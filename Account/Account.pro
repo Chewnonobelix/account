@@ -15,7 +15,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     Model/entry.cpp \
-    Model/information.cpp
+    Model/information.cpp \
+    Model/total.cpp
 
 RESOURCES += View/qml.qrc
 
@@ -32,4 +33,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     Model/entry.h \
-    Model/information.h
+    Model/information.h \
+    Model/total.h
