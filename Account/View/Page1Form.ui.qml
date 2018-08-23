@@ -1,18 +1,39 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import QtQuick.Controls 1.4
 
 Page {
-    width: 600
-    height: 400
 
     header: Label {
-        text: qsTr("Page 1")
+        text: qsTr("Account")
         font.pixelSize: Qt.application.font.pixelSize * 2
         padding: 10
     }
 
-    Label {
-        text: qsTr("You are on Page 1.")
-        anchors.centerIn: parent
+    TableView {
+        anchors.fill: parent
+        TableViewColumn {
+            role: "Date"
+            title: qsTr("Date")
+            width: 100
+        }
+
+        TableViewColumn {
+            role: "Value"
+            title: qsTr("Value")
+            width: 100
+        }
+
+        TableViewColumn {
+            role: "Label"
+            title: qsTr("Label")
+            width: 100
+        }
+
+        TableViewColumn {
+            role: "Total"
+            title: qsTr("Total")
+            width: 100
+        }
     }
 }
