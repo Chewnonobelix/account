@@ -1,5 +1,7 @@
 #include "total.h"
 
+
+
 Total::Total()
 {
 
@@ -22,7 +24,7 @@ Total operator+(const Entry& e1, const Entry& e2)
 {
     Total ret;
 
-    ret.setValue(e1.value() + e2.value());
+    ret.setValue((-1*Categories::type(e1.info().category())*e1.value()) + (-1*Categories::type(e2.info().category())*e2.value()));
     ret.setDate(Total::maxDate(e1.date(), e2.date()));
 
     return ret;

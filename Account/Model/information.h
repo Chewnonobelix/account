@@ -2,6 +2,7 @@
 #define INFORMATION_H
 
 #include <QString>
+#include "categories.h"
 
 class Information
 {
