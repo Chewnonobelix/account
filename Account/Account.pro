@@ -16,7 +16,8 @@ SOURCES += \
         main.cpp \
     Model/entry.cpp \
     Model/information.cpp \
-    Model/total.cpp
+    Model/total.cpp \
+    Model/categories.cpp
 
 RESOURCES += View/qml.qrc
 
@@ -34,4 +35,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     Model/entry.h \
     Model/information.h \
-    Model/total.h
+    Model/total.h \
+    Model/categories.h
