@@ -1,5 +1,4 @@
 #include "entry.h"
-#include "total.h"
 
 Entry::Entry(): m_id(-1)
 {
@@ -30,11 +29,6 @@ Entry& Entry::operator = (const Entry& e)
     return *this;
 }
 
-
-Total operator + (const Entry& e1, const Entry& e2)
-{
-    return Total();
-}
 
 int Entry::id() const
 {

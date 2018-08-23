@@ -6,7 +6,6 @@
 
 #include "information.h"
 
-class Total;
 
 class Entry
 {
@@ -26,7 +25,6 @@ public:
 
     Entry& operator =(const Entry&);
 
-    friend Total operator+(const Entry&, const Entry&);
 
     int id() const;
     void setId(int id);
@@ -40,6 +38,7 @@ public:
     void setType(QString type);
     Information info() const;
     void setInfo(Information info);
+
 };
 
 #endif // ENTRY_H
