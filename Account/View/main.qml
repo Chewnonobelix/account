@@ -4,9 +4,7 @@ import QtQuick.Controls 2.4
 
 ApplicationWindow {
     visible: true
-    width: 640
-    height: 480
-    title: qsTr("Tabs")
+
 
     menuBar: MenuBar {
         Menu {
@@ -16,6 +14,12 @@ ApplicationWindow {
             Action {text: qsTr("&Save") }
             Action {text: qsTr("&Quit") }
         }
+    }
+
+    header: Label {
+        text: qsTr("Account")
+        font.pixelSize: Qt.application.font.pixelSize * 2
+        padding: 10
     }
 
     SwipeView {
