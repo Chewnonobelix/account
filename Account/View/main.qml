@@ -1,10 +1,14 @@
 import QtQuick 2.9
+import QtQuick.Controls 1.4
+
 import QtQuick.Controls 2.2
 import QtQuick.Controls 2.4
 
 ApplicationWindow {
     visible: true
 
+    width: 600
+    height: 400
 
     menuBar: MenuBar {
         Menu {
@@ -22,15 +26,19 @@ ApplicationWindow {
         padding: 10
     }
 
+
     SwipeView {
         id: swipeView
-        anchors.fill: parent
         currentIndex: tabBar.currentIndex
+        implicitWidth: parent.width
+        implicitHeight: parent.height
 
         Page1Form {
+            id: table
         }
 
         Page2Form {
+            id: graph
         }
     }
 
