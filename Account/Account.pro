@@ -1,4 +1,4 @@
-QT += quick
+QT += quick sql core
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -17,7 +17,9 @@ SOURCES += \
     Model/entry.cpp \
     Model/information.cpp \
     Model/total.cpp \
-    Model/categories.cpp
+    Model/categories.cpp \
+    Controller/abstractcontroller.cpp \
+    Controller/controllerdb.cpp
 
 RESOURCES += View/qml.qrc
 
@@ -36,4 +38,6 @@ HEADERS += \
     Model/entry.h \
     Model/information.h \
     Model/total.h \
-    Model/categories.h
+    Model/categories.h \
+    Controller/abstractcontroller.h \
+    Controller/controllerdb.h

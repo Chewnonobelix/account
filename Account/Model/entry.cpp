@@ -90,3 +90,7 @@ void Entry::setInfo(Information info)
     m_info = info;
 }
 
+bool operator == (const Entry& e1, const Entry& e2)
+{
+    return e1.id() == e2.id();
+}
