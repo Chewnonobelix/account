@@ -10,13 +10,15 @@
 class ControllerDB
 {
 private:
-    QSqlQuery m_addEntry;
+    QSqlDatabase m_db;
+    QSqlQuery* m_addEntry;
     QString m_removeEntry;
-    QSqlQuery m_selectEntry;
-    QSqlQuery m_accounts;
+    QSqlQuery* m_selectEntry;
+    QSqlQuery* m_accounts;
 
 public:
     ControllerDB();
+    ~ControllerDB();
 
     bool addEntry(const Entry&);
     QList<Entry> selectEntry(QString);
