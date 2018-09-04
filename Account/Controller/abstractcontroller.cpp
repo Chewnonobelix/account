@@ -1,8 +1,8 @@
 #include "abstractcontroller.h"
 
-QStringList AbstractController::m_listAccount = QStringList();
 QString AbstractController::m_account = QString();
 QMultiMap<QDate, Entry> AbstractController::m_entry = QMultiMap<QDate, Entry>();
+ControllerDB AbstractController::m_db = ControllerDB();
 
 AbstractController::AbstractController(): QObject(nullptr)
 {
@@ -12,14 +12,9 @@ AbstractController::AbstractController(): QObject(nullptr)
 AbstractController::~AbstractController()
 {}
 
-void AbstractController::setAccountList(QStringList l)
-{
-    m_listAccount = l;
-}
-
 QStringList AbstractController::accountList()
 {
-    return m_listAccount;
+    return m_db.selectAccount();
 }
 
 void AbstractController::setCurrentAccount(QString a)
@@ -35,11 +30,29 @@ QString AbstractController::currentAccount()
 
 void AbstractController::addEntry(const Entry& e)
 {
-    m_entry.insert(e.date(), e);
+    if(m_db.addEntry(e))
+    {
+        auto l = m_db.selectEntry(currentAccount());
+        m_entry.clear();
+
+        for(auto it: l)
+            m_entry.insert(it.date(), it);
+
+    }
 }
 
 void AbstractController::removeEntry(const Entry& e)
 {
-    m_entry.remove(e.date(), e);
+    //m_entry.remove(e.date(), e);
 }
 
+Entry AbstractController::entry(int id)
+{
+    Entry ret;
+
+    for(auto it: m_entry)
+        if(it.id() == id)
+            ret = it;
+
+    return ret;
+}

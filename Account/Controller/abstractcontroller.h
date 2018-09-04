@@ -10,14 +10,17 @@
 #include "Model/categories.h"
 #include "Model/total.h"
 
+#include "controllerdb.h"
+
 class AbstractController: public QObject
 {
     Q_OBJECT
 
 private:
-    static QStringList m_listAccount;
     static QString m_account;
     static QMultiMap<QDate, Entry> m_entry;
+    static ControllerDB m_db;
+
 
 public:
     AbstractController();
@@ -34,6 +37,7 @@ public:
     static void addEntry(const Entry&);
     static void removeEntry(const Entry&);
 
+    static Entry entry(int);
 };
 
 #endif // ABSTRACTCONTROLLER_H
