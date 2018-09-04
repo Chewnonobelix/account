@@ -47,13 +47,13 @@ int main(int argc, char *argv[])
         return -1;
 
     qDebug()<<engine.rootObjects();*/
+    MainController mc;
+
+    mc.exec();
 
     if(argc > 1 && QString(argv[1]) == "--test")
         test();
 
-    MainController mc;
-
-    mc.exec();
 
     return app.exec();
 }

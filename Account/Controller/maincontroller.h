@@ -2,6 +2,7 @@
 #define MAINCONTROLLER_H
 
 #include <QQmlApplicationEngine>
+#include <QDebug>
 
 #include "abstractcontroller.h"
 
@@ -17,6 +18,11 @@ public:
     ~MainController();
 
     int exec();
+
+public slots:
+    void add();
+    void remove(int);
+    void edit(int);
 };
 
 #endif // MAINCONTROLLER_H
