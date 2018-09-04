@@ -19,7 +19,7 @@ Page {
         }
     }
 
-    Popup {
+   /* Popup {
         id: adding
         closePolicy: Popup.NoAutoClose
 
@@ -84,7 +84,7 @@ Page {
                             labelc: "X text"
                             total: 65.6*/
 
-                        adding.reset()
+ /*                       adding.reset()
                         adding.close()
 
 
@@ -102,7 +102,7 @@ Page {
                 }
             }
         }
-    }
+    }*/
 
     Item {
         anchors.top: cal.bottom
@@ -116,11 +116,13 @@ Page {
             anchors.top: parent.top
             anchors.left: parent.left
             focus: true
-            onClicked: {
+           /* onClicked: {
                 adding.x = pressX + x + parent.x
                 adding.y = pressY + y + parent.y
                 adding.open()
-            }
+            }*/
+
+            onClicked: mainWindow.adding()
         }
 
 
@@ -132,7 +134,7 @@ Page {
             anchors.leftMargin: (parent.width * .1)
 
             onClicked: {
-                tableModel.remove(view.currentRow)
+                mainWindow.remove(view.currentRow)
             }
 
         }
@@ -147,6 +149,7 @@ Page {
 
             onClicked: {
                 console.log(index)
+                mainWindow.edit(index)
             }
 
         }

@@ -10,6 +10,13 @@ ApplicationWindow {
     width: 600
     height: 400
 
+    signal adding()
+    signal remove(int index)
+    signal edit(int index)
+    signal accountChange(int index)
+
+    id: mainWindow
+
     menuBar: MenuBar {
         Menu {
             title: qsTr("&File")
