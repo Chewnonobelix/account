@@ -5,7 +5,7 @@
 #include <QSqlQuery>
 #include <QVariant>
 #include <QSqlRecord>
-#include "abstractcontroller.h"
+#include "../Model/entry.h"
 
 class ControllerDB
 {
@@ -19,6 +19,8 @@ private:
 public:
     ControllerDB();
     ~ControllerDB();
+
+    bool isConnected() const;
 
     bool addEntry(const Entry&);
     QList<Entry> selectEntry(QString);

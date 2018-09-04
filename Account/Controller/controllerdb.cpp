@@ -7,30 +7,38 @@ ControllerDB::ControllerDB()
     m_db.setUserName("chewnonobelix");
     m_db.setPassword("04091986a");
     m_db.setDatabaseName("account_test");
-    if(!m_db.open())
-        throw "Cannot open Databbase";
+    if(m_db.open())
+    {
+        m_selectEntry = new QSqlQuery(m_db);
+        m_addEntry = new QSqlQuery(m_db);
+        m_accounts = new QSqlQuery(m_db);
 
-    m_selectEntry = new QSqlQuery(m_db);
-    m_addEntry = new QSqlQuery(m_db);
-    m_accounts = new QSqlQuery(m_db);
-
-    m_selectEntry->prepare("SELECT * FROM account WHERE account=:a");
-    m_addEntry->prepare("INSERT INTO account (account, value, date_eff, type) VALUES (:account,:value,:date,:type)");
-    m_accounts->prepare("SELECT DISTINCT account FROM account");
+        m_selectEntry->prepare("SELECT * FROM account WHERE account=:a");
+        m_addEntry->prepare("INSERT INTO account (account, value, date_eff, type) VALUES (:account,:value,:date,:type)");
+        m_accounts->prepare("SELECT DISTINCT account FROM account");
+    }
 }
 
 ControllerDB::~ControllerDB()
 {
-    delete m_selectEntry;
-    delete m_addEntry;
-    delete m_accounts;
+    if(isConnected())
+    {
+        delete m_selectEntry;
+        delete m_addEntry;
+        delete m_accounts;
 
-    m_db.close();
+        m_db.close();
+    }
+}
+
+bool ControllerDB::isConnected() const
+{
+    return m_db.isOpen();
 }
 
 bool ControllerDB::addEntry(const Entry & e)
 {
-    if(e.id() < 0)
+    if(isConnected() && e.id() < 0)
     {
         m_addEntry->bindValue(":account", QVariant(e.account()));
         m_addEntry->bindValue(":value", QVariant(e.value()));
@@ -46,6 +54,9 @@ bool ControllerDB::addEntry(const Entry & e)
 QList<Entry> ControllerDB::selectEntry(QString account)
 {
     QList<Entry> res;
+
+    if(!isConnected())
+        return res;
 
     m_selectEntry->bindValue(":a", QVariant(account));
     if(m_selectEntry->exec())
@@ -68,7 +79,7 @@ QList<Entry> ControllerDB::selectEntry(QString account)
 QStringList ControllerDB::selectAccount()
 {
     QStringList res;
-    if(m_accounts->exec())
+    if(isConnected() && m_accounts->exec())
     {
         qDebug()<<"Exec "<<m_accounts->lastQuery()<<m_accounts->executedQuery();
 
