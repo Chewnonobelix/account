@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QRandomGenerator>
 #include "Controller/controllerdb.h"
+#include "Controller/maincontroller.h"
 
 void test()
 {
@@ -39,16 +40,20 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    QQmlApplicationEngine engine;
+    /*QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     if (engine.rootObjects().isEmpty())
         return -1;
 
-    qDebug()<<engine.rootObjects();
+    qDebug()<<engine.rootObjects();*/
 
     if(argc > 1 && QString(argv[1]) == "--test")
         test();
+
+    MainController mc;
+
+    mc.exec();
 
     return app.exec();
 }
