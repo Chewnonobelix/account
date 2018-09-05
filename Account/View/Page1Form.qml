@@ -47,6 +47,7 @@ Page {
                 adding.x = pressX + x + parent.x
                 adding.y = pressY + y + parent.y
                 mainWindow.adding()
+                page1.openAdding()
             }
         }
 
