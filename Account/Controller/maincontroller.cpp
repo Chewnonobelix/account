@@ -26,9 +26,34 @@ int MainController::exec()
 
 void MainController::add()
 {
-    qDebug()<<"Add";
+    QObject* item = m_engine.rootObjects().first()->findChild<QObject*>("table");
+    QVariant ret;
+    QMetaObject::invokeMethod(item, "openAdding", Q_RETURN_ARG(QVariant, ret));
+
+    QObject* adding = item->findChild<QObject*>("addingid");
+
+    connect(adding, SIGNAL(accept()), this, SLOT(adding()));
 }
 
+void MainController::adding()
+{
+    QObject* adding = m_engine.rootObjects().first()->findChild<QObject*>("addingid");
+
+    Entry e;
+    QVariant val, date, label;
+    QMetaObject::invokeMethod(adding, "value", Q_RETURN_ARG(QVariant, val));
+    QMetaObject::invokeMethod(adding, "label", Q_RETURN_ARG(QVariant, label));
+    QMetaObject::invokeMethod(adding, "date", Q_RETURN_ARG(QVariant, date));
+
+    e.setDate(date.toDate());
+    e.setValue(val.toDouble());
+    Information i;
+    i.setTitle(label.toString());
+    e.setInfo(i);
+    qDebug()<<e.date()<<e.value()<<e.info().title();
+
+    AbstractController::addEntry(e);
+}
 void MainController::remove(int id)
 {
     qDebug()<<"Remove"<<id;

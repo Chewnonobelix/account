@@ -3,6 +3,7 @@
 
 #include <QQmlApplicationEngine>
 #include <QDebug>
+#include <QQuickView>
 
 #include "abstractcontroller.h"
 
@@ -23,6 +24,8 @@ public slots:
     void add();
     void remove(int);
     void edit(int);
+
+    void adding();
 };
 
 #endif // MAINCONTROLLER_H
