@@ -9,6 +9,10 @@ Page {
     implicitWidth: parent.width
     implicitHeight: parent.height
 
+    id: pageTable
+
+    property date v_date
+
     Calendar {
         id: cal
         weekNumbersVisible: true
@@ -16,6 +20,7 @@ Page {
         implicitWidth: parent.width * 0.2
 
         onClicked: {
+            v_date = selectedDate
         }
     }
 
@@ -44,8 +49,8 @@ Page {
             anchors.left: parent.left
             focus: true
             onClicked: {
-                adding.x = pressX + x + parent.x
-                adding.y = pressY + y + parent.y
+                addingid.x = pressX + x + parent.x
+                addingid.y = pressY + y + parent.y
                 mainWindow.adding()
             }
         }
