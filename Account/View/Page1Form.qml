@@ -21,6 +21,16 @@ Page {
 
    /* */
 
+    Adding {
+        id: addingid
+        objectName: "addingid"
+    }
+
+    function openAdding() {
+        addingid.open()
+        return 0
+    }
+
     Item {
         anchors.top: cal.bottom
         width: cal.width
@@ -33,13 +43,11 @@ Page {
             anchors.top: parent.top
             anchors.left: parent.left
             focus: true
-           /* onClicked: {
+            onClicked: {
                 adding.x = pressX + x + parent.x
                 adding.y = pressY + y + parent.y
-                adding.open()
-            }*/
-
-            onClicked: mainWindow.adding()
+                mainWindow.adding()
+            }
         }
 
 

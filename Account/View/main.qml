@@ -42,6 +42,7 @@ ApplicationWindow {
 
         Page1Form {
             id: table
+            objectName: "table"
         }
 
         Page2Form {
