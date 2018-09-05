@@ -48,6 +48,9 @@ ApplicationWindow {
         Page2Form {
             id: graph
         }
+
+        Information {
+        }
     }
 
     footer: TabBar {
@@ -59,6 +62,10 @@ ApplicationWindow {
         }
         TabButton {
             text: qsTr("Graph")
+        }
+
+        TabButton {
+            text: qsTr("Info")
         }
     }
 }
