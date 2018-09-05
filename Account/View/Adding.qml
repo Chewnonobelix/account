@@ -14,18 +14,9 @@ Popup {
 
     signal accept()
 
-    function value() {
-        return spinbox.realValue
-    }
-
-    function label() {
-        return valueLabel.text
-    }
-
-    function date() {
-        return cal.selectedDate
-    }
-
+    property double v_val
+    property string v_title
+    property string v_type
 
     ColumnLayout {
         Label {
@@ -42,30 +33,24 @@ Popup {
 
             TextField {
                 id: valueLabel
+                onTextChanged: {
+                    v_title = text
+                }
             }
 
-            SpinBox {
+            DoubleSpinBox {
                 id: spinbox
-                from: 0
-                value: 110
-                to: 100 * 100
-                stepSize: 10
-                editable: true
-
-                property int decimals: 2
-                property real realValue: value / 100
-
-                validator: DoubleValidator {
-                    bottom: Math.min(spinbox.from, spinbox.to)
-                    top:  Math.max(spinbox.from, spinbox.to)
+                onValueChanged: {
+                    v_val = realValue
                 }
+            }
 
-                textFromValue: function(value, locale) {
-                    return Number(value / 100).toLocaleString(locale, 'f', spinbox.decimals)
-                }
-
-                valueFromText: function(text, locale) {
-                    return Number.fromLocaleString(locale, text) * 100
+            ComboBox {
+                id: type
+                objectName: "type"
+                model: ["Income", "Outcome"]
+                onCurrentTextChanged: {
+                    v_type = currentText
                 }
             }
         }
