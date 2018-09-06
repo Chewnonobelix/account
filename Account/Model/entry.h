@@ -34,6 +34,7 @@ public:
 
     Entry& operator =(const Entry&);
     friend bool operator ==(const Entry&, const Entry&);
+    friend bool operator < (const Entry&, const Entry&);
 
     int id() const;
     void setId(int id);
