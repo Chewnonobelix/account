@@ -2,10 +2,20 @@
 #define INFORMATION_H
 
 #include <QString>
+#include <QObject>
+
 #include "categories.h"
 
 class Information
 {
+    Q_GADGET
+
+    Q_PROPERTY(int id READ id)
+    Q_PROPERTY(int idEntry READ idEntry)
+    Q_PROPERTY(QString title READ title)
+    Q_PROPERTY(bool estimated READ estimated)
+    Q_PROPERTY(QString category READ category)
+
 private:
     int m_id;
     int m_idEntry;
