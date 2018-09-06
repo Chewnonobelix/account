@@ -3,12 +3,21 @@
 
 #include <QString>
 #include <QDate>
-
+#include <QObject>
 #include "information.h"
 
 
 class Entry
 {
+    Q_GADGET
+
+    Q_PROPERTY(int id READ id)
+    Q_PROPERTY(QString account READ account)
+    Q_PROPERTY(double value READ value)
+    Q_PROPERTY(QDate date READ date)
+    Q_PROPERTY(QString type READ type)
+    Q_PROPERTY(Information info READ info)
+
 private:
     int m_id;
     QString m_account;
