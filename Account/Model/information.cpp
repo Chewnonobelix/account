@@ -23,6 +23,16 @@ Information& Information::operator =(const Information& i)
     return *this;
 }
 
+bool operator == (const Information& i1, const Information& i2)
+{
+    return i1.id() == i2.id();
+}
+
+bool operator <(const Information& i1, const Information& i2)
+{
+    return i1.title() < i2.title();
+}
+
 int Information::id() const
 {
     return m_id;

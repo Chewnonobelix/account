@@ -30,6 +30,9 @@ public:
 
     Information& operator = (const Information&);
 
+    friend bool operator ==(const Information&, const Information&);
+    friend bool operator <(const Information&, const Information&);
+
     int id() const;
     void setId(int id);
     int idEntry() const;
