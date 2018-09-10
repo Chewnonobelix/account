@@ -13,15 +13,15 @@ Page {
 
     property date v_date
 
-    Calendar {
+    MultiCalendar {
         id: cal
         weekNumbersVisible: true
         implicitHeight: parent.height /2
         implicitWidth: parent.width * 0.2
 
-        onClicked: {
+        /*onClicked: {
             v_date = selectedDate
-        }
+        }*/
     }
 
    /* */

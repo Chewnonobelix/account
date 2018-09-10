@@ -7,5 +7,6 @@
         <file>Information.qml</file>
         <file>Adding.qml</file>
         <file>DoubleSpinBox.qml</file>
+        <file>MultiCalendar.qml</file>
     </qresource>
 </RCC>
