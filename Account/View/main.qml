@@ -40,6 +40,9 @@ ApplicationWindow {
         implicitWidth: parent.width
         implicitHeight: parent.height
 
+        MultiCalendar {
+        }
+
         Page1Form {
             id: table
             objectName: "table"
@@ -49,13 +52,15 @@ ApplicationWindow {
             id: graph
         }
 
-        Information {
-        }
     }
 
     footer: TabBar {
         id: tabBar
         currentIndex: swipeView.currentIndex
+
+        TabButton {
+            text: qsTr("Info")
+        }
 
         TabButton {
             text: qsTr("List")
@@ -64,8 +69,5 @@ ApplicationWindow {
             text: qsTr("Graph")
         }
 
-        TabButton {
-            text: qsTr("Info")
-        }
     }
 }
