@@ -6,23 +6,30 @@ Calendar {
     id: multiCal
 
     property var selectedDates: []
+    property var stylesData: []
 
 
     style: CalendarStyle {
+        id:cs
         dayDelegate: Rectangle {
-            function reset() {
-                for(var i in selectedDates) {
-                    i.color = "black"
+            signal updateSelected()
+            signal reset()
+
+            onReset: {
+                for(var i in stylesData) {
+                    stylesData[i].color = "black"
                 }
 
                 while(selectedDates.length > 0) {
                     selectedDates.pop()
+
                 }
 
             }
 
-            function updateSelected() {
-                if(selectedDates.indexOf(styleData.date.toString()) != -1) {
+            onUpdateSelected: {
+
+                if(selectedDates.indexOf(styleData.index) != -1) {
                     c_date.color = "red"
                 }
                 else {
@@ -37,35 +44,40 @@ Calendar {
                 text: styleData.date.getDate()
                 color: styleData.selected ? "red" : "black"
 
+                onTextChanged: {
+                    if(stylesData.indexOf(c_date) == -1) {
+                        stylesData.push(c_date)
+                    }
+                }
             }
 
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
                     if(mouse.modifiers === Qt.ShiftModifier) {
-                        var index = selectedDates.indexOf(styleData.date.toString())
-                        console.log(index)
-                        console.log(selectedDates.length)
-                        for(var i in selectedDates) {
-                            console.log(i.text)
-                        }
+                        var index = selectedDates.indexOf(styleData.index)
+
 
                         if( index == -1) {
-                            selectedDates[styleData.date.toString()] = c_date.parent
-                            console.log(c_date.parent)
+                            selectedDates[selectedDates.length] = styleData.index
                         }
                         else {
-                            delete selectedDates[styleData.date.toString()]
+                            delete selectedDates[index]
                         }
                     }
                     else {
 
-                        //selectedDates = [styleData.date.toString()]
+                        parent.reset()
+                        selectedDates[selectedDates.length] = styleData.index
+
                     }
 
                     parent.updateSelected()
                 }
             }
         }
+
     }
+
+
 }
