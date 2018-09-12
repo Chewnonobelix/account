@@ -9,8 +9,15 @@ Calendar {
     property var stylesData: []
 
 
+
+
     style: CalendarStyle {
         id:cs
+
+
+
+        property int currentMonth: -1
+
         dayDelegate: Rectangle {
             signal updateSelected()
             signal reset()
@@ -45,6 +52,11 @@ Calendar {
                 color: styleData.selected ? "red" : "black"
 
                 onTextChanged: {
+                    if(cs.currentMonth != multiCal.visibleMonth) {
+                        cs.currentMonth = multiCal.visibleMonth
+                        parent.reset()
+                    }
+
                     if(stylesData.indexOf(c_date) == -1) {
                         stylesData.push(c_date)
                     }
@@ -62,7 +74,9 @@ Calendar {
                             selectedDates[selectedDates.length] = styleData.index
                         }
                         else {
-                            delete selectedDates[index]
+                            if(selectedDates.length > 1) {
+                                delete selectedDates[index]
+                            }
                         }
                     }
                     else {
