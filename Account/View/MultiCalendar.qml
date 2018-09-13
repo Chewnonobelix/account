@@ -8,6 +8,8 @@ Calendar {
     property var selectedDates: []
     property var stylesData: []
 
+    signal s_datesChanged()
+
     style: CalendarStyle {
         id:cs
 
@@ -53,7 +55,7 @@ Calendar {
                     styleRect.color = "white"
                     c_date.color = "black"
                 }
-
+                multiCal.s_datesChanged()
             }
 
             Label {
