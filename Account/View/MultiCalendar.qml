@@ -13,25 +13,15 @@ Calendar {
 
         property int currentMonth: -1
 
-        function f(d, d2, d3) {
-            console.log("d = " + d)
-            console.log("d2 = " + d2)
-            console.log("d3 = " + d3)
-            return (d === d3)
-        }
-
         function isSelected(sd) {
-            console.log("Test = " + sd.date)
-            return selectedDates.forEach(f, sd.date)
-//            for(var i in selectedDates) {
-//                if(sd.date === selectedDates[i]) {
-//                    return true
-//                }
-//                else {
-//                    return false
-//                }
-//            }
-//            return false
+            var ret = false
+
+            for(var i in selectedDates) {
+                if(sd.date.toString() === selectedDates[i].toString()) {
+                    ret = true
+                }
+            }
+            return ret
         }
 
         dayDelegate: Rectangle {
@@ -51,11 +41,11 @@ Calendar {
 
                 }
 
+
             }
 
             onUpdateSelected: {
-                console.log("Select = " + isSelected(styleData))
-                if(selectedDates.indexOf(styleData.date) != -1) {
+                if(cs.isSelected(styleData) && (styleData.date.getMonth() === visibleMonth)) {
                     c_date.color = "white"
                     styleRect.color = "royalblue"
                 }
