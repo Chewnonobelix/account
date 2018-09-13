@@ -18,10 +18,6 @@ Page {
         weekNumbersVisible: true
         implicitHeight: parent.height /2
         implicitWidth: parent.width * 0.2
-
-        /*onClicked: {
-            v_date = selectedDate
-        }*/
     }
 
    /* */
@@ -52,6 +48,11 @@ Page {
                 addingid.x = pressX + x + parent.x
                 addingid.y = pressY + y + parent.y
                 mainWindow.adding()
+                console.log("Cal:" + cal.selectedDates.length)
+
+                for(var i in cal.selectedDates) {
+                    console.log(cal.selectedDates[i])
+                }
             }
         }
 
