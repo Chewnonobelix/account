@@ -4,7 +4,7 @@
         <file>Page1Form.qml</file>
         <file>Page2Form.ui.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>Information.qml</file>
+        <file>InformationView.qml</file>
         <file>Adding.qml</file>
         <file>DoubleSpinBox.qml</file>
         <file>MultiCalendar.qml</file>
