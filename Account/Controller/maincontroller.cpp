@@ -5,6 +5,13 @@ MainController::MainController(): AbstractController()
 {
     AbstractController::setCurrentAccount("test_account1");
     AbstractController::initTestEntry();
+
+    qmlRegisterUncreatableType<Entry>("Account",1,0,"Entry", "Va te faire enculer");
+//    qmlRegisterType<Information>();
+
+//    qDebug()<<QMetaType::type("Entry");
+//    qDebug()<<qRegisterMetaType<Entry>();
+//    qDebug()<<qRegisterMetaType<Information>();
 }
 
 MainController::~MainController()
@@ -79,6 +86,17 @@ void MainController::remove(int id)
 void MainController::edit(int id)
 {
     qDebug()<<"Edit"<< id;
+    QObject* info = m_engine.rootObjects().first()->findChild<QObject*>("infoTest");
+
+    if(info)
+    {
+        qDebug()<<info;
+        Entry e = AbstractController::entry(id);
+        qDebug()<<e.id()<<e.value()<<e.date();
+        qDebug()<<QVariant::fromValue(e).isValid();
+        qDebug()<<info->metaObject()->indexOfProperty("modelEntry")<<info->setProperty("modelEntry", QVariant::fromValue(e));
+        qDebug()<<info->setProperty("modelInf", QVariant::fromValue(e.info()));
+    }
 }
 
 void MainController::selection()
@@ -107,7 +125,8 @@ void MainController::selection()
     if(tab){
         QVariantList vl;
         for(auto i = 0 ; i < ret.size(); i++)
-            vl<<QVariant::fromValue(ret[i]);
+            vl<<QVariant::fromValue(ret.value(i));
+
         tab->setProperty("model", vl);
     }
 
