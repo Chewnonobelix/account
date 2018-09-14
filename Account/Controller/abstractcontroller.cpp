@@ -73,13 +73,13 @@ QList<Entry> AbstractController::entries(QDate d)
 
 void AbstractController::initTestEntry()
 {
-    for(int i = 0; i < 136; i++)
+    for(int i = 0; i < 5; i++)
     {
         Entry e;
-        QRandomGenerator rdn;
-        rdn.bounded(999.9);
+        QRandomGenerator::global()->bounded(999.8);
+        e.setId(QRandomGenerator::global()->generate() % 264);
         e.setAccount(currentAccount());
-        e.setValue(rdn.generateDouble());
+        e.setValue(QRandomGenerator::global()->generateDouble() *100);
         e.setDate(QDate::currentDate());
 
         if(i%5 == 0)
@@ -87,8 +87,12 @@ void AbstractController::initTestEntry()
         else
             e.setType("outcome");
 
+//        qDebug()<<"Gen"<<e.id()<<e.value();
 
         m_entry.insert(e.date(), e);
     }
 
+
+//    for(auto e: m_entry)
+//        qDebug()<<e.id()<<e.value();
 }
