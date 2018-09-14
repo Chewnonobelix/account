@@ -2,7 +2,7 @@
 
 MainController::MainController(): AbstractController()
 {
-
+    AbstractController::setCurrentAccount("test_account1");
 }
 
 MainController::~MainController()
@@ -20,6 +20,10 @@ int MainController::exec()
     connect(root, SIGNAL(adding()), this, SLOT(add()));
     connect(root, SIGNAL(remove(int)), this, SLOT(remove(int)));
     connect(root, SIGNAL(edit(int)), this, SLOT(edit(int)));
+    QObject* calendar = root->findChild<QObject*>("cal");
+
+    if(calendar)
+        connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(selection()));
 
     return 0;
 }
@@ -62,4 +66,29 @@ void MainController::remove(int id)
 void MainController::edit(int id)
 {
     qDebug()<<"Edit"<< id;
+}
+
+void MainController::selection()
+{
+    qDebug()<<"Selection";
+    QObject* calendar = m_engine.rootObjects().first()->findChild<QObject*>("cal");
+    QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));
+    QJSValue array = mp.read(calendar).value<QJSValue>();
+    QList<QDate> ld;
+
+    for(int i = 0; i < array.property("length").toInt(); i++)
+        ld<<array.property(i).toDateTime().date();
+
+
+    qDebug()<<ld;
+
+    QList<Entry> ret;
+
+    if(ld.isEmpty())
+        ret = AbstractController::entries();
+    else
+        for(auto it: ld)
+            ret<<AbstractController::entries(it);
+
+    qDebug()<<"List ret"<<ret.size();
 }

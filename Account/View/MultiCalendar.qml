@@ -80,15 +80,18 @@ Calendar {
                 propagateComposedEvents: true
                 onClicked: {
                     if(mouse.modifiers === Qt.ShiftModifier) {
-                        var index = selectedDates.indexOf(styleData.date)
+                        var index = -1
+                        for(var i in selectedDates) {
+                            if(styleData.date.toString() === selectedDates[i].toString()) {
+                                index = i
+                            }
 
+                        }
                         if( index == -1) {
                             selectedDates[selectedDates.length] = styleData.date
                         }
                         else {
-                            if(selectedDates.length > 1) {
-                                selectedDates.splice(index,1)
-                            }
+                            selectedDates.splice(index,1)
                         }
                     }
                     else {

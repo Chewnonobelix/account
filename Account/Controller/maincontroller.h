@@ -4,7 +4,8 @@
 #include <QQmlApplicationEngine>
 #include <QDebug>
 #include <QQuickView>
-
+#include <QVariant>
+#include <QJSValue>
 #include "abstractcontroller.h"
 
 class MainController: AbstractController
@@ -26,6 +27,7 @@ public slots:
     void edit(int);
 
     void adding();
+    void selection();
 };
 
 #endif // MAINCONTROLLER_H

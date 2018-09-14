@@ -5,6 +5,7 @@
 #include <QDate>
 #include <QMultiMap>
 #include <QObject>
+#include <QDebug>
 
 #include "Model/entry.h"
 #include "Model/categories.h"
@@ -38,6 +39,7 @@ public:
     static void removeEntry(const Entry&);
 
     static Entry entry(int);
+    static QList<Entry> entries(QDate = QDate());
 };
 
 #endif // ABSTRACTCONTROLLER_H

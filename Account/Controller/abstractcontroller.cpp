@@ -20,6 +20,10 @@ QStringList AbstractController::accountList()
 void AbstractController::setCurrentAccount(QString a)
 {
     m_account = a;
+    m_entry.clear();
+    auto l = m_db.selectEntry(a);
+    for(auto it: l)
+        m_entry.insert(it.date(), it);
 }
 
 QString AbstractController::currentAccount()
@@ -55,4 +59,13 @@ Entry AbstractController::entry(int id)
             ret = it;
 
     return ret;
+}
+
+QList<Entry> AbstractController::entries(QDate d)
+{
+    qDebug()<<m_entry.size();
+    if(d == QDate())
+        return m_entry.values();
+    else
+        return m_entry.values(d);
 }

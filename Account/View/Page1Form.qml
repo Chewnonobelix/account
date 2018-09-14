@@ -15,6 +15,7 @@ Page {
 
     MultiCalendar {
         id: cal
+        objectName: "cal"
         weekNumbersVisible: true
         implicitHeight: parent.height /2
         implicitWidth: parent.width * 0.2
