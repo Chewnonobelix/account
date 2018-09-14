@@ -66,6 +66,10 @@ ApplicationWindow {
             id: graph
         }
 
+        InformationView {
+            objectName: "infoTest"
+        }
+
     }
 
     footer: TabBar {
@@ -77,6 +81,9 @@ ApplicationWindow {
         }
         TabButton {
             text: qsTr("Graph")
+        }
+        TabButton {
+            text: qsTr("Info test")
         }
 
     }
