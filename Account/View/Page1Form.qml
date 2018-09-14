@@ -66,7 +66,7 @@ Page {
             anchors.leftMargin: (parent.width * .1)
 
             onClicked: {
-                mainWindow.remove(view.currentRow)
+                mainWindow.remove(view.model[index])
             }
 
         }
@@ -80,7 +80,9 @@ Page {
             property int index
 
             onClicked: {
-                mainWindow.edit(index)
+//                mainWindow.edit(index)
+                console.log("Index: " + view.model[index].id)
+                mainWindow.edit(view.model[index].id)
             }
 
         }
@@ -104,6 +106,10 @@ Page {
         id: view
         objectName: "entryView"
 
+        TableViewColumn {
+            role: "id"
+            visible: false
+        }
 
         TableViewColumn {
             role: "date"
@@ -127,6 +133,12 @@ Page {
             role: "type"
             title: qsTr("Type")
             width: 100
+        }
+
+        onClicked: {
+            console.log(row)
+            console.log(model[row].id)
+ //           mainWindow.edit(row)
         }
     }
 }
