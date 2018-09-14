@@ -28,6 +28,7 @@ public slots:
 
     void adding();
     void selection();
+    void accountChange(QString);
 };
 
 #endif // MAINCONTROLLER_H

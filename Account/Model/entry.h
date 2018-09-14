@@ -16,7 +16,8 @@ class Entry
     Q_PROPERTY(double value READ value)
     Q_PROPERTY(QDate date READ date)
     Q_PROPERTY(QString type READ type)
-    Q_PROPERTY(Information info READ info)
+//    Q_PROPERTY(Information info READ info)
+    Q_PROPERTY(QString label READ label)
 
 private:
     int m_id;
@@ -48,7 +49,7 @@ public:
     void setType(QString type);
     Information info() const;
     void setInfo(Information info);
-
+    QString label() const;
 };
 
 #endif // ENTRY_H

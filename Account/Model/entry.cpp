@@ -100,3 +100,8 @@ bool operator < (const Entry& e1, const Entry& e2)
     return (e1.date() < e2.date()) ||
             (e1.info() < e2.info());
 }
+
+QString Entry::label() const
+{
+    return info().title();
+}

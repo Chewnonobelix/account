@@ -27,6 +27,17 @@ int MainController::exec()
     if(calendar)
         connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(selection()));
 
+    QObject* combo = root->findChild<QObject*>("accountSelect");
+
+    if(combo)
+    {
+        QStringList t;
+        t<<"test_account1"<<"test_account2";
+        combo->setProperty("model", t);
+//        combo->setProperty("model", AbstractController::accountList());
+        connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
+        accountChange(t[0]);
+    }
     return 0;
 }
 
@@ -82,7 +93,6 @@ void MainController::selection()
         ld<<array.property(i).toDateTime().date();
 
 
-    qDebug()<<ld;
 
     QList<Entry> ret;
 
@@ -92,20 +102,30 @@ void MainController::selection()
         for(auto it: ld)
             ret<<AbstractController::entries(it);
 
-    qDebug()<<"List ret"<<ret.size();
 
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
-    qDebug()<<tab;
     if(tab){
-        const QMetaObject* mo = tab->metaObject();
         QVariantList vl;
         for(auto i = 0 ; i < ret.size(); i++)
             vl<<QVariant::fromValue(ret[i]);
-
-        qDebug()<<tab->dynamicPropertyNames()<<mo->indexOfProperty("myList")<<mo->indexOfProperty("myModel");
-       qDebug()<< tab->setProperty("model", vl);
-       //QVariant ret2;
-
-       //QMetaObject::invokeMethod(tab, "updateModel", Q_RETURN_ARG(QVariant, ret2));
+        tab->setProperty("model", vl);
     }
+
+    Total t;
+    for(auto e: ret)
+        t = t + e;
+
+    QObject* tot = m_engine.rootObjects().first()->findChild<QObject*>("total");
+    tot->setProperty("text", t.value());
+}
+
+void MainController::accountChange(QString acc)
+{
+    AbstractController::setCurrentAccount(acc);
+    QObject* account = m_engine.rootObjects().first()->findChild<QObject*>("accountTitle");
+
+    if(account)
+        account->setProperty("text", tr("Account: ") + acc);
+
+    selection();
 }

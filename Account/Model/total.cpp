@@ -2,7 +2,7 @@
 
 
 
-Total::Total()
+Total::Total(): m_value(0)
 {
 
 }

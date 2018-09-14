@@ -24,6 +24,8 @@ void AbstractController::setCurrentAccount(QString a)
     auto l = m_db.selectEntry(a);
     for(auto it: l)
         m_entry.insert(it.date(), it);
+
+    initTestEntry();
 }
 
 QString AbstractController::currentAccount()
@@ -63,7 +65,6 @@ Entry AbstractController::entry(int id)
 
 QList<Entry> AbstractController::entries(QDate d)
 {
-    qDebug()<<m_entry.size();
     if(d == QDate())
         return m_entry.values();
     else
@@ -72,7 +73,7 @@ QList<Entry> AbstractController::entries(QDate d)
 
 void AbstractController::initTestEntry()
 {
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < 136; i++)
     {
         Entry e;
         QRandomGenerator rdn;
@@ -80,7 +81,11 @@ void AbstractController::initTestEntry()
         e.setAccount(currentAccount());
         e.setValue(rdn.generateDouble());
         e.setDate(QDate::currentDate());
-        e.setType("outcome");
+
+        if(i%5 == 0)
+            e.setType("income");
+        else
+            e.setType("outcome");
 
 
         m_entry.insert(e.date(), e);

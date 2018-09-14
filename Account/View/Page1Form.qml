@@ -80,52 +80,22 @@ Page {
             property int index
 
             onClicked: {
-                console.log(index)
                 mainWindow.edit(index)
             }
 
         }
-    }
 
-    /*ListModel {
-        id: tableModel
-
-        ListElement {
-            datec: "2018-11-6"
-            value: 25.3
-            labelc: "X text"
-            total: 65.6
+        Label {
+            id: total
+            objectName: "total"
+            width: parent.width
+            anchors.top: edit.bottom
+            anchors.topMargin: 10
         }
 
-        ListElement {
-            datec: "2018-5-6"
-            value: 465
-            labelc: "y text"
-            total: 45.6
-        }
-    }*/
-
-    property var myList: []
-
-    function updateModel () {
-        myModel.clear()
-        for(var i in myList) {
-            console.log(myList[i].value + " i")
-        }
     }
 
-    ListModel {
-        id: myModel
-        objectName: "myModel"
-    }
 
-    Component {
-        id: tabViewDelegate
-
-        Text {
-            text: date
-        }
-    }
 
     TableView {
         anchors.left: cal.right
@@ -134,10 +104,9 @@ Page {
         id: view
         objectName: "entryView"
 
-        model: myModel
 
         TableViewColumn {
-            role: "datec"
+            role: "date"
             title: qsTr("Date")
             width: 100
         }
@@ -148,34 +117,17 @@ Page {
             width: 100
         }
 
-        /*TableViewColumn {
-            role: "labelc"
+        TableViewColumn {
+            role: "label"
             title: qsTr("Label")
             width: 100
-        }*/
+        }
 
         TableViewColumn {
-            role: "total"
-            title: qsTr("Total")
+            role: "type"
+            title: qsTr("Type")
             width: 100
         }
-
-//        onClicked: {
-//            edit.index = row
-//        }
-
-
-//        onDoubleClicked: {
-//            console.log(model.get(row).labelc)
-//            clicked(row)
-//            edit.clicked()
-//        }
-
-        onModelChanged: {
-            console.log("Model changed " + model.count)
-        }
-
-//        itemDelegate: tabViewDelegate
     }
 }
 

@@ -27,10 +27,27 @@ ApplicationWindow {
         }
     }
 
-    header: Label {
-        text: qsTr("Account")
-        font.pixelSize: Qt.application.font.pixelSize * 2
-        padding: 10
+    header:Item {
+        height: 50
+        Label {
+            objectName: "accountTitle"
+            text: qsTr("Account")
+            font.pixelSize: Qt.application.font.pixelSize * 2
+            padding: 10
+        }
+
+        ComboBox {
+            id: accountSelect
+            objectName: "accountSelect"
+
+            anchors.right: parent.right
+
+            signal s_currentTextChange(string text)
+
+            onCurrentTextChanged: {
+                s_currentTextChange(currentText)
+            }
+        }
     }
 
 
