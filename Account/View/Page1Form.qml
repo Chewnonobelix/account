@@ -21,7 +21,7 @@ Page {
         implicitWidth: parent.width * 0.2
     }
 
-   /* */
+    /* */
 
     Adding {
         id: addingid
@@ -87,8 +87,9 @@ Page {
         }
     }
 
-    ListModel {
+    /*ListModel {
         id: tableModel
+
         ListElement {
             datec: "2018-11-6"
             value: 25.3
@@ -102,6 +103,28 @@ Page {
             labelc: "y text"
             total: 45.6
         }
+    }*/
+
+    property var myList: []
+
+    function updateModel () {
+        myModel.clear()
+        for(var i in myList) {
+            console.log(myList[i].value + " i")
+        }
+    }
+
+    ListModel {
+        id: myModel
+        objectName: "myModel"
+    }
+
+    Component {
+        id: tabViewDelegate
+
+        Text {
+            text: date
+        }
     }
 
     TableView {
@@ -109,6 +132,10 @@ Page {
         width: parent.width - cal.width
         height: parent.height
         id: view
+        objectName: "entryView"
+
+        model: myModel
+
         TableViewColumn {
             role: "datec"
             title: qsTr("Date")
@@ -121,11 +148,11 @@ Page {
             width: 100
         }
 
-        TableViewColumn {
+        /*TableViewColumn {
             role: "labelc"
             title: qsTr("Label")
             width: 100
-        }
+        }*/
 
         TableViewColumn {
             role: "total"
@@ -133,17 +160,22 @@ Page {
             width: 100
         }
 
-        onClicked: {
-            edit.index = row
+//        onClicked: {
+//            edit.index = row
+//        }
+
+
+//        onDoubleClicked: {
+//            console.log(model.get(row).labelc)
+//            clicked(row)
+//            edit.clicked()
+//        }
+
+        onModelChanged: {
+            console.log("Model changed " + model.count)
         }
 
-        onDoubleClicked: {
-            console.log(model.get(row).labelc)
-            clicked(row)
-            edit.clicked()
-        }
-
-        model: tableModel
+//        itemDelegate: tabViewDelegate
     }
 }
 

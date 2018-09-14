@@ -69,3 +69,21 @@ QList<Entry> AbstractController::entries(QDate d)
     else
         return m_entry.values(d);
 }
+
+void AbstractController::initTestEntry()
+{
+    for(int i = 0; i < 10; i++)
+    {
+        Entry e;
+        QRandomGenerator rdn;
+        rdn.bounded(999.9);
+        e.setAccount(currentAccount());
+        e.setValue(rdn.generateDouble());
+        e.setDate(QDate::currentDate());
+        e.setType("outcome");
+
+
+        m_entry.insert(e.date(), e);
+    }
+
+}

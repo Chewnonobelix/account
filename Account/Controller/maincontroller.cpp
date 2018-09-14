@@ -1,8 +1,10 @@
 #include "maincontroller.h"
 
+
 MainController::MainController(): AbstractController()
 {
     AbstractController::setCurrentAccount("test_account1");
+    AbstractController::initTestEntry();
 }
 
 MainController::~MainController()
@@ -91,4 +93,19 @@ void MainController::selection()
             ret<<AbstractController::entries(it);
 
     qDebug()<<"List ret"<<ret.size();
+
+    QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
+    qDebug()<<tab;
+    if(tab){
+        const QMetaObject* mo = tab->metaObject();
+        QVariantList vl;
+        for(auto i = 0 ; i < ret.size(); i++)
+            vl<<QVariant::fromValue(ret[i]);
+
+        qDebug()<<tab->dynamicPropertyNames()<<mo->indexOfProperty("myList")<<mo->indexOfProperty("myModel");
+       qDebug()<< tab->setProperty("model", vl);
+       //QVariant ret2;
+
+       //QMetaObject::invokeMethod(tab, "updateModel", Q_RETURN_ARG(QVariant, ret2));
+    }
 }

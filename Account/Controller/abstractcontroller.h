@@ -6,7 +6,7 @@
 #include <QMultiMap>
 #include <QObject>
 #include <QDebug>
-
+#include <QRandomGenerator>
 #include "Model/entry.h"
 #include "Model/categories.h"
 #include "Model/total.h"
@@ -40,6 +40,8 @@ public:
 
     static Entry entry(int);
     static QList<Entry> entries(QDate = QDate());
+
+    static void initTestEntry();
 };
 
 #endif // ABSTRACTCONTROLLER_H
