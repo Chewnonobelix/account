@@ -87,6 +87,9 @@ void AbstractController::initTestEntry()
         else
             e.setType("outcome");
 
+        Information in;
+        in.setTitle(QString::number(e.id()));
+        e.setInfo(in);
 //        qDebug()<<"Gen"<<e.id()<<e.value();
 
         m_entry.insert(e.date(), e);
