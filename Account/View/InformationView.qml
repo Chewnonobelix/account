@@ -1,29 +1,40 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
-import Account 1.0
 
 Item {
     id: info
     objectName: "info"
 
+    Item {
+        id: entry
+        objectName: "entry"
+        property double value
+        property int id
+    }
+
+    Item {
+        id: infoModel
+        objectName: "infoModel"
+    }
+
 //    property Information modelInf
-    property Entry modelEntry
+//    property Entry modelEntry
     property int eid
     property string v_category
     property bool v_estimated
 
     RowLayout {
-        Label {
+        TextField {
             id: title
-//            text: modelInf.title
+            text: infoModel.title
 
 
         }
 
         DoubleSpinBox {
             enabled: false
-            value: modelEntry.value * 100
+            value: entry.value *100
 
         }
 
@@ -44,7 +55,7 @@ Item {
                 v_estimated = checked
             }
 
-//            checked: modelInf.estimated
+            checked: infoModel.estimated
         }
     }
 

@@ -26,6 +26,12 @@ Page {
     Adding {
         id: addingid
         objectName: "addingid"
+        v_date: cal.selectedDates[0]
+
+        onOpened: {
+            console.log("Open " + cal.selectedDates[0])
+            console.log(cal.selectedDates.length)
+        }
     }
 
     function openAdding() {
@@ -81,8 +87,8 @@ Page {
 
             onClicked: {
 //                mainWindow.edit(index)
-                console.log("Index: " + view.model[index].id)
-                mainWindow.edit(view.model[index].id)
+                console.log("Index: " + view.model[view.currentIndex].id)
+                mainWindow.edit(view.model[view.currentIndex].id)
             }
 
         }
@@ -105,7 +111,7 @@ Page {
         height: parent.height
         id: view
         objectName: "entryView"
-
+        property int currentIndex: -1
         TableViewColumn {
             role: "id"
             visible: false
@@ -135,9 +141,11 @@ Page {
             width: 100
         }
 
+
         onClicked: {
             console.log(row)
             console.log(model[row].id)
+            currentIndex = row
  //           mainWindow.edit(row)
         }
     }

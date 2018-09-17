@@ -96,9 +96,20 @@ Calendar {
                     }
                     else {
                         parent.reset()
-                        selectedDates[selectedDates.length] = styleData.date
+                        console.log(selectedDate)
+                        console.log(styleData.date)
+                        console.log(selectedDates.length)
+                        if(!styleData.selected && selectedDate.toString() !== styleData.date.toString()) {
+                            selectedDates[selectedDates.length] = styleData.date
+                            selectedDate = styleData.date
+                        }
+                        else {
+                            delete selectedDate
+                        }
                     }
                     parent.updateSelected()
+
+                    console.log(styleData.selected)
                 }
             }
         }

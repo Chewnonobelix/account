@@ -6,12 +6,12 @@ MainController::MainController(): AbstractController()
     AbstractController::setCurrentAccount("test_account1");
     AbstractController::initTestEntry();
 
-    qmlRegisterUncreatableType<Entry>("Account",1,0,"Entry", "Va te faire enculer");
-//    qmlRegisterType<Information>();
+    //qmlRegisterType<Entry>("Account",1,0,"Entry");
+    //    qmlRegisterType<Information>();
 
-//    qDebug()<<QMetaType::type("Entry");
-//    qDebug()<<qRegisterMetaType<Entry>();
-//    qDebug()<<qRegisterMetaType<Information>();
+    //    qDebug()<<QMetaType::type("Entry");
+    //    qDebug()<<qRegisterMetaType<Entry>();
+    //    qDebug()<<qRegisterMetaType<Information>();
 }
 
 MainController::~MainController()
@@ -41,7 +41,7 @@ int MainController::exec()
         QStringList t;
         t<<"test_account1"<<"test_account2";
         combo->setProperty("model", t);
-//        combo->setProperty("model", AbstractController::accountList());
+        //        combo->setProperty("model", AbstractController::accountList());
         connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
         accountChange(t[0]);
     }
@@ -65,9 +65,13 @@ void MainController::adding()
 
     Entry e;
     QVariant val, date, label;
-    QMetaObject::invokeMethod(adding, "value", Q_RETURN_ARG(QVariant, val));
-    QMetaObject::invokeMethod(adding, "label", Q_RETURN_ARG(QVariant, label));
-    QMetaObject::invokeMethod(adding, "date", Q_RETURN_ARG(QVariant, date));
+//    QMetaObject::invokeMethod(adding, "value", Q_RETURN_ARG(QVariant, val));
+//    QMetaObject::invokeMethod(adding, "label", Q_RETURN_ARG(QVariant, label));
+//    QMetaObject::invokeMethod(adding, "date", Q_RETURN_ARG(QVariant, date));
+
+    val = adding->property("v_val");
+    date = adding->property("v_date");
+    label = adding->property("v_title");
 
     e.setDate(date.toDate());
     e.setValue(val.toDouble());
@@ -90,12 +94,20 @@ void MainController::edit(int id)
 
     if(info)
     {
-        qDebug()<<info;
         Entry e = AbstractController::entry(id);
-        qDebug()<<e.id()<<e.value()<<e.date();
-        qDebug()<<QVariant::fromValue(e).isValid();
-        qDebug()<<info->metaObject()->indexOfProperty("modelEntry")<<info->setProperty("modelEntry", QVariant::fromValue(e));
-        qDebug()<<info->setProperty("modelInf", QVariant::fromValue(e.info()));
+        QObject* model =  m_engine.rootObjects().first()->findChild<QObject*>("entry");
+        if(model)
+        {
+            qDebug()<<"value "<<model->setProperty("value", e.value());
+            model->setProperty("id", e.id());
+        }
+
+        model =  m_engine.rootObjects().first()->findChild<QObject*>("infoModel");
+        if(model)
+        {
+            model->setProperty("estimated", e.info().estimated());
+            model->setProperty("title", e.info().title());
+        }
     }
 }
 
@@ -108,8 +120,9 @@ void MainController::selection()
     QList<QDate> ld;
 
     for(int i = 0; i < array.property("length").toInt(); i++)
+    {
         ld<<array.property(i).toDateTime().date();
-
+    }
 
 
     QList<Entry> ret;
@@ -126,8 +139,7 @@ void MainController::selection()
         QVariantList vl;
         for(auto i = 0 ; i < ret.size(); i++)
             vl<<QVariant::fromValue(ret.value(i));
-
-        tab->setProperty("model", vl);
+        qDebug()<<tab->setProperty("model", vl);
     }
 
     Total t;

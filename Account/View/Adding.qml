@@ -1,4 +1,5 @@
-import QtQuick 2.9
+import QtQuick 2.11
+import QtQml 2.11
 import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.11
@@ -14,15 +15,17 @@ Popup {
 
     signal accept()
 
-    property double v_val
-    property string v_title
-    property string v_type
+    property real v_val: spinBox.realValue
+    property string v_title: valueLabel.text
+    property string v_type: type.currentText
+    property date v_date
 
     ColumnLayout {
         Label {
             id: labelAdd
-            text: qsTr("Adding")
+            text: qsTr("Adding " + v_date)
         }
+
 
 
         RowLayout {
@@ -33,25 +36,25 @@ Popup {
 
             TextField {
                 id: valueLabel
-                onTextChanged: {
-                    v_title = text
-                }
+//                onTextChanged: {
+//                    v_title = text
+//                }
             }
 
             DoubleSpinBox {
                 id: spinbox
-                onValueChanged: {
-                    v_val = realValue
-                }
+//                onValueChanged: {
+//                    v_val = realValue
+//                }
             }
 
             ComboBox {
                 id: type
                 objectName: "type"
                 model: ["Income", "Outcome"]
-                onCurrentTextChanged: {
-                    v_type = currentText
-                }
+//                onCurrentTextChanged: {
+//                    v_type = currentText
+//                }
             }
         }
 
