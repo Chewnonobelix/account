@@ -92,10 +92,6 @@ Calendar {
                 visibleMonth = currentMonth
                 visibleYear = currentYear
 
-                while(toRemove.length > 0) {
-                    toRemove.pop()
-                }
-
                 multiCal.s_datesChanged()
             }
 
