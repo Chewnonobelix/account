@@ -15,7 +15,7 @@ Popup {
 
     signal accept()
 
-    property real v_val: spinBox.realValue
+    property real v_val: spinbox.realValue
     property string v_title: valueLabel.text
     property string v_type: type.currentText
     property date v_date
