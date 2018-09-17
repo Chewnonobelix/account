@@ -12,8 +12,10 @@ Calendar {
     readonly property string format: "dd-MM-yyyy"
 
     Component.onCompleted: {
-        selectedDate = new Date("01-01-1900", format)
-
+        selectedDate = minimumDate
+        visibleMonth = new Date().getMonth()
+        console.log(new Date().getYear())
+        visibleYear = 1900 + new Date().getYear()
     }
 
     style: CalendarStyle {
@@ -39,7 +41,7 @@ Calendar {
 
             onReset: {
                 for(var i in stylesData) {
-                    stylesData[i][0].color = "black"
+                    (stylesData[i][1].date.getMonth() === (visibleMonth)) ? "black" : "grey"
                     stylesData[i][0].parent.color = "white"
                 }
 
@@ -52,13 +54,15 @@ Calendar {
             }
 
             onUpdateSelected: {
+                console.log(styleData.date)
                 if(cs.isSelected(styleData) && (styleData.date.getMonth() === visibleMonth)) {
                     c_date.color = "white"
                     styleRect.color = "royalblue"
                 }
-                else {
+                else if(styleData.date.getMonth() === visibleMonth){
                     styleRect.color = "white"
                     c_date.color = "black"
+                    console.log("Color")
                 }
                 multiCal.s_datesChanged()
             }
@@ -67,12 +71,12 @@ Calendar {
                 id: c_date
                 anchors.centerIn: parent
                 text: styleData.date.getDate()
-
+                color: styleData.date.getMonth() === (multiCal.visibleMonth) ? "black" : "grey"
                 onTextChanged: {
-                    if(cs.currentMonth != multiCal.visibleMonth) {
+                    /*if(cs.currentMonth != (visibleMonth + 1)) {
                         cs.currentMonth = multiCal.visibleMonth
                         parent.reset()
-                    }
+                    }*/
 
                     if(stylesData.indexOf(c_date) == -1) {
                         stylesData.push([c_date, styleData])
@@ -102,13 +106,12 @@ Calendar {
                     else {
                         parent.reset()
 
-                        if(!styleData.selected && Qt.formatDate(selectedDate, format) !== Qt.formatDate(styleData.date, format)) {
+                        if(!styleData.selected && Qt.formatDate(selectedDate, format) !== Qt.formatDate(styleData.date, format) && styleData.date.getMonth() === (multiCal.visibleMonth)) {
                             selectedDates[selectedDates.length] = Qt.formatDate(styleData.date, format)
                             selectedDate = styleData.date
-                            var x = Date.fromLocaleString(Qt.locale(), styleData.date, format)
                         }
                         else {
-                            selectedDate = new Date("01-01-1900", format)
+                            selectedDate = minimumDate
                         }
                     }
                     parent.updateSelected()
