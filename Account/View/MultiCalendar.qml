@@ -10,12 +10,43 @@ Calendar {
 
     signal s_datesChanged()
     readonly property string format: "dd-MM-yyyy"
+    property int currentMonth
+    property int currentYear
+
+    visibleMonth: currentMonth
+    visibleYear: currentYear
+
+    function showNextMonth() {
+        currentMonth ++
+
+        if(currentMonth == 12) {
+            showNextYear()
+            currentMonth = 0
+        }
+        visibleMonth = currentMonth
+
+    }
+
+
+    function showPreviousMonth() {
+        currentMonth --
+        visibleMonth = currentMonth
+
+        if(currentMonth == -1) {
+            showPreviousYear()
+            currentMonth = 11
+        }
+        visibleMonth = currentMonth
+
+    }
 
     Component.onCompleted: {
         selectedDate = minimumDate
         visibleMonth = new Date().getMonth()
+        currentMonth = visibleMonth
         console.log(new Date().getYear())
         visibleYear = 1900 + new Date().getYear()
+        currentYear = visibleYear
     }
 
     style: CalendarStyle {
@@ -55,11 +86,12 @@ Calendar {
 
             onUpdateSelected: {
                 console.log(styleData.date)
+
                 if(cs.isSelected(styleData) && (styleData.date.getMonth() === visibleMonth)) {
                     c_date.color = "white"
                     styleRect.color = "royalblue"
                 }
-                else if(styleData.date.getMonth() === visibleMonth){
+                else /*if(styleData.date.getMonth() === visibleMonth)*/{
                     styleRect.color = "white"
                     c_date.color = "black"
                     console.log("Color")
@@ -111,6 +143,7 @@ Calendar {
                             selectedDate = styleData.date
                         }
                         else {
+                            selectedDates.splice(0,1)
                             selectedDate = minimumDate
                         }
                     }
