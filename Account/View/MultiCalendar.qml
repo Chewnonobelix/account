@@ -9,17 +9,22 @@ Calendar {
     property var stylesData: []
 
     signal s_datesChanged()
+    readonly property string format: "dd-MM-yyyy"
+
+    Component.onCompleted: {
+        selectedDate = new Date("01-01-1900", format)
+
+    }
 
     style: CalendarStyle {
         id:cs
-
         property int currentMonth: -1
 
         function isSelected(sd) {
             var ret = false
 
             for(var i in selectedDates) {
-                if(sd.date.toString() === selectedDates[i].toString()) {
+                if(Qt.formatDate(sd.date, format) === selectedDates[i]) {
                     ret = true
                 }
             }
@@ -82,13 +87,13 @@ Calendar {
                     if(mouse.modifiers === Qt.ShiftModifier) {
                         var index = -1
                         for(var i in selectedDates) {
-                            if(styleData.date.toString() === selectedDates[i].toString()) {
+                            if(Qt.formatDate(styleData.date, format) === selectedDates[i]) {
                                 index = i
                             }
 
                         }
                         if( index == -1) {
-                            selectedDates[selectedDates.length] = styleData.date
+                            selectedDates[selectedDates.length] = Qt.formatDate(styleData.date, format)
                         }
                         else {
                             selectedDates.splice(index,1)
@@ -97,12 +102,13 @@ Calendar {
                     else {
                         parent.reset()
 
-                        if(!styleData.selected && selectedDate.toString() !== styleData.date.toString()) {
-                            selectedDates[selectedDates.length] = styleData.date
+                        if(!styleData.selected && Qt.formatDate(selectedDate, format) !== Qt.formatDate(styleData.date, format)) {
+                            selectedDates[selectedDates.length] = Qt.formatDate(styleData.date, format)
                             selectedDate = styleData.date
+                            var x = Date.fromLocaleString(Qt.locale(), styleData.date, format)
                         }
                         else {
-                            selectedDate = new Date("1900-01-01", "yyyy-MM-dd")
+                            selectedDate = new Date("01-01-1900", format)
                         }
                     }
                     parent.updateSelected()

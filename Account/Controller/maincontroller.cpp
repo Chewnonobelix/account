@@ -121,9 +121,8 @@ void MainController::selection()
 
     for(int i = 0; i < array.property("length").toInt(); i++)
     {
-        ld<<array.property(i).toDateTime().date();
+        ld<<QDate::fromString(array.property(i).toString(), "dd-MM-yyyy");
     }
-
 
     QList<Entry> ret;
 

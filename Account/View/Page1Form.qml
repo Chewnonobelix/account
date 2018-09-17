@@ -140,7 +140,10 @@ Page {
             width: 100
         }
 
+        itemDelegate: Text {
+            text: styleData.column === 1 ? Qt.formatDate(styleData.value, "dd-MM-yyyy") : styleData.value
 
+        }
 
         onClicked: {
             currentIndex = row
