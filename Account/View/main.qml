@@ -66,9 +66,9 @@ ApplicationWindow {
             id: graph
         }
 
-        InformationView {
-            objectName: "infoTest"
-        }
+//        InformationView {
+//            objectName: "infoTest"
+//        }
 
     }
 
@@ -82,9 +82,9 @@ ApplicationWindow {
         TabButton {
             text: qsTr("Graph")
         }
-        TabButton {
-            text: qsTr("Info test")
-        }
+//        TabButton {
+//            text: qsTr("Info test")
+//        }
 
     }
 }

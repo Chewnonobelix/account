@@ -25,6 +25,7 @@ Item {
     property bool v_estimated
 
     RowLayout {
+        id: row
         TextField {
             id: title
             text: infoModel.title
@@ -57,6 +58,12 @@ Item {
 
             checked: infoModel.estimated
         }
+    }
+
+    Label {
+        anchors.top:row.bottom
+        anchors.topMargin: 10
+        text: "Coming Soon"
     }
 
     //Frequency
