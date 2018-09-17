@@ -96,20 +96,17 @@ Calendar {
                     }
                     else {
                         parent.reset()
-                        console.log(selectedDate)
-                        console.log(styleData.date)
-                        console.log(selectedDates.length)
+
                         if(!styleData.selected && selectedDate.toString() !== styleData.date.toString()) {
                             selectedDates[selectedDates.length] = styleData.date
                             selectedDate = styleData.date
                         }
                         else {
-                            delete selectedDate
+                            selectedDate = new Date("1900-01-01", "yyyy-MM-dd")
                         }
                     }
                     parent.updateSelected()
 
-                    console.log(styleData.selected)
                 }
             }
         }

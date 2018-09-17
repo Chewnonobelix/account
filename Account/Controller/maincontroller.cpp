@@ -139,7 +139,8 @@ void MainController::selection()
         QVariantList vl;
         for(auto i = 0 ; i < ret.size(); i++)
             vl<<QVariant::fromValue(ret.value(i));
-        qDebug()<<tab->setProperty("model", vl);
+
+        tab->setProperty("model", vl);
     }
 
     Total t;
