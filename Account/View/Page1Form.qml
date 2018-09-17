@@ -101,6 +101,14 @@ Page {
 
     }
 
+    ListModel {
+        id: defaultModel
+        objectName: "defaultModel"
+
+        function testInsert(vv) {
+            console.log("vv")
+        }
+    }
 
     TableView {
         anchors.left: cal.right
@@ -108,8 +116,21 @@ Page {
         height: parent.height
         id: view
         objectName: "entryView"
+        model: defaultModel
         property int currentIndex: -1
 
+
+        Connections {
+            target: cal
+            onS_datesChanged: {
+                console.log("Test co?")
+
+                view.model.clear()
+
+                console.log(view.model.length)
+            }
+
+        }
 
         TableViewColumn {
             role: "id"
