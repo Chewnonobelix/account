@@ -52,7 +52,7 @@ void Entry::setAccount(QString account)
 
 double Entry::value() const
 {
-    return m_value;
+    return round (m_value * 100.0) / 100.0 ;
 }
 
 void Entry::setValue(double value)
