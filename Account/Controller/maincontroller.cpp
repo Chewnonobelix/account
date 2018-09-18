@@ -45,6 +45,11 @@ int MainController::exec()
         connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
         accountChange(t[0]);
     }
+
+    QObject* adding = root->findChild<QObject*>("addingid");
+
+    if(adding)
+        connect(adding, SIGNAL(accept()), this, SLOT(adding()));
     return 0;
 }
 
@@ -54,15 +59,12 @@ void MainController::add()
     QVariant ret;
     QMetaObject::invokeMethod(item, "openAdding", Q_RETURN_ARG(QVariant, ret));
 
-    QObject* adding = item->findChild<QObject*>("addingid");
 
-    connect(adding, SIGNAL(accept()), this, SLOT(adding()));
 }
 
 void MainController::adding()
 {
     QObject* adding = m_engine.rootObjects().first()->findChild<QObject*>("addingid");
-    static int ind = 0;
     Entry e;
     QVariant val, date, label, type;
 
@@ -78,9 +80,9 @@ void MainController::adding()
     i.setTitle(label.toString());
     e.setInfo(i);
     e.setAccount(currentAccount());
-    qDebug()<<ind<<e.date()<<e.value()<<e.info().title()<<e.type();
-       ind++;
+    qDebug()<<e.date()<<e.value()<<e.info().title()<<e.type();
     AbstractController::addEntry(e);
+    selection();
 }
 void MainController::remove(int id)
 {
