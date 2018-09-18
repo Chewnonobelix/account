@@ -26,12 +26,19 @@ Page {
     Adding {
         id: addingid
         objectName: "addingid"
-        //v_date: cal.selectedDates[0]
 
-        /*onOpened: {
-            console.log("Open " + cal.selectedDates[0])
+
+        onOpened: {
             console.log(cal.selectedDates.length)
-        }*/
+            if(cal.selectedDates.length > 0) {
+                v_date = cal.selectedDates[0]
+            }
+            else {
+                v_date = Qt.formatDate(new Date(), "dd-MM-yyyy")
+            }
+
+            reset()
+        }
     }
 
     function openAdding() {
@@ -55,11 +62,6 @@ Page {
                 addingid.x = pressX + x + parent.x
                 addingid.y = pressY + y + parent.y
                 mainWindow.adding()
-                console.log("Cal:" + cal.selectedDates.length)
-
-                for(var i in cal.selectedDates) {
-                    console.log(cal.selectedDates[i])
-                }
             }
         }
 

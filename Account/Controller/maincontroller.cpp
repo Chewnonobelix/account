@@ -62,9 +62,9 @@ void MainController::add()
 void MainController::adding()
 {
     QObject* adding = m_engine.rootObjects().first()->findChild<QObject*>("addingid");
-
+    static int ind = 0;
     Entry e;
-    QVariant val, date, label;
+    QVariant val, date, label, type;
 //    QMetaObject::invokeMethod(adding, "value", Q_RETURN_ARG(QVariant, val));
 //    QMetaObject::invokeMethod(adding, "label", Q_RETURN_ARG(QVariant, label));
 //    QMetaObject::invokeMethod(adding, "date", Q_RETURN_ARG(QVariant, date));
@@ -72,14 +72,16 @@ void MainController::adding()
     val = adding->property("v_val");
     date = adding->property("v_date");
     label = adding->property("v_title");
+    type = adding->property("v_type");
 
-    e.setDate(date.toDate());
+    e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
     e.setValue(val.toDouble());
+    e.setType(type.toString());
     Information i;
     i.setTitle(label.toString());
     e.setInfo(i);
-    qDebug()<<e.date()<<e.value()<<e.info().title();
-
+    qDebug()<<ind<<e.date()<<e.value()<<e.info().title()<<e.type();
+       ind++;
     AbstractController::addEntry(e);
 }
 void MainController::remove(int id)
