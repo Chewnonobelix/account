@@ -1,0 +1,15 @@
+INPUT(
+./release\main.o
+./release\entry.o
+./release\information.o
+./release\total.o
+./release\categories.o
+./release\abstractcontroller.o
+./release\controllerdb.o
+./release\maincontroller.o
+./release\qrc_qml.o
+./release\moc_entry.o
+./release\moc_information.o
+./release\moc_abstractcontroller.o
+./release\moc_maincontroller.o
+);

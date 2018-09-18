@@ -65,9 +65,6 @@ void MainController::adding()
     static int ind = 0;
     Entry e;
     QVariant val, date, label, type;
-//    QMetaObject::invokeMethod(adding, "value", Q_RETURN_ARG(QVariant, val));
-//    QMetaObject::invokeMethod(adding, "label", Q_RETURN_ARG(QVariant, label));
-//    QMetaObject::invokeMethod(adding, "date", Q_RETURN_ARG(QVariant, date));
 
     val = adding->property("v_val");
     date = adding->property("v_date");
@@ -80,6 +77,7 @@ void MainController::adding()
     Information i;
     i.setTitle(label.toString());
     e.setInfo(i);
+    e.setAccount(currentAccount());
     qDebug()<<ind<<e.date()<<e.value()<<e.info().title()<<e.type();
        ind++;
     AbstractController::addEntry(e);
