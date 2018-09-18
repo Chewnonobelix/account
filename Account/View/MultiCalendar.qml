@@ -36,8 +36,22 @@ Calendar {
             showPreviousYear()
             currentMonth = 11
         }
-        visibleMonth = currentMonth
+       visibleMonth = currentMonth
+    }
 
+    function showNextYear() {
+        currentYear ++
+
+        visibleYear = currentYear
+
+    }
+
+
+    function showPreviousYear() {
+        currentYear --
+        visibleYear = currentYear
+
+       visibleYear = currentYear
     }
 
     Component.onCompleted: {
@@ -50,6 +64,32 @@ Calendar {
 
     style: CalendarStyle {
         id:cs
+
+        Gradient {
+            id: gradientSelect
+
+            GradientStop {
+                color: "darkblue"
+                position: 0.0
+            }
+
+            GradientStop {
+                color: "lightblue"
+                position: 0.5
+            }
+
+            GradientStop {
+                color: "darkblue"
+                position: 1.0
+            }
+        }
+
+        Gradient {
+            id: gradientUnSelect
+            GradientStop {
+                color: "white"
+            }
+        }
 
         function isSelected(sd) {
             var ret = false
@@ -70,7 +110,7 @@ Calendar {
             onReset: {
                 for(var i in stylesData) {
                     stylesData[i][0].color = (stylesData[i][1].date.getMonth() === (visibleMonth)) ? "black" : "grey"
-                    stylesData[i][0].parent.color = "white"
+                    stylesData[i][0].parent.gradient = gradientUnSelect
                 }
 
                 while(selectedDates.length > 0) {
@@ -81,13 +121,12 @@ Calendar {
             onUpdateSelected: {
                     if(cs.isSelected(styleData) && (styleData.date.getMonth() === visibleMonth)) {
                         c_date.color = "white"
-                        styleRect.color = "royalblue"
+                        styleRect.gradient = gradientSelect
                     }
                     else {
-                        styleRect.color = "white"
+                        styleRect.gradient = gradientUnSelect
                         c_date.color = styleData.date.getMonth() === visibleMonth ? "black" : "grey"
                     }
-//                }/**/
 
                 visibleMonth = currentMonth
                 visibleYear = currentYear
