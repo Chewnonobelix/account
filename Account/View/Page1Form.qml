@@ -104,11 +104,8 @@ Page {
     ListModel {
         id: defaultModel
         objectName: "defaultModel"
-
-        function testInsert(vv) {
-            console.log("vv")
-        }
     }
+
 
     TableView {
         anchors.left: cal.right
@@ -119,15 +116,15 @@ Page {
         model: defaultModel
         property int currentIndex: -1
 
+        function fAdd(i) {
+            defaultModel.append(i)
+        }
+
 
         Connections {
             target: cal
             onS_datesChanged: {
-                console.log("Test co?")
-
-                view.model.clear()
-
-                console.log(view.model.length)
+                defaultModel.clear()
             }
 
         }
@@ -164,7 +161,9 @@ Page {
         itemDelegate: Text {
             text: styleData.column === 1 ? Qt.formatDate(styleData.value, "dd-MM-yyyy") : styleData.value
 
+
         }
+
 
         onClicked: {
             currentIndex = row

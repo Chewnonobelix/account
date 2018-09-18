@@ -133,10 +133,8 @@ void MainController::selection()
             ret<<AbstractController::entries(it);
 
 
-    QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("defaultModel");
+    QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
     if(tab){
-        QVariantList vl;
-        qDebug()<<tab;
         for(auto i = 0 ; i < ret.size(); i++)
         {
             QVariantMap map;
@@ -145,12 +143,9 @@ void MainController::selection()
             map.insert("value", ret[i].value());
             map.insert("label", ret[i].label());
             map.insert("type", ret[i].type());
-            qDebug()<<tab->metaObject()->indexOfMethod("testInsert(vv)");
-//            qDebug()<<map;
-            //QMetaObject::invokeMethod(tab, "append", Q_ARG(QVariant, QVariant::fromValue(map)));
-            //vl<<QVariant::fromValue(ret.value(i));
+
+            QMetaObject::invokeMethod(tab, "fAdd", Q_ARG(QVariant, map));
         }
-//        tab->setProperty("model", vl);
     }
 
     Total t;

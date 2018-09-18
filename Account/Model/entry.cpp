@@ -57,7 +57,7 @@ double Entry::value() const
 
 void Entry::setValue(double value)
 {
-    m_value = value;
+    m_value = round (value * 100.0) / 100.0 ;
 }
 
 QDate Entry::date() const
