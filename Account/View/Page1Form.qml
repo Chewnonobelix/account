@@ -28,20 +28,20 @@ Page {
         objectName: "addingid"
 
 
-        onOpened: {
-            console.log(cal.selectedDates.length)
-            if(cal.selectedDates.length > 0) {
-                v_date = cal.selectedDates[0]
-            }
-            else {
-                v_date = Qt.formatDate(new Date(), "dd-MM-yyyy")
-            }
-
+        Component.onCompleted:   {
             reset()
         }
     }
 
     function openAdding() {
+        if(cal.selectedDates.length > 0) {
+            for(var index in cal.selectedDates){
+                addingid.addDate(cal.selectedDates[index])
+            }
+        }
+        else {
+             addingid.addDate(Qt.formatDate(new Date(), "dd-MM-yyyy"))
+        }
         addingid.open()
         return 0
     }

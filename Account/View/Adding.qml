@@ -11,6 +11,8 @@ Popup {
     function reset() {
         valueLabel.text = ""
         spinbox.value = 0
+        dateModel.clear()
+        dateCombo.currentIndex = 0
     }
 
     signal accept()
@@ -18,7 +20,18 @@ Popup {
     property real v_val: spinbox.realValue
     property string v_title: valueLabel.text
     property string v_type: type.currentText
-    property string v_date
+    property string v_date: dateCombo.currentText
+
+
+//    property var dateModel: []
+
+    ListModel {
+        id: dateModel
+    }
+
+    function addDate(d) {
+        dateModel.append({"text:": d})
+    }
 
     ColumnLayout {
         Label {
@@ -27,6 +40,10 @@ Popup {
         }
 
 
+        ComboBox {
+            id: dateCombo
+            model: dateModel
+        }
 
         RowLayout {
             Label {
