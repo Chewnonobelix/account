@@ -16,6 +16,7 @@ Calendar {
     visibleMonth: currentMonth
     visibleYear: currentYear
 
+
     function showNextMonth() {
         currentMonth ++
 
@@ -65,21 +66,27 @@ Calendar {
     style: CalendarStyle {
         id:cs
 
+        background: Rectangle {
+            color: "transparent"
+        }
+
+
+
         Gradient {
             id: gradientSelect
 
             GradientStop {
-                color: "darkblue"
+                color: "goldenrod"
                 position: 0.0
             }
 
             GradientStop {
-                color: "lightblue"
+                color: "gold"
                 position: 0.5
             }
 
             GradientStop {
-                color: "darkblue"
+                color: "goldenrod"
                 position: 1.0
             }
         }
@@ -87,7 +94,7 @@ Calendar {
         Gradient {
             id: gradientUnSelect
             GradientStop {
-                color: "white"
+                color: "transparent"
             }
         }
 
@@ -102,12 +109,31 @@ Calendar {
             return ret
         }
 
+        weekNumberDelegate: Rectangle {
+            color: "transparent"
+            width: multiCal.width/14
+            Label {
+                anchors.centerIn: parent
+                text: styleData.weekNumber
+            }
+        }
+
+        dayOfWeekDelegate: Rectangle {
+            color: "transparent"
+            height: multiCal.height/16
+            Label {
+                anchors.centerIn: parent
+                text: Qt.locale().dayName(styleData.dayOfWeek, Locale.ShortFormat)
+            }
+        }
         dayDelegate: Rectangle {
             signal updateSelected()
             signal reset()
             id: styleRect
 
             onReset: {
+                view.unselectAll()
+
                 for(var i in stylesData) {
                     stylesData[i][0].color = (stylesData[i][1].date.getMonth() === (visibleMonth)) ? "black" : "grey"
                     stylesData[i][0].parent.gradient = gradientUnSelect
@@ -119,6 +145,8 @@ Calendar {
             }
 
             onUpdateSelected: {
+                view.unselectAll()
+
                     if(cs.isSelected(styleData) && (styleData.date.getMonth() === visibleMonth)) {
                         c_date.color = "white"
                         styleRect.gradient = gradientSelect
@@ -144,6 +172,7 @@ Calendar {
                     if(stylesData.indexOf(c_date) == -1) {
                         stylesData.push([c_date, styleData])
                     }
+                    reset()
                 }
             }
 

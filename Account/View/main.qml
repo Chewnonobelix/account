@@ -27,8 +27,28 @@ ApplicationWindow {
         }
     }
 
-    header:Item {
+    Component.onCompleted: {
+        console.log("Copleted " + backRect.height +", "+ backRect.width)
+    }
+
+    background: Rectangle {
+        id: backRect
+        anchors.fill: parent
+        gradient: Gradient {
+            GradientStop {
+                color: "lightyellow"
+                position: 0.0
+            }
+            GradientStop {
+                color: "white"
+                position: 1.0
+            }
+        }
+    }
+
+    header:Rectangle {
         height: 50
+        color: "transparent"
         Label {
             objectName: "accountTitle"
             text: qsTr("Account")
@@ -56,6 +76,10 @@ ApplicationWindow {
         currentIndex: tabBar.currentIndex
         implicitWidth: parent.width
         implicitHeight: parent.height
+
+        background: Rectangle {
+            color: "transparent"
+        }
 
         Page1Form {
             id: table

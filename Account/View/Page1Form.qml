@@ -3,6 +3,7 @@ import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Styles 1.4
 
 Page {
 
@@ -12,13 +13,16 @@ Page {
     id: pageTable
 
     property date v_date
-
+    background: Rectangle {
+        color: "transparent"
+    }
     MultiCalendar {
         id: cal
         objectName: "cal"
         weekNumbersVisible: true
         implicitHeight: parent.height /2
         implicitWidth: parent.width * 0.2
+
     }
 
     /* */
@@ -40,7 +44,7 @@ Page {
             }
         }
         else {
-             addingid.addDate(Qt.formatDate(new Date(), "dd-MM-yyyy"))
+            addingid.addDate(Qt.formatDate(new Date(), "dd-MM-yyyy"))
         }
         addingid.open()
         return 0
@@ -111,11 +115,13 @@ Page {
 
     TableView {
         anchors.left: cal.right
+        anchors.leftMargin: 5
         width: parent.width - cal.width
         height: parent.height
         id: view
         objectName: "entryView"
         model: defaultModel
+
         property int currentIndex: -1
 
         function fAdd(i) {
@@ -123,6 +129,14 @@ Page {
         }
 
 
+        function unselectAll() {
+            if(rowCount > 0) {
+                selection.deselect(0, rowCount-1)
+            }
+            currentIndex = -1
+        }
+
+        backgroundVisible: false
         Connections {
             target: cal
             onS_datesChanged: {
@@ -160,16 +174,49 @@ Page {
             width: 100
         }
 
-        itemDelegate: Text {
+        itemDelegate: Label {
+            id: textItem
             text: styleData.column === 1 ? Qt.formatDate(styleData.value, "dd-MM-yyyy") : styleData.value
 
 
         }
 
+        rowDelegate: Rectangle {
+            id:rectRow
+            gradient: styleData.selected ? selectView : unselectView
+        }
 
-        onClicked: {
-            currentIndex = row
+
+    style: TableViewStyle{
+        highlightedTextColor: "gold"
+        activateItemOnSingleClick: true
+    }
+
+    onClicked: {
+        currentIndex = row
+    }
+
+    Gradient {
+        id:selectView
+        GradientStop {
+            color: "gold"
+            position: 0.0
+        }
+        GradientStop {
+            color: "silver"
+            position: 0.5
+        }
+        GradientStop {
+            color: "gold"
+            position: 1.0        }
+    }
+
+    Gradient {
+        id: unselectView
+        GradientStop {
+            color: "transparent"
         }
     }
+}
 }
 
