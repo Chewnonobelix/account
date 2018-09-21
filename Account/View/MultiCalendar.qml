@@ -15,6 +15,7 @@ Calendar {
 
     visibleMonth: currentMonth
     visibleYear: currentYear
+    weekNumbersVisible: true
 
 
     function showNextMonth() {
@@ -189,7 +190,7 @@ Calendar {
             signal updateSelected()
             signal reset()
             id: styleRect
-
+            gradient: gradientUnSelect
             onReset: {
                 view.unselectAll()
 
