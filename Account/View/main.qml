@@ -27,10 +27,6 @@ ApplicationWindow {
         }
     }
 
-    Component.onCompleted: {
-        console.log("Copleted " + backRect.height +", "+ backRect.width)
-    }
-
     background: Rectangle {
         id: backRect
         anchors.fill: parent
