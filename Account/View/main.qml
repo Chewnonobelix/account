@@ -21,8 +21,6 @@ ApplicationWindow {
         Menu {
             title: qsTr("&File")
             Action {text: qsTr("&New account") }
-            Action {text: qsTr("&Load account") }
-            Action {text: qsTr("&Save") }
             Action {text: qsTr("&Quit") }
         }
     }
