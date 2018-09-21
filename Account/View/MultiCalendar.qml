@@ -37,7 +37,7 @@ Calendar {
             showPreviousYear()
             currentMonth = 11
         }
-       visibleMonth = currentMonth
+        visibleMonth = currentMonth
     }
 
     function showNextYear() {
@@ -52,8 +52,9 @@ Calendar {
         currentYear --
         visibleYear = currentYear
 
-       visibleYear = currentYear
+        visibleYear = currentYear
     }
+
 
     Component.onCompleted: {
         selectedDate = minimumDate
@@ -65,11 +66,62 @@ Calendar {
 
     style: CalendarStyle {
         id:cs
-
+        gridVisible: true
+        gridColor: "goldenrod"
         background: Rectangle {
             color: "transparent"
         }
 
+        navigationBar: Rectangle {
+            height: multiCal.height/16
+
+            gradient: buttonMonth
+
+            Label {
+                id:monthLabel
+                color:"black"
+                anchors.centerIn: parent
+                text: Qt.locale().monthName(visibleMonth, Locale.ShortFormat) + " " + visibleYear
+            }
+
+            Button {
+                id: nextMonth
+                anchors.right: parent.right
+                width: multiCal.width/14
+                height: parent.height
+                style: ButtonStyle {
+                    background: Rectangle {
+                        gradient: buttonMonth
+                        border.color: "silver"
+
+                    }
+                }
+
+                text: ">"
+                onClicked: {
+                    multiCal.showNextMonth()
+                }
+            }
+
+            Button {
+                id: prevMonth
+                anchors.left: parent.left
+                width: multiCal.width/14
+                height: parent.height
+                style: ButtonStyle {
+                    background: Rectangle {
+                        gradient: buttonMonth
+                        border.color: "silver"
+                    }
+                }
+
+                text: "<"
+                onClicked: {
+                    multiCal.showPreviousMonth()
+                }
+            }
+
+        }
 
 
         Gradient {
@@ -110,8 +162,10 @@ Calendar {
         }
 
         weekNumberDelegate: Rectangle {
-            color: "transparent"
+            gradient: buttonMonth
             width: multiCal.width/14
+            anchors.top: navigationBar.bottom
+            border.color: "darkgoldenrod"
             Label {
                 anchors.centerIn: parent
                 text: styleData.weekNumber
@@ -119,8 +173,11 @@ Calendar {
         }
 
         dayOfWeekDelegate: Rectangle {
-            color: "transparent"
+            anchors.top: navigationBar.bottom
+            gradient: buttonMonth
             height: multiCal.height/16
+            border.color: "darkgoldenrod"
+
             Label {
                 anchors.centerIn: parent
                 text: Qt.locale().dayName(styleData.dayOfWeek, Locale.ShortFormat)
@@ -147,14 +204,14 @@ Calendar {
             onUpdateSelected: {
                 view.unselectAll()
 
-                    if(cs.isSelected(styleData) && (styleData.date.getMonth() === visibleMonth)) {
-                        c_date.color = "white"
-                        styleRect.gradient = gradientSelect
-                    }
-                    else {
-                        styleRect.gradient = gradientUnSelect
-                        c_date.color = styleData.date.getMonth() === visibleMonth ? "black" : "grey"
-                    }
+                if(cs.isSelected(styleData) && (styleData.date.getMonth() === visibleMonth)) {
+                    c_date.color = "white"
+                    styleRect.gradient = gradientSelect
+                }
+                else {
+                    styleRect.gradient = gradientUnSelect
+                    c_date.color = styleData.date.getMonth() === visibleMonth ? "black" : "grey"
+                }
 
                 visibleMonth = currentMonth
                 visibleYear = currentYear
@@ -212,4 +269,22 @@ Calendar {
             }
         }
     }
+
+    Gradient {
+        id: buttonMonth
+        GradientStop {
+            color: "darkgoldenrod"
+            position: 0.0
+        }
+        GradientStop {
+            color: "gold"
+            position: 0.5
+        }
+        GradientStop {
+            color: "darkgoldenrod"
+            position: 1.0
+        }
+    }
 }
+
+
