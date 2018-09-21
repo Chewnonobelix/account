@@ -122,6 +122,7 @@ Page {
         objectName: "entryView"
         model: defaultModel
 
+        property string currentType
         property int currentIndex: -1
 
         function fAdd(i) {
@@ -168,11 +169,11 @@ Page {
             width: 100
         }
 
-        TableViewColumn {
-            role: "type"
-            title: qsTr("Type")
-            width: 100
-        }
+//        TableViewColumn {
+//            role: "type"
+//            title: qsTr("Type")
+//            width: 100
+//        }
 
         itemDelegate: Label {
             id: textItem
@@ -183,7 +184,7 @@ Page {
 
         rowDelegate: Rectangle {
             id:rectRow
-            gradient: styleData.selected ? selectView : unselectView
+            gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? selectViewOut : selectViewIn : unselectView
         }
 
 
@@ -194,16 +195,32 @@ Page {
 
     onClicked: {
         currentIndex = row
+        currentType = defaultModel.get(row).type
     }
 
     Gradient {
-        id:selectView
+        id:selectViewOut
         GradientStop {
             color: "gold"
             position: 0.0
         }
         GradientStop {
-            color: "silver"
+            color: "darkred"
+            position: 0.5
+        }
+        GradientStop {
+            color: "gold"
+            position: 1.0        }
+    }
+
+    Gradient {
+        id:selectViewIn
+        GradientStop {
+            color: "gold"
+            position: 0.0
+        }
+        GradientStop {
+            color: "aquamarine"
             position: 0.5
         }
         GradientStop {
