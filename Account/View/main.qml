@@ -32,12 +32,12 @@ ApplicationWindow {
         anchors.fill: parent
         gradient: Gradient {
             GradientStop {
-                color: "lightyellow"
+                color: "lemonchiffon"
                 position: 0.0
             }
             GradientStop {
                 color: "white"
-                position: 1.0
+                position: 1
             }
         }
     }
