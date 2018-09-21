@@ -165,6 +165,7 @@ Calendar {
             gradient: buttonMonth
             width: multiCal.width/14
             anchors.top: navigationBar.bottom
+
             border.color: "darkgoldenrod"
             Label {
                 anchors.centerIn: parent
@@ -173,6 +174,7 @@ Calendar {
         }
 
         dayOfWeekDelegate: Rectangle {
+            anchors.centerIn: parent
             anchors.top: navigationBar.bottom
             gradient: buttonMonth
             height: multiCal.height/16
@@ -205,12 +207,10 @@ Calendar {
                 view.unselectAll()
 
                 if(cs.isSelected(styleData) && (styleData.date.getMonth() === visibleMonth)) {
-                    c_date.color = "white"
                     styleRect.gradient = gradientSelect
                 }
                 else {
                     styleRect.gradient = gradientUnSelect
-                    c_date.color = styleData.date.getMonth() === visibleMonth ? "black" : "grey"
                 }
 
                 visibleMonth = currentMonth
