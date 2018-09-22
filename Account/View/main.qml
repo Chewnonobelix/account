@@ -3,6 +3,7 @@ import QtQuick.Controls 1.4
 
 import QtQuick.Controls 2.2
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Styles 1.4
 
 ApplicationWindow {
     visible: true
@@ -25,19 +26,21 @@ ApplicationWindow {
         }
     }
 
+    Gradient {
+        id: blueGradient
+                GradientStop {
+                    color: "darkseagreen"
+                    position: 0.0
+                }
+                GradientStop {
+                    color: "white"
+                    position: 1
+                }
+            }
     background: Rectangle {
         id: backRect
         anchors.fill: parent
-        gradient: Gradient {
-            GradientStop {
-                color: "lemonchiffon"
-                position: 0.0
-            }
-            GradientStop {
-                color: "white"
-                position: 1
-            }
-        }
+        gradient: blueGradient
     }
 
     header:Rectangle {
@@ -57,6 +60,27 @@ ApplicationWindow {
             anchors.right: parent.right
 
             signal s_currentTextChange(string text)
+
+            Rectangle {
+                gradient: buttonGradient
+                anchors.fill: parent
+            }
+
+            delegate: ItemDelegate {
+                width: accountSelect.width
+//                color: "transparent"
+
+                contentItem: Rectangle {
+                    color: "green"
+
+                    Label {
+                        color: "black"
+                        text: modelData
+                    }
+                }
+
+                highlighted: accountSelect.highlightedIndex === index
+            }
 
             onCurrentTextChanged: {
                 s_currentTextChange(currentText)
@@ -104,5 +128,21 @@ ApplicationWindow {
 //            text: qsTr("Info test")
 //        }
 
+    }
+
+    Gradient {
+        id: buttonGradient
+        GradientStop {
+            color: "goldenrod"
+            position: 0.0
+        }
+        GradientStop {
+            color: "gold"
+            position: 0.5
+        }
+        GradientStop {
+            color: "goldenrod"
+            position: 1.0
+        }
     }
 }

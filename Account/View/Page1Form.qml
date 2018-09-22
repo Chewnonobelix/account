@@ -52,6 +52,7 @@ Page {
 
     Item {
         anchors.top: cal.bottom
+        anchors.topMargin: 10
         width: cal.width
 
         Button {
@@ -62,6 +63,10 @@ Page {
             anchors.top: parent.top
             anchors.left: parent.left
             focus: true
+            Rectangle {
+                anchors.fill: parent
+                gradient: buttonGradient
+            }
             onClicked: {
                 addingid.x = pressX + x + parent.x
                 addingid.y = pressY + y + parent.y
@@ -77,6 +82,10 @@ Page {
             anchors.left: add.right
             anchors.leftMargin: (parent.width * .1)
 
+            Rectangle {
+                anchors.fill: parent
+                gradient: buttonGradient
+            }
             onClicked: {
                 mainWindow.remove(view.model[index])
             }
@@ -90,6 +99,10 @@ Page {
             anchors.top: add.bottom
             anchors.topMargin: 10
             property int index
+            Rectangle {
+                anchors.fill: parent
+                gradient: buttonGradient
+            }
 
             onClicked: {
                 mainWindow.edit(view.model[view.currentIndex].id)
@@ -116,12 +129,13 @@ Page {
     TableView {
         anchors.left: cal.right
         anchors.leftMargin: 5
-        width: parent.width - cal.width
-        height: parent.height
+        implicitHeight: parent.height
+        implicitWidth: parent.width * 0.2
         id: view
         objectName: "entryView"
         model: defaultModel
-
+//        verticalScrollBarPolicy: Qt.ScrollBarAlwaysOn
+//        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOn
         property string currentType
         property int currentIndex: -1
 
@@ -152,34 +166,46 @@ Page {
         }
 
         TableViewColumn {
+            role: "type"
+            title: qsTr("[+/-]")
+            width: 40
+            movable: false
+            resizable: false
+            id: colType
+        }
+
+        TableViewColumn {
             role: "date"
             title: qsTr("Date")
             width: 100
+            movable: false
         }
 
         TableViewColumn {
             role: "value"
             title: qsTr("Value")
             width: 100
+            movable: false
         }
 
         TableViewColumn {
             role: "label"
             title: qsTr("Label")
             width: 100
+            movable: false
         }
 
-//        TableViewColumn {
-//            role: "type"
-//            title: qsTr("Type")
-//            width: 100
-//        }
-
-        itemDelegate: Label {
-            id: textItem
-            text: styleData.column === 1 ? Qt.formatDate(styleData.value, "dd-MM-yyyy") : styleData.value
 
 
+        itemDelegate: Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+            Label {
+                id: textItem
+                text: styleData.column === 2 ? Qt.formatDate(styleData.value, "dd-MM-yyyy") : (styleData.column === 1 && styleData.value === "outcome" )?  "-": (styleData.column === 1 && styleData.value === "income" )? "+" : styleData.value
+
+                anchors.centerIn: parent
+            }
         }
 
         rowDelegate: Rectangle {
@@ -188,52 +214,109 @@ Page {
         }
 
 
-    style: TableViewStyle{
-        highlightedTextColor: "gold"
-        activateItemOnSingleClick: true
+
+        headerDelegate: Rectangle {
+            gradient:  headerGradient
+            height: 15
+            Label {
+                anchors.centerIn: parent
+                text: styleData.value
+            }
+        }
+
+        onClicked: {
+            currentIndex = row
+            currentType = defaultModel.get(row).type
+        }
+
+        Gradient {
+            id:selectViewOut
+            GradientStop {
+                color: "gold"
+                position: 0.0
+            }
+            GradientStop {
+                color: "lightcoral"
+                position: 0.5
+            }
+            GradientStop {
+                color: "gold"
+                position: 1.0        }
+        }
+
+        Gradient {
+            id:selectViewIn
+            GradientStop {
+                color: "gold"
+                position: 0.0
+            }
+            GradientStop {
+                color: "aquamarine"
+                position: 0.5
+            }
+            GradientStop {
+                color: "gold"
+                position: 1.0        }
+        }
+
+        Gradient {
+            id: unselectView
+            GradientStop {
+                color: "transparent"
+            }
+        }
+
+        Gradient {
+            id: headerGradient
+            GradientStop {
+                color: "goldenrod"
+                position: 0.0
+            }
+            GradientStop {
+                color: "darkgoldenrod"
+                position: 0.25
+            }
+            GradientStop {
+                color: "gold"
+                position: 0.5
+            }
+            GradientStop {
+                color: "goldenrod"
+                position: 0.75
+            }
+            GradientStop {
+                color: "darkgoldenrod"
+                position: 1.0
+            }
+        }
+
+        Gradient {
+            id: buttonGradient
+            GradientStop {
+                color: "goldenrod"
+                position: 0.0
+            }
+            GradientStop {
+                color: "gold"
+                position: 0.5
+            }
+            GradientStop {
+                color: "goldenrod"
+                position: 1.0
+            }
+        }
+
     }
 
-    onClicked: {
-        currentIndex = row
-        currentType = defaultModel.get(row).type
-    }
+    InformationView {
+        id: infoView
+        objectName: "infoView"
 
-    Gradient {
-        id:selectViewOut
-        GradientStop {
-            color: "gold"
-            position: 0.0
-        }
-        GradientStop {
-            color: "darkred"
-            position: 0.5
-        }
-        GradientStop {
-            color: "gold"
-            position: 1.0        }
-    }
+        width: parent.width * 0.6
+        anchors.left: view.right
+        anchors.leftMargin: 10
 
-    Gradient {
-        id:selectViewIn
-        GradientStop {
-            color: "gold"
-            position: 0.0
-        }
-        GradientStop {
-            color: "aquamarine"
-            position: 0.5
-        }
-        GradientStop {
-            color: "gold"
-            position: 1.0        }
-    }
 
-    Gradient {
-        id: unselectView
-        GradientStop {
-            color: "transparent"
-        }
     }
-}
 }
 

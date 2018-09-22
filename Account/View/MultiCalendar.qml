@@ -76,7 +76,7 @@ Calendar {
         navigationBar: Rectangle {
             height: multiCal.height/16
 
-            gradient: buttonMonth
+            gradient: columnMonth
 
             Label {
                 id:monthLabel
@@ -129,17 +129,17 @@ Calendar {
             id: gradientSelect
 
             GradientStop {
-                color: "goldenrod"
+                color: "seagreen"
                 position: 0.0
             }
 
             GradientStop {
-                color: "gold"
+                color: "mediumseagreen"
                 position: 0.5
             }
 
             GradientStop {
-                color: "goldenrod"
+                color: "seagreen"
                 position: 1.0
             }
         }
@@ -163,7 +163,7 @@ Calendar {
         }
 
         weekNumberDelegate: Rectangle {
-            gradient: buttonMonth
+            gradient: columnMonth
             width: multiCal.width/14
             anchors.top: navigationBar.bottom
 
@@ -177,7 +177,7 @@ Calendar {
         dayOfWeekDelegate: Rectangle {
             anchors.centerIn: parent
             anchors.top: navigationBar.bottom
-            gradient: buttonMonth
+            gradient: columnMonth
             height: multiCal.height/16
             border.color: "darkgoldenrod"
 
@@ -190,13 +190,13 @@ Calendar {
             signal updateSelected()
             signal reset()
             id: styleRect
-            gradient: gradientUnSelect
+            gradient: blueGradient
             onReset: {
                 view.unselectAll()
 
                 for(var i in stylesData) {
                     stylesData[i][0].color = (stylesData[i][1].date.getMonth() === (visibleMonth)) ? "black" : "grey"
-                    stylesData[i][0].parent.gradient = gradientUnSelect
+                    stylesData[i][0].parent.gradient = blueGradient
                 }
 
                 while(selectedDates.length > 0) {
@@ -272,9 +272,33 @@ Calendar {
     }
 
     Gradient {
-        id: buttonMonth
+        id: columnMonth
+        GradientStop {
+            color: "goldenrod"
+            position: 0.0
+        }
         GradientStop {
             color: "darkgoldenrod"
+            position: 0.25
+        }
+        GradientStop {
+            color: "gold"
+            position: 0.5
+        }
+        GradientStop {
+            color: "goldenrod"
+            position: 0.75
+        }
+        GradientStop {
+            color: "darkgoldenrod"
+            position: 1.0
+        }
+    }
+
+    Gradient {
+        id: buttonMonth
+        GradientStop {
+            color: "goldenrod"
             position: 0.0
         }
         GradientStop {
@@ -282,10 +306,11 @@ Calendar {
             position: 0.5
         }
         GradientStop {
-            color: "darkgoldenrod"
+            color: "goldenrod"
             position: 1.0
         }
     }
+
 }
 
 
