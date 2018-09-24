@@ -13,16 +13,21 @@ Page {
     id: pageTable
 
     property date v_date
+
+    AccountStyle {
+        id: pageStyle
+    }
+
     background: Rectangle {
         color: "transparent"
     }
+
     MultiCalendar {
         id: cal
         objectName: "cal"
         weekNumbersVisible: true
         implicitHeight: parent.height /2
         implicitWidth: parent.width * 0.2
-
     }
 
     /* */
@@ -30,7 +35,6 @@ Page {
     Adding {
         id: addingid
         objectName: "addingid"
-
 
         Component.onCompleted:   {
             reset()
@@ -57,15 +61,14 @@ Page {
 
         Button {
             id: add
-            flat: false
             text: qsTr("Add")
             width: parent.width * .45
             anchors.top: parent.top
             anchors.left: parent.left
-            focus: true
+
             Rectangle {
                 anchors.fill: parent
-                gradient: buttonGradient
+                gradient: pageStyle.goldButton
             }
             onClicked: {
                 addingid.x = pressX + x + parent.x
@@ -84,7 +87,7 @@ Page {
 
             Rectangle {
                 anchors.fill: parent
-                gradient: buttonGradient
+                gradient: pageStyle.goldButton
             }
             onClicked: {
                 mainWindow.remove(view.model[index])
@@ -101,7 +104,7 @@ Page {
             property int index
             Rectangle {
                 anchors.fill: parent
-                gradient: buttonGradient
+                gradient: pageStyle.goldButton
             }
 
             onClicked: {
@@ -134,8 +137,7 @@ Page {
         id: view
         objectName: "entryView"
         model: defaultModel
-//        verticalScrollBarPolicy: Qt.ScrollBarAlwaysOn
-//        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOn
+
         property string currentType
         property int currentIndex: -1
 
@@ -210,13 +212,13 @@ Page {
 
         rowDelegate: Rectangle {
             id:rectRow
-            gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? selectViewOut : selectViewIn : unselectView
+            gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
         }
 
 
 
         headerDelegate: Rectangle {
-            gradient:  headerGradient
+            gradient:  pageStyle.goldHeader
             height: 15
             Label {
                 anchors.centerIn: parent
@@ -228,84 +230,6 @@ Page {
             currentIndex = row
             currentType = defaultModel.get(row).type
         }
-
-        Gradient {
-            id:selectViewOut
-            GradientStop {
-                color: "gold"
-                position: 0.0
-            }
-            GradientStop {
-                color: "lightcoral"
-                position: 0.5
-            }
-            GradientStop {
-                color: "gold"
-                position: 1.0        }
-        }
-
-        Gradient {
-            id:selectViewIn
-            GradientStop {
-                color: "gold"
-                position: 0.0
-            }
-            GradientStop {
-                color: "aquamarine"
-                position: 0.5
-            }
-            GradientStop {
-                color: "gold"
-                position: 1.0        }
-        }
-
-        Gradient {
-            id: unselectView
-            GradientStop {
-                color: "transparent"
-            }
-        }
-
-        Gradient {
-            id: headerGradient
-            GradientStop {
-                color: "goldenrod"
-                position: 0.0
-            }
-            GradientStop {
-                color: "darkgoldenrod"
-                position: 0.25
-            }
-            GradientStop {
-                color: "gold"
-                position: 0.5
-            }
-            GradientStop {
-                color: "goldenrod"
-                position: 0.75
-            }
-            GradientStop {
-                color: "darkgoldenrod"
-                position: 1.0
-            }
-        }
-
-        Gradient {
-            id: buttonGradient
-            GradientStop {
-                color: "goldenrod"
-                position: 0.0
-            }
-            GradientStop {
-                color: "gold"
-                position: 0.5
-            }
-            GradientStop {
-                color: "goldenrod"
-                position: 1.0
-            }
-        }
-
     }
 
     InformationView {
@@ -315,8 +239,6 @@ Page {
         width: parent.width * 0.6
         anchors.left: view.right
         anchors.leftMargin: 10
-
-
     }
 }
 

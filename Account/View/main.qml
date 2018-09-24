@@ -18,6 +18,10 @@ ApplicationWindow {
 
     id: mainWindow
 
+    AccountStyle {
+        id: pageStyle
+    }
+
     menuBar: MenuBar {
         Menu {
             title: qsTr("&File")
@@ -26,21 +30,10 @@ ApplicationWindow {
         }
     }
 
-    Gradient {
-        id: blueGradient
-                GradientStop {
-                    color: "darkseagreen"
-                    position: 0.0
-                }
-                GradientStop {
-                    color: "white"
-                    position: 1
-                }
-            }
     background: Rectangle {
         id: backRect
         anchors.fill: parent
-        gradient: blueGradient
+        gradient: pageStyle.backgroundGradient
     }
 
     header:Rectangle {
@@ -56,7 +49,6 @@ ApplicationWindow {
         ComboBox {
             id: accountSelect
             objectName: "accountSelect"
-
             anchors.right: parent.right
 
             signal s_currentTextChange(string text)
@@ -133,15 +125,15 @@ ApplicationWindow {
     Gradient {
         id: buttonGradient
         GradientStop {
-            color: "goldenrod"
+            color: "gold"
             position: 0.0
         }
         GradientStop {
-            color: "gold"
+            color: "goldenrod"
             position: 0.5
         }
         GradientStop {
-            color: "goldenrod"
+            color: "gold"
             position: 1.0
         }
     }

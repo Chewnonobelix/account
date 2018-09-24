@@ -8,5 +8,6 @@
         <file>Adding.qml</file>
         <file>DoubleSpinBox.qml</file>
         <file>MultiCalendar.qml</file>
+        <file>AccountStyle.qml</file>
     </qresource>
 </RCC>

@@ -69,6 +69,11 @@ Calendar {
         id:cs
         gridVisible: true
         gridColor: "goldenrod"
+
+        AccountStyle {
+            id: pageStyle
+        }
+
         background: Rectangle {
             color: "transparent"
         }
@@ -76,7 +81,7 @@ Calendar {
         navigationBar: Rectangle {
             height: multiCal.height/16
 
-            gradient: columnMonth
+            gradient: pageStyle.goldHeader
 
             Label {
                 id:monthLabel
@@ -92,7 +97,7 @@ Calendar {
                 height: parent.height
                 style: ButtonStyle {
                     background: Rectangle {
-                        gradient: buttonMonth
+                        gradient: pageStyle.goldButton
                         border.color: "silver"
 
                     }
@@ -111,7 +116,7 @@ Calendar {
                 height: parent.height
                 style: ButtonStyle {
                     background: Rectangle {
-                        gradient: buttonMonth
+                        gradient: pageStyle.goldButton
                         border.color: "silver"
                     }
                 }
@@ -129,25 +134,18 @@ Calendar {
             id: gradientSelect
 
             GradientStop {
-                color: "seagreen"
+                color: "mediumseagreen"
                 position: 0.0
             }
 
             GradientStop {
-                color: "mediumseagreen"
+                color: "seagreen"
                 position: 0.5
             }
 
             GradientStop {
-                color: "seagreen"
+                color: "mediumseagreen"
                 position: 1.0
-            }
-        }
-
-        Gradient {
-            id: gradientUnSelect
-            GradientStop {
-                color: "transparent"
             }
         }
 
@@ -163,7 +161,7 @@ Calendar {
         }
 
         weekNumberDelegate: Rectangle {
-            gradient: columnMonth
+            gradient: pageStyle.goldHeader
             width: multiCal.width/14
             anchors.top: navigationBar.bottom
 
@@ -177,7 +175,7 @@ Calendar {
         dayOfWeekDelegate: Rectangle {
             anchors.centerIn: parent
             anchors.top: navigationBar.bottom
-            gradient: columnMonth
+            gradient: pageStyle.goldHeader
             height: multiCal.height/16
             border.color: "darkgoldenrod"
 
@@ -196,7 +194,7 @@ Calendar {
 
                 for(var i in stylesData) {
                     stylesData[i][0].color = (stylesData[i][1].date.getMonth() === (visibleMonth)) ? "black" : "grey"
-                    stylesData[i][0].parent.gradient = blueGradient
+                    stylesData[i][0].parent.gradient = pageStyle.backgroundGradient
                 }
 
                 while(selectedDates.length > 0) {
@@ -211,7 +209,7 @@ Calendar {
                     styleRect.gradient = gradientSelect
                 }
                 else {
-                    styleRect.gradient = gradientUnSelect
+                    styleRect.gradient = pageStyle.unselectView
                 }
 
                 visibleMonth = currentMonth
@@ -268,46 +266,6 @@ Calendar {
 
                 }
             }
-        }
-    }
-
-    Gradient {
-        id: columnMonth
-        GradientStop {
-            color: "goldenrod"
-            position: 0.0
-        }
-        GradientStop {
-            color: "darkgoldenrod"
-            position: 0.25
-        }
-        GradientStop {
-            color: "gold"
-            position: 0.5
-        }
-        GradientStop {
-            color: "goldenrod"
-            position: 0.75
-        }
-        GradientStop {
-            color: "darkgoldenrod"
-            position: 1.0
-        }
-    }
-
-    Gradient {
-        id: buttonMonth
-        GradientStop {
-            color: "goldenrod"
-            position: 0.0
-        }
-        GradientStop {
-            color: "gold"
-            position: 0.5
-        }
-        GradientStop {
-            color: "goldenrod"
-            position: 1.0
         }
     }
 
