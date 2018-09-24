@@ -28,7 +28,7 @@ Item {
         id: row
         TextField {
             id: title
-            text: infoModel.title
+//            text: infoModel.title
 
 
         }
@@ -56,7 +56,7 @@ Item {
                 v_estimated = checked
             }
 
-            checked: infoModel.estimated
+//            checked: infoModel.estimated
         }
     }
 
