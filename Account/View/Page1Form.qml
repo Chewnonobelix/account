@@ -67,14 +67,22 @@ Page {
             anchors.left: parent.left
 
             Rectangle {
+                id: rectAdd
                 anchors.fill: parent
                 gradient: pageStyle.goldButton
             }
-            onClicked: {
+
+            onPressed: {
+                rectAdd.gradient = pageStyle.darkGoldButton
+            }
+
+            onReleased: {
+                rectAdd.gradient = pageStyle.goldButton
                 addingid.x = pressX + x + parent.x
                 addingid.y = pressY + y + parent.y
                 mainWindow.adding()
             }
+
         }
 
 
@@ -86,13 +94,20 @@ Page {
             anchors.leftMargin: (parent.width * .1)
 
             Rectangle {
+                id: rectRemove
+
                 anchors.fill: parent
                 gradient: pageStyle.goldButton
             }
-            onClicked: {
-                mainWindow.remove(view.model[index])
+
+            onPressed: {
+                rectRemove.gradient = pageStyle.darkGoldButton
             }
 
+            onReleased: {
+                rectRemove.gradient = pageStyle.goldButton
+                mainWindow.remove(view.model[index])
+            }
         }
 
         Button {
@@ -103,14 +118,22 @@ Page {
             anchors.topMargin: 10
             property int index
             Rectangle {
+                id: rectEdit
                 anchors.fill: parent
                 gradient: pageStyle.goldButton
             }
 
-            onClicked: {
-                mainWindow.edit(view.model[view.currentIndex].id)
+//            onClicked: {
+//                mainWindow.edit(view.model[view.currentIndex].id)
+//            }
+
+            onPressed: {
+                rectEdit.gradient = pageStyle.darkGoldButton
             }
 
+            onReleased: {
+                rectEdit.gradient = pageStyle.goldButton
+            }
         }
 
         Label {
@@ -126,6 +149,7 @@ Page {
     ListModel {
         id: defaultModel
         objectName: "defaultModel"
+
     }
 
 
@@ -153,11 +177,15 @@ Page {
             currentIndex = -1
         }
 
+        function reset() {
+            defaultModel.clear()
+        }
+
         backgroundVisible: false
         Connections {
             target: cal
             onS_datesChanged: {
-                defaultModel.clear()
+                view.reset()
             }
 
         }
@@ -173,7 +201,7 @@ Page {
             width: 40
             movable: false
             resizable: false
-            id: colType
+
         }
 
         TableViewColumn {
@@ -181,6 +209,8 @@ Page {
             title: qsTr("Date")
             width: 100
             movable: false
+            resizable: false
+
         }
 
         TableViewColumn {
@@ -188,6 +218,7 @@ Page {
             title: qsTr("Value")
             width: 100
             movable: false
+            resizable: false
         }
 
         TableViewColumn {
@@ -195,11 +226,14 @@ Page {
             title: qsTr("Label")
             width: 100
             movable: false
+            resizable: false
         }
 
 
 
         itemDelegate: Rectangle {
+            width: parent.width
+            height: 20
             anchors.fill: parent
             color: "transparent"
             Label {
@@ -212,18 +246,38 @@ Page {
 
         rowDelegate: Rectangle {
             id:rectRow
+
+            width: parent.width
+            height: 20
+
             gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
         }
 
 
+        style: TableViewStyle {
+            headerDelegate: Rectangle {
+                height: 20
+                gradient:  pageStyle.goldHeader
+                Label {
+                    anchors.centerIn: parent
+                    text: styleData.value + ""
 
-        headerDelegate: Rectangle {
-            gradient:  pageStyle.goldHeader
-            height: 15
-            Label {
-                anchors.centerIn: parent
-                text: styleData.value
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    onClicked: {
+                        console.log("Sort " + styleData)
+                    }
+
+                }
+
+
+
             }
+
+
         }
 
         onClicked: {
