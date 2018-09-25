@@ -130,24 +130,6 @@ Calendar {
         }
 
 
-        Gradient {
-            id: gradientSelect
-
-            GradientStop {
-                color: "mediumseagreen"
-                position: 0.0
-            }
-
-            GradientStop {
-                color: "seagreen"
-                position: 0.5
-            }
-
-            GradientStop {
-                color: "mediumseagreen"
-                position: 1.0
-            }
-        }
 
         function isSelected(sd) {
             var ret = false
@@ -206,7 +188,7 @@ Calendar {
                 view.unselectAll()
 
                 if(cs.isSelected(styleData) && (styleData.date.getMonth() === visibleMonth)) {
-                    styleRect.gradient = gradientSelect
+                    styleRect.gradient = pageStyle.calSelect
                 }
                 else {
                     styleRect.gradient = pageStyle.unselectView
