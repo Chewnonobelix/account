@@ -15,6 +15,10 @@ Popup {
         dateCombo.currentIndex = 0
     }
 
+    AccountStyle {
+        id: pageStyle
+    }
+
     signal accept()
 
     property real v_val: spinbox.realValue
@@ -29,6 +33,13 @@ Popup {
     onOpened: {
         dateCombo.currentIndex = 0
     }
+
+    background: Rectangle {
+        gradient: pageStyle.backgroundGradient
+        border.color: "darkgoldenrod"
+    }
+
+
 
 //    property var dateModel: []
 
@@ -78,8 +89,22 @@ Popup {
                 id: b_save
                 text: qsTr("Save")
 
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                    id: saveRect
+                }
+
                 onClicked: {
                     console.log(addingid.v_date + " Accept")
+
+                }
+
+                onPressed: {
+                    saveRect.gradient = pageStyle.darkGoldButton
+                }
+
+                onReleased: {
+                    saveRect.gradient = pageStyle.goldButton
                     addingid.accept()
                     reset()
                     close()
@@ -90,7 +115,17 @@ Popup {
                 id:b_cancel
                 text: qsTr("Cancel")
 
-                onClicked: {
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                    id: cancelRect
+                }
+
+                onPressed: {
+                    cancelRect.gradient = pageStyle.darkGoldButton
+                }
+
+                onReleased: {
+                    cancelRect.gradient = pageStyle.goldButton
                     reset()
                     close()
                 }
