@@ -137,6 +137,7 @@ void MainController::selection()
 
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
     if(tab){
+        QMetaObject::invokeMethod(tab, "reset");
         for(auto i = 0 ; i < ret.size(); i++)
         {
             QVariantMap map;
