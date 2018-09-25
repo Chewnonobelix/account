@@ -18,6 +18,24 @@ QtObject {
 
     }
 
+    property Gradient darkGoldButton: Gradient {
+        id: darkGoldButton
+        GradientStop {
+            color: Qt.darker("gold",1.1)
+            position: 0.0
+        }
+        GradientStop {
+            color: Qt.darker("goldenrod",1.1)
+            position: 0.5
+        }
+        GradientStop {
+            color: Qt.darker("gold",1.1)
+            position: 1.0
+        }
+
+    }
+
+
     property Gradient goldHeader: Gradient {
         id: goldHeader
         GradientStop {
@@ -88,6 +106,25 @@ QtObject {
         GradientStop {
             color: "white"
             position: 1
+        }
+    }
+
+    property Gradient calSelect: Gradient {
+        id: gradientSelect
+
+        GradientStop {
+            color: "darkseagreen"
+            position: 0.0
+        }
+
+        GradientStop {
+            color: "seagreen"
+            position: 0.5
+        }
+
+        GradientStop {
+            color: "darkseagreen"
+            position: 1.0
         }
     }
 
