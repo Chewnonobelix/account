@@ -6,7 +6,7 @@ import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.4
 
 Popup {
-    closePolicy: Popup.NoAutoClose
+//    closePolicy: Popup.NoAutoClose
 
     function reset() {
         valueLabel.text = ""
@@ -22,6 +22,13 @@ Popup {
     property string v_type: type.currentText
     property string v_date: dateCombo.currentText
 
+    onClosed: {
+        dateModel.clear()
+    }
+
+    onOpened: {
+        dateCombo.currentIndex = 0
+    }
 
 //    property var dateModel: []
 
