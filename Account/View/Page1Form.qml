@@ -256,12 +256,13 @@ Page {
 
         style: TableViewStyle {
             headerDelegate: Rectangle {
-                height: 20
+                height: headerText.implicitHeight * 1.2
+                width: headerText.implicitWidth
                 gradient:  pageStyle.goldHeader
                 Label {
+                    id: headerText
                     anchors.centerIn: parent
-                    text: styleData.value + ""
-
+                    text: styleData.value
                 }
 
                 MouseArea {
@@ -270,11 +271,7 @@ Page {
                     onClicked: {
                         console.log("Sort " + styleData)
                     }
-
                 }
-
-
-
             }
 
 
