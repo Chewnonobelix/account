@@ -230,6 +230,14 @@ Page {
         }
 
 
+        TableViewColumn {
+            role: "total"
+            title: qsTr("Total")
+            width: 100
+            movable: false
+            resizable: false
+        }
+
 
         itemDelegate: Rectangle {
             width: parent.width
@@ -287,9 +295,11 @@ Page {
         id: infoView
         objectName: "infoView"
 
-        width: parent.width * 0.6
+//        width: parent.width * 0.6
         anchors.left: view.right
+        anchors.right: parent.right
         anchors.leftMargin: 10
+
     }
 }
 

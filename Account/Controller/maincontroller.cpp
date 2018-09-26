@@ -134,6 +134,7 @@ void MainController::selection()
         for(auto it: ld)
             ret<<AbstractController::entries(it);
 
+    Total t;
 
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
     if(tab){
@@ -141,19 +142,17 @@ void MainController::selection()
         for(auto i = 0 ; i < ret.size(); i++)
         {
             QVariantMap map;
+            t = t + ret[i];
             map.insert("id", ret[i].id());
             map.insert("date", ret[i].date());
             map.insert("value", ret[i].value());
             map.insert("label", ret[i].label());
             map.insert("type", ret[i].type());
-
+            map.insert("total", t.value());
             QMetaObject::invokeMethod(tab, "fAdd", Q_ARG(QVariant, map));
         }
     }
 
-    Total t;
-    for(auto e: ret)
-        t = t + e;
 
     QObject* tot = m_engine.rootObjects().first()->findChild<QObject*>("total");
     tot->setProperty("text", t.value());
