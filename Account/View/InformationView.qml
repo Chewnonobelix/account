@@ -18,8 +18,8 @@ Item {
         objectName: "infoModel"
     }
 
-//    property Information modelInf
-//    property Entry modelEntry
+    //    property Information modelInf
+    //    property Entry modelEntry
     property int eid
     property string v_category
     property bool v_estimated
@@ -28,15 +28,16 @@ Item {
         id: row
         TextField {
             id: title
-//            text: infoModel.title
+            //            text: infoModel.title
 
 
         }
 
         DoubleSpinBox {
-            enabled: false
-            value: entry.value *100
+            id: spinbox
+            value: entry.value*100
 
+            enabled: false
         }
 
         ComboBox {
@@ -56,7 +57,7 @@ Item {
                 v_estimated = checked
             }
 
-//            checked: infoModel.estimated
+            //            checked: infoModel.estimated
         }
     }
 
