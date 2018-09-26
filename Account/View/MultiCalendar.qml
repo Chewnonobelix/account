@@ -187,10 +187,10 @@ Calendar {
             onUpdateSelected: {
                 view.unselectAll()
 
-                if(cs.isSelected(styleData) && (styleData.date.getMonth() === visibleMonth)) {
+                if(cs.isSelected(styleData) && checkMonth(styleData)) {
                     styleRect.gradient = pageStyle.calSelect
                 }
-                else {
+                else if(checkMonth(styleData)){
                     styleRect.gradient = pageStyle.unselectView
                 }
 
@@ -204,7 +204,7 @@ Calendar {
                 id: c_date
                 anchors.centerIn: parent
                 text: styleData.date.getDate()
-                color: styleData.date.getMonth() === (multiCal.visibleMonth) ? "black" : "grey"
+                color:  parent.checkMonth(styleData)? "black" : "grey"
                 onTextChanged: {
 
                     if(stylesData.indexOf(c_date) == -1) {
@@ -214,11 +214,15 @@ Calendar {
                 }
             }
 
+            function checkMonth(m) {
+                return m.date.getMonth() === (multiCal.visibleMonth)
+            }
+
             MouseArea {
                 anchors.fill: parent
                 propagateComposedEvents: true
                 onClicked: {
-                    if(mouse.modifiers === Qt.ShiftModifier) {
+                    if((mouse.modifiers === Qt.ShiftModifier) && parent.checkMonth(styleData)){
                         var index = -1
                         for(var i in selectedDates) {
                             if(Qt.formatDate(styleData.date, format) === selectedDates[i]) {
@@ -233,7 +237,7 @@ Calendar {
                             selectedDates.splice(index,1)
                         }
                     }
-                    else {
+                    else if(parent.checkMonth(styleData)){
                         parent.reset()
                         if(!styleData.selected && Qt.formatDate(selectedDate, format) !== Qt.formatDate(styleData.date, format) && styleData.date.getMonth() === (multiCal.visibleMonth)) {
                             selectedDates[selectedDates.length] = Qt.formatDate(styleData.date, format)
