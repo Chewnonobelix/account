@@ -6,6 +6,10 @@ Item {
     id: info
     objectName: "info"
 
+    AccountStyle {
+        id: pageStyle
+    }
+
     Item {
         id: entry
         objectName: "entry"
@@ -21,58 +25,55 @@ Item {
     property int eid
     property string v_category
     property bool v_estimated
-//    clip:  true
-        //        contentItem: row
-        //        contentWidth: row.width
-        //        contentHeight: row.height
-        //        hoverEnabled: true
-        ////        anchors.fill: parent
+    TextField {
+        id: title
+    }
 
-        //        Component.onCompleted: {
-        //            console.log("Bordem de couille de boeuf")
-        //            console.log(height)
-        //            console.log(width)
-        //        }
-        //    }
+    DoubleSpinBox {
+        id: spinbox
+        value: entry.value*100
+        anchors.left: title.right
+        enabled: false
+    }
 
-//        RowLayout {
-//            id: row
-//            height: parent.height
-//            width: parent.width
-//                    clip: true
-            TextField {
-                id: title
-            }
+    ComboBox {
+        id: category
+        objectName: "category"
+        anchors.left: spinbox.right
 
-            DoubleSpinBox {
-                id: spinbox
-                value: entry.value*100
-                anchors.left: title.right
-                enabled: false
-//                clip: true
-            }
+        model: ["Transport", "Loyer", "Energie", "Telecom"]
 
-            ComboBox {
-                id: category
-                objectName: "category"
-                anchors.left: spinbox.right
-
-                model: ["Transport", "Loyer", "Energie", "Telecom"]
-            }
-
-            CheckBox {
-                id: estimated
-                objectName: "estimated"
-                anchors.left: category.right
-
-                text: qsTr("Estimated")
-            }
-//        }
-
-        Label {
-            anchors.top:title.bottom
-            anchors.topMargin: 10
-            text: "Coming Soon"
+        Rectangle {
+            anchors.fill: parent
+            gradient: pageStyle.goldButton
         }
+
+        delegate: ItemDelegate {
+            width: category.width
+            contentItem: Rectangle  {
+                gradient: pageStyle.goldButton
+                anchors.fill: parent
+                Label {
+                    color: "black"
+                    text: modelData
+                    anchors.centerIn: parent
+                }
+            }
+        }
+    }
+
+    CheckBox {
+        id: estimated
+        objectName: "estimated"
+        anchors.left: category.right
+
+        text: qsTr("Estimated")
+    }
+
+    Label {
+        anchors.top:title.bottom
+        anchors.topMargin: 10
+        text: "Coming Soon"
+    }
     //Frequency
 }
