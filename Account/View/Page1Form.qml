@@ -123,9 +123,9 @@ Page {
                 gradient: pageStyle.goldButton
             }
 
-//            onClicked: {
-//                mainWindow.edit(view.model[view.currentIndex].id)
-//            }
+            //            onClicked: {
+            //                mainWindow.edit(view.model[view.currentIndex].id)
+            //            }
 
             onPressed: {
                 rectEdit.gradient = pageStyle.darkGoldButton
@@ -156,8 +156,8 @@ Page {
     TableView {
         anchors.left: cal.right
         anchors.leftMargin: 5
-        implicitHeight: parent.height
-        implicitWidth: parent.width * 0.2
+        height: parent.height
+        width: parent.width * 0.25
         id: view
         objectName: "entryView"
         model: defaultModel
@@ -265,7 +265,6 @@ Page {
         style: TableViewStyle {
             headerDelegate: Rectangle {
                 height: headerText.implicitHeight * 1.2
-                width: headerText.implicitWidth
                 gradient:  pageStyle.goldHeader
                 Label {
                     id: headerText
@@ -287,19 +286,33 @@ Page {
 
         onClicked: {
             currentIndex = row
-            currentType = defaultModel.get(row).type
         }
     }
 
-    InformationView {
-        id: infoView
-        objectName: "infoView"
+    ScrollView {
 
-//        width: parent.width * 0.6
+        contentWidth: infoView.width
+        contentHeight: infoView.height
         anchors.left: view.right
-        anchors.right: parent.right
+        width: parent.width*0.55
+        height: parent.height
+
+
         anchors.leftMargin: 10
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
+
+        clip: true
+        InformationView {
+            id: infoView
+            objectName: "infoView"
+            width: 600
+            height: pageTable.height
+            clip: true
+        }
+
+
 
     }
+
 }
 

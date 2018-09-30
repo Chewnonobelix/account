@@ -18,54 +18,61 @@ Item {
         objectName: "infoModel"
     }
 
-    //    property Information modelInf
-    //    property Entry modelEntry
     property int eid
     property string v_category
     property bool v_estimated
+//    clip:  true
+        //        contentItem: row
+        //        contentWidth: row.width
+        //        contentHeight: row.height
+        //        hoverEnabled: true
+        ////        anchors.fill: parent
 
-    RowLayout {
-        id: row
-        TextField {
-            id: title
-            //            text: infoModel.title
+        //        Component.onCompleted: {
+        //            console.log("Bordem de couille de boeuf")
+        //            console.log(height)
+        //            console.log(width)
+        //        }
+        //    }
 
-
-        }
-
-        DoubleSpinBox {
-            id: spinbox
-            value: entry.value*100
-
-            enabled: false
-        }
-
-        ComboBox {
-            id: category
-            objectName: "category"
-            model: ["Transport", "Loyer", "Energie", "Telecom"]
-            onCurrentTextChanged: {
-                v_category = currentText
-            }
-        }
-
-        CheckBox {
-            id: estimated
-            objectName: "estimated"
-            text: qsTr("Estimated")
-            onCheckedChanged: {
-                v_estimated = checked
+//        RowLayout {
+//            id: row
+//            height: parent.height
+//            width: parent.width
+//                    clip: true
+            TextField {
+                id: title
             }
 
-            //            checked: infoModel.estimated
+            DoubleSpinBox {
+                id: spinbox
+                value: entry.value*100
+                anchors.left: title.right
+                enabled: false
+//                clip: true
+            }
+
+            ComboBox {
+                id: category
+                objectName: "category"
+                anchors.left: spinbox.right
+
+                model: ["Transport", "Loyer", "Energie", "Telecom"]
+            }
+
+            CheckBox {
+                id: estimated
+                objectName: "estimated"
+                anchors.left: category.right
+
+                text: qsTr("Estimated")
+            }
+//        }
+
+        Label {
+            anchors.top:title.bottom
+            anchors.topMargin: 10
+            text: "Coming Soon"
         }
-    }
-
-    Label {
-        anchors.top:row.bottom
-        anchors.topMargin: 10
-        text: "Coming Soon"
-    }
-
     //Frequency
 }
