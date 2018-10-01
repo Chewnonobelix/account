@@ -20,7 +20,8 @@ SOURCES += \
     Model/categories.cpp \
     Controller/abstractcontroller.cpp \
     Controller/controllerdb.cpp \
-    Controller/maincontroller.cpp
+    Controller/maincontroller.cpp \
+    Controller/controllerinformation.cpp
 
 RESOURCES += View/qml.qrc
 
@@ -42,4 +43,5 @@ HEADERS += \
     Model/categories.h \
     Controller/abstractcontroller.h \
     Controller/controllerdb.h \
-    Controller/maincontroller.h
+    Controller/maincontroller.h \
+    Controller/controllerinformation.h

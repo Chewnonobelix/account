@@ -25,8 +25,18 @@ Item {
     property int eid
     property string v_category
     property bool v_estimated
+
+    signal s_titleChanged(string title)
+    signal s_estimatedChanged(bool title)
+
     TextField {
         id: title
+
+        onEditingFinished: {
+
+            s_titleChanged(text)
+        }
+
     }
 
     DoubleSpinBox {
@@ -68,6 +78,10 @@ Item {
         anchors.left: category.right
 
         text: qsTr("Estimated")
+
+        onCheckStateChanged: {
+            s_estimatedChanged(checked)
+        }
     }
 
     Label {

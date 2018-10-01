@@ -5,13 +5,6 @@ MainController::MainController(): AbstractController()
 {
     AbstractController::setCurrentAccount("test_account1");
     AbstractController::initTestEntry();
-
-    //qmlRegisterType<Entry>("Account",1,0,"Entry");
-    //    qmlRegisterType<Information>();
-
-    //    qDebug()<<QMetaType::type("Entry");
-    //    qDebug()<<qRegisterMetaType<Entry>();
-    //    qDebug()<<qRegisterMetaType<Information>();
 }
 
 MainController::~MainController()
@@ -28,7 +21,7 @@ int MainController::exec()
 
     connect(root, SIGNAL(adding()), this, SLOT(add()));
     connect(root, SIGNAL(remove(int)), this, SLOT(remove(int)));
-//    connect(root, SIGNAL(edit(int)), this, SLOT(edit(int)));
+
     QObject* calendar = root->findChild<QObject*>("cal");
 
     if(calendar)
@@ -41,7 +34,6 @@ int MainController::exec()
         QStringList t;
         t<<"test_account1"<<"test_account2";
         combo->setProperty("model", t);
-        //        combo->setProperty("model", AbstractController::accountList());
         connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
         accountChange(t[0]);
     }
@@ -64,8 +56,6 @@ void MainController::add()
     QObject* item = m_engine.rootObjects().first()->findChild<QObject*>("table");
     QVariant ret;
     QMetaObject::invokeMethod(item, "openAdding", Q_RETURN_ARG(QVariant, ret));
-
-
 }
 
 void MainController::adding()
@@ -86,7 +76,7 @@ void MainController::adding()
     i.setTitle(label.toString());
     e.setInfo(i);
     e.setAccount(currentAccount());
-    qDebug()<<e.date()<<e.value()<<e.info().title()<<e.type();
+
     AbstractController::addEntry(e);
     selection();
 }
@@ -98,22 +88,12 @@ void MainController::remove(int id)
 void MainController::edit(int id)
 {
     QObject* info = m_engine.rootObjects().first()->findChild<QObject*>("infoView");
-    qDebug()<<"Edit"<< id<<info;
+    qDebug()<<"Edit"<< id;
 
     if(info)
     {
         Entry e = AbstractController::entry(id);
-        QObject* model =  m_engine.rootObjects().first()->findChild<QObject*>("entry");
-        if(model)
-        {
-            model->setProperty("id", e.id());
-            model->setProperty("value", e.value());
-        }
-
-        model =  m_engine.rootObjects().first()->findChild<QObject*>("infoModel");
-        if(model)
-        {
-        }
+        m_info.set(e, info);
     }
 }
 
