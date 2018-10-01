@@ -12,10 +12,16 @@ ControllerDB::ControllerDB()
         m_selectEntry = new QSqlQuery(m_db);
         m_addEntry = new QSqlQuery(m_db);
         m_accounts = new QSqlQuery(m_db);
+        m_updateEntry = new QSqlQuery(m_db);
 
-        m_selectEntry->prepare("SELECT * FROM account WHERE account=:a");
+        m_selectEntry->prepare("SELECT * FROM account AS a"
+                               "INNER JOIN information AS i ON a.ID = i.id_entry "
+                               "WHERE a.account=:a");
         m_addEntry->prepare("INSERT INTO account (account, value, date_eff, type) VALUES (:account,:value,:date,:type)");
         m_accounts->prepare("SELECT DISTINCT account FROM account");
+        m_updateEntry->prepare("UPDATE information "
+                               "SET (info=:title, prev=:estimated)"
+                               "WHERE id=:id AND id_entry=:ide");
     }
 }
 
@@ -64,10 +70,17 @@ QList<Entry> ControllerDB::selectEntry(QString account)
         while(m_selectEntry->next())
         {
             Entry t;
-            t.setId(m_selectEntry->value("id").toInt());
-            t.setDate(m_selectEntry->value("date_eff").toDate());
-            t.setValue(m_selectEntry->value("value").toDouble());
-            t.setType(m_selectEntry->value("type").toString());
+            Information i;
+            t.setId(m_selectEntry->value("a.id").toInt());
+            t.setDate(m_selectEntry->value("a.date_eff").toDate());
+            t.setValue(m_selectEntry->value("a.value").toDouble());
+            t.setType(m_selectEntry->value("a.type").toString());
+
+            i.setId(m_selectEntry->value("i.id"));
+            i.setIdEntry(m_selectEntry->value("i.id_entry"));
+            i.setEstimated(m_selectEntry->value("i.prev"));
+            i.setTitle(m_selectEntry->value("i.info"));
+
 
             res<<t;
         }
@@ -90,3 +103,18 @@ QStringList ControllerDB::selectAccount()
     return res;
 }
 
+bool ControllerDB::updateEntry(const Entry & e)
+{
+    bool ret = false;
+    if(isConnected() && e.id() >= 0)
+    {
+        m_updateEntry->bindValue(":ide", e.id());
+        m_updateEntry->bindValue(":id", e.info().id());
+        m_updateEntry->bindValue(":title", e.info().title());
+        m_updateEntry->bindValue(":estimated", e.info().estimated());
+
+        ret = m_updateEntry->exec();
+    }
+
+    return ret;
+}

@@ -15,6 +15,7 @@ private:
     QString m_removeEntry;
     QSqlQuery* m_selectEntry;
     QSqlQuery* m_accounts;
+    QSqlQuery* m_updateEntry;
 
 public:
     ControllerDB();
@@ -25,6 +26,7 @@ public:
     bool addEntry(const Entry&);
     QList<Entry> selectEntry(QString);
     QStringList selectAccount();
+    bool updateEntry(const Entry&);
 };
 
 #endif // CONTROLLERDB_H

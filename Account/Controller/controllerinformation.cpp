@@ -15,8 +15,6 @@ void ControllerInformation::labelEdit(QString l)
 
     show();
     s_update(m_entry);
-
-    qDebug()<<"Label"<<l;
 }
 
 void ControllerInformation::estimatedEdit(bool e)
@@ -28,7 +26,6 @@ void ControllerInformation::estimatedEdit(bool e)
 
     show();
     s_update(m_entry);
-    qDebug()<<"Estimated"<<e;
 }
 
 void ControllerInformation::show()
