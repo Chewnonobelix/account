@@ -285,7 +285,16 @@ Page {
         }
 
         onClicked: {
-            currentIndex = row
+
+            if(currentIndex !== row) {
+                currentIndex = row
+            }
+            else {
+                currentIndex = -1
+                unselectAll()
+            }
+
+            infoView.enabled = currentIndex !== -1
         }
     }
 
@@ -308,6 +317,7 @@ Page {
             width: 600
             height: pageTable.height
             clip: true
+            enabled: false
         }
 
 
