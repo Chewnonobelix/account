@@ -117,6 +117,7 @@ Page {
             anchors.top: add.bottom
             anchors.topMargin: 10
             property int index
+            enabled: false
             Rectangle {
                 id: rectEdit
                 anchors.fill: parent
@@ -180,6 +181,8 @@ Page {
         function reset() {
             defaultModel.clear()
         }
+
+        signal s_view(int index)
 
         backgroundVisible: false
         Connections {
@@ -288,13 +291,15 @@ Page {
 
             if(currentIndex !== row) {
                 currentIndex = row
+                s_view(defaultModel.get(currentIndex).id)
             }
             else {
-                currentIndex = -1
                 unselectAll()
             }
 
             infoView.enabled = currentIndex !== -1
+
+
         }
     }
 

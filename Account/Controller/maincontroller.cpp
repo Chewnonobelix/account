@@ -28,7 +28,7 @@ int MainController::exec()
 
     connect(root, SIGNAL(adding()), this, SLOT(add()));
     connect(root, SIGNAL(remove(int)), this, SLOT(remove(int)));
-    connect(root, SIGNAL(edit(int)), this, SLOT(edit(int)));
+//    connect(root, SIGNAL(edit(int)), this, SLOT(edit(int)));
     QObject* calendar = root->findChild<QObject*>("cal");
 
     if(calendar)
@@ -50,6 +50,12 @@ int MainController::exec()
 
     if(adding)
         connect(adding, SIGNAL(accept()), this, SLOT(adding()));
+
+    QObject* view = root->findChild<QObject*>("entryView");
+
+    if(view)
+        connect(view, SIGNAL(s_view(int)), this, SLOT(edit(int)));
+
     return 0;
 }
 
@@ -91,8 +97,8 @@ void MainController::remove(int id)
 
 void MainController::edit(int id)
 {
-    qDebug()<<"Edit"<< id;
-    QObject* info = m_engine.rootObjects().first()->findChild<QObject*>("infoTest");
+    QObject* info = m_engine.rootObjects().first()->findChild<QObject*>("infoView");
+    qDebug()<<"Edit"<< id<<info;
 
     if(info)
     {
@@ -100,15 +106,13 @@ void MainController::edit(int id)
         QObject* model =  m_engine.rootObjects().first()->findChild<QObject*>("entry");
         if(model)
         {
-            qDebug()<<"value "<<model->setProperty("value", e.value());
             model->setProperty("id", e.id());
+            model->setProperty("value", e.value());
         }
 
         model =  m_engine.rootObjects().first()->findChild<QObject*>("infoModel");
         if(model)
         {
-            model->setProperty("estimated", e.info().estimated());
-            model->setProperty("title", e.info().title());
         }
     }
 }
