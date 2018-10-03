@@ -15,6 +15,8 @@ ControllerDB::ControllerDB()
         m_accounts = SqlQuery::create(m_db);
         m_updateInfo = SqlQuery::create(m_db);
         m_addInformation = SqlQuery::create(m_db);
+        m_removeEntry = SqlQuery::create(m_db);
+        m_removeInformation = SqlQuery::create(m_db);
 
         m_selectEntry->prepare("SELECT * FROM account AS a"
                                "INNER JOIN information AS i ON a.ID = i.id_entry "
@@ -23,14 +25,22 @@ ControllerDB::ControllerDB()
         m_addEntry->prepare("INSERT INTO account (ID, account, value, date_eff, type) "
                             "VALUES (:id, :account,:value,:date,:type)");
 
+        m_removeEntry->prepare("DELETE FROM account"
+                               "WHERE ID=:id");
+
+
         m_addInformation->prepare("INSERT INTO information (id, id_entry, info, prev, category)"
                                   "VALUES(:id, :ide, :title, :prev, :cat)");
-
-        m_accounts->prepare("SELECT DISTINCT account FROM account");
 
         m_updateInfo->prepare("UPDATE information "
                                "SET (info=:title, prev=:estimated)"
                                "WHERE id=:id AND id_entry=:ide");
+
+        m_removeInformation->prepare("DELETE FROM information"
+                                     "WHERE id_entry=:ide");
+
+        m_accounts->prepare("SELECT DISTINCT account FROM account");
+
     }
 
     qDebug()<<"DB Connected"<<isConnected();
@@ -126,6 +136,25 @@ bool ControllerDB::updateInfo(const Entry & e)
         m_updateInfo->bindValue(":estimated", e.info().estimated());
 
         ret = m_updateInfo->exec();
+    }
+
+    return ret;
+}
+
+
+bool ControllerDB::removeEntry(const Entry & e)
+{
+    bool ret = false;
+
+    if(isConnected())
+    {
+        m_removeInformation->bindValue(":ide", e.id());
+        m_removeEntry->bindValue(":id", e.id());
+
+        ret = m_removeInformation->exec();
+
+        if(ret)
+            ret &= m_removeEntry->exec();
     }
 
     return ret;

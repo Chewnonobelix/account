@@ -139,7 +139,7 @@ void MainController::selection()
 
 
     QObject* tot = m_engine.rootObjects().first()->findChild<QObject*>("total");
-    tot->setProperty("text", t.value());
+//    tot->setProperty("val", t.value());
 }
 
 void MainController::accountChange(QString acc)

@@ -15,14 +15,16 @@ class ControllerDB
 
 private:
     QSqlDatabase m_db;
-    SqlQuery m_addEntry;
-    QString m_removeEntry;
 
+    SqlQuery m_addEntry;
+    SqlQuery m_removeEntry;
     SqlQuery m_selectEntry;
+
     SqlQuery m_accounts;
 
     SqlQuery m_updateInfo;
     SqlQuery m_addInformation;
+    SqlQuery m_removeInformation;
 
 
 public:
@@ -33,7 +35,10 @@ public:
 
     bool addEntry(const Entry&);
     QList<Entry> selectEntry(QString);
+    bool removeEntry(const Entry&);
+
     QStringList selectAccount();
+
     bool updateInfo(const Entry&);
 };
 
