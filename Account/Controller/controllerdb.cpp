@@ -7,36 +7,39 @@ ControllerDB::ControllerDB()
     m_db.setUserName("chewnonobelix");
     m_db.setPassword("04091986a");
     m_db.setDatabaseName("account_test");
+    m_db.setPort(3306);
     if(m_db.open())
     {
-        m_selectEntry = new QSqlQuery(m_db);
-        m_addEntry = new QSqlQuery(m_db);
-        m_accounts = new QSqlQuery(m_db);
-        m_updateEntry = new QSqlQuery(m_db);
+        m_selectEntry = SqlQuery::create(m_db);
+        m_addEntry = SqlQuery::create(m_db);
+        m_accounts = SqlQuery::create(m_db);
+        m_updateInfo = SqlQuery::create(m_db);
+        m_addInformation = SqlQuery::create(m_db);
 
         m_selectEntry->prepare("SELECT * FROM account AS a"
                                "INNER JOIN information AS i ON a.ID = i.id_entry "
                                "WHERE a.account=:a");
 
-        m_addEntry->prepare("INSERT INTO account (account, value, date_eff, type) "
-                            "VALUES (:account,:value,:date,:type)");
+        m_addEntry->prepare("INSERT INTO account (ID, account, value, date_eff, type) "
+                            "VALUES (:id, :account,:value,:date,:type)");
+
+        m_addInformation->prepare("INSERT INTO information (id, id_entry, info, prev, category)"
+                                  "VALUES(:id, :ide, :title, :prev, :cat)");
 
         m_accounts->prepare("SELECT DISTINCT account FROM account");
 
-        m_updateEntry->prepare("UPDATE information "
+        m_updateInfo->prepare("UPDATE information "
                                "SET (info=:title, prev=:estimated)"
                                "WHERE id=:id AND id_entry=:ide");
     }
+
+    qDebug()<<"DB Connected"<<isConnected();
 }
 
 ControllerDB::~ControllerDB()
 {
     if(isConnected())
     {
-        delete m_selectEntry;
-        delete m_addEntry;
-        delete m_accounts;
-
         m_db.close();
     }
 }
@@ -55,6 +58,12 @@ bool ControllerDB::addEntry(const Entry & e)
         m_addEntry->bindValue(":value", QVariant(e.value()));
         m_addEntry->bindValue(":date", QVariant(e.date()));
         m_addEntry->bindValue(":type", QVariant(e.type()));
+        m_addEntry->bindValue(":id", QVariant());
+
+        ret = m_addEntry->exec();
+//        auto result = m_addEntry->result();
+        int id = m_addEntry->boundValue(":id").toInt();
+        qDebug()<<"ID"<<id;
     }
 
     return ret;
@@ -106,17 +115,17 @@ QStringList ControllerDB::selectAccount()
     return res;
 }
 
-bool ControllerDB::updateEntry(const Entry & e)
+bool ControllerDB::updateInfo(const Entry & e)
 {
     bool ret = false;
     if(isConnected() && e.id() >= 0)
     {
-        m_updateEntry->bindValue(":ide", e.id());
-        m_updateEntry->bindValue(":id", e.info().id());
-        m_updateEntry->bindValue(":title", e.info().title());
-        m_updateEntry->bindValue(":estimated", e.info().estimated());
+        m_updateInfo->bindValue(":ide", e.id());
+        m_updateInfo->bindValue(":id", e.info().id());
+        m_updateInfo->bindValue(":title", e.info().title());
+        m_updateInfo->bindValue(":estimated", e.info().estimated());
 
-        ret = m_updateEntry->exec();
+        ret = m_updateInfo->exec();
     }
 
     return ret;

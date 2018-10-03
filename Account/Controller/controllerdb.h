@@ -5,18 +5,25 @@
 #include <QSqlQuery>
 #include <QVariant>
 #include <QSqlRecord>
+#include <QSqlResult>
+#include <QSharedPointer>
 #include "../Model/entry.h"
 
 class ControllerDB
 {
+    typedef QSharedPointer<QSqlQuery> SqlQuery;
+
 private:
     QSqlDatabase m_db;
-    QSqlQuery* m_addEntry;
+    SqlQuery m_addEntry;
     QString m_removeEntry;
-    QSqlQuery* m_selectEntry;
-    QSqlQuery* m_accounts;
-    QSqlQuery* m_updateEntry;
-    //QSqlQuery* m_addInformation;
+
+    SqlQuery m_selectEntry;
+    SqlQuery m_accounts;
+
+    SqlQuery m_updateInfo;
+    SqlQuery m_addInformation;
+
 
 public:
     ControllerDB();
@@ -27,7 +34,8 @@ public:
     bool addEntry(const Entry&);
     QList<Entry> selectEntry(QString);
     QStringList selectAccount();
-    bool updateEntry(const Entry&);
+    bool updateInfo(const Entry&);
 };
+
 
 #endif // CONTROLLERDB_H
