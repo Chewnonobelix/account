@@ -17,8 +17,12 @@ ControllerDB::ControllerDB()
         m_selectEntry->prepare("SELECT * FROM account AS a"
                                "INNER JOIN information AS i ON a.ID = i.id_entry "
                                "WHERE a.account=:a");
-        m_addEntry->prepare("INSERT INTO account (account, value, date_eff, type) VALUES (:account,:value,:date,:type)");
+
+        m_addEntry->prepare("INSERT INTO account (account, value, date_eff, type) "
+                            "VALUES (:account,:value,:date,:type)");
+
         m_accounts->prepare("SELECT DISTINCT account FROM account");
+
         m_updateEntry->prepare("UPDATE information "
                                "SET (info=:title, prev=:estimated)"
                                "WHERE id=:id AND id_entry=:ide");
@@ -44,17 +48,16 @@ bool ControllerDB::isConnected() const
 
 bool ControllerDB::addEntry(const Entry & e)
 {
+    bool ret = false;
     if(isConnected() && e.id() < 0)
     {
         m_addEntry->bindValue(":account", QVariant(e.account()));
         m_addEntry->bindValue(":value", QVariant(e.value()));
         m_addEntry->bindValue(":date", QVariant(e.date()));
         m_addEntry->bindValue(":type", QVariant(e.type()));
-
-        return m_addEntry->exec();
     }
 
-    return false;
+    return ret;
 }
 
 QList<Entry> ControllerDB::selectEntry(QString account)
@@ -76,12 +79,12 @@ QList<Entry> ControllerDB::selectEntry(QString account)
             t.setValue(m_selectEntry->value("a.value").toDouble());
             t.setType(m_selectEntry->value("a.type").toString());
 
-            i.setId(m_selectEntry->value("i.id"));
-            i.setIdEntry(m_selectEntry->value("i.id_entry"));
-            i.setEstimated(m_selectEntry->value("i.prev"));
-            i.setTitle(m_selectEntry->value("i.info"));
+            i.setId(m_selectEntry->value("i.id").toInt());
+            i.setIdEntry(m_selectEntry->value("i.id_entry").toInt());
+            i.setEstimated(m_selectEntry->value("i.prev").toBool());
+            i.setTitle(m_selectEntry->value("i.info").toString());
 
-
+            t.setInfo(i);
             res<<t;
         }
     }

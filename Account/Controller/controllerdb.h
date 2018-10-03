@@ -16,6 +16,7 @@ private:
     QSqlQuery* m_selectEntry;
     QSqlQuery* m_accounts;
     QSqlQuery* m_updateEntry;
+    //QSqlQuery* m_addInformation;
 
 public:
     ControllerDB();
