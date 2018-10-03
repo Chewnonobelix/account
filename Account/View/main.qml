@@ -54,6 +54,7 @@ ApplicationWindow {
     header:Rectangle {
         height: 50
         color: "transparent"
+        id: head
         Label {
             objectName: "accountTitle"
             text: qsTr("Account")

@@ -58,6 +58,8 @@ Page {
         anchors.top: cal.bottom
         anchors.topMargin: 10
         width: cal.width
+        height: edit.height + add.height + 10
+        id: group
 
         Button {
             id: add
@@ -137,15 +139,36 @@ Page {
             }
         }
 
-        Label {
-            id: total
-            objectName: "total"
-            width: parent.width
-            anchors.top: edit.bottom
-            anchors.topMargin: 10
-        }
 
     }
+
+
+//    Item {
+//        width: cal.width
+//        anchors.top: group.bottom
+////        anchors.bottom: parent.bottom
+////        anchors.bottomMargin: 10
+//        anchors.topMargin: 10
+//        anchors.left: parent.left
+//        height: pageTable.height - cal.height - group.height - 20
+
+
+//        Label {
+//            id: total
+//            objectName: "total"
+//            anchors.centerIn: parent
+//            property double val: 0
+
+//            text: accountSelect.currentText + " = " + val
+
+//            color: val < 0 ? "red": "green"
+
+
+
+//        }
+
+//    }
+
 
     ListModel {
         id: defaultModel
