@@ -71,9 +71,19 @@ bool ControllerDB::addEntry(const Entry & e)
         m_addEntry->bindValue(":id", QVariant());
 
         ret = m_addEntry->exec();
-//        auto result = m_addEntry->result();
-        int id = m_addEntry->boundValue(":id").toInt();
-        qDebug()<<"ID"<<id;
+        int id = m_addEntry->lastInsertId().toInt();
+
+        if(ret && id > 0)
+        {
+            m_addInformation->bindValue(":ide", id);
+            m_addInformation->bindValue(":title", e.info().title());
+            m_addInformation->bindValue(":prev",e.info().estimated());
+            m_addInformation->bindValue(":cat",e.info().category());
+            qDebug()<<ret<<id;
+
+            ret &= m_addInformation->exec();
+            qDebug()<<ret;
+        }
     }
 
     return ret;
@@ -89,6 +99,7 @@ QList<Entry> ControllerDB::selectEntry(QString account)
     m_selectEntry->bindValue(":a", QVariant(account));
     if(m_selectEntry->exec())
     {
+        qDebug()<<"Find?";
         while(m_selectEntry->next())
         {
             Entry t;
