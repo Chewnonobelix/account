@@ -28,6 +28,8 @@ private:
     SqlQuery m_removeInformation;
     SqlQuery m_selectInformation;
 
+    SqlQuery m_addCategory;
+    SqlQuery m_removeCategory;
 
 public:
     ControllerDB();
@@ -40,8 +42,12 @@ public:
     bool removeEntry(const Entry&);
 
     QStringList selectAccount();
+    bool removeAccount(QString);
 
     bool updateInfo(const Entry&);
+
+    bool addCategory(QString, Categories::Type);
+    bool removeCategory(QString);
 };
 
 

@@ -18,6 +18,7 @@ ControllerDB::ControllerDB()
         m_removeEntry = SqlQuery::create(m_db);
         m_removeInformation = SqlQuery::create(m_db);
         m_selectInformation = SqlQuery::create(m_db);
+        m_addCategory = SqlQuery::create(m_db);
 
         m_selectEntry->prepare("SELECT * FROM account AS a"
                                "WHERE a.account=:a");
@@ -44,6 +45,8 @@ ControllerDB::ControllerDB()
 
         m_accounts->prepare("SELECT DISTINCT account FROM account");
 
+        m_addCategory->prepare("INSERT INTO category(name, type)"
+                               "VALUES(:name, :type)");
     }
 
     qDebug()<<"DB Connected"<<isConnected();
@@ -180,4 +183,28 @@ bool ControllerDB::removeEntry(const Entry & e)
     }
 
     return ret;
+}
+
+bool ControllerDB::removeAccount(QString name)
+{
+    bool ret = true;
+
+    auto entries = selectEntry(name);
+    for(auto e: entries)
+        ret &= removeEntry(e);
+
+    return ret;
+}
+
+bool ControllerDB::addCategory(QString n, Categories::Type t)
+{
+    if(isConnected())
+    {
+        m_addCategory->bindValue(":name", n);
+        m_addCategory->bindValue(":type", t);
+
+        return m_addCategory->exec();
+    }
+
+    return false;
 }
