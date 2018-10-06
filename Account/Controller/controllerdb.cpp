@@ -17,9 +17,9 @@ ControllerDB::ControllerDB()
         m_addInformation = SqlQuery::create(m_db);
         m_removeEntry = SqlQuery::create(m_db);
         m_removeInformation = SqlQuery::create(m_db);
+        m_selectInformation = SqlQuery::create(m_db);
 
         m_selectEntry->prepare("SELECT * FROM account AS a"
-                               "INNER JOIN information AS i ON a.ID = i.id_entry "
                                "WHERE a.account=:a");
 
         m_addEntry->prepare("INSERT INTO account (ID, account, value, date_eff, type) "
@@ -38,6 +38,9 @@ ControllerDB::ControllerDB()
 
         m_removeInformation->prepare("DELETE FROM information"
                                      "WHERE id_entry=:ide");
+
+        m_selectInformation->prepare("SELECT * FROM information"
+                                     "WHERE id_entry = :ide");
 
         m_accounts->prepare("SELECT DISTINCT account FROM account");
 
@@ -109,10 +112,18 @@ QList<Entry> ControllerDB::selectEntry(QString account)
             t.setValue(m_selectEntry->value("a.value").toDouble());
             t.setType(m_selectEntry->value("a.type").toString());
 
-            i.setId(m_selectEntry->value("i.id").toInt());
-            i.setIdEntry(m_selectEntry->value("i.id_entry").toInt());
-            i.setEstimated(m_selectEntry->value("i.prev").toBool());
-            i.setTitle(m_selectEntry->value("i.info").toString());
+            m_selectInformation->bindValue(":ide", t.id());
+            bool inf = m_selectInformation->exec();
+            if(!inf)
+            {
+                qDebug()<<m_selectInformation->lastError().text();
+                break;
+            }
+
+            i.setId(m_selectInformation->value("id").toInt());
+            i.setIdEntry(m_selectInformation->value("id_entry").toInt());
+            i.setEstimated(m_selectInformation->value("prev").toBool());
+            i.setTitle(m_selectInformation->value("info").toString());
 
             t.setInfo(i);
             res<<t;

@@ -7,6 +7,7 @@
 #include <QSqlRecord>
 #include <QSqlResult>
 #include <QSharedPointer>
+#include <QSqlError>
 #include "../Model/entry.h"
 
 class ControllerDB
@@ -25,6 +26,7 @@ private:
     SqlQuery m_updateInfo;
     SqlQuery m_addInformation;
     SqlQuery m_removeInformation;
+    SqlQuery m_selectInformation;
 
 
 public:
