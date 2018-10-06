@@ -58,6 +58,8 @@ Page {
         anchors.top: cal.bottom
         anchors.topMargin: 10
         width: cal.width
+        height: edit.height + add.height + 10
+        id: group
 
         Button {
             id: add
@@ -67,14 +69,22 @@ Page {
             anchors.left: parent.left
 
             Rectangle {
+                id: rectAdd
                 anchors.fill: parent
                 gradient: pageStyle.goldButton
             }
-            onClicked: {
+
+            onPressed: {
+                rectAdd.gradient = pageStyle.darkGoldButton
+            }
+
+            onReleased: {
+                rectAdd.gradient = pageStyle.goldButton
                 addingid.x = pressX + x + parent.x
                 addingid.y = pressY + y + parent.y
                 mainWindow.adding()
             }
+
         }
 
 
@@ -86,13 +96,20 @@ Page {
             anchors.leftMargin: (parent.width * .1)
 
             Rectangle {
+                id: rectRemove
+
                 anchors.fill: parent
                 gradient: pageStyle.goldButton
             }
-            onClicked: {
-                mainWindow.remove(view.model[index])
+
+            onPressed: {
+                rectRemove.gradient = pageStyle.darkGoldButton
             }
 
+            onReleased: {
+                rectRemove.gradient = pageStyle.goldButton
+                mainWindow.remove(view.model[index])
+            }
         }
 
         Button {
@@ -102,38 +119,69 @@ Page {
             anchors.top: add.bottom
             anchors.topMargin: 10
             property int index
+            enabled: false
             Rectangle {
+                id: rectEdit
                 anchors.fill: parent
                 gradient: pageStyle.goldButton
             }
 
-            onClicked: {
-                mainWindow.edit(view.model[view.currentIndex].id)
+            //            onClicked: {
+            //                mainWindow.edit(view.model[view.currentIndex].id)
+            //            }
+
+            onPressed: {
+                rectEdit.gradient = pageStyle.darkGoldButton
             }
 
+            onReleased: {
+                rectEdit.gradient = pageStyle.goldButton
+            }
         }
 
-        Label {
-            id: total
-            objectName: "total"
-            width: parent.width
-            anchors.top: edit.bottom
-            anchors.topMargin: 10
-        }
 
     }
+
+
+//    Item {
+//        width: cal.width
+//        anchors.top: group.bottom
+////        anchors.bottom: parent.bottom
+////        anchors.bottomMargin: 10
+//        anchors.topMargin: 10
+//        anchors.left: parent.left
+//        height: pageTable.height - cal.height - group.height - 20
+
+
+//        Label {
+//            id: total
+//            objectName: "total"
+//            anchors.centerIn: parent
+//            property double val: 0
+
+//            text: accountSelect.currentText + " = " + val
+
+//            color: val < 0 ? "red": "green"
+
+
+
+//        }
+
+//    }
+
 
     ListModel {
         id: defaultModel
         objectName: "defaultModel"
+
     }
 
 
     TableView {
         anchors.left: cal.right
         anchors.leftMargin: 5
-        implicitHeight: parent.height
-        implicitWidth: parent.width * 0.2
+        height: parent.height
+        width: parent.width * 0.25
         id: view
         objectName: "entryView"
         model: defaultModel
@@ -153,11 +201,17 @@ Page {
             currentIndex = -1
         }
 
+        function reset() {
+            defaultModel.clear()
+        }
+
+        signal s_view(int index)
+
         backgroundVisible: false
         Connections {
             target: cal
             onS_datesChanged: {
-                defaultModel.clear()
+                view.reset()
             }
 
         }
@@ -173,7 +227,7 @@ Page {
             width: 40
             movable: false
             resizable: false
-            id: colType
+
         }
 
         TableViewColumn {
@@ -181,6 +235,8 @@ Page {
             title: qsTr("Date")
             width: 100
             movable: false
+            resizable: false
+
         }
 
         TableViewColumn {
@@ -188,6 +244,7 @@ Page {
             title: qsTr("Value")
             width: 100
             movable: false
+            resizable: false
         }
 
         TableViewColumn {
@@ -195,11 +252,22 @@ Page {
             title: qsTr("Label")
             width: 100
             movable: false
+            resizable: false
         }
 
 
+        TableViewColumn {
+            role: "total"
+            title: qsTr("Total")
+            width: 100
+            movable: false
+            resizable: false
+        }
+
 
         itemDelegate: Rectangle {
+            width: parent.width
+            height: 20
             anchors.fill: parent
             color: "transparent"
             Label {
@@ -212,33 +280,77 @@ Page {
 
         rowDelegate: Rectangle {
             id:rectRow
+
+            width: parent.width
+            height: 20
+
             gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
         }
 
 
+        style: TableViewStyle {
+            headerDelegate: Rectangle {
+                height: headerText.implicitHeight * 1.2
+                gradient:  pageStyle.goldHeader
+                Label {
+                    id: headerText
+                    anchors.centerIn: parent
+                    text: styleData.value
+                }
 
-        headerDelegate: Rectangle {
-            gradient:  pageStyle.goldHeader
-            height: 15
-            Label {
-                anchors.centerIn: parent
-                text: styleData.value
+                MouseArea {
+                    anchors.fill: parent
+
+                    onClicked: {
+                        console.log("Sort " + styleData)
+                    }
+                }
             }
+
+
         }
 
         onClicked: {
-            currentIndex = row
-            currentType = defaultModel.get(row).type
+
+            if(currentIndex !== row) {
+                currentIndex = row
+                s_view(defaultModel.get(currentIndex).id)
+            }
+            else {
+                unselectAll()
+            }
+
+            infoView.enabled = currentIndex !== -1
+
+
         }
     }
 
-    InformationView {
-        id: infoView
-        objectName: "infoView"
+    ScrollView {
 
-        width: parent.width * 0.6
+        contentWidth: infoView.width
+        contentHeight: infoView.height
         anchors.left: view.right
+        width: parent.width*0.55
+        height: parent.height
+
+
         anchors.leftMargin: 10
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
+
+        clip: true
+        InformationView {
+            id: infoView
+            objectName: "infoView"
+            width: 600
+            height: pageTable.height
+            clip: true
+            enabled: false
+        }
+
+
+
     }
+
 }
 

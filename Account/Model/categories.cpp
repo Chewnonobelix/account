@@ -2,7 +2,12 @@
 
 QMap<QString, Categories::Type> Categories::m_categories = QMap<QString, Type>();
 
-Categories::Categories()
+Categories::Categories(): QObject(nullptr)
+{
+
+}
+
+Categories::~Categories()
 {
 
 }

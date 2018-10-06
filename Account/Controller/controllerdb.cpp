@@ -7,26 +7,59 @@ ControllerDB::ControllerDB()
     m_db.setUserName("chewnonobelix");
     m_db.setPassword("04091986a");
     m_db.setDatabaseName("account_test");
+    m_db.setPort(3306);
     if(m_db.open())
     {
-        m_selectEntry = new QSqlQuery(m_db);
-        m_addEntry = new QSqlQuery(m_db);
-        m_accounts = new QSqlQuery(m_db);
+        m_selectEntry = SqlQuery::create(m_db);
+        m_addEntry = SqlQuery::create(m_db);
+        m_accounts = SqlQuery::create(m_db);
+        m_updateInfo = SqlQuery::create(m_db);
+        m_addInformation = SqlQuery::create(m_db);
+        m_removeEntry = SqlQuery::create(m_db);
+        m_removeInformation = SqlQuery::create(m_db);
+        m_selectInformation = SqlQuery::create(m_db);
+        m_addCategory = SqlQuery::create(m_db);
+        m_removeCategory = SqlQuery::create(m_db);
 
-        m_selectEntry->prepare("SELECT * FROM account WHERE account=:a");
-        m_addEntry->prepare("INSERT INTO account (account, value, date_eff, type) VALUES (:account,:value,:date,:type)");
+        m_selectEntry->prepare("SELECT * FROM account AS a"
+                               "WHERE a.account=:a");
+
+        m_addEntry->prepare("INSERT INTO account (ID, account, value, date_eff, type) "
+                            "VALUES (:id, :account,:value,:date,:type)");
+
+        m_removeEntry->prepare("DELETE FROM account"
+                               "WHERE ID=:id");
+
+
+        m_addInformation->prepare("INSERT INTO information (id, id_entry, info, prev, category)"
+                                  "VALUES(:id, :ide, :title, :prev, :cat)");
+
+        m_updateInfo->prepare("UPDATE information "
+                               "SET (info=:title, prev=:estimated)"
+                               "WHERE id=:id AND id_entry=:ide");
+
+        m_removeInformation->prepare("DELETE FROM information"
+                                     "WHERE id_entry=:ide");
+
+        m_selectInformation->prepare("SELECT * FROM information"
+                                     "WHERE id_entry = :ide");
+
         m_accounts->prepare("SELECT DISTINCT account FROM account");
+
+        m_addCategory->prepare("INSERT INTO category(name, type)"
+                               "VALUES(:name, :type)");
+
+        m_removeCategory->prepare("DELETE FROM category"
+                                  "WHERE name = :name");
     }
+
+    qDebug()<<"DB Connected"<<isConnected();
 }
 
 ControllerDB::~ControllerDB()
 {
     if(isConnected())
     {
-        delete m_selectEntry;
-        delete m_addEntry;
-        delete m_accounts;
-
         m_db.close();
     }
 }
@@ -38,17 +71,32 @@ bool ControllerDB::isConnected() const
 
 bool ControllerDB::addEntry(const Entry & e)
 {
+    bool ret = false;
     if(isConnected() && e.id() < 0)
     {
         m_addEntry->bindValue(":account", QVariant(e.account()));
         m_addEntry->bindValue(":value", QVariant(e.value()));
         m_addEntry->bindValue(":date", QVariant(e.date()));
         m_addEntry->bindValue(":type", QVariant(e.type()));
+        m_addEntry->bindValue(":id", QVariant());
 
-        return m_addEntry->exec();
+        ret = m_addEntry->exec();
+        int id = m_addEntry->lastInsertId().toInt();
+
+        if(ret && id > 0)
+        {
+            m_addInformation->bindValue(":ide", id);
+            m_addInformation->bindValue(":title", e.info().title());
+            m_addInformation->bindValue(":prev",e.info().estimated());
+            m_addInformation->bindValue(":cat",e.info().category());
+            qDebug()<<ret<<id;
+
+            ret &= m_addInformation->exec();
+            qDebug()<<ret;
+        }
     }
 
-    return false;
+    return ret;
 }
 
 QList<Entry> ControllerDB::selectEntry(QString account)
@@ -61,14 +109,30 @@ QList<Entry> ControllerDB::selectEntry(QString account)
     m_selectEntry->bindValue(":a", QVariant(account));
     if(m_selectEntry->exec())
     {
+        qDebug()<<"Find?";
         while(m_selectEntry->next())
         {
             Entry t;
-            t.setId(m_selectEntry->value("id").toInt());
-            t.setDate(m_selectEntry->value("date_eff").toDate());
-            t.setValue(m_selectEntry->value("value").toDouble());
-            t.setType(m_selectEntry->value("type").toString());
+            Information i;
+            t.setId(m_selectEntry->value("a.id").toInt());
+            t.setDate(m_selectEntry->value("a.date_eff").toDate());
+            t.setValue(m_selectEntry->value("a.value").toDouble());
+            t.setType(m_selectEntry->value("a.type").toString());
 
+            m_selectInformation->bindValue(":ide", t.id());
+            bool inf = m_selectInformation->exec();
+            if(!inf)
+            {
+                qDebug()<<m_selectInformation->lastError().text();
+                break;
+            }
+
+            i.setId(m_selectInformation->value("id").toInt());
+            i.setIdEntry(m_selectInformation->value("id_entry").toInt());
+            i.setEstimated(m_selectInformation->value("prev").toBool());
+            i.setTitle(m_selectInformation->value("info").toString());
+
+            t.setInfo(i);
             res<<t;
         }
     }
@@ -90,3 +154,72 @@ QStringList ControllerDB::selectAccount()
     return res;
 }
 
+bool ControllerDB::updateInfo(const Entry & e)
+{
+    bool ret = false;
+    if(isConnected() && e.id() >= 0)
+    {
+        m_updateInfo->bindValue(":ide", e.id());
+        m_updateInfo->bindValue(":id", e.info().id());
+        m_updateInfo->bindValue(":title", e.info().title());
+        m_updateInfo->bindValue(":estimated", e.info().estimated());
+
+        ret = m_updateInfo->exec();
+    }
+
+    return ret;
+}
+
+
+bool ControllerDB::removeEntry(const Entry & e)
+{
+    bool ret = false;
+
+    if(isConnected())
+    {
+        m_removeInformation->bindValue(":ide", e.id());
+        m_removeEntry->bindValue(":id", e.id());
+
+        ret = m_removeInformation->exec();
+
+        if(ret)
+            ret &= m_removeEntry->exec();
+    }
+
+    return ret;
+}
+
+bool ControllerDB::removeAccount(QString name)
+{
+    bool ret = true;
+
+    auto entries = selectEntry(name);
+    for(auto e: entries)
+        ret &= removeEntry(e);
+
+    return ret;
+}
+
+bool ControllerDB::addCategory(QString n, Categories::Type t)
+{
+    if(isConnected())
+    {
+        m_addCategory->bindValue(":name", n);
+        m_addCategory->bindValue(":type", t);
+
+        return m_addCategory->exec();
+    }
+
+    return false;
+}
+
+bool ControllerDB::removeCategory(QString name)
+{
+    if(isConnected())
+    {
+        m_removeCategory->bindValue(":name", name);
+        return m_removeCategory->exec();
+    }
+
+    return false;
+}

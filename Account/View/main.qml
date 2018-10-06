@@ -1,4 +1,4 @@
-import QtQuick 2.9
+import QtQuick 2.11
 import QtQuick.Controls 1.4
 
 import QtQuick.Controls 2.2
@@ -23,10 +23,25 @@ ApplicationWindow {
     }
 
     menuBar: MenuBar {
+
         Menu {
             title: qsTr("&File")
-            Action {text: qsTr("&New account") }
-            Action {text: qsTr("&Quit") }
+            MenuItem {
+                text: qsTr("&New account")
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                }
+            }
+            MenuItem {
+                text: qsTr("&Quit")
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                }
+            }
+        }
+
+        background: Rectangle {
+            gradient: pageStyle.goldHeader
         }
     }
 
@@ -39,6 +54,7 @@ ApplicationWindow {
     header:Rectangle {
         height: 50
         color: "transparent"
+        id: head
         Label {
             objectName: "accountTitle"
             text: qsTr("Account")
@@ -54,20 +70,20 @@ ApplicationWindow {
             signal s_currentTextChange(string text)
 
             Rectangle {
-                gradient: buttonGradient
+                gradient: pageStyle.goldButton
                 anchors.fill: parent
             }
 
             delegate: ItemDelegate {
                 width: accountSelect.width
-//                color: "transparent"
 
                 contentItem: Rectangle {
-                    color: "green"
-
+                    gradient: pageStyle.goldButton
+                    anchors.fill: parent
                     Label {
                         color: "black"
                         text: modelData
+                        anchors.centerIn: parent
                     }
                 }
 
@@ -89,6 +105,8 @@ ApplicationWindow {
 
         background: Rectangle {
             color: "transparent"
+
+
         }
 
         Page1Form {
@@ -99,10 +117,6 @@ ApplicationWindow {
         Page2Form {
             id: graph
         }
-
-//        InformationView {
-//            objectName: "infoTest"
-//        }
 
     }
 
@@ -116,25 +130,6 @@ ApplicationWindow {
         TabButton {
             text: qsTr("Graph")
         }
-//        TabButton {
-//            text: qsTr("Info test")
-//        }
 
-    }
-
-    Gradient {
-        id: buttonGradient
-        GradientStop {
-            color: "gold"
-            position: 0.0
-        }
-        GradientStop {
-            color: "goldenrod"
-            position: 0.5
-        }
-        GradientStop {
-            color: "gold"
-            position: 1.0
-        }
     }
 }

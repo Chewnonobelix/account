@@ -5,13 +5,6 @@ MainController::MainController(): AbstractController()
 {
     AbstractController::setCurrentAccount("test_account1");
     AbstractController::initTestEntry();
-
-    //qmlRegisterType<Entry>("Account",1,0,"Entry");
-    //    qmlRegisterType<Information>();
-
-    //    qDebug()<<QMetaType::type("Entry");
-    //    qDebug()<<qRegisterMetaType<Entry>();
-    //    qDebug()<<qRegisterMetaType<Information>();
 }
 
 MainController::~MainController()
@@ -28,7 +21,7 @@ int MainController::exec()
 
     connect(root, SIGNAL(adding()), this, SLOT(add()));
     connect(root, SIGNAL(remove(int)), this, SLOT(remove(int)));
-    connect(root, SIGNAL(edit(int)), this, SLOT(edit(int)));
+
     QObject* calendar = root->findChild<QObject*>("cal");
 
     if(calendar)
@@ -41,7 +34,6 @@ int MainController::exec()
         QStringList t;
         t<<"test_account1"<<"test_account2";
         combo->setProperty("model", t);
-        //        combo->setProperty("model", AbstractController::accountList());
         connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
         accountChange(t[0]);
     }
@@ -50,6 +42,12 @@ int MainController::exec()
 
     if(adding)
         connect(adding, SIGNAL(accept()), this, SLOT(adding()));
+
+    QObject* view = root->findChild<QObject*>("entryView");
+
+    if(view)
+        connect(view, SIGNAL(s_view(int)), this, SLOT(edit(int)));
+
     return 0;
 }
 
@@ -58,8 +56,6 @@ void MainController::add()
     QObject* item = m_engine.rootObjects().first()->findChild<QObject*>("table");
     QVariant ret;
     QMetaObject::invokeMethod(item, "openAdding", Q_RETURN_ARG(QVariant, ret));
-
-
 }
 
 void MainController::adding()
@@ -80,7 +76,7 @@ void MainController::adding()
     i.setTitle(label.toString());
     e.setInfo(i);
     e.setAccount(currentAccount());
-    qDebug()<<e.date()<<e.value()<<e.info().title()<<e.type();
+
     AbstractController::addEntry(e);
     selection();
 }
@@ -91,25 +87,13 @@ void MainController::remove(int id)
 
 void MainController::edit(int id)
 {
+    QObject* info = m_engine.rootObjects().first()->findChild<QObject*>("infoView");
     qDebug()<<"Edit"<< id;
-    QObject* info = m_engine.rootObjects().first()->findChild<QObject*>("infoTest");
 
     if(info)
     {
         Entry e = AbstractController::entry(id);
-        QObject* model =  m_engine.rootObjects().first()->findChild<QObject*>("entry");
-        if(model)
-        {
-            qDebug()<<"value "<<model->setProperty("value", e.value());
-            model->setProperty("id", e.id());
-        }
-
-        model =  m_engine.rootObjects().first()->findChild<QObject*>("infoModel");
-        if(model)
-        {
-            model->setProperty("estimated", e.info().estimated());
-            model->setProperty("title", e.info().title());
-        }
+        m_info.set(e, info);
     }
 }
 
@@ -134,28 +118,28 @@ void MainController::selection()
         for(auto it: ld)
             ret<<AbstractController::entries(it);
 
+    Total t;
 
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
     if(tab){
+        QMetaObject::invokeMethod(tab, "reset");
         for(auto i = 0 ; i < ret.size(); i++)
         {
             QVariantMap map;
+            t = t + ret[i];
             map.insert("id", ret[i].id());
             map.insert("date", ret[i].date());
             map.insert("value", ret[i].value());
             map.insert("label", ret[i].label());
             map.insert("type", ret[i].type());
-
+            map.insert("total", t.value());
             QMetaObject::invokeMethod(tab, "fAdd", Q_ARG(QVariant, map));
         }
     }
 
-    Total t;
-    for(auto e: ret)
-        t = t + e;
 
     QObject* tot = m_engine.rootObjects().first()->findChild<QObject*>("total");
-    tot->setProperty("text", t.value());
+//    tot->setProperty("val", t.value());
 }
 
 void MainController::accountChange(QString acc)

@@ -3,17 +3,24 @@
 
 #include <QMap>
 #include <QString>
+#include <QObject>
+#include <QMetaEnum>
+#include "categories.h"
 
-class Categories
+class Categories: public QObject
 {
+    Q_OBJECT
+
 public:
-    enum Type {outcome = -1, income = 0};
+    enum Type {outcome = -1, income = 1};
+    Q_ENUM(Type)
 
 private:
     static QMap<QString, Type> m_categories;
 
 public:
     Categories();
+    ~Categories();
 
     static int type(QString);
     static bool addType(QString, int);

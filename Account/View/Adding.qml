@@ -4,9 +4,10 @@ import QtQuick.Controls 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Styles 1.4
 
 Popup {
-    closePolicy: Popup.NoAutoClose
+//    closePolicy: Popup.NoAutoClose
 
     function reset() {
         valueLabel.text = ""
@@ -15,12 +16,30 @@ Popup {
         dateCombo.currentIndex = 0
     }
 
+    AccountStyle {
+        id: pageStyle
+    }
+
     signal accept()
 
     property real v_val: spinbox.realValue
     property string v_title: valueLabel.text
     property string v_type: type.currentText
     property string v_date: dateCombo.currentText
+
+    onClosed: {
+        dateModel.clear()
+    }
+
+    onOpened: {
+        dateCombo.currentIndex = 0
+    }
+
+    background: Rectangle {
+        gradient: pageStyle.backgroundGradient
+        border.color: "darkgoldenrod"
+    }
+
 
 
 //    property var dateModel: []
@@ -63,6 +82,8 @@ Popup {
                 id: type
                 objectName: "type"
                 model: ["Income", "Outcome"]
+
+
             }
         }
 
@@ -71,8 +92,18 @@ Popup {
                 id: b_save
                 text: qsTr("Save")
 
-                onClicked: {
-                    console.log(addingid.v_date + " Accept")
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                    id: saveRect
+                }
+
+
+                onPressed: {
+                    saveRect.gradient = pageStyle.darkGoldButton
+                }
+
+                onReleased: {
+                    saveRect.gradient = pageStyle.goldButton
                     addingid.accept()
                     reset()
                     close()
@@ -83,7 +114,17 @@ Popup {
                 id:b_cancel
                 text: qsTr("Cancel")
 
-                onClicked: {
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                    id: cancelRect
+                }
+
+                onPressed: {
+                    cancelRect.gradient = pageStyle.darkGoldButton
+                }
+
+                onReleased: {
+                    cancelRect.gradient = pageStyle.goldButton
                     reset()
                     close()
                 }

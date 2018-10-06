@@ -7,6 +7,7 @@
 #include <QVariant>
 #include <QJSValue>
 #include "abstractcontroller.h"
+#include "controllerinformation.h"
 
 class MainController: AbstractController
 {
@@ -14,6 +15,7 @@ class MainController: AbstractController
 
 private:
     QQmlApplicationEngine m_engine;
+    ControllerInformation m_info;
 
 public:
     MainController();
