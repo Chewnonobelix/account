@@ -20,11 +20,10 @@ Item {
     Item {
         id: infoModel
         objectName: "infoModel"
+        property bool estimated
+        property string title
+        property string type
     }
-
-    property int eid
-    property string v_category
-    property bool v_estimated
 
     signal s_titleChanged(string title)
     signal s_estimatedChanged(bool title)
@@ -32,8 +31,9 @@ Item {
     TextField {
         id: title
 
-        onEditingFinished: {
+        text: infoModel.title
 
+        onEditingFinished: {
             s_titleChanged(text)
         }
 
@@ -52,6 +52,16 @@ Item {
         anchors.left: spinbox.right
 
         model: ["Transport", "Loyer", "Energie", "Telecom"]
+
+        function setting(type) {
+            var index = find(type)
+            if(index >= 0) {
+                currentIndex = index
+            }
+            else {
+                currentIndex = 0
+            }
+        }
 
         Rectangle {
             anchors.fill: parent
@@ -78,6 +88,8 @@ Item {
         anchors.left: category.right
 
         text: qsTr("Estimated")
+
+        checked: infoModel.estimated
 
         onCheckStateChanged: {
             s_estimatedChanged(checked)

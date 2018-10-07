@@ -40,6 +40,9 @@ void ControllerInformation::show()
     model = m_view->findChild<QObject*>("infoModel");
     if(model)
     {
+        model->setProperty("estimated", m_entry.info().estimated());
+        model->setProperty("title", m_entry.info().title());
+        model->setProperty("type", m_entry.info().category());
     }
 }
 
