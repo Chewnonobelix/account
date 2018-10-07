@@ -48,6 +48,10 @@ int MainController::exec()
     if(view)
         connect(view, SIGNAL(s_view(int)), this, SLOT(edit(int)));
 
+    QObject* xml = root->findChild<QObject*>("xmlMenu");
+    if(xml)
+        connect(xml, SIGNAL(s_xml(bool)), this, SLOT(toXml(bool)));
+
     return 0;
 }
 
@@ -154,4 +158,9 @@ void MainController::accountChange(QString acc)
         head->setProperty("accountName", acc);
 
     selection();
+}
+
+void MainController::toXml(bool xml)
+{
+    qDebug()<<"To xml"<<xml;
 }

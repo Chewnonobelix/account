@@ -31,6 +31,8 @@ public slots:
     void adding();
     void selection();
     void accountChange(QString);
+
+    void toXml(bool);
 };
 
 #endif // MAINCONTROLLER_H

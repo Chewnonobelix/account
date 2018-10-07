@@ -33,6 +33,21 @@ ApplicationWindow {
                 }
             }
             MenuItem {
+                text: qsTr("&Xml")
+                objectName: "xmlMenu"
+                checkable: true
+
+                signal s_xml(bool toXml)
+                onClicked: {
+                    s_xml(checked)
+                }
+
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                }
+            }
+
+            MenuItem {
                 text: qsTr("&Quit")
                 background: Rectangle {
                     gradient: pageStyle.goldButton
