@@ -1,6 +1,6 @@
 #include "information.h"
 
-Information::Information(): m_id(-1)
+Information::Information(): m_id(-1), m_estimated(false)
 {
 
 }
