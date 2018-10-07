@@ -55,11 +55,16 @@ ApplicationWindow {
         height: 50
         color: "transparent"
         id: head
+        objectName:  "head"
+        property string accountName
+        property double total
+
         Label {
             objectName: "accountTitle"
-            text: qsTr("Account")
+            text: qsTr("Account") + ": " + parent.accountName + " = " + parent.total + "€"
             font.pixelSize: Qt.application.font.pixelSize * 2
             padding: 10
+            color: parent.total > 0 ? "green" : "red"
         }
 
         ComboBox {

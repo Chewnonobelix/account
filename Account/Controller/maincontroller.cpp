@@ -138,17 +138,20 @@ void MainController::selection()
     }
 
 
-    QObject* tot = m_engine.rootObjects().first()->findChild<QObject*>("total");
-//    tot->setProperty("val", t.value());
+
+    QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
+    if(head)
+        head->setProperty("total", t.value());
 }
 
 void MainController::accountChange(QString acc)
 {
     AbstractController::setCurrentAccount(acc);
-    QObject* account = m_engine.rootObjects().first()->findChild<QObject*>("accountTitle");
 
-    if(account)
-        account->setProperty("text", tr("Account: ") + acc);
+    QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
+
+    if(head)
+        head->setProperty("accountName", acc);
 
     selection();
 }
