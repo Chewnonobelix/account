@@ -49,7 +49,7 @@ void AbstractController::addEntry(const Entry& e)
 
 void AbstractController::removeEntry(const Entry& e)
 {
-    //m_entry.remove(e.date(), e);
+    m_db.removeEntry(e);
 }
 
 Entry AbstractController::entry(int id)
@@ -82,7 +82,7 @@ void AbstractController::initTestEntry()
         e.setValue(QRandomGenerator::global()->generateDouble() *100);
         e.setDate(QDate::currentDate());
 
-        if(i%5 == 0)
+        if(i%5 < 3)
             e.setType("income");
         else
             e.setType("outcome");
@@ -90,12 +90,7 @@ void AbstractController::initTestEntry()
         Information in;
         in.setTitle(QString::number(e.id()));
         e.setInfo(in);
-//        qDebug()<<"Gen"<<e.id()<<e.value();
 
         m_entry.insert(e.date(), e);
     }
-
-
-//    for(auto e: m_entry)
-//        qDebug()<<e.id()<<e.value();
 }
