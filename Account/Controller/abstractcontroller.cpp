@@ -2,7 +2,7 @@
 
 QString AbstractController::m_account = QString();
 QMultiMap<QDate, Entry> AbstractController::m_entry = QMultiMap<QDate, Entry>();
-QSharedPointer<InterfaceDataSave> AbstractController::m_db = QSharedPointer<InterfaceDataSave>();
+InterfaceDataSave* AbstractController::m_db = nullptr;
 
 AbstractController::AbstractController(): QObject(nullptr)
 {
@@ -20,7 +20,9 @@ AbstractController::AbstractController(): QObject(nullptr)
 
 
 AbstractController::~AbstractController()
-{}
+{
+
+}
 
 QStringList AbstractController::accountList()
 {
@@ -108,14 +110,17 @@ void AbstractController::initTestEntry()
 void AbstractController::setDb(QString name)
 {
     int type = QMetaType::type(name.toLatin1());
-    qDebug()<<type<<name<<name.toLatin1();
     if(type == QMetaType::UnknownType)
         throw QString("Unknow DB type");
 
-    QSharedPointer<InterfaceDataSave> p;
-    qDebug()<<"Before"<<p.isNull();
-    p.reset((InterfaceDataSave*)QMetaType::create(type));
-    qDebug()<<"After"<<p.isNull();
+    if(m_db != nullptr)
+        delete m_db;
 
-    m_db = p;
+    m_db = (InterfaceDataSave*)(QMetaType::create(type));
+}
+
+void AbstractController::deleteDb()
+{
+    if(m_db != nullptr)
+        delete m_db;
 }

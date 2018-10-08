@@ -8,7 +8,9 @@ MainController::MainController(): AbstractController()
 }
 
 MainController::~MainController()
-{}
+{
+    AbstractController::deleteDb();
+}
 
 int MainController::exec()
 {

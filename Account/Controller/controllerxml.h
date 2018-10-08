@@ -3,17 +3,22 @@
 
 #include <QDomDocument>
 #include <QDomElement>
-
+#include <QSharedPointer>
+#include <QFile>
 #include "interfacedatasave.h"
 
-class ControllerXML
+class ControllerXML: public InterfaceDataSave
 {
 private:
     QString m_filename;
     QDomDocument m_document;
+    QFile* m_file;
+    int * x;
+    Information selectInformation(const QDomElement&) const;
 
 public:
     ControllerXML();
+    ControllerXML(const ControllerXML&);
     ~ControllerXML();
 
     void setFilename(QString);
@@ -29,6 +34,8 @@ public:
 
     virtual bool addCategory(QString, Categories::Type);
     virtual bool removeCategory(QString);
+
+    virtual bool init();
 };
 
 #endif // CONTROLLERXML_H
