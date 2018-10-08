@@ -1,4 +1,4 @@
-QT += quick sql core
+QT += quick sql core xml
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -21,7 +21,8 @@ SOURCES += \
     Controller/abstractcontroller.cpp \
     Controller/controllerdb.cpp \
     Controller/maincontroller.cpp \
-    Controller/controllerinformation.cpp
+    Controller/controllerinformation.cpp \
+    Controller/controllerxml.cpp
 
 RESOURCES += View/qml.qrc
 
@@ -44,4 +45,6 @@ HEADERS += \
     Controller/abstractcontroller.h \
     Controller/controllerdb.h \
     Controller/maincontroller.h \
-    Controller/controllerinformation.h
+    Controller/controllerinformation.h \
+    Controller/interfacedatasave.h \
+    Controller/controllerxml.h

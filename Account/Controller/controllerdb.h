@@ -9,8 +9,9 @@
 #include <QSharedPointer>
 #include <QSqlError>
 #include "../Model/entry.h"
+#include "interfacedatasave.h"
 
-class ControllerDB
+class ControllerDB: public InterfaceDataSave
 {
     typedef QSharedPointer<QSqlQuery> SqlQuery;
 
@@ -33,6 +34,7 @@ private:
 
 public:
     ControllerDB();
+    ControllerDB(const ControllerDB&);
     ~ControllerDB();
 
     bool isConnected() const;
@@ -48,7 +50,10 @@ public:
 
     bool addCategory(QString, Categories::Type);
     bool removeCategory(QString);
+
+    bool init();
 };
 
+Q_DECLARE_METATYPE(ControllerDB)
 
 #endif // CONTROLLERDB_H

@@ -12,6 +12,7 @@
 #include "Model/total.h"
 
 #include "controllerdb.h"
+#include "interfacedatasave.h"
 
 class AbstractController: public QObject
 {
@@ -20,7 +21,7 @@ class AbstractController: public QObject
 private:
     static QString m_account;
     static QMultiMap<QDate, Entry> m_entry;
-    static ControllerDB m_db;
+    static QSharedPointer<InterfaceDataSave> m_db;
 
 
 public:
@@ -40,6 +41,8 @@ public:
 
     static Entry entry(int);
     static QList<Entry> entries(QDate = QDate());
+
+    static void setDb(QString);
 
     static void initTestEntry();
 };

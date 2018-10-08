@@ -2,26 +2,36 @@
 
 QString AbstractController::m_account = QString();
 QMultiMap<QDate, Entry> AbstractController::m_entry = QMultiMap<QDate, Entry>();
-ControllerDB AbstractController::m_db = ControllerDB();
+QSharedPointer<InterfaceDataSave> AbstractController::m_db = QSharedPointer<InterfaceDataSave>();
 
 AbstractController::AbstractController(): QObject(nullptr)
 {
 
+    try
+    {
+        setDb("ControllerXML");
+        m_db->init();
+    }
+    catch(QString except)
+    {
+        qDebug()<<except;
+    }
 }
+
 
 AbstractController::~AbstractController()
 {}
 
 QStringList AbstractController::accountList()
 {
-    return m_db.selectAccount();
+    return m_db->selectAccount();
 }
 
 void AbstractController::setCurrentAccount(QString a)
 {
     m_account = a;
     m_entry.clear();
-    auto l = m_db.selectEntry(a);
+    auto l = m_db->selectEntry(a);
     for(auto it: l)
         m_entry.insert(it.date(), it);
 
@@ -36,9 +46,9 @@ QString AbstractController::currentAccount()
 
 void AbstractController::addEntry(const Entry& e)
 {
-    if(m_db.addEntry(e))
+    if(m_db->addEntry(e))
     {
-        auto l = m_db.selectEntry(currentAccount());
+        auto l = m_db->selectEntry(currentAccount());
         m_entry.clear();
 
         for(auto it: l)
@@ -49,7 +59,7 @@ void AbstractController::addEntry(const Entry& e)
 
 void AbstractController::removeEntry(const Entry& e)
 {
-    m_db.removeEntry(e);
+    m_db->removeEntry(e);
 }
 
 Entry AbstractController::entry(int id)
@@ -93,4 +103,19 @@ void AbstractController::initTestEntry()
 
         m_entry.insert(e.date(), e);
     }
+}
+
+void AbstractController::setDb(QString name)
+{
+    int type = QMetaType::type(name.toLatin1());
+    qDebug()<<type<<name<<name.toLatin1();
+    if(type == QMetaType::UnknownType)
+        throw QString("Unknow DB type");
+
+    QSharedPointer<InterfaceDataSave> p;
+    qDebug()<<"Before"<<p.isNull();
+    p.reset((InterfaceDataSave*)QMetaType::create(type));
+    qDebug()<<"After"<<p.isNull();
+
+    m_db = p;
 }

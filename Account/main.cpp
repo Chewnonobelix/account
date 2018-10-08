@@ -40,6 +40,9 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
+    qDebug()<<"ControllerDB"<<qRegisterMetaType<ControllerDB>()<<sizeof(int*);
+    qDebug()<<"ControllerXML"<<qRegisterMetaType<ControllerXML>();
+
     /*QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 

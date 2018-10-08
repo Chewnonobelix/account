@@ -2,6 +2,21 @@
 #include <QDebug>
 ControllerDB::ControllerDB()
 {
+}
+
+ControllerDB::ControllerDB(const ControllerDB&) {}
+
+
+ControllerDB::~ControllerDB()
+{
+    if(isConnected())
+    {
+        m_db.close();
+    }
+}
+
+bool ControllerDB::init()
+{
     m_db = QSqlDatabase::addDatabase("QMYSQL");
     m_db.setHostName("chewnonobelix.myqnapcloud.com");
     m_db.setUserName("chewnonobelix");
@@ -54,14 +69,8 @@ ControllerDB::ControllerDB()
     }
 
     qDebug()<<"DB Connected"<<isConnected();
-}
 
-ControllerDB::~ControllerDB()
-{
-    if(isConnected())
-    {
-        m_db.close();
-    }
+    return isConnected();
 }
 
 bool ControllerDB::isConnected() const

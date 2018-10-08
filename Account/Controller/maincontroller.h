@@ -8,6 +8,7 @@
 #include <QJSValue>
 #include "abstractcontroller.h"
 #include "controllerinformation.h"
+#include "controllerxml.h"
 
 class MainController: AbstractController
 {
@@ -34,5 +35,7 @@ public slots:
 
     void toXml(bool);
 };
+
+Q_DECLARE_METATYPE(ControllerXML)
 
 #endif // MAINCONTROLLER_H
