@@ -181,9 +181,23 @@ QList<Entry> ControllerXML::selectEntry(QString account)
     return ret;
 }
 
-bool ControllerXML::removeEntry(const Entry&)
+bool ControllerXML::removeEntry(const Entry& e)
 {
-    return false;
+    QDomElement root = m_document.firstChild().toElement();
+
+    QDomNodeList list = root.elementsByTagName("entry");
+
+    bool ret = false;
+    for(int i = 0; i < list.size(); i++)
+    {
+        QDomElement el = list.at(i).toElement();
+        if(el.attribute("id").toInt() == e.id())
+        {
+            auto rm = root.removeChild(el);
+            ret = !rm.isNull();
+        }
+    }
+    return ret;
 }
 
 QStringList ControllerXML::selectAccount()

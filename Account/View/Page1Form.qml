@@ -95,6 +95,7 @@ Page {
             anchors.left: add.right
             anchors.leftMargin: (parent.width * .1)
 
+            property int index: view.currentIndex
             Rectangle {
                 id: rectRemove
 
@@ -108,7 +109,9 @@ Page {
 
             onReleased: {
                 rectRemove.gradient = pageStyle.goldButton
-                mainWindow.remove(view.model[index])
+                if(index > -1) {
+                    mainWindow.remove(defaultModel.get(index).id)
+                }
             }
         }
 
@@ -142,32 +145,6 @@ Page {
 
     }
 
-
-//    Item {
-//        width: cal.width
-//        anchors.top: group.bottom
-////        anchors.bottom: parent.bottom
-////        anchors.bottomMargin: 10
-//        anchors.topMargin: 10
-//        anchors.left: parent.left
-//        height: pageTable.height - cal.height - group.height - 20
-
-
-//        Label {
-//            id: total
-//            objectName: "total"
-//            anchors.centerIn: parent
-//            property double val: 0
-
-//            text: accountSelect.currentText + " = " + val
-
-//            color: val < 0 ? "red": "green"
-
-
-
-//        }
-
-//    }
 
 
     ListModel {

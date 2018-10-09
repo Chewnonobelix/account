@@ -54,13 +54,19 @@ void AbstractController::addEntry(const Entry& e)
 
         for(auto it: l)
             m_entry.insert(it.date(), it);
-
     }
 }
 
 void AbstractController::removeEntry(const Entry& e)
 {
-    m_db->removeEntry(e);
+    if(m_db->removeEntry(e))
+    {
+        auto l = m_db->selectEntry(currentAccount());
+        m_entry.clear();
+
+        for(auto it: l)
+            m_entry.insert(it.date(), it);
+    }
 }
 
 Entry AbstractController::entry(int id)

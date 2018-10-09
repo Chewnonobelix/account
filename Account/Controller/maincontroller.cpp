@@ -89,6 +89,10 @@ void MainController::adding()
 void MainController::remove(int id)
 {
     qDebug()<<"Remove"<<id;
+
+    Entry e = AbstractController::entry(id);
+    AbstractController::removeEntry(e);
+    selection();
 }
 
 void MainController::edit(int id)
