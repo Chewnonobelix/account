@@ -19,6 +19,7 @@ private:
 
     QSet<int> m_entryId;
     QSet<int> m_infoId;
+    QSet<QString> m_accountList;
 
     int maxId(const QSet<int>&) const;
 

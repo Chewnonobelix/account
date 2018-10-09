@@ -160,6 +160,7 @@ QList<Entry> ControllerXML::selectEntry(QString account)
         e.setDate(QDate::fromString(child.text()));
         child = el.elementsByTagName("account").at(0).toElement();
         e.setAccount(child.text());
+        m_accountList<<e.account();
         child = el.elementsByTagName("value").at(0).toElement();
         e.setValue(child.text().toDouble());
         child = el.elementsByTagName("type").at(0).toElement();
@@ -187,7 +188,7 @@ bool ControllerXML::removeEntry(const Entry&)
 
 QStringList ControllerXML::selectAccount()
 {
-    return QStringList();
+    return m_accountList.toList();
 }
 
 bool ControllerXML::removeAccount(QString)
