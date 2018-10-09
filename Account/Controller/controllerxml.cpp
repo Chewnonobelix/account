@@ -205,9 +205,17 @@ QStringList ControllerXML::selectAccount()
     return m_accountList.toList();
 }
 
-bool ControllerXML::removeAccount(QString)
+bool ControllerXML::removeAccount(QString account)
 {
-    return false;
+    auto list = selectEntry(account);
+
+    if(list.isEmpty())
+        return false;
+
+    for(auto e: list)
+        removeEntry(e);
+
+    return true;
 }
 
 bool ControllerXML::updateInfo(const Entry&)
