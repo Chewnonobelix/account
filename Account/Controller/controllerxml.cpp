@@ -19,7 +19,7 @@ ControllerXML::~ControllerXML()
     QTextStream stream(m_file);
     stream<<m_document.toString();
     m_file->close();
-     delete m_file;
+    delete m_file;
 }
 
 bool ControllerXML::init()
@@ -68,7 +68,9 @@ bool ControllerXML::addEntry(const Entry& e)
 
     Information info = e.info();
     info.setId(idi);
-    addInfo(el, e.info());
+    info.setIdEntry(ide);
+
+    addInfo(el, info);
     root.appendChild(el);
 
     return true;
@@ -76,6 +78,24 @@ bool ControllerXML::addEntry(const Entry& e)
 
 void ControllerXML::addInfo(QDomElement& el, const Information & i)
 {
+    QDomElement el2 = m_document.createElement("information");
+    el2.setAttribute("id", i.id());
+    el2.setAttribute("id_entry", i.idEntry());
+
+    auto textNode = [&](QString tagname, QString value)
+    {
+        QDomElement el3 = m_document.createElement(tagname);
+        QDomText txt = m_document.createTextNode(value);
+        el3.appendChild(txt);
+        el2.appendChild(el3);
+    };
+
+
+    textNode("title", i.title());
+    textNode("estimated", QString::number(i.estimated()));
+    textNode("category", i.category());
+
+    el.appendChild(el2);
 
 }
 
@@ -94,9 +114,22 @@ int ControllerXML::maxId(const QSet<int> & l) const
     return ret;
 }
 
-Information  ControllerXML::selectInformation(const QDomElement&) const
+Information  ControllerXML::selectInformation(const QDomElement& el) const
 {
     Information ret;
+
+    int id = el.attribute("id").toInt();
+    ret.setId(id);
+    id = el.attribute("id_entry").toInt();
+    ret.setIdEntry(id);
+
+    bool est = el.elementsByTagName("estimated").at(0).toElement().text().toInt();
+    QString cat = el.elementsByTagName("category").at(0).toElement().text();
+    QString title = el.elementsByTagName("title").at(0).toElement().text();
+
+    ret.setEstimated(est);
+    ret.setCategory(cat);
+    ret.setTitle(title);
 
     return ret;
 }
@@ -122,7 +155,6 @@ QList<Entry> ControllerXML::selectEntry(QString account)
         QDomElement el = children.at(i).toElement();
         Entry e;
         e.setId(el.attribute("id").toInt());
-        m_entryId<<e.id();
         QDomElement child = el.elementsByTagName("date").at(0).toElement();
 
         e.setDate(QDate::fromString(child.text()));
@@ -138,8 +170,11 @@ QList<Entry> ControllerXML::selectEntry(QString account)
         Information inf = selectInformation(child);
         inf.setIdEntry(e.id());
         e.setInfo(inf);
+
+        m_entryId<<e.id();
         m_infoId<<inf.id();
-        ret<<e;
+        if(account == e.account())
+            ret<<e;
     }
 
     return ret;

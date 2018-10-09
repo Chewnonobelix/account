@@ -26,7 +26,7 @@ Total operator+(const Entry& e1, const Entry& e2)
 
     QMetaEnum qme = QMetaEnum::fromType<Categories::Type>();
 
-    ret.setValue((qme.keyToValue(e1.type().toLatin1())*e1.value()) + (qme.keyToValue(e1.type().toLatin1())*e2.value()));
+    ret.setValue((qme.keyToValue(e1.type().toLower().toLatin1())*e1.value()) + (qme.keyToValue(e1.type().toLower().toLatin1())*e2.value()));
     ret.setDate(Total::maxDate(e1.date(), e2.date()));
 
     ret.setValue(round (ret.value() * 100.0) / 100.0);
@@ -38,7 +38,7 @@ Total& operator + (Total& t, const Entry& e)
 {
     QMetaEnum qme = QMetaEnum::fromType<Categories::Type>();
 
-    t.setValue(t.value() + (qme.keyToValue(e.type().toLatin1())*e.value()));
+    t.setValue(t.value() + (qme.keyToValue(e.type().toLower().toLatin1())*e.value()));
     t.setDate(Total::maxDate(t.date(), e.date()));
 
     t.setValue(round (t.value() * 100.0) / 100.0);

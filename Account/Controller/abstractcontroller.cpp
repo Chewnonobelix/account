@@ -37,7 +37,6 @@ void AbstractController::setCurrentAccount(QString a)
     for(auto it: l)
         m_entry.insert(it.date(), it);
 
-    initTestEntry();
 }
 
 QString AbstractController::currentAccount()
