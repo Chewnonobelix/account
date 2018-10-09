@@ -27,12 +27,6 @@ ApplicationWindow {
         Menu {
             title: qsTr("&File")
             MenuItem {
-                text: qsTr("&New account")
-                background: Rectangle {
-                    gradient: pageStyle.goldButton
-                }
-            }
-            MenuItem {
                 text: qsTr("&Xml")
                 objectName: "xmlMenu"
                 checkable: true
@@ -53,6 +47,23 @@ ApplicationWindow {
                     gradient: pageStyle.goldButton
                 }
             }
+        }
+
+        Menu {
+            title: qsTr("Account")
+            MenuItem {
+                text: qsTr("&New account")
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                }
+            }
+            MenuItem {
+                text: qsTr("&Delete account")
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                }
+            }
+
         }
 
         background: Rectangle {
