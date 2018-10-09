@@ -137,7 +137,7 @@ void MainController::selection()
             map.insert("date", ret[i].date());
             map.insert("value", ret[i].value());
             map.insert("label", ret[i].label());
-            map.insert("type", ret[i].type());
+            map.insert("type", ret[i].type().toLower());
             map.insert("total", t.value());
             QMetaObject::invokeMethod(tab, "fAdd", Q_ARG(QVariant, map));
         }
