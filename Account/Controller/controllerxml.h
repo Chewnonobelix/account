@@ -15,6 +15,7 @@ private:
     QFile* m_file;
     int * x;
     Information selectInformation(const QDomElement&) const;
+    void addInfo(QDomElement&, const Information&);
 
 public:
     ControllerXML();

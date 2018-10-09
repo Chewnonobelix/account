@@ -42,9 +42,37 @@ void ControllerXML::setFilename(QString filename)
     m_filename = filename;
 }
 
-bool ControllerXML::addEntry(const Entry&)
+bool ControllerXML::addEntry(const Entry& e)
 {
-    return false;
+    QDomElement root = m_document.elementsByTagName("database").at(0).toElement();
+
+    QDomElement el = m_document.createElement("entry");
+    el.setAttribute("id", e.id());
+
+    auto func = [&](QString tagname, QString value)
+    {
+        QDomElement child = m_document.createElement(tagname);
+        auto t = m_document.createTextNode("");
+        t.setNodeValue(value);
+        child.appendChild(t);
+        el.appendChild(child);
+    };
+
+    func("date", e.date().toString());
+    func("value", QString::number(e.value()));
+    func("account", e.account());
+    func("type", e.type());
+
+    addInfo(el, e.info());
+
+    root.appendChild(el);
+
+    return true;
+}
+
+void ControllerXML::addInfo(QDomElement& el, const Information & i)
+{
+
 }
 
 Information  ControllerXML::selectInformation(const QDomElement&) const
