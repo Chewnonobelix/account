@@ -5,6 +5,7 @@
 #include <QDomElement>
 #include <QSharedPointer>
 #include <QFile>
+#include <QList>
 #include "interfacedatasave.h"
 
 class ControllerXML: public InterfaceDataSave
@@ -13,9 +14,13 @@ private:
     QString m_filename;
     QDomDocument m_document;
     QFile* m_file;
-    int * x;
     Information selectInformation(const QDomElement&) const;
     void addInfo(QDomElement&, const Information&);
+
+    QSet<int> m_entryId;
+    QSet<int> m_infoId;
+
+    int maxId(const QSet<int>&) const;
 
 public:
     ControllerXML();

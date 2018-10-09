@@ -44,10 +44,13 @@ void ControllerXML::setFilename(QString filename)
 
 bool ControllerXML::addEntry(const Entry& e)
 {
+    int ide = maxId(m_entryId) + 1;
+    int idi = maxId(m_infoId) + 1;
+
     QDomElement root = m_document.elementsByTagName("database").at(0).toElement();
 
     QDomElement el = m_document.createElement("entry");
-    el.setAttribute("id", e.id());
+    el.setAttribute("id", ide);
 
     auto func = [&](QString tagname, QString value)
     {
@@ -63,8 +66,9 @@ bool ControllerXML::addEntry(const Entry& e)
     func("account", e.account());
     func("type", e.type());
 
+    Information info = e.info();
+    info.setId(idi);
     addInfo(el, e.info());
-
     root.appendChild(el);
 
     return true;
@@ -73,6 +77,21 @@ bool ControllerXML::addEntry(const Entry& e)
 void ControllerXML::addInfo(QDomElement& el, const Information & i)
 {
 
+}
+
+int ControllerXML::maxId(const QSet<int> & l) const
+{
+    int ret = -1;
+
+    for(int i: l)
+    {
+        if(i > ret)
+        {
+            ret = i;
+        }
+    }
+
+    return ret;
 }
 
 Information  ControllerXML::selectInformation(const QDomElement&) const
@@ -85,6 +104,8 @@ Information  ControllerXML::selectInformation(const QDomElement&) const
 QList<Entry> ControllerXML::selectEntry(QString account)
 {
     QList<Entry> ret;
+    m_entryId.clear();
+    m_infoId.clear();
 
     QDomElement root = m_document.elementsByTagName("database").at(0).toElement();
     if(root.isNull())
@@ -101,6 +122,7 @@ QList<Entry> ControllerXML::selectEntry(QString account)
         QDomElement el = children.at(i).toElement();
         Entry e;
         e.setId(el.attribute("id").toInt());
+        m_entryId<<e.id();
         QDomElement child = el.elementsByTagName("date").at(0).toElement();
 
         e.setDate(QDate::fromString(child.text()));
@@ -114,7 +136,9 @@ QList<Entry> ControllerXML::selectEntry(QString account)
         child = el.elementsByTagName("information").at(0).toElement();
 
         Information inf = selectInformation(child);
+        inf.setIdEntry(e.id());
         e.setInfo(inf);
+        m_infoId<<inf.id();
         ret<<e;
     }
 
