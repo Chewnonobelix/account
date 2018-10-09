@@ -218,17 +218,67 @@ bool ControllerXML::removeAccount(QString account)
     return true;
 }
 
-bool ControllerXML::updateInfo(const Entry&)
+bool ControllerXML::updateInfo(const Entry& e)
 {
+    QDomElement root = m_document.elementsByTagName("database").at(0).toElement();
+
+    auto list = root.elementsByTagName("entry");
+
+    for(int i = 0; i < list.size(); i ++)
+    {
+        QDomElement el = list.at(i).toElement();
+        if(el.attribute("id").toInt() == e.id())
+        {
+            QDomElement info = el.elementsByTagName("information").at(0).toElement();
+            auto setter = [&](QString tagname, QString value)
+            {
+                QDomElement child = info.elementsByTagName(tagname).at(0).toElement();
+                QDomText txt = child.firstChild().toText();
+                txt.setData(value);
+            };
+            Information inf = e.info();
+            setter("estimated", QString::number(inf.estimated()));
+            setter("category", inf.category());
+            setter("title", inf.title());
+
+            return true;
+        }
+    }
+
     return false;
 }
 
-bool ControllerXML::addCategory(QString, Categories::Type)
+bool ControllerXML::addCategory(QString name, Categories::Type type)
 {
-    return false;
+    auto root = m_document.elementsByTagName("database").at(0).toElement();
+    auto list = root.elementsByTagName("category");
+
+    for(int i = 0; i < list.size(); i++)
+        if(list.at(i).toElement().text() == name)
+            return false;
+
+    QDomElement el = m_document.createElement("category");
+    el.setAttribute("type", type);
+    QDomText txt = m_document.createTextNode(name);
+    el.appendChild(txt);
+    root.appendChild(el);
+    return true;
 }
 
-bool ControllerXML::removeCategory(QString)
+bool ControllerXML::removeCategory(QString name)
 {
+    auto root = m_document.elementsByTagName("database").at(0).toElement();
+    auto list = root.elementsByTagName("category");
+
+    for(int i = 0; i < list.size(); i++)
+    {
+        QDomElement el = list.at(i).toElement();
+        if(el.text() == name)
+        {
+            auto ret = root.removeChild(el);
+
+            return !ret.isNull();
+        }
+    }
     return false;
 }

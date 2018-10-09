@@ -54,7 +54,13 @@ int MainController::exec()
     if(xml)
         connect(xml, SIGNAL(s_xml(bool)), this, SLOT(toXml(bool)));
 
+    connect(&m_info, SIGNAL(s_update(Entry)), this, SLOT(update(Entry)));
     return 0;
+}
+
+void MainController::update(Entry e)
+{
+    AbstractController::updateEntry(e);
 }
 
 void MainController::add()

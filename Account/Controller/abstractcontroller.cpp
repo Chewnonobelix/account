@@ -129,3 +129,8 @@ void AbstractController::deleteDb()
     if(m_db != nullptr)
         delete m_db;
 }
+
+void AbstractController::updateEntry(const Entry & e)
+{
+    m_db->updateInfo(e);
+}

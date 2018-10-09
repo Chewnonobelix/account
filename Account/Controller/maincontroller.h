@@ -34,6 +34,8 @@ public slots:
     void accountChange(QString);
 
     void toXml(bool);
+
+    void update(Entry);
 };
 
 Q_DECLARE_METATYPE(ControllerXML)

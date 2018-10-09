@@ -37,6 +37,7 @@ public:
 
     static void addEntry(const Entry&);
     static void removeEntry(const Entry&);
+    static void updateEntry(const Entry&);
 
     static Entry entry(int);
     static QList<Entry> entries(QDate = QDate());
