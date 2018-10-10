@@ -50,8 +50,19 @@ Item {
         id: category
         objectName: "category"
         anchors.left: spinbox.right
+        editable: currentText === ""
+        model: ["Transport", "Loyer", "Energie", "Telecom", ""]
 
-        model: ["Transport", "Loyer", "Energie", "Telecom"]
+        Keys.onPressed: {
+            if(event.key === Qt.Key_Enter && currentIndex === model.length-1) {
+                var tmp = model
+                tmp.pop()
+                tmp.push(editText)
+                tmp.push("")
+                model = tmp
+                currentIndex = tmp.length-2
+            }
+        }
 
         function setting(type) {
             var index = find(type)
@@ -68,6 +79,10 @@ Item {
             gradient: pageStyle.goldButton
         }
 
+        Component.onCompleted: {
+            console.log(model.length)
+        }
+
         delegate: ItemDelegate {
             width: category.width
             contentItem: Rectangle  {
@@ -78,6 +93,7 @@ Item {
                     text: modelData
                     anchors.centerIn: parent
                 }
+
             }
         }
     }
