@@ -53,6 +53,7 @@ Item {
         editable: currentText === ""
         model: ["Transport", "Loyer", "Energie", "Telecom", ""]
 
+
         Keys.onPressed: {
             if(event.key === Qt.Key_Enter && currentIndex === model.length-1) {
                 var tmp = model
@@ -88,10 +89,25 @@ Item {
             contentItem: Rectangle  {
                 gradient: pageStyle.goldButton
                 anchors.fill: parent
+
                 Label {
                     color: "black"
                     text: modelData
                     anchors.centerIn: parent
+                }
+
+                MouseArea {
+                    property string cTxt: modelData
+                    anchors.fill: parent
+                    cursorShape: Qt.WhatsThisCursor
+
+                    onClicked: {
+                        if(mouse.button === Qt.LeftButton) {
+                            var index = category.find(cTxt)
+                            category.currentIndex = index
+                            category.popup.close()
+                        }
+                    }
                 }
 
             }
