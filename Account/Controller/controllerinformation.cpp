@@ -53,7 +53,13 @@ void ControllerInformation::set(Entry e, QObject* v)
 
     QObject* combo = v->findChild<QObject*>("category");
     if(combo)
+    {
+        QString type = e.type();
+        QStringList cat = AbstractController::categories(type);
+        cat<<"";
+        combo->setProperty("model", cat);
         connect(combo, SIGNAL(s_addCategory(QString)), this, SLOT(addCategory(QString)));
+    }
 
     connect(v, SIGNAL(s_titleChanged(QString)), this, SLOT(labelEdit(QString)));
     connect(v, SIGNAL(s_estimatedChanged(bool)), this, SLOT(estimatedEdit(bool)));

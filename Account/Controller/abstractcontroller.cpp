@@ -11,7 +11,9 @@ AbstractController::AbstractController(): QObject(nullptr)
     {
         setDb("ControllerXML");
         m_db->init();
-        m_db->selectCategory();
+        auto x = m_db->selectCategory();
+        for(auto it = x.begin(); it != x.end(); it++)
+            addCategory(it.key(), it.value());
 
     }
     catch(QString except)

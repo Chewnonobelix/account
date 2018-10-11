@@ -51,7 +51,7 @@ Item {
         objectName: "category"
         anchors.left: spinbox.right
         editable: currentText === ""
-        model: ["Transport", "Loyer", "Energie", "Telecom", ""]
+        model: [""]
 
 
         signal s_addCategory(string cat)

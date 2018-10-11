@@ -5,6 +5,7 @@
 #include <QDebug>
 #include "Model/entry.h"
 #include "Model/information.h"
+#include "abstractcontroller.h"
 
 class ControllerInformation: public QObject
 {
