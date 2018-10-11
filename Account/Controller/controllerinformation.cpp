@@ -51,7 +51,17 @@ void ControllerInformation::set(Entry e, QObject* v)
     m_entry = e;
     m_view = v;
 
+    QObject* combo = v->findChild<QObject*>("category");
+    if(combo)
+        connect(combo, SIGNAL(s_addCategory(QString)), this, SLOT(addCategory(QString)));
+
     connect(v, SIGNAL(s_titleChanged(QString)), this, SLOT(labelEdit(QString)));
     connect(v, SIGNAL(s_estimatedChanged(bool)), this, SLOT(estimatedEdit(bool)));
     show();
+}
+
+
+void ControllerInformation::addCategory(QString name)
+{
+    emit s_addCategory(name, m_entry.type());
 }

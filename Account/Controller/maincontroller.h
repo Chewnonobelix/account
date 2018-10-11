@@ -10,7 +10,7 @@
 #include "controllerinformation.h"
 #include "controllerxml.h"
 
-class MainController: AbstractController
+class MainController: public AbstractController
 {
     Q_OBJECT
 
@@ -36,8 +36,10 @@ public slots:
     void toXml(bool);
 
     void update(Entry);
+
+    void addCategory(QString, QString);
+
 };
 
-Q_DECLARE_METATYPE(ControllerXML)
 
 #endif // MAINCONTROLLER_H

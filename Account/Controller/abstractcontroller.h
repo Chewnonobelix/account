@@ -45,6 +45,9 @@ public:
     static void setDb(QString);
     static void deleteDb();
 
+    static void addCategory(QString, QString);
+    static QStringList categories(QString);
+
     static void initTestEntry();
 };
 

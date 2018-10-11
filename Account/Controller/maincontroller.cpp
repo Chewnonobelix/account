@@ -4,7 +4,9 @@
 MainController::MainController(): AbstractController()
 {
     AbstractController::setCurrentAccount("test_account1");
-    AbstractController::initTestEntry();
+    //AbstractController::initTestEntry();
+
+    connect(&m_info, ControllerInformation::s_addCategory, this, addCategory);
 }
 
 MainController::~MainController()
@@ -175,4 +177,9 @@ void MainController::accountChange(QString acc)
 void MainController::toXml(bool xml)
 {
     qDebug()<<"To xml"<<xml;
+}
+
+void MainController::addCategory(QString name, QString type)
+{
+    AbstractController::addCategory(name, type);
 }

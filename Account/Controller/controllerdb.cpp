@@ -209,7 +209,7 @@ bool ControllerDB::removeAccount(QString name)
     return ret;
 }
 
-bool ControllerDB::addCategory(QString n, Categories::Type t)
+bool ControllerDB::addCategory(QString n, QString t)
 {
     if(isConnected())
     {
@@ -231,4 +231,10 @@ bool ControllerDB::removeCategory(QString name)
     }
 
     return false;
+}
+
+QMap<QString, QString> ControllerDB::selectCategory()
+{
+
+    return QMap<QString, QString>();
 }

@@ -24,9 +24,11 @@ public:
 public slots:
     void labelEdit(QString);
     void estimatedEdit(bool);
+    void addCategory(QString);
 
 signals:
     void s_update(const Entry&);
+    void s_addCategory(QString, QString);
 
 };
 

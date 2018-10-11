@@ -27,6 +27,14 @@ bool Categories::addType(QString name, int type)
     return true;
 }
 
+bool Categories::addType(QString name, QString type)
+{
+    QMetaEnum enume = QMetaEnum::fromType<Type>();
+
+    int t = enume.keyToValue(type.toLower().toLatin1());
+
+    return addType(name, t);
+}
 bool Categories::removeType(QString name)
 {
     return m_categories.remove(name) > 0;
@@ -35,4 +43,9 @@ bool Categories::removeType(QString name)
 QStringList Categories::categories()
 {
     return m_categories.keys();
+}
+
+void Categories::clear()
+{
+    m_categories.clear();
 }

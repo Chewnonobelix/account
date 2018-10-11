@@ -11,6 +11,8 @@ AbstractController::AbstractController(): QObject(nullptr)
     {
         setDb("ControllerXML");
         m_db->init();
+        m_db->selectCategory();
+
     }
     catch(QString except)
     {
@@ -133,4 +135,31 @@ void AbstractController::deleteDb()
 void AbstractController::updateEntry(const Entry & e)
 {
     m_db->updateInfo(e);
+}
+
+void AbstractController::addCategory(QString name, QString type)
+{
+    m_db->addCategory(name, type);
+    Categories::clear();
+    auto c = m_db->selectCategory();
+
+    for(auto it = c.begin(); it != c.end(); it++)
+        Categories::addType(it.key(), it.value());
+
+}
+
+QStringList AbstractController::categories(QString type)
+{
+    QMetaEnum enume = QMetaEnum::fromType<Categories::Type>();
+    int t = enume.keyToValue(type.toLower().toLatin1());
+
+    QStringList list = Categories::categories();
+
+    QStringList ret;
+
+    for(auto it: list)
+        if(Categories::type(it) == t)
+            ret<<it;
+
+    return ret;
 }

@@ -24,7 +24,9 @@ public:
 
     static int type(QString);
     static bool addType(QString, int);
+    static bool addType(QString, QString);
     static bool removeType(QString);
+    static void clear();
     static QStringList categories();
 };
 

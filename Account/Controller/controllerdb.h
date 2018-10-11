@@ -48,8 +48,9 @@ public:
 
     bool updateInfo(const Entry&);
 
-    bool addCategory(QString, Categories::Type);
+    bool addCategory(QString, QString);
     bool removeCategory(QString);
+    QMap<QString, QString> selectCategory();
 
     bool init();
 };

@@ -63,7 +63,18 @@ ApplicationWindow {
                     gradient: pageStyle.goldButton
                 }
             }
-
+            MenuItem {
+                text: qsTr("New &Category")
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                }
+            }
+            MenuItem {
+                text: qsTr("Delete Ca&tegory")
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                }
+            }
         }
 
         background: Rectangle {

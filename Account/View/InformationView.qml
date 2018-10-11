@@ -54,6 +54,8 @@ Item {
         model: ["Transport", "Loyer", "Energie", "Telecom", ""]
 
 
+        signal s_addCategory(string cat)
+
         Keys.onPressed: {
             if(event.key === Qt.Key_Enter && currentIndex === model.length-1) {
                 var tmp = model
@@ -62,6 +64,7 @@ Item {
                 tmp.push("")
                 model = tmp
                 currentIndex = tmp.length-2
+                s_addCategory(editText)
             }
         }
 
