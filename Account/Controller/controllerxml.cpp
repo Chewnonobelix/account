@@ -93,7 +93,7 @@ void ControllerXML::addInfo(QDomElement& el, const Information & i)
 
     textNode("title", i.title());
     textNode("estimated", QString::number(i.estimated()));
-    textNode("category", i.category());
+    textNode("category_name", i.category());
 
     el.appendChild(el2);
 
@@ -124,7 +124,7 @@ Information  ControllerXML::selectInformation(const QDomElement& el) const
     ret.setIdEntry(id);
 
     bool est = el.elementsByTagName("estimated").at(0).toElement().text().toInt();
-    QString cat = el.elementsByTagName("category").at(0).toElement().text();
+    QString cat = el.elementsByTagName("category_name").at(0).toElement().text();
     QString title = el.elementsByTagName("title").at(0).toElement().text();
 
     ret.setEstimated(est);
@@ -238,7 +238,7 @@ bool ControllerXML::updateInfo(const Entry& e)
             };
             Information inf = e.info();
             setter("estimated", QString::number(inf.estimated()));
-            setter("category", inf.category());
+            setter("category_name", inf.category());
             setter("title", inf.title());
 
             return true;
@@ -248,7 +248,7 @@ bool ControllerXML::updateInfo(const Entry& e)
     return false;
 }
 
-bool ControllerXML::addCategory(QString name, Categories::Type type)
+bool ControllerXML::addCategory(QString name, QString type)
 {
     auto root = m_document.elementsByTagName("database").at(0).toElement();
     auto list = root.elementsByTagName("category");
@@ -281,4 +281,19 @@ bool ControllerXML::removeCategory(QString name)
         }
     }
     return false;
+}
+
+QMap<QString, QString> ControllerXML::selectCategory()
+{
+    auto categories = m_document.documentElement().elementsByTagName("category");
+    QMap<QString, QString> ret;
+    qDebug()<<categories.size();
+    for(int i = 0; i < categories.size(); i++)
+    {
+        QDomElement el = categories.at(i).toElement();
+        ret[el.text()] = el.attribute("type");
+    }
+
+    qDebug()<<ret;
+    return ret;
 }

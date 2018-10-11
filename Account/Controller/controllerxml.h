@@ -39,10 +39,15 @@ public:
 
     virtual bool updateInfo(const Entry&);
 
-    virtual bool addCategory(QString, Categories::Type);
+    virtual bool addCategory(QString, QString);
     virtual bool removeCategory(QString);
+    QMap<QString, QString> selectCategory();
+
 
     virtual bool init();
 };
+
+Q_DECLARE_METATYPE(ControllerXML)
+
 
 #endif // CONTROLLERXML_H
