@@ -18,8 +18,9 @@ public:
 
     virtual bool updateInfo(const Entry&) = 0;
 
-    virtual bool addCategory(QString, Categories::Type) = 0;
+    virtual bool addCategory(QString, QString) = 0;
     virtual bool removeCategory(QString) = 0;
+    virtual QMap<QString, QString> selectCategory() = 0;
 
     virtual bool init() = 0;
 };
