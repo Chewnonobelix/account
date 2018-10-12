@@ -3,7 +3,6 @@
 
 MainController::MainController(): AbstractController()
 {
-    AbstractController::setCurrentAccount("test_account1");
     //AbstractController::initTestEntry();
 
     connect(&m_info, ControllerInformation::s_addCategory, this, addCategory);
@@ -35,8 +34,9 @@ int MainController::exec()
 
     if(combo)
     {
-        QStringList t;
-        t<<"test_account1"<<"test_account2";
+        QStringList t = AbstractController::accountList();
+        if(t.isEmpty())
+                t<<"";
         combo->setProperty("model", t);
         connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
         accountChange(t[0]);

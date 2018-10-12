@@ -160,7 +160,6 @@ QList<Entry> ControllerXML::selectEntry(QString account)
         e.setDate(QDate::fromString(child.text()));
         child = el.elementsByTagName("account").at(0).toElement();
         e.setAccount(child.text());
-        m_accountList<<e.account();
         child = el.elementsByTagName("value").at(0).toElement();
         e.setValue(child.text().toDouble());
         child = el.elementsByTagName("type").at(0).toElement();
@@ -202,7 +201,12 @@ bool ControllerXML::removeEntry(const Entry& e)
 
 QStringList ControllerXML::selectAccount()
 {
-    return m_accountList.toList();
+    QDomNodeList list = m_document.documentElement().elementsByTagName("account");
+    QSet<QString> ret;
+    for(int i = 0; i < list.size(); i++)
+        ret<<list.at(i).toElement().text();
+
+    return ret.toList();
 }
 
 bool ControllerXML::removeAccount(QString account)
@@ -287,13 +291,11 @@ QMap<QString, QString> ControllerXML::selectCategory()
 {
     auto categories = m_document.documentElement().elementsByTagName("category");
     QMap<QString, QString> ret;
-    qDebug()<<categories.size();
     for(int i = 0; i < categories.size(); i++)
     {
         QDomElement el = categories.at(i).toElement();
         ret[el.text()] = el.attribute("type");
     }
 
-    qDebug()<<ret;
     return ret;
 }

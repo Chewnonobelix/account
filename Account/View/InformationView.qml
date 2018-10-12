@@ -83,9 +83,6 @@ Item {
             gradient: pageStyle.goldButton
         }
 
-        Component.onCompleted: {
-            console.log(model.length)
-        }
 
         delegate: ItemDelegate {
             width: category.width
