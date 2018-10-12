@@ -28,6 +28,17 @@ void ControllerInformation::estimatedEdit(bool e)
     s_update(m_entry);
 }
 
+void ControllerInformation::catChanged(QString cat)
+{
+    Information i = m_entry.info();
+    i.setCategory(cat);
+
+    m_entry.setInfo(i);
+
+    show();
+    s_update(m_entry);
+}
+
 void ControllerInformation::show()
 {
     QObject* model =  m_view->findChild<QObject*>("entry");
@@ -44,6 +55,11 @@ void ControllerInformation::show()
         model->setProperty("title", m_entry.info().title());
         model->setProperty("type", m_entry.info().category());
     }
+
+    model = m_view->findChild<QObject*>("category");
+
+    if(model)
+        QMetaObject::invokeMethod(model, "setting", Q_ARG(QVariant, m_entry.info().category()));
 }
 
 void ControllerInformation::set(Entry e, QObject* v)
@@ -59,10 +75,12 @@ void ControllerInformation::set(Entry e, QObject* v)
         cat<<"";
         combo->setProperty("model", cat);
         connect(combo, SIGNAL(s_addCategory(QString)), this, SLOT(addCategory(QString)));
+        connect(combo, SIGNAL(s_currentTextChanged(QString)), this, SLOT(catChanged(QString)));
     }
 
     connect(v, SIGNAL(s_titleChanged(QString)), this, SLOT(labelEdit(QString)));
     connect(v, SIGNAL(s_estimatedChanged(bool)), this, SLOT(estimatedEdit(bool)));
+
     show();
 }
 

@@ -93,7 +93,7 @@ void ControllerXML::addInfo(QDomElement& el, const Information & i)
 
     textNode("title", i.title());
     textNode("estimated", QString::number(i.estimated()));
-    textNode("category_name", i.category());
+    textNode("categoryName", i.category());
 
     el.appendChild(el2);
 
@@ -124,7 +124,10 @@ Information  ControllerXML::selectInformation(const QDomElement& el) const
     ret.setIdEntry(id);
 
     bool est = el.elementsByTagName("estimated").at(0).toElement().text().toInt();
-    QString cat = el.elementsByTagName("category_name").at(0).toElement().text();
+
+    QString cat;
+    if(el.elementsByTagName("categoryName").size() > 0)
+        cat = el.elementsByTagName("categoryName").at(0).toElement().text();
     QString title = el.elementsByTagName("title").at(0).toElement().text();
 
     ret.setEstimated(est);
@@ -233,16 +236,28 @@ bool ControllerXML::updateInfo(const Entry& e)
         QDomElement el = list.at(i).toElement();
         if(el.attribute("id").toInt() == e.id())
         {
+
             QDomElement info = el.elementsByTagName("information").at(0).toElement();
             auto setter = [&](QString tagname, QString value)
             {
+
                 QDomElement child = info.elementsByTagName(tagname).at(0).toElement();
+                if(child.isNull())
+                {
+                    child = m_document.createElement(tagname);
+                    info.appendChild(child);
+                }
                 QDomText txt = child.firstChild().toText();
+                if(txt.isNull())
+                {
+                    txt = m_document.createTextNode("");
+                    child.appendChild(txt);
+                }
                 txt.setData(value);
             };
             Information inf = e.info();
             setter("estimated", QString::number(inf.estimated()));
-            setter("category_name", inf.category());
+            setter("categoryName", inf.category());
             setter("title", inf.title());
 
             return true;

@@ -53,8 +53,12 @@ Item {
         editable: currentText === ""
         model: [""]
 
-
         signal s_addCategory(string cat)
+        signal s_currentTextChanged(string cat)
+
+        onCurrentTextChanged: {
+            s_currentTextChanged(currentText)
+        }
 
         Keys.onPressed: {
             if(event.key === Qt.Key_Enter && currentIndex === model.length-1) {
@@ -70,11 +74,12 @@ Item {
 
         function setting(type) {
             var index = find(type)
+
             if(index >= 0) {
                 currentIndex = index
             }
             else {
-                currentIndex = 0
+                currentIndex = model.length-1
             }
         }
 
