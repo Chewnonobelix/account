@@ -62,6 +62,27 @@ Popup {
         ComboBox {
             id: dateCombo
             model: dateModel
+
+            Rectangle {
+                gradient: pageStyle.goldButton
+                anchors.fill: parent
+            }
+
+            delegate: ItemDelegate {
+                width: accountSelect.width
+
+                contentItem: Rectangle {
+                    gradient: pageStyle.goldButton
+                    anchors.fill: parent
+                    Label {
+                        color: "black"
+                        text: modelData
+                        anchors.centerIn: parent
+                    }
+                }
+
+                highlighted: accountSelect.highlightedIndex === index
+            }
         }
 
         RowLayout {
@@ -83,7 +104,26 @@ Popup {
                 objectName: "type"
                 model: ["Income", "Outcome"]
 
+                Rectangle {
+                    gradient: pageStyle.goldButton
+                    anchors.fill: parent
+                }
 
+                delegate: ItemDelegate {
+                    width: accountSelect.width
+
+                    contentItem: Rectangle {
+                        gradient: pageStyle.goldButton
+                        anchors.fill: parent
+                        Label {
+                            color: "black"
+                            text: modelData
+                            anchors.centerIn: parent
+                        }
+                    }
+
+                    highlighted: accountSelect.highlightedIndex === index
+                }
             }
         }
 
