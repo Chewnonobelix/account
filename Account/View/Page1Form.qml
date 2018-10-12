@@ -35,7 +35,8 @@ Page {
     Adding {
         id: addingid
         objectName: "addingid"
-
+        y: parent.height / 2 + add.height / 2 + 10
+        x: add.width / 2
         Component.onCompleted:   {
             reset()
         }
@@ -51,7 +52,6 @@ Page {
             addingid.addDate(Qt.formatDate(new Date(), "dd-MM-yyyy"))
         }
         addingid.open()
-        return 0
     }
 
     Item {
@@ -80,8 +80,8 @@ Page {
 
             onReleased: {
                 rectAdd.gradient = pageStyle.goldButton
-                addingid.x = pressX + x + parent.x
-                addingid.y = pressY + y + parent.y
+//                addingid.x = pressX + x + parent.x
+//                addingid.y = pressY + y + parent.y
                 mainWindow.adding()
             }
 

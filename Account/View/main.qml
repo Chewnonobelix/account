@@ -8,8 +8,8 @@ import QtQuick.Controls.Styles 1.4
 ApplicationWindow {
     visible: true
 
-    width: 600
-    height: 400
+    width: 800
+    height: 640
 
     signal adding()
     signal remove(int index)

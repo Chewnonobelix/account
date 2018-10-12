@@ -68,8 +68,8 @@ void MainController::update(Entry e)
 void MainController::add()
 {
     QObject* item = m_engine.rootObjects().first()->findChild<QObject*>("table");
-    QVariant ret;
-    QMetaObject::invokeMethod(item, "openAdding", Q_RETURN_ARG(QVariant, ret));
+
+    QMetaObject::invokeMethod(item, "openAdding");
 }
 
 void MainController::adding()
