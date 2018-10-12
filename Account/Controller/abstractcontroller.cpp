@@ -13,7 +13,7 @@ AbstractController::AbstractController(): QObject(nullptr)
         m_db->init();
         auto x = m_db->selectCategory();
         for(auto it = x.begin(); it != x.end(); it++)
-            addCategory(it.key(), it.value());
+            Categories::addType(it.key(), it.value());
 
     }
     catch(QString except)
