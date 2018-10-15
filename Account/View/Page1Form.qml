@@ -35,10 +35,18 @@ Page {
     Adding {
         id: addingid
         objectName: "addingid"
-        y: parent.height / 2 + add.height / 2 + 10
-        x: add.width / 2
+        y: pY > -1 ? (mainWindow.height * pY) : (parent.height / 2 + add.height / 2 + 10)
+        x: pY > -1 ? (mainWindow.width * pX) : (add.width / 2)
+        property double pX: -1
+        property double pY: -1
         Component.onCompleted:   {
             reset()
+        }
+
+        onXChanged: {
+//            console.log("Change " + ((x+width)-mainWindow.width))
+//            console.log(x)
+//            console.log(width)
         }
     }
 
@@ -47,7 +55,17 @@ Page {
         addingid.close()
     }
 
-    function openAdding() {
+    function openAdding(pX, pY) {
+
+        addingid.pX = pX
+        addingid.pY = pY
+        console.log("min " + Number.MIN_VALUE)
+        var mx = 0, my = 0
+        mx = ((mainWindow.width * pX)+addingid.width)-mainWindow.width
+        my = ((mainWindow.height * pY)+addingid.height)-mainWindow.height
+
+
+
         if(cal.selectedDates.length > 0) {
             for(var index in cal.selectedDates){
                 addingid.addDate(cal.selectedDates[index])
@@ -74,11 +92,11 @@ Page {
             anchors.left: parent.left
 
             Shortcut {
-                 context: Qt.ApplicationShortcut
-                 onActivated:  {
-                     add.released()
-                 }
-                 sequence: "A"
+                context: Qt.ApplicationShortcut
+                onActivated:  {
+                    add.released()
+                }
+                sequence: "A"
             }
 
 
@@ -111,11 +129,11 @@ Page {
             property int index: view.currentIndex
 
             Shortcut {
-                 context: Qt.ApplicationShortcut
-                 onActivated:  {
-                     remove.released()
-                 }
-                 sequence: "R"
+                context: Qt.ApplicationShortcut
+                onActivated:  {
+                    remove.released()
+                }
+                sequence: "R"
             }
 
             Rectangle {

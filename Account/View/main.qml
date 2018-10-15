@@ -18,6 +18,7 @@ ApplicationWindow {
 
     id: mainWindow
 
+
     AccountStyle {
         id: pageStyle
     }
@@ -28,7 +29,7 @@ ApplicationWindow {
     }
 
     menuBar: MenuBar {
-
+        objectName: "menuBar"
         Menu {
             title: qsTr("&File")
             MenuItem {

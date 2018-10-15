@@ -68,8 +68,18 @@ void MainController::update(Entry e)
 void MainController::add()
 {
     QObject* item = m_engine.rootObjects().first()->findChild<QObject*>("table");
+    QObject* m = m_engine.rootObjects().first();
+    QObject* h = m->findChild<QObject*>("head");
+    QObject* mb = m->findChild<QObject*>("menuBar");
+    QPoint p = QCursor::pos();
+    double pX, pY;
+    pX = p.x() - m->property("x").toDouble();
+    pX /= m->property("width").toDouble();
 
-    QMetaObject::invokeMethod(item, "openAdding");
+    pY = p.y() - m->property("y").toDouble() - h->property("height").toDouble() - mb->property("height").toDouble();
+    pY /= m->property("height").toDouble();
+
+    QMetaObject::invokeMethod(item, "openAdding", Q_ARG(QVariant, pX), Q_ARG(QVariant, pY));
 }
 
 void MainController::adding()
