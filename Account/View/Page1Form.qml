@@ -73,6 +73,16 @@ Page {
             anchors.top: parent.top
             anchors.left: parent.left
 
+            Shortcut {
+                 context: Qt.ApplicationShortcut
+                 onActivated:  {
+                     add.released()
+                 }
+                 sequence: "A"
+            }
+
+
+
             Rectangle {
                 id: rectAdd
                 anchors.fill: parent
@@ -85,8 +95,6 @@ Page {
 
             onReleased: {
                 rectAdd.gradient = pageStyle.goldButton
-//                addingid.x = pressX + x + parent.x
-//                addingid.y = pressY + y + parent.y
                 mainWindow.adding()
             }
 
@@ -101,6 +109,15 @@ Page {
             anchors.leftMargin: (parent.width * .1)
 
             property int index: view.currentIndex
+
+            Shortcut {
+                 context: Qt.ApplicationShortcut
+                 onActivated:  {
+                     remove.released()
+                 }
+                 sequence: "R"
+            }
+
             Rectangle {
                 id: rectRemove
 
