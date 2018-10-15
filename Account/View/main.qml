@@ -22,6 +22,11 @@ ApplicationWindow {
         id: pageStyle
     }
 
+    MouseArea {
+        anchors.fill: parent
+        id: mainarea
+    }
+
     menuBar: MenuBar {
 
         Menu {

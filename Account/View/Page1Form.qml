@@ -42,6 +42,11 @@ Page {
         }
     }
 
+
+    Component.onCompleted: {
+        addingid.close()
+    }
+
     function openAdding() {
         if(cal.selectedDates.length > 0) {
             for(var index in cal.selectedDates){
