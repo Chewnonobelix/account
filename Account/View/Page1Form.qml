@@ -35,12 +35,23 @@ Page {
     Adding {
         id: addingid
         objectName: "addingid"
-        y: pY > -1 ? (mainWindow.height * pY) : (parent.height / 2 + add.height / 2 + 10)
-        x: pY > -1 ? (mainWindow.width * pX) : (add.width / 2)
+        y: pY > -1 ? (mainWindow.height * pY) - Math.max(0, mY) : (parent.height / 2 + add.height / 2 + 10)
+        x: pY > -1 ? (mainWindow.width * pX) - Math.max(0, mX): (add.width / 2)
         property double pX: -1
         property double pY: -1
+        property double mX: -1
+        property double mY: -1
         Component.onCompleted:   {
             reset()
+        }
+
+        function setSize(px, py) {
+            mX = ((mainWindow.width * px)+width)-mainWindow.width
+            mY = ((mainWindow.height * py)+height)-(mainWindow.height)
+
+            console.log("mY " + mY)
+            pX = px
+            pY= py
         }
 
         onXChanged: {
@@ -57,14 +68,7 @@ Page {
 
     function openAdding(pX, pY) {
 
-        addingid.pX = pX
-        addingid.pY = pY
-        console.log("min " + Number.MIN_VALUE)
-        var mx = 0, my = 0
-        mx = ((mainWindow.width * pX)+addingid.width)-mainWindow.width
-        my = ((mainWindow.height * pY)+addingid.height)-mainWindow.height
-
-
+        addingid.setSize(pX, pY)
 
         if(cal.selectedDates.length > 0) {
             for(var index in cal.selectedDates){

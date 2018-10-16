@@ -19,6 +19,7 @@ ApplicationWindow {
     id: mainWindow
 
 
+    Component.onCompleted: showMaximized()
     AccountStyle {
         id: pageStyle
     }
@@ -29,6 +30,7 @@ ApplicationWindow {
     }
 
     menuBar: MenuBar {
+
         objectName: "menuBar"
         Menu {
             title: qsTr("&File")
