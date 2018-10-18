@@ -237,6 +237,10 @@ Page {
 
         }
 
+        onWidthChanged: {
+            positionViewAtRow(0, ListView.Beginning )
+        }
+
         TableViewColumn {
             role: "id"
             visible: false
@@ -297,6 +301,21 @@ Page {
 
                 anchors.centerIn: parent
             }
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+
+                onClicked: {
+                    if(view.selection.contains(styleData.row)) {
+                        view.selection.clear()
+                    }
+                    else {
+                        view.selection.clear()
+                        view.selection.select(styleData.row)
+                    }
+                }
+            }
         }
 
         rowDelegate: Rectangle {
@@ -304,6 +323,7 @@ Page {
 
             width: parent.width
             height: 20
+
 
             gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
         }
@@ -357,7 +377,7 @@ Page {
 
 
         anchors.leftMargin: 10
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
+
 
         clip: true
         InformationView {
