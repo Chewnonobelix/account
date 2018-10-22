@@ -117,7 +117,7 @@ Page {
 
             onReleased: {
                 rectAdd.gradient = pageStyle.goldButton
-                mainWindow.adding()
+                mainWindow.adding(false)
             }
 
         }

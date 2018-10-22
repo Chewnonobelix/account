@@ -22,7 +22,7 @@ int MainController::exec()
 
     QObject* root = m_engine.rootObjects().first();
 
-    connect(root, SIGNAL(adding()), this, SLOT(add()));
+    connect(root, SIGNAL(adding(bool)), this, SLOT(add(bool)));
     connect(root, SIGNAL(remove(int)), this, SLOT(remove(int)));
 
     QObject* calendar = root->findChild<QObject*>("cal");
@@ -65,7 +65,7 @@ void MainController::update(Entry e)
     AbstractController::updateEntry(e);
 }
 
-void MainController::add()
+void MainController::add(bool account)
 {
     QObject* item = m_engine.rootObjects().first()->findChild<QObject*>("table");
     QObject* m = m_engine.rootObjects().first();
@@ -78,7 +78,8 @@ void MainController::add()
 
     pY = p.y() - m->property("y").toDouble() - h->property("height").toDouble() - mb->property("height").toDouble();
     pY /= m->property("height").toDouble();
-
+    QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("addingid");
+    popup->setProperty("newAccount", account);
     QMetaObject::invokeMethod(item, "openAdding", Q_ARG(QVariant, pX), Q_ARG(QVariant, pY));
 }
 
@@ -86,22 +87,47 @@ void MainController::adding()
 {
     QObject* adding = m_engine.rootObjects().first()->findChild<QObject*>("addingid");
     Entry e;
-    QVariant val, date, label, type;
 
-    val = adding->property("v_val");
-    date = adding->property("v_date");
-    label = adding->property("v_title");
-    type = adding->property("v_type");
+    if(adding->property("newAccount").toBool())
+    {
+        QVariant val, date, account;
 
-    e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
-    e.setValue(val.toDouble());
-    e.setType(type.toString());
-    Information i;
-    i.setTitle(label.toString());
-    e.setInfo(i);
-    e.setAccount(currentAccount());
+        val = adding->property("v_val");
+        date = adding->property("v_date");
+        account = adding->property("v_title");
+        e.setAccount(account.toString());
+        e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
+        e.setValue(val.toDouble());
+        e.setType("Income");
 
+        Information i;
+        i.setTitle("Initial");
+        e.setInfo(i);
+    }
+    else
+    {
+        QVariant val, date, label, type;
+
+        val = adding->property("v_val");
+        date = adding->property("v_date");
+        label = adding->property("v_title");
+        type = adding->property("v_type");
+
+        e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
+        e.setValue(val.toDouble());
+        e.setType(type.toString());
+        Information i;
+        i.setTitle(label.toString());
+        e.setInfo(i);
+        if(date > QDate::currentDate())
+            i.setEstimated(true);
+        e.setAccount(currentAccount());
+    }
     AbstractController::addEntry(e);
+
+    if(adding->property("newAccount").toBool())
+        loadAccount();
+
     selection();
 }
 void MainController::remove(int id)
@@ -249,4 +275,19 @@ void MainController::toXml(bool xml)
 void MainController::addCategory(QString name, QString type)
 {
     AbstractController::addCategory(name, type);
+}
+
+void MainController::loadAccount()
+{
+    QObject* combo = m_engine.rootObjects().first()->findChild<QObject*>("accountSelect");
+
+    if(combo)
+    {
+        QStringList t = AbstractController::accountList();
+        if(t.isEmpty())
+            t<<"";
+        combo->setProperty("model", t);
+        connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
+        accountChange(t[0]);
+    }
 }

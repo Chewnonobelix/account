@@ -47,6 +47,7 @@ public:
     bool removeAccount(QString);
 
     bool updateInfo(const Entry&);
+    bool updateEntry(const Entry &);
 
     bool addCategory(QString, QString);
     bool removeCategory(QString);

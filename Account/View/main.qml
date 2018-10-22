@@ -11,7 +11,7 @@ ApplicationWindow {
     width: 800
     height: 640
 
-    signal adding()
+    signal adding(bool account)
     signal remove(int index)
     signal edit(int index)
     signal accountChange(int index)
@@ -20,6 +20,16 @@ ApplicationWindow {
 
 
     Component.onCompleted: showMaximized()
+
+    Shortcut {
+        sequence: "CTRL+N"
+        context: Qt.ApplicationShortcut
+
+        onActivated: {
+            adding(true)
+        }
+    }
+
     AccountStyle {
         id: pageStyle
     }
@@ -61,24 +71,16 @@ ApplicationWindow {
             title: qsTr("Account")
             MenuItem {
                 text: qsTr("&New account")
+                onClicked: {
+                    adding(true)
+                }
+
                 background: Rectangle {
                     gradient: pageStyle.goldButton
                 }
             }
             MenuItem {
                 text: qsTr("&Delete account")
-                background: Rectangle {
-                    gradient: pageStyle.goldButton
-                }
-            }
-            MenuItem {
-                text: qsTr("New &Category")
-                background: Rectangle {
-                    gradient: pageStyle.goldButton
-                }
-            }
-            MenuItem {
-                text: qsTr("Delete Ca&tegory")
                 background: Rectangle {
                     gradient: pageStyle.goldButton
                 }

@@ -238,3 +238,8 @@ QMap<QString, QString> ControllerDB::selectCategory()
 
     return QMap<QString, QString>();
 }
+
+bool ControllerDB::updateEntry(const Entry &)
+{
+    return false;
+}

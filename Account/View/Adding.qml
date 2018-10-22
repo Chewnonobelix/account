@@ -20,12 +20,14 @@ Popup {
         id: pageStyle
     }
 
+
     signal accept()
 
     property real v_val: spinbox.realValue
     property string v_title: valueLabel.text
     property string v_type: type.currentText
     property string v_date: dateCombo.currentText
+    property bool newAccount: false
 
     onClosed: {
         dateModel.clear()
@@ -33,6 +35,7 @@ Popup {
 
     onOpened: {
         dateCombo.currentIndex = 0
+        l_new.text = newAccount ? qsTr("Add new account"): qsTr("Add new entry")
     }
 
     background: Rectangle {
@@ -103,6 +106,7 @@ Popup {
                 id: type
                 objectName: "type"
                 model: ["Income", "Outcome"]
+                enabled: !addingid.newAccount
 
                 Rectangle {
                     gradient: pageStyle.goldButton

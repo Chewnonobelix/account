@@ -314,3 +314,42 @@ QMap<QString, QString> ControllerXML::selectCategory()
 
     return ret;
 }
+
+bool ControllerXML::updateEntry(const Entry & e)
+{
+    auto root = m_document.elementsByTagName("database").at(0).toElement();
+    auto list = root.elementsByTagName("entry");
+
+    for(auto i = 0; i < list.size(); i++)
+    {
+        QDomElement el = list.at(i).toElement();
+        if(el.attribute("id").toInt() == e.id())
+        {
+            qDebug()<<"Ypi";
+            auto setter = [&](QString tagname, QString value)
+            {
+
+                QDomElement child = el.elementsByTagName(tagname).at(0).toElement();
+                if(child.isNull())
+                {
+                    child = m_document.createElement(tagname);
+                    el.appendChild(child);
+                }
+                QDomText txt = child.firstChild().toText();
+                if(txt.isNull())
+                {
+                    txt = m_document.createTextNode("");
+                    el.appendChild(txt);
+                }
+                txt.setData(value);
+            };
+
+            setter("date", e.date().toString());
+            setter("value",QString::number(e.value()));
+
+            return true;
+        }
+    }
+
+    return false;
+}

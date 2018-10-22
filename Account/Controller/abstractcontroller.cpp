@@ -40,7 +40,6 @@ void AbstractController::setCurrentAccount(QString a)
     auto l = m_db->selectEntry(a);
     for(auto it: l)
         m_entry.insert(it.date(), it);
-
 }
 
 QString AbstractController::currentAccount()
@@ -53,8 +52,23 @@ void AbstractController::addEntry(const Entry& e)
 {
     if(m_db->addEntry(e))
     {
-        auto l = m_db->selectEntry(currentAccount());
+          Entry init;
+        for(auto it: entries())
+            if(it.label() == "Initial")
+                init = it;
+
+        if(e.date() < init.date())
+        {
+            QMetaEnum qme = QMetaEnum::fromType<Categories::Type>();
+            init.setDate(e.date());
+            double val = init.value();
+            val -= (e.value()*qme.keysToValue(e.type().toLower().toLatin1()));
+            init.setValue(val);
+            updateEntry(init);
+            setCurrentAccount(init.account());
+        }
         m_entry.clear();
+        auto l = m_db->selectEntry(currentAccount());
 
         for(auto it: l)
             m_entry.insert(it.date(), it);
@@ -136,6 +150,7 @@ void AbstractController::deleteDb()
 
 void AbstractController::updateEntry(const Entry & e)
 {
+    m_db->updateEntry(e);
     m_db->updateInfo(e);
 }
 

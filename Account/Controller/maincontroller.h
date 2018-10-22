@@ -25,7 +25,7 @@ public:
     int exec();
 
 public slots:
-    void add();
+    void add(bool = false);
     void remove(int);
     void edit(int);
 
@@ -38,6 +38,8 @@ public slots:
     void update(Entry);
 
     void addCategory(QString, QString);
+
+    void loadAccount();
 
 };
 

@@ -17,6 +17,7 @@ public:
     virtual bool removeAccount(QString) = 0;
 
     virtual bool updateInfo(const Entry&) = 0;
+    virtual bool updateEntry(const Entry&) = 0;
 
     virtual bool addCategory(QString, QString) = 0;
     virtual bool removeCategory(QString) = 0;
