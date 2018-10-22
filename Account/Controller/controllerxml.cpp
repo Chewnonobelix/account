@@ -325,7 +325,6 @@ bool ControllerXML::updateEntry(const Entry & e)
         QDomElement el = list.at(i).toElement();
         if(el.attribute("id").toInt() == e.id())
         {
-            qDebug()<<"Ypi";
             auto setter = [&](QString tagname, QString value)
             {
 
