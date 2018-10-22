@@ -36,7 +36,7 @@ int MainController::exec()
     {
         QStringList t = AbstractController::accountList();
         if(t.isEmpty())
-                t<<"";
+            t<<"";
         combo->setProperty("model", t);
         connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
         accountChange(t[0]);
@@ -132,7 +132,7 @@ void MainController::selection()
     QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));
     QJSValue array = mp.read(calendar).value<QJSValue>();
     QList<QDate> ld;
-
+    QObject* chart = m_engine.rootObjects().first()->findChild<QObject*>("chart");
     for(int i = 0; i < array.property("length").toInt(); i++)
     {
         ld<<QDate::fromString(array.property(i).toString(), "dd-MM-yyyy");
@@ -146,23 +146,80 @@ void MainController::selection()
         for(auto it: ld)
             ret<<AbstractController::entries(it);
 
-    Total t;
+
+    auto cpm1 = [](QDate d1, QDate d2)
+    {
+        if(d1.isValid() && d2.isValid())
+        {
+            if(d1 < d2)
+                return d1;
+        }
+        else if(d1.isValid())
+            return d1;
+
+        return d2;
+    };
+
+    auto cpm2 = [](QDate d1, QDate d2)
+    {
+        if(d1.isValid() && d2.isValid())
+        {
+            if(d1 > d2)
+                return d1;
+        }
+        else if(d1.isValid())
+            return d1;
+
+        return d2;
+    };
+
+    Total m, e, t;
+    QDate minD, maxD;
+    double minV, maxV;
 
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
     if(tab){
+        if(!ret.isEmpty())
+        {
+            minV = ret.first().value();
+            maxV = ret.first().value();
+        }
         QMetaObject::invokeMethod(tab, "reset");
         for(auto i = 0 ; i < ret.size(); i++)
         {
             QVariantMap map;
+            minD = cpm1(minD, ret[i].date());
+            maxD = cpm2(maxD, ret[i].date());
             t = t + ret[i];
+
+            if(!ret[i].info().estimated())
+                m = m + ret[i];
+
+            if(ret[i].info().estimated())
+                e = e + ret[i];
+
+            minV = minV < t.value() ? minV : t.value();
+            maxV = maxV > t.value() ? maxV : t.value();
+
             map.insert("id", ret[i].id());
             map.insert("date", ret[i].date());
             map.insert("value", ret[i].value());
             map.insert("label", ret[i].label());
             map.insert("type", ret[i].type().toLower());
             map.insert("total", t.value());
+            map.insert("real", m.value());
+            map.insert("estimated", e.value());
             QMetaObject::invokeMethod(tab, "fAdd", Q_ARG(QVariant, map));
+            QMetaObject::invokeMethod(chart, "addData", Q_ARG(QVariant, QDateTime(m.date())), Q_ARG(QVariant, m.value()),
+                                      Q_ARG(QVariant, QDateTime(e.date())), Q_ARG(QVariant,e.value()),
+                                      Q_ARG(QVariant, QDateTime(t.date())), Q_ARG(QVariant,t.value()));
         }
+
+        minV -= 10;
+        maxV += 10;
+        QMetaObject::invokeMethod(chart, "setMinMaxDate", Q_ARG(QVariant, minD), Q_ARG(QVariant, maxD));
+        QMetaObject::invokeMethod(chart, "setMinMaxValue", Q_ARG(QVariant, minV), Q_ARG(QVariant, maxV));
+        QMetaObject::invokeMethod(chart, "reset");
     }
 
 

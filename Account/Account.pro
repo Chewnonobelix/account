@@ -1,4 +1,4 @@
-QT += quick sql core xml
+QT += quick sql core xml widgets charts qml gui
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
