@@ -314,6 +314,17 @@ Page {
                         view.selection.clear()
                         view.selection.select(styleData.row)
                     }
+
+                    if(view.currentIndex !== styleData.row) {
+                        view.currentIndex = styleData.row
+                        view.s_view(defaultModel.get(view.currentIndex).id)
+                    }
+                    else {
+                        unselectAll()
+                    }
+
+                    infoView.enabled = (view.currentIndex !== -1) && (defaultModel.get(view.currentIndex).label !== "Initial")
+
                 }
             }
         }
@@ -347,21 +358,6 @@ Page {
                     }
                 }
             }
-
-
-        }
-
-        onClicked: {
-
-            if(currentIndex !== row) {
-                currentIndex = row
-                s_view(defaultModel.get(currentIndex).id)
-            }
-            else {
-                unselectAll()
-            }
-
-            infoView.enabled = currentIndex !== -1
 
 
         }
