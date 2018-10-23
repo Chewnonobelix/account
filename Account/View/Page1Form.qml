@@ -324,7 +324,7 @@ Page {
                     }
 
                     infoView.enabled = (view.currentIndex !== -1) && (defaultModel.get(view.currentIndex).label !== "Initial")
-
+                    remove.enabled = (view.currentIndex !== -1) && (defaultModel.get(view.currentIndex).label !== "Initial")
                 }
             }
         }
