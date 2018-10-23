@@ -15,22 +15,27 @@ Page {
     //        padding: 10
     //    }
 
+    AccountStyle {
+        id: pageStyle
+    }
+
+    background: Rectangle {
+        color: "transparent"
+    }
+
     ChartView {
         anchors.fill: parent
         anchors.centerIn: parent
         //theme: ChartView.ChartThemeBlueIcy
         id: chart
-        title: "Chart"
+        title: qsTr("Account evolution")
         objectName: "chart"
         antialiasing: true
 
         backgroundColor: "transparent"
 
-        function addData(/*md, m, ed, e,*/ td, t) {
-//            mainChart.append(md, m)
-//            estimatedChart.append(ed, t)
-            totalChart.append(td, t)
-
+        function addData(td, t) {
+            mainChart.append(td, t)
         }
 
         function setMinMaxDate(min, max) {
@@ -44,16 +49,14 @@ Page {
         }
 
         function clear (){
-            totalChart.clear()
+            mainChart.clear()
         }
 
         function reset () {
             setAxisX(dta, mainChart)
             setAxisX(dta, estimatedChart)
-            setAxisX(dta, totalChart)
             setAxisY(va, mainChart)
             setAxisY(va, estimatedChart)
-            setAxisY(va, totalChart)
         }
 
         Component.onCompleted: {
@@ -81,13 +84,6 @@ Page {
             name: "estimated"
             id: estimatedChart
             objectName: "estimatedChart"
-        }
-
-        LineSeries{
-            pointsVisible: true
-            name: "total"
-            id: totalChart
-            objectName: "totalChart"
         }
     }
 }
