@@ -9,6 +9,7 @@
 #include "abstractcontroller.h"
 #include "controllerinformation.h"
 #include "controllerxml.h"
+#include "graphcontroller.h"
 
 class MainController: public AbstractController
 {
@@ -17,6 +18,7 @@ class MainController: public AbstractController
 private:
     QQmlApplicationEngine m_engine;
     ControllerInformation m_info;
+    GraphController m_graph;
 
 public:
     MainController();

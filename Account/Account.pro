@@ -22,7 +22,8 @@ SOURCES += \
     Controller/controllerdb.cpp \
     Controller/maincontroller.cpp \
     Controller/controllerinformation.cpp \
-    Controller/controllerxml.cpp
+    Controller/controllerxml.cpp \
+    Controller/graphcontroller.cpp
 
 RESOURCES += View/qml.qrc
 
@@ -47,4 +48,5 @@ HEADERS += \
     Controller/maincontroller.h \
     Controller/controllerinformation.h \
     Controller/interfacedatasave.h \
-    Controller/controllerxml.h
+    Controller/controllerxml.h \
+    Controller/graphcontroller.h

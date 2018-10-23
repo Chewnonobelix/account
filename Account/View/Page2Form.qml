@@ -26,9 +26,9 @@ Page {
 
         backgroundColor: "transparent"
 
-        function addData(md, m, ed, e, td, t) {
-            mainChart.append(md, m)
-            estimatedChart.append(ed, t)
+        function addData(/*md, m, ed, e,*/ td, t) {
+//            mainChart.append(md, m)
+//            estimatedChart.append(ed, t)
             totalChart.append(td, t)
 
         }
@@ -41,6 +41,10 @@ Page {
         function setMinMaxValue(min, max) {
             va.max = max
             va.min = min
+        }
+
+        function clear (){
+            totalChart.clear()
         }
 
         function reset () {
