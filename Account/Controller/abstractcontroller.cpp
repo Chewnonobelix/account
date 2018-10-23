@@ -50,19 +50,23 @@ QString AbstractController::currentAccount()
 
 void AbstractController::addEntry(const Entry& e)
 {
-    if(m_db->addEntry(e))
+    Entry et = e;
+    Information i = et.info();
+    i.setEstimated(et.date() > QDate::currentDate());
+    et.setInfo(i);
+    if(m_db->addEntry(et))
     {
           Entry init;
         for(auto it: entries())
             if(it.label() == "Initial")
                 init = it;
 
-        if(e.date() < init.date())
+        if(et.date() < init.date())
         {
             QMetaEnum qme = QMetaEnum::fromType<Categories::Type>();
-            init.setDate(e.date());
+            init.setDate(et.date());
             double val = init.value();
-            val -= (e.value()*qme.keysToValue(e.type().toLower().toLatin1()));
+            val -= (et.value()*qme.keysToValue(et.type().toLower().toLatin1()));
             init.setValue(val);
             updateEntry(init);
             setCurrentAccount(init.account());

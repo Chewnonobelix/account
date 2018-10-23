@@ -123,7 +123,7 @@ Item {
         id: estimated
         objectName: "estimated"
         anchors.left: category.right
-
+        enabled: false
         text: qsTr("Estimated")
 
         checked: infoModel.estimated

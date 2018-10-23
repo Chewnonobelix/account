@@ -76,7 +76,6 @@ void GraphController::timerEvent(QTimerEvent *event)
     QMetaObject::invokeMethod(m_view, "setMinMaxValue", Q_ARG(QVariant, minVal), Q_ARG(QVariant, maxVal));
 
 
-    qDebug()<<m_sum.size()<<m_sumEstimated.size();
     for(auto it: m_sum)
         QMetaObject::invokeMethod(m_view, "addDataMain", Q_ARG(QVariant,it.date()), Q_ARG(QVariant, it.value()));
 

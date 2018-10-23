@@ -224,6 +224,8 @@ Page {
 
         function reset() {
             defaultModel.clear()
+            currentIndex = -1
+            infoView.enabled = false
         }
 
         signal s_view(int index)
@@ -322,6 +324,7 @@ Page {
                     else {
                         unselectAll()
                     }
+
 
                     infoView.enabled = (view.currentIndex !== -1) && (defaultModel.get(view.currentIndex).label !== "Initial")
                     remove.enabled = (view.currentIndex !== -1) && (defaultModel.get(view.currentIndex).label !== "Initial")
