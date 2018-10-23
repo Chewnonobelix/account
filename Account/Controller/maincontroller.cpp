@@ -166,7 +166,6 @@ void MainController::selection()
     QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));
     QJSValue array = mp.read(calendar).value<QJSValue>();
     QList<QDate> ld;
-    QObject* chart = m_engine.rootObjects().first()->findChild<QObject*>("chart");
     for(int i = 0; i < array.property("length").toInt(); i++)
     {
         ld<<QDate::fromString(array.property(i).toString(), "dd-MM-yyyy");

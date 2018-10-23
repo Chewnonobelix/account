@@ -34,8 +34,12 @@ Page {
 
         backgroundColor: "transparent"
 
-        function addData(td, t) {
+        function addDataMain(td, t) {
             mainChart.append(td, t)
+        }
+
+        function addDataEstimated(td, t) {
+            estimatedChart.append(td, t)
         }
 
         function setMinMaxDate(min, max) {
@@ -50,6 +54,7 @@ Page {
 
         function clear (){
             mainChart.clear()
+            estimatedChart.clear()
         }
 
         function reset () {

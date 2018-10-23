@@ -12,6 +12,7 @@ private:
     QObject* m_view;
     int m_idTimer;
     QMap<QDate, Total> m_sum;
+    QMap<QDate, Total> m_sumEstimated;
 
 protected:
     void timerEvent(QTimerEvent *event);

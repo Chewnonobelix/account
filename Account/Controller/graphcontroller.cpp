@@ -25,6 +25,7 @@ void GraphController::timerEvent(QTimerEvent *event)
 {
     qDebug()<<"Timer event"<<event->timerId();
     m_sum.clear();
+    m_sumEstimated.clear();
     QMetaObject::invokeMethod(m_view, "clear");
     auto entrieslist = entries();
     QSet<QDate> keys;
@@ -38,6 +39,8 @@ void GraphController::timerEvent(QTimerEvent *event)
     for(auto it: keys)
     {
         Total t;
+        Total te;
+
         auto l = entries(it);
 
         if((minDate.isValid() && it < minDate) || minDate.isNull())
@@ -48,8 +51,16 @@ void GraphController::timerEvent(QTimerEvent *event)
 
 
         for(auto it2: l)
-            t = t+ it2;
-
+        {
+            if(it2.info().estimated())
+            {
+                te = te + it2;
+            }
+            else
+            {
+                t = t+ it2;
+            }
+        }
 
         if(t.value() < minVal)
             minVal = t.value();
@@ -58,12 +69,18 @@ void GraphController::timerEvent(QTimerEvent *event)
             maxVal = t.value();
 
         m_sum[it] = t;
+        m_sumEstimated[it] = te;
     }
 
     QMetaObject::invokeMethod(m_view, "setMinMaxDate", Q_ARG(QVariant, minDate), Q_ARG(QVariant, maxDate));
     QMetaObject::invokeMethod(m_view, "setMinMaxValue", Q_ARG(QVariant, minVal), Q_ARG(QVariant, maxVal));
 
+
+    qDebug()<<m_sum.size()<<m_sumEstimated.size();
     for(auto it: m_sum)
-        QMetaObject::invokeMethod(m_view, "addData", Q_ARG(QVariant,it.date()), Q_ARG(QVariant, it.value()));
+        QMetaObject::invokeMethod(m_view, "addDataMain", Q_ARG(QVariant,it.date()), Q_ARG(QVariant, it.value()));
+
+    for(auto it: m_sumEstimated)
+        QMetaObject::invokeMethod(m_view, "addDataEstimated", Q_ARG(QVariant,it.date()), Q_ARG(QVariant, it.value()));
 
 }
