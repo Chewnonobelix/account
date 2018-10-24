@@ -28,58 +28,80 @@ void GraphController::timerEvent(QTimerEvent *event)
     m_sumEstimated.clear();
     QMetaObject::invokeMethod(m_view, "clear");
     auto entrieslist = entries();
-    QSet<QDate> keys;
+    QList<QDate> keysT;
+    QDate minDate , maxDate;
 
     for(auto it: entrieslist)
-        keys<<it.date();
-
-    QDate minDate, maxDate;
-    double minVal = 1000000000, maxVal = -1000000000;
-
-    for(auto it: keys)
     {
-        Total t;
-        Total te;
+        if((minDate.isValid() && it.date() < minDate) || minDate.isNull())
+            minDate = it.date();
 
+        if((maxDate.isValid() && it.date() > maxDate) || maxDate.isNull())
+            maxDate = it.date();
+    }
+
+    QDate cd = minDate;
+    keysT<<minDate;
+    while(cd != maxDate)
+    {
+        cd = cd.addDays(1);
+        keysT<<cd;
+    }
+
+    double minVal = 1000000000, maxVal = -1000000000;
+    Total t;
+
+    QList<QPair<Total, bool>> sum;
+    for(auto it: keysT)
+    {
         auto l = entries(it);
-
-        if((minDate.isValid() && it < minDate) || minDate.isNull())
-            minDate = it;
-
-        if((maxDate.isValid() && it > maxDate) || maxDate.isNull())
-            maxDate = it;
+        if(l.isEmpty())
+        {
+            Entry e;
+            e.setDate(it);
+            e.setValue(0);
+            Information i;
+            i.setEstimated(it > QDate::currentDate());
+            e.setInfo(i);
+            l<<e;
+        }
 
 
         for(auto it2: l)
         {
-            if(it2.info().estimated())
-            {
-                te = te + it2;
-            }
-            else
-            {
-                t = t+ it2;
-            }
+            t = t + it2;
         }
 
+        sum.append(qMakePair(t, l.first().info().estimated()));
+
         if(t.value() < minVal)
+        {
             minVal = t.value();
+            minVal = minVal < 0 ? minVal + minVal*0.05: minVal - minVal * .05;
+        }
 
         if(t.value() > maxVal)
+        {
             maxVal = t.value();
+            maxVal = maxVal > 0 ? maxVal + maxVal*0.05: maxVal - maxVal * .05;
+        }
 
-        m_sum[it] = t;
-        m_sumEstimated[it] = te;
+
+
     }
 
     QMetaObject::invokeMethod(m_view, "setMinMaxDate", Q_ARG(QVariant, minDate), Q_ARG(QVariant, maxDate));
     QMetaObject::invokeMethod(m_view, "setMinMaxValue", Q_ARG(QVariant, minVal), Q_ARG(QVariant, maxVal));
 
 
-    for(auto it: m_sum)
-        QMetaObject::invokeMethod(m_view, "addDataMain", Q_ARG(QVariant,it.date()), Q_ARG(QVariant, it.value()));
+    for(auto it = sum.begin(); it != sum.end(); it++)
+    {
+        if(it->second && m_view->property("estimatedCount").toInt() == 0)
+            QMetaObject::invokeMethod(m_view, "addDataEstimated", Q_ARG(QVariant,(it-1)->first.date()), Q_ARG(QVariant, (it-1)->first.value()));
+        if(it->second)
+            QMetaObject::invokeMethod(m_view, "addDataEstimated", Q_ARG(QVariant,it->first.date()), Q_ARG(QVariant, it->first.value()));
+        else
+            QMetaObject::invokeMethod(m_view, "addDataMain", Q_ARG(QVariant,it->first.date()), Q_ARG(QVariant, it->first.value()));
 
-    for(auto it: m_sumEstimated)
-        QMetaObject::invokeMethod(m_view, "addDataEstimated", Q_ARG(QVariant,it.date()), Q_ARG(QVariant, it.value()));
-
+    }
 }

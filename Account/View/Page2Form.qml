@@ -32,6 +32,8 @@ Page {
         objectName: "chart"
         antialiasing: true
 
+        property int estimatedCount: estimatedChart.count
+
         backgroundColor: "transparent"
 
         function addDataMain(td, t) {
