@@ -21,6 +21,8 @@ public:
     friend Total operator+(const Entry&, const Entry&);
     friend Total& operator + (Total&, const Entry&);
     friend Total& operator + (const Entry&, Total&);
+    friend bool operator < (const Total&, const Total&);
+    friend bool operator ==(const Total&, const Total&);
 
     QDate date() const;
     void setDate(QDate date);

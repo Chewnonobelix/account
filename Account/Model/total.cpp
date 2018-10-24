@@ -78,3 +78,13 @@ QDate Total::maxDate(const QDate & d1, const QDate & d2)
     else
         return d1;
 }
+
+bool operator <(const Total& t1, const Total& t2)
+{
+    return (t1.date() < t2.date()) && (t1.value() < t2.value());
+}
+
+bool operator == (const Total& t1, const Total& t2)
+{
+    return (t1.date() == t2.date()) && (t1.value() == t2.value());
+}
