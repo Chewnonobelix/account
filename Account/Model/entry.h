@@ -4,6 +4,7 @@
 #include <QString>
 #include <QDate>
 #include <QObject>
+#include <QtMath>
 #include "information.h"
 
 

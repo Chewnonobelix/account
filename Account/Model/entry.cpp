@@ -52,12 +52,12 @@ void Entry::setAccount(QString account)
 
 double Entry::value() const
 {
-    return round (m_value * 100.0) / 100.0 ;
+    return floor (m_value * 100.0) / 100.0 ;
 }
 
 void Entry::setValue(double value)
 {
-    m_value = round (value * 100.0) / 100.0 ;
+    m_value = floor (value * 100.0) / 100.0 ;
 }
 
 QDate Entry::date() const
