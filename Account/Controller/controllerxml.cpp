@@ -31,9 +31,11 @@ bool ControllerXML::init()
         return false;
 
     if(!m_document.setContent(m_file))
-        return false;
+    {
+        m_file->close();
 
-    m_file->close();
+        return false;
+    }
     return true;
 }
 
