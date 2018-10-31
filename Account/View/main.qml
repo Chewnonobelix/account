@@ -84,6 +84,10 @@ ApplicationWindow {
                 background: Rectangle {
                     gradient: pageStyle.goldButton
                 }
+
+                onClicked: {
+                    deleteAccount.open()
+                }
             }
         }
 
@@ -91,6 +95,7 @@ ApplicationWindow {
             gradient: pageStyle.goldHeader
         }
     }
+
 
     background: Rectangle {
         id: backRect
@@ -158,6 +163,7 @@ ApplicationWindow {
         implicitWidth: parent.width
         implicitHeight: parent.height
 
+
         background: Rectangle {
             color: "transparent"
 
@@ -167,10 +173,60 @@ ApplicationWindow {
         Page1Form {
             id: table
             objectName: "table"
+
         }
 
         Page2Form {
             id: graph
+        }
+
+        Popup {
+            id: deleteAccount
+            anchors.centerIn: swipeView
+            width: delOk.width + delCancel.width + 10 + 2*delOk.padding + 2*delCancel.padding
+            height: delOk.height + 4*delOk.padding
+
+            background: Rectangle {
+                anchors.fill: parent
+            }
+
+            onOpened: {
+                console.log(width +" " + height)
+                console.log(delOk.width +" " + delOk.height)
+                console.log(delOk.padding)
+            }
+
+            Label {
+                id: labelDelete
+                property string account: accountSelect.currentText
+                text: qsTr("Delete ") + account + " ?"
+            }
+
+            Button {
+                id: delOk
+                text: qsTr("Ok")
+                anchors.top:labelDelete.bottom
+                anchors.topMargin: padding
+
+                onClicked: {
+                    console.log("ok")
+                    deleteAccount.close()
+                }
+
+            }
+
+            Button {
+                id: delCancel
+                anchors.left: delOk.right
+                anchors.leftMargin: padding
+                anchors.top:labelDelete.bottom
+                anchors.topMargin: padding
+
+                text: qsTr("Cancel")
+                onClicked: {
+                    deleteAccount.close()
+                }
+            }
         }
 
     }
