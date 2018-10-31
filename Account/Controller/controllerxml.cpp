@@ -17,7 +17,7 @@ ControllerXML::~ControllerXML()
 {
     m_file->open(QIODevice::WriteOnly);
     QTextStream stream(m_file);
-    stream<<m_document.toString();
+    stream<<m_document.toString().toLatin1().toBase64();
     m_file->close();
     delete m_file;
 }
@@ -30,12 +30,16 @@ bool ControllerXML::init()
     if(!m_file->open(QIODevice::ReadOnly))
         return false;
 
-    if(!m_document.setContent(m_file))
+    QByteArray text64 = m_file->readAll();
+    QByteArray text = QByteArray::fromBase64(text64);
+    if(!m_document.setContent(text))
     {
         m_file->close();
 
         return false;
     }
+
+    m_file->close();
     return true;
 }
 
