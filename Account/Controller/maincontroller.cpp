@@ -375,3 +375,8 @@ void MainController::validateCheckEstimated()
     QMetaObject::invokeMethod(popup, "close");
     selection();
 }
+
+void MainController::deleteAccount(QString account)
+{
+    AbstractController::deletAccount(account);
+}

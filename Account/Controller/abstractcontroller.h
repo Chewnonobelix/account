@@ -48,6 +48,8 @@ public:
     static void addCategory(QString, QString);
     static QStringList categories(QString);
 
+    static void deletAccount(QString);
+
     static void initTestEntry();
 };
 

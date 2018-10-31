@@ -46,6 +46,7 @@ public slots:
     void loadAccount();
 
     void validateCheckEstimated();
+    void deleteAccount(QString);
 
 };
 

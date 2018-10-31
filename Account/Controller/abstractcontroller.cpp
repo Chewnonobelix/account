@@ -184,3 +184,8 @@ QStringList AbstractController::categories(QString type)
 
     return ret;
 }
+
+void AbstractController::deletAccount(QString account)
+{
+    m_db->removeAccount(account);
+}
