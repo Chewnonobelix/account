@@ -25,7 +25,9 @@ SOURCES += \
     Controller/controllerxml.cpp \
     Controller/graphcontroller.cpp \
     Controller/xmltosql.cpp \
-    Controller/sqltoxml.cpp
+    Controller/sqltoxml.cpp \
+    Model/budget.cpp \
+    Model/commonexpense.cpp
 
 RESOURCES += View/qml.qrc
 
@@ -53,4 +55,6 @@ HEADERS += \
     Controller/controllerxml.h \
     Controller/graphcontroller.h \
     Controller/xmltosql.h \
-    Controller/sqltoxml.h
+    Controller/sqltoxml.h \
+    Model/budget.h \
+    Model/commonexpense.h

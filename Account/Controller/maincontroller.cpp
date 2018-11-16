@@ -219,7 +219,8 @@ void MainController::selection()
     double minV, maxV;
 
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
-    if(tab){
+    if(tab)
+    {
         if(!ret.isEmpty())
         {
             minV = ret.first().value();
@@ -251,16 +252,10 @@ void MainController::selection()
             map.insert("real", m.value());
             map.insert("estimated", e.value());
             QMetaObject::invokeMethod(tab, "fAdd", Q_ARG(QVariant, map));
-            //            QMetaObject::invokeMethod(chart, "addData", Q_ARG(QVariant, QDateTime(m.date())), Q_ARG(QVariant, m.value()),
-            //                                      Q_ARG(QVariant, QDateTime(e.date())), Q_ARG(QVariant,e.value()),
-            //                                      Q_ARG(QVariant, QDateTime(t.date())), Q_ARG(QVariant,t.value()));
         }
 
         minV -= 10;
         maxV += 10;
-        //        QMetaObject::invokeMethod(chart, "setMinMaxDate", Q_ARG(QVariant, minD), Q_ARG(QVariant, maxD));
-        //        QMetaObject::invokeMethod(chart, "setMinMaxValue", Q_ARG(QVariant, minV), Q_ARG(QVariant, maxV));
-        //        QMetaObject::invokeMethod(chart, "reset");
     }
 
 

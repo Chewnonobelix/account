@@ -235,11 +235,12 @@ bool ControllerDB::removeCategory(QString name)
 
 QMap<QString, QString> ControllerDB::selectCategory()
 {
-
+    //TODO
     return QMap<QString, QString>();
 }
 
 bool ControllerDB::updateEntry(const Entry &)
 {
+    //TODO
     return false;
 }
