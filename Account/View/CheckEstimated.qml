@@ -43,13 +43,16 @@ Popup {
         delegate: Row {
             id: row
             CheckBox {
+                id: rowChecked
                 checked: isChecked
 
                 onCheckedChanged: {
                     isChecked = checked
                 }
             }
-            Text {
+            Label {
+                anchors.left: rowChecked.right
+                anchors.verticalCenter: rowChecked.verticalCenter
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 text: label + " " + edate + " " + value + "€"
