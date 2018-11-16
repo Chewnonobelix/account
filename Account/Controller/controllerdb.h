@@ -21,8 +21,10 @@ private:
     SqlQuery m_addEntry;
     SqlQuery m_removeEntry;
     SqlQuery m_selectEntry;
+    SqlQuery m_updateEntry; //TODO
 
     SqlQuery m_accounts;
+    SqlQuery m_removeAccount; //TODO
 
     SqlQuery m_updateInfo;
     SqlQuery m_addInformation;
@@ -31,6 +33,7 @@ private:
 
     SqlQuery m_addCategory;
     SqlQuery m_removeCategory;
+    SqlQuery m_selectCategory; //TODO
 
 public:
     ControllerDB();
