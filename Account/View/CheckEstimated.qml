@@ -8,6 +8,12 @@ Popup {
 
     id: checker
 
+    Label {
+        text: qsTr("Entry to check")
+        font.pixelSize: 20
+        id: header
+    }
+
     background: Rectangle {
         gradient: pageStyle.backgroundGradient
         border.color: "gold"
@@ -40,6 +46,9 @@ Popup {
         model: checkerModel
         width: parent.width
         height: parent.height * .94
+        anchors.top: header.bottom
+        anchors.topMargin: 10
+        flickableDirection: Flickable.AutoFlickDirection
         delegate: Row {
             id: row
             CheckBox {
@@ -51,10 +60,7 @@ Popup {
                 }
             }
             Label {
-                anchors.left: rowChecked.right
                 anchors.verticalCenter: rowChecked.verticalCenter
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
                 text: label + " " + edate + " " + value + "€"
             }
         }
