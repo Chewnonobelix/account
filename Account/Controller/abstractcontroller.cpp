@@ -56,7 +56,7 @@ void AbstractController::addEntry(const Entry& e)
     et.setInfo(i);
     if(m_db->addEntry(et))
     {
-          Entry init;
+        Entry init;
         for(auto it: entries())
             if(it.label() == "Initial")
                 init = it;
@@ -64,7 +64,10 @@ void AbstractController::addEntry(const Entry& e)
         if(et.date() < init.date())
         {
             QMetaEnum qme = QMetaEnum::fromType<Categories::Type>();
-            init.setDate(et.date());
+            QDate nd = et.date().addDays(-1);
+
+
+            init.setDate(nd);
             double val = init.value();
             val -= (et.value()*qme.keysToValue(et.type().toLower().toLatin1()));
             init.setValue(val);
