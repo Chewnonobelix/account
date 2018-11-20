@@ -32,7 +32,7 @@ Item {
         id: title
 
         text: infoModel.title
-
+        font.family: pageStyle.core.name
         onEditingFinished: {
             s_titleChanged(text)
         }
@@ -44,6 +44,8 @@ Item {
         value: entry.value*100
         anchors.left: title.right
         enabled: false
+        font.family:  pageStyle.core.name
+
     }
 
     ComboBox {
@@ -52,6 +54,7 @@ Item {
         anchors.left: spinbox.right
         editable: currentText === ""
         model: [""]
+        font.family: pageStyle.core.name
 
         signal s_addCategory(string cat)
         signal s_currentTextChanged(string cat)
@@ -98,6 +101,7 @@ Item {
                 Label {
                     color: "black"
                     text: modelData
+                    font.family: pageStyle.core.name
                     anchors.centerIn: parent
                 }
 
@@ -125,6 +129,7 @@ Item {
         anchors.left: category.right
         enabled: false
         text: qsTr("Estimated")
+        font.family: pageStyle.core.name
 
         checked: infoModel.estimated
 

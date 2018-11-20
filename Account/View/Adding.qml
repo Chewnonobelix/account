@@ -59,13 +59,14 @@ Popup {
         Label {
             id: labelAdd
             text: qsTr("Adding " + v_date)
+            font.family: pageStyle.title.name
         }
 
 
         ComboBox {
             id: dateCombo
             model: dateModel
-
+            font.family: pageStyle.core.name
             Rectangle {
                 gradient: pageStyle.goldButton
                 anchors.fill: parent
@@ -81,6 +82,7 @@ Popup {
                         color: "black"
                         text: modelData
                         anchors.centerIn: parent
+                        font.family: pageStyle.core.name
                     }
                 }
 
@@ -92,14 +94,17 @@ Popup {
             Label {
                 id: l_new
                 text: qsTr("Add new entry")
+                font.family: pageStyle.title.name
             }
 
             TextField {
                 id: valueLabel
+                font.family: pageStyle.core.name
             }
 
             DoubleSpinBox {
                 id: spinbox
+                font.family: pageStyle.core.name
             }
 
             ComboBox {
@@ -107,6 +112,8 @@ Popup {
                 objectName: "type"
                 model: ["Income", "Outcome"]
                 enabled: !addingid.newAccount
+
+                font.family: pageStyle.core.name
 
                 Rectangle {
                     gradient: pageStyle.goldButton
@@ -123,6 +130,7 @@ Popup {
                             color: "black"
                             text: modelData
                             anchors.centerIn: parent
+                            font.family: pageStyle.core.name
                         }
                     }
 
@@ -135,6 +143,7 @@ Popup {
             Button {
                 id: b_save
                 text: qsTr("Save")
+                font.family: pageStyle.core.name
 
                 background: Rectangle {
                     gradient: pageStyle.goldButton
@@ -157,6 +166,7 @@ Popup {
             Button {
                 id:b_cancel
                 text: qsTr("Cancel")
+                font.family: pageStyle.core.name
 
                 background: Rectangle {
                     gradient: pageStyle.goldButton

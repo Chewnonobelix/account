@@ -94,6 +94,8 @@ Page {
             width: parent.width * .45
             anchors.top: parent.top
             anchors.left: parent.left
+            font.family: pageStyle.core.name
+            font.pixelSize: 15
 
             Shortcut {
                 context: Qt.ApplicationShortcut
@@ -129,7 +131,8 @@ Page {
             width: parent.width * .45
             anchors.left: add.right
             anchors.leftMargin: (parent.width * .1)
-
+            font.family: pageStyle.core.name
+            font.pixelSize: 15
             property int index: view.currentIndex
 
             Shortcut {
@@ -167,6 +170,9 @@ Page {
             anchors.topMargin: 10
             property int index
             enabled: false
+            font.family: pageStyle.core.name
+            font.pixelSize: 15
+
             Rectangle {
                 id: rectEdit
                 anchors.fill: parent
@@ -302,6 +308,9 @@ Page {
                 text: styleData.column === 2 ? Qt.formatDate(styleData.value, "dd-MM-yyyy") : (styleData.column === 1 && styleData.value === "outcome" )?  "-": (styleData.column === 1 && styleData.value === "income" )? "+" : styleData.value
 
                 anchors.centerIn: parent
+
+                font.family: pageStyle.core.name
+
             }
 
             MouseArea {
@@ -351,6 +360,8 @@ Page {
                     id: headerText
                     anchors.centerIn: parent
                     text: styleData.value
+                    font.family: pageStyle.title.name
+
                 }
 
                 MouseArea {

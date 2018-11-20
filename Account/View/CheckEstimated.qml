@@ -11,6 +11,7 @@ Popup {
     Label {
         text: qsTr("Entry to check")
         font.pixelSize: 20
+        font.family: pageStyle.title.name
         id: header
     }
 
@@ -60,6 +61,8 @@ Popup {
                 }
             }
             Label {
+                font.family: pageStyle.core.name
+                font.pointSize: 15
                 anchors.verticalCenter: rowChecked.verticalCenter
                 text: label + " " + edate + " " + value + "€"
             }
@@ -72,6 +75,7 @@ Popup {
         anchors.top: listChecker.bottom
         anchors.topMargin: 10
         height: parent.height * .05
+        font.family: pageStyle.core.name
 
         Rectangle {
             id: saveRect
@@ -96,6 +100,7 @@ Popup {
         anchors.top: listChecker.bottom
         anchors.topMargin: 10
         height: parent.height * .05
+        font.family: pageStyle.core.name
 
         Rectangle {
             id: laterRect

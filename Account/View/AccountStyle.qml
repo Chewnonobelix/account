@@ -1,6 +1,20 @@
 import QtQuick 2.0
 
 QtObject {
+    property FontLoader title: FontLoader{
+        name: "Castellar"
+//        name: "Segoe Script"
+        id: titleFont
+
+    }
+
+    property FontLoader core: FontLoader{
+//        name: "Castellar"
+        name: "Baskerville Old Face"
+        id: coreFont
+
+    }
+
     property Gradient goldButton: Gradient {
         id: goldButton
         GradientStop {

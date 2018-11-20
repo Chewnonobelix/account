@@ -40,6 +40,7 @@ ApplicationWindow {
     }
 
     menuBar: MenuBar {
+        font.family: pageStyle.core.name
 
         objectName: "menuBar"
         Menu {
@@ -48,6 +49,7 @@ ApplicationWindow {
                 text: qsTr("&Xml")
                 objectName: "xmlMenu"
                 checkable: true
+                font.family: pageStyle.core.name
 
                 signal s_xml(bool toXml)
                 onClicked: {
@@ -61,6 +63,8 @@ ApplicationWindow {
 
             MenuItem {
                 text: qsTr("&Quit")
+                font.family: pageStyle.core.name
+
                 background: Rectangle {
                     gradient: pageStyle.goldButton
                 }
@@ -69,8 +73,12 @@ ApplicationWindow {
 
         Menu {
             title: qsTr("Account")
+            font.family: pageStyle.core.name
+
             MenuItem {
                 text: qsTr("&New account")
+                font.family: pageStyle.core.name
+
                 onClicked: {
                     adding(true)
                 }
@@ -81,6 +89,8 @@ ApplicationWindow {
             }
             MenuItem {
                 text: qsTr("&Delete account")
+                font.family: pageStyle.core.name
+
                 background: Rectangle {
                     gradient: pageStyle.goldButton
                 }
@@ -115,6 +125,7 @@ ApplicationWindow {
             objectName: "accountTitle"
             text: qsTr("Account") + ": " + parent.accountName + " = " + parent.total + "€"
             font.pixelSize: Qt.application.font.pixelSize * 2
+            font.family: pageStyle.title.name
             padding: 10
             color: parent.total > 0 ? "green" : "red"
         }
@@ -123,6 +134,7 @@ ApplicationWindow {
             id: accountSelect
             objectName: "accountSelect"
             anchors.right: parent.right
+            font.family: pageStyle.core.name
 
             signal s_currentTextChange(string text)
 
@@ -141,6 +153,7 @@ ApplicationWindow {
                         color: "black"
                         text: modelData
                         anchors.centerIn: parent
+                        font.family: pageStyle.core.name
                     }
                 }
 

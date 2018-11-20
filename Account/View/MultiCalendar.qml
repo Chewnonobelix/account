@@ -88,6 +88,7 @@ Calendar {
                 color:"black"
                 anchors.centerIn: parent
                 text: Qt.locale().monthName(visibleMonth, Locale.ShortFormat) + " " + visibleYear
+                font.family: pageStyle.title.name
             }
 
             Button {
@@ -96,6 +97,13 @@ Calendar {
                 width: multiCal.width/14
                 height: parent.height
                 style: ButtonStyle {
+                    label: Label{
+                        font.family: pageStyle.core.name
+                        font.pixelSize: 15
+                        text: ">"
+                        anchors.centerIn: parent
+                    }
+
                     background: Rectangle {
                         gradient: pageStyle.goldButton
                         border.color: "silver"
@@ -103,7 +111,7 @@ Calendar {
                     }
                 }
 
-                text: ">"
+
                 onClicked: {
                     multiCal.showNextMonth()
                 }
@@ -115,13 +123,20 @@ Calendar {
                 width: multiCal.width/14
                 height: parent.height
                 style: ButtonStyle {
+                    label: Label{
+                        font.family: pageStyle.core.name
+                        font.pixelSize: 15
+
+                        text: "<"
+                        anchors.horizontalCenter: background.horizontalCenter
+                    }
+
                     background: Rectangle {
                         gradient: pageStyle.goldButton
                         border.color: "silver"
                     }
                 }
 
-                text: "<"
                 onClicked: {
                     multiCal.showPreviousMonth()
                 }
@@ -151,6 +166,7 @@ Calendar {
             Label {
                 anchors.centerIn: parent
                 text: styleData.weekNumber
+                font.family: pageStyle.title.name
             }
         }
 
@@ -163,6 +179,7 @@ Calendar {
 
             Label {
                 anchors.centerIn: parent
+                font.family: pageStyle.title.name
                 text: Qt.locale().dayName(styleData.dayOfWeek, Locale.ShortFormat)
             }
         }
@@ -204,6 +221,7 @@ Calendar {
                 id: c_date
                 anchors.centerIn: parent
                 text: styleData.date.getDate()
+                font.family: pageStyle.core.name
                 color:  parent.checkMonth(styleData)? "black" : "grey"
                 onTextChanged: {
 
