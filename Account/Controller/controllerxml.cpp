@@ -32,6 +32,7 @@ bool ControllerXML::init()
 
     QByteArray text64 = m_file->readAll();
     QByteArray text = QByteArray::fromBase64(text64);
+
     if(!m_document.setContent(text))
     {
         m_file->close();
@@ -67,7 +68,7 @@ bool ControllerXML::addEntry(const Entry& e)
         el.appendChild(child);
     };
 
-    func("date", e.date().toString());
+    func("date", e.date().toString("dd-MM-yyyy"));
     func("value", QString::number(e.value()));
     func("account", e.account());
     func("type", e.type());
@@ -166,7 +167,7 @@ QList<Entry> ControllerXML::selectEntry(QString account)
         e.setId(el.attribute("id").toInt());
         QDomElement child = el.elementsByTagName("date").at(0).toElement();
 
-        e.setDate(QDate::fromString(child.text()));
+        e.setDate(QDate::fromString(child.text(), "dd-MM-yyyy"));
         child = el.elementsByTagName("account").at(0).toElement();
         e.setAccount(child.text());
         child = el.elementsByTagName("value").at(0).toElement();
@@ -349,7 +350,7 @@ bool ControllerXML::updateEntry(const Entry & e)
                 txt.setData(value);
             };
 
-            setter("date", e.date().toString());
+            setter("date", e.date().toString("dd-MM-yyyy"));
             setter("value",QString::number(e.value()));
 
             return true;
