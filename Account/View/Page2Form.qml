@@ -27,7 +27,8 @@ Rectangle {
         //theme: ChartView.ChartThemeBlueIcy
         id: chart
         title: qsTr("Account evolution")
-        titleFont: pageStyle.title.name
+        titleFont.family: pageStyle.title.name
+        titleFont.pixelSize: pageStyle.title.size
         objectName: "chart"
         antialiasing: true
 
@@ -81,16 +82,19 @@ Rectangle {
 
 
         legend.font.family: pageStyle.title.name
+        legend.font.pixelSize: pageStyle.title.size
 
         DateTimeAxis {
             id: dta
             format: "dd-MM- yyyy"
             labelsFont.family: pageStyle.core.name
+            labelsFont.pixelSize: pageStyle.core.size
         }
 
         ValueAxis {
             id: va
             labelsFont.family: pageStyle.core.name
+            labelsFont.pixelSize: pageStyle.core.size
 
         }
 

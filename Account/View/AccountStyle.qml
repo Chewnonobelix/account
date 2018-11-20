@@ -5,6 +5,8 @@ QtObject {
         name: "Castellar"
 //        name: "Segoe Script"
         id: titleFont
+        property int size: 20
+        property int size2: 16
 
     }
 
@@ -12,6 +14,7 @@ QtObject {
 //        name: "Castellar"
         name: "Baskerville Old Face"
         id: coreFont
+        property int size: 15
 
     }
 

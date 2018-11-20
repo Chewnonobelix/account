@@ -95,7 +95,7 @@ Page {
             anchors.top: parent.top
             anchors.left: parent.left
             font.family: pageStyle.core.name
-            font.pixelSize: 15
+            font.pixelSize: pageStyle.core.size
 
             Shortcut {
                 context: Qt.ApplicationShortcut
@@ -132,7 +132,7 @@ Page {
             anchors.left: add.right
             anchors.leftMargin: (parent.width * .1)
             font.family: pageStyle.core.name
-            font.pixelSize: 15
+            font.pixelSize: pageStyle.core.size
             property int index: view.currentIndex
 
             Shortcut {
@@ -171,7 +171,7 @@ Page {
             property int index
             enabled: false
             font.family: pageStyle.core.name
-            font.pixelSize: 15
+            font.pixelSize: pageStyle.core.size
 
             Rectangle {
                 id: rectEdit
@@ -310,6 +310,7 @@ Page {
                 anchors.centerIn: parent
 
                 font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
 
             }
 
@@ -361,6 +362,7 @@ Page {
                     anchors.centerIn: parent
                     text: styleData.value
                     font.family: pageStyle.title.name
+                    font.pixelSize: pageStyle.title.size2
 
                 }
 

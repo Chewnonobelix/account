@@ -41,6 +41,7 @@ ApplicationWindow {
 
     menuBar: MenuBar {
         font.family: pageStyle.core.name
+        font.pixelSize: pageStyle.core.size
 
         objectName: "menuBar"
         Menu {
@@ -50,6 +51,7 @@ ApplicationWindow {
                 objectName: "xmlMenu"
                 checkable: true
                 font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
 
                 signal s_xml(bool toXml)
                 onClicked: {
@@ -64,6 +66,7 @@ ApplicationWindow {
             MenuItem {
                 text: qsTr("&Quit")
                 font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
 
                 background: Rectangle {
                     gradient: pageStyle.goldButton
@@ -74,10 +77,12 @@ ApplicationWindow {
         Menu {
             title: qsTr("Account")
             font.family: pageStyle.core.name
+            font.pixelSize: pageStyle.core.size
 
             MenuItem {
                 text: qsTr("&New account")
                 font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
 
                 onClicked: {
                     adding(true)
@@ -90,6 +95,7 @@ ApplicationWindow {
             MenuItem {
                 text: qsTr("&Delete account")
                 font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
 
                 background: Rectangle {
                     gradient: pageStyle.goldButton
@@ -124,7 +130,7 @@ ApplicationWindow {
         Label {
             objectName: "accountTitle"
             text: qsTr("Account") + ": " + parent.accountName + " = " + parent.total + "€"
-            font.pixelSize: Qt.application.font.pixelSize * 2
+            font.pixelSize: pageStyle.title.size
             font.family: pageStyle.title.name
             padding: 10
             color: parent.total > 0 ? "green" : "red"
@@ -135,6 +141,7 @@ ApplicationWindow {
             objectName: "accountSelect"
             anchors.right: parent.right
             font.family: pageStyle.core.name
+            font.pixelSize: pageStyle.core.size
 
             signal s_currentTextChange(string text)
 
@@ -154,6 +161,7 @@ ApplicationWindow {
                         text: modelData
                         anchors.centerIn: parent
                         font.family: pageStyle.core.name
+                        font.pixelSize: pageStyle.core.size
                     }
                 }
 
@@ -220,7 +228,8 @@ ApplicationWindow {
                 text: qsTr("Ok")
                 anchors.top:labelDelete.bottom
                 anchors.topMargin: padding
-
+                font.pixelSize: pageStyle.core.size
+                font.family: pageStyle.core.name
                 onClicked: {
                     console.log("ok")
                     deleteAccount.close()
@@ -234,6 +243,8 @@ ApplicationWindow {
                 anchors.leftMargin: padding
                 anchors.top:labelDelete.bottom
                 anchors.topMargin: padding
+                font.pixelSize: pageStyle.core.size
+                font.family: pageStyle.core.name
 
                 text: qsTr("Cancel")
                 onClicked: {

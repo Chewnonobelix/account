@@ -89,6 +89,7 @@ Calendar {
                 anchors.centerIn: parent
                 text: Qt.locale().monthName(visibleMonth, Locale.ShortFormat) + " " + visibleYear
                 font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
             }
 
             Button {
@@ -99,7 +100,7 @@ Calendar {
                 style: ButtonStyle {
                     label: Label{
                         font.family: pageStyle.core.name
-                        font.pixelSize: 15
+                        font.pixelSize: pageStyle.core.size
                         text: ">"
                         anchors.centerIn: parent
                     }
@@ -125,7 +126,7 @@ Calendar {
                 style: ButtonStyle {
                     label: Label{
                         font.family: pageStyle.core.name
-                        font.pixelSize: 15
+                        font.pixelSize: pageStyle.core.size
 
                         text: "<"
                         anchors.horizontalCenter: background.horizontalCenter
@@ -167,6 +168,7 @@ Calendar {
                 anchors.centerIn: parent
                 text: styleData.weekNumber
                 font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
             }
         }
 
@@ -180,6 +182,7 @@ Calendar {
             Label {
                 anchors.centerIn: parent
                 font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size2
                 text: Qt.locale().dayName(styleData.dayOfWeek, Locale.ShortFormat)
             }
         }
@@ -222,6 +225,7 @@ Calendar {
                 anchors.centerIn: parent
                 text: styleData.date.getDate()
                 font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
                 color:  parent.checkMonth(styleData)? "black" : "grey"
                 onTextChanged: {
 

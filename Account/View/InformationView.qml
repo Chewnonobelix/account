@@ -33,6 +33,7 @@ Item {
 
         text: infoModel.title
         font.family: pageStyle.core.name
+        font.pixelSize: pageStyle.core.size
         onEditingFinished: {
             s_titleChanged(text)
         }
@@ -45,6 +46,7 @@ Item {
         anchors.left: title.right
         enabled: false
         font.family:  pageStyle.core.name
+        font.pixelSize: pageStyle.core.size
 
     }
 
@@ -55,6 +57,7 @@ Item {
         editable: currentText === ""
         model: [""]
         font.family: pageStyle.core.name
+        font.pixelSize: pageStyle.core.size
 
         signal s_addCategory(string cat)
         signal s_currentTextChanged(string cat)
@@ -102,6 +105,7 @@ Item {
                     color: "black"
                     text: modelData
                     font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
                     anchors.centerIn: parent
                 }
 
@@ -130,6 +134,7 @@ Item {
         enabled: false
         text: qsTr("Estimated")
         font.family: pageStyle.core.name
+        font.pixelSize: pageStyle.core.size
 
         checked: infoModel.estimated
 

@@ -60,6 +60,7 @@ Popup {
             id: labelAdd
             text: qsTr("Adding " + v_date)
             font.family: pageStyle.title.name
+            font.pixelSize: pageStyle.title.size
         }
 
 
@@ -67,6 +68,7 @@ Popup {
             id: dateCombo
             model: dateModel
             font.family: pageStyle.core.name
+            font.pixelSize: pageStyle.core.size
             Rectangle {
                 gradient: pageStyle.goldButton
                 anchors.fill: parent
@@ -83,6 +85,7 @@ Popup {
                         text: modelData
                         anchors.centerIn: parent
                         font.family: pageStyle.core.name
+                        font.pixelSize: pageStyle.core.size
                     }
                 }
 
@@ -95,16 +98,19 @@ Popup {
                 id: l_new
                 text: qsTr("Add new entry")
                 font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
             }
 
             TextField {
                 id: valueLabel
                 font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
             }
 
             DoubleSpinBox {
                 id: spinbox
                 font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
             }
 
             ComboBox {
@@ -114,6 +120,7 @@ Popup {
                 enabled: !addingid.newAccount
 
                 font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
 
                 Rectangle {
                     gradient: pageStyle.goldButton
@@ -131,6 +138,7 @@ Popup {
                             text: modelData
                             anchors.centerIn: parent
                             font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
                         }
                     }
 
@@ -144,6 +152,7 @@ Popup {
                 id: b_save
                 text: qsTr("Save")
                 font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
 
                 background: Rectangle {
                     gradient: pageStyle.goldButton
@@ -167,7 +176,7 @@ Popup {
                 id:b_cancel
                 text: qsTr("Cancel")
                 font.family: pageStyle.core.name
-
+                font.pixelSize: pageStyle.core.size
                 background: Rectangle {
                     gradient: pageStyle.goldButton
                     id: cancelRect
