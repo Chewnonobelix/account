@@ -1,5 +1,7 @@
 import QtQuick 2.11
 import QtQuick.Controls 1.4
+
+import QtQuick.Controls 2.4
 import QtQuick.Controls.Styles 1.4
 
 Calendar {
@@ -63,6 +65,8 @@ Calendar {
         currentMonth = visibleMonth
         visibleYear = 1900 + new Date().getYear()
         currentYear = visibleYear
+        //        console.log("oulalala " + multiCal.width + ", " + multiCal.height)
+        //        console.log(multiCal.style + ", " + style)
     }
 
     style: CalendarStyle {
@@ -79,6 +83,7 @@ Calendar {
         }
 
         navigationBar: Rectangle {
+            id: navBar
             height: multiCal.height/16
 
             gradient: pageStyle.goldHeader
@@ -97,20 +102,23 @@ Calendar {
                 anchors.right: parent.right
                 width: multiCal.width/14
                 height: parent.height
-                style: ButtonStyle {
-                    label: Label{
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
-                        text: ">"
-                        anchors.centerIn: parent
-                    }
+                text: ">"
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
 
-                    background: Rectangle {
-                        gradient: pageStyle.goldButton
-                        border.color: "silver"
-
-                    }
+                onWidthChanged: {
+                    console.log("me " + width + ", " + height)
+                    console.log("multi " + multiCal.width + ", " + multiCal.height)
+                    console.log("nav " + navBar.width + ", " + navBar.height)
+                    console.log("parent " + parent)
                 }
+
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                    border.color: "silver"
+                    anchors.fill: parent
+                }
+
 
 
                 onClicked: {
@@ -123,20 +131,16 @@ Calendar {
                 anchors.left: parent.left
                 width: multiCal.width/14
                 height: parent.height
-                style: ButtonStyle {
-                    label: Label{
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
 
-                        text: "<"
-                        anchors.horizontalCenter: background.horizontalCenter
-                    }
+                text: "<"
 
-                    background: Rectangle {
-                        gradient: pageStyle.goldButton
-                        border.color: "silver"
-                    }
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                    border.color: "silver"
                 }
+
 
                 onClicked: {
                     multiCal.showPreviousMonth()
