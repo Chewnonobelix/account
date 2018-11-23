@@ -65,8 +65,6 @@ Calendar {
         currentMonth = visibleMonth
         visibleYear = 1900 + new Date().getYear()
         currentYear = visibleYear
-        //        console.log("oulalala " + multiCal.width + ", " + multiCal.height)
-        //        console.log(multiCal.style + ", " + style)
     }
 
     style: CalendarStyle {
@@ -106,20 +104,11 @@ Calendar {
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
 
-                onWidthChanged: {
-                    console.log("me " + width + ", " + height)
-                    console.log("multi " + multiCal.width + ", " + multiCal.height)
-                    console.log("nav " + navBar.width + ", " + navBar.height)
-                    console.log("parent " + parent)
-                }
-
                 background: Rectangle {
                     gradient: pageStyle.goldButton
                     border.color: "silver"
                     anchors.fill: parent
                 }
-
-
 
                 onClicked: {
                     multiCal.showNextMonth()
@@ -275,12 +264,10 @@ Calendar {
                         }
                     }
                     parent.updateSelected()
-
                 }
             }
         }
     }
-
 }
 
 

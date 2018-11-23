@@ -87,6 +87,8 @@ Page {
         width: cal.width
         height: edit.height + add.height + 10
         id: group
+        enabled: accountSelect.model.length > 1
+
 
         Button {
             id: add

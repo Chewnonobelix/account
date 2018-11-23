@@ -15,7 +15,7 @@ ApplicationWindow {
     signal remove(int index)
     signal edit(int index)
     signal accountChange(int index)
-
+    signal removeAccount (string name)
     id: mainWindow
 
 
@@ -96,7 +96,7 @@ ApplicationWindow {
                 text: qsTr("&Delete account")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
-
+                enabled: accountSelect.model.length > 1
                 background: Rectangle {
                     gradient: pageStyle.goldButton
                 }
@@ -149,6 +149,10 @@ ApplicationWindow {
                 gradient: pageStyle.goldButton
                 anchors.fill: parent
             }
+
+           onModelChanged: {
+               console.log("Count: " + count)
+           }
 
             delegate: ItemDelegate {
                 width: accountSelect.width
@@ -204,23 +208,24 @@ ApplicationWindow {
         Popup {
             id: deleteAccount
             anchors.centerIn: swipeView
-            width: delOk.width + delCancel.width + 10 + 2*delOk.padding + 2*delCancel.padding
-            height: delOk.height + 4*delOk.padding
+
+            width: labelDelete.width * 1.2
+            height: (labelDelete.height + delOk.height + 3*delOk.padding) * 1.1
 
             background: Rectangle {
                 anchors.fill: parent
+                gradient: pageStyle.backgroundGradient
+                border.color: "gold"
             }
 
-            onOpened: {
-                console.log(width +" " + height)
-                console.log(delOk.width +" " + delOk.height)
-                console.log(delOk.padding)
-            }
 
             Label {
                 id: labelDelete
                 property string account: accountSelect.currentText
                 text: qsTr("Delete ") + account + " ?"
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
+                anchors.horizontalCenter: parent.width / 2
             }
 
             Button {
@@ -230,10 +235,22 @@ ApplicationWindow {
                 anchors.topMargin: padding
                 font.pixelSize: pageStyle.core.size
                 font.family: pageStyle.core.name
-                onClicked: {
-                    console.log("ok")
-                    deleteAccount.close()
+
+                onPressed: {
+                    rectEdit.gradient = pageStyle.darkGoldButton
                 }
+
+                onReleased: {
+                    mainWindow.removeAccount(labelDelete.account)
+                    deleteAccount.close()
+                    rectEdit.gradient = pageStyle.goldButton
+                }
+
+                background: Rectangle {
+                    id: rectEdit
+                    gradient: pageStyle.goldButton
+                }
+
 
             }
 
@@ -247,8 +264,20 @@ ApplicationWindow {
                 font.family: pageStyle.core.name
 
                 text: qsTr("Cancel")
-                onClicked: {
+
+                onPressed: {
+                    rectEdit2.gradient = pageStyle.darkGoldButton
+                }
+
+                onReleased: {
                     deleteAccount.close()
+                    rectEdit2.gradient = pageStyle.goldButton
+                }
+
+                background: Rectangle {
+                    id: rectEdit2
+
+                    gradient: pageStyle.goldButton
                 }
             }
         }

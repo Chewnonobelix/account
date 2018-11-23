@@ -24,6 +24,7 @@ int MainController::exec()
 
     connect(root, SIGNAL(adding(bool)), this, SLOT(add(bool)));
     connect(root, SIGNAL(remove(int)), this, SLOT(remove(int)));
+    connect(root, SIGNAL(removeAccount(QString)), this, SLOT(deleteAccount(QString)));
 
     QObject* calendar = root->findChild<QObject*>("cal");
 
@@ -374,4 +375,5 @@ void MainController::validateCheckEstimated()
 void MainController::deleteAccount(QString account)
 {
     AbstractController::deletAccount(account);
+    loadAccount();
 }
