@@ -49,15 +49,8 @@ Page {
             mX = ((mainWindow.width * px)+width)-mainWindow.width
             mY = ((mainWindow.height * py)+height)-(mainWindow.height)
 
-            console.log("mY " + mY)
             pX = px
             pY= py
-        }
-
-        onXChanged: {
-//            console.log("Change " + ((x+width)-mainWindow.width))
-//            console.log(x)
-//            console.log(width)
         }
     }
 
@@ -87,7 +80,7 @@ Page {
         width: cal.width
         height: edit.height + add.height + 10
         id: group
-        enabled: accountSelect.model.length > 1
+        enabled: accountSelect.model.length > 0
 
 
         Button {
@@ -371,9 +364,6 @@ Page {
                 MouseArea {
                     anchors.fill: parent
 
-                    onClicked: {
-                        console.log("Sort " + styleData)
-                    }
                 }
             }
 

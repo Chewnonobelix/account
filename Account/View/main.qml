@@ -96,7 +96,7 @@ ApplicationWindow {
                 text: qsTr("&Delete account")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
-                enabled: accountSelect.model.length > 1
+                enabled: accountSelect.model.length > 0
                 background: Rectangle {
                     gradient: pageStyle.goldButton
                 }
@@ -133,7 +133,7 @@ ApplicationWindow {
             font.pixelSize: pageStyle.title.size
             font.family: pageStyle.title.name
             padding: 10
-            color: parent.total > 0 ? "green" : "red"
+            color: accountSelect.model.length > 0 ? parent.total > 0 ? "green" : "red" : "transparent"
         }
 
         ComboBox {
@@ -142,7 +142,7 @@ ApplicationWindow {
             anchors.right: parent.right
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
-
+            enabled: accountSelect.model.length > 0
             signal s_currentTextChange(string text)
 
             Rectangle {
@@ -150,7 +150,6 @@ ApplicationWindow {
                 anchors.fill: parent
             }
 
-           onModelChanged: {
                console.log("Count: " + count)
            }
 
@@ -187,7 +186,7 @@ ApplicationWindow {
         currentIndex: tabBar.currentIndex
         implicitWidth: parent.width
         implicitHeight: parent.height
-
+        enabled: accountSelect.model.length > 0
 
         background: Rectangle {
             color: "transparent"

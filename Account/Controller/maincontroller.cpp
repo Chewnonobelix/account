@@ -35,12 +35,8 @@ int MainController::exec()
 
     if(combo)
     {
-        QStringList t = AbstractController::accountList();
-        if(t.isEmpty())
-            t<<"";
-        combo->setProperty("model", t);
         connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
-        accountChange(t[0]);
+        loadAccount();
     }
 
     QObject* adding = root->findChild<QObject*>("addingid");
@@ -149,8 +145,6 @@ void MainController::adding()
 }
 void MainController::remove(int id)
 {
-    qDebug()<<"Remove"<<id;
-
     Entry e = AbstractController::entry(id);
     AbstractController::removeEntry(e);
     selection();
@@ -159,7 +153,6 @@ void MainController::remove(int id)
 void MainController::edit(int id)
 {
     QObject* info = m_engine.rootObjects().first()->findChild<QObject*>("infoView");
-    qDebug()<<"Edit"<< id;
 
     if(info)
     {
@@ -170,7 +163,6 @@ void MainController::edit(int id)
 
 void MainController::selection()
 {
-    qDebug()<<"Selection";
     QObject* calendar = m_engine.rootObjects().first()->findChild<QObject*>("cal");
     QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));
     QJSValue array = mp.read(calendar).value<QJSValue>();
@@ -296,11 +288,14 @@ void MainController::loadAccount()
     if(combo)
     {
         QStringList t = AbstractController::accountList();
-        if(t.isEmpty())
-            t<<"";
+
         combo->setProperty("model", t);
         connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
-        accountChange(t[0]);
+
+        if(t.isEmpty())
+            accountChange("");
+        else
+            accountChange(t[0]);
     }
 }
 
@@ -318,9 +313,6 @@ void MainController::checkEstimated()
 
     if(checker)
     {
-        qDebug()<<"To check"<<list.size();
-
-
         QMetaObject::invokeMethod(checker, "clear");
         for(auto it: list)
         {
@@ -335,7 +327,7 @@ void MainController::checkEstimated()
 
         int count = checker->property("count").toInt();
 
-        if(count > 0)
+        if( count > 0)
             QMetaObject::invokeMethod(popup, "open");
     }
 }
