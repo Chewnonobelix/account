@@ -208,6 +208,7 @@ Page {
         objectName: "entryView"
         model: defaultModel
 
+        sortIndicatorVisible:  true
         property string currentType
         property int currentIndex: -1
 
@@ -290,8 +291,45 @@ Page {
             width: 100
             movable: false
             resizable: false
+
+
         }
 
+        style: TableViewStyle {
+            section.delegate: Rectangle {
+
+            }
+        }
+
+        section.delegate: Rectangle {
+            height: view.height * 0.03
+            gradient:  pageStyle.goldHeader
+            anchors.centerIn: parent
+            anchors.leftMargin: 10
+
+
+
+            Label {
+                id: headerText
+                height: parent.height*.8
+                anchors.centerIn: parent
+                text: styleData.value
+                font.family: pageStyle.title.name
+                font.pixelSize: height * 0.85
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.WhatsThisCursor
+                    propagateComposedEvents: true
+                    onHoveredChanged: {
+                        console.log("Va mourrir connard")
+                    }
+                }
+
+            }
+
+        }
 
         itemDelegate: Rectangle {
             width: parent.width
@@ -347,28 +385,6 @@ Page {
             gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
         }
 
-
-        style: TableViewStyle {
-            headerDelegate: Rectangle {
-                height: headerText.implicitHeight * 1.2
-                gradient:  pageStyle.goldHeader
-                Label {
-                    id: headerText
-                    anchors.centerIn: parent
-                    text: styleData.value
-                    font.family: pageStyle.title.name
-                    font.pixelSize: pageStyle.title.size2
-
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-
-                }
-            }
-
-
-        }
     }
 
     ScrollView {

@@ -34,10 +34,10 @@ ApplicationWindow {
         id: pageStyle
     }
 
-    MouseArea {
-        anchors.fill: parent
-        id: mainarea
-    }
+//    MouseArea {
+//        anchors.fill: parent
+//        id: mainarea
+//    }
 
     menuBar: MenuBar {
         font.family: pageStyle.core.name
@@ -149,9 +149,6 @@ ApplicationWindow {
                 gradient: pageStyle.goldButton
                 anchors.fill: parent
             }
-
-               console.log("Count: " + count)
-           }
 
             delegate: ItemDelegate {
                 width: accountSelect.width
