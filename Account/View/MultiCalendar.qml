@@ -88,11 +88,13 @@ Calendar {
 
             Label {
                 id:monthLabel
+                height: parent.height
                 color:"black"
                 anchors.centerIn: parent
                 text: Qt.locale().monthName(visibleMonth, Locale.ShortFormat) + " " + visibleYear
                 font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.pixelSize: height * 0.8
+
             }
 
             Button {
@@ -154,15 +156,21 @@ Calendar {
         weekNumberDelegate: Rectangle {
             gradient: pageStyle.goldHeader
             width: multiCal.width/14
+            height: multiCal.height/7
             anchors.top: navigationBar.bottom
 
             border.color: "darkgoldenrod"
             Label {
+                id: wndLabel
+                height: parent.height
                 anchors.centerIn: parent
                 text: styleData.weekNumber
                 font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.pixelSize: height * 0.3
+                verticalAlignment: Text.AlignVCenter
             }
+
+
         }
 
         dayOfWeekDelegate: Rectangle {
@@ -174,8 +182,10 @@ Calendar {
 
             Label {
                 anchors.centerIn: parent
+                height: parent.height
                 font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size2
+                font.pixelSize: height * 0.6
+                verticalAlignment: Text.AlignVCenter
                 text: Qt.locale().dayName(styleData.dayOfWeek, Locale.ShortFormat)
             }
         }

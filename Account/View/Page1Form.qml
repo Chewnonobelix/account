@@ -295,13 +295,8 @@ Page {
 
         }
 
-        style: TableViewStyle {
-            section.delegate: Rectangle {
 
-            }
-        }
-
-        section.delegate: Rectangle {
+        headerDelegate: Rectangle {
             height: view.height * 0.03
             gradient:  pageStyle.goldHeader
             anchors.centerIn: parent
@@ -316,17 +311,6 @@ Page {
                 text: styleData.value
                 font.family: pageStyle.title.name
                 font.pixelSize: height * 0.85
-
-                MouseArea {
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    cursorShape: Qt.WhatsThisCursor
-                    propagateComposedEvents: true
-                    onHoveredChanged: {
-                        console.log("Va mourrir connard")
-                    }
-                }
-
             }
 
         }
