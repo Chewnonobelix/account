@@ -18,7 +18,6 @@ ApplicationWindow {
     signal removeAccount (string name)
     id: mainWindow
 
-
     Component.onCompleted: showMaximized()
 
     Shortcut {
@@ -33,11 +32,6 @@ ApplicationWindow {
     AccountStyle {
         id: pageStyle
     }
-
-//    MouseArea {
-//        anchors.fill: parent
-//        id: mainarea
-//    }
 
     menuBar: MenuBar {
         font.family: pageStyle.core.name
@@ -67,9 +61,20 @@ ApplicationWindow {
                 text: qsTr("&Quit")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
+                id: quitMenu
+
+                Shortcut {
+                    sequence: "CTRL+Q"
+                    context: Qt.ApplicationShortcut
+                    onActivated: quitMenu.clicked()
+                }
 
                 background: Rectangle {
                     gradient: pageStyle.goldButton
+                }
+
+                onClicked: {
+                    mainWindow.close()
                 }
             }
         }
