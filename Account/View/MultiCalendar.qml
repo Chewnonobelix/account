@@ -184,7 +184,7 @@ Calendar {
                 anchors.centerIn: parent
                 height: parent.height
                 font.family: pageStyle.title.name
-                font.pixelSize: height * 0.6
+                font.pixelSize: height * 0.55
                 verticalAlignment: Text.AlignVCenter
                 text: Qt.locale().dayName(styleData.dayOfWeek, Locale.ShortFormat)
             }
