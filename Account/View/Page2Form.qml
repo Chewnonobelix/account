@@ -4,10 +4,10 @@ import QtCharts 2.0
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 1.4
 
-Page {
+Rectangle {
     implicitWidth: parent.width
     implicitHeight: parent.height
-    //    id: page2
+    id: pageChart
 
     //    header: Label {
     //        text: qsTr("Page 2")
@@ -19,9 +19,7 @@ Page {
         id: pageStyle
     }
 
-    background: Rectangle {
         color: "transparent"
-    }
 
     ChartView {
         anchors.fill: parent
@@ -72,6 +70,7 @@ Page {
 
         DateTimeAxis {
             id: dta
+            format: "dd-MM- yyyy"
         }
 
         ValueAxis {
@@ -79,7 +78,7 @@ Page {
         }
 
         LineSeries {
-//            color: "transparent"
+            //            color: "transparent"
             pointsVisible: true
             name: "main"
             id: mainChart

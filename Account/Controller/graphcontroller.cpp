@@ -21,9 +21,8 @@ void GraphController::set(QObject * view)
 {
     m_view = view;
 }
-void GraphController::timerEvent(QTimerEvent *event)
+void GraphController::timerEvent(QTimerEvent *)
 {
-    qDebug()<<"Timer event"<<event->timerId();
     m_sum.clear();
     m_sumEstimated.clear();
     QMetaObject::invokeMethod(m_view, "clear");
