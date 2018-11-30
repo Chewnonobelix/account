@@ -148,6 +148,9 @@ ApplicationWindow {
         }
     }
 
+    CheckEstimated {
+        objectName: "cEstimated"
+    }
 
     SwipeView {
         id: swipeView

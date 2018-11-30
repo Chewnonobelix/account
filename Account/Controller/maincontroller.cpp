@@ -65,6 +65,14 @@ int MainController::exec()
         m_graph.exec();
     }
 
+    QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
+    QObject* checker = popup->findChild<QObject*>("checkerModel");
+
+    if(checker)
+    {
+        connect(checker, SIGNAL(validate()), this, SLOT(validateCheckEstimated()));
+    }
+
     return 0;
 }
 
@@ -243,16 +251,16 @@ void MainController::selection()
             map.insert("real", m.value());
             map.insert("estimated", e.value());
             QMetaObject::invokeMethod(tab, "fAdd", Q_ARG(QVariant, map));
-//            QMetaObject::invokeMethod(chart, "addData", Q_ARG(QVariant, QDateTime(m.date())), Q_ARG(QVariant, m.value()),
-//                                      Q_ARG(QVariant, QDateTime(e.date())), Q_ARG(QVariant,e.value()),
-//                                      Q_ARG(QVariant, QDateTime(t.date())), Q_ARG(QVariant,t.value()));
+            //            QMetaObject::invokeMethod(chart, "addData", Q_ARG(QVariant, QDateTime(m.date())), Q_ARG(QVariant, m.value()),
+            //                                      Q_ARG(QVariant, QDateTime(e.date())), Q_ARG(QVariant,e.value()),
+            //                                      Q_ARG(QVariant, QDateTime(t.date())), Q_ARG(QVariant,t.value()));
         }
 
         minV -= 10;
         maxV += 10;
-//        QMetaObject::invokeMethod(chart, "setMinMaxDate", Q_ARG(QVariant, minD), Q_ARG(QVariant, maxD));
-//        QMetaObject::invokeMethod(chart, "setMinMaxValue", Q_ARG(QVariant, minV), Q_ARG(QVariant, maxV));
-//        QMetaObject::invokeMethod(chart, "reset");
+        //        QMetaObject::invokeMethod(chart, "setMinMaxDate", Q_ARG(QVariant, minD), Q_ARG(QVariant, maxD));
+        //        QMetaObject::invokeMethod(chart, "setMinMaxValue", Q_ARG(QVariant, minV), Q_ARG(QVariant, maxV));
+        //        QMetaObject::invokeMethod(chart, "reset");
     }
 
 
@@ -272,6 +280,7 @@ void MainController::accountChange(QString acc)
         head->setProperty("accountName", acc);
 
     selection();
+    checkEstimated();
 }
 
 void MainController::toXml(bool xml)
@@ -297,4 +306,72 @@ void MainController::loadAccount()
         connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
         accountChange(t[0]);
     }
+}
+
+void MainController::checkEstimated()
+{
+    QList<Entry> list;
+
+    for(auto it: entries())
+    {
+        if(it.info().estimated() && it.date() <= QDate::currentDate())
+            list<<it;
+    }
+    QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
+    QObject* checker = popup->findChild<QObject*>("checkerModel");
+
+    if(checker)
+    {
+        qDebug()<<"To check"<<list.size();
+
+
+        QMetaObject::invokeMethod(checker, "clear");
+        for(auto it: list)
+        {
+            QVariantMap map;
+            map.insert("id", it.id());
+            map.insert("edate", it.date().toString("dd-MM-yyyy"));
+            map.insert("label", it.label());
+            map.insert("isChecked", false);
+            map.insert("value", it.value());
+            QMetaObject::invokeMethod(checker, "fAdd", Q_ARG(QVariant, map));
+        }
+
+        int count = checker->property("count").toInt();
+
+        if(count > 0)
+            QMetaObject::invokeMethod(popup, "open");
+    }
+}
+
+void MainController::validateCheckEstimated()
+{
+    QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
+    QObject* checker = popup->findChild<QObject*>("checkerModel");
+
+    int count = checker->property("count").toInt();
+
+    for(int i = 0; i < count; i++)
+    {
+        QVariant id ,isChecked;
+        QMetaObject::invokeMethod(checker, "idE", Q_RETURN_ARG(QVariant, id), Q_ARG(QVariant, i));
+        QMetaObject::invokeMethod(checker, "isChecked", Q_RETURN_ARG(QVariant, isChecked), Q_ARG(QVariant, i));
+
+        Entry e = entry(id.toInt());
+
+        if(isChecked.toBool())
+        {
+            Information inf = e.info();
+            inf.setEstimated(false);
+            e.setInfo(inf);
+            updateEntry(e);
+        }
+        else
+        {
+            removeEntry(e);
+        }
+    }
+
+    QMetaObject::invokeMethod(popup, "close");
+    selection();
 }

@@ -20,6 +20,8 @@ private:
     ControllerInformation m_info;
     GraphController m_graph;
 
+    void checkEstimated();
+
 public:
     MainController();
     ~MainController();
@@ -42,6 +44,8 @@ public slots:
     void addCategory(QString, QString);
 
     void loadAccount();
+
+    void validateCheckEstimated();
 
 };
 
