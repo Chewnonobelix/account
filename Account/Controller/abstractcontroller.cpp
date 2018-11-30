@@ -3,6 +3,7 @@
 QString AbstractController::m_account = QString();
 QMultiMap<QDate, Entry> AbstractController::m_entry = QMultiMap<QDate, Entry>();
 InterfaceDataSave* AbstractController::m_db = nullptr;
+Total AbstractController::m_accountTotal = Total();
 
 AbstractController::AbstractController(): QObject(nullptr)
 {
@@ -37,9 +38,14 @@ void AbstractController::setCurrentAccount(QString a)
 {
     m_account = a;
     m_entry.clear();
+    m_accountTotal = Total();
+
     auto l = m_db->selectEntry(a);
     for(auto it: l)
+    {
+        m_accountTotal = m_accountTotal + it;
         m_entry.insert(it.date(), it);
+    }
 }
 
 QString AbstractController::currentAccount()
@@ -191,4 +197,10 @@ QStringList AbstractController::categories(QString type)
 void AbstractController::deletAccount(QString account)
 {
     m_db->removeAccount(account);
+}
+
+
+Total AbstractController::accountTotal()
+{
+    return m_accountTotal;
 }

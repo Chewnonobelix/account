@@ -21,7 +21,7 @@ private:
     static QString m_account;
     static QMultiMap<QDate, Entry> m_entry;
     static InterfaceDataSave* m_db;
-
+    static Total m_accountTotal;
 
 public:
     AbstractController();
@@ -51,6 +51,8 @@ public:
     static void deletAccount(QString);
 
     static void initTestEntry();
+
+    static Total accountTotal();
 };
 
 #endif // ABSTRACTCONTROLLER_H

@@ -253,9 +253,6 @@ void MainController::selection()
 
 
 
-    QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
-    if(head)
-        head->setProperty("total", t.value());
 }
 
 void MainController::accountChange(QString acc)
@@ -265,7 +262,10 @@ void MainController::accountChange(QString acc)
     QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
 
     if(head)
+    {
         head->setProperty("accountName", acc);
+        head->setProperty("total", accountTotal().value());
+    }
 
     selection();
     checkEstimated();
