@@ -94,6 +94,7 @@ void MainController::add(bool account)
     QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("addingid");
     popup->setProperty("newAccount", account);
     QMetaObject::invokeMethod(item, "openAdding", Q_ARG(QVariant, pX), Q_ARG(QVariant, pY));
+    accountChange(currentAccount());
 }
 
 void MainController::adding()
@@ -251,7 +252,9 @@ void MainController::selection()
         maxV += 10;
     }
 
-
+    QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
+    if(head)
+        head->setProperty("selectionTotal", t.value());
 
 }
 

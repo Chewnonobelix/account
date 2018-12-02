@@ -131,14 +131,25 @@ ApplicationWindow {
         objectName:  "head"
         property string accountName
         property double total
-
+        property double selectionTotal
         Label {
+            id: accountTitle
             objectName: "accountTitle"
             text: qsTr("Account") + ": " + parent.accountName + " = " + parent.total + "€"
             font.pixelSize: pageStyle.title.size
             font.family: pageStyle.title.name
             padding: 10
             color: accountSelect.model.length > 0 ? parent.total > 0 ? "green" : "red" : "transparent"
+        }
+
+        Label {
+            anchors.left: accountTitle.right
+            anchors.leftMargin: 10
+            text: qsTr("Selection total: ") + parent.selectionTotal + " €"
+            font.pixelSize: pageStyle.title.size
+            font.family: pageStyle.title.name
+            padding: 10
+            color: accountSelect.model.length > 0 ? parent.selectionTotal > 0 ? "green" : "red" : "transparent"
         }
 
         ComboBox {
@@ -189,7 +200,7 @@ ApplicationWindow {
         implicitWidth: parent.width
         implicitHeight: parent.height
         enabled: accountSelect.model.length > 0
-
+        anchors.top:  parent.header.bottom
         background: Rectangle {
             color: "transparent"
 
