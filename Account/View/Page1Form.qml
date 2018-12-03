@@ -157,35 +157,35 @@ Page {
             }
         }
 
-        Button {
-            id: edit
-            text: qsTr("Edit")
-            width: parent.width
-            anchors.top: add.bottom
-            anchors.topMargin: 10
-            property int index
-            enabled: false
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+//        Button {
+//            id: edit
+//            text: qsTr("Edit")
+//            width: parent.width
+//            anchors.top: add.bottom
+//            anchors.topMargin: 10
+//            property int index
+//            enabled: false
+//            font.family: pageStyle.core.name
+//            font.pixelSize: pageStyle.core.size
 
-            Rectangle {
-                id: rectEdit
-                anchors.fill: parent
-                gradient: pageStyle.goldButton
-            }
+//            Rectangle {
+//                id: rectEdit
+//                anchors.fill: parent
+//                gradient: pageStyle.goldButton
+//            }
 
-            //            onClicked: {
-            //                mainWindow.edit(view.model[view.currentIndex].id)
-            //            }
+//            //            onClicked: {
+//            //                mainWindow.edit(view.model[view.currentIndex].id)
+//            //            }
 
-            onPressed: {
-                rectEdit.gradient = pageStyle.darkGoldButton
-            }
+//            onPressed: {
+//                rectEdit.gradient = pageStyle.darkGoldButton
+//            }
 
-            onReleased: {
-                rectEdit.gradient = pageStyle.goldButton
-            }
-        }
+//            onReleased: {
+//                rectEdit.gradient = pageStyle.goldButton
+//            }
+//        }
 
 
     }
@@ -251,11 +251,37 @@ Page {
         }
 
         TableViewColumn {
+            role: "estimated"
+            visible: false
+        }
+
+        TableViewColumn {
             role: "type"
             title: qsTr("[+/-]")
             width: 40
             movable: false
             resizable: false
+
+            delegate: Rectangle {
+                color: "transparent"
+                anchors.centerIn: parent
+
+
+                Label {
+                    property string est: defaultModel.get(styleData.row).estimated ? "*" : ""
+                    text: styleData.value === "income" ? "+"+est:"-"+est
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+
+                    MouseArea {
+                        ToolTip.text: "?"
+                        ToolTip.visible: hovered
+                        hoverEnabled: true
+
+                    }
+
+                }
+            }
 
         }
 
@@ -296,6 +322,7 @@ Page {
         }
 
 
+
         headerDelegate: Rectangle {
             height: view.height * 0.03
             gradient:  pageStyle.goldHeader
@@ -311,6 +338,7 @@ Page {
                 text: styleData.value
                 font.family: pageStyle.title.name
                 font.pixelSize: height * 0.85
+
             }
 
         }
@@ -322,7 +350,8 @@ Page {
             color: "transparent"
             Label {
                 id: textItem
-                text: styleData.column === 2 ? Qt.formatDate(styleData.value, "dd-MM-yyyy") : (styleData.column === 1 && styleData.value === "outcome" )?  "-": (styleData.column === 1 && styleData.value === "income" )? "+" : styleData.value
+                text: styleData.column === 3 ? Qt.formatDate(styleData.value, "dd-MM-yyyy") : styleData.value
+
 
                 anchors.centerIn: parent
 
