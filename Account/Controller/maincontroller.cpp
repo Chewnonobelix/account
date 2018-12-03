@@ -94,7 +94,6 @@ void MainController::add(bool account)
     QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("addingid");
     popup->setProperty("newAccount", account);
     QMetaObject::invokeMethod(item, "openAdding", Q_ARG(QVariant, pX), Q_ARG(QVariant, pY));
-    accountChange(currentAccount());
 }
 
 void MainController::adding()
@@ -138,6 +137,7 @@ void MainController::adding()
         e.setAccount(currentAccount());
     }
     AbstractController::addEntry(e);
+    accountChange(currentAccount());
 
     if(adding->property("newAccount").toBool())
         loadAccount();
