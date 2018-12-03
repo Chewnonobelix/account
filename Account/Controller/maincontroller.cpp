@@ -247,7 +247,7 @@ void MainController::selection()
             map.insert("type", ret[i].type().toLower());
             map.insert("total", t.value());
             map.insert("real", m.value());
-            map.insert("estimated", e.value());
+            map.insert("estimated", ret[i].info().estimated());
             QMetaObject::invokeMethod(tab, "fAdd", Q_ARG(QVariant, map));
         }
 
