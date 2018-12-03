@@ -169,9 +169,12 @@ void MainController::selection()
     QJSValue array = mp.read(calendar).value<QJSValue>();
     QList<QDate> ld;
     for(int i = 0; i < array.property("length").toInt(); i++)
-    {
         ld<<QDate::fromString(array.property(i).toString(), "dd-MM-yyyy");
-    }
+
+    for(int i = 0; i < ld.size(); i++)
+        for(int j = i; j < ld.size(); j++)
+            if(ld[j] < ld[i])
+                ld.swap(i,j);
 
     QList<Entry> ret;
 
