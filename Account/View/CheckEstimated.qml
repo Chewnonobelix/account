@@ -4,8 +4,8 @@ import QtQuick.Controls 2.4
 Popup {
     implicitHeight: parent.height
     implicitWidth: parent.width * .33
-    x: parent.width/2 - width/2
-
+//    x: parent.width/2 - width/2
+    anchors.centerIn: parent
     id: checker
 
     Label {
@@ -46,7 +46,7 @@ Popup {
         id: listChecker
         model: checkerModel
         width: parent.width
-        height: parent.height * .94
+        height: parent.height * .90
         anchors.top: header.bottom
         anchors.topMargin: 10
         flickableDirection: Flickable.AutoFlickDirection
