@@ -156,38 +156,6 @@ Page {
                 }
             }
         }
-
-//        Button {
-//            id: edit
-//            text: qsTr("Edit")
-//            width: parent.width
-//            anchors.top: add.bottom
-//            anchors.topMargin: 10
-//            property int index
-//            enabled: false
-//            font.family: pageStyle.core.name
-//            font.pixelSize: pageStyle.core.size
-
-//            Rectangle {
-//                id: rectEdit
-//                anchors.fill: parent
-//                gradient: pageStyle.goldButton
-//            }
-
-//            //            onClicked: {
-//            //                mainWindow.edit(view.model[view.currentIndex].id)
-//            //            }
-
-//            onPressed: {
-//                rectEdit.gradient = pageStyle.darkGoldButton
-//            }
-
-//            onReleased: {
-//                rectEdit.gradient = pageStyle.goldButton
-//            }
-//        }
-
-
     }
 
 
@@ -218,7 +186,7 @@ Page {
 
 
         function unselectAll() {
-            if(rowCount > 0) {
+            if(rowCount >= 0) {
                 selection.deselect(0, rowCount-1)
             }
             currentIndex = -1
@@ -261,29 +229,37 @@ Page {
             width: 40
             movable: false
             resizable: false
-
+            id: typeColumn
+            property string tipText: "*: estimated entry"
             delegate: Rectangle {
                 color: "transparent"
                 anchors.centerIn: parent
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    propagateComposedEvents: true
+                    onClicked: {
+                        var i = styleData.row !== view.currentIndex ? styleData.row : -1
 
-
+                        view.selection.clear()
+                        view.currentIndex = i
+                        if(i >= 0) {
+                            view.selection.select(i)
+                        }
+                    }
+                }
                 Label {
                     property string est: defaultModel.get(styleData.row).estimated ? "*" : ""
                     text: styleData.value === "income" ? "+"+est:"-"+est
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
-
-                    MouseArea {
-                        ToolTip.text: "?"
-                        ToolTip.visible: hovered
-                        hoverEnabled: true
-
-                    }
-
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors.fill: parent
                 }
-            }
 
+            }
         }
+
 
         TableViewColumn {
             role: "date"
@@ -291,7 +267,34 @@ Page {
             width: 100
             movable: false
             resizable: false
+            id: columnDate
 
+
+            delegate: Rectangle {
+                color: "transparent"
+                anchors.centerIn: parent
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    propagateComposedEvents: true
+                    onClicked: {
+                        var i = styleData.row !== view.currentIndex ? styleData.row : -1
+                        view.selection.clear()
+                        view.currentIndex = i
+                        if(i >= 0) {
+                            view.selection.select(i)
+                        }
+                    }
+                }
+
+                Label {
+                    text: Qt.formatDate(styleData.value, "dd-MM-yyyy")
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors.fill: parent
+                }
+            }
         }
 
         TableViewColumn {
@@ -317,18 +320,16 @@ Page {
             width: 100
             movable: false
             resizable: false
-
-
         }
 
 
-
         headerDelegate: Rectangle {
-            height: view.height * 0.03
             gradient:  pageStyle.goldHeader
+
+            height: view.height * 0.03
             anchors.centerIn: parent
             anchors.leftMargin: 10
-
+            property string isHovered: styleData.containsMouse
 
 
             Label {
@@ -339,8 +340,18 @@ Page {
                 font.family: pageStyle.title.name
                 font.pixelSize: height * 0.85
 
+                ToolTip.visible: isHovered && (styleData.column === 2)
+                ToolTip.text: view.getToolTip(styleData.column)
+                ToolTip.delay: 500
+            }
+        }
+
+        function getToolTip(index) {
+            if(index === 2) {
+                return typeColumn.tipText
             }
 
+            return ""
         }
 
         itemDelegate: Rectangle {
@@ -350,7 +361,7 @@ Page {
             color: "transparent"
             Label {
                 id: textItem
-                text: styleData.column === 3 ? Qt.formatDate(styleData.value, "dd-MM-yyyy") : styleData.value
+                text: styleData.value
 
 
                 anchors.centerIn: parent
@@ -378,7 +389,7 @@ Page {
                         view.s_view(defaultModel.get(view.currentIndex).id)
                     }
                     else {
-                        unselectAll()
+                        view.unselectAll()
                     }
 
 
@@ -397,7 +408,6 @@ Page {
 
             gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
         }
-
     }
 
     ScrollView {
