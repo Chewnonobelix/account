@@ -107,7 +107,7 @@ Calendar {
                 font.pixelSize: pageStyle.core.size
 
                 background: Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                     border.color: "silver"
                     anchors.fill: parent
                 }
@@ -128,7 +128,7 @@ Calendar {
                 text: "<"
 
                 background: Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                     border.color: "silver"
                 }
 

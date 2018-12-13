@@ -95,7 +95,7 @@ Page {
             Shortcut {
                 context: Qt.ApplicationShortcut
                 onActivated:  {
-                    add.released()
+                    add.clicked()
                 }
                 sequence: "A"
             }
@@ -105,15 +105,11 @@ Page {
             Rectangle {
                 id: rectAdd
                 anchors.fill: parent
-                gradient: pageStyle.goldButton
+                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
             }
 
-            onPressed: {
-                rectAdd.gradient = pageStyle.darkGoldButton
-            }
 
-            onReleased: {
-                rectAdd.gradient = pageStyle.goldButton
+            onClicked:  {
                 mainWindow.adding(false)
             }
 
@@ -129,11 +125,11 @@ Page {
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
             property int index: view.currentIndex
-
+            enabled: view.currentIndex !== -1
             Shortcut {
                 context: Qt.ApplicationShortcut
                 onActivated:  {
-                    remove.released()
+                    remove.clicked()
                 }
                 sequence: "R"
             }
@@ -142,15 +138,9 @@ Page {
                 id: rectRemove
 
                 anchors.fill: parent
-                gradient: pageStyle.goldButton
+                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
             }
-
-            onPressed: {
-                rectRemove.gradient = pageStyle.darkGoldButton
-            }
-
-            onReleased: {
-                rectRemove.gradient = pageStyle.goldButton
+            onClicked: {
                 if(index > -1) {
                     mainWindow.remove(defaultModel.get(index).id)
                 }

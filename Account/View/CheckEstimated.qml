@@ -81,16 +81,12 @@ Popup {
         Rectangle {
             id: saveRect
             anchors.fill: parent
-            gradient: pageStyle.goldButton
+            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
         }
 
-        onPressed: {
-            saveRect.gradient = pageStyle.darkGoldButton
-        }
 
-        onReleased: {
+        onClicked:  {
             checkerModel.validate()
-            saveRect.gradient = pageStyle.goldButton
         }
     }
 
@@ -107,15 +103,10 @@ Popup {
         Rectangle {
             id: laterRect
             anchors.fill: parent
-            gradient: pageStyle.goldButton
+            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
         }
 
-        onPressed: {
-            saveRect.gradient = pageStyle.darkGoldButton
-        }
-
-        onReleased: {
-            saveRect.gradient = pageStyle.goldButton
+        onClicked: {
             close()
         }
 

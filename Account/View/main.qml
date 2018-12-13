@@ -53,7 +53,7 @@ ApplicationWindow {
                 }
 
                 background: Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
             }
 
@@ -70,7 +70,7 @@ ApplicationWindow {
                 }
 
                 background: Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
 
                 onClicked: {
@@ -94,7 +94,7 @@ ApplicationWindow {
                 }
 
                 background: Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
             }
             MenuItem {
@@ -103,7 +103,7 @@ ApplicationWindow {
                 font.pixelSize: pageStyle.core.size
                 enabled: accountSelect.model.length > 0
                 background: Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
 
                 onClicked: {
@@ -248,19 +248,15 @@ ApplicationWindow {
                 font.pixelSize: pageStyle.core.size
                 font.family: pageStyle.core.name
 
-                onPressed: {
-                    rectEdit.gradient = pageStyle.darkGoldButton
-                }
 
-                onReleased: {
+                onClicked:  {
                     mainWindow.removeAccount(labelDelete.account)
                     deleteAccount.close()
-                    rectEdit.gradient = pageStyle.goldButton
                 }
 
                 background: Rectangle {
                     id: rectEdit
-                    gradient: pageStyle.goldButton
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
 
 
@@ -277,19 +273,14 @@ ApplicationWindow {
 
                 text: qsTr("Cancel")
 
-                onPressed: {
-                    rectEdit2.gradient = pageStyle.darkGoldButton
-                }
-
-                onReleased: {
+                onClicked:  {
                     deleteAccount.close()
-                    rectEdit2.gradient = pageStyle.goldButton
                 }
 
                 background: Rectangle {
                     id: rectEdit2
 
-                    gradient: pageStyle.goldButton
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
             }
         }

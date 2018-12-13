@@ -155,17 +155,12 @@ Popup {
                 font.pixelSize: pageStyle.core.size
 
                 background: Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                     id: saveRect
                 }
 
 
-                onPressed: {
-                    saveRect.gradient = pageStyle.darkGoldButton
-                }
-
-                onReleased: {
-                    saveRect.gradient = pageStyle.goldButton
+                onClicked: {
                     addingid.accept()
                     reset()
                     close()
@@ -178,16 +173,11 @@ Popup {
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
                 background: Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                     id: cancelRect
                 }
 
-                onPressed: {
-                    cancelRect.gradient = pageStyle.darkGoldButton
-                }
-
-                onReleased: {
-                    cancelRect.gradient = pageStyle.goldButton
+                onClicked: {
                     reset()
                     close()
                 }
