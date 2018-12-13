@@ -186,9 +186,7 @@ Page {
 
 
         function unselectAll() {
-            if(rowCount >= 0) {
-                selection.deselect(0, rowCount-1)
-            }
+            selection.clear()
             currentIndex = -1
         }
 
@@ -223,6 +221,17 @@ Page {
             visible: false
         }
 
+        function setNewIndex(index) {
+            if(selection.contains(index)) {
+                selection.clear()
+                currentIndex = -1
+            } else {
+                selection.clear()
+                currentIndex = index
+                selection.select(index)
+            }
+        }
+
         TableViewColumn {
             role: "type"
             title: qsTr("[+/-]")
@@ -239,13 +248,7 @@ Page {
                     cursorShape: Qt.PointingHandCursor
                     propagateComposedEvents: true
                     onClicked: {
-                        var i = styleData.row !== view.currentIndex ? styleData.row : -1
-
-                        view.selection.clear()
-                        view.currentIndex = i
-                        if(i >= 0) {
-                            view.selection.select(i)
-                        }
+                        view.setNewIndex(styleData.row)
                     }
                 }
                 Label {
@@ -278,12 +281,7 @@ Page {
                     cursorShape: Qt.PointingHandCursor
                     propagateComposedEvents: true
                     onClicked: {
-                        var i = styleData.row !== view.currentIndex ? styleData.row : -1
-                        view.selection.clear()
-                        view.currentIndex = i
-                        if(i >= 0) {
-                            view.selection.select(i)
-                        }
+                        view.setNewIndex(styleData.row)
                     }
                 }
 
