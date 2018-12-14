@@ -155,18 +155,8 @@ Page {
         objectName: "defaultModel"
 
         function swap(i, j) {
-            console.log("before", get(i), get(j), i, j)
-            var k = get(i)
-            var l = get(j)
-
-            remove(j,1)
-            remove(i,1)
-
-
-            insert(i, l)
-            insert(j,k)
-            console.log("after", get(i), get(j))
-
+            move(j,i,1)
+            move(i+1,j,1)
         }
 
         function sort(role, order) {
