@@ -154,6 +154,21 @@ Page {
         id: defaultModel
         objectName: "defaultModel"
 
+        function sort(role, order) {
+            for(var i = 0; i < count; i++ ) {
+                for(var j = i; j < count; j++) {
+                    if(order === Qt.AscendingOrder) {
+                        if(get(j)[role] < get(i)[role]) {
+                            swap(i,j)
+                        }
+                    } else {
+                        if(get(j)[role] > get(i)[role]) {
+                            swap(i,j)
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
