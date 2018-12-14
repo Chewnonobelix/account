@@ -334,6 +334,16 @@ Page {
             }
         }
 
+        onSortIndicatorColumnChanged: {
+            defaultModel.sort( getColumn(sortIndicatorColumn).role , sortIndicatorOrder)
+        }
+
+        onSortIndicatorOrderChanged: {
+            defaultModel.sort(getColumn(sortIndicatorColumn).role , sortIndicatorOrder)
+
+        }
+
+
         function getToolTip(index) {
             if(index === 2) {
                 return typeColumn.tipText
