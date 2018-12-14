@@ -67,7 +67,7 @@ Item {
         }
 
         Keys.onPressed: {
-            if(event.key === Qt.Key_Enter && currentIndex === model.length-1) {
+            if((event.key === Qt.Key_Enter || event.key === Qt.Key_Return)  && currentIndex === model.length-1) {
                 var tmp = model
                 tmp.pop()
                 tmp.push(editText)
