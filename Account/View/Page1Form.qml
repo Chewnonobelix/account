@@ -218,7 +218,11 @@ Page {
         }
 
         onWidthChanged: {
-            positionViewAtRow(0, ListView.Beginning )
+            flickableItem.contentX = 0
+        }
+
+        onHeightChanged: {
+            flickableItem.contentY = 0
         }
 
         TableViewColumn {
