@@ -127,21 +127,6 @@ Item {
         }
     }
 
-    CheckBox {
-        id: estimated
-        objectName: "estimated"
-        anchors.left: category.right
-        enabled: false
-        text: qsTr("Estimated")
-        font.family: pageStyle.core.name
-        font.pixelSize: pageStyle.core.size
-
-        checked: infoModel.estimated
-
-        onCheckStateChanged: {
-            s_estimatedChanged(checked)
-        }
-    }
 
     Label {
         anchors.top:title.bottom
