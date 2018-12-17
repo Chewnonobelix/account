@@ -26,6 +26,7 @@ bool ControllerDB::init()
     if(m_db.open())
     {
         m_accounts = SqlQuery::create(m_db);
+        m_removeAccount = SqlQuery::create(m_db);
 
         m_selectEntry = SqlQuery::create(m_db);
         m_addEntry = SqlQuery::create(m_db);
@@ -65,6 +66,9 @@ bool ControllerDB::init()
                                      "WHERE id_entry = :ide");
 
         m_accounts->prepare("SELECT DISTINCT account FROM account");
+
+        m_removeAccount->prepare("DELETE FROM account "
+                                 "WHERE account=:a");
 
         m_addCategory->prepare("INSERT INTO categories(name, type)"
                                "VALUES(:name, :type)");
@@ -209,11 +213,13 @@ bool ControllerDB::removeEntry(const Entry & e)
 
 bool ControllerDB::removeAccount(QString name)
 {
-    bool ret = true;
+    bool ret = false;
 
-    auto entries = selectEntry(name);
-    for(auto e: entries)
-        ret &= removeEntry(e);
+    if(isConnected())
+    {
+        m_removeAccount->bindValue(":a", name);
+        ret = m_removeAccount->exec();
+    }
 
     return ret;
 }
