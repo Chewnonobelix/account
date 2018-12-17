@@ -33,7 +33,7 @@ private:
 
     SqlQuery m_addCategory;
     SqlQuery m_removeCategory;
-    SqlQuery m_selectCategory; //TODO
+    SqlQuery m_selectCategory;
 
 public:
     ControllerDB();

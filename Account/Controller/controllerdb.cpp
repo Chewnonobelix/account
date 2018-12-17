@@ -25,16 +25,21 @@ bool ControllerDB::init()
     m_db.setPort(3306);
     if(m_db.open())
     {
+        m_accounts = SqlQuery::create(m_db);
+
         m_selectEntry = SqlQuery::create(m_db);
         m_addEntry = SqlQuery::create(m_db);
-        m_accounts = SqlQuery::create(m_db);
+        m_removeEntry = SqlQuery::create(m_db);
+
         m_updateInfo = SqlQuery::create(m_db);
         m_addInformation = SqlQuery::create(m_db);
-        m_removeEntry = SqlQuery::create(m_db);
         m_removeInformation = SqlQuery::create(m_db);
         m_selectInformation = SqlQuery::create(m_db);
+
         m_addCategory = SqlQuery::create(m_db);
         m_removeCategory = SqlQuery::create(m_db);
+        m_selectCategory = SqlQuery::create(m_db);
+
 
         m_selectEntry->prepare("SELECT * FROM account AS a"
                                "WHERE a.account=:a");
@@ -61,11 +66,15 @@ bool ControllerDB::init()
 
         m_accounts->prepare("SELECT DISTINCT account FROM account");
 
-        m_addCategory->prepare("INSERT INTO category(name, type)"
+        m_addCategory->prepare("INSERT INTO categories(name, type)"
                                "VALUES(:name, :type)");
 
-        m_removeCategory->prepare("DELETE FROM category"
+        m_removeCategory->prepare("DELETE FROM categories"
                                   "WHERE name = :name");
+
+        m_selectCategory->prepare("SELECT name, type FROM categories");
+
+
     }
 
     qDebug()<<"DB Connected"<<isConnected();
@@ -235,8 +244,18 @@ bool ControllerDB::removeCategory(QString name)
 
 QMap<QString, QString> ControllerDB::selectCategory()
 {
-    //TODO
-    return QMap<QString, QString>();
+    QMap<QString, QString> ret;
+    if(isConnected() && m_selectCategory->exec())
+    {
+        while(m_selectCategory->next())
+        {
+            QString name = m_selectCategory->value("name").toString();
+            QString type = m_selectCategory->value("type").toString();
+            ret[name] = type;
+        }
+    }
+
+    return ret;
 }
 
 bool ControllerDB::updateEntry(const Entry &)
