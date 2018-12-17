@@ -31,6 +31,7 @@ bool ControllerDB::init()
         m_selectEntry = SqlQuery::create(m_db);
         m_addEntry = SqlQuery::create(m_db);
         m_removeEntry = SqlQuery::create(m_db);
+        m_updateEntry = SqlQuery::create(m_db);
 
         m_updateInfo = SqlQuery::create(m_db);
         m_addInformation = SqlQuery::create(m_db);
@@ -49,6 +50,10 @@ bool ControllerDB::init()
                             "VALUES (:id, :account,:value,:date,:type)");
 
         m_removeEntry->prepare("DELETE FROM account"
+                               "WHERE ID=:id");
+
+        m_updateEntry->prepare("UPDATE account"
+                               "SET (account=:a, value=:v, date_eff=:d, type=:t)"
                                "WHERE ID=:id");
 
 
@@ -264,8 +269,25 @@ QMap<QString, QString> ControllerDB::selectCategory()
     return ret;
 }
 
-bool ControllerDB::updateEntry(const Entry &)
+bool ControllerDB::updateEntry(const Entry & e)
 {
-    //TODO
-    return false;
+//    m_updateEntry->prepare("UPDATE account"
+//                           "SET (account=:a, value=:v, date_eff=:d, type=:t)"
+//                           "WHERE ID=:id");
+
+    bool ret = false;
+
+    if(isConnected())
+    {
+        m_updateEntry->bindValue(":a", e.account());
+        m_updateEntry->bindValue(":v", e.value());
+        m_updateEntry->bindValue(":d", e.date());
+        m_updateEntry->bindValue(":t", e.type());
+        m_updateEntry->bindValue(":id", e.id());
+
+        ret = m_updateEntry->exec();
+    }
+
+
+    return ret;
 }
