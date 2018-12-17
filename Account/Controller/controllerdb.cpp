@@ -286,6 +286,8 @@ bool ControllerDB::updateEntry(const Entry & e)
         m_updateEntry->bindValue(":id", e.id());
 
         ret = m_updateEntry->exec();
+
+        ret &= updateInfo(e);
     }
 
 

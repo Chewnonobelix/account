@@ -24,7 +24,7 @@ private:
     SqlQuery m_updateEntry; //TODO
 
     SqlQuery m_accounts;
-    SqlQuery m_removeAccount;
+    SqlQuery m_removeAccount; //TODO
 
     SqlQuery m_updateInfo;
     SqlQuery m_addInformation;
