@@ -20,8 +20,10 @@ class AbstractController: public QObject
 private:
     static QString m_account;
     static QMultiMap<QDate, Entry> m_entry;
-    static InterfaceDataSave* m_db;
     static Total m_accountTotal;
+
+protected:
+    static InterfaceDataSave* m_db;
 
 public:
     AbstractController();

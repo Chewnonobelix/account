@@ -51,7 +51,7 @@ int MainController::exec()
 
     QObject* xml = root->findChild<QObject*>("xmlMenu");
     if(xml)
-        connect(xml, SIGNAL(s_xml(bool)), this, SLOT(toXml(bool)));
+        connect(xml, SIGNAL(s_xml()), this, SLOT(toXml()));
 
     connect(&m_info, SIGNAL(s_update(Entry)), this, SLOT(update(Entry)));
 
@@ -277,9 +277,13 @@ void MainController::accountChange(QString acc)
     checkEstimated();
 }
 
-void MainController::toXml(bool xml)
+void MainController::toXml()
 {
-    qDebug()<<"To xml"<<xml;
+    qDebug()<<"To Sql";
+    XmltoSql xts(*dynamic_cast<ControllerXML*>(m_db));
+
+    bool ret = xts.exec();
+    qDebug()<<ret;
 }
 
 void MainController::addCategory(QString name, QString type)

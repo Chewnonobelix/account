@@ -41,15 +41,15 @@ ApplicationWindow {
         Menu {
             title: qsTr("&File")
             MenuItem {
-                text: qsTr("&Xml")
+                text: qsTr("&Consolidate")
                 objectName: "xmlMenu"
-                checkable: true
+//                checkable: true
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
 
-                signal s_xml(bool toXml)
+                signal s_xml()
                 onClicked: {
-                    s_xml(checked)
+                    s_xml()
                 }
 
                 background: Rectangle {

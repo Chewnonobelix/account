@@ -10,6 +10,7 @@
 #include "controllerinformation.h"
 #include "controllerxml.h"
 #include "graphcontroller.h"
+#include "xmltosql.h"
 
 class MainController: public AbstractController
 {
@@ -37,7 +38,7 @@ public slots:
     void selection();
     void accountChange(QString);
 
-    void toXml(bool);
+    void toXml();
 
     void update(Entry);
 
