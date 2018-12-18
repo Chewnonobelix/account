@@ -408,15 +408,11 @@ Page {
 
                     if(view.currentIndex !== styleData.row) {
                         view.currentIndex = styleData.row
-                        view.s_view(defaultModel.get(view.currentIndex).id)
                     }
                     else {
                         view.unselectAll()
                     }
 
-
-                    infoView.enabled = (view.currentIndex !== -1) && (defaultModel.get(view.currentIndex).label !== "Initial")
-                    remove.enabled = (view.currentIndex !== -1) && (defaultModel.get(view.currentIndex).label !== "Initial")
                 }
             }
         }
@@ -429,6 +425,12 @@ Page {
 
 
             gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
+        }
+
+        onCurrentIndexChanged: {
+            infoView.enabled = (currentIndex !== -1) && (defaultModel.get(currentIndex).label !== "Initial")
+            remove.enabled = (view.currentIndex !== -1) && (defaultModel.get(view.currentIndex).label !== "Initial")
+            s_view(defaultModel.get(currentIndex).id)
         }
     }
 
