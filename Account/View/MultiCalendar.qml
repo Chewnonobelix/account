@@ -246,6 +246,8 @@ Calendar {
             MouseArea {
                 anchors.fill: parent
                 propagateComposedEvents: true
+                cursorShape: parent.checkMonth(styleData) ? Qt.PointingHandCursor: Qt.ArrowCursor
+
                 onClicked: {
                     if((mouse.modifiers === Qt.ShiftModifier) && parent.checkMonth(styleData)){
                         var index = -1
