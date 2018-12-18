@@ -72,8 +72,7 @@ Popup {
     Button {
         id: save
         text: qsTr("Save")
-        anchors.top: listChecker.bottom
-        anchors.topMargin: 10
+        anchors.bottom: parent.bottom
         height: parent.height * .05
         font.family: pageStyle.core.name
         font.pointSize: pageStyle.core.size
@@ -94,8 +93,7 @@ Popup {
         text: qsTr("Later")
         anchors.left: save.right
         anchors.leftMargin: 10
-        anchors.top: listChecker.bottom
-        anchors.topMargin: 10
+        anchors.bottom: parent.bottom
         height: parent.height * .05
         font.family: pageStyle.core.name
         font.pointSize: pageStyle.core.size
