@@ -9,12 +9,6 @@ Rectangle {
     implicitHeight: parent.height
     id: pageChart
 
-    //    header: Label {
-    //        text: qsTr("Page 2")
-    //        font.pixelSize: Qt.application.font.pixelSize * 2
-    //        padding: 10
-    //    }
-
     AccountStyle {
         id: pageStyle
     }
@@ -24,7 +18,7 @@ Rectangle {
     ChartView {
         anchors.fill: parent
         anchors.centerIn: parent
-        //theme: ChartView.ChartThemeBlueIcy
+
         id: chart
         title: qsTr("Account evolution")
         titleFont.family: pageStyle.title.name
@@ -60,10 +54,6 @@ Rectangle {
         }
 
         function reset () {
-//            setAxisX(dta, mainChart)
-//            setAxisX(dta, estimatedChart)
-//            setAxisY(va, mainChart)
-//            setAxisY(va, estimatedChart)
         }
 
         Component.onCompleted: {
@@ -76,8 +66,6 @@ Rectangle {
             series("estimated").objectName = "estimatedChart"
             series("estimated").pointsVisible = true
 
-
-            console.log("Legend: " + legend)
         }
 
 
@@ -97,20 +85,5 @@ Rectangle {
             labelsFont.pixelSize: pageStyle.core.size
 
         }
-
-//        LineSeries {
-//            //            color: "transparent"
-//            pointsVisible: true
-//            name: "main"
-//            id: mainChart
-//            objectName: "mainChart"
-//        }
-
-//        LineSeries {
-//            pointsVisible: true
-//            name: "estimated"
-//            id: estimatedChart
-//            objectName: "estimatedChart"
-//        }
     }
 }
