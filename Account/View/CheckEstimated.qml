@@ -77,6 +77,12 @@ Popup {
         font.family: pageStyle.core.name
         font.pointSize: pageStyle.core.size
 
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            acceptedButtons: Qt.NoButton
+        }
+
         Rectangle {
             id: saveRect
             anchors.fill: parent
@@ -97,6 +103,12 @@ Popup {
         height: parent.height * .05
         font.family: pageStyle.core.name
         font.pointSize: pageStyle.core.size
+
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            acceptedButtons: Qt.NoButton
+        }
 
         Rectangle {
             id: laterRect
