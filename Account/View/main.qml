@@ -302,6 +302,13 @@ ApplicationWindow {
                 font.pixelSize: pageStyle.title.size
             }
 
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                acceptedButtons: Qt.NoButton
+            }
+
+
             background: Rectangle {
                 color: tabBar.currentItem === parent ? "darkseagreen" : "white"
             }
@@ -315,6 +322,12 @@ ApplicationWindow {
                 color: tabBar.currentItem === graphTabButton ? "black" : "darkseagreen"
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                acceptedButtons: Qt.NoButton
             }
 
             background: Rectangle {
