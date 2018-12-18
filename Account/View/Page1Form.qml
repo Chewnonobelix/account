@@ -360,11 +360,12 @@ Page {
 
         onSortIndicatorColumnChanged: {
             defaultModel.sort( getColumn(sortIndicatorColumn).role , sortIndicatorOrder)
+            s_view(defaultModel.get(currentIndex).id)
         }
 
         onSortIndicatorOrderChanged: {
             defaultModel.sort(getColumn(sortIndicatorColumn).role , sortIndicatorOrder)
-
+            s_view(defaultModel.get(currentIndex).id)
         }
 
 
