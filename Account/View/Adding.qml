@@ -44,9 +44,6 @@ Popup {
     }
 
 
-
-//    property var dateModel: []
-
     ListModel {
         id: dateModel
     }
@@ -157,6 +154,12 @@ Popup {
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                     id: saveRect
+
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        acceptedButtons: Qt.NoButton
+                    }
                 }
 
 
@@ -175,6 +178,12 @@ Popup {
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                     id: cancelRect
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
                 }
 
                 onClicked: {
