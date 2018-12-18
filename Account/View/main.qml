@@ -292,10 +292,34 @@ ApplicationWindow {
         currentIndex: swipeView.currentIndex
 
         TabButton {
-            text: qsTr("List")
+            id: listTabButton
+
+            contentItem: Label {
+                text: qsTr("List")
+                horizontalAlignment: Qt.AlignHCenter
+                color: tabBar.currentItem === listTabButton ? "black" : "darkseagreen"
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
+            }
+
+            background: Rectangle {
+                color: tabBar.currentItem === parent ? "darkseagreen" : "white"
+            }
         }
         TabButton {
-            text: qsTr("Graph")
+            id: graphTabButton
+
+            contentItem: Label {
+                text: qsTr("Graph")
+                horizontalAlignment: Qt.AlignHCenter
+                color: tabBar.currentItem === graphTabButton ? "black" : "darkseagreen"
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
+            }
+
+            background: Rectangle {
+                color: tabBar.currentItem === parent ? "darkseagreen" : "white"
+            }
         }
 
     }
