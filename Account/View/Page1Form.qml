@@ -336,13 +336,13 @@ Page {
 
 
         headerDelegate: Rectangle {
-            gradient:  pageStyle.goldHeader
+            gradient: isClicked ? pageStyle.darkGoldButton :  pageStyle.goldHeader
 
             height: view.height * 0.03
             anchors.centerIn: parent
             anchors.leftMargin: 10
-            property string isHovered: styleData.containsMouse
-
+            property bool isHovered: styleData.containsMouse
+            property bool isClicked: styleData.pressed
 
             Label {
                 id: headerText
