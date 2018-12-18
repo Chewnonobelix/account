@@ -30,7 +30,7 @@ SpinBox {
             text: spinbox.textFromValue(spinbox.value, spinbox.locale)
 
             font: spinbox.font
-//                    color: "transparent"
+
             selectionColor: "#21be2b"
             selectedTextColor: "#ffffff"
             horizontalAlignment: Qt.AlignHCenter
@@ -42,14 +42,25 @@ SpinBox {
 
         }
 
+
+
         up.indicator: Rectangle {
             x: spinbox.mirrored ? 0 : parent.width - width
             height: parent.height
             implicitWidth: 40
             implicitHeight: 40
             border.color: enabled ? "#21be2b" : "#bdbebf"
-            gradient: enabled ? pageStyle.goldButton: pageStyle.unselectView
+            gradient: enabled ? up.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton: pageStyle.unselectView
+
+
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.NoButton
+                cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+            }
+
             Text {
+
                 text: ">"
                 font.pixelSize: spinbox.font.pixelSize * 2
                 color: enabled ? "black" : "grey"
@@ -66,7 +77,13 @@ SpinBox {
             implicitWidth: 40
             implicitHeight: 40
             border.color: enabled ? "#21be2b" : "#bdbebf"
-            gradient: enabled ? pageStyle.goldButton: pageStyle.unselectView
+            gradient: enabled ? down.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton: pageStyle.unselectView
+
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.NoButton
+                cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+            }
 
             Text {
                 text: "<"
