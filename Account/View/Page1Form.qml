@@ -181,7 +181,7 @@ Page {
         anchors.left: cal.right
         anchors.leftMargin: 5
         height: parent.height
-        width: parent.width * 0.25
+        width: (parent.width * 0.25) - 5
         id: view
         objectName: "entryView"
         model: defaultModel
@@ -437,7 +437,7 @@ Page {
         contentWidth: infoView.width
         contentHeight: infoView.height
         anchors.left: view.right
-        width: parent.width*0.55
+        width: (parent.width*0.55)-10
         height: parent.height
 
 
