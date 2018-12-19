@@ -217,7 +217,7 @@ Page {
         function reset() {
             defaultModel.clear()
             currentIndex = -1
-            infoView.enabled = false
+            infoView.visible = false
         }
 
         signal s_view(int index)
@@ -369,6 +369,8 @@ Page {
                 ToolTip.visible: isHovered && (styleData.column === 2)
                 ToolTip.text: view.getToolTip(styleData.column)
                 ToolTip.delay: 500
+
+
             }
         }
 
@@ -448,7 +450,7 @@ Page {
         }
 
         onCurrentIndexChanged: {
-            infoView.enabled = (currentIndex !== -1) && (defaultModel.get(currentIndex).label !== "Initial")
+            infoView.visible = (currentIndex !== -1) && (defaultModel.get(currentIndex).label !== "Initial")
             remove.enabled = (view.currentIndex !== -1) && (defaultModel.get(view.currentIndex).label !== "Initial")
             s_view(defaultModel.get(currentIndex).id)
         }
@@ -465,15 +467,16 @@ Page {
 
         anchors.leftMargin: 10
 
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
 
         clip: true
         InformationView {
             id: infoView
             objectName: "infoView"
-            width: 600
             height: pageTable.height
             clip: true
-            enabled: false
+            visible: false
+            enabled: true
         }
 
 
