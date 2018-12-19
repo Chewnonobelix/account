@@ -168,6 +168,10 @@ Item {
                     anchors.fill: parent
                     cursorShape: index === (category.count - 1)  ? Qt.WhatsThisCursor : Qt.PointingHandCursor
 
+                    ToolTip.visible: (index === (category.count - 1)) && hovered
+                    ToolTip.text: qsTr("Add a new category")
+                    ToolTip.delay: 500
+
                     onClicked: {
                         if(mouse.button === Qt.LeftButton) {
                             var index = category.find(cTxt)
