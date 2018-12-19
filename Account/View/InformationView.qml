@@ -10,6 +10,7 @@ Item {
         id: pageStyle
     }
 
+    width: spinbox.width + category.width + title.width
     Item {
         id: entry
         objectName: "entry"
@@ -28,9 +29,51 @@ Item {
     signal s_titleChanged(string title)
     signal s_estimatedChanged(bool title)
 
+
+    onEnabledChanged: {
+        titleLabel.enabled = true
+        categoryLabel.enabled = true
+        valueLabel.enabled = true
+    }
+
+    Label {
+        id: titleLabel
+        text: qsTr("Title")
+        width: title.width
+        font.pixelSize: pageStyle.title.size
+        font.family: pageStyle.title.name
+        background: Rectangle {
+            gradient: pageStyle.goldHeader
+        }
+    }
+
+    Label {
+        id: valueLabel
+        text: qsTr("Value")
+        width: spinbox.width
+        anchors.left: titleLabel.right
+        font.pixelSize: pageStyle.title.size
+        font.family: pageStyle.title.name
+        background: Rectangle {
+            gradient: pageStyle.goldHeader
+        }
+    }
+    Label {
+        id: categoryLabel
+        text: qsTr("Category")
+        width: category.width
+        anchors.left: valueLabel.right
+        font.pixelSize: pageStyle.title.size
+        font.family: pageStyle.title.name
+        background: Rectangle {
+            gradient: pageStyle.goldHeader
+        }
+    }
     TextField {
         id: title
 
+        anchors.top:titleLabel.bottom
+        anchors.topMargin: 5
         text: infoModel.title
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
@@ -43,6 +86,8 @@ Item {
     DoubleSpinBox {
         id: spinbox
         value: entry.value*100
+        anchors.top: valueLabel.bottom
+        anchors.topMargin: 5
         anchors.left: title.right
         enabled: false
         font.family:  pageStyle.core.name
@@ -53,6 +98,8 @@ Item {
     ComboBox {
         id: category
         objectName: "category"
+        anchors.top: categoryLabel.bottom
+        anchors.topMargin: 5
         anchors.left: spinbox.right
         editable: currentText === ""
         model: [""]
