@@ -71,12 +71,22 @@ Popup {
                 anchors.fill: parent
             }
 
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                acceptedButtons: Qt.NoButton
+            }
             delegate: ItemDelegate {
                 width: accountSelect.width
 
                 contentItem: Rectangle {
                     gradient: pageStyle.goldButton
                     anchors.fill: parent
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        acceptedButtons: Qt.NoButton
+                    }
                     Label {
                         color: "black"
                         text: modelData
@@ -124,12 +134,22 @@ Popup {
                     anchors.fill: parent
                 }
 
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
+                }
                 delegate: ItemDelegate {
                     width: accountSelect.width
 
                     contentItem: Rectangle {
                         gradient: pageStyle.goldButton
                         anchors.fill: parent
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            acceptedButtons: Qt.NoButton
+                        }
                         Label {
                             color: "black"
                             text: modelData

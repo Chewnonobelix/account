@@ -56,15 +56,33 @@ Popup {
                 id: rowChecked
                 checked: isChecked
 
+                MouseArea {
+                    z: -1
+                    acceptedButtons: Qt.NoButton
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                }
+
                 onCheckedChanged: {
                     isChecked = checked
                 }
             }
+
+
             Label {
                 font.family: pageStyle.core.name
                 font.pointSize: pageStyle.core.size
                 anchors.verticalCenter: rowChecked.verticalCenter
                 text: label + " " + edate + " " + value + "€"
+
+                MouseArea {
+                    acceptedButtons: Qt.LeftButton
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+
+                    onClicked: rowChecked.checked = !rowChecked.checked
+                }
+
             }
         }
     }

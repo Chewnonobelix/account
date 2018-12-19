@@ -66,6 +66,13 @@ Item {
             s_currentTextChanged(currentText)
         }
 
+        MouseArea {
+            anchors.fill: parent
+            z: -1
+            cursorShape: Qt.PointingHandCursor
+            acceptedButtons: Qt.NoButton
+        }
+
         Keys.onPressed: {
             if((event.key === Qt.Key_Enter || event.key === Qt.Key_Return)  && currentIndex === model.length-1) {
                 var tmp = model
@@ -112,7 +119,7 @@ Item {
                 MouseArea {
                     property string cTxt: modelData
                     anchors.fill: parent
-                    cursorShape: Qt.WhatsThisCursor
+                    cursorShape: index === (category.count - 1)  ? Qt.WhatsThisCursor : Qt.PointingHandCursor
 
                     onClicked: {
                         if(mouse.button === Qt.LeftButton) {

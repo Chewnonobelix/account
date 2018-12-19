@@ -161,6 +161,11 @@ ApplicationWindow {
             enabled: accountSelect.model.length > 0
             signal s_currentTextChange(string text)
 
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                acceptedButtons: Qt.NoButton
+            }
             Rectangle {
                 gradient: pageStyle.goldButton
                 anchors.fill: parent
@@ -172,6 +177,11 @@ ApplicationWindow {
                 contentItem: Rectangle {
                     gradient: pageStyle.goldButton
                     anchors.fill: parent
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        acceptedButtons: Qt.NoButton
+                    }
                     Label {
                         color: "black"
                         text: modelData

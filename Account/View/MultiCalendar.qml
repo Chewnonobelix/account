@@ -19,6 +19,12 @@ Calendar {
     visibleYear: currentYear
     weekNumbersVisible: true
 
+    MouseArea {
+        z: -1
+        anchors.fill: parent
+        acceptedButtons: Qt.NoButton
+        onWheel: console.log(wheel.angleDelta)
+    }
 
     function showNextMonth() {
         currentMonth ++
@@ -95,6 +101,8 @@ Calendar {
                 font.family: pageStyle.title.name
                 font.pixelSize: height * 0.8
 
+
+
             }
 
             Button {
@@ -110,6 +118,13 @@ Calendar {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                     border.color: "silver"
                     anchors.fill: parent
+                }
+
+                MouseArea {
+                    z: -1
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
                 }
 
                 onClicked: {
@@ -130,6 +145,13 @@ Calendar {
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                     border.color: "silver"
+                }
+
+                MouseArea {
+                    z: -1
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
                 }
 
 

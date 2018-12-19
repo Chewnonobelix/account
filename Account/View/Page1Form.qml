@@ -109,6 +109,13 @@ Page {
             }
 
 
+            MouseArea {
+                z: -1
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                acceptedButtons: Qt.NoButton
+            }
+
             onClicked:  {
                 mainWindow.adding(false)
             }
@@ -132,6 +139,13 @@ Page {
                     remove.clicked()
                 }
                 sequence: "R"
+            }
+
+            MouseArea {
+                z: -1
+                anchors.fill: parent
+                cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                acceptedButtons: Qt.NoButton
             }
 
             Rectangle {
