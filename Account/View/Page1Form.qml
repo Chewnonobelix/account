@@ -190,6 +190,9 @@ Page {
         }
     }
 
+    onWidthChanged: {
+        view.width = ((width * 0.25) - 5) < view.maximumWidth ? (width * 0.25) + 5 : view.maximumWidth
+    }
 
     TableView {
         anchors.left: cal.right
@@ -199,6 +202,8 @@ Page {
         id: view
         objectName: "entryView"
         model: defaultModel
+
+        property int maximumWidth: 4*100+40
 
         sortIndicatorVisible:  true
         property string currentType
