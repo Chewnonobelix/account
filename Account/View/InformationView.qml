@@ -111,12 +111,34 @@ Item {
         anchors.left: spinbox.right
         editable: currentText === ""
         model: [""]
-        font.family: pageStyle.core.name
-        font.pixelSize: pageStyle.core.size
+
 
         signal s_addCategory(string cat)
         signal s_currentTextChanged(string cat)
 
+        contentItem: StackLayout {
+            currentIndex: category.editable ? 1 : 0
+            Label {
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                text: category.currentText
+            }
+
+            TextField {
+                id: editCombo
+
+                Keys.onPressed: {
+                    if((event.key === Qt.Key_Enter || event.key === Qt.Key_Return)  && category.currentIndex === category.model.length-1) {
+                        category.addCat(text)
+                        clear()
+                    }
+                }
+            }
+        }
+
+        onContentItemChanged: console.log("content", contentItem, editable, ec)
         onCurrentTextChanged: {
             s_currentTextChanged(currentText)
         }
@@ -128,17 +150,16 @@ Item {
             acceptedButtons: Qt.NoButton
         }
 
-        Keys.onPressed: {
-            if((event.key === Qt.Key_Enter || event.key === Qt.Key_Return)  && currentIndex === model.length-1) {
-                var tmp = model
-                tmp.pop()
-                tmp.push(editText)
-                tmp.push("")
-                model = tmp
-                currentIndex = tmp.length-2
-                s_addCategory(editText)
-            }
+        function addCat(newCat) {
+            var tmp = model
+            tmp.pop()
+            tmp.push(newCat)
+            tmp.push("")
+            model = tmp
+            currentIndex = tmp.length-2
+            s_addCategory(newCat)
         }
+
 
         function setting(type) {
             var index = find(type)
@@ -151,7 +172,7 @@ Item {
             }
         }
 
-        Rectangle {
+        background: Rectangle {
             anchors.fill: parent
             gradient: pageStyle.goldButton
         }
