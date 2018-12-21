@@ -66,9 +66,7 @@ int MainController::exec()
     QObject* checker = popup->findChild<QObject*>("checkerModel");
 
     if(checker)
-    {
         connect(checker, SIGNAL(validate()), this, SLOT(validateCheckEstimated()));
-    }
 
     return 0;
 }
@@ -303,7 +301,10 @@ void MainController::loadAccount()
         connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
 
         if(t.isEmpty())
+        {
             accountChange("");
+            add(true);
+        }
         else
             accountChange(t[0]);
     }
