@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
+import QtQuick.Window 2.12
 
 Item {
     id: info
@@ -9,7 +10,7 @@ Item {
     AccountStyle {
         id: pageStyle
     }
-
+    property int maximum: Screen.width * .55 - 10
     width: spinbox.width + category.width + title.width
     Item {
         id: entry
@@ -42,6 +43,7 @@ Item {
         width: title.width
         font.pixelSize: pageStyle.title.size
         font.family: pageStyle.title.name
+        horizontalAlignment: Qt.AlignHCenter
         background: Rectangle {
             gradient: pageStyle.goldHeader
         }
@@ -54,6 +56,7 @@ Item {
         anchors.left: titleLabel.right
         font.pixelSize: pageStyle.title.size
         font.family: pageStyle.title.name
+        horizontalAlignment: Qt.AlignHCenter
         background: Rectangle {
             gradient: pageStyle.goldHeader
         }
@@ -65,13 +68,14 @@ Item {
         anchors.left: valueLabel.right
         font.pixelSize: pageStyle.title.size
         font.family: pageStyle.title.name
+        horizontalAlignment: Qt.AlignHCenter
         background: Rectangle {
             gradient: pageStyle.goldHeader
         }
     }
     TextField {
         id: title
-
+        width: maximum / 3
         anchors.top:titleLabel.bottom
         anchors.topMargin: 5
         text: infoModel.title
@@ -85,6 +89,8 @@ Item {
 
     DoubleSpinBox {
         id: spinbox
+        width: maximum / 3
+
         value: entry.value*100
         anchors.top: valueLabel.bottom
         anchors.topMargin: 5
@@ -98,17 +104,41 @@ Item {
     ComboBox {
         id: category
         objectName: "category"
+        width: maximum / 3
+
         anchors.top: categoryLabel.bottom
         anchors.topMargin: 5
         anchors.left: spinbox.right
         editable: currentText === ""
         model: [""]
-        font.family: pageStyle.core.name
-        font.pixelSize: pageStyle.core.size
+
 
         signal s_addCategory(string cat)
         signal s_currentTextChanged(string cat)
 
+        contentItem: StackLayout {
+            currentIndex: category.editable ? 1 : 0
+            Label {
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                text: category.currentText
+            }
+
+            TextField {
+                id: editCombo
+
+                Keys.onPressed: {
+                    if((event.key === Qt.Key_Enter || event.key === Qt.Key_Return)  && category.currentIndex === category.model.length-1) {
+                        category.addCat(text)
+                        clear()
+                    }
+                }
+            }
+        }
+
+        onContentItemChanged: console.log("content", contentItem, editable, ec)
         onCurrentTextChanged: {
             s_currentTextChanged(currentText)
         }
@@ -120,17 +150,16 @@ Item {
             acceptedButtons: Qt.NoButton
         }
 
-        Keys.onPressed: {
-            if((event.key === Qt.Key_Enter || event.key === Qt.Key_Return)  && currentIndex === model.length-1) {
-                var tmp = model
-                tmp.pop()
-                tmp.push(editText)
-                tmp.push("")
-                model = tmp
-                currentIndex = tmp.length-2
-                s_addCategory(editText)
-            }
+        function addCat(newCat) {
+            var tmp = model
+            tmp.pop()
+            tmp.push(newCat)
+            tmp.push("")
+            model = tmp
+            currentIndex = tmp.length-2
+            s_addCategory(newCat)
         }
+
 
         function setting(type) {
             var index = find(type)
@@ -143,7 +172,7 @@ Item {
             }
         }
 
-        Rectangle {
+        background: Rectangle {
             anchors.fill: parent
             gradient: pageStyle.goldButton
         }

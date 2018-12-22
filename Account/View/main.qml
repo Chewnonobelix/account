@@ -1,6 +1,6 @@
 import QtQuick 2.11
 import QtQuick.Controls 1.4
-
+import QtQuick.Window 2.12
 import QtQuick.Controls 2.2
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Styles 1.4
@@ -18,8 +18,10 @@ ApplicationWindow {
     signal removeAccount (string name)
     id: mainWindow
 
-    Component.onCompleted: showMaximized()
-
+    property int maximizedWidth: Screen.width
+    Component.onCompleted: {
+        showMaximized()
+    }
     Shortcut {
         sequence: "CTRL+N"
         context: Qt.ApplicationShortcut
