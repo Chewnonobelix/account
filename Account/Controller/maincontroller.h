@@ -22,6 +22,7 @@ private:
     GraphController m_graph;
 
     void checkEstimated();
+    void previewCalendar();
 
 public:
     MainController();

@@ -162,8 +162,48 @@ void MainController::edit(int id)
     }
 }
 
+void MainController::previewCalendar()
+{
+    QObject* cal = m_engine.rootObjects().first()->findChild<QObject*>("cal");
+    int month;
+    if(cal)
+        month = cal->property("currentMonth").toInt();
+
+    auto es =  entries();
+    QMultiMap<int,Entry> l;
+    for(auto it: es)
+    {
+        qDebug()<<"Month"<<it.date().month()<<month;
+        if(it.date().month() == (month + 1))
+        {
+            l.insert(it.date().day(), it);
+        }
+    }
+
+    qDebug()<<"Preview"<<l.size()<<l.keys();
+
+    QMap<int, Total> finalMap;
+    for(auto k: l.keys())
+    {
+        auto l2 = l.values(k);
+        Total t;
+        for(auto it: l2)
+        {
+            t = t + it;
+        }
+
+        finalMap[k] = t;
+    }
+
+    qDebug()<<"Final map"<<finalMap.size();
+    for(auto it = finalMap.begin(); it != finalMap.end(); it++)
+        qDebug()<<it.key()<<it.value().date()<<it.value().value();
+
+}
+
 void MainController::selection()
 {
+    previewCalendar();
     QObject* calendar = m_engine.rootObjects().first()->findChild<QObject*>("cal");
     QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));
     QJSValue array = mp.read(calendar).value<QJSValue>();

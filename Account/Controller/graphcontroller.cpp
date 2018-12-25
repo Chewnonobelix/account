@@ -84,9 +84,6 @@ void GraphController::timerEvent(QTimerEvent *)
             maxVal = t.value();
             maxVal = maxVal > 0 ? maxVal + maxVal*0.05: maxVal - maxVal * .05;
         }
-
-
-
     }
 
     QMetaObject::invokeMethod(m_view, "setMinMaxDate", Q_ARG(QVariant, minDate), Q_ARG(QVariant, maxDate));
