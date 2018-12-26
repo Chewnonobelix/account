@@ -457,7 +457,8 @@ Page {
         onCurrentIndexChanged: {
             infoView.visible = (currentIndex !== -1) && (defaultModel.get(currentIndex).label !== "Initial")
             remove.enabled = (view.currentIndex !== -1) && (defaultModel.get(view.currentIndex).label !== "Initial")
-            s_view(defaultModel.get(currentIndex).id)
+            if(currentIndex !== -1)
+                s_view(defaultModel.get(currentIndex).id)
         }
     }
 
