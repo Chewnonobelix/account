@@ -173,14 +173,12 @@ void MainController::previewCalendar()
     QMultiMap<int,Entry> l;
     for(auto it: es)
     {
-        qDebug()<<"Month"<<it.date().month()<<month;
         if(it.date().month() == (month + 1))
         {
             l.insert(it.date().day(), it);
         }
     }
 
-    qDebug()<<"Preview"<<l.size()<<l.keys();
 
     QMap<int, Total> finalMap;
     for(auto k: l.keys())
@@ -195,9 +193,26 @@ void MainController::previewCalendar()
         finalMap[k] = t;
     }
 
-    qDebug()<<"Final map"<<finalMap.size();
-    for(auto it = finalMap.begin(); it != finalMap.end(); it++)
-        qDebug()<<it.key()<<it.value().date()<<it.value().value();
+    QObject* model = cal->findChild<QObject*>("calendarPreview");
+    QMetaObject::invokeMethod(model, "clear");
+
+    for(auto i = 1; i <= 31; i++)
+    {
+        QVariantMap map;
+        if(finalMap.contains(i))
+        {
+            map.insert("day", i);
+            map.insert("valid", true);
+            map.insert("value", finalMap[i].value());
+        }
+        else
+        {
+            map.insert("day", i);
+            map.insert("valid", false);
+        }
+
+        QMetaObject::invokeMethod(model, "add", Q_ARG(QVariant, map));
+    }
 
 }
 
