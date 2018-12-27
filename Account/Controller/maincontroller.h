@@ -22,7 +22,6 @@ private:
     GraphController m_graph;
 
     void checkEstimated();
-    void previewCalendar();
 
 public:
     MainController();
@@ -50,6 +49,7 @@ public slots:
     void validateCheckEstimated();
     void deleteAccount(QString);
 
+    void previewCalendar();
 };
 
 

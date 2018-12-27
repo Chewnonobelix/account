@@ -29,7 +29,10 @@ int MainController::exec()
     QObject* calendar = root->findChild<QObject*>("cal");
 
     if(calendar)
+    {
+        connect(calendar, SIGNAL(s_monthChanged()), this, SLOT(previewCalendar()));
         connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(selection()));
+    }
 
     QObject* combo = root->findChild<QObject*>("accountSelect");
 
@@ -76,6 +79,7 @@ int MainController::exec()
 void MainController::update(Entry e)
 {
     AbstractController::updateEntry(e);
+    selection();
 }
 
 void MainController::add(bool account)
@@ -166,19 +170,30 @@ void MainController::previewCalendar()
 {
     QObject* cal = m_engine.rootObjects().first()->findChild<QObject*>("cal");
     int month;
+    int year;
     if(cal)
+    {
+        year = cal->property("currentYear").toInt();
         month = cal->property("currentMonth").toInt();
-
+    }
     auto es =  entries();
     QMultiMap<int,Entry> l;
+    Total t;
+    QDate first;
     for(auto it: es)
     {
         if(it.date().month() == (month + 1))
         {
             l.insert(it.date().day(), it);
         }
-    }
+        else if(it.date().month() <= month || it.date().year() < year)
+        {
+            t = t + it;
+        }
 
+        if(it.date() < first || !first.isValid())
+            first = it.date();
+    }
 
     QMap<int, Total> finalMap;
     for(auto k: l.keys())
@@ -191,6 +206,18 @@ void MainController::previewCalendar()
         }
 
         finalMap[k] = t;
+    }
+
+    QVector<Total> megaTotal(32);
+    megaTotal[0] = t;
+
+    for(int i = 1; i <= 31; i++)
+    {
+        if(finalMap.contains(i))
+            megaTotal[i] = megaTotal[i-1] + finalMap[i];
+        else
+            megaTotal[i] = megaTotal[i-1];
+
     }
 
     QObject* model = cal->findChild<QObject*>("calendarPreview");
@@ -213,6 +240,25 @@ void MainController::previewCalendar()
 
         QMetaObject::invokeMethod(model, "add", Q_ARG(QVariant, map));
     }
+
+    model = cal->findChild<QObject*>("totalPreview");
+    QMetaObject::invokeMethod(model, "clear");
+
+    for(auto i = 0; i <= 31 ; i++)
+    {
+        QVariantMap map;
+        map.insert("day", i);
+        map.insert("value", megaTotal[i].value());
+
+        if(megaTotal[i].date() >= first && megaTotal[i].date().isValid())
+        {
+//            qDebug()<<"Date"<<megaTotal[i].date();
+
+           QMetaObject::invokeMethod(model, "add", Q_ARG(QVariant, map));
+        }
+    }
+
+//    qDebug()<<"First"<<first;
 
 }
 
