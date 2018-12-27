@@ -79,7 +79,7 @@ int MainController::exec()
 void MainController::update(Entry e)
 {
     AbstractController::updateEntry(e);
-    selection();
+    selection(e.id());
 }
 
 void MainController::add(bool account)
@@ -252,17 +252,12 @@ void MainController::previewCalendar()
 
         if(megaTotal[i].date() >= first && megaTotal[i].date().isValid())
         {
-//            qDebug()<<"Date"<<megaTotal[i].date();
-
            QMetaObject::invokeMethod(model, "add", Q_ARG(QVariant, map));
         }
     }
-
-//    qDebug()<<"First"<<first;
-
 }
 
-void MainController::selection()
+void MainController::selection(int id)
 {
     previewCalendar();
     QObject* calendar = m_engine.rootObjects().first()->findChild<QObject*>("cal");
@@ -319,6 +314,7 @@ void MainController::selection()
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
     if(tab)
     {
+        QMetaObject::invokeMethod(tab, "unselectAll");
         if(!ret.isEmpty())
         {
             minV = ret.first().value();
@@ -354,6 +350,9 @@ void MainController::selection()
 
         minV -= 10;
         maxV += 10;
+
+        if(id > -1)
+            QMetaObject::invokeMethod(tab, "selectFromId", Q_ARG(QVariant, id));
     }
 
     QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");

@@ -265,6 +265,16 @@ Page {
             }
         }
 
+        function selectFromId(id) {
+            console.log("reselect", id)
+            for(var i = 0; i < defaultModel.count; i++) {
+                if(defaultModel.get(i).id === id) {
+                    console.log("find", i)
+                    setNewIndex(i)
+                }
+            }
+        }
+
         TableViewColumn {
             role: "type"
             title: qsTr("[+/-]")
@@ -457,6 +467,7 @@ Page {
         onCurrentIndexChanged: {
             infoView.visible = (currentIndex !== -1) && (defaultModel.get(currentIndex).label !== "Initial")
             remove.enabled = (view.currentIndex !== -1) && (defaultModel.get(view.currentIndex).label !== "Initial")
+
             if(currentIndex !== -1)
                 s_view(defaultModel.get(currentIndex).id)
         }

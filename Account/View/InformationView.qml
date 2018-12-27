@@ -7,6 +7,7 @@ Item {
     id: info
     objectName: "info"
 
+    property bool opening: false
     AccountStyle {
         id: pageStyle
     }
@@ -95,12 +96,12 @@ Item {
         anchors.top: valueLabel.bottom
         anchors.topMargin: 5
         anchors.left: title.right
-//        enabled: false
         font.family:  pageStyle.core.name
         font.pixelSize: pageStyle.core.size
 
         onRealValueChanged: {
-            info.s_valueChanged(realValue)
+            if(!parent.opening)
+                info.s_valueChanged(realValue)
         }
     }
 

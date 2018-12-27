@@ -48,6 +48,7 @@ void ControllerInformation::catChanged(QString cat)
 
 void ControllerInformation::show()
 {
+    m_view->setProperty("opening", true);
     QObject* model =  m_view->findChild<QObject*>("entry");
     if(model)
     {
@@ -67,6 +68,9 @@ void ControllerInformation::show()
 
     if(model)
         QMetaObject::invokeMethod(model, "setting", Q_ARG(QVariant, m_entry.info().category()));
+
+    m_view->setProperty("opening", false);
+
 }
 
 void ControllerInformation::set(Entry e, QObject* v)
