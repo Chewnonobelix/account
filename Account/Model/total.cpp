@@ -34,18 +34,27 @@ Total operator+(const Entry& e1, const Entry& e2)
     return ret;
 }
 
-Total& operator + (Total& t, const Entry& e)
+Total operator + (const Total& t, const Total& t2)
 {
-    QMetaEnum qme = QMetaEnum::fromType<Categories::Type>();
-
-    t.setValue(t.value() + (qme.keyToValue(e.type().toLower().toLatin1())*e.value()));
-    t.setDate(Total::maxDate(t.date(), e.date()));
-
-    t.setValue(round (t.value() * 100.0) / 100.0);
-    return t;
+    Total ret;
+    ret.setValue(t.value() + t2.value());
+    ret.setDate(Total::maxDate(t.date(), t2.date()));
+    ret.setValue(round (ret.value() * 100.0) / 100.0);
+    return ret;
 }
 
-Total& operator + (const Entry& e, Total& t)
+Total operator + (const Total& t, const Entry& e)
+{
+    QMetaEnum qme = QMetaEnum::fromType<Categories::Type>();
+    Total ret;
+    ret.setValue(t.value() + (qme.keyToValue(e.type().toLower().toLatin1())*e.value()));
+    ret.setDate(Total::maxDate(t.date(), e.date()));
+
+    ret.setValue(round (ret.value() * 100.0) / 100.0);
+    return ret;
+}
+
+Total operator + (const Entry& e, const Total& t)
 {
     return (t + e);
 }
