@@ -13,7 +13,7 @@ GraphController::~GraphController()
 
 int GraphController::exec()
 {
-    m_idTimer = startTimer(1000);
+    m_idTimer = startTimer(10000);
     return 0;
 }
 
@@ -21,6 +21,7 @@ void GraphController::set(QObject * view)
 {
     m_view = view;
 }
+
 void GraphController::timerEvent(QTimerEvent *)
 {
     m_sum.clear();
