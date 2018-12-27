@@ -27,7 +27,7 @@ public slots:
     void estimatedEdit(bool);
     void addCategory(QString);
     void catChanged(QString);
-
+    void valueChanged(double);
 signals:
     void s_update(const Entry&);
     void s_addCategory(QString, QString);

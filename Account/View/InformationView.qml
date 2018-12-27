@@ -29,7 +29,7 @@ Item {
 
     signal s_titleChanged(string title)
     signal s_estimatedChanged(bool title)
-
+    signal s_valueChanged(real value)
 
     onEnabledChanged: {
         titleLabel.enabled = true
@@ -95,10 +95,13 @@ Item {
         anchors.top: valueLabel.bottom
         anchors.topMargin: 5
         anchors.left: title.right
-        enabled: false
+//        enabled: false
         font.family:  pageStyle.core.name
         font.pixelSize: pageStyle.core.size
 
+        onRealValueChanged: {
+            info.s_valueChanged(realValue)
+        }
     }
 
     ComboBox {

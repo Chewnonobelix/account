@@ -165,6 +165,8 @@ void AbstractController::updateEntry(const Entry & e)
 {
     m_db->updateEntry(e);
     m_db->updateInfo(e);
+
+    setCurrentAccount(currentAccount());
 }
 
 void AbstractController::addCategory(QString name, QString type)

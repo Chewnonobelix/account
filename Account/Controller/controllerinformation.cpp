@@ -28,6 +28,13 @@ void ControllerInformation::estimatedEdit(bool e)
     s_update(m_entry);
 }
 
+void ControllerInformation::valueChanged(double value)
+{
+    m_entry.setValue(value);
+    s_update(m_entry);
+    show();
+}
+
 void ControllerInformation::catChanged(QString cat)
 {
     Information i = m_entry.info();
@@ -80,7 +87,7 @@ void ControllerInformation::set(Entry e, QObject* v)
 
     connect(v, SIGNAL(s_titleChanged(QString)), this, SLOT(labelEdit(QString)));
     connect(v, SIGNAL(s_estimatedChanged(bool)), this, SLOT(estimatedEdit(bool)));
-
+    connect(v, SIGNAL(s_valueChanged(double)), this, SLOT(valueChanged(double)));
     show();
 }
 
