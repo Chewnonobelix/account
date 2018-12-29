@@ -55,4 +55,5 @@ HEADERS += \
     Controller/graphcontroller.h \
     Controller/xmltosql.h \
     Model/budget.h \
-    Model/commonexpense.h
+    Model/commonexpense.h \
+    Test/xmltest.h
