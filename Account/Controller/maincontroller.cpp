@@ -398,7 +398,10 @@ void MainController::loadAccount()
     if(combo)
     {
         QStringList t = AbstractController::accountList();
-
+        if(t.size() == 0)
+        {
+            add(true);
+        }
         combo->setProperty("model", t);
         connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
 
