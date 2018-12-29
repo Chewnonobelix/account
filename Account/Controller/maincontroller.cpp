@@ -79,7 +79,12 @@ int MainController::exec()
 void MainController::update(Entry e)
 {
     AbstractController::updateEntry(e);
-    selection(e.id());
+    selection();
+
+    QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
+
+    if(tab)
+        QMetaObject::invokeMethod(tab, "selectFromId", Q_ARG(QVariant, e.id()));
 }
 
 void MainController::add(bool account)
@@ -351,8 +356,6 @@ void MainController::selection(int id)
         minV -= 10;
         maxV += 10;
 
-        if(id > -1)
-            QMetaObject::invokeMethod(tab, "selectFromId", Q_ARG(QVariant, id));
     }
 
     QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
