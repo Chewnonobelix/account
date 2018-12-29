@@ -266,10 +266,8 @@ Page {
         }
 
         function selectFromId(id) {
-            console.log("reselect", id)
             for(var i = 0; i < defaultModel.count; i++) {
                 if(defaultModel.get(i).id === id) {
-                    console.log("find", i)
                     setNewIndex(i)
                 }
             }

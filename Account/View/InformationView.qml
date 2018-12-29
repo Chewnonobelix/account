@@ -142,7 +142,6 @@ Item {
             }
         }
 
-        onContentItemChanged: console.log("content", contentItem, editable, ec)
         onCurrentTextChanged: {
             s_currentTextChanged(currentText)
         }
@@ -155,13 +154,16 @@ Item {
         }
 
         function addCat(newCat) {
-            var tmp = model
-            tmp.pop()
-            tmp.push(newCat)
-            tmp.push("")
-            model = tmp
-            currentIndex = tmp.length-2
+//            console.log("add cat", newCat, model.length, currentIndex)
+//            model.pop()
+//            model.push(newCat)
+//            model.push("")
+
+//            currentIndex = model.length-2
+//            console.log("add cat2", newCat, model.length, currentIndex)
+
             s_addCategory(newCat)
+
         }
 
 

@@ -24,8 +24,8 @@ void ControllerInformation::estimatedEdit(bool e)
 
     m_entry.setInfo(i);
 
-    show();
     s_update(m_entry);
+    show();
 }
 
 void ControllerInformation::valueChanged(double value)
@@ -42,8 +42,8 @@ void ControllerInformation::catChanged(QString cat)
 
     m_entry.setInfo(i);
 
-    show();
     s_update(m_entry);
+    show();
 }
 
 void ControllerInformation::show()
@@ -99,4 +99,20 @@ void ControllerInformation::set(Entry e, QObject* v)
 void ControllerInformation::addCategory(QString name)
 {
     emit s_addCategory(name, m_entry.type());
+    Information i = m_entry.info();
+    i.setCategory(name);
+    m_entry.setInfo(i);
+
+    QObject* combo = m_view->findChild<QObject*>("category");
+    if(combo)
+    {
+        QString type = m_entry.type();
+        QStringList cat = AbstractController::categories(type);
+        cat<<"";
+        combo->setProperty("model", cat);
+        connect(combo, SIGNAL(s_addCategory(QString)), this, SLOT(addCategory(QString)));
+        connect(combo, SIGNAL(s_currentTextChanged(QString)), this, SLOT(catChanged(QString)));
+    }
+
+    show();
 }
