@@ -4,22 +4,29 @@
 #include <QDir>
 #include "controllerxml.h"
 
-class ControllerXMLMulti: public ControllerXML
+class ControllerXMLMulti: public InterfaceDataSave
 {
 private:
     QString m_owner;
     QMap<QString, QDomDocument> m_accounts;
     QSet<int> m_entriesId;
     QSet<int> m_infoId;
+    QDomDocument m_currentAccount;
 
     int maxId(const QSet<int> &) const;
     Information selectInformation(const QDomElement&) const;
+    void addInfo(QDomElement&, const Information&);
+
+    void close();
+    void createAccount(QString);
 
 public:
     ControllerXMLMulti();
     ControllerXMLMulti(const ControllerXMLMulti&);
     ~ControllerXMLMulti();
 
+
+    void setCurrentAccount(QString);
 
     virtual bool addEntry(const Entry&);
     virtual QList<Entry> selectEntry(QString);
