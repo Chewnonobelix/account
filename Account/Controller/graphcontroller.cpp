@@ -13,7 +13,7 @@ GraphController::~GraphController()
 
 int GraphController::exec()
 {
-    m_idTimer = startTimer(1000);
+    m_idTimer = startTimer(10000);
     return 0;
 }
 
@@ -21,6 +21,7 @@ void GraphController::set(QObject * view)
 {
     m_view = view;
 }
+
 void GraphController::timerEvent(QTimerEvent *)
 {
     m_sum.clear();
@@ -84,9 +85,6 @@ void GraphController::timerEvent(QTimerEvent *)
             maxVal = t.value();
             maxVal = maxVal > 0 ? maxVal + maxVal*0.05: maxVal - maxVal * .05;
         }
-
-
-
     }
 
     QMetaObject::invokeMethod(m_view, "setMinMaxDate", Q_ARG(QVariant, minDate), Q_ARG(QVariant, maxDate));

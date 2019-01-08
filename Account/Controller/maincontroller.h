@@ -35,7 +35,7 @@ public slots:
     void edit(int);
 
     void adding();
-    void selection();
+    void selection(int = -1);
     void accountChange(QString);
 
     void toXml();
@@ -49,6 +49,7 @@ public slots:
     void validateCheckEstimated();
     void deleteAccount(QString);
 
+    void previewCalendar();
 };
 
 

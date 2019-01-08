@@ -19,8 +19,9 @@ public:
     Total& operator = (const Total&);
 
     friend Total operator+(const Entry&, const Entry&);
-    friend Total& operator + (Total&, const Entry&);
-    friend Total& operator + (const Entry&, Total&);
+    friend Total operator + (const Total&, const Total&);
+    friend Total operator + (const Total&, const Entry&);
+    friend Total operator + (const Entry&, const Total&);
     friend bool operator < (const Total&, const Total&);
     friend bool operator ==(const Total&, const Total&);
 

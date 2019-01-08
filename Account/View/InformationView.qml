@@ -7,6 +7,7 @@ Item {
     id: info
     objectName: "info"
 
+    property bool opening: false
     AccountStyle {
         id: pageStyle
     }
@@ -29,7 +30,7 @@ Item {
 
     signal s_titleChanged(string title)
     signal s_estimatedChanged(bool title)
-
+    signal s_valueChanged(real value)
 
     onEnabledChanged: {
         titleLabel.enabled = true
@@ -95,10 +96,13 @@ Item {
         anchors.top: valueLabel.bottom
         anchors.topMargin: 5
         anchors.left: title.right
-        enabled: false
         font.family:  pageStyle.core.name
         font.pixelSize: pageStyle.core.size
 
+        onRealValueChanged: {
+            if(!parent.opening)
+                info.s_valueChanged(realValue)
+        }
     }
 
     ComboBox {
@@ -138,7 +142,6 @@ Item {
             }
         }
 
-        onContentItemChanged: console.log("content", contentItem, editable, ec)
         onCurrentTextChanged: {
             s_currentTextChanged(currentText)
         }
@@ -151,13 +154,16 @@ Item {
         }
 
         function addCat(newCat) {
-            var tmp = model
-            tmp.pop()
-            tmp.push(newCat)
-            tmp.push("")
-            model = tmp
-            currentIndex = tmp.length-2
+//            console.log("add cat", newCat, model.length, currentIndex)
+//            model.pop()
+//            model.push(newCat)
+//            model.push("")
+
+//            currentIndex = model.length-2
+//            console.log("add cat2", newCat, model.length, currentIndex)
+
             s_addCategory(newCat)
+
         }
 
 

@@ -265,6 +265,14 @@ Page {
             }
         }
 
+        function selectFromId(id) {
+            for(var i = 0; i < defaultModel.count; i++) {
+                if(defaultModel.get(i).id === id) {
+                    setNewIndex(i)
+                }
+            }
+        }
+
         TableViewColumn {
             role: "type"
             title: qsTr("[+/-]")

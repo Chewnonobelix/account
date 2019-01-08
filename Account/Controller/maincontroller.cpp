@@ -29,7 +29,10 @@ int MainController::exec()
     QObject* calendar = root->findChild<QObject*>("cal");
 
     if(calendar)
+    {
+        connect(calendar, SIGNAL(s_monthChanged()), this, SLOT(previewCalendar()));
         connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(selection()));
+    }
 
     QObject* combo = root->findChild<QObject*>("accountSelect");
 
@@ -74,6 +77,12 @@ int MainController::exec()
 void MainController::update(Entry e)
 {
     AbstractController::updateEntry(e);
+    selection();
+
+    QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
+
+    if(tab)
+        QMetaObject::invokeMethod(tab, "selectFromId", Q_ARG(QVariant, e.id()));
 }
 
 void MainController::add(bool account)
@@ -160,8 +169,100 @@ void MainController::edit(int id)
     }
 }
 
-void MainController::selection()
+void MainController::previewCalendar()
 {
+    QObject* cal = m_engine.rootObjects().first()->findChild<QObject*>("cal");
+    int month;
+    int year;
+    if(cal)
+    {
+        year = cal->property("currentYear").toInt();
+        month = cal->property("currentMonth").toInt();
+    }
+    auto es =  entries();
+    QMultiMap<int,Entry> l;
+    Total t;
+    QDate first;
+    for(auto it: es)
+    {
+        if(it.date().month() == (month + 1))
+        {
+            l.insert(it.date().day(), it);
+        }
+        else if(it.date().month() <= month || it.date().year() < year)
+        {
+            t = t + it;
+        }
+
+        if(it.date() < first || !first.isValid())
+            first = it.date();
+    }
+
+    QMap<int, Total> finalMap;
+    for(auto k: l.keys())
+    {
+        auto l2 = l.values(k);
+        Total t;
+        for(auto it: l2)
+        {
+            t = t + it;
+        }
+
+        finalMap[k] = t;
+    }
+
+    QVector<Total> megaTotal(32);
+    megaTotal[0] = t;
+
+    for(int i = 1; i <= 31; i++)
+    {
+        if(finalMap.contains(i))
+            megaTotal[i] = megaTotal[i-1] + finalMap[i];
+        else
+            megaTotal[i] = megaTotal[i-1];
+
+    }
+
+    QObject* model = cal->findChild<QObject*>("calendarPreview");
+    QMetaObject::invokeMethod(model, "clear");
+
+    for(auto i = 1; i <= 31; i++)
+    {
+        QVariantMap map;
+        if(finalMap.contains(i))
+        {
+            map.insert("day", i);
+            map.insert("valid", true);
+            map.insert("value", finalMap[i].value());
+        }
+        else
+        {
+            map.insert("day", i);
+            map.insert("valid", false);
+        }
+
+        QMetaObject::invokeMethod(model, "add", Q_ARG(QVariant, map));
+    }
+
+    model = cal->findChild<QObject*>("totalPreview");
+    QMetaObject::invokeMethod(model, "clear");
+
+    for(auto i = 0; i <= 31 ; i++)
+    {
+        QVariantMap map;
+        map.insert("day", i);
+        map.insert("value", megaTotal[i].value());
+
+        if(megaTotal[i].date() >= first && megaTotal[i].date().isValid())
+        {
+           QMetaObject::invokeMethod(model, "add", Q_ARG(QVariant, map));
+        }
+    }
+}
+
+void MainController::selection(int id)
+{
+    previewCalendar();
     QObject* calendar = m_engine.rootObjects().first()->findChild<QObject*>("cal");
     QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));
     QJSValue array = mp.read(calendar).value<QJSValue>();
@@ -216,6 +317,7 @@ void MainController::selection()
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
     if(tab)
     {
+        QMetaObject::invokeMethod(tab, "unselectAll");
         if(!ret.isEmpty())
         {
             minV = ret.first().value();
@@ -251,6 +353,7 @@ void MainController::selection()
 
         minV -= 10;
         maxV += 10;
+
     }
 
     QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
@@ -296,7 +399,10 @@ void MainController::loadAccount()
     if(combo)
     {
         QStringList t = AbstractController::accountList();
-
+        if(t.size() == 0)
+        {
+            add(true);
+        }
         combo->setProperty("model", t);
         connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
 

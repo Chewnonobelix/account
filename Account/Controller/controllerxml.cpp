@@ -27,7 +27,7 @@ bool ControllerXML::init()
 
     m_file->setFileName(m_filename);
 
-    if(!m_file->open(QIODevice::ReadOnly))
+    if(!m_file->open(QIODevice::ReadWrite))
         return false;
 
     QByteArray text64 = m_file->readAll();
@@ -36,11 +36,21 @@ bool ControllerXML::init()
     if(!m_document.setContent(text))
     {
         m_file->close();
-
-        return false;
+        auto root = m_document.createElement("database");
+        m_document.appendChild(root);
     }
 
     m_file->close();
+
+    auto list = m_document.elementsByTagName("entry");
+
+    for(int i = 0; i < list.size(); i++)
+    {
+        m_entryId<<list.at(i).toElement().attribute("id").toInt();
+        auto info = list.at(i).toElement().elementsByTagName("information").at(0).toElement();
+        m_infoId<<info.attribute("id").toInt();
+    }
+
     return true;
 }
 
@@ -53,6 +63,9 @@ bool ControllerXML::addEntry(const Entry& e)
 {
     int ide = maxId(m_entryId) + 1;
     int idi = maxId(m_infoId) + 1;
+
+    m_entryId<<ide;
+    m_infoId<<idi;
 
     QDomElement root = m_document.elementsByTagName("database").at(0).toElement();
 

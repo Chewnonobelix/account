@@ -10,7 +10,43 @@ Calendar {
     property var selectedDates: []
     property var stylesData: []
 
+    ListModel {
+        id: calendarPreview
+        objectName: "calendarPreview"
+
+        function add(item) {
+            append(item)
+        }
+
+        function find(day) {
+            for(var i = 0; i < count; i++) {
+                if(get(i).day === day) {
+                    return get(i)
+                }
+            }
+        }
+    }
+
+    ListModel {
+        id: totalPreview
+        objectName: "totalPreview"
+
+        function add(item) {
+            append(item)
+        }
+
+        function find(day) {
+            for(var i = 0; i < count; i++) {
+                if(get(i).day === day) {
+//                    console.log("find", day, get(i).day, get(i).value)
+                    return get(i)
+                }
+            }
+        }
+    }
+
     signal s_datesChanged()
+    signal s_monthChanged()
     readonly property string format: "dd-MM-yyyy"
     property int currentMonth
     property int currentYear
@@ -35,6 +71,7 @@ Calendar {
         }
         visibleMonth = currentMonth
 
+        s_monthChanged()
     }
 
 
@@ -47,6 +84,7 @@ Calendar {
             currentMonth = 11
         }
         visibleMonth = currentMonth
+        s_monthChanged()
     }
 
     function showNextYear() {
@@ -214,6 +252,11 @@ Calendar {
         dayDelegate: Rectangle {
             signal updateSelected()
             signal reset()
+
+            property int day: Qt.formatDate(styleData.date, "d")
+            property double val: delCurrentMonth && calendarPreview.find(day).valid ? calendarPreview.find(day).value : 0
+            property bool delCurrentMonth: styleData.date.getMonth() === visibleMonth
+
             id: styleRect
             gradient: blueGradient
             onReset: {
@@ -226,6 +269,40 @@ Calendar {
 
                 while(selectedDates.length > 0) {
                     selectedDates.pop()
+                }
+            }
+
+            ToolTip {
+                text: qsTr("Total: " + totalRect.total + "€ \n" + qsTr("Day transaction: " + parent.val +"€"))
+                visible: styleData.hovered
+                delay: 500
+            }
+
+            Rectangle {
+                width: parent.width
+                height: parent.height * .05
+                anchors.topMargin: 2
+                anchors.top: parent.top
+                color: {
+                    if(calendarPreview.find(parent.day).valid && parent.delCurrentMonth) {
+                        color: parent.val > 0 ? "green" : "red"
+                    }
+                    else {
+                        color: "transparent"
+                    }
+                }
+            }
+
+            Rectangle {
+                width: parent.width
+                height: parent.height * .05
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 2
+                id: totalRect
+                property double total: totalPreview.find(parent.day).value
+                property bool isFind: totalPreview.find(parent.day) !== undefined
+                color: {
+                        color:  parent.delCurrentMonth && isFind ? total > 0 ? "green" : "red" : "transparent"
                 }
             }
 
@@ -259,6 +336,8 @@ Calendar {
                     }
                     reset()
                 }
+
+
             }
 
             function checkMonth(m) {

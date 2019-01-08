@@ -3,37 +3,8 @@
 #include <QQmlApplicationEngine>
 #include <QDebug>
 #include <QRandomGenerator>
-#include "Controller/controllerdb.h"
 #include "Controller/maincontroller.h"
-
-void test()
-{
-//    ControllerDB cdbb;
-//    qDebug()<<"Test";
-//    auto accounts = cdbb.selectAccount();
-//    qDebug()<<accounts;
-//    auto entries1 = cdbb.selectEntry(accounts[0]);
-//    qDebug()<<entries1.size()<<accounts[0];
-//    for(auto e: entries1)
-//        qDebug()<<e.id()<<e.value()<<e.date()<<e.type();
-
-//    Entry e;
-//    QRandomGenerator rdn;
-//    rdn.bounded(999.9);
-//    e.setAccount(accounts[0]);
-//    e.setValue(rdn.generateDouble());
-//    e.setDate(QDate::currentDate());
-//    e.setType("outcome");
-//    cdbb.addEntry(e);
-
-//    auto entries2 = cdbb.selectEntry(accounts[0]);
-//    qDebug()<<entries2.size()<<accounts[0];
-//    for(auto e: entries2)
-//        qDebug()<<e.id()<<e.value()<<e.date()<<e.type();
-
-
-
-}
+//#include "Test/xmltest.h"
 
 int main(int argc, char *argv[])
 {
@@ -55,9 +26,12 @@ int main(int argc, char *argv[])
 
     mc.exec();
 
-    if(argc > 1 && QString(argv[1]) == "--test")
-        test();
+//    XmlTest test1;
 
+    if(argc > 1 && QString(argv[1]) == "--test")
+    {
+//        test1.start();
+    }
 
     return app.exec();
 }

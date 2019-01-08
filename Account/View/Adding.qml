@@ -7,7 +7,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Controls.Styles 1.4
 
 Popup {
-//    closePolicy: Popup.NoAutoClose
+    //    closePolicy: Popup.NoAutoClose
 
     function reset() {
         valueLabel.text = ""
@@ -31,6 +31,7 @@ Popup {
 
     onClosed: {
         dateModel.clear()
+        valueLabel.background.border.color = "#bdbdbd"
     }
 
     onOpened: {
@@ -112,6 +113,9 @@ Popup {
                 id: valueLabel
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
+
+                ToolTip.text: qsTr("Please complete the entry's title")
+                ToolTip.visible: background.border.color == "#ff0000"
             }
 
             DoubleSpinBox {
@@ -184,9 +188,15 @@ Popup {
 
 
                 onClicked: {
-                    addingid.accept()
-                    reset()
-                    close()
+
+                    if(valueLabel.text.length !== 0) {
+                        addingid.accept()
+                        reset()
+                        close()
+                    }
+                    else {
+                        valueLabel.background.border.color = "red"
+                    }
                 }
             }
 
