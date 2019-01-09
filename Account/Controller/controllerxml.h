@@ -20,6 +20,7 @@ private:
     QSet<int> m_entryId;
     QSet<int> m_infoId;
 
+
     int maxId(const QSet<int>&) const;
 
 public:
@@ -41,7 +42,7 @@ public:
 
     virtual bool addCategory(QString, QString);
     virtual bool removeCategory(QString);
-    QMap<QString, QString> selectCategory();
+    virtual QMap<QString, QString> selectCategory();
 
 
     virtual bool init();
