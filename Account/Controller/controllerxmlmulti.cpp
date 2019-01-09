@@ -215,8 +215,25 @@ int ControllerXMLMulti::maxId(const QSet<int> & l) const
     return ret;
 }
 
-Information ControllerXMLMulti::selectInformation(const QDomElement&) const
+Information ControllerXMLMulti::selectInformation(const QDomElement& el) const
 {
-    //TODO
-    return Information();
+    Information ret;
+
+    int id = el.attribute("id").toInt();
+    ret.setId(id);
+    id = el.attribute("id_entry").toInt();
+    ret.setIdEntry(id);
+
+    bool est = el.elementsByTagName("estimated").at(0).toElement().text().toInt();
+
+    QString cat;
+    if(el.elementsByTagName("categoryName").size() > 0)
+        cat = el.elementsByTagName("categoryName").at(0).toElement().text();
+    QString title = el.elementsByTagName("title").at(0).toElement().text();
+
+    ret.setEstimated(est);
+    ret.setCategory(cat);
+    ret.setTitle(title);
+
+    return ret;
 }
