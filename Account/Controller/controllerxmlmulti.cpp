@@ -177,8 +177,7 @@ bool ControllerXMLMulti::removeEntry(const Entry& e)
 
 QStringList ControllerXMLMulti::selectAccount()
 {
-    //TODO
-    return QStringList();
+    return m_accounts.keys();
 }
 
 bool ControllerXMLMulti::removeAccount(QString)
