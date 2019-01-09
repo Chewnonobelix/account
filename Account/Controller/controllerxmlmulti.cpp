@@ -305,7 +305,7 @@ bool ControllerXMLMulti::init()
     {
         QDomDocument doc;
         QFile file;
-        file.setFileName(filename);
+        file.setFileName("data\\"+filename);
         file.open(QIODevice::ReadWrite);
         auto read64 = file.readAll();
         auto read =  QByteArray::fromBase64(read64);
