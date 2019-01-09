@@ -181,10 +181,14 @@ QStringList ControllerXMLMulti::selectAccount()
     return m_accounts.keys();
 }
 
-bool ControllerXMLMulti::removeAccount(QString)
+bool ControllerXMLMulti::removeAccount(QString account)
 {
-    //TODO
-    return false;
+    QDir dir;
+    dir.cd("data");
+    QFile file;
+    file.setFileName(account+".xml");
+
+    return file.remove();
 }
 
 bool ControllerXMLMulti::updateInfo(const Entry& e)
