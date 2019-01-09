@@ -20,7 +20,7 @@ void ControllerXMLMulti::close()
 {
     QDir dir;
 
-    dir.cd(owner());
+    dir.cd("data");
 
     for(auto it = m_accounts.begin(); it != m_accounts.end(); it++)
     {
@@ -31,19 +31,8 @@ void ControllerXMLMulti::close()
         file.close();
     }
 }
-
-
-QString ControllerXMLMulti::owner() const
-{
-    return m_owner;
 }
 
-void ControllerXMLMulti::setOwner(QString owner)
-{
-    close();
-    m_owner = owner;
-    init();
-}
 
 void ControllerXMLMulti::createAccount(QString a)
 {
@@ -178,14 +167,11 @@ QMap<QString, QString> ControllerXMLMulti::selectCategory()
 
 bool ControllerXMLMulti::init()
 {
-    if(owner().isEmpty())
-        return  false;
-
     QDir dir;
-    if(!dir.cd(owner()))
+    if(!dir.cd("data"))
     {
-        dir.mkdir(owner());
-        dir.cd(owner());
+        dir.mkdir("data");
+        dir.cd("data");
     }
 
     auto infoList = dir.entryList(QStringList("*.xml"), QDir::Files);

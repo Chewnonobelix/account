@@ -2,12 +2,12 @@
 #define CONTROLLERXMLMULTI_H
 
 #include <QDir>
+#include <QDebug>
 #include "controllerxml.h"
 
 class ControllerXMLMulti: public InterfaceDataSave
 {
 private:
-    QString m_owner;
     QMap<QString, QDomDocument> m_accounts;
     QSet<int> m_entriesId;
     QSet<int> m_infoId;
@@ -44,9 +44,6 @@ public:
 
 
     virtual bool init();
-
-    QString owner() const;
-    void setOwner(QString);
 };
 
 Q_DECLARE_METATYPE(ControllerXMLMulti)
