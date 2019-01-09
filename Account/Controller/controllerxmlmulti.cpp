@@ -140,9 +140,41 @@ bool ControllerXMLMulti::updateInfo(const Entry&)
     return false;
 }
 
-bool ControllerXMLMulti::updateEntry(const Entry &)
+bool ControllerXMLMulti::updateEntry(const Entry & e)
 {
-    //TODO
+    auto root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+    auto list = root.elementsByTagName("entry");
+
+    for(auto i = 0; i < list.size(); i++)
+    {
+        QDomElement el = list.at(i).toElement();
+        if(el.attribute("id").toInt() == e.id())
+        {
+            auto setter = [&](QString tagname, QString value)
+            {
+
+                QDomElement child = el.elementsByTagName(tagname).at(0).toElement();
+                if(child.isNull())
+                {
+                    child = m_currentAccount.createElement(tagname);
+                    el.appendChild(child);
+                }
+                QDomText txt = child.firstChild().toText();
+                if(txt.isNull())
+                {
+                    txt = m_currentAccount.createTextNode("");
+                    el.appendChild(txt);
+                }
+                txt.setData(value);
+            };
+
+            setter("date", e.date().toString("dd-MM-yyyy"));
+            setter("value",QString::number(e.value()));
+
+            return true;
+        }
+    }
+
     return false;
 }
 
