@@ -44,7 +44,8 @@ void ControllerXMLMulti::createAccount(QString a)
 
 void ControllerXMLMulti::setCurrentAccount(QString a)
 {
-    m_currentAccount = m_accounts[a];
+    if(m_accounts.contains(a))
+        m_currentAccount = m_accounts[a];
 }
 
 bool ControllerXMLMulti::addEntry(const Entry& e)
