@@ -155,6 +155,7 @@ QList<Entry> ControllerXMLMulti::selectEntry(QString account)
 
     return ret;
 }
+
 bool ControllerXMLMulti::removeEntry(const Entry& e)
 {
     setCurrentAccount(e.account());
@@ -321,6 +322,7 @@ bool ControllerXMLMulti::init()
 
         file.close();
     }
+
 
     return true;
 }

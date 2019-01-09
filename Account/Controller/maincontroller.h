@@ -10,6 +10,7 @@
 #include "controllerinformation.h"
 #include "controllerxml.h"
 #include "graphcontroller.h"
+#include "controllerxmlmulti.h"
 #include "xmltosql.h"
 
 class MainController: public AbstractController

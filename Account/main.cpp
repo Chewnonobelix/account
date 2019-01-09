@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
 
     qDebug()<<"ControllerDB"<<qRegisterMetaType<ControllerDB>()<<sizeof(int*);
     qDebug()<<"ControllerXML"<<qRegisterMetaType<ControllerXML>();
+    qDebug()<<"ControllerXMLMulti"<<qRegisterMetaType<ControllerXMLMulti>();
 
     /*QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

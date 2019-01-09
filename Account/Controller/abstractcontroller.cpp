@@ -10,7 +10,7 @@ AbstractController::AbstractController(): QObject(nullptr)
 
     try
     {
-        setDb("ControllerXML");
+        setDb("ControllerXMLMulti");
         m_db->init();
         auto x = m_db->selectCategory();
         for(auto it = x.begin(); it != x.end(); it++)
