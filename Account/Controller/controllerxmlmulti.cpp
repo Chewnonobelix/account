@@ -110,14 +110,50 @@ void ControllerXMLMulti::addInfo(QDomElement& el, const Information & i)
     el.appendChild(el2);
 }
 
-QList<Entry> ControllerXMLMulti::selectEntry(QString)
+QList<Entry> ControllerXMLMulti::selectEntry(QString account)
 {
-    //TODO
-    return QList<Entry>();
-}
+    setCurrentAccount(account);
+    QList<Entry> ret;
 
-bool ControllerXMLMulti::removeEntry(const Entry&)
-{
+
+    QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+    if(root.isNull())
+    {
+        root = m_currentAccount.createElement("database");
+    }
+
+    QDomNodeList children = root.elementsByTagName("entry");
+
+
+    for(int i = 0; i < children.size(); i ++)
+    {
+        QDomElement el = children.at(i).toElement();
+        Entry e;
+        e.setId(el.attribute("id").toInt());
+        QDomElement child = el.elementsByTagName("date").at(0).toElement();
+
+        e.setDate(QDate::fromString(child.text(), "dd-MM-yyyy"));
+        child = el.elementsByTagName("account").at(0).toElement();
+        e.setAccount(child.text());
+        child = el.elementsByTagName("value").at(0).toElement();
+        e.setValue(child.text().toDouble());
+        child = el.elementsByTagName("type").at(0).toElement();
+        e.setType(child.text());
+
+        child = el.elementsByTagName("information").at(0).toElement();
+
+        Information inf = selectInformation(child);
+        inf.setIdEntry(e.id());
+        e.setInfo(inf);
+
+        m_entriesId<<e.id();
+        m_infoId<<inf.id();
+
+        ret<<e;
+    }
+
+    return ret;
+}
 bool ControllerXMLMulti::removeEntry(const Entry& e)
 {
     setCurrentAccount(e.account());
