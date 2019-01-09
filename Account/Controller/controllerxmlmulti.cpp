@@ -187,9 +187,45 @@ bool ControllerXMLMulti::removeAccount(QString)
     return false;
 }
 
-bool ControllerXMLMulti::updateInfo(const Entry&)
+bool ControllerXMLMulti::updateInfo(const Entry& e)
 {
-    //TODO
+    QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+
+    auto list = root.elementsByTagName("entry");
+
+    for(int i = 0; i < list.size(); i ++)
+    {
+        QDomElement el = list.at(i).toElement();
+        if(el.attribute("id").toInt() == e.id())
+        {
+
+            QDomElement info = el.elementsByTagName("information").at(0).toElement();
+            auto setter = [&](QString tagname, QString value)
+            {
+
+                QDomElement child = info.elementsByTagName(tagname).at(0).toElement();
+                if(child.isNull())
+                {
+                    child = m_currentAccount.createElement(tagname);
+                    info.appendChild(child);
+                }
+                QDomText txt = child.firstChild().toText();
+                if(txt.isNull())
+                {
+                    txt = m_currentAccount.createTextNode("");
+                    child.appendChild(txt);
+                }
+                txt.setData(value);
+            };
+            Information inf = e.info();
+            setter("estimated", QString::number(inf.estimated()));
+            setter("categoryName", inf.category());
+            setter("title", inf.title());
+
+            return true;
+        }
+    }
+
     return false;
 }
 
