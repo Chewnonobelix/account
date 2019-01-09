@@ -118,8 +118,25 @@ QList<Entry> ControllerXMLMulti::selectEntry(QString)
 
 bool ControllerXMLMulti::removeEntry(const Entry&)
 {
-    //TODO
-    return false;
+bool ControllerXMLMulti::removeEntry(const Entry& e)
+{
+    setCurrentAccount(e.account());
+
+    QDomElement root = m_currentAccount.firstChild().toElement();
+
+    QDomNodeList list = root.elementsByTagName("entry");
+
+    bool ret = false;
+    for(int i = 0; i < list.size(); i++)
+    {
+        QDomElement el = list.at(i).toElement();
+        if(el.attribute("id").toInt() == e.id())
+        {
+            auto rm = root.removeChild(el);
+            ret = !rm.isNull();
+        }
+    }
+    return ret;
 }
 
 QStringList ControllerXMLMulti::selectAccount()
