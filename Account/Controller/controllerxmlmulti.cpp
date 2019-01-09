@@ -24,13 +24,15 @@ void ControllerXMLMulti::close()
 
     for(auto it = m_accounts.begin(); it != m_accounts.end(); it++)
     {
-        QFile file(it.key() + ".xml");
-        file.open(QIODevice::WriteOnly);
-        auto write64 = it.value().toByteArray().toBase64();
-        file.write(write64);
-        file.close();
+        if(!it.key().isEmpty())
+        {
+            QFile file("data\\" + it.key() + ".xml");
+            file.open(QIODevice::WriteOnly);
+            auto write64 = it.value().toByteArray().toBase64();
+            file.write(write64);
+            file.close();
+        }
     }
-}
 }
 
 void ControllerXMLMulti::createAccount(QString a)
