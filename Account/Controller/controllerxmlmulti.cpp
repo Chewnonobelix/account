@@ -33,12 +33,10 @@ void ControllerXMLMulti::close()
 }
 }
 
-
 void ControllerXMLMulti::createAccount(QString a)
 {
     QDomDocument doc;
-    doc.createElement("database");
-
+    doc.setContent(QString("<database />"));
     m_accounts[a] = doc;
 }
 
