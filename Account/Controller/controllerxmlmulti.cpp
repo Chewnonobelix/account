@@ -272,10 +272,21 @@ bool ControllerXMLMulti::updateEntry(const Entry & e)
     return false;
 }
 
-bool ControllerXMLMulti::addCategory(QString, QString)
+bool ControllerXMLMulti::addCategory(QString name, QString type)
 {
-    //TODO
-    return false;
+    auto root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+    auto list = root.elementsByTagName("category");
+
+    for(int i = 0; i < list.size(); i++)
+        if(list.at(i).toElement().text() == name)
+            return false;
+
+    QDomElement el = m_currentAccount.createElement("category");
+    el.setAttribute("type", type);
+    QDomText txt = m_currentAccount.createTextNode(name);
+    el.appendChild(txt);
+    root.appendChild(el);
+    return true;
 }
 
 bool ControllerXMLMulti::removeCategory(QString name)
