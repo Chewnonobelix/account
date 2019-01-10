@@ -286,8 +286,15 @@ bool ControllerXMLMulti::removeCategory(QString)
 
 QMap<QString, QString> ControllerXMLMulti::selectCategory()
 {
-    //TODO
-    return QMap<QString, QString>();
+    auto categories = m_currentAccount.documentElement().elementsByTagName("category");
+    QMap<QString, QString> ret;
+    for(int i = 0; i < categories.size(); i++)
+    {
+        QDomElement el = categories.at(i).toElement();
+        ret[el.text()] = el.attribute("type");
+    }
+
+    return ret;
 }
 
 
