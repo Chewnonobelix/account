@@ -278,9 +278,21 @@ bool ControllerXMLMulti::addCategory(QString, QString)
     return false;
 }
 
-bool ControllerXMLMulti::removeCategory(QString)
+bool ControllerXMLMulti::removeCategory(QString name)
 {
-    //TODO
+    auto root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+    auto list = root.elementsByTagName("category");
+
+    for(int i = 0; i < list.size(); i++)
+    {
+        QDomElement el = list.at(i).toElement();
+        if(el.text() == name)
+        {
+            auto ret = root.removeChild(el);
+
+            return !ret.isNull();
+        }
+    }
     return false;
 }
 
