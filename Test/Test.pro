@@ -10,6 +10,7 @@ SOURCES +=  tst_xmltest.cpp \
     ../Account/Controller/controllerdb.cpp \
     ../Account/Controller/controllerinformation.cpp \
     ../Account/Controller/controllerxml.cpp \
+    ../Account/Controller/controllerxmlmulti.cpp \
     ../Account/Controller/graphcontroller.cpp \
     ../Account/Controller/maincontroller.cpp \
     ../Account/Controller/xmltosql.cpp \
@@ -25,6 +26,7 @@ HEADERS +=  \
     ../Account/Controller/controllerdb.h \
     ../Account/Controller/controllerinformation.h \
     ../Account/Controller/controllerxml.h \
+    ../Account/Controller/controllerxmlmulti.h \
     ../Account/Controller/graphcontroller.h \
     ../Account/Controller/interfacedatasave.h \
     ../Account/Controller/maincontroller.h \

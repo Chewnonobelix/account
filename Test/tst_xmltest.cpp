@@ -3,7 +3,7 @@
 #include <QRandomGenerator>
 #include <QDebug>
 
-#include "../Account/Controller/controllerxml.h"
+#include "../Account/Controller/controllerxmlmulti.h"
 
 // add necessary includes here
 
@@ -11,17 +11,24 @@ class XmlTest : public QObject
 {
     Q_OBJECT
 private:
-    ControllerXML m_xml;
+    ControllerXMLMulti m_xml;
     bool ret;
+    int m_timer;
+    QRandomGenerator rdn;
+
 public:
     XmlTest();
     ~XmlTest();
+
+protected:
+    void timerEvent(QTimerEvent *);
 
 private slots:
     void initTestCase();
     void testAccounts();
     void testEntries();
     void testCharge();
+    void cleanupTestCase();
 };
 
 XmlTest::XmlTest()
@@ -34,16 +41,22 @@ XmlTest::~XmlTest()
 
 }
 
+void XmlTest::timerEvent(QTimerEvent *)
+{
+    m_xml.close();
+}
+
 void XmlTest::initTestCase()
 {
     QVERIFY(m_xml.init());
     ret = true;
+    m_timer = startTimer(60*1000*0.5);
+    rdn.bounded(10000.0);
+
 }
 
 void XmlTest::testEntries()
 {
-    QRandomGenerator rdn;
-    rdn.bounded(10000.0);
 
     QString accountName = m_xml.selectAccount()[rdn.generate()%m_xml.selectAccount().size()];
     auto entries = m_xml.selectEntry(accountName);
@@ -87,12 +100,12 @@ void XmlTest::testEntries()
 void XmlTest::testAccounts()
 {
     int totalAccount = m_xml.selectAccount().size();
-    QRandomGenerator rdn;
-    rdn.bounded(10000.0);
+
     auto list = m_xml.selectAccount();
     bool ret = true;
-    for(int i = 0; i < 2; i ++)
+    for(int i = 0; i < 10; i ++)
     {
+        QVERIFY(ret);
         QString accountName = "account " + QString::number(i+totalAccount);
         Entry e;
         Information info;
@@ -108,9 +121,11 @@ void XmlTest::testAccounts()
     auto list2 =  m_xml.selectAccount();
     int totalAccount2 = m_xml.selectAccount().size();
 
-    ret &=(totalAccount+2 == totalAccount2);
+    QCOMPARE(totalAccount+10, totalAccount2);
+    ret &=(totalAccount+10 == totalAccount2);
     qDebug()<<"Add account "<<ret;
-    qDebug()<<"remove account"<<m_xml.removeAccount(m_xml.selectAccount().last());
+    qDebug()<<"Remove"<<m_xml.selectAccount().first();
+    QVERIFY(m_xml.removeAccount(m_xml.selectAccount().last()));
 
 //    return ret && (totalAccount+1 == m_xml.selectAccount().size());
 }
@@ -120,12 +135,19 @@ void XmlTest::testCharge()
     QTime begin;
     begin.start();
     int i = 1;
-    while(i < 100)
+    while(i < 1000)
     {
         testEntries();
         qDebug()<<(ret)<<i;
         i++;
+        m_xml.close();
     }
+}
+
+
+void XmlTest::cleanupTestCase()
+{
+    killTimer(m_timer);
 }
 
 QTEST_APPLESS_MAIN(XmlTest)
