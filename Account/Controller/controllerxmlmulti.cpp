@@ -1,23 +1,29 @@
 #include "controllerxmlmulti.h"
 
 
-ControllerXMLMulti::ControllerXMLMulti(): InterfaceDataSave()
+ControllerXMLMulti::ControllerXMLMulti(): InterfaceDataSave(), QObject(nullptr), m_timer(-1)
 {
 
 }
 
-ControllerXMLMulti::ControllerXMLMulti(const ControllerXMLMulti& c): InterfaceDataSave(c)
+ControllerXMLMulti::ControllerXMLMulti(const ControllerXMLMulti& c): InterfaceDataSave(c), QObject(nullptr), m_timer(-1)
 {
 
 }
 
 ControllerXMLMulti::~ControllerXMLMulti()
 {
+    if(m_timer != -1)
+        killTimer(m_timer);
+    m_timer = -1;
+
     close();
+
 }
 
 void ControllerXMLMulti::close()
 {
+
     QDir dir;
 
     dir.cd("data");
@@ -33,6 +39,7 @@ void ControllerXMLMulti::close()
             file.close();
         }
     }
+
 }
 
 void ControllerXMLMulti::createAccount(QString a)
@@ -187,9 +194,9 @@ bool ControllerXMLMulti::removeAccount(QString account)
     QDir dir;
     dir.cd("data");
     QFile file;
-    file.setFileName(account+".xml");
+    file.setFileName("data\\" + account+".xml");
 
-    return file.remove();
+    return (file.remove() || m_accounts.remove(account) > 0);
 }
 
 bool ControllerXMLMulti::updateInfo(const Entry& e)
@@ -352,7 +359,7 @@ bool ControllerXMLMulti::init()
 
         file.close();
     }
-
+    m_timer = startTimer(60*1000*5); //5 mins
 
     return true;
 }
@@ -393,4 +400,9 @@ Information ControllerXMLMulti::selectInformation(const QDomElement& el) const
     ret.setTitle(title);
 
     return ret;
+}
+
+void ControllerXMLMulti::timerEvent(QTimerEvent *)
+{
+    close();
 }

@@ -5,26 +5,32 @@
 #include <QDebug>
 #include "controllerxml.h"
 
-class ControllerXMLMulti: public InterfaceDataSave
+class ControllerXMLMulti: public InterfaceDataSave, public QObject
 {
+
 private:
     QMap<QString, QDomDocument> m_accounts;
     QSet<int> m_entriesId;
     QSet<int> m_infoId;
     QDomDocument m_currentAccount;
 
+    int m_timer;
+
     int maxId(const QSet<int> &) const;
     Information selectInformation(const QDomElement&) const;
     void addInfo(QDomElement&, const Information&);
 
-    void close();
     void createAccount(QString);
+
+protected:
+    void timerEvent(QTimerEvent*);
 
 public:
     ControllerXMLMulti();
     ControllerXMLMulti(const ControllerXMLMulti&);
     ~ControllerXMLMulti();
 
+    void close();
 
     void setCurrentAccount(QString);
 
