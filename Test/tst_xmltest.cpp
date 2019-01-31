@@ -62,16 +62,22 @@ void XmlTest::testEntries()
     auto entries = m_xml.selectEntry(accountName);
 
     bool ret = true;
+    QDate date = QDate::currentDate();
+    static int j = 0;
+    date = date.addDays(j);
+    j++;
     for(int i = 0; i < 100; i ++)
     {
         Entry e;
-        e.setDate(QDate::currentDate());
+        e.setDate(date);
         e.setAccount(accountName);
         Information info;
         info.setTitle("entry " + QString::number(rdn.generate()));
+        info.setEstimated(date > QDate::currentDate());
         e.setValue(rdn.generateDouble());
         e.setInfo(info);
         e.setType(rdn.generate()%2 ? "income":"outcome");
+
         ret &= m_xml.addEntry(e);
     }
 
@@ -81,8 +87,8 @@ void XmlTest::testEntries()
 
 
     QCOMPARE(entries3.size(), entries.size() + 100);
-//    ret &= (entries.size() + 100) == entries3.size();
-//    qDebug()<<"Add result"<<ret<<entries3.size();
+    //    ret &= (entries.size() + 100) == entries3.size();
+    //    qDebug()<<"Add result"<<ret<<entries3.size();
 
     for(int i = 0; i < toRemove; i++)
     {
@@ -103,10 +109,18 @@ void XmlTest::testAccounts()
 
     auto list = m_xml.selectAccount();
     bool ret = true;
-    for(int i = 0; i < 10; i ++)
+    int first = 0;
+
+    for(auto it: list)
+    {
+        int ints = (it.split("_").last().toInt());
+        first =  ints > first ? ints : first ;
+    }
+
+    for(int i = 0; i < 81; i ++)
     {
         QVERIFY(ret);
-        QString accountName = "account " + QString::number(i+totalAccount);
+        QString accountName = "account_" + QString::number(i+first+1);
         Entry e;
         Information info;
         info.setTitle("initial");
@@ -116,32 +130,50 @@ void XmlTest::testAccounts()
         e.setInfo(info);
 
         ret &= m_xml.addEntry(e);
+        qDebug()<<ret<<i<<(i+first)<<first;
     }
 
     auto list2 =  m_xml.selectAccount();
     int totalAccount2 = m_xml.selectAccount().size();
 
-    QCOMPARE(totalAccount+10, totalAccount2);
-    ret &=(totalAccount+10 == totalAccount2);
+
+    QCOMPARE(totalAccount+81, totalAccount2);
+    ret &=(totalAccount+81 == totalAccount2);
     qDebug()<<"Add account "<<ret;
-    qDebug()<<"Remove"<<m_xml.selectAccount().first();
+    qDebug()<<"Remove"<<m_xml.selectAccount().last();
     QVERIFY(m_xml.removeAccount(m_xml.selectAccount().last()));
 
-//    return ret && (totalAccount+1 == m_xml.selectAccount().size());
+    //    return ret && (totalAccount+1 == m_xml.selectAccount().size());
 }
 
 void XmlTest::testCharge()
 {
-    QTime begin;
-    begin.start();
     int i = 1;
-    while(i < 1000)
+    QDate cDate = QDate::currentDate();
+    QDate itDate = cDate.addYears(-5);
+    QString accountName = "charge_"+cDate.toString("dd-MM-yyyy");
+    bool ret = true;
+
+    while(itDate < cDate.addYears(5))
     {
-        testEntries();
-        qDebug()<<(ret)<<i;
-        i++;
-        m_xml.close();
+        qDebug()<<"Test days"<<itDate;
+        Entry e;
+        e.setDate(itDate);
+        e.setAccount(accountName);
+        Information info;
+        info.setTitle("entry " + QString::number(rdn.generate()));
+        info.setEstimated(itDate > QDate::currentDate());
+        e.setValue(rdn.generateDouble()*10);
+        e.setInfo(info);
+        e.setType(rdn.generate()%2 ? "income":"outcome");
+
+        ret &= m_xml.addEntry(e);
+
+        itDate = itDate.addDays(1);
     }
+    m_xml.close();
+
+    QVERIFY(ret);
 }
 
 
