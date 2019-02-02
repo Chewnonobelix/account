@@ -2,7 +2,7 @@ import QtQuick 2.0
 
 QtObject {
     property FontLoader title: FontLoader{
-        name: "CSTELAR.TTF"
+        source: "CASTELAR.TTF"
 //        name: "Segoe Script"
         id: titleFont
         property int size: 20
@@ -12,7 +12,7 @@ QtObject {
 
     property FontLoader core: FontLoader{
 //        name: "Castellar"
-        name: "BASKVILL.TTF"
+        source: "BASKVILL.TTF"
         id: coreFont
         property int size: 15
 
