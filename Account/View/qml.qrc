@@ -10,5 +10,7 @@
         <file>MultiCalendar.qml</file>
         <file>AccountStyle.qml</file>
         <file>CheckEstimated.qml</file>
+        <file>BASKVILL.TTF</file>
+        <file>CASTELAR.TTF</file>
     </qresource>
 </RCC>
