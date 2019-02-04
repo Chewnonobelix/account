@@ -194,10 +194,72 @@ Page {
         view.width = ((width * 0.25) - 5) < view.maximumWidth ? (width * 0.25) + 5 : view.maximumWidth
     }
 
+    Button {
+        id: nextPages
+        anchors.top: view.bottom
+        anchors.right: view.right
+        text: ">>"
+        height: parent.height * 0.05
+        width: view.width * 0.20
+
+        onClicked: pageSkip.pageIndex += 10
+    }
+
+    Button {
+        id: nextPage
+        anchors.top: view.bottom
+        anchors.right: nextPages.left
+        text: ">"
+        height: parent.height * 0.05
+        width: view.width * 0.20
+
+        onClicked: pageSkip.pageIndex ++
+    }
+
+    Button {
+        id: previousPage
+        anchors.top: view.bottom
+        anchors.left: previousPages.right
+        text: "<"
+        height: parent.height * 0.05
+        width: view.width * 0.20
+
+        onClicked: pageSkip.pageIndex --
+    }
+
+    Button {
+        id: previousPages
+        anchors.top: view.bottom
+        anchors.left: view.left
+        text: "<<"
+        height: parent.height * 0.05
+        width: view.width * 0.20
+
+        onClicked: pageSkip.pageIndex -= 10
+    }
+
+
+    TextField {
+        id: pageSkip
+        property int pageIndex: 1
+        property int maxPage: 5
+        anchors.top: view.bottom
+        anchors.left: previousPage.right
+        anchors.right: nextPage.left
+        height: parent.height * 0.05
+        text: pageIndex
+        horizontalAlignment: Qt.AlignHCenter
+
+        onPageIndexChanged: {
+            if(pageIndex < 1) pageIndex = 1
+            if(pageIndex > maxPage) pageIndex = maxPage
+        }
+    }
+
     TableView {
         anchors.left: cal.right
         anchors.leftMargin: 5
-        height: parent.height
+        height: parent.height * 0.95
         width: (parent.width * 0.25) - 5
         id: view
         objectName: "entryView"
