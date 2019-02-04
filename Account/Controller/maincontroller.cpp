@@ -6,6 +6,7 @@ MainController::MainController(): AbstractController()
     //AbstractController::initTestEntry();
 
     connect(&m_info, ControllerInformation::s_addCategory, this, addCategory);
+    connect(&m_graph, GraphController::s_sum, this, receiveSum);
 }
 
 MainController::~MainController()
@@ -30,7 +31,7 @@ int MainController::exec()
 
     if(calendar)
     {
-        connect(calendar, SIGNAL(s_monthChanged()), this, SLOT(previewCalendar()));
+        //connect(calendar, SIGNAL(s_monthChanged()), this, SLOT(previewCalendar()));
         connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(selection()));
     }
 
@@ -169,7 +170,7 @@ void MainController::edit(int id)
     }
 }
 
-void MainController::previewCalendar()
+void MainController::previewCalendar(QMap<QDate, Total> all)
 {
     QObject* cal = m_engine.rootObjects().first()->findChild<QObject*>("cal");
     int month;
@@ -262,7 +263,6 @@ void MainController::previewCalendar()
 
 void MainController::selection(int id)
 {
-    previewCalendar();
     QObject* calendar = m_engine.rootObjects().first()->findChild<QObject*>("cal");
     QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));
     QJSValue array = mp.read(calendar).value<QJSValue>();
@@ -485,4 +485,9 @@ void MainController::deleteAccount(QString account)
 {
     AbstractController::deletAccount(account);
     loadAccount();
+}
+
+void MainController::receiveSum(QMap<QDate, Total> summed)
+{
+    qDebug()<<"Update";
 }
