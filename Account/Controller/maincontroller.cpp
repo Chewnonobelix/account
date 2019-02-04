@@ -283,6 +283,14 @@ void MainController::selection(int id)
         for(auto it: ld)
             ret<<AbstractController::entries(it);
 
+    int maxPage = ret.size() < 100 ? 1 : ret.size() / 100;
+    QObject* pageSkip = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
+    qDebug()<<ret.size()<<maxPage;
+    if(pageSkip)
+    {
+        pageSkip->setProperty("pageIndex", 1);
+        pageSkip->setProperty("maxPage", maxPage);
+    }
 
     auto cpm1 = [](QDate d1, QDate d2)
     {
@@ -373,6 +381,12 @@ void MainController::accountChange(QString acc)
         head->setProperty("accountName", acc);
         head->setProperty("total", accountTotal().value());
     }
+
+    int maxPage = entries().size() / 100;
+    QObject* pageSkip = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
+
+    if(pageSkip)
+        pageSkip->setProperty("maxPage", maxPage);
 
     selection();
     checkEstimated();

@@ -241,6 +241,7 @@ Page {
 
     TextField {
         id: pageSkip
+        objectName: "pageSkip"
         property int pageIndex: 1
         property int maxPage: 5
         anchors.top: view.bottom
