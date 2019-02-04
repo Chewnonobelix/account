@@ -14,6 +14,7 @@ GraphController::~GraphController()
 int GraphController::exec()
 {
     m_idTimer = startTimer(10000);
+    timerEvent(nullptr);
     return 0;
 }
 
@@ -101,4 +102,10 @@ void GraphController::timerEvent(QTimerEvent *)
             QMetaObject::invokeMethod(m_view, "addDataMain", Q_ARG(QVariant,it->first.date()), Q_ARG(QVariant, it->first.value()));
 
     }
+
+    auto all = m_sum;
+    all.unite(m_sumEstimated);
+
+    emit s_sum(all);
+
 }

@@ -22,6 +22,9 @@ public:
     ~GraphController();
     void set(QObject*);
     int exec();
+
+signals:
+    void s_sum(QMap<QDate, Total>);
 };
 
 #endif // GRAPHCONTROLLER_H
