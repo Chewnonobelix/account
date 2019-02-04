@@ -150,11 +150,11 @@ void XmlTest::testCharge()
 {
     int i = 1;
     QDate cDate = QDate::currentDate();
-    QDate itDate = cDate.addYears(-5);
+    QDate itDate = cDate.addYears(-1);
     QString accountName = "charge_"+cDate.toString("dd-MM-yyyy");
     bool ret = true;
 
-    while(itDate < cDate.addYears(5))
+    while(itDate < cDate.addYears(1))
     {
         qDebug()<<"Test days"<<itDate;
         Entry e;
