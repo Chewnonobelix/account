@@ -1,6 +1,7 @@
 #include "total.h"
 
 
+#include <QDebug>
 
 Total::Total(): m_value(0)
 {
@@ -8,7 +9,8 @@ Total::Total(): m_value(0)
 }
 
 Total::Total(const Total& t): m_date(t.date()), m_value(t.value())
-{}
+{
+}
 
 Total::~Total() {}
 
@@ -59,7 +61,13 @@ Total operator + (const Entry& e, const Total& t)
     return (t + e);
 }
 
+Total operator -(const Total& t1, const Total& t2)
+{
+    Total temp = t2;
+    temp.setValue(-t2.value());
 
+    return (t1 +  t2);
+}
 QDate Total::date() const
 {
     return m_date;

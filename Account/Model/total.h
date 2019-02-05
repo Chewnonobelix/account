@@ -18,6 +18,7 @@ public:
 
     Total& operator = (const Total&);
 
+    friend Total operator -(const Total&, const Total&);
     friend Total operator+(const Entry&, const Entry&);
     friend Total operator + (const Total&, const Total&);
     friend Total operator + (const Total&, const Entry&);
