@@ -254,7 +254,7 @@ Calendar {
             signal reset()
 
             property int day: Qt.formatDate(styleData.date, "d")
-            property double val: delCurrentMonth && calendarPreview.find(day).valid ? calendarPreview.find(day).value : 0
+            property double val: delCurrentMonth && calendarPreview.find(day) !== undefined ? calendarPreview.find(day).value : 0
             property bool delCurrentMonth: styleData.date.getMonth() === visibleMonth
 
             id: styleRect
