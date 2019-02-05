@@ -24,8 +24,10 @@ public:
     void set(QObject*);
     int exec();
 
+    QMap<QDate, Total> sum() const;
+
 signals:
-    void s_sum(QMap<QDate, Total>);
+    void s_sum();
 };
 
 #endif // GRAPHCONTROLLER_H

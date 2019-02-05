@@ -24,10 +24,14 @@ void GraphController::set(QObject * view)
     m_view = view;
 }
 
+QMap<QDate, Total> GraphController::sum() const
+{
+    return m_sum;
+}
+
 void GraphController::timerEvent(QTimerEvent *)
 {
     m_sum.clear();
-    m_sumEstimated.clear();
     QMetaObject::invokeMethod(m_view, "clear");
     auto entrieslist = entries();
     QList<QDate> keysT;
@@ -104,9 +108,10 @@ void GraphController::timerEvent(QTimerEvent *)
 
     }
 
-    auto all = m_sum;
-    all.unite(m_sumEstimated);
+    m_sum.clear();
+    for(auto it: sum)
+        m_sum[it.first.date()] = it.first;
 
-    emit s_sum(all);
+    emit s_sum();
 
 }
