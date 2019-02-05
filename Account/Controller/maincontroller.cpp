@@ -171,77 +171,50 @@ void MainController::edit(int id)
     }
 }
 
-void MainController::previewCalendar(QMap<QDate, Total> all)
+void MainController::previewCalendar()
 {
+    QMap<QDate, Total> all = m_graph.sum();
     QObject* cal = m_engine.rootObjects().first()->findChild<QObject*>("cal");
     int month;
     int year;
     if(cal)
     {
         year = cal->property("currentYear").toInt();
-        month = cal->property("currentMonth").toInt();
-    }
-    auto es =  entries();
-    QMultiMap<int,Entry> l;
-    Total t;
-    QDate first;
-    for(auto it: es)
-    {
-        if(it.date().month() == (month + 1))
-        {
-            l.insert(it.date().day(), it);
-        }
-        else if(it.date().month() <= month || it.date().year() < year)
-        {
-            t = t + it;
-        }
-
-        if(it.date() < first || !first.isValid())
-            first = it.date();
+        month = cal->property("currentMonth").toInt() + 1;
     }
 
-    QMap<int, Total> finalMap;
-    for(auto k: l.keys())
+    QVector<Total> monthPreview, dayPreview;
+    QDate itDate;
+    itDate.setDate(year, month, 1);
+    QDate last = itDate.addMonths(1);
+    while(itDate < last)
     {
-        auto l2 = l.values(k);
-        Total t;
-        for(auto it: l2)
+
+        if(all.contains(itDate))
+           monthPreview<<all[itDate];
+
+        if(all.contains(itDate))
         {
-            t = t + it;
+            auto it = all.find(itDate);
+
+            if((it - 1) == all.begin())
+                dayPreview<<all[itDate];
+            else
+                dayPreview<<(*it - *(it-1));
         }
 
-        finalMap[k] = t;
-    }
-
-    QVector<Total> megaTotal(32);
-    megaTotal[0] = t;
-
-    for(int i = 1; i <= 31; i++)
-    {
-        if(finalMap.contains(i))
-            megaTotal[i] = megaTotal[i-1] + finalMap[i];
-        else
-            megaTotal[i] = megaTotal[i-1];
-
+        itDate = itDate.addDays(1);
     }
 
     QObject* model = cal->findChild<QObject*>("calendarPreview");
     QMetaObject::invokeMethod(model, "clear");
-
-    for(auto i = 1; i <= 31; i++)
+    QDate first;
+    first.setDate(year, month, 1);
+    for(auto i = 0; i < dayPreview.size(); i++)
     {
         QVariantMap map;
-        if(finalMap.contains(i))
-        {
-            map.insert("day", i);
-            map.insert("valid", true);
-            map.insert("value", finalMap[i].value());
-        }
-        else
-        {
-            map.insert("day", i);
-            map.insert("valid", false);
-        }
+        map.insert("day", i+1);
+        map.insert("value", dayPreview[i].value());
 
         QMetaObject::invokeMethod(model, "add", Q_ARG(QVariant, map));
     }
@@ -249,13 +222,13 @@ void MainController::previewCalendar(QMap<QDate, Total> all)
     model = cal->findChild<QObject*>("totalPreview");
     QMetaObject::invokeMethod(model, "clear");
 
-    for(auto i = 0; i <= 31 ; i++)
+    for(auto i = 0; i < monthPreview.size() ; i++)
     {
         QVariantMap map;
-        map.insert("day", i);
-        map.insert("value", megaTotal[i].value());
+        map.insert("day", i+1);
+        map.insert("value", monthPreview[i].value());
 
-        if(megaTotal[i].date() >= first && megaTotal[i].date().isValid())
+        if(monthPreview[i].date() >= first && monthPreview[i].date().isValid())
         {
            QMetaObject::invokeMethod(model, "add", Q_ARG(QVariant, map));
         }
