@@ -235,7 +235,7 @@ void MainController::previewCalendar()
     }
 }
 
-void MainController::selection(int id)
+void MainController::selection(int)
 {
     QObject* calendar = m_engine.rootObjects().first()->findChild<QObject*>("cal");
     QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));
@@ -297,7 +297,8 @@ void MainController::selection(int id)
     double minV, maxV;
 
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
-    if(tab)
+    QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
+    if(tab && skipper)
     {
         QMetaObject::invokeMethod(tab, "unselectAll");
         if(!ret.isEmpty())
@@ -306,7 +307,9 @@ void MainController::selection(int id)
             maxV = ret.first().value();
         }
         QMetaObject::invokeMethod(tab, "reset");
-        for(auto i = 0 ; i < ret.size(); i++)
+        int first = ((skipper->property("pageIndex").toInt() - 1) * 100);
+        qDebug()<<"ret"<<ret.size()<<first;
+        for(auto i = first ; i < qMin(ret.size(), first+100); i++)
         {
             QVariantMap map;
             minD = cpm1(minD, ret[i].date());
