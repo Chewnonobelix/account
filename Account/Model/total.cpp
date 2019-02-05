@@ -66,7 +66,7 @@ Total operator -(const Total& t1, const Total& t2)
     Total temp = t2;
     temp.setValue(-t2.value());
 
-    return (t1 +  t2);
+    return (t1 +  temp);
 }
 QDate Total::date() const
 {
