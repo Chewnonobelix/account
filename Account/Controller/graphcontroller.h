@@ -1,7 +1,7 @@
 #ifndef GRAPHCONTROLLER_H
 #define GRAPHCONTROLLER_H
 
-
+#include <QThread>
 #include "abstractcontroller.h"
 
 class GraphController: public AbstractController
@@ -12,7 +12,8 @@ private:
     QObject* m_view;
     int m_idTimer;
     QMap<QDate, Total> m_sum;
-    QMap<QDate, Total> m_sumEstimated;
+
+    QThread m_thread;
 
 protected:
     void timerEvent(QTimerEvent *event);

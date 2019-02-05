@@ -15,6 +15,7 @@ int GraphController::exec()
 {
     m_idTimer = startTimer(10000);
     timerEvent(nullptr);
+    moveToThread(&m_thread);
     return 0;
 }
 
