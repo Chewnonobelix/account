@@ -50,9 +50,9 @@ public slots:
     void validateCheckEstimated();
     void deleteAccount(QString);
 
-    void previewCalendar(QMap<QDate, Total>);
+    void previewCalendar();
 
-    void receiveSum(QMap<QDate, Total>);
+    void receiveSum();
 };
 
 

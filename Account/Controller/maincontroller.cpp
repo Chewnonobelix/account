@@ -7,6 +7,7 @@ MainController::MainController(): AbstractController()
 
     connect(&m_info, ControllerInformation::s_addCategory, this, addCategory);
     connect(&m_graph, GraphController::s_sum, this, receiveSum);
+
 }
 
 MainController::~MainController()
@@ -31,7 +32,7 @@ int MainController::exec()
 
     if(calendar)
     {
-        //connect(calendar, SIGNAL(s_monthChanged()), this, SLOT(previewCalendar()));
+        connect(calendar, SIGNAL(s_monthChanged()), this, SLOT(previewCalendar()));
         connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(selection()));
     }
 
@@ -501,7 +502,8 @@ void MainController::deleteAccount(QString account)
     loadAccount();
 }
 
-void MainController::receiveSum(QMap<QDate, Total> summed)
+void MainController::receiveSum()
 {
     qDebug()<<"Update";
+    previewCalendar();
 }
