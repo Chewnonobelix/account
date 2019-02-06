@@ -194,6 +194,8 @@ Page {
         view.width = ((width * 0.25) - 5) < view.maximumWidth ? (width * 0.25) + 5 : view.maximumWidth
     }
 
+
+
     Button {
         id: nextPages
         anchors.top: view.bottom
@@ -203,6 +205,21 @@ Page {
         width: view.width * 0.20
 
         onClicked: pageSkip.pageIndex += 10
+
+        font.family: pageStyle.core.name
+        font.pixelSize: pageStyle.core.size
+        MouseArea {
+            z: -1
+            anchors.fill: parent
+            cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+            acceptedButtons: Qt.NoButton
+        }
+
+        Rectangle {
+            anchors.fill: parent
+            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+        }
+
     }
 
     Button {
@@ -214,6 +231,21 @@ Page {
         width: view.width * 0.20
 
         onClicked: pageSkip.pageIndex ++
+
+        font.family: pageStyle.core.name
+        font.pixelSize: pageStyle.core.size
+        MouseArea {
+            z: -1
+            anchors.fill: parent
+            cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+            acceptedButtons: Qt.NoButton
+        }
+
+        Rectangle {
+            anchors.fill: parent
+            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+        }
+
     }
 
     Button {
@@ -225,6 +257,21 @@ Page {
         width: view.width * 0.20
 
         onClicked: pageSkip.pageIndex --
+
+        font.family: pageStyle.core.name
+        font.pixelSize: pageStyle.core.size
+        MouseArea {
+            z: -1
+            anchors.fill: parent
+            cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+            acceptedButtons: Qt.NoButton
+        }
+
+        Rectangle {
+            anchors.fill: parent
+            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+        }
+
     }
 
     Button {
@@ -236,6 +283,21 @@ Page {
         width: view.width * 0.20
 
         onClicked: pageSkip.pageIndex -= 10
+
+        font.family: pageStyle.core.name
+        font.pixelSize: pageStyle.core.size
+        MouseArea {
+            z: -1
+            anchors.fill: parent
+            cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+            acceptedButtons: Qt.NoButton
+        }
+
+        Rectangle {
+            anchors.fill: parent
+            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+        }
+
     }
 
 
@@ -252,6 +314,7 @@ Page {
         horizontalAlignment: Qt.AlignHCenter
 
         signal s_pageChange()
+
         onPageIndexChanged: {
             if(pageIndex < 1) pageIndex = 1
             if(pageIndex > maxPage) pageIndex = maxPage
