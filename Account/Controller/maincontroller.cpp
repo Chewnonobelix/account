@@ -264,7 +264,7 @@ void MainController::selection(int)
 
     int maxPage = ret.size() < 100 ? 1 : (ret.size() / 100);
     QObject* pageSkip = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
-    qDebug()<<ret.size()<<maxPage;
+
     if(pageSkip)
     {
         int cMaxPage = pageSkip->property("maxPage").toInt();
@@ -318,7 +318,7 @@ void MainController::selection(int)
         }
         QMetaObject::invokeMethod(tab, "reset");
         int first = ((skipper->property("pageIndex").toInt()));
-        qDebug()<<"ret"<<ret.size()<<first;
+
         first -= 1;
         first *= 100;
         for(auto i = first ; i < qMin(ret.size(), first+100); i++)
@@ -492,6 +492,5 @@ void MainController::deleteAccount(QString account)
 
 void MainController::receiveSum()
 {
-    qDebug()<<"Update";
     previewCalendar();
 }
