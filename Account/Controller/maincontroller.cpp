@@ -73,6 +73,11 @@ int MainController::exec()
     if(checker)
         connect(checker, SIGNAL(validate()), this, SLOT(validateCheckEstimated()));
 
+    QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
+
+    if(skipper)
+        connect(skipper, SIGNAL(s_pageChange()), this, SLOT(selection()));
+
     return 0;
 }
 
@@ -257,13 +262,18 @@ void MainController::selection(int)
         for(auto it: ld)
             ret<<AbstractController::entries(it);
 
-    int maxPage = ret.size() < 100 ? 1 : ret.size() / 100;
+    int maxPage = ret.size() < 100 ? 1 : (ret.size() / 100);
     QObject* pageSkip = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
     qDebug()<<ret.size()<<maxPage;
     if(pageSkip)
     {
-        pageSkip->setProperty("pageIndex", 1);
-        pageSkip->setProperty("maxPage", maxPage);
+        int cMaxPage = pageSkip->property("maxPage").toInt();
+
+        if(maxPage != cMaxPage)
+        {
+            pageSkip->setProperty("pageIndex", 1);
+            pageSkip->setProperty("maxPage", maxPage);
+        }
     }
 
     auto cpm1 = [](QDate d1, QDate d2)
@@ -307,8 +317,10 @@ void MainController::selection(int)
             maxV = ret.first().value();
         }
         QMetaObject::invokeMethod(tab, "reset");
-        int first = ((skipper->property("pageIndex").toInt() - 1) * 100);
+        int first = ((skipper->property("pageIndex").toInt()));
         qDebug()<<"ret"<<ret.size()<<first;
+        first -= 1;
+        first *= 100;
         for(auto i = first ; i < qMin(ret.size(), first+100); i++)
         {
             QVariantMap map;

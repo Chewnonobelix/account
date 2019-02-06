@@ -251,9 +251,12 @@ Page {
         text: pageIndex
         horizontalAlignment: Qt.AlignHCenter
 
+        signal s_pageChange()
         onPageIndexChanged: {
             if(pageIndex < 1) pageIndex = 1
             if(pageIndex > maxPage) pageIndex = maxPage
+
+            s_pageChange()
         }
     }
 
