@@ -202,7 +202,7 @@ void MainController::previewCalendar()
         {
             auto it = all.find(itDate);
 
-            if((it - 1) == all.begin())
+            if((it) == all.begin())
                 dayPreview<<all[itDate];
             else
                 dayPreview<<(*it - *(it-1));
