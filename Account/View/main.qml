@@ -30,6 +30,10 @@ ApplicationWindow {
 
     Transfert {
         id: tranfert
+
+        onOpened: {
+            addAccount(accountSelect.model)
+        }
     }
 
     Shortcut {

@@ -37,12 +37,15 @@ Popup {
         anchors.left: fieldInfo.right
     }
 
-    property list accounts
 
     function addAccount(accountList) {
-        accounts = accountList
         fromCombo.model = accountList
         toCombo.model = accountList
+
+        if(accountList.length > 0) {
+            fromCombo.currentIndex = 0
+            toCombo.currentIndex = 1
+        }
     }
 
     ComboBox {
@@ -50,8 +53,30 @@ Popup {
         objectName: "fromCombo"
 
         anchors.left: parent.left
-        onCurrentTextChanged: {
 
+
+        onCurrentIndexChanged: {
+            if(currentIndex === 0) {
+                toCombo.currentIndex = 1
+            } else if(currentIndex === toCombo.currentIndex) {
+                toCombo.currentIndex = 0
+            }
+        }
+
+        delegate: ItemDelegate {
+
+            contentItem: Rectangle {
+                width: fromCombo.width
+                Text {
+                    id: delegateText
+                    text: modelData
+                    anchors.fill: parent
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                }
+            }
         }
 
     }
@@ -60,10 +85,30 @@ Popup {
         id: toCombo
         objectName: "toCombo"
 
-        anchors.left: fromCombo.right
-        onCurrentTextChanged: {
-
+        onCurrentIndexChanged: {
+            if(currentIndex === 0) {
+                fromCombo.currentIndex = 1
+            } else if(currentIndex === fromCombo.currentIndex) {
+                fromCombo.currentIndex = 0
+            }
         }
+
+        delegate: ItemDelegate {
+            contentItem: Rectangle {
+                width: toCombo.width
+                Text {
+                    id: delegateText2
+                    text: modelData
+                    anchors.fill: parent
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                }
+            }
+        }
+
+        anchors.left: fromCombo.right
     }
 
     DoubleSpinBox {
