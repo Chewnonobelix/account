@@ -28,6 +28,15 @@ ApplicationWindow {
         id: pageStyle
     }
 
+    Transfert {
+        id: tranfert
+    }
+
+    Shortcut {
+        sequence: "F"
+        onActivated: tranfert.open()
+    }
+
     menuBar: MenuBar {
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size

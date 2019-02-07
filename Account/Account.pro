@@ -30,6 +30,7 @@ SOURCES += \
     Model/commonexpense.cpp \
     Controller/controllerxmlmulti.cpp \
     Controller/languagecontroller.cpp
+    Controller/controllertransfert.cpp
 
 RESOURCES += View/qml.qrc
 

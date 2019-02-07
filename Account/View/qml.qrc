@@ -12,5 +12,6 @@
         <file>CheckEstimated.qml</file>
         <file>BASKVILL.TTF</file>
         <file>CASTELAR.TTF</file>
+        <file>Transfert.qml</file>
     </qresource>
 </RCC>
