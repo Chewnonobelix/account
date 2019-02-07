@@ -64,17 +64,20 @@ Popup {
         }
 
         delegate: ItemDelegate {
+            width: fromCombo.width
 
             contentItem: Rectangle {
-                width: fromCombo.width
+                anchors.fill: parent
+                gradient:  pageStyle.goldButton
                 Text {
                     id: delegateText
                     text: modelData
-                    anchors.fill: parent
+                    anchors.centerIn: parent
                 }
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
                 }
             }
         }
@@ -94,16 +97,20 @@ Popup {
         }
 
         delegate: ItemDelegate {
+            width: toCombo.width
+
             contentItem: Rectangle {
-                width: toCombo.width
-                Text {
-                    id: delegateText2
-                    text: modelData
-                    anchors.fill: parent
-                }
+                anchors.fill: parent
+                gradient: pageStyle.goldButton
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
+                }
+                Text {
+                    id: delegateText2
+                    text: modelData
+                    anchors.centerIn: parent
                 }
             }
         }
