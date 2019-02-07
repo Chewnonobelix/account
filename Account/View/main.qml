@@ -33,6 +33,10 @@ ApplicationWindow {
 
         onOpened: {
             addAccount(accountSelect.model)
+            x = swipeView.width/2 - width/2
+            y = swipeView.height/2 - height/2
+
+            console.log(x, y)
         }
     }
 
