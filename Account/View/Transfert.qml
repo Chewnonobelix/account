@@ -8,6 +8,7 @@ Popup {
 
     width: fromCombo.width + toCombo.width + spinVal.width + fieldInfo.width + 2*fromCombo.leftPadding
     height: fromCombo.height + fromLabel.height
+    closePolicy: Popup.NoAutoClose
 
     Label {
         id:fromLabel

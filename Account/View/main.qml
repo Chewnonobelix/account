@@ -17,6 +17,8 @@ ApplicationWindow {
     signal edit(int index)
     signal accountChange(int index)
     signal removeAccount (string name)
+    signal openTransfert()
+
     id: mainWindow
 
     property int maximizedWidth: Screen.width
@@ -30,6 +32,7 @@ ApplicationWindow {
 
     Transfert {
         id: tranfert
+        objectName: "transfert"
 
         onOpened: {
             addAccount(accountSelect.model)
@@ -42,7 +45,7 @@ ApplicationWindow {
 
     Shortcut {
         sequence: "F"
-        onActivated: tranfert.open()
+        onActivated: openTransfert()
     }
 
     menuBar: MenuBar {
