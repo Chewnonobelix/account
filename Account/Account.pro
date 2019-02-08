@@ -65,3 +65,4 @@ HEADERS += \
     Controller/controllerxmlmulti.h \
     Model/accountglobal.h \
     Controller/languagecontroller.h
+    Model/frequency.h
