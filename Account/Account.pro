@@ -72,3 +72,4 @@ HEADERS += \
     Model/accountglobal.h \
     Controller/controllertransfert.h \
     Controller/languagecontroller.h
+    Model/frequency.h
