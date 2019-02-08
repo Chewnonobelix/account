@@ -57,4 +57,5 @@ HEADERS += \
     Controller/xmltosql.h \
     Model/budget.h \
     Model/commonexpense.h \
-    Controller/controllerxmlmulti.h
+    Controller/controllerxmlmulti.h \
+    Model/accountglobal.h
