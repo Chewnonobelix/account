@@ -18,5 +18,6 @@
         <file>Budget/BudgetView.qml</file>
         <file>Budget/BudgetManager.qml</file>
         <file>Budget/ReferenceView.qml</file>
+        <file>Frequency.qml</file>
     </qresource>
 </RCC>
