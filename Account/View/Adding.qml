@@ -115,7 +115,7 @@ Popup {
                 font.pixelSize: pageStyle.core.size
 
                 ToolTip.text: qsTr("Please complete the entry's title")
-                ToolTip.visible: background.border.color == "#ff0000"
+                ToolTip.visible: background.border.color === "#ff0000"
             }
 
             DoubleSpinBox {
