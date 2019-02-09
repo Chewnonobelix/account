@@ -9,6 +9,7 @@ SOURCES +=  tst_xmltest.cpp \
     ../Account/Controller/abstractcontroller.cpp \
     ../Account/Controller/controllerdb.cpp \
     ../Account/Controller/controllerinformation.cpp \
+    ../Account/Controller/controllertransfert.cpp \
     ../Account/Controller/controllerxml.cpp \
     ../Account/Controller/controllerxmlmulti.cpp \
     ../Account/Controller/graphcontroller.cpp \
@@ -22,10 +23,12 @@ SOURCES +=  tst_xmltest.cpp \
     ../Account/Model/information.cpp \
     ../Account/Model/total.cpp
 
+
 HEADERS +=  \
     ../Account/Controller/abstractcontroller.h \
     ../Account/Controller/controllerdb.h \
     ../Account/Controller/controllerinformation.h \
+    ../Account/Controller/controllertransfert.h \
     ../Account/Controller/controllerxml.h \
     ../Account/Controller/controllerxmlmulti.h \
     ../Account/Controller/graphcontroller.h \
@@ -41,3 +44,23 @@ HEADERS +=  \
     ../Account/Model/total.h
 
 INCLUDEPATH = ../Account
+
+RESOURCES += \
+    ../Account/View/qml.qrc
+
+DISTFILES += \
+    ../Account/View/BASKVILL.TTF \
+    ../Account/View/CASTELAR.TTF \
+    ../Account/View/qtquickcontrols2.conf \
+    ../Account/View/AccountStyle.qml \
+    ../Account/View/Adding.qml \
+    ../Account/View/CheckEstimated.qml \
+    ../Account/View/DoubleSpinBox.qml \
+    ../Account/View/InformationView.qml \
+    ../Account/View/main.qml \
+    ../Account/View/MultiCalendar.qml \
+    ../Account/View/Page1Form.qml \
+    ../Account/View/Page2Form.qml \
+    ../Account/View/Transfert.qml
+
+
