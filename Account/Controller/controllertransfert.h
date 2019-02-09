@@ -17,6 +17,9 @@ public:
     int exec();
 
     void set(QObject*);
+
+public slots:
+    void accept();
 };
 
 #endif // CONTROLLERTRANSFERT_H
