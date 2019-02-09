@@ -1,43 +1,13 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import QtQuick.Layouts 1.12
 
 Popup {
     AccountStyle {
         id: pageStyle
     }
 
-    width: fromCombo.width + toCombo.width + spinVal.width + fieldInfo.width + 2*fromCombo.leftPadding
-    height: fromCombo.height + fromLabel.height
     closePolicy: Popup.NoAutoClose
-
-    Label {
-        id:fromLabel
-        text: qsTr("From")
-        anchors.bottom: fromCombo.top
-        anchors.left: fromCombo.left
-    }
-
-    Label {
-        id:toLabel
-        text: qsTr("to")
-        anchors.bottom: toCombo.top
-        anchors.left: toCombo.right
-    }
-
-    Label {
-        id:valueLabel
-        text: qsTr("Value")
-        anchors.bottom: spinVal.top
-        anchors.left: spinVal.right
-    }
-
-    Label {
-        id:infoLabel
-        text: qsTr("Info")
-        anchors.bottom: fieldInfo.top
-        anchors.left: fieldInfo.right
-    }
-
 
     function addAccount(accountList) {
         fromCombo.model = accountList
@@ -49,87 +19,135 @@ Popup {
         }
     }
 
-    ComboBox {
-        id: fromCombo
-        objectName: "fromCombo"
 
-        anchors.left: parent.left
-
-
-        onCurrentIndexChanged: {
-            if(currentIndex === 0) {
-                toCombo.currentIndex = 1
-            } else if(currentIndex === toCombo.currentIndex) {
-                toCombo.currentIndex = 0
-            }
+    GridLayout {
+        columns: 4
+        columnSpacing: 5
+        Label {
+            id:fromLabel
+            text: qsTr("From")
         }
 
-        delegate: ItemDelegate {
-            width: fromCombo.width
+        Label {
+            id:toLabel
+            text: qsTr("to")
+        }
 
-            contentItem: Rectangle {
-                anchors.fill: parent
-                gradient:  pageStyle.goldButton
-                Text {
-                    id: delegateText
-                    text: modelData
-                    anchors.centerIn: parent
+        Label {
+            id:valueLabel
+            text: qsTr("Value")
+        }
+
+        Label {
+            id:infoLabel
+            text: qsTr("Info")
+        }
+
+
+        ComboBox {
+            id: fromCombo
+            objectName: "fromCombo"
+
+            onCurrentIndexChanged: {
+                if(currentIndex === 0) {
+                    toCombo.currentIndex = 1
+                } else if(currentIndex === toCombo.currentIndex) {
+                    toCombo.currentIndex = 0
                 }
-                MouseArea {
+            }
+
+            delegate: ItemDelegate {
+                width: fromCombo.width
+
+                contentItem: Rectangle {
                     anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    acceptedButtons: Qt.NoButton
+                    gradient:  pageStyle.goldButton
+                    Text {
+                        id: delegateText
+                        text: modelData
+                        anchors.centerIn: parent
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        acceptedButtons: Qt.NoButton
+                    }
                 }
             }
+
         }
 
-    }
+        ComboBox {
+            id: toCombo
+            objectName: "toCombo"
 
-    ComboBox {
-        id: toCombo
-        objectName: "toCombo"
-
-        onCurrentIndexChanged: {
-            if(currentIndex === 0) {
-                fromCombo.currentIndex = 1
-            } else if(currentIndex === fromCombo.currentIndex) {
-                fromCombo.currentIndex = 0
+            onCurrentIndexChanged: {
+                if(currentIndex === 0) {
+                    fromCombo.currentIndex = 1
+                } else if(currentIndex === fromCombo.currentIndex) {
+                    fromCombo.currentIndex = 0
+                }
             }
-        }
 
-        delegate: ItemDelegate {
-            width: toCombo.width
+            delegate: ItemDelegate {
+                width: toCombo.width
 
-            contentItem: Rectangle {
-                anchors.fill: parent
-                gradient: pageStyle.goldButton
-                MouseArea {
+                contentItem: Rectangle {
                     anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    acceptedButtons: Qt.NoButton
-                }
-                Text {
-                    id: delegateText2
-                    text: modelData
-                    anchors.centerIn: parent
+                    gradient: pageStyle.goldButton
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        acceptedButtons: Qt.NoButton
+                    }
+                    Text {
+                        id: delegateText2
+                        text: modelData
+                        anchors.centerIn: parent
+                    }
                 }
             }
         }
 
-        anchors.left: fromCombo.right
-    }
+        DoubleSpinBox {
+            id: spinVal
+            objectName: "spinVal"
+        }
 
-    DoubleSpinBox {
-        id: spinVal
-        objectName: "spinVal"
+        TextField {
+            id: fieldInfo
+            objectName: "fieldInfo"
+        }
 
-        anchors.left: toCombo.right
-    }
+        Button {
+            enabled: false
+            background: Rectangle {
+                color: "transparent"
+            }
+        }
 
-    TextField {
-        id: fieldInfo
-        objectName: "fieldInfo"
+        Button {
+            enabled: false
+            background: Rectangle {
+                color: "transparent"
+            }
+        }
 
-        anchors.left: spinVal.right
+        Button {
+            enabled: false
+            background: Rectangle {
+                color: "transparent"
+            }
+        }
+
+        RowLayout {
+            Button {
+                text: qsTr("Ok")
+            }
+
+            Button {
+                text: qsTr("Cancel")
+            }
+        }
     }
 }
