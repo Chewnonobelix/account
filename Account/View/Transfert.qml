@@ -7,11 +7,20 @@ Popup {
         id: pageStyle
     }
 
+    id: transfertView
     closePolicy: Popup.NoAutoClose
+
+    signal s_accept()
+
+    width: coreLayout.width + 20
+    height: coreLayout.height + dateField.height + layoutButton.height + 20
+
 
     function addAccount(accountList) {
         fromCombo.model = accountList
         toCombo.model = accountList
+        spinVal.value = 0
+        fieldInfo.clear()
 
         if(accountList.length > 0) {
             fromCombo.currentIndex = 0
@@ -20,7 +29,21 @@ Popup {
     }
 
 
+    background: Rectangle {
+        border.color: "gold"
+        gradient: pageStyle.backgroundGradient
+    }
+
+    TextField {
+        id: dateField
+        objectName: "dateField"
+
+        inputMask: "00-00-0000"
+    }
+
     GridLayout {
+        id: coreLayout
+        anchors.top: dateField.bottom
         columns: 4
         columnSpacing: 5
         Label {
@@ -48,6 +71,17 @@ Popup {
             id: fromCombo
             objectName: "fromCombo"
 
+            Rectangle {
+                anchors.fill: parent
+                gradient: pageStyle.goldButton
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                acceptedButtons: Qt.NoButton
+            }
+
             onCurrentIndexChanged: {
                 if(currentIndex === 0) {
                     toCombo.currentIndex = 1
@@ -74,12 +108,22 @@ Popup {
                     }
                 }
             }
-
         }
 
         ComboBox {
             id: toCombo
             objectName: "toCombo"
+
+            Rectangle {
+                anchors.fill: parent
+                gradient: pageStyle.goldButton
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                acceptedButtons: Qt.NoButton
+            }
 
             onCurrentIndexChanged: {
                 if(currentIndex === 0) {
@@ -117,6 +161,11 @@ Popup {
         TextField {
             id: fieldInfo
             objectName: "fieldInfo"
+            width: layoutButton.width
+
+            onWidthChanged: console.log("width", width)
+            ToolTip.text: qsTr("Please complete the entry's title")
+            ToolTip.visible: background.border.color === "#ff0000"
         }
 
         Button {
@@ -126,28 +175,37 @@ Popup {
             }
         }
 
+    }
+
+    RowLayout {
+        id: layoutButton
+        anchors.top: coreLayout.bottom
+        anchors.right: coreLayout.right
         Button {
-            enabled: false
+            text: qsTr("Ok")
             background: Rectangle {
-                color: "transparent"
+                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+            }
+
+            onClicked: {
+                if(fieldInfo.text.length !== 0) {
+                    fieldInfo.background.border.color = "transparent"
+                    transfertView.s_accept()
+                    transfertView.close()
+                } else {
+                    fieldInfo.background.border.color = "red"
+                }
+
             }
         }
 
         Button {
-            enabled: false
+            text: qsTr("Cancel")
             background: Rectangle {
-                color: "transparent"
-            }
-        }
-
-        RowLayout {
-            Button {
-                text: qsTr("Ok")
+                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
             }
 
-            Button {
-                text: qsTr("Cancel")
-            }
+            onClicked: transfertView.close()
         }
     }
 }
