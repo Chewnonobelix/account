@@ -13,6 +13,7 @@
 #include "controllerxmlmulti.h"
 #include "xmltosql.h"
 #include "languagecontroller.h"
+#include "controllertransfert.h"
 
 class MainController: public AbstractController
 {
@@ -23,6 +24,7 @@ private:
     ControllerInformation m_info;
     GraphController m_graph;
     LanguageController m_lang;
+    ControllerTransfert m_transfert;
 
     void checkEstimated();
 
@@ -55,6 +57,8 @@ public slots:
     void previewCalendar();
 
     void receiveSum();
+
+    void openTransfert();
 };
 
 

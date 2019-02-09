@@ -78,6 +78,14 @@ int MainController::exec()
     if(skipper)
         connect(skipper, SIGNAL(s_pageChange()), this, SLOT(selection()));
 
+    QObject* transfert = root->findChild<QObject*>("transfert");
+
+    if(transfert)
+    {
+        m_transfert.set(transfert);
+        connect(root, SIGNAL(openTransfert()), this, SLOT(openTransfert()));
+    }
+
     return 0;
 }
 
@@ -450,4 +458,9 @@ void MainController::deleteAccount(QString account)
 void MainController::receiveSum()
 {
     previewCalendar();
+}
+
+void MainController::openTransfert()
+{
+    m_transfert.exec();
 }
