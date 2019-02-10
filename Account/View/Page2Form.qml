@@ -15,11 +15,21 @@ Rectangle {
 
         color: "transparent"
 
+    property int month
+    property int year
+
     ChartView {
         anchors.fill: parent
         anchors.centerIn: parent
 
         id: chart
+
+
+        property int month: parent.month
+        property int years: parent.year
+
+        signal s_increment()
+
         title: qsTr("Account evolution")
         titleFont.family: pageStyle.title.name
         titleFont.pixelSize: pageStyle.title.size

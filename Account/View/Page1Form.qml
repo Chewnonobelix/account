@@ -12,7 +12,8 @@ Page {
 
     id: pageTable
 
-    property date v_date
+    property int v_dateMonth: cal.currentMonth + 1
+    property int v_dateYear: cal.currentYear
 
     AccountStyle {
         id: pageStyle

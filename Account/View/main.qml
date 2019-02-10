@@ -227,6 +227,8 @@ ApplicationWindow {
 
         Page2Form {
             id: graph
+            month: table.v_dateMonth
+            year: table.v_dateYear
         }
 
         Popup {
