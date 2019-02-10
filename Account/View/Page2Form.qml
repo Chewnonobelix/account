@@ -75,6 +75,15 @@ Rectangle {
         id: chart
 
 
+        MouseArea {
+            acceptedButtons: Qt.NoButton
+            anchors.fill: parent
+
+            onWheel: {
+                console.log("wheel", wheel.angleDelta.y)
+            }
+        }
+
         property int month: parent.month
         property int years: parent.year
 
