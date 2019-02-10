@@ -15,9 +15,6 @@ private:
 
     QThread m_thread;
 
-protected:
-    void timerEvent(QTimerEvent *event);
-
 public:
     GraphController();
     ~GraphController();

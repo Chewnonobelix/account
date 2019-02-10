@@ -1,6 +1,6 @@
 #include "graphcontroller.h"
 
-GraphController::GraphController(): AbstractController(), m_idTimer(0)
+GraphController::GraphController(): AbstractController(), m_idTimer(0), m_view(nullptr)
 {
 
 }
@@ -11,13 +11,6 @@ GraphController::~GraphController()
         killTimer(m_idTimer);
 }
 
-int GraphController::exec()
-{
-    m_idTimer = startTimer(10000);
-    timerEvent(nullptr);
-    moveToThread(&m_thread);
-    return 0;
-}
 
 void GraphController::set(QObject * view)
 {
@@ -29,9 +22,13 @@ QMap<QDate, Total> GraphController::sum() const
     return m_sum;
 }
 
-void GraphController::timerEvent(QTimerEvent *)
+int GraphController::exec()
 {
     m_sum.clear();
+
+    if(!m_view)
+        return -1;
+
     QMetaObject::invokeMethod(m_view, "clear");
     auto entrieslist = entries();
     QList<QDate> keysT;
@@ -114,4 +111,5 @@ void GraphController::timerEvent(QTimerEvent *)
 
     emit s_sum();
 
+    return 0;
 }

@@ -90,6 +90,7 @@ void MainController::update(Entry e)
 
     if(tab)
         QMetaObject::invokeMethod(tab, "selectFromId", Q_ARG(QVariant, e.id()));
+
 }
 
 void MainController::add(bool account)
@@ -242,6 +243,7 @@ void MainController::previewCalendar()
 
 void MainController::selection(int)
 {
+    m_graph.exec();
     QObject* calendar = m_engine.rootObjects().first()->findChild<QObject*>("cal");
     QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));
     QJSValue array = mp.read(calendar).value<QJSValue>();
