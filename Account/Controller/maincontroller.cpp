@@ -219,7 +219,7 @@ void MainController::previewCalendar()
     for(auto i = 0; i < dayPreview.size(); i++)
     {
         QVariantMap map;
-        map.insert("day", i+1);
+        map.insert("day", dayPreview[i].date().day());
         map.insert("value", dayPreview[i].value());
 
         QMetaObject::invokeMethod(model, "add", Q_ARG(QVariant, map));
@@ -231,7 +231,7 @@ void MainController::previewCalendar()
     for(auto i = 0; i < monthPreview.size() ; i++)
     {
         QVariantMap map;
-        map.insert("day", i+1);
+        map.insert("day", monthPreview[i].date().day());
         map.insert("value", monthPreview[i].value());
 
         if(monthPreview[i].date() >= first && monthPreview[i].date().isValid())
