@@ -1,8 +1,8 @@
 import QtQuick 2.11
-import QtQuick.Controls 2.4
 import QtCharts 2.2
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 1.4
+import QtQuick.Controls 2.4
 
 Rectangle {
     implicitWidth: parent.width
@@ -18,10 +18,60 @@ Rectangle {
     property int month
     property int year
 
+    Button {
+        id: next
+        anchors.left: chart.right
+        anchors.verticalCenter: chart.verticalCenter
+        text: qsTr(">")
+        height: parent.height * .25
+        width: parent.width * 0.025
+
+        background: Rectangle {
+            anchors.fill: parent
+            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+        }
+
+        onClicked: {
+            chart.month ++
+            if(chart.month == 13) {
+                chart.month = 1
+                chart.years++
+            }
+
+            chart.s_increment()
+        }
+    }
+
+    Button {
+        id: prev
+        anchors.right: chart.left
+        anchors.verticalCenter: chart.verticalCenter
+        text: qsTr("<")
+        height: parent.height * .25
+        width: parent.width * 0.025
+
+        background: Rectangle {
+            anchors.fill: parent
+            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+        }
+
+        onClicked: {
+            chart.month --
+            if(chart.month == 0) {
+                chart.month = 12
+                chart.years--
+            }
+
+            chart.s_increment()
+        }
+
+    }
+
     ChartView {
-        anchors.fill: parent
         anchors.centerIn: parent
 
+        height: parent.height
+        width: parent.width * .95
         id: chart
 
 

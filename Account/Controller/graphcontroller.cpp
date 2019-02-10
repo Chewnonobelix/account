@@ -13,6 +13,11 @@ GraphController::~GraphController()
 void GraphController::set(QObject * view)
 {
     m_view = view;
+
+    if(m_view)
+    {
+        connect(m_view, SIGNAL(s_increment()), this, SLOT(increment()));
+    }
 }
 
 QMap<QDate, Total> GraphController::sum() const
@@ -85,6 +90,8 @@ void GraphController::change(int nGranularity)
 
 void GraphController::increment()
 {
+    QMetaObject::invokeMethod(m_view, "clear");
+
     QMap<QDate, Total> ret;
     int cMonth = m_view->property("month").toInt();
     int cYear = m_view->property("years").toInt();
@@ -124,7 +131,7 @@ void GraphController::increment()
         {
             if(it.date().month() == cMonth && it.date().year() == cYear)
             {
-                qDebug()<<it.date();
+                qDebug()<<"Month"<<it.date();
                 ret[it.date()] = it;
                 setMax(it.value());
                 setMin(it.value());
@@ -136,7 +143,7 @@ void GraphController::increment()
 
         for(int i = 0; i < 12; i++)
         {
-            qDebug()<<itDate;
+            qDebug()<<"Year"<<itDate;
             ret[itDate] = m_sum[itDate];
             setMax(m_sum[itDate].value());
             setMin(m_sum[itDate].value());
