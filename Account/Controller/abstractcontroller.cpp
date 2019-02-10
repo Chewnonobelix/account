@@ -206,3 +206,10 @@ Total AbstractController::accountTotal()
 {
     return m_accountTotal;
 }
+
+QList<QDate> AbstractController::allDate()
+{
+    auto ret = m_entry.keys().toSet().toList();
+    std::sort(ret.begin(), ret.end());
+    return ret;
+}

@@ -43,6 +43,7 @@ public:
 
     static Entry entry(int);
     static QList<Entry> entries(QDate = QDate());
+    static QList<QDate> allDate();
 
     static void setDb(QString);
     static void deleteDb();
