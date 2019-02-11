@@ -18,8 +18,8 @@ QtObject {
 
     }
 
-    property Gradient goldButton: Gradient {
-        id: goldButton
+    property Gradient darkGoldButton: Gradient {
+        id: darkGoldButton
         GradientStop {
             color: "gold"
             position: 0.0
@@ -35,23 +35,22 @@ QtObject {
 
     }
 
-    property Gradient darkGoldButton: Gradient {
-        id: darkGoldButton
+    property Gradient goldButton: Gradient {
+        id: goldButton
         GradientStop {
-            color: Qt.darker("gold",1.1)
+            color: "goldenrod"
             position: 0.0
         }
         GradientStop {
-            color: Qt.darker("goldenrod",1.1)
+            color: "gold"
             position: 0.5
         }
         GradientStop {
-            color: Qt.darker("gold",1.1)
+            color: "goldenrod"
             position: 1.0
         }
 
     }
-
 
     property Gradient goldHeader: Gradient {
         id: goldHeader
