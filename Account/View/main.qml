@@ -114,6 +114,34 @@ ApplicationWindow {
             }
         }
 
+        Menu {
+            title: qsTr("Current accounts")
+            font.family: pageStyle.core.name
+            font.pixelSize: pageStyle.core.size
+
+            MenuItem {
+                text: qsTr("&Add transaction")
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+
+                background: Rectangle {
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                }
+
+            }
+            MenuItem {
+                text: qsTr("&Remove transaction")
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+
+                background: Rectangle {
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                }
+
+            }
+
+        }
+
         background: Rectangle {
             gradient: pageStyle.goldHeader
         }
