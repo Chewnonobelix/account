@@ -20,6 +20,8 @@ Rectangle {
 
     Button {
         id: next
+        enabled: chart.ok
+
         anchors.left: chart.right
         anchors.verticalCenter: chart.verticalCenter
         text: qsTr(">")
@@ -32,13 +34,7 @@ Rectangle {
         }
 
         onClicked: {
-            chart.month ++
-            if(chart.month == 13) {
-                chart.month = 1
-                chart.years++
-            }
-
-            chart.s_increment()
+            chart.s_increment(1)
         }
     }
 
@@ -50,19 +46,15 @@ Rectangle {
         height: parent.height * .25
         width: parent.width * 0.025
 
+        enabled: chart.ok
+
         background: Rectangle {
             anchors.fill: parent
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
         }
 
         onClicked: {
-            chart.month --
-            if(chart.month == 0) {
-                chart.month = 12
-                chart.years--
-            }
-
-            chart.s_increment()
+            chart.s_increment(-1)
         }
     }
 
@@ -73,6 +65,7 @@ Rectangle {
         width: parent.width * .95
         id: chart
 
+        property bool ok: true
 
         MouseArea {
             acceptedButtons: Qt.NoButton
@@ -86,10 +79,11 @@ Rectangle {
         property int month: parent.month
         property int years: parent.year
 
-        signal s_increment()
+        signal s_increment(int i)
         signal s_zoom(int dir)
 
-        title: qsTr("Account evolution")
+        property string granularity: qsTr("month")
+        title: qsTr("Account evolution ") + granularity
         titleFont.family: pageStyle.title.name
         titleFont.pixelSize: pageStyle.title.size
         objectName: "chart"

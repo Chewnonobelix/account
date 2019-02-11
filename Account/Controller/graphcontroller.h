@@ -30,7 +30,7 @@ public:
 
 public slots:
     void change(int);
-    void increment();
+    void increment(int = 0);
 
 signals:
     void s_sum();

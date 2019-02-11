@@ -16,7 +16,7 @@ void GraphController::set(QObject * view)
 
     if(m_view)
     {
-        connect(m_view, SIGNAL(s_increment()), this, SLOT(increment()));
+        connect(m_view, SIGNAL(s_increment(int)), this, SLOT(increment(int)));
         connect(m_view, SIGNAL(s_zoom(int)), this, SLOT(change(int)));
     }
 }
@@ -89,7 +89,7 @@ void GraphController::change(int nGranularity)
     increment();
 }
 
-void GraphController::increment()
+void GraphController::increment(int inc)
 {
     QMetaObject::invokeMethod(m_view, "clear");
 
@@ -123,9 +123,26 @@ void GraphController::increment()
         }
     };
 
+    m_view->setProperty("ok", (m_gran != over));
+
     switch(m_gran)
     {
     case month:
+        cMonth += inc;
+
+        if(cMonth == 0)
+        {
+            cMonth = 12;
+            cYear --;
+        }
+        else if(cMonth == 13)
+        {
+            cMonth = 1;
+            cYear ++;
+        }
+
+        m_view->setProperty("granularity", tr("one month"));
+
         for(auto it: m_sum)
         {
             if(it.date().month() == cMonth && it.date().year() == cYear)
@@ -136,10 +153,13 @@ void GraphController::increment()
             }
         }
         break;
+
     case year:
+        cYear += inc;
         itDate.setDate(cYear, 1, 1);
         ret[itDate] = m_sum[itDate];
         itDate = itDate.addDays(30);
+        m_view->setProperty("granularity", tr("one year"));
 
         for(int i = 0; i < 12; i++)
         {
@@ -150,12 +170,13 @@ void GraphController::increment()
             itDate = itDate.addDays(itDate.daysInMonth() - itDate.day());
         }
         break;
+
     case over:
         itDate = m_sum.first().date();
         ret[itDate] = m_sum[itDate];
         itDate = itDate.addDays(itDate.daysInMonth() - itDate.day());
         lastDay = m_sum.last().date();
-
+        m_view->setProperty("granularity", tr("all years"));
         while(itDate < lastDay)
         {
             ret[itDate] = m_sum[itDate];
@@ -175,6 +196,9 @@ void GraphController::increment()
         }
         break;
     }
+
+    m_view->setProperty("month", cMonth);
+    m_view->setProperty("years", cYear);
 
     QDate minDate, maxDate;
     if(!ret.isEmpty())
