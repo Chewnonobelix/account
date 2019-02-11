@@ -85,7 +85,6 @@ int GraphController::exec()
 
 void GraphController::change(int nGranularity)
 {
-    qDebug()<<"new granularity"<<((m_gran + nGranularity + 3)%3)<<nGranularity;
     m_gran = (granularity)((m_gran + nGranularity + 3)%3);
     increment();
 }
@@ -99,8 +98,6 @@ void GraphController::increment()
     int cYear = m_view->property("years").toInt();
     QDate itDate, lastDay;
     QSharedPointer<int> minVal, maxVal;
-
-    qDebug()<<"increment"<<m_sum.size()<<m_gran<<cMonth<<cYear;
 
     auto setMin = [&](double val) {
         if(minVal.isNull())
@@ -189,8 +186,6 @@ void GraphController::increment()
 
     if(!maxVal.isNull())
     {
-        qDebug()<<*minVal<<*maxVal;
-
         *maxVal = *maxVal > 0 ? *maxVal * 1.05 : *maxVal * .95;
         *minVal = *minVal < 0 ? *minVal * 1.05 : *minVal * .95;
 

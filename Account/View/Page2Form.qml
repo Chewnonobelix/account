@@ -79,7 +79,6 @@ Rectangle {
             anchors.fill: parent
 
             onWheel: {
-                console.log("wheel", wheel.angleDelta.y)
                 parent.s_zoom(wheel.angleDelta.y > 0 ? -1 : 1)
             }
         }

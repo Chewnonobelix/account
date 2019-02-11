@@ -16,13 +16,6 @@ int main(int argc, char *argv[])
     qDebug()<<"ControllerXML"<<qRegisterMetaType<ControllerXML>();
     qDebug()<<"ControllerXMLMulti"<<qRegisterMetaType<ControllerXMLMulti>();
 
-    /*QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-
-    if (engine.rootObjects().isEmpty())
-        return -1;
-
-    qDebug()<<engine.rootObjects();*/
     MainController mc;
 
     mc.exec();

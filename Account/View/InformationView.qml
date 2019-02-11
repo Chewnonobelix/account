@@ -154,16 +154,7 @@ Item {
         }
 
         function addCat(newCat) {
-//            console.log("add cat", newCat, model.length, currentIndex)
-//            model.pop()
-//            model.push(newCat)
-//            model.push("")
-
-//            currentIndex = model.length-2
-//            console.log("add cat2", newCat, model.length, currentIndex)
-
             s_addCategory(newCat)
-
         }
 
 

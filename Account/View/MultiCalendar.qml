@@ -38,7 +38,6 @@ Calendar {
         function find(day) {
             for(var i = 0; i < count; i++) {
                 if(get(i).day === day) {
-//                    console.log("find", day, get(i).day, get(i).value)
                     return get(i)
                 }
             }
