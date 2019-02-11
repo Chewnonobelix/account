@@ -64,7 +64,6 @@ Rectangle {
 
             chart.s_increment()
         }
-
     }
 
     ChartView {
@@ -81,6 +80,7 @@ Rectangle {
 
             onWheel: {
                 console.log("wheel", wheel.angleDelta.y)
+                parent.s_zoom(wheel.angleDelta.y > 0 ? -1 : 1)
             }
         }
 
@@ -88,6 +88,7 @@ Rectangle {
         property int years: parent.year
 
         signal s_increment()
+        signal s_zoom(int dir)
 
         title: qsTr("Account evolution")
         titleFont.family: pageStyle.title.name

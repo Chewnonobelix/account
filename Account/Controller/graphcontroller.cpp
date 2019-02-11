@@ -17,6 +17,7 @@ void GraphController::set(QObject * view)
     if(m_view)
     {
         connect(m_view, SIGNAL(s_increment()), this, SLOT(increment()));
+        connect(m_view, SIGNAL(s_zoom(int)), this, SLOT(change(int)));
     }
 }
 
@@ -84,7 +85,8 @@ int GraphController::exec()
 
 void GraphController::change(int nGranularity)
 {
-    m_gran = (granularity)nGranularity;
+    qDebug()<<"new granularity"<<((m_gran + nGranularity + 3)%3)<<nGranularity;
+    m_gran = (granularity)((m_gran + nGranularity + 3)%3);
     increment();
 }
 
@@ -131,7 +133,6 @@ void GraphController::increment()
         {
             if(it.date().month() == cMonth && it.date().year() == cYear)
             {
-                qDebug()<<"Month"<<it.date();
                 ret[it.date()] = it;
                 setMax(it.value());
                 setMin(it.value());
@@ -139,27 +140,34 @@ void GraphController::increment()
         }
         break;
     case year:
-        itDate.setDate(cYear, 1, 31);
+        itDate.setDate(cYear, 1, 1);
+        ret[itDate] = m_sum[itDate];
+        itDate = itDate.addDays(30);
 
         for(int i = 0; i < 12; i++)
         {
-            qDebug()<<"Year"<<itDate;
             ret[itDate] = m_sum[itDate];
             setMax(m_sum[itDate].value());
             setMin(m_sum[itDate].value());
+            itDate = itDate.addMonths(1);
+            itDate = itDate.addDays(itDate.daysInMonth() - itDate.day());
         }
         break;
     case over:
-        itDate.setDate(cYear, cMonth, 1);
-        itDate = itDate.addDays(itDate.daysInMonth() - 1);
+        itDate = m_sum.first().date();
+        ret[itDate] = m_sum[itDate];
+        itDate = itDate.addDays(itDate.daysInMonth() - itDate.day());
         lastDay = m_sum.last().date();
 
         while(itDate < lastDay)
         {
-            qDebug()<<"Over"<<itDate;
             ret[itDate] = m_sum[itDate];
             setMax(m_sum[itDate].value());
             setMin(m_sum[itDate].value());
+
+            itDate = itDate.addMonths(1);
+            itDate = itDate.addDays(itDate.daysInMonth() - itDate.day());
+
         }
 
         if(!ret.contains(lastDay))
@@ -172,16 +180,24 @@ void GraphController::increment()
     }
 
     QDate minDate, maxDate;
-    minDate = ret.first().date();
-    maxDate = ret.last().date();
+    if(!ret.isEmpty())
+    {
+        minDate = ret.first().date();
+        maxDate = ret.last().date();
+    }
 
-    qDebug()<<*minVal<<*maxVal;
 
-    *maxVal = *maxVal > 0 ? *maxVal * 1.05 : *maxVal * .95;
-    *minVal = *minVal < 0 ? *minVal * 1.05 : *minVal * .95;
+    if(!maxVal.isNull())
+    {
+        qDebug()<<*minVal<<*maxVal;
 
-    QMetaObject::invokeMethod(m_view, "setMinMaxDate", Q_ARG(QVariant, minDate), Q_ARG(QVariant, maxDate));
-    QMetaObject::invokeMethod(m_view, "setMinMaxValue", Q_ARG(QVariant, *minVal), Q_ARG(QVariant, *maxVal));
+        *maxVal = *maxVal > 0 ? *maxVal * 1.05 : *maxVal * .95;
+        *minVal = *minVal < 0 ? *minVal * 1.05 : *minVal * .95;
+
+
+        QMetaObject::invokeMethod(m_view, "setMinMaxDate", Q_ARG(QVariant, minDate), Q_ARG(QVariant, maxDate));
+        QMetaObject::invokeMethod(m_view, "setMinMaxValue", Q_ARG(QVariant, *minVal), Q_ARG(QVariant, *maxVal));
+    }
 
     for(auto it = ret.begin(); it != ret.end(); it++)
     {
