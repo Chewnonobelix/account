@@ -123,7 +123,8 @@ void GraphController::increment(int inc)
         }
     };
 
-    m_view->setProperty("ok", (m_gran != over));
+    m_view->setProperty("okPrev", (m_gran != over));
+    m_view->setProperty("okNext", (m_gran != over));
 
     switch(m_gran)
     {
@@ -157,15 +158,28 @@ void GraphController::increment(int inc)
     case year:
         cYear += inc;
         itDate.setDate(cYear, 1, 1);
-        ret[itDate] = m_sum[itDate];
+        if(m_sum.contains(itDate))
+            ret[itDate] = m_sum[itDate];
         itDate = itDate.addDays(30);
         m_view->setProperty("granularity", tr("one year"));
 
+        if(!m_sum.contains(itDate.addMonths(-1)))
+            ret[m_sum.first().date()] = m_sum.first();
         for(int i = 0; i < 12; i++)
         {
-            ret[itDate] = m_sum[itDate];
-            setMax(m_sum[itDate].value());
-            setMin(m_sum[itDate].value());
+            if(m_sum.contains(itDate))
+            {
+                ret[itDate] = m_sum[itDate];
+                setMax(m_sum[itDate].value());
+                setMin(m_sum[itDate].value());
+            }
+            else
+            {
+                QDate wtf;
+                wtf.setDate(itDate.year(), itDate.month()-1, 1);
+                if(m_sum.contains(wtf))
+                    ret[m_sum.last().date()] = m_sum.last();
+            }
             itDate = itDate.addMonths(1);
             itDate = itDate.addDays(itDate.daysInMonth() - itDate.day());
         }
@@ -179,9 +193,12 @@ void GraphController::increment(int inc)
         m_view->setProperty("granularity", tr("all years"));
         while(itDate < lastDay)
         {
-            ret[itDate] = m_sum[itDate];
-            setMax(m_sum[itDate].value());
-            setMin(m_sum[itDate].value());
+            if(m_sum.contains(itDate))
+            {
+                ret[itDate] = m_sum[itDate];
+                setMax(m_sum[itDate].value());
+                setMin(m_sum[itDate].value());
+            }
 
             itDate = itDate.addMonths(1);
             itDate = itDate.addDays(itDate.daysInMonth() - itDate.day());
@@ -207,6 +224,11 @@ void GraphController::increment(int inc)
         maxDate = ret.last().date();
     }
 
+    if(!ret.isEmpty() && !m_sum.isEmpty())
+    {
+        m_view->setProperty("okPrev", !(ret.first() == m_sum.first()));
+        m_view->setProperty("okNext", !(ret.last() == m_sum.last()));
+    }
 
     if(!maxVal.isNull())
     {

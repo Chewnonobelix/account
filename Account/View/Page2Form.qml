@@ -20,7 +20,7 @@ Rectangle {
 
     Button {
         id: next
-        enabled: chart.ok
+        enabled: chart.okNext
 
         anchors.left: chart.right
         anchors.verticalCenter: chart.verticalCenter
@@ -46,7 +46,7 @@ Rectangle {
         height: parent.height * .25
         width: parent.width * 0.025
 
-        enabled: chart.ok
+        enabled: chart.okPrev
 
         background: Rectangle {
             anchors.fill: parent
@@ -65,7 +65,8 @@ Rectangle {
         width: parent.width * .95
         id: chart
 
-        property bool ok: true
+        property bool okNext: true
+        property bool okPrev: true
 
         MouseArea {
             acceptedButtons: Qt.NoButton
@@ -83,6 +84,7 @@ Rectangle {
         signal s_zoom(int dir)
 
         property string granularity: qsTr("month")
+
         title: qsTr("Account evolution ") + granularity
         titleFont.family: pageStyle.title.name
         titleFont.pixelSize: pageStyle.title.size
