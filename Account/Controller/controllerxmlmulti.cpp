@@ -92,7 +92,7 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
 
     addInfo(el, info);
     root.appendChild(el);
-
+    close();
     return true;
 }
 
@@ -196,7 +196,7 @@ bool ControllerXMLMulti::removeAccount(QString account)
     QFile file;
     file.setFileName("data\\" + account+".xml");
 
-    return (file.remove() || m_accounts.remove(account) > 0);
+    return (m_accounts.remove(account) > 0 && file.remove());
 }
 
 bool ControllerXMLMulti::updateInfo(const Entry& e)
