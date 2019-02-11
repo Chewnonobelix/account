@@ -15,7 +15,9 @@ Calendar {
         objectName: "calendarPreview"
 
         function add(item) {
-            append(item)
+            if(item.value !== 0) {
+                append(item)
+            }
         }
 
         function find(day) {
