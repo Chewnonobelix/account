@@ -275,7 +275,7 @@ Calendar {
 
             ToolTip {
                 text: qsTr("Total: " + totalRect.total + "€ \n" + qsTr("Day transaction: " + parent.val +"€"))
-                visible: styleData.hovered
+                visible: styleData.hovered && parent.delCurrentMonth
                 delay: 500
             }
 
@@ -332,7 +332,7 @@ Calendar {
                 text: styleData.date.getDate()
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
-                color:  parent.checkMonth(styleData)? "black" : "grey"
+                color:  parent.delCurrentMonth ? "black" : "grey"
                 onTextChanged: {
 
                     if(stylesData.indexOf(c_date) == -1) {
