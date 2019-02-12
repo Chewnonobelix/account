@@ -278,46 +278,47 @@ void MainController::selection(int)
         }
     }
 
-    auto cpm1 = [](QDate d1, QDate d2)
-    {
-        if(d1.isValid() && d2.isValid())
-        {
-            if(d1 < d2)
-                return d1;
-        }
-        else if(d1.isValid())
-            return d1;
+//    auto cpm1 = [](QDate d1, QDate d2)
+//    {
+//        if(d1.isValid() && d2.isValid())
+//        {
+//            if(d1 < d2)
+//                return d1;
+//        }
+//        else if(d1.isValid())
+//            return d1;
 
-        return d2;
-    };
+//        return d2;
+//    };
 
-    auto cpm2 = [](QDate d1, QDate d2)
-    {
-        if(d1.isValid() && d2.isValid())
-        {
-            if(d1 > d2)
-                return d1;
-        }
-        else if(d1.isValid())
-            return d1;
+//    auto cpm2 = [](QDate d1, QDate d2)
+//    {
+//        if(d1.isValid() && d2.isValid())
+//        {
+//            if(d1 > d2)
+//                return d1;
+//        }
+//        else if(d1.isValid())
+//            return d1;
 
-        return d2;
-    };
+//        return d2;
+//    };
 
-    Total m, e, t;
-    QDate minD, maxD;
-    double minV, maxV;
+    Total t;
+//    Total m, e, t;
+//    QDate minD, maxD;
+//    double minV, maxV;
 
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
     QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
     if(tab && skipper)
     {
         QMetaObject::invokeMethod(tab, "unselectAll");
-        if(!ret.isEmpty())
-        {
-            minV = ret.first().value();
-            maxV = ret.first().value();
-        }
+//        if(!ret.isEmpty())
+//        {
+//            minV = ret.first().value();
+//            maxV = ret.first().value();
+//        }
         QMetaObject::invokeMethod(tab, "reset");
         int first = ((skipper->property("pageIndex").toInt()));
 
@@ -325,33 +326,37 @@ void MainController::selection(int)
         first *= 100;
         for(auto i = first ; i < qMin(ret.size(), first+100); i++)
         {
-            QVariantMap map;
-            minD = cpm1(minD, ret[i].date());
-            maxD = cpm2(maxD, ret[i].date());
             t = t + ret[i];
 
-            if(!ret[i].info().estimated())
-                m = m + ret[i];
+            if(i >= first && i < qMin(ret.size(), first+100))
+            {
+                QVariantMap map;
+    //            minD = cpm1(minD, ret[i].date());
+    //            maxD = cpm2(maxD, ret[i].date());
 
-            if(ret[i].info().estimated())
-                e = e + ret[i];
+    //            if(!ret[i].info().estimated())
+    //                m = m + ret[i];
 
-            minV = minV < t.value() ? minV : t.value();
-            maxV = maxV > t.value() ? maxV : t.value();
+    //            if(ret[i].info().estimated())
+    //                e = e + ret[i];
 
-            map.insert("id", ret[i].id());
-            map.insert("date", ret[i].date());
-            map.insert("value", ret[i].value());
-            map.insert("label", ret[i].label());
-            map.insert("type", ret[i].type().toLower());
-            map.insert("total", t.value());
-            map.insert("real", m.value());
-            map.insert("estimated", ret[i].info().estimated());
-            QMetaObject::invokeMethod(tab, "fAdd", Q_ARG(QVariant, map));
+    //            minV = minV < t.value() ? minV : t.value();
+    //            maxV = maxV > t.value() ? maxV : t.value();
+
+                map.insert("id", ret[i].id());
+                map.insert("date", ret[i].date());
+                map.insert("value", ret[i].value());
+                map.insert("label", ret[i].label());
+                map.insert("type", ret[i].type().toLower());
+                map.insert("total", t.value());
+    //            map.insert("real", m.value());
+                map.insert("estimated", ret[i].info().estimated());
+                QMetaObject::invokeMethod(tab, "fAdd", Q_ARG(QVariant, map));
+            }
         }
 
-        minV -= 10;
-        maxV += 10;
+//        minV -= 10;
+//        maxV += 10;
 
     }
 
