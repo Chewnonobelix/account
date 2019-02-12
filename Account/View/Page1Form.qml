@@ -147,7 +147,7 @@ Page {
         }
     }
 
-
+    property int currentId: view.currentIndex > -1 && defaultModel.get(view.currentIndex).label !== "Initial" ? defaultModel.get(view.currentIndex).id : -1
 
     ListModel {
         id: defaultModel

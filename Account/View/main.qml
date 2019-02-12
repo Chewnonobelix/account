@@ -158,8 +158,12 @@ ApplicationWindow {
                 text: qsTr("&Add transaction")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
-
-                onClicked: adding(false)
+                enabled: dAccountMenu.enabled
+                onClicked: {
+                    if(enabled) {
+                        adding(false)
+                    }
+                }
 
                 indicator: Label {
                     text: addShort.nativeText
@@ -187,6 +191,7 @@ ApplicationWindow {
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
 
+                enabled: table.currentId !== -1
                 indicator: Label {
                     text: delShort.nativeText
                     anchors.rightMargin: 10
@@ -199,6 +204,12 @@ ApplicationWindow {
                     sequence: "CTRL+D"
                     context: Qt.ApplicationShortcut
                     onActivated: removeEntryMenu.clicked()
+                }
+
+                onClicked: {
+                    if(enabled) {
+                        remove(table.currentId)
+                    }
                 }
 
                 background: Rectangle {
