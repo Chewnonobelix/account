@@ -37,7 +37,12 @@ int GraphController::exec()
     auto dateList = allDate();
     QList<QDate> keysT;
     QDate minDate , maxDate;
-    minDate = dateList.first(); maxDate = dateList.last();
+
+    if(!dateList.isEmpty())
+    {
+        minDate = dateList.first();
+        maxDate = dateList.last();
+    }
 
     QDate cd = minDate;
     keysT<<minDate;
