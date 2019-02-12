@@ -93,15 +93,6 @@ Page {
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
 
-            Shortcut {
-                context: Qt.ApplicationShortcut
-                onActivated:  {
-                    add.clicked()
-                }
-                sequence: "A"
-            }
-
-
 
             Rectangle {
                 id: rectAdd
@@ -134,13 +125,6 @@ Page {
             font.pixelSize: pageStyle.core.size
             property int index: view.currentIndex
             enabled: view.currentIndex !== -1
-            Shortcut {
-                context: Qt.ApplicationShortcut
-                onActivated:  {
-                    remove.clicked()
-                }
-                sequence: "R"
-            }
 
             MouseArea {
                 z: -1

@@ -22,14 +22,6 @@ ApplicationWindow {
     Component.onCompleted: {
         showMaximized()
     }
-    Shortcut {
-        sequence: "CTRL+N"
-        context: Qt.ApplicationShortcut
-
-        onActivated: {
-            adding(true)
-        }
-    }
 
     AccountStyle {
         id: pageStyle
@@ -65,7 +57,15 @@ ApplicationWindow {
                 font.pixelSize: pageStyle.core.size
                 id: quitMenu
 
+                indicator: Label {
+                    text: quitShort.nativeText
+                    anchors.rightMargin: 10
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
                 Shortcut {
+                    id: quitShort
                     sequence: "CTRL+Q"
                     context: Qt.ApplicationShortcut
                     onActivated: quitMenu.clicked()
@@ -87,6 +87,7 @@ ApplicationWindow {
             font.pixelSize: pageStyle.core.size
 
             MenuItem {
+                id: nAccountMenu
                 text: qsTr("&New account")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
@@ -95,17 +96,50 @@ ApplicationWindow {
                     adding(true)
                 }
 
+                indicator: Label {
+                    text: accountAddShort.nativeText
+                    anchors.rightMargin: 10
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Shortcut {
+                    id: accountAddShort
+                    sequence: "CTRL+N"
+
+                    onActivated: {
+                        nAccountMenu.clicked()
+                    }
+                }
+
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
             }
             MenuItem {
+                id: dAccountMenu
                 text: qsTr("&Delete account")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
                 enabled: accountSelect.model.length > 0
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                }
+
+                indicator: Label {
+                    text: accountDelShort.nativeText
+                    anchors.rightMargin: 10
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Shortcut {
+                    id: accountDelShort
+                    sequence: "CTRL+SHIFT+D"
+
+                    onActivated: {
+                        dAccountMenu.clicked()
+                    }
                 }
 
                 onClicked: {
@@ -120,19 +154,52 @@ ApplicationWindow {
             font.pixelSize: pageStyle.core.size
 
             MenuItem {
+                id: addEntryMenu
                 text: qsTr("&Add transaction")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
+
+                onClicked: adding(false)
+
+                indicator: Label {
+                    text: addShort.nativeText
+                    anchors.rightMargin: 10
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Shortcut {
+                    id: addShort
+                    sequence: "CTRL+A"
+                    context: Qt.ApplicationShortcut
+                    onActivated: addEntryMenu.clicked()
+                }
 
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
 
             }
+
             MenuItem {
+                id: removeEntryMenu
                 text: qsTr("&Remove transaction")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
+
+                indicator: Label {
+                    text: delShort.nativeText
+                    anchors.rightMargin: 10
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Shortcut {
+                    id: delShort
+                    sequence: "CTRL+D"
+                    context: Qt.ApplicationShortcut
+                    onActivated: removeEntryMenu.clicked()
+                }
 
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
