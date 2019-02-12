@@ -4,6 +4,7 @@ import QtQuick.Window 2.12
 import QtQuick.Controls 2.2
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Styles 1.4
+import QtQuick.Dialogs 1.3
 
 ApplicationWindow {
     visible: true
@@ -37,10 +38,10 @@ ApplicationWindow {
             MenuItem {
                 text: qsTr("&Consolidate")
                 objectName: "xmlMenu"
-//                checkable: true
+                //                checkable: true
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
-
+                enabled: false
                 signal s_xml()
                 onClicked: {
                     s_xml()
@@ -222,6 +223,96 @@ ApplicationWindow {
 
         background: Rectangle {
             gradient: pageStyle.goldHeader
+        }
+
+        Menu {
+            title: qsTr("?")
+            font.family: pageStyle.core.name
+            font.pixelSize: pageStyle.core.size
+
+            MenuItem {
+                text: qsTr("About")
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                }
+
+                onClicked: about.open()
+
+                Popup {
+                    id: about
+                    height: 200
+                    width: 600
+                    Label {
+                        anchors.centerIn: parent
+                        text: qsTr("This application is made by Arnaud DUHAMEL
+                            Current Version beta 0.9")
+                        font.family: pageStyle.title.name
+                        font.pixelSize: pageStyle.title.size
+                    }
+
+                    background: Rectangle{
+                        anchors.fill: parent
+                        gradient: pageStyle.backgroundGradient
+                        border.color: "gold"
+                    }
+
+                    Button {
+                        text: qsTr("Ok")
+                        onClicked: about.close()
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+
+                         background: Rectangle {
+                             anchors.fill: parent
+                             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                         }
+                    }
+                }
+            }
+
+            MenuItem {
+                text: qsTr("Licence")
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                }
+
+                onTriggered: aboutQt.open()
+
+                Popup {
+                    id: aboutQt
+                    height: 200
+                    width: 600
+                    Label {
+                        anchors.centerIn: parent
+                        text: qsTr("This application is made with Qt 5.12 and QML")
+                        font.family: pageStyle.title.name
+                        font.pixelSize: pageStyle.title.size
+                    }
+
+                    background: Rectangle{
+                        anchors.fill: parent
+                        gradient: pageStyle.backgroundGradient
+                        border.color: "gold"
+                    }
+
+                    Button {
+                        text: qsTr("Ok")
+                        onClicked: aboutQt.close()
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+
+                         background: Rectangle {
+                             anchors.fill: parent
+                             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                         }
+                    }
+                }
+
+
+            }
         }
     }
 
