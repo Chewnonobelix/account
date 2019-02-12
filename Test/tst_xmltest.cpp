@@ -150,25 +150,28 @@ void XmlTest::testCharge()
 {
     int i = 1;
     QDate cDate = QDate::currentDate();
-    QDate itDate = cDate.addYears(-1);
+    QDate itDate = cDate.addYears(-30);
     QString accountName = "charge_"+cDate.toString("dd-MM-yyyy");
     bool ret = true;
 
-    while(itDate < cDate.addYears(1))
+    while(itDate < cDate.addYears(30))
     {
         qDebug()<<"Test days"<<itDate;
-        Entry e;
-        e.setDate(itDate);
-        e.setAccount(accountName);
-        Information info;
-        info.setTitle("entry " + QString::number(rdn.generate()));
-        info.setEstimated(itDate > QDate::currentDate());
-        e.setValue(rdn.generateDouble()*10);
-        e.setInfo(info);
-        e.setType(rdn.generate()%2 ? "income":"outcome");
 
-        ret &= m_xml.addEntry(e);
+        for(i = 0; i < 5; i++)
+        {
+            Entry e;
+            e.setDate(itDate);
+            e.setAccount(accountName);
+            Information info;
+            info.setTitle("entry " + QString::number(rdn.generate()));
+            info.setEstimated(itDate > QDate::currentDate());
+            e.setValue(rdn.generateDouble()*10);
+            e.setInfo(info);
+            e.setType(rdn.generate()%2 ? "income":"outcome");
 
+            ret &= m_xml.addEntry(e);
+        }
         itDate = itDate.addDays(1);
     }
     m_xml.close();
