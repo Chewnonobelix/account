@@ -25,7 +25,7 @@ Rectangle {
         anchors.left: chart.right
         anchors.verticalCenter: chart.verticalCenter
         text: qsTr(">")
-        height: parent.height * .25
+        height: chart.height
         width: parent.width * 0.025
 
         background: Rectangle {
@@ -43,7 +43,7 @@ Rectangle {
         anchors.right: chart.left
         anchors.verticalCenter: chart.verticalCenter
         text: qsTr("<")
-        height: parent.height * .25
+        height: chart.height
         width: parent.width * 0.025
 
         enabled: chart.okPrev
