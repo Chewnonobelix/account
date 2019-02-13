@@ -13,6 +13,7 @@ SOURCES +=  tst_xmltest.cpp \
     ../Account/Controller/controllerxmlmulti.cpp \
     ../Account/Controller/graphcontroller.cpp \
     ../Account/Controller/maincontroller.cpp \
+    ../Account/Controller/languagecontroller.cpp \
     ../Account/Controller/xmltosql.cpp \
     ../Account/Model/budget.cpp \
     ../Account/Model/categories.cpp \
@@ -28,6 +29,7 @@ HEADERS +=  \
     ../Account/Controller/controllerxml.h \
     ../Account/Controller/controllerxmlmulti.h \
     ../Account/Controller/graphcontroller.h \
+    ../Account/Controller/languagecontroller.h \
     ../Account/Controller/interfacedatasave.h \
     ../Account/Controller/maincontroller.h \
     ../Account/Controller/xmltosql.h \

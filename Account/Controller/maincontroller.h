@@ -12,6 +12,7 @@
 #include "graphcontroller.h"
 #include "controllerxmlmulti.h"
 #include "xmltosql.h"
+#include "languagecontroller.h"
 
 class MainController: public AbstractController
 {
@@ -21,6 +22,7 @@ private:
     QQmlApplicationEngine m_engine;
     ControllerInformation m_info;
     GraphController m_graph;
+    LanguageController m_lang;
 
     void checkEstimated();
 

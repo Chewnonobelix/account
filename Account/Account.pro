@@ -28,7 +28,8 @@ SOURCES += \
     Controller/xmltosql.cpp \
     Model/budget.cpp \
     Model/commonexpense.cpp \
-    Controller/controllerxmlmulti.cpp
+    Controller/controllerxmlmulti.cpp \
+    Controller/languagecontroller.cpp
 
 RESOURCES += View/qml.qrc
 
@@ -62,4 +63,5 @@ HEADERS += \
     Model/budget.h \
     Model/commonexpense.h \
     Controller/controllerxmlmulti.h \
-    Model/accountglobal.h
+    Model/accountglobal.h \
+    Controller/languagecontroller.h
