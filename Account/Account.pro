@@ -43,6 +43,9 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+TRANSLATIONS += account_fr.ts \
+                account_en.ts \
+
 HEADERS += \
     Model/entry.h \
     Model/information.h \
