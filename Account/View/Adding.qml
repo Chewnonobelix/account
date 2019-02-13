@@ -56,7 +56,7 @@ Popup {
     ColumnLayout {
         Label {
             id: labelAdd
-            text: qsTr("Adding " + v_date)
+            text: qsTr("Adding")+" " + v_date
             font.family: pageStyle.title.name
             font.pixelSize: pageStyle.title.size
         }
@@ -127,7 +127,7 @@ Popup {
             ComboBox {
                 id: type
                 objectName: "type"
-                model: ["Income", "Outcome"]
+                model: [qsTr("Income"), qsTr("Outcome")]
                 enabled: !addingid.newAccount
 
                 font.family: pageStyle.core.name

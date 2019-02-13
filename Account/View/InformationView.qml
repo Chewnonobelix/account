@@ -215,7 +215,7 @@ Item {
     Label {
         anchors.top:title.bottom
         anchors.topMargin: 10
-        text: "Coming Soon"
+        text: qsTr("Coming Soon")
     }
     //Frequency
 }

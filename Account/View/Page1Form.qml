@@ -394,7 +394,7 @@ Page {
             movable: false
             resizable: false
             id: typeColumn
-            property string tipText: "*: estimated entry"
+            property string tipText: qsTr("*: estimated entry")
             delegate: Rectangle {
                 color: "transparent"
                 anchors.centerIn: parent
@@ -408,7 +408,7 @@ Page {
                 }
                 Label {
                     property string est: defaultModel.get(styleData.row).estimated ? "*" : ""
-                    text: styleData.value === "income" ? "+"+est:"-"+est
+                    text: styleData.value === qsTr("income") ? "+"+est:"-"+est
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
                     horizontalAlignment: Text.AlignHCenter
@@ -573,7 +573,7 @@ Page {
             height: 20
 
 
-            gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
+            gradient: styleData.selected ? defaultModel.get(styleData.row).type === qsTr("outcome") ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
         }
 
         onCurrentIndexChanged: {
@@ -607,10 +607,6 @@ Page {
             visible: false
             enabled: true
         }
-
-
-
     }
-
 }
 

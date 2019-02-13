@@ -150,7 +150,7 @@ ApplicationWindow {
         }
 
         Menu {
-            title: qsTr("Current accounts")
+            title: qsTr("Current account")
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
 
@@ -344,7 +344,7 @@ ApplicationWindow {
         Label {
             anchors.left: accountTitle.right
             anchors.leftMargin: 10
-            text: qsTr("Selection total: ") + parent.selectionTotal + " €"
+            text: qsTr("Selection total")+": " + parent.selectionTotal + " €"
             font.pixelSize: pageStyle.title.size
             font.family: pageStyle.title.name
             padding: 10
@@ -445,7 +445,7 @@ ApplicationWindow {
             Label {
                 id: labelDelete
                 property string account: accountSelect.currentText
-                text: qsTr("Delete ") + account + " ?"
+                text: qsTr("Delete")+" " + account + " ?"
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
                 anchors.horizontalCenter: parent.width / 2

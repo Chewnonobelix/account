@@ -274,7 +274,7 @@ Calendar {
             }
 
             ToolTip {
-                text: qsTr("Total: " + totalRect.total + "€ \n" + qsTr("Day transaction: " + parent.val +"€"))
+                text: qsTr("Total") +": " + totalRect.total + "€ \n" + qsTr("Day transaction") +": " + parent.val +"€"
                 visible: styleData.hovered && parent.delCurrentMonth
                 delay: 500
             }
