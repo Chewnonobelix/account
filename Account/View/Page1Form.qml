@@ -456,6 +456,29 @@ Page {
             width: 100
             movable: false
             resizable: false
+
+            delegate: Rectangle {
+                color: "transparent"
+                anchors.centerIn: parent
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    propagateComposedEvents: true
+                    onClicked: {
+                        view.setNewIndex(styleData.row)
+                    }
+                }
+
+                Label {
+                    text: styleData.value
+                    clip: true
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors.fill: parent
+                }
+            }
+
         }
 
         TableViewColumn {
@@ -464,6 +487,28 @@ Page {
             width: 100
             movable: false
             resizable: false
+
+            delegate: Rectangle {
+                color: "transparent"
+                anchors.centerIn: parent
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    propagateComposedEvents: true
+                    onClicked: {
+                        view.setNewIndex(styleData.row)
+                    }
+                }
+
+                Label {
+                    text: styleData.value
+                    clip: true
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors.fill: parent
+                }
+            }
         }
 
 
@@ -473,6 +518,29 @@ Page {
             width: 100
             movable: false
             resizable: false
+
+            delegate: Rectangle {
+                color: "transparent"
+                anchors.centerIn: parent
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    propagateComposedEvents: true
+                    onClicked: {
+                        view.setNewIndex(styleData.row)
+                    }
+                }
+
+                Label {
+                    text: styleData.value
+                    clip: true
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors.fill: parent
+                }
+            }
+
         }
 
 
@@ -526,25 +594,13 @@ Page {
         }
 
         itemDelegate: Rectangle {
-            width: parent.width
-            height: 20
-            anchors.fill: parent
-            color: "transparent"
-            Label {
-                id: textItem
-                text: styleData.value
-
-
-                anchors.centerIn: parent
-
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
-
-            }
-
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
+
+                ToolTip.text: styleData.value
+                ToolTip.visible: styleData.hovered
+                ToolTip.timeout: 500
 
                 onClicked: {
                     if(view.selection.contains(styleData.row)) {
