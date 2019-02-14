@@ -45,7 +45,6 @@ void ControllerTransfert::accept()
     transfertVal = val->property("value").toInt() / 100.0;
     date = dateField->property("text").toString();
 
-    qDebug()<<accountOut<<accountIn<<title<<transfertVal<<QDate::fromString(date, "dd-MM-yyyy");
     Entry in, out;
 
     out.setAccount(accountOut);
@@ -60,8 +59,10 @@ void ControllerTransfert::accept()
     in = out;
     in.setType("income");
     in.setAccount(accountIn);
-    addEntry(in); addEntry(out);
+    setCurrentAccount(in.account());
+    addEntry(in);
+    setCurrentAccount(out.account());
+    addEntry(out);
 
-    qDebug()<<in.date()<<out.date();
     emit s_finish();
 }
