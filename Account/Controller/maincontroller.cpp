@@ -84,6 +84,7 @@ int MainController::exec()
     {
         m_transfert.set(transfert);
         connect(root, SIGNAL(openTransfert()), this, SLOT(openTransfert()));
+        connect(&m_transfert, ControllerTransfert::s_finish, this, MainController::selection);
     }
 
     return 0;
