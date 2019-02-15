@@ -15,8 +15,23 @@
         <translation></translation>
     </message>
     <message>
+        <location filename="View/Adding.qml" line="59"/>
+        <source>Adding</source>
+        <translation></translation>
+    </message>
+    <message>
         <location filename="View/Adding.qml" line="117"/>
         <source>Please complete the entry&apos;s title</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="View/Adding.qml" line="130"/>
+        <source>Income</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="View/Adding.qml" line="130"/>
+        <source>Outcome</source>
         <translation></translation>
     </message>
     <message>
@@ -74,18 +89,31 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="View/InformationView.qml" line="55"/>
+        <location filename="View/InformationView.qml" line="56"/>
         <source>Value</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/InformationView.qml" line="67"/>
+        <location filename="View/InformationView.qml" line="69"/>
         <source>Category</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/InformationView.qml" line="198"/>
-        <source>Add a new category</source>
+        <location filename="View/InformationView.qml" line="230"/>
+        <source>Coming Soon</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>MultiCalendar</name>
+    <message>
+        <location filename="View/MultiCalendar.qml" line="277"/>
+        <source>Total</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="View/MultiCalendar.qml" line="277"/>
+        <source>Day transaction</source>
         <translation></translation>
     </message>
 </context>
@@ -102,28 +130,44 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="392"/>
+        <location filename="View/Page1Form.qml" line="398"/>
         <source>[+/-]</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="424"/>
+        <location filename="View/Page1Form.qml" line="403"/>
+        <source>estimated entry</source>
+        <oldsource>*: estimated entry</oldsource>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="View/Page1Form.qml" line="417"/>
+        <source>income</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="View/Page1Form.qml" line="430"/>
         <source>Date</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="455"/>
+        <location filename="View/Page1Form.qml" line="461"/>
         <source>Value</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="463"/>
+        <location filename="View/Page1Form.qml" line="492"/>
         <source>Label</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="472"/>
+        <location filename="View/Page1Form.qml" line="523"/>
         <source>Total</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="View/Page1Form.qml" line="639"/>
+        <source>outcome</source>
         <translation></translation>
     </message>
 </context>
@@ -146,7 +190,24 @@
     </message>
     <message>
         <location filename="View/Page2Form.qml" line="88"/>
-        <source>Account evolution </source>
+        <source>Account evolution</source>
+        <oldsource>Account evolution </oldsource>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="View/Page2Form.qml" line="99"/>
+        <location filename="View/Page2Form.qml" line="117"/>
+        <location filename="View/Page2Form.qml" line="125"/>
+        <location filename="View/Page2Form.qml" line="128"/>
+        <location filename="View/Page2Form.qml" line="129"/>
+        <source>past</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="View/Page2Form.qml" line="103"/>
+        <location filename="View/Page2Form.qml" line="118"/>
+        <location filename="View/Page2Form.qml" line="126"/>
+        <source>estimated</source>
         <translation></translation>
     </message>
 </context>
@@ -185,7 +246,8 @@
     </message>
     <message>
         <location filename="View/main.qml" line="153"/>
-        <source>Current accounts</source>
+        <source>Current account</source>
+        <oldsource>Current accounts</oldsource>
         <translation></translation>
     </message>
     <message>
@@ -235,12 +297,14 @@
     </message>
     <message>
         <location filename="View/main.qml" line="347"/>
-        <source>Selection total: </source>
+        <source>Selection total</source>
+        <oldsource>Selection total: </oldsource>
         <translation></translation>
     </message>
     <message>
         <location filename="View/main.qml" line="448"/>
-        <source>Delete </source>
+        <source>Delete</source>
+        <oldsource>Delete </oldsource>
         <translation></translation>
     </message>
     <message>
