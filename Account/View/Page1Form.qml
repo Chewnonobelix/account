@@ -202,6 +202,7 @@ Page {
 
         Rectangle {
             anchors.fill: parent
+            border.color: "darkgoldenrod"
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
         }
 
@@ -228,6 +229,7 @@ Page {
 
         Rectangle {
             anchors.fill: parent
+            border.color: "darkgoldenrod"
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
         }
 
@@ -255,6 +257,7 @@ Page {
         Rectangle {
             anchors.fill: parent
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+            border.color: "darkgoldenrod"
         }
 
     }
@@ -281,6 +284,7 @@ Page {
         Rectangle {
             anchors.fill: parent
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+            border.color: "darkgoldenrod"
         }
 
     }
@@ -318,6 +322,8 @@ Page {
         model: defaultModel
 
         property int maximumWidth: 4*100+40
+
+        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 
         sortIndicatorVisible:  true
         property string currentType
@@ -394,7 +400,7 @@ Page {
             movable: false
             resizable: false
             id: typeColumn
-            property string tipText: qsTr("*: estimated entry")
+            property string tipText: "*:" +  qsTr("estimated entry")
             delegate: Rectangle {
                 color: "transparent"
                 anchors.centerIn: parent
@@ -553,6 +559,7 @@ Page {
             property bool isHovered: styleData.containsMouse
             property bool isClicked: styleData.pressed
 
+            border.color: "darkgoldenrod"
             Label {
                 id: headerText
                 height: parent.height*.8
@@ -652,7 +659,7 @@ Page {
 
         anchors.leftMargin: 10
 
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
         clip: true
         InformationView {

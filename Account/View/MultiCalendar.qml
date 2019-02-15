@@ -155,7 +155,7 @@ Calendar {
 
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-                    border.color: "silver"
+                    border.color: "darkgoldenrod"
                     anchors.fill: parent
                 }
 
@@ -183,7 +183,7 @@ Calendar {
 
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-                    border.color: "silver"
+                    border.color: "darkgoldenrod"
                 }
 
                 MouseArea {

@@ -47,6 +47,7 @@ Item {
         horizontalAlignment: Qt.AlignHCenter
         background: Rectangle {
             gradient: pageStyle.goldHeader
+            border.color: "darkgoldenrod"
         }
     }
 
@@ -60,6 +61,7 @@ Item {
         horizontalAlignment: Qt.AlignHCenter
         background: Rectangle {
             gradient: pageStyle.goldHeader
+            border.color: "darkgoldenrod"
         }
     }
     Label {
@@ -72,6 +74,7 @@ Item {
         horizontalAlignment: Qt.AlignHCenter
         background: Rectangle {
             gradient: pageStyle.goldHeader
+            border.color: "darkgoldenrod"
         }
     }
     TextField {
