@@ -102,9 +102,20 @@ Item {
         font.family:  pageStyle.core.name
         font.pixelSize: pageStyle.core.size
 
+        property date s_date
+        Timer {
+            id: timer
+            repeat: false
+
+            onTriggered: {
+                if(!parent.opening)
+                    info.s_valueChanged(parent.realValue)
+
+            }
+        }
+
         onRealValueChanged: {
-            if(!parent.opening)
-                info.s_valueChanged(realValue)
+            timer.restart()
         }
     }
 
@@ -120,57 +131,57 @@ Item {
         model: [""]
 
 
-        signal s_addCategory(string cat)
-        signal s_currentTextChanged(string cat)
+        //        signal s_addCategory(string cat)
+        //        signal s_currentTextChanged(string cat)
 
-        contentItem: StackLayout {
-            currentIndex: category.editable ? 1 : 0
-            Label {
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                text: category.currentText
-            }
+        //        contentItem: StackLayout {
+        //            currentIndex: category.editable ? 1 : 0
+        //            Label {
+        //                font.family: pageStyle.core.name
+        //                font.pixelSize: pageStyle.core.size
+        //                horizontalAlignment: Qt.AlignHCenter
+        //                verticalAlignment: Qt.AlignVCenter
+        //                text: category.currentText
+        //            }
 
-            TextField {
-                id: editCombo
+        //            TextField {
+        //                id: editCombo
 
-                Keys.onPressed: {
-                    if((event.key === Qt.Key_Enter || event.key === Qt.Key_Return)  && category.currentIndex === category.model.length-1) {
-                        category.addCat(text)
-                        clear()
-                    }
-                }
-            }
-        }
+        //                Keys.onPressed: {
+        //                    if((event.key === Qt.Key_Enter || event.key === Qt.Key_Return)  && category.currentIndex === category.model.length-1) {
+        //                        category.addCat(text)
+        //                        clear()
+        //                    }
+        //                }
+        //            }
+        //        }
 
-        onCurrentTextChanged: {
-            s_currentTextChanged(currentText)
-        }
+        //        onCurrentTextChanged: {
+        //            s_currentTextChanged(currentText)
+        //        }
 
-        MouseArea {
-            anchors.fill: parent
-            z: -1
-            cursorShape: Qt.PointingHandCursor
-            acceptedButtons: Qt.NoButton
-        }
+        //        MouseArea {
+        //            anchors.fill: parent
+        //            z: -1
+        //            cursorShape: Qt.PointingHandCursor
+        //            acceptedButtons: Qt.NoButton
+        //        }
 
-        function addCat(newCat) {
-            s_addCategory(newCat)
-        }
+        //        function addCat(newCat) {
+        //            s_addCategory(newCat)
+        //        }
 
 
-        function setting(type) {
-            var index = find(type)
+        //        function setting(type) {
+        //            var index = find(type)
 
-            if(index >= 0) {
-                currentIndex = index
-            }
-            else {
-                currentIndex = model.length-1
-            }
-        }
+        //            if(index >= 0) {
+        //                currentIndex = index
+        //            }
+        //            else {
+        //                currentIndex = model.length-1
+        //            }
+        //        }
 
         background: Rectangle {
             anchors.fill: parent
@@ -178,40 +189,40 @@ Item {
         }
 
 
-        delegate: ItemDelegate {
-            width: category.width
-            contentItem: Rectangle  {
-                gradient: pageStyle.goldButton
-                anchors.fill: parent
+        //        delegate: ItemDelegate {
+        //            width: category.width
+        //            contentItem: Rectangle  {
+        //                gradient: pageStyle.goldButton
+        //                anchors.fill: parent
 
-                Label {
-                    color: "black"
-                    text: modelData
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
-                    anchors.centerIn: parent
-                }
+        //                Label {
+        //                    color: "black"
+        //                    text: modelData
+        //                    font.family: pageStyle.core.name
+        //                    font.pixelSize: pageStyle.core.size
+        //                    anchors.centerIn: parent
+        //                }
 
-                MouseArea {
-                    property string cTxt: modelData
-                    anchors.fill: parent
-                    cursorShape: index === (category.count - 1)  ? Qt.WhatsThisCursor : Qt.PointingHandCursor
+        //                MouseArea {
+        //                    property string cTxt: modelData
+        //                    anchors.fill: parent
+        //                    cursorShape: index === (category.count - 1)  ? Qt.WhatsThisCursor : Qt.PointingHandCursor
 
-                    ToolTip.visible: (index === (category.count - 1)) && hovered
-                    ToolTip.text: qsTr("Add a new category")
-                    ToolTip.delay: 500
+        //                    ToolTip.visible: (index === (category.count - 1)) && hovered
+        //                    ToolTip.text: qsTr("Add a new category")
+        //                    ToolTip.delay: 500
 
-                    onClicked: {
-                        if(mouse.button === Qt.LeftButton) {
-                            var index = category.find(cTxt)
-                            category.currentIndex = index
-                            category.popup.close()
-                        }
-                    }
-                }
+        //                    onClicked: {
+        //                        if(mouse.button === Qt.LeftButton) {
+        //                            var index = category.find(cTxt)
+        //                            category.currentIndex = index
+        //                            category.popup.close()
+        //                        }
+        //                    }
+        //                }
 
-            }
-        }
+        //            }
+        //        }
     }
 
 

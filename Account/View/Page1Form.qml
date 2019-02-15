@@ -659,7 +659,7 @@ Page {
 
         anchors.leftMargin: 10
 
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+        ScrollBar.horizontal.policy: ScrollBar.AsNeeded
 
         clip: true
         InformationView {
