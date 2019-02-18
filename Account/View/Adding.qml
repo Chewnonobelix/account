@@ -54,52 +54,73 @@ Popup {
     }
 
     ColumnLayout {
-        Label {
-            id: labelAdd
-            text: qsTr("Adding")+" " + v_date
-            font.family: pageStyle.title.name
-            font.pixelSize: pageStyle.title.size
-        }
-
-
-        ComboBox {
-            id: dateCombo
-            model: dateModel
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
-            Rectangle {
-                gradient: pageStyle.goldButton
-                anchors.fill: parent
+        RowLayout {
+            Label {
+                id: labelAdd
+                text: qsTr("Adding")+" " + v_date
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
             }
 
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                acceptedButtons: Qt.NoButton
-            }
-            delegate: ItemDelegate {
-                width: accountSelect.width
+            Label {
+                id: dateLabel
 
-                contentItem: Rectangle {
-                    gradient: pageStyle.goldButton
+                text: dateAdding.selectedDate
+                MouseArea {
                     anchors.fill: parent
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        acceptedButtons: Qt.NoButton
-                    }
-                    Label {
-                        color: "black"
-                        text: modelData
-                        anchors.centerIn: parent
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
-                    }
+                    onClicked: datePop.open()
+                    cursorShape: hovered ? Qt.PointingHandCursor : Qt.ArrowCursor
                 }
+            }
 
-                highlighted: accountSelect.highlightedIndex === index
+            Popup {
+                id:datePop
+
+                Calendar {
+                    id: dateAdding
+
+                    onClicked: datePop.close()
+                }
             }
         }
+        //        ComboBox {
+        //            id: dateCombo
+        //            model: dateModel
+        //            font.family: pageStyle.core.name
+        //            font.pixelSize: pageStyle.core.size
+        //            Rectangle {
+        //                gradient: pageStyle.goldButton
+        //                anchors.fill: parent
+        //            }
+
+        //            MouseArea {
+        //                anchors.fill: parent
+        //                cursorShape: Qt.PointingHandCursor
+        //                acceptedButtons: Qt.NoButton
+        //            }
+        //            delegate: ItemDelegate {
+        //                width: accountSelect.width
+
+        //                contentItem: Rectangle {
+        //                    gradient: pageStyle.goldButton
+        //                    anchors.fill: parent
+        //                    MouseArea {
+        //                        anchors.fill: parent
+        //                        cursorShape: Qt.PointingHandCursor
+        //                        acceptedButtons: Qt.NoButton
+        //                    }
+        //                    Label {
+        //                        color: "black"
+        //                        text: modelData
+        //                        anchors.centerIn: parent
+        //                        font.family: pageStyle.core.name
+        //                        font.pixelSize: pageStyle.core.size
+        //                    }
+        //                }
+
+        //                highlighted: accountSelect.highlightedIndex === index
+        //            }
+        //        }
 
         RowLayout {
             Label {
