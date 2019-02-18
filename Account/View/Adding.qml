@@ -25,7 +25,7 @@ Popup {
     property real v_val: spinbox.realValue
     property string v_title: valueLabel.text
     property string v_type: type.currentText
-    property string v_date: dateCombo.currentText
+    property string v_date: dateLabel.text
     property bool newAccount: false
 
     onClosed: {
@@ -87,6 +87,17 @@ Popup {
                     id: dateAdding
                     selectedDate: new Date()
                     onClicked: datePop.close()
+
+                    style: CalendarStyle {
+                        anchors.fill: parent
+                        background: Rectangle {
+                            anchors.fill: parent
+                            gradient: pageStyle.backgroundGradient
+                            border.color: "gold"
+                        }
+
+
+                    }
                 }
             }
         }
