@@ -13,7 +13,6 @@ Popup {
         valueLabel.text = ""
         spinbox.value = 0
         dateModel.clear()
-        dateCombo.currentIndex = 0
     }
 
     AccountStyle {
@@ -35,7 +34,6 @@ Popup {
     }
 
     onOpened: {
-        dateCombo.currentIndex = 0
         l_new.text = newAccount ? qsTr("Add new account"): qsTr("Add new entry")
     }
 
@@ -62,14 +60,23 @@ Popup {
                 font.pixelSize: pageStyle.title.size
             }
 
-            Label {
+            Button {
                 id: dateLabel
 
-                text: dateAdding.selectedDate
+                text: Qt.formatDate(dateAdding.selectedDate, "dd-MM-yyyy")
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+
+                background: Rectangle {
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                }
+
+                onClicked: datePop.open()
+
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: datePop.open()
-                    cursorShape: hovered ? Qt.PointingHandCursor : Qt.ArrowCursor
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
                 }
             }
 
@@ -78,49 +85,11 @@ Popup {
 
                 Calendar {
                     id: dateAdding
-
+                    selectedDate: new Date()
                     onClicked: datePop.close()
                 }
             }
         }
-        //        ComboBox {
-        //            id: dateCombo
-        //            model: dateModel
-        //            font.family: pageStyle.core.name
-        //            font.pixelSize: pageStyle.core.size
-        //            Rectangle {
-        //                gradient: pageStyle.goldButton
-        //                anchors.fill: parent
-        //            }
-
-        //            MouseArea {
-        //                anchors.fill: parent
-        //                cursorShape: Qt.PointingHandCursor
-        //                acceptedButtons: Qt.NoButton
-        //            }
-        //            delegate: ItemDelegate {
-        //                width: accountSelect.width
-
-        //                contentItem: Rectangle {
-        //                    gradient: pageStyle.goldButton
-        //                    anchors.fill: parent
-        //                    MouseArea {
-        //                        anchors.fill: parent
-        //                        cursorShape: Qt.PointingHandCursor
-        //                        acceptedButtons: Qt.NoButton
-        //                    }
-        //                    Label {
-        //                        color: "black"
-        //                        text: modelData
-        //                        anchors.centerIn: parent
-        //                        font.family: pageStyle.core.name
-        //                        font.pixelSize: pageStyle.core.size
-        //                    }
-        //                }
-
-        //                highlighted: accountSelect.highlightedIndex === index
-        //            }
-        //        }
 
         RowLayout {
             Label {
