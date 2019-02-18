@@ -12,10 +12,6 @@ AbstractController::AbstractController(): QObject(nullptr)
     {
         setDb("ControllerXMLMulti");
         m_db->init();
-        auto x = m_db->selectCategory();
-        for(auto it = x.begin(); it != x.end(); it++)
-            Categories::addType(it.key(), it.value());
-
     }
     catch(QString except)
     {
@@ -46,6 +42,11 @@ void AbstractController::setCurrentAccount(QString a)
         m_accountTotal = m_accountTotal + it;
         m_entry.insert(it.date(), it);
     }
+
+    auto x = m_db->selectCategory();
+    for(auto it = x.begin(); it != x.end(); it++)
+        Categories::addType(it.key(), it.value());
+
 }
 
 QString AbstractController::currentAccount()
