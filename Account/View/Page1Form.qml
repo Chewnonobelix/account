@@ -316,14 +316,14 @@ Page {
         anchors.left: cal.right
         anchors.leftMargin: 5
         height: parent.height * 0.95
-        width: (parent.width * 0.25) - 5
+        width: (parent.width * 0.30) - 5
         id: view
         objectName: "entryView"
         model: defaultModel
 
-        property int maximumWidth: 4*100+40
+        property int maximumWidth: 4*100+60
 
-        horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+        horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
 
         sortIndicatorVisible:  true
         property string currentType
@@ -396,7 +396,7 @@ Page {
         TableViewColumn {
             role: "type"
             title: qsTr("[+/-]")
-            width: 40
+            width: 45
             movable: false
             resizable: false
             id: typeColumn
@@ -490,9 +490,10 @@ Page {
         TableViewColumn {
             role: "label"
             title: qsTr("Label")
-            width: 100
+            width: 110
             movable: false
             resizable: false
+            id: labelHeader
 
             delegate: Rectangle {
                 color: "transparent"
@@ -511,8 +512,15 @@ Page {
                     clip: true
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
-                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
                     anchors.fill: parent
+
+                    onContentWidthChanged: {
+//                        labelHeader.width = contentWidth * 1.05 > labelHeader.width ? contentWidth * 1.05 : labelHeader.width
+                        console.log(contentWidth)
+
+                    }
+//                    Component.onCompleted: console.log(contentWidth, width)
                 }
             }
         }
@@ -653,7 +661,7 @@ Page {
         contentWidth: infoView.width
         contentHeight: infoView.height
         anchors.left: view.right
-        width: (parent.width*0.55)-10
+        anchors.right: parent.right
         height: parent.height
 
 
