@@ -91,6 +91,8 @@ Popup {
                     width: 250
 
                     style: CalendarStyle {
+                        gridColor: "goldenrod"
+                        gridVisible: true
                         background: Rectangle {
                             anchors.fill: parent
                             gradient: pageStyle.backgroundGradient
@@ -99,7 +101,6 @@ Popup {
 
                         dayDelegate: Rectangle {
                             color: "transparent"
-                            border.color: "gold"
                             Label {
                                 id: dLabel
                                 text: styleData.date.getDate()
