@@ -94,7 +94,8 @@ Popup {
                         gridColor: "goldenrod"
                         gridVisible: true
                         background: Rectangle {
-                            anchors.fill: parent
+                            height: 250
+                            width: 250
                             gradient: pageStyle.backgroundGradient
                             border.color: "gold"
                         }
@@ -116,6 +117,78 @@ Popup {
                             }
                         }
 
+                        navigationBar: Rectangle {
+                            id: navBar
+                            height: dateAdding.height/16
+
+                            gradient: pageStyle.goldHeader
+
+                            Label {
+                                id:monthLabel
+                                height: parent.height
+                                color:"black"
+                                anchors.centerIn: parent
+                                text: Qt.locale().monthName(dateAdding.visibleMonth, Locale.ShortFormat) + " " + dateAdding.visibleYear
+                                font.family: pageStyle.title.name
+                                font.pixelSize: height * 0.8
+                            }
+
+                            Button {
+                                id: nextMonth
+                                anchors.right: parent.right
+                                width: dateAdding.width/14
+                                height: parent.height
+                                text: ">"
+                                font.family: pageStyle.core.name
+                                font.pixelSize: pageStyle.core.size
+
+                                background: Rectangle {
+                                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                                    border.color: "darkgoldenrod"
+                                    anchors.fill: parent
+                                }
+
+                                MouseArea {
+                                    z: -1
+                                    anchors.fill: parent
+                                    cursorShape: Qt.PointingHandCursor
+                                    acceptedButtons: Qt.NoButton
+                                }
+
+                                onClicked: {
+                                    dateAdding.showNextMonth()
+                                }
+                            }
+
+                            Button {
+                                id: prevMonth
+                                anchors.left: parent.left
+                                width: dateAdding.width/14
+                                height: parent.height
+                                font.family: pageStyle.core.name
+                                font.pixelSize: pageStyle.core.size
+
+                                text: "<"
+
+                                background: Rectangle {
+                                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                                    border.color: "darkgoldenrod"
+                                }
+
+                                MouseArea {
+                                    z: -1
+                                    anchors.fill: parent
+                                    cursorShape: Qt.PointingHandCursor
+                                    acceptedButtons: Qt.NoButton
+                                }
+
+
+                                onClicked: {
+                                    dateAdding.showPreviousMonth()
+                                }
+                            }
+                        }
+
                         dayOfWeekDelegate: Rectangle {
                             height: dateAdding.height/16
                             gradient: pageStyle.goldHeader
@@ -127,8 +200,6 @@ Popup {
                             }
                         }
                     }
-
-
                 }
             }
         }
