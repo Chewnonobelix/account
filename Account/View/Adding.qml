@@ -55,7 +55,7 @@ Popup {
         RowLayout {
             Label {
                 id: labelAdd
-                text: qsTr("Adding")+" " + v_date
+                text: qsTr("Adding")
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
             }
@@ -101,11 +101,28 @@ Popup {
                             color: "transparent"
                             border.color: "gold"
                             Label {
+                                id: dLabel
                                 text: styleData.date.getDate()
                                 font.family: pageStyle.core.name
                                 font.pixelSize: pageStyle.core.size
                                 anchors.centerIn: parent
                                 color: styleData.date.getMonth() === dateAdding.visibleMonth ? "black" : "grey"
+                            }
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: styleData.date.getMonth() === dateAdding.visibleMonth ? Qt.PointingHandCursor : Qt.ArrowCursor
+                                acceptedButtons: Qt.NoButton
+                            }
+                        }
+
+                        dayOfWeekDelegate: Rectangle {
+                            height: dateAdding.height/16
+                            gradient: pageStyle.goldHeader
+                            Label {
+                                anchors.centerIn: parent
+                                text: Qt.locale().dayName(styleData.dayOfWeek, Locale.ShortFormat)
+                                font.family: pageStyle.title.name
+//                                font.pixelSize: height * 0.55
                             }
                         }
                     }
