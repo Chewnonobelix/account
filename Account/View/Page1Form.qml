@@ -514,13 +514,6 @@ Page {
                     font.pixelSize: pageStyle.core.size
                     verticalAlignment: Text.AlignVCenter
                     anchors.fill: parent
-
-                    onContentWidthChanged: {
-//                        labelHeader.width = contentWidth * 1.05 > labelHeader.width ? contentWidth * 1.05 : labelHeader.width
-                        console.log(contentWidth)
-
-                    }
-//                    Component.onCompleted: console.log(contentWidth, width)
                 }
             }
         }

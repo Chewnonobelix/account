@@ -54,7 +54,7 @@ Item {
     Label {
         id: valueLabel
         text: qsTr("Value")
-        width: spinbox.width
+        width: spinbox.width +10
         anchors.left: titleLabel.right
         font.pixelSize: pageStyle.title.size
         font.family: pageStyle.title.name
@@ -99,6 +99,8 @@ Item {
         anchors.top: valueLabel.bottom
         anchors.topMargin: 5
         anchors.left: title.right
+        anchors.leftMargin: 5
+//        anchors.rightMargin: 5
         font.family:  pageStyle.core.name
         font.pixelSize: pageStyle.core.size
 
@@ -128,6 +130,7 @@ Item {
         anchors.top: categoryLabel.bottom
         anchors.topMargin: 5
         anchors.left: spinbox.right
+        anchors.leftMargin: 5
         editable: currentText === ""
         model: [""]
 
