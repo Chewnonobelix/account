@@ -139,9 +139,6 @@ Calendar {
                 text: Qt.locale().monthName(visibleMonth, Locale.ShortFormat) + " " + visibleYear
                 font.family: pageStyle.title.name
                 font.pixelSize: height * 0.8
-
-
-
             }
 
             Button {
@@ -198,10 +195,7 @@ Calendar {
                     multiCal.showPreviousMonth()
                 }
             }
-
         }
-
-
 
         function isSelected(sd) {
             var ret = false
@@ -230,8 +224,6 @@ Calendar {
                 font.pixelSize: height * 0.3
                 verticalAlignment: Text.AlignVCenter
             }
-
-
         }
 
         dayOfWeekDelegate: Rectangle {
