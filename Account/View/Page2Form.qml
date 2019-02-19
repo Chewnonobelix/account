@@ -128,8 +128,8 @@ Rectangle {
             series(qsTr("past")).objectName = "mainChart"
             series(qsTr("past")).pointsVisible = true
 
-            series("estimated").objectName = "estimatedChart"
-            series("estimated").pointsVisible = true
+            series(qsTr("estimated")).objectName = "estimatedChart"
+            series(qsTr("estimated")).pointsVisible = true
 
         }
 
