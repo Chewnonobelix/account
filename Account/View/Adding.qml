@@ -87,17 +87,30 @@ Popup {
                     id: dateAdding
                     selectedDate: new Date()
                     onClicked: datePop.close()
+                    height: 250
+                    width: 250
 
                     style: CalendarStyle {
-                        anchors.fill: parent
                         background: Rectangle {
                             anchors.fill: parent
                             gradient: pageStyle.backgroundGradient
                             border.color: "gold"
                         }
 
-
+                        dayDelegate: Rectangle {
+                            color: "transparent"
+                            border.color: "gold"
+                            Label {
+                                text: styleData.date.getDate()
+                                font.family: pageStyle.core.name
+                                font.pixelSize: pageStyle.core.size
+                                anchors.centerIn: parent
+                                color: styleData.date.getMonth() === dateAdding.visibleMonth ? "black" : "grey"
+                            }
+                        }
                     }
+
+
                 }
             }
         }
