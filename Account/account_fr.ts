@@ -4,43 +4,43 @@
 <context>
     <name>Adding</name>
     <message>
-        <location filename="View/Adding.qml" line="39"/>
+        <location filename="View/Adding.qml" line="37"/>
         <source>Add new account</source>
         <translation>Créer un nouveau compte</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="39"/>
-        <location filename="View/Adding.qml" line="107"/>
+        <location filename="View/Adding.qml" line="37"/>
+        <location filename="View/Adding.qml" line="139"/>
         <source>Add new entry</source>
         <translation>Ajouter une nouvelle transaction</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="59"/>
+        <location filename="View/Adding.qml" line="58"/>
         <source>Adding</source>
         <translation>Ajout</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="117"/>
+        <location filename="View/Adding.qml" line="149"/>
         <source>Please complete the entry&apos;s title</source>
         <translation>Veuillez remplir l&apos;intituler</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="130"/>
+        <location filename="View/Adding.qml" line="162"/>
         <source>Income</source>
         <translation>Revenu</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="130"/>
+        <location filename="View/Adding.qml" line="162"/>
         <source>Outcome</source>
         <translation>Dépense</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="174"/>
+        <location filename="View/Adding.qml" line="206"/>
         <source>Save</source>
         <translation>Sauvegarder</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="205"/>
+        <location filename="View/Adding.qml" line="237"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -99,13 +99,14 @@
         <translation>Catégorie</translation>
     </message>
     <message>
-        <location filename="View/InformationView.qml" line="230"/>
+        <location filename="View/InformationView.qml" line="214"/>
         <source>Coming Soon</source>
         <translation>Arrive bientôt</translation>
     </message>
     <message>
+        <location filename="View/InformationView.qml" line="194"/>
         <source>Add a new category</source>
-        <translation type="vanished">Ajouter une nouvelle catégorie</translation>
+        <translation>Ajouter une nouvelle catégorie</translation>
     </message>
 </context>
 <context>
@@ -165,12 +166,12 @@
         <translation>Intituler</translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="523"/>
+        <location filename="View/Page1Form.qml" line="524"/>
         <source>Total</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="639"/>
+        <location filename="View/Page1Form.qml" line="640"/>
         <source>outcome</source>
         <translation>Dépense</translation>
     </message>
