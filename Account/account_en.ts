@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="View/Adding.qml" line="37"/>
-        <location filename="View/Adding.qml" line="139"/>
+        <location filename="View/Adding.qml" line="210"/>
         <source>Add new entry</source>
         <translation></translation>
     </message>
@@ -20,27 +20,27 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="149"/>
+        <location filename="View/Adding.qml" line="220"/>
         <source>Please complete the entry&apos;s title</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="162"/>
+        <location filename="View/Adding.qml" line="233"/>
         <source>Income</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="162"/>
+        <location filename="View/Adding.qml" line="233"/>
         <source>Outcome</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="206"/>
+        <location filename="View/Adding.qml" line="277"/>
         <source>Save</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="237"/>
+        <location filename="View/Adding.qml" line="308"/>
         <source>Cancel</source>
         <translation></translation>
     </message>
@@ -112,12 +112,12 @@
 <context>
     <name>MultiCalendar</name>
     <message>
-        <location filename="View/MultiCalendar.qml" line="277"/>
+        <location filename="View/MultiCalendar.qml" line="269"/>
         <source>Total</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/MultiCalendar.qml" line="277"/>
+        <location filename="View/MultiCalendar.qml" line="269"/>
         <source>Day transaction</source>
         <translation></translation>
     </message>
@@ -212,6 +212,8 @@
         <location filename="View/Page2Form.qml" line="103"/>
         <location filename="View/Page2Form.qml" line="118"/>
         <location filename="View/Page2Form.qml" line="126"/>
+        <location filename="View/Page2Form.qml" line="131"/>
+        <location filename="View/Page2Form.qml" line="132"/>
         <source>estimated</source>
         <translation></translation>
     </message>
@@ -234,96 +236,94 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="86"/>
-        <location filename="View/main.qml" line="337"/>
+        <location filename="View/main.qml" line="88"/>
+        <location filename="View/main.qml" line="348"/>
         <source>Account</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="92"/>
+        <location filename="View/main.qml" line="94"/>
         <source>&amp;New account</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="122"/>
+        <location filename="View/main.qml" line="126"/>
         <source>&amp;Delete account</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="153"/>
+        <location filename="View/main.qml" line="159"/>
         <source>Current account</source>
         <oldsource>Current accounts</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="159"/>
+        <location filename="View/main.qml" line="165"/>
         <source>&amp;Add transaction</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="191"/>
+        <location filename="View/main.qml" line="199"/>
         <source>&amp;Remove transaction</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="229"/>
+        <location filename="View/main.qml" line="240"/>
         <source>?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="234"/>
+        <location filename="View/main.qml" line="245"/>
         <source>About</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="250"/>
+        <location filename="View/main.qml" line="261"/>
         <source>This application is made by Arnaud DUHAMEL
                             Current Version beta 0.9</source>
-        <oldsource>This application is made by Arnaud DUHAMEL
-                            Current Version beta 0.9</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="263"/>
-        <location filename="View/main.qml" line="302"/>
-        <location filename="View/main.qml" line="456"/>
+        <location filename="View/main.qml" line="274"/>
+        <location filename="View/main.qml" line="313"/>
+        <location filename="View/main.qml" line="467"/>
         <source>Ok</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="277"/>
+        <location filename="View/main.qml" line="288"/>
         <source>Licence</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="290"/>
+        <location filename="View/main.qml" line="301"/>
         <source>This application is made with Qt 5.12 and QML</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="347"/>
+        <location filename="View/main.qml" line="358"/>
         <source>Selection total</source>
         <oldsource>Selection total: </oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="448"/>
+        <location filename="View/main.qml" line="459"/>
         <source>Delete</source>
         <oldsource>Delete </oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="485"/>
+        <location filename="View/main.qml" line="496"/>
         <source>Cancel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="509"/>
+        <location filename="View/main.qml" line="520"/>
         <source>List</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="531"/>
+        <location filename="View/main.qml" line="542"/>
         <source>Graph</source>
         <translation></translation>
     </message>
