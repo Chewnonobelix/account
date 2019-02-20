@@ -63,6 +63,8 @@ ApplicationWindow {
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
                 }
 
                 Shortcut {
@@ -86,7 +88,7 @@ ApplicationWindow {
             title: qsTr("Account")
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
-
+            width: 210
             MenuItem {
                 id: nAccountMenu
                 text: qsTr("&New account")
@@ -102,6 +104,8 @@ ApplicationWindow {
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
                 }
 
                 Shortcut {
@@ -132,6 +136,8 @@ ApplicationWindow {
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
                 }
 
                 Shortcut {
@@ -171,6 +177,8 @@ ApplicationWindow {
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
                 }
 
                 Shortcut {
@@ -195,9 +203,12 @@ ApplicationWindow {
                 enabled: table.currentId !== -1
                 indicator: Label {
                     text: delShort.nativeText
+                    anchors.leftMargin: 10
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
                 }
 
                 Shortcut {
