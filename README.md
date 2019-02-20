@@ -14,8 +14,14 @@ Currently language displaying depend on your OS language.
 - English (default)
 - French
 
-III) How to
------------
+III) How to use it
+------------------
+
+1) Account
+----------
+
+An account is a collection of transaction, income or outcome.
+
 
 IV) Shortcut
 ------------
