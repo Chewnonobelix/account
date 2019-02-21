@@ -26,6 +26,7 @@ Then add an account's name, set the initial amount of the account, and set the o
 When a transaction is set before the opening date, the initial value and date will automatically adjust. The total ammount at the original date will not be change.
 You can either delete an account, to do that click the "Account" menu and "Remove account".
 When no account exist the Create account popup will show up.
+You can change current account by selection box on the top right
 
 2) Transaction
 --------------
@@ -61,6 +62,15 @@ You can select one or more day by maintain shift key, and click on days. When yo
 6) Graph
 --------
 
+The graph view display account evolution over time. The blue part correspond to valid past transactions. The green part to futur estimated transactions.
+The default view is for one month, you can zoom to a year, or all year view by scroll in or out your mouse.
+
 IV) Shortcut
 ------------
 
+CTRL+Q: Quit application
+CTRL+N: Create new account
+CTRL+SHIFT+D: Delete current account
+CTRL+A: Add new transaction
+CTRL+D: Delete current Account
+SHIFT+ left click on day calendar: Select multiple date 
