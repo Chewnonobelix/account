@@ -72,5 +72,5 @@ CTRL+Q: Quit application
 CTRL+N: Create new account
 CTRL+SHIFT+D: Delete current account
 CTRL+A: Add new transaction
-CTRL+D: Delete current Account
+CTRL+D: Delete current transaction
 SHIFT+ left click on day calendar: Select multiple date 
