@@ -371,6 +371,10 @@ ApplicationWindow {
             enabled: accountSelect.model.length > 0
             signal s_currentTextChange(string text)
 
+            ToolTip.text: qsTr("Select account")
+            ToolTip.delay: 500
+            ToolTip.visible: hovered
+
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
