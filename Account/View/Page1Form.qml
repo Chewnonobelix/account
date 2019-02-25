@@ -94,6 +94,10 @@ Page {
             font.pixelSize: pageStyle.core.size
 
 
+            ToolTip.text: qsTr("Add new transaction")
+            ToolTip.visible: hovered
+            ToolTip.delay: 500
+
             Rectangle {
                 id: rectAdd
                 anchors.fill: parent
@@ -125,6 +129,10 @@ Page {
             font.pixelSize: pageStyle.core.size
             property int index: view.currentIndex
             enabled: view.currentIndex !== -1
+
+            ToolTip.text: qsTr("Remove select transaction")
+            ToolTip.visible: hovered
+            ToolTip.delay: 500
 
             MouseArea {
                 z: -1
@@ -193,6 +201,13 @@ Page {
 
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
+
+        enabled: pageSkip.maxPage > 1 || (pageSkip.pageIndex < pageSkip.maxPage)
+
+        ToolTip.text: qsTr("Next 10 pages")
+        ToolTip.delay: 500
+        ToolTip.visible: hovered
+
         MouseArea {
             z: -1
             anchors.fill: parent
@@ -217,6 +232,12 @@ Page {
         width: view.width * 0.20
 
         onClicked: pageSkip.pageIndex ++
+
+        enabled: pageSkip.maxPage > 1 || (pageSkip.pageIndex < pageSkip.maxPage)
+
+        ToolTip.text: qsTr("Next page")
+        ToolTip.delay: 500
+        ToolTip.visible: hovered
 
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
@@ -245,6 +266,12 @@ Page {
 
         onClicked: pageSkip.pageIndex --
 
+        enabled: pageSkip.maxPage > 1 && (pageSkip.pageIndex > 1)
+
+        ToolTip.text: qsTr("Previous page")
+        ToolTip.delay: 500
+        ToolTip.visible: hovered
+
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
         MouseArea {
@@ -271,6 +298,12 @@ Page {
         width: view.width * 0.20
 
         onClicked: pageSkip.pageIndex -= 10
+
+        enabled: pageSkip.maxPage > 1 && (pageSkip.pageIndex > 1)
+
+        ToolTip.text: qsTr("Previous 10 pages")
+        ToolTip.delay: 500
+        ToolTip.visible: hovered
 
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
@@ -301,6 +334,12 @@ Page {
         height: parent.height * 0.05
         text: pageIndex
         horizontalAlignment: Qt.AlignHCenter
+
+        enabled: maxPage > 1
+
+        ToolTip.text: qsTr("Current page")
+        ToolTip.delay: 500
+        ToolTip.visible: hovered
 
         signal s_pageChange()
 
