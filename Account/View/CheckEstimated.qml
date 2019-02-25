@@ -4,7 +4,7 @@ import QtQuick.Controls 2.4
 Popup {
     implicitHeight: parent.height
     implicitWidth: parent.width * .33
-//    x: parent.width/2 - width/2
+
     anchors.centerIn: parent
     id: checker
 
@@ -55,6 +55,8 @@ Popup {
             CheckBox {
                 id: rowChecked
                 checked: isChecked
+                font.family: pageStyle.core.name
+                font.pointSize: pageStyle.core.size
 
                 MouseArea {
                     z: -1
@@ -79,8 +81,13 @@ Popup {
                     acceptedButtons: Qt.LeftButton
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-
+                    hoverEnabled: true
                     onClicked: rowChecked.checked = !rowChecked.checked
+                    propagateComposedEvents: true
+
+                    ToolTip.text: qsTr("Select transaction for validation")
+                    ToolTip.delay: 500
+                    ToolTip.visible: containsMouse
                 }
 
             }
@@ -133,6 +140,10 @@ Popup {
             anchors.fill: parent
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
         }
+
+        ToolTip.text: qsTr("Keep validation for later")
+        ToolTip.visible: hovered
+        ToolTip.delay: 500
 
         onClicked: {
             close()
