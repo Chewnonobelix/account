@@ -73,6 +73,10 @@ Popup {
 
                 onClicked: datePop.open()
 
+                ToolTip.text: qsTr("Select the transaction's date")
+                ToolTip.delay: 500
+                ToolTip.visible: hovered
+
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
@@ -218,13 +222,22 @@ Popup {
                 font.pixelSize: pageStyle.core.size
 
                 ToolTip.text: qsTr("Please complete the entry's title")
-                ToolTip.visible: background.border.color === "#ff0000"
+                ToolTip.visible: !valid || ttVisible
+                ToolTip.delay: 100
+
+                onValidChanged: console.log(valid)
+                property bool valid: text.length !== 0
+                property bool ttVisible: false
             }
 
             DoubleSpinBox {
                 id: spinbox
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
+
+                ToolTip.text: qsTr("Specify transaction's value")
+                ToolTip.visible: hovered
+                ToolTip.delay: 500
             }
 
             ComboBox {
@@ -235,6 +248,10 @@ Popup {
 
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
+
+                ToolTip.text: qsTr("Specify income or outcome")
+                ToolTip.visible: hovered
+                ToolTip.delay: 500
 
                 Rectangle {
                     gradient: pageStyle.goldButton
@@ -278,6 +295,9 @@ Popup {
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
 
+                ToolTip.text: qsTr("Please complete the entry's title")
+                ToolTip.visible: ttVisible
+
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                     id: saveRect
@@ -289,15 +309,16 @@ Popup {
                     }
                 }
 
-
+                property bool ttVisible: false
                 onClicked: {
 
-                    if(valueLabel.text.length !== 0) {
+                    if(valueLabel.valid) {
                         addingid.accept()
                         reset()
                         close()
                     }
                     else {
+                        ttVisible = true
                         valueLabel.background.border.color = "red"
                     }
                 }
