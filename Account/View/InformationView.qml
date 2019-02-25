@@ -89,6 +89,9 @@ Item {
             s_titleChanged(text)
         }
 
+        ToolTip.text: qsTr("Change transaction's title")
+        ToolTip.visible: hovered
+        ToolTip.delay: 500
     }
 
     DoubleSpinBox {
@@ -103,6 +106,10 @@ Item {
 //        anchors.rightMargin: 5
         font.family:  pageStyle.core.name
         font.pixelSize: pageStyle.core.size
+
+        ToolTip.text: qsTr("Change transaction's value")
+        ToolTip.visible: hovered
+        ToolTip.delay: 500
 
         property date s_date
         Timer {
@@ -133,6 +140,10 @@ Item {
         anchors.leftMargin: 5
         editable: currentText === ""
         model: [""]
+
+        ToolTip.text: qsTr("Set transaction's category")
+        ToolTip.visible: hovered
+        ToolTip.delay: 500
 
         onAccepted: {
             s_addCategory(editText)
