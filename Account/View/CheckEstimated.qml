@@ -42,54 +42,64 @@ Popup {
         }
     }
 
-    ListView {
+    ScrollView {
         id: listChecker
-        model: checkerModel
         width: parent.width
         height: parent.height * .90
         anchors.top: header.bottom
         anchors.topMargin: 10
-        flickableDirection: Flickable.AutoFlickDirection
-        delegate: Row {
-            id: row
-            CheckBox {
-                id: rowChecked
-                checked: isChecked
-                font.family: pageStyle.core.name
-                font.pointSize: pageStyle.core.size
+        //        flickableDirection: Flickable.AutoFlickDirection
+        //        vertical.policy: Qt.ScrollBarAsNeeded
 
-                MouseArea {
-                    z: -1
-                    acceptedButtons: Qt.NoButton
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
+        clip: true
+        Column {
+            clip: true
+            Repeater {
+                model: checkerModel
+                clip: true
+                delegate: Row {
+                    id: row
+                    clip: true
+                    CheckBox {
+                        id: rowChecked
+                        checked: isChecked
+                        font.family: pageStyle.core.name
+                        font.pointSize: pageStyle.core.size
+
+                        MouseArea {
+                            z: -1
+                            acceptedButtons: Qt.NoButton
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                        }
+
+                        onCheckedChanged: {
+                            isChecked = checked
+                        }
+                    }
+
+
+                    Label {
+                        font.family: pageStyle.core.name
+                        font.pointSize: pageStyle.core.size
+                        anchors.verticalCenter: rowChecked.verticalCenter
+                        text: label + " " + edate + " " + value + "€"
+
+                        MouseArea {
+                            acceptedButtons: Qt.LeftButton
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            hoverEnabled: true
+                            onClicked: rowChecked.checked = !rowChecked.checked
+                            propagateComposedEvents: true
+
+                            ToolTip.text: qsTr("Select transaction for validation")
+                            ToolTip.delay: 500
+                            ToolTip.visible: containsMouse
+                        }
+
+                    }
                 }
-
-                onCheckedChanged: {
-                    isChecked = checked
-                }
-            }
-
-
-            Label {
-                font.family: pageStyle.core.name
-                font.pointSize: pageStyle.core.size
-                anchors.verticalCenter: rowChecked.verticalCenter
-                text: label + " " + edate + " " + value + "€"
-
-                MouseArea {
-                    acceptedButtons: Qt.LeftButton
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    hoverEnabled: true
-                    onClicked: rowChecked.checked = !rowChecked.checked
-                    propagateComposedEvents: true
-
-                    ToolTip.text: qsTr("Select transaction for validation")
-                    ToolTip.delay: 500
-                    ToolTip.visible: containsMouse
-                }
-
             }
         }
     }
