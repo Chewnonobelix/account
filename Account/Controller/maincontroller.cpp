@@ -290,7 +290,7 @@ void MainController::selection(int)
 
         first -= 1;
         first *= 100;
-        for(auto i = first ; i < qMin(ret.size(), first+100); i++)
+        for(auto i = 0 ; i < ret.size(); i++)
         {
             t = t + ret[i];
 
