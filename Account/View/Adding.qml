@@ -227,7 +227,6 @@ Popup {
                 ToolTip.visible: !valid || ttVisible
                 ToolTip.delay: 100
 
-                onValidChanged: console.log(valid)
                 property bool valid: text.length !== 0
                 property bool ttVisible: false
             }

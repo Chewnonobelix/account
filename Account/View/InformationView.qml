@@ -147,7 +147,6 @@ Item {
 
         onAccepted: {
             s_addCategory(editText)
-            console.log("Accepted", editText, currentIndex)
         }
         signal s_addCategory(string cat)
         signal s_currentTextChanged(string cat)
