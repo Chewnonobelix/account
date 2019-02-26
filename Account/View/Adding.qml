@@ -9,6 +9,8 @@ import QtQuick.Controls.Styles 1.4
 Popup {
     //    closePolicy: Popup.NoAutoClose
 
+    id: addingPage
+
     function reset() {
         valueLabel.text = ""
         spinbox.value = 0
@@ -73,7 +75,7 @@ Popup {
 
                 onClicked: datePop.open()
 
-                ToolTip.text: qsTr("Select the transaction's date")
+                ToolTip.text: addingPage ? qsTr("Selection account creation date") : qsTr("Select the transaction's date")
                 ToolTip.delay: 500
                 ToolTip.visible: hovered
 
@@ -221,7 +223,7 @@ Popup {
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
 
-                ToolTip.text: qsTr("Please complete the entry's title")
+                ToolTip.text: addingPage.newAccount ? qsTr("Please enter an account name") : qsTr("Please complete the entry's title")
                 ToolTip.visible: !valid || ttVisible
                 ToolTip.delay: 100
 
@@ -235,7 +237,7 @@ Popup {
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
 
-                ToolTip.text: qsTr("Specify transaction's value")
+                ToolTip.text: addingPage.newAccount ? qsTr("Specify account opening value") : qsTr("Specify transaction's value")
                 ToolTip.visible: hovered
                 ToolTip.delay: 500
             }
@@ -295,7 +297,7 @@ Popup {
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
 
-                ToolTip.text: qsTr("Please complete the entry's title")
+                ToolTip.text:  addingPage.newAccount ? qsTr("Please enter an account name") : qsTr("Please complete the entry's title")
                 ToolTip.visible: ttVisible
 
                 background: Rectangle {

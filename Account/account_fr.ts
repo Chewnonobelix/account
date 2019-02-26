@@ -4,43 +4,75 @@
 <context>
     <name>Adding</name>
     <message>
-        <location filename="View/Adding.qml" line="37"/>
+        <location filename="View/Adding.qml" line="39"/>
         <source>Add new account</source>
         <translation>Créer un nouveau compte</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="37"/>
-        <location filename="View/Adding.qml" line="210"/>
+        <location filename="View/Adding.qml" line="39"/>
+        <location filename="View/Adding.qml" line="216"/>
         <source>Add new entry</source>
         <translation>Ajouter une nouvelle transaction</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="58"/>
+        <location filename="View/Adding.qml" line="60"/>
         <source>Adding</source>
         <translation>Ajout</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="220"/>
+        <location filename="View/Adding.qml" line="78"/>
+        <source>Select the transaction&apos;s date</source>
+        <translation>Selectionné la date de la transaction</translation>
+    </message>
+    <message>
+        <location filename="View/Adding.qml" line="78"/>
+        <source>Selection account creation date</source>
+        <translation>Selectionné la date de création du compte</translation>
+    </message>
+    <message>
+        <location filename="View/Adding.qml" line="226"/>
+        <location filename="View/Adding.qml" line="300"/>
         <source>Please complete the entry&apos;s title</source>
         <translation>Veuillez remplir l&apos;intituler</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="233"/>
+        <location filename="View/Adding.qml" line="226"/>
+        <location filename="View/Adding.qml" line="300"/>
+        <source>Please enter an account name</source>
+        <translation>Entré le nom du compte</translation>
+    </message>
+    <message>
+        <location filename="View/Adding.qml" line="240"/>
+        <source>Specify transaction&apos;s value</source>
+        <translation>Spécifié la valeur de la transaction</translation>
+    </message>
+    <message>
+        <location filename="View/Adding.qml" line="240"/>
+        <source>Specify account opening value</source>
+        <translation>Indiqué la valeur du compte à l&apos;ouverture</translation>
+    </message>
+    <message>
+        <location filename="View/Adding.qml" line="248"/>
         <source>Income</source>
         <translation>Revenu</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="233"/>
+        <location filename="View/Adding.qml" line="248"/>
         <source>Outcome</source>
         <translation>Dépense</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="277"/>
+        <location filename="View/Adding.qml" line="254"/>
+        <source>Specify income or outcome</source>
+        <translation>Spécifié revenu ou dépense</translation>
+    </message>
+    <message>
+        <location filename="View/Adding.qml" line="296"/>
         <source>Save</source>
         <translation>Sauvegarder</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="308"/>
+        <location filename="View/Adding.qml" line="331"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -53,14 +85,24 @@
         <translation>Transaction à valider</translation>
     </message>
     <message>
-        <location filename="View/CheckEstimated.qml" line="92"/>
+        <location filename="View/CheckEstimated.qml" line="88"/>
+        <source>Select transaction for validation</source>
+        <translation>Sélectionné la transaction pour validation</translation>
+    </message>
+    <message>
+        <location filename="View/CheckEstimated.qml" line="99"/>
         <source>Save</source>
         <translation>Sauvegarder</translation>
     </message>
     <message>
-        <location filename="View/CheckEstimated.qml" line="117"/>
+        <location filename="View/CheckEstimated.qml" line="124"/>
         <source>Later</source>
         <translation>Plus tard</translation>
+    </message>
+    <message>
+        <location filename="View/CheckEstimated.qml" line="144"/>
+        <source>Keep validation for later</source>
+        <translation>Gardé la validation pour plus tard</translation>
     </message>
 </context>
 <context>
@@ -99,12 +141,27 @@
         <translation>Catégorie</translation>
     </message>
     <message>
-        <location filename="View/InformationView.qml" line="214"/>
+        <location filename="View/InformationView.qml" line="92"/>
+        <source>Change transaction&apos;s title</source>
+        <translation>Modifié l&apos;intituler de la transaction</translation>
+    </message>
+    <message>
+        <location filename="View/InformationView.qml" line="110"/>
+        <source>Change transaction&apos;s value</source>
+        <translation>Modifié la valeur de la transaction</translation>
+    </message>
+    <message>
+        <location filename="View/InformationView.qml" line="144"/>
+        <source>Set transaction&apos;s category</source>
+        <translation>Indiqué la catégorie de la transaction</translation>
+    </message>
+    <message>
+        <location filename="View/InformationView.qml" line="225"/>
         <source>Coming Soon</source>
         <translation>Arrive bientôt</translation>
     </message>
     <message>
-        <location filename="View/InformationView.qml" line="194"/>
+        <location filename="View/InformationView.qml" line="205"/>
         <source>Add a new category</source>
         <translation>Ajouter une nouvelle catégorie</translation>
     </message>
@@ -130,48 +187,83 @@
         <translation>Ajouter</translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="120"/>
+        <location filename="View/Page1Form.qml" line="97"/>
+        <source>Add new transaction</source>
+        <translation>Ajouter une nouvelle transaction</translation>
+    </message>
+    <message>
+        <location filename="View/Page1Form.qml" line="124"/>
         <source>Remove</source>
         <translation>Supprimer</translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="398"/>
+        <location filename="View/Page1Form.qml" line="133"/>
+        <source>Remove select transaction</source>
+        <translation>Supprimer la transaction courante</translation>
+    </message>
+    <message>
+        <location filename="View/Page1Form.qml" line="207"/>
+        <source>Next 10 pages</source>
+        <translation>Avancé de 10 pages</translation>
+    </message>
+    <message>
+        <location filename="View/Page1Form.qml" line="238"/>
+        <source>Next page</source>
+        <translation>Page suivante</translation>
+    </message>
+    <message>
+        <location filename="View/Page1Form.qml" line="271"/>
+        <source>Previous page</source>
+        <translation>Page précédente</translation>
+    </message>
+    <message>
+        <location filename="View/Page1Form.qml" line="304"/>
+        <source>Previous 10 pages</source>
+        <translation>Reculer de 10 pages</translation>
+    </message>
+    <message>
+        <location filename="View/Page1Form.qml" line="340"/>
+        <source>Current page</source>
+        <translation>Page courante</translation>
+    </message>
+    <message>
+        <location filename="View/Page1Form.qml" line="437"/>
         <source>[+/-]</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="403"/>
+        <location filename="View/Page1Form.qml" line="442"/>
         <source>estimated entry</source>
         <oldsource>*: estimated entry</oldsource>
         <translation>Entrées prévisionnelle</translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="417"/>
+        <location filename="View/Page1Form.qml" line="456"/>
         <source>income</source>
         <translation>Revenu</translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="430"/>
+        <location filename="View/Page1Form.qml" line="469"/>
         <source>Date</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="461"/>
+        <location filename="View/Page1Form.qml" line="500"/>
         <source>Value</source>
         <translation>Valeur</translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="492"/>
+        <location filename="View/Page1Form.qml" line="531"/>
         <source>Label</source>
         <translation>Intituler</translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="524"/>
+        <location filename="View/Page1Form.qml" line="563"/>
         <source>Total</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="640"/>
+        <location filename="View/Page1Form.qml" line="679"/>
         <source>outcome</source>
         <translation>Dépense</translation>
     </message>
@@ -281,15 +373,17 @@
         <location filename="View/main.qml" line="261"/>
         <source>This application is made by Arnaud DUHAMEL
                             Current Version beta 0.9</source>
+        <oldsource>This application is made by Arnaud DUHAMEL
+                            Current Version beta 0.9</oldsource>
         <translation>Cette application a était crée par Arnaud DUHAMEL 
-Version actuel: beta 0.9</translation>
+Version actuel:1.0</translation>
     </message>
     <message>
         <location filename="View/main.qml" line="274"/>
         <location filename="View/main.qml" line="313"/>
-        <location filename="View/main.qml" line="467"/>
+        <location filename="View/main.qml" line="471"/>
         <source>Ok</source>
-        <translation>Fermer</translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <location filename="View/main.qml" line="288"/>
@@ -308,23 +402,28 @@ Version actuel: beta 0.9</translation>
         <translation>Total de la sélection</translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="459"/>
+        <location filename="View/main.qml" line="374"/>
+        <source>Select account</source>
+        <translation>Selectionné le compte</translation>
+    </message>
+    <message>
+        <location filename="View/main.qml" line="463"/>
         <source>Delete</source>
         <oldsource>Delete </oldsource>
         <translation>Supprimer</translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="496"/>
+        <location filename="View/main.qml" line="500"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="520"/>
+        <location filename="View/main.qml" line="524"/>
         <source>List</source>
         <translation>Liste</translation>
     </message>
     <message>
-        <location filename="View/main.qml" line="542"/>
+        <location filename="View/main.qml" line="546"/>
         <source>Graph</source>
         <translation>Graphique</translation>
     </message>
