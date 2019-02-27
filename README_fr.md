@@ -42,16 +42,20 @@ To edit a transaction, click on the wish transaction. You can edit the transacti
 ------------------------
 
 This list display all select transaction. If no date is select in the calendar, then all transaction are display.
-OA red line mean an outcome, a green one mean a income. When an * appear next to an +/- symbol, it mean the transaction is an estimated one, ie the transaction date add after the current day. 
+A red line mean an outcome, a green one mean a income. When an * appear next to an +/- symbol, it mean the transaction is an estimated one, ie the transaction date add after the current day. 
 When the current day passe an estimated transaction, it will open a checkout window, you can validate, or remove estimated transaction. If you validate it, the transaction become unestimated. 
 
 4) Catégories
 -------------
 
-A new category can be add by clicking on the last element of the category combo. Categories are set for income or outcome for a single account.
+Vous pouvez ajouté une nouvelle catégorie en cliquant sur le dernier élément de la liste des catégories. Une catégories est lié soit aux revenues, soit au dépenses pour un seul compte.
 
 5) Calendrier
 -------------
+
+Le calendrier fournit une prévisualisation de détails du compte actif.
+Pour chaque jour possédant au moins une transaction, un rectangle vert ou rouge apparaitra en haut de la case du jour. Un rectangle vert correspond à un total journalier positif, tandis qu'un rectangle rouge correpond à un total journalier négatif.
+Pour chaque jour compris entre la première et la dernière transactions, un rectangle vert ou rouge apparaitra uen bas de la case du jour. Un rectangle vert correspond à un total journalier positif, tandis qu'un rectangle rouge correpond à un total journalier négatif.
 
 The calendar display preview details of the account.
 For each day with one or more transaction, a green or a red rectangle will be display on the top of the day square. The green rectangle mean the total day transaction is more than 0. The red one mean a total less than 0.
@@ -62,10 +66,11 @@ You can select one or more day by maintain shift key, and click on days. When yo
 6) Graphique
 ------------
 
-The graph view display account evolution over time. The blue part correspond to valid past transactions. The green part to futur estimated transactions.
-The default view is for one month, you can zoom to a year, or all year view by scroll in or out your mouse.
+L'onglet graphique fournit une visualisation de l'évolution du compte dans le temps. La partie bleu correspond au transaction validé, tandis que la partie verte correspond au transaction prévu.
+Par défaut la vue montre l'évolution sur un mois, vous pouvez changé cette vue avec la molette de la souris pour passé sur une vue sur 1 an, ou une vue sur toutes la durée d'existence du compte.
 
-IV) Raccourcis
+ 
+ IV) Raccourcis
 --------------
 
 CTRL+Q: Quitter l'application
