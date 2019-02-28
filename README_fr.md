@@ -20,30 +20,30 @@ III) Utilisation
 1) Compte
 ----------
 
-An account is a collection of transaction, income or outcome.
-To create an account click on the menu "Account" and "Create account".
-Then add an account's name, set the initial amount of the account, and set the opening account date.
-When a transaction is set before the opening date, the initial value and date will automatically adjust. The total ammount at the original date will not be change.
-You can either delete an account, to do that click the "Account" menu and "Remove account".
-When no account exist the Create account popup will show up.
-You can change current account by selection box on the top right
+Un compte est un ensemble transaction, que ce soit des dépenses, ou des revenues.
+Pour créé un compte cliqué sur le menu "Compte", et "Nouveau compte".
+Indiqué le nom du compte, le montant initial présent sur le compte, et la date d'ouverture du compte.
+Quand une nouvelle est ajouté avant la première date présente, la date et le montant initial sera automatiquement ajusté. Le total du compte à l'ancienne date d'ouverture n'aura pas changé.
+Vous pouvez supprimé un compte en cliquant sur le menu "Compte" et "Supprimer le compte"
+Quand aucun compte n'existe, la fenêtre de création de compte s'ouvrira automatiquement.
+Vous pouvez changé le compte affiché grâce à la liste en haut à droite.
 
 2) Transaction
 --------------
 
-A transaction is an income or an outcome for the current account.
-To add a transaction click on "Current account" menu, and "Add transaction".
-Then add a transaction's title, set the amount of the transaction, set the transaction date, and the transcation's type (income, or outcome).
-An income will increase the account's total, an outcome will decrease the account's total.
-You can delete a transaction, select a transaction, click the "Current account" menu and "Remove transaction".
-To edit a transaction, click on the wish transaction. You can edit the transaction's title, the transacction's amount, and set a transacton category (see in section 4).
+Une transaction est soit un revenu, soit une dépense pour le compte actif.
+Pour ajouté une transaction, cliqué sur le menu "Compte courant" et "Ajouter transaction".
+Indiqué l'intituler de la transaction, son montant, sa date, et si il s'agit d'une dépense ou d'un revenu.
+Un revenu augmentera le total du compte, tandis qu'une dépense le dimunuera? 
+Vous pouvez supprimer un transaction. Sélectionné une transaction dans la liste des transactions, cliqué sur le menu "Compte courant", et cliqué sur "Supprimer transaction".
+Pour édité un transaction, cliqué sur la transaction désiré. Vous pourrez modifié l'intitulé, le montant, et assigné une catégorie à la transaction (voir section 4)
 
 3) Liste de transactions
 ------------------------
 
-This list display all select transaction. If no date is select in the calendar, then all transaction are display.
-A red line mean an outcome, a green one mean a income. When an * appear next to an +/- symbol, it mean the transaction is an estimated one, ie the transaction date add after the current day. 
-When the current day passe an estimated transaction, it will open a checkout window, you can validate, or remove estimated transaction. If you validate it, the transaction become unestimated. 
+Cette liste affiche toutes les transactions des dates sélectionné. Si aucune date n'est sélectionné, toutes les transactions du compte seront affiché.
+Quand une transaction est sélectionné, une ligne rouge signifie une dépense, et une ligne verte un revenu. Quand un * apparait à côté d'un symbole +/-, ce la signifie qu'il s'agit d'une transaction prévisionnelle, ie une transaction ajouté à une date postérieur à la date courante.
+Quand une transaction estimé devient antérieur au jour courant, une fenêtre de validation apparait. Cette fenêtre permet de validé ou de supprimé une transaction estimé. Si vous validé une transaction, celle ci deviendra non estimé.  
 
 4) Catégories
 -------------
@@ -56,11 +56,7 @@ Vous pouvez ajouté une nouvelle catégorie en cliquant sur le dernier élément
 Le calendrier fournit une prévisualisation de détails du compte actif.
 Pour chaque jour possédant au moins une transaction, un rectangle vert ou rouge apparaitra en haut de la case du jour. Un rectangle vert correspond à un total journalier positif, tandis qu'un rectangle rouge correpond à un total journalier négatif.
 Pour chaque jour compris entre la première et la dernière transactions, un rectangle vert ou rouge apparaitra uen bas de la case du jour. Un rectangle vert correspond à un total journalier positif, tandis qu'un rectangle rouge correpond à un total journalier négatif.
-
-The calendar display preview details of the account.
-For each day with one or more transaction, a green or a red rectangle will be display on the top of the day square. The green rectangle mean the total day transaction is more than 0. The red one mean a total less than 0.
-When one or more transaction is set for an account, a green or a red rectangle will be display on the bottom of the each day square between the first date and the last day. The green rectangle mean the total of the account is more than 0. The red one mean a total of the account is less than 0.
-You can select one or more day by maintain shift key, and click on days. When you click on a day, and with no shift key, a single day will be select. The Transaction list will be update with all transactions for selected day.
+Vous pouvez sélectionné plusieurs date en maintenant la touche shift. Quand une ou plusieurs date sont sélectionné, la liste des transactions n'affiche que les transactions pour les dates sélectionné.
 
 
 6) Graphique
