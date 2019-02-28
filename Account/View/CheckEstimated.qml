@@ -7,7 +7,7 @@ Popup {
 
     anchors.centerIn: parent
     id: checker
-
+    width: header.width * 1.10
     Label {
         text: qsTr("Entry to check")
         font.pixelSize: pageStyle.title.size
@@ -158,8 +158,5 @@ Popup {
         onClicked: {
             close()
         }
-
     }
-
-
 }
