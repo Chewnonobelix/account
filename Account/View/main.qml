@@ -342,24 +342,33 @@ ApplicationWindow {
         property string accountName
         property double total
         property double selectionTotal
-        Label {
-            id: accountTitle
-            objectName: "accountTitle"
-            text: qsTr("Account") + ": " + parent.accountName + " = " + parent.total + "€"
-            font.pixelSize: pageStyle.title.size
-            font.family: pageStyle.title.name
-            padding: 10
-            color: accountSelect.model.length > 0 ? parent.total > 0 ? "green" : "red" : "transparent"
-        }
 
-        Label {
-            anchors.left: accountTitle.right
-            anchors.leftMargin: 10
-            text: qsTr("Selection total")+": " + parent.selectionTotal + " €"
-            font.pixelSize: pageStyle.title.size
-            font.family: pageStyle.title.name
-            padding: 10
-            color: accountSelect.model.length > 0 ? parent.selectionTotal > 0 ? "green" : "red" : "transparent"
+        Row {
+            anchors.left: parent.left
+            anchors.right: accountSelect.left
+
+            Label {
+                id: accountTitle
+                objectName: "accountTitle"
+                text: qsTr("Account") + ": " + head.accountName + " = " + head.total + "€"
+                font.pixelSize: pageStyle.title.size
+                font.family: pageStyle.title.name
+                padding: 10
+                fontSizeMode: Text.Fit
+                color: accountSelect.model.length > 0 ? head.total > 0 ? "green" : "red" : "transparent"
+                width: parent.width * .5
+            }
+
+            Label {
+                id: selectLabel
+                fontSizeMode: Text.Fit
+                text: qsTr("Selection total")+": " + head.selectionTotal + " €"
+                font.pixelSize: pageStyle.title.size
+                font.family: pageStyle.title.name
+                padding: 10
+                color: accountSelect.model.length > 0 ? head.selectionTotal > 0 ? "green" : "red" : "transparent"
+                width: parent.width * .5
+            }
         }
 
         ComboBox {
