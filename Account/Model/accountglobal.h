@@ -1,0 +1,4 @@
+#ifndef ACCOUNTGLOBAL_H
+#define ACCOUNTGLOBAL_H
+
+#endif // ACCOUNTGLOBAL_H
