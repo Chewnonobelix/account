@@ -257,11 +257,13 @@ ApplicationWindow {
                     height: 200
                     width: 600
                     Label {
-                        anchors.centerIn: parent
+                        anchors.fill: parent
                         text: qsTr("This application is made by Arnaud DUHAMEL
                             Current Version beta 0.9")
                         font.family: pageStyle.title.name
                         font.pixelSize: pageStyle.title.size
+                        verticalAlignment: Text.AlignVCenter
+                        fontSizeMode: Text.Fit0
                     }
 
                     background: Rectangle{
@@ -297,10 +299,12 @@ ApplicationWindow {
                     height: 200
                     width: 600
                     Label {
-                        anchors.centerIn: parent
+                        anchors.fill: parent
                         text: qsTr("This application is made with Qt 5.12 and QML")
                         font.family: pageStyle.title.name
                         font.pixelSize: pageStyle.title.size
+                        verticalAlignment: Text.AlignVCenter
+                        fontSizeMode: Text.Fit
                     }
 
                     background: Rectangle{
