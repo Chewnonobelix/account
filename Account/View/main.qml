@@ -63,6 +63,8 @@ ApplicationWindow {
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
                 }
 
                 Shortcut {
@@ -86,7 +88,7 @@ ApplicationWindow {
             title: qsTr("Account")
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
-
+            width: 210
             MenuItem {
                 id: nAccountMenu
                 text: qsTr("&New account")
@@ -102,6 +104,8 @@ ApplicationWindow {
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
                 }
 
                 Shortcut {
@@ -132,6 +136,8 @@ ApplicationWindow {
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
                 }
 
                 Shortcut {
@@ -150,7 +156,7 @@ ApplicationWindow {
         }
 
         Menu {
-            title: qsTr("Current accounts")
+            title: qsTr("Current account")
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
 
@@ -171,6 +177,8 @@ ApplicationWindow {
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
                 }
 
                 Shortcut {
@@ -195,9 +203,12 @@ ApplicationWindow {
                 enabled: table.currentId !== -1
                 indicator: Label {
                     text: delShort.nativeText
+                    anchors.leftMargin: 10
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
                 }
 
                 Shortcut {
@@ -246,11 +257,13 @@ ApplicationWindow {
                     height: 200
                     width: 600
                     Label {
-                        anchors.centerIn: parent
+                        anchors.fill: parent
                         text: qsTr("This application is made by Arnaud DUHAMEL
                             Current Version beta 0.9")
                         font.family: pageStyle.title.name
                         font.pixelSize: pageStyle.title.size
+                        verticalAlignment: Text.AlignVCenter
+                        fontSizeMode: Text.Fit0
                     }
 
                     background: Rectangle{
@@ -286,10 +299,12 @@ ApplicationWindow {
                     height: 200
                     width: 600
                     Label {
-                        anchors.centerIn: parent
+                        anchors.fill: parent
                         text: qsTr("This application is made with Qt 5.12 and QML")
                         font.family: pageStyle.title.name
                         font.pixelSize: pageStyle.title.size
+                        verticalAlignment: Text.AlignVCenter
+                        fontSizeMode: Text.Fit
                     }
 
                     background: Rectangle{
@@ -331,24 +346,33 @@ ApplicationWindow {
         property string accountName
         property double total
         property double selectionTotal
-        Label {
-            id: accountTitle
-            objectName: "accountTitle"
-            text: qsTr("Account") + ": " + parent.accountName + " = " + parent.total + "€"
-            font.pixelSize: pageStyle.title.size
-            font.family: pageStyle.title.name
-            padding: 10
-            color: accountSelect.model.length > 0 ? parent.total > 0 ? "green" : "red" : "transparent"
-        }
 
-        Label {
-            anchors.left: accountTitle.right
-            anchors.leftMargin: 10
-            text: qsTr("Selection total: ") + parent.selectionTotal + " €"
-            font.pixelSize: pageStyle.title.size
-            font.family: pageStyle.title.name
-            padding: 10
-            color: accountSelect.model.length > 0 ? parent.selectionTotal > 0 ? "green" : "red" : "transparent"
+        Row {
+            anchors.left: parent.left
+            anchors.right: accountSelect.left
+
+            Label {
+                id: accountTitle
+                objectName: "accountTitle"
+                text: qsTr("Account") + ": " + head.accountName + " = " + head.total + "€"
+                font.pixelSize: pageStyle.title.size
+                font.family: pageStyle.title.name
+                padding: 10
+                fontSizeMode: Text.Fit
+                color: accountSelect.model.length > 0 ? head.total > 0 ? "green" : "red" : "transparent"
+                width: parent.width * .5
+            }
+
+            Label {
+                id: selectLabel
+                fontSizeMode: Text.Fit
+                text: qsTr("Selection total")+": " + head.selectionTotal + " €"
+                font.pixelSize: pageStyle.title.size
+                font.family: pageStyle.title.name
+                padding: 10
+                color: accountSelect.model.length > 0 ? head.selectionTotal > 0 ? "green" : "red" : "transparent"
+                width: parent.width * .5
+            }
         }
 
         ComboBox {
@@ -359,6 +383,10 @@ ApplicationWindow {
             font.pixelSize: pageStyle.core.size
             enabled: accountSelect.model.length > 0
             signal s_currentTextChange(string text)
+
+            ToolTip.text: qsTr("Select account")
+            ToolTip.delay: 500
+            ToolTip.visible: hovered
 
             MouseArea {
                 anchors.fill: parent
@@ -445,7 +473,7 @@ ApplicationWindow {
             Label {
                 id: labelDelete
                 property string account: accountSelect.currentText
-                text: qsTr("Delete ") + account + " ?"
+                text: qsTr("Delete")+" " + account + " ?"
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
                 anchors.horizontalCenter: parent.width / 2

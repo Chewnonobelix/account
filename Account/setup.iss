@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Account"
-#define MyAppVersion "0.1"
+#define MyAppVersion "Beta 0.9"
 #define MyAppPublisher "Chewnonobelix inc"
 #define MyAppExeName "Account.exe"
 
@@ -30,7 +30,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "E:\Dev\account\build-Account-Desktop_Qt_5_12_0_MinGW_64_bit-Release\release\*"; DestDir: "{app}"; Flags: ignoreversion ignoreversion recursesubdirs createallsubdirs
+Source: "E:\Dev\build-Account-Desktop_Qt_5_12_0_MinGW_64_bit-Release\Account\release\*"; DestDir: "{app}"; Flags: ignoreversion ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

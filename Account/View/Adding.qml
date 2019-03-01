@@ -9,11 +9,12 @@ import QtQuick.Controls.Styles 1.4
 Popup {
     //    closePolicy: Popup.NoAutoClose
 
+    id: addingPage
+
     function reset() {
         valueLabel.text = ""
         spinbox.value = 0
         dateModel.clear()
-        dateCombo.currentIndex = 0
     }
 
     AccountStyle {
@@ -26,7 +27,7 @@ Popup {
     property real v_val: spinbox.realValue
     property string v_title: valueLabel.text
     property string v_type: type.currentText
-    property string v_date: dateCombo.currentText
+    property string v_date: dateLabel.text
     property bool newAccount: false
 
     onClosed: {
@@ -35,7 +36,6 @@ Popup {
     }
 
     onOpened: {
-        dateCombo.currentIndex = 0
         l_new.text = newAccount ? qsTr("Add new account"): qsTr("Add new entry")
     }
 
@@ -54,50 +54,159 @@ Popup {
     }
 
     ColumnLayout {
-        Label {
-            id: labelAdd
-            text: qsTr("Adding " + v_date)
-            font.family: pageStyle.title.name
-            font.pixelSize: pageStyle.title.size
-        }
-
-
-        ComboBox {
-            id: dateCombo
-            model: dateModel
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
-            Rectangle {
-                gradient: pageStyle.goldButton
-                anchors.fill: parent
+        RowLayout {
+            Label {
+                id: labelAdd
+                text: qsTr("Adding")
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
             }
 
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                acceptedButtons: Qt.NoButton
-            }
-            delegate: ItemDelegate {
-                width: accountSelect.width
+            Button {
+                id: dateLabel
 
-                contentItem: Rectangle {
-                    gradient: pageStyle.goldButton
-                    anchors.fill: parent
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        acceptedButtons: Qt.NoButton
-                    }
-                    Label {
-                        color: "black"
-                        text: modelData
-                        anchors.centerIn: parent
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
-                    }
+                text: Qt.formatDate(dateAdding.selectedDate, "dd-MM-yyyy")
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+
+                background: Rectangle {
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
 
-                highlighted: accountSelect.highlightedIndex === index
+                onClicked: datePop.open()
+
+                ToolTip.text: addingPage ? qsTr("Selection account creation date") : qsTr("Select the transaction's date")
+                ToolTip.delay: 500
+                ToolTip.visible: hovered
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
+                }
+            }
+
+            Popup {
+                id:datePop
+
+                Calendar {
+                    id: dateAdding
+                    selectedDate: new Date()
+                    onClicked: datePop.close()
+                    height: 250
+                    width: 250
+
+                    style: CalendarStyle {
+                        gridColor: "goldenrod"
+                        gridVisible: true
+                        background: Rectangle {
+                            height: 250
+                            width: 250
+                            gradient: pageStyle.backgroundGradient
+                            border.color: "gold"
+                        }
+
+                        dayDelegate: Rectangle {
+                            color: "transparent"
+                            Label {
+                                id: dLabel
+                                text: styleData.date.getDate()
+                                font.family: pageStyle.core.name
+                                font.pixelSize: pageStyle.core.size
+                                anchors.centerIn: parent
+                                color: styleData.date.getMonth() === dateAdding.visibleMonth ? "black" : "grey"
+                            }
+                            MouseArea {
+                                anchors.fill: parent
+                                cursorShape: styleData.date.getMonth() === dateAdding.visibleMonth ? Qt.PointingHandCursor : Qt.ArrowCursor
+                                acceptedButtons: Qt.NoButton
+                            }
+                        }
+
+                        navigationBar: Rectangle {
+                            id: navBar
+                            height: dateAdding.height/16
+
+                            gradient: pageStyle.goldHeader
+
+                            Label {
+                                id:monthLabel
+                                height: parent.height
+                                color:"black"
+                                anchors.centerIn: parent
+                                text: Qt.locale().monthName(dateAdding.visibleMonth, Locale.ShortFormat) + " " + dateAdding.visibleYear
+                                font.family: pageStyle.title.name
+                                font.pixelSize: height * 0.8
+                            }
+
+                            Button {
+                                id: nextMonth
+                                anchors.right: parent.right
+                                width: dateAdding.width/14
+                                height: parent.height
+                                text: ">"
+                                font.family: pageStyle.core.name
+                                font.pixelSize: pageStyle.core.size
+
+                                background: Rectangle {
+                                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                                    border.color: "darkgoldenrod"
+                                    anchors.fill: parent
+                                }
+
+                                MouseArea {
+                                    z: -1
+                                    anchors.fill: parent
+                                    cursorShape: Qt.PointingHandCursor
+                                    acceptedButtons: Qt.NoButton
+                                }
+
+                                onClicked: {
+                                    dateAdding.showNextMonth()
+                                }
+                            }
+
+                            Button {
+                                id: prevMonth
+                                anchors.left: parent.left
+                                width: dateAdding.width/14
+                                height: parent.height
+                                font.family: pageStyle.core.name
+                                font.pixelSize: pageStyle.core.size
+
+                                text: "<"
+
+                                background: Rectangle {
+                                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                                    border.color: "darkgoldenrod"
+                                }
+
+                                MouseArea {
+                                    z: -1
+                                    anchors.fill: parent
+                                    cursorShape: Qt.PointingHandCursor
+                                    acceptedButtons: Qt.NoButton
+                                }
+
+
+                                onClicked: {
+                                    dateAdding.showPreviousMonth()
+                                }
+                            }
+                        }
+
+                        dayOfWeekDelegate: Rectangle {
+                            height: dateAdding.height/16
+                            gradient: pageStyle.goldHeader
+                            Label {
+                                anchors.centerIn: parent
+                                text: Qt.locale().dayName(styleData.dayOfWeek, Locale.ShortFormat)
+                                font.family: pageStyle.title.name
+//                                font.pixelSize: height * 0.55
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -114,24 +223,36 @@ Popup {
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
 
-                ToolTip.text: qsTr("Please complete the entry's title")
-                ToolTip.visible: background.border.color === "#ff0000"
+                ToolTip.text: addingPage.newAccount ? qsTr("Please enter an account name") : qsTr("Please complete the entry's title")
+                ToolTip.visible: !valid || ttVisible
+                ToolTip.delay: 100
+
+                property bool valid: text.length !== 0
+                property bool ttVisible: false
             }
 
             DoubleSpinBox {
                 id: spinbox
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
+
+                ToolTip.text: addingPage.newAccount ? qsTr("Specify account opening value") : qsTr("Specify transaction's value")
+                ToolTip.visible: hovered
+                ToolTip.delay: 500
             }
 
             ComboBox {
                 id: type
                 objectName: "type"
-                model: ["Income", "Outcome"]
+                model: [qsTr("Income"), qsTr("Outcome")]
                 enabled: !addingid.newAccount
 
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
+
+                ToolTip.text: qsTr("Specify income or outcome")
+                ToolTip.visible: hovered
+                ToolTip.delay: 500
 
                 Rectangle {
                     gradient: pageStyle.goldButton
@@ -175,6 +296,9 @@ Popup {
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
 
+                ToolTip.text:  addingPage.newAccount ? qsTr("Please enter an account name") : qsTr("Please complete the entry's title")
+                ToolTip.visible: ttVisible
+
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                     id: saveRect
@@ -186,15 +310,16 @@ Popup {
                     }
                 }
 
-
+                property bool ttVisible: false
                 onClicked: {
 
-                    if(valueLabel.text.length !== 0) {
+                    if(valueLabel.valid) {
                         addingid.accept()
                         reset()
                         close()
                     }
                     else {
+                        ttVisible = true
                         valueLabel.background.border.color = "red"
                     }
                 }

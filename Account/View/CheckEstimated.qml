@@ -4,7 +4,7 @@ import QtQuick.Controls 2.4
 Popup {
     implicitHeight: parent.height
     implicitWidth: parent.width * .33
-//    x: parent.width/2 - width/2
+
     anchors.centerIn: parent
     id: checker
 
@@ -12,7 +12,10 @@ Popup {
         text: qsTr("Entry to check")
         font.pixelSize: pageStyle.title.size
         font.family: pageStyle.title.name
+        fontSizeMode: Text.Fit
         id: header
+        anchors.left: parent.left
+        anchors.right: parent.right
     }
 
     background: Rectangle {
@@ -42,47 +45,64 @@ Popup {
         }
     }
 
-    ListView {
+    ScrollView {
         id: listChecker
-        model: checkerModel
         width: parent.width
         height: parent.height * .90
         anchors.top: header.bottom
         anchors.topMargin: 10
-        flickableDirection: Flickable.AutoFlickDirection
-        delegate: Row {
-            id: row
-            CheckBox {
-                id: rowChecked
-                checked: isChecked
+        //        flickableDirection: Flickable.AutoFlickDirection
+        //        vertical.policy: Qt.ScrollBarAsNeeded
 
-                MouseArea {
-                    z: -1
-                    acceptedButtons: Qt.NoButton
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
+        clip: true
+        Column {
+            clip: true
+            Repeater {
+                model: checkerModel
+                clip: true
+                delegate: Row {
+                    id: row
+                    clip: true
+                    CheckBox {
+                        id: rowChecked
+                        checked: isChecked
+                        font.family: pageStyle.core.name
+                        font.pointSize: pageStyle.core.size
+
+                        MouseArea {
+                            z: -1
+                            acceptedButtons: Qt.NoButton
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                        }
+
+                        onCheckedChanged: {
+                            isChecked = checked
+                        }
+                    }
+
+
+                    Label {
+                        font.family: pageStyle.core.name
+                        font.pointSize: pageStyle.core.size
+                        anchors.verticalCenter: rowChecked.verticalCenter
+                        text: label + " " + edate + " " + value + "€"
+
+                        MouseArea {
+                            acceptedButtons: Qt.LeftButton
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            hoverEnabled: true
+                            onClicked: rowChecked.checked = !rowChecked.checked
+                            propagateComposedEvents: true
+
+                            ToolTip.text: qsTr("Select transaction for validation")
+                            ToolTip.delay: 500
+                            ToolTip.visible: containsMouse
+                        }
+
+                    }
                 }
-
-                onCheckedChanged: {
-                    isChecked = checked
-                }
-            }
-
-
-            Label {
-                font.family: pageStyle.core.name
-                font.pointSize: pageStyle.core.size
-                anchors.verticalCenter: rowChecked.verticalCenter
-                text: label + " " + edate + " " + value + "€"
-
-                MouseArea {
-                    acceptedButtons: Qt.LeftButton
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-
-                    onClicked: rowChecked.checked = !rowChecked.checked
-                }
-
             }
         }
     }
@@ -134,11 +154,12 @@ Popup {
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
         }
 
+        ToolTip.text: qsTr("Keep validation for later")
+        ToolTip.visible: hovered
+        ToolTip.delay: 500
+
         onClicked: {
             close()
         }
-
     }
-
-
 }

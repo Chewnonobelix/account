@@ -47,19 +47,21 @@ Item {
         horizontalAlignment: Qt.AlignHCenter
         background: Rectangle {
             gradient: pageStyle.goldHeader
+            border.color: "darkgoldenrod"
         }
     }
 
     Label {
         id: valueLabel
         text: qsTr("Value")
-        width: spinbox.width
+        width: spinbox.width +10
         anchors.left: titleLabel.right
         font.pixelSize: pageStyle.title.size
         font.family: pageStyle.title.name
         horizontalAlignment: Qt.AlignHCenter
         background: Rectangle {
             gradient: pageStyle.goldHeader
+            border.color: "darkgoldenrod"
         }
     }
     Label {
@@ -72,6 +74,7 @@ Item {
         horizontalAlignment: Qt.AlignHCenter
         background: Rectangle {
             gradient: pageStyle.goldHeader
+            border.color: "darkgoldenrod"
         }
     }
     TextField {
@@ -86,6 +89,9 @@ Item {
             s_titleChanged(text)
         }
 
+        ToolTip.text: qsTr("Change transaction's title")
+        ToolTip.visible: hovered
+        ToolTip.delay: 500
     }
 
     DoubleSpinBox {
@@ -96,12 +102,29 @@ Item {
         anchors.top: valueLabel.bottom
         anchors.topMargin: 5
         anchors.left: title.right
+        anchors.leftMargin: 5
+//        anchors.rightMargin: 5
         font.family:  pageStyle.core.name
         font.pixelSize: pageStyle.core.size
 
+        ToolTip.text: qsTr("Change transaction's value")
+        ToolTip.visible: hovered
+        ToolTip.delay: 500
+
+        property date s_date
+        Timer {
+            id: timer
+            repeat: false
+
+            onTriggered: {
+                if(!parent.opening)
+                    info.s_valueChanged(parent.realValue)
+
+            }
+        }
+
         onRealValueChanged: {
-            if(!parent.opening)
-                info.s_valueChanged(realValue)
+            timer.restart()
         }
     }
 
@@ -109,38 +132,25 @@ Item {
         id: category
         objectName: "category"
         width: maximum / 3
+        height: spinbox.height
 
         anchors.top: categoryLabel.bottom
         anchors.topMargin: 5
         anchors.left: spinbox.right
+        anchors.leftMargin: 5
         editable: currentText === ""
         model: [""]
 
+        ToolTip.text: qsTr("Set transaction's category")
+        ToolTip.visible: hovered
+        ToolTip.delay: 500
 
+        onAccepted: {
+            s_addCategory(editText)
+        }
         signal s_addCategory(string cat)
         signal s_currentTextChanged(string cat)
 
-        contentItem: StackLayout {
-            currentIndex: category.editable ? 1 : 0
-            Label {
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                text: category.currentText
-            }
-
-            TextField {
-                id: editCombo
-
-                Keys.onPressed: {
-                    if((event.key === Qt.Key_Enter || event.key === Qt.Key_Return)  && category.currentIndex === category.model.length-1) {
-                        category.addCat(text)
-                        clear()
-                    }
-                }
-            }
-        }
 
         onCurrentTextChanged: {
             s_currentTextChanged(currentText)
@@ -151,10 +161,6 @@ Item {
             z: -1
             cursorShape: Qt.PointingHandCursor
             acceptedButtons: Qt.NoButton
-        }
-
-        function addCat(newCat) {
-            s_addCategory(newCat)
         }
 
 
@@ -215,7 +221,7 @@ Item {
     Label {
         anchors.top:title.bottom
         anchors.topMargin: 10
-        text: "Coming Soon"
+        text: qsTr("Coming Soon")
     }
     //Frequency
 }

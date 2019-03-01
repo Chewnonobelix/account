@@ -139,9 +139,6 @@ Calendar {
                 text: Qt.locale().monthName(visibleMonth, Locale.ShortFormat) + " " + visibleYear
                 font.family: pageStyle.title.name
                 font.pixelSize: height * 0.8
-
-
-
             }
 
             Button {
@@ -155,7 +152,7 @@ Calendar {
 
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-                    border.color: "silver"
+                    border.color: "darkgoldenrod"
                     anchors.fill: parent
                 }
 
@@ -183,7 +180,7 @@ Calendar {
 
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-                    border.color: "silver"
+                    border.color: "darkgoldenrod"
                 }
 
                 MouseArea {
@@ -198,10 +195,7 @@ Calendar {
                     multiCal.showPreviousMonth()
                 }
             }
-
         }
-
-
 
         function isSelected(sd) {
             var ret = false
@@ -230,8 +224,6 @@ Calendar {
                 font.pixelSize: height * 0.3
                 verticalAlignment: Text.AlignVCenter
             }
-
-
         }
 
         dayOfWeekDelegate: Rectangle {
@@ -274,7 +266,7 @@ Calendar {
             }
 
             ToolTip {
-                text: qsTr("Total: " + totalRect.total + "€ \n" + qsTr("Day transaction: " + parent.val +"€"))
+                text: qsTr("Total") +": " + totalRect.total + "€ \n" + qsTr("Day transaction") +": " + parent.val +"€"
                 visible: styleData.hovered && parent.delCurrentMonth
                 delay: 500
             }

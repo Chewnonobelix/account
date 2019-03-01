@@ -94,6 +94,10 @@ Page {
             font.pixelSize: pageStyle.core.size
 
 
+            ToolTip.text: qsTr("Add new transaction")
+            ToolTip.visible: hovered
+            ToolTip.delay: 500
+
             Rectangle {
                 id: rectAdd
                 anchors.fill: parent
@@ -125,6 +129,10 @@ Page {
             font.pixelSize: pageStyle.core.size
             property int index: view.currentIndex
             enabled: view.currentIndex !== -1
+
+            ToolTip.text: qsTr("Remove select transaction")
+            ToolTip.visible: hovered
+            ToolTip.delay: 500
 
             MouseArea {
                 z: -1
@@ -193,6 +201,13 @@ Page {
 
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
+
+        enabled: pageSkip.maxPage > 1 || (pageSkip.pageIndex < pageSkip.maxPage)
+
+        ToolTip.text: qsTr("Next 10 pages")
+        ToolTip.delay: 500
+        ToolTip.visible: hovered
+
         MouseArea {
             z: -1
             anchors.fill: parent
@@ -202,6 +217,7 @@ Page {
 
         Rectangle {
             anchors.fill: parent
+            border.color: "darkgoldenrod"
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
         }
 
@@ -217,6 +233,12 @@ Page {
 
         onClicked: pageSkip.pageIndex ++
 
+        enabled: pageSkip.maxPage > 1 || (pageSkip.pageIndex < pageSkip.maxPage)
+
+        ToolTip.text: qsTr("Next page")
+        ToolTip.delay: 500
+        ToolTip.visible: hovered
+
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
         MouseArea {
@@ -228,6 +250,7 @@ Page {
 
         Rectangle {
             anchors.fill: parent
+            border.color: "darkgoldenrod"
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
         }
 
@@ -243,6 +266,12 @@ Page {
 
         onClicked: pageSkip.pageIndex --
 
+        enabled: pageSkip.maxPage > 1 && (pageSkip.pageIndex > 1)
+
+        ToolTip.text: qsTr("Previous page")
+        ToolTip.delay: 500
+        ToolTip.visible: hovered
+
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
         MouseArea {
@@ -255,6 +284,7 @@ Page {
         Rectangle {
             anchors.fill: parent
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+            border.color: "darkgoldenrod"
         }
 
     }
@@ -269,6 +299,12 @@ Page {
 
         onClicked: pageSkip.pageIndex -= 10
 
+        enabled: pageSkip.maxPage > 1 && (pageSkip.pageIndex > 1)
+
+        ToolTip.text: qsTr("Previous 10 pages")
+        ToolTip.delay: 500
+        ToolTip.visible: hovered
+
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
         MouseArea {
@@ -281,6 +317,7 @@ Page {
         Rectangle {
             anchors.fill: parent
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+            border.color: "darkgoldenrod"
         }
 
     }
@@ -298,6 +335,12 @@ Page {
         text: pageIndex
         horizontalAlignment: Qt.AlignHCenter
 
+        enabled: maxPage > 1
+
+        ToolTip.text: qsTr("Current page")
+        ToolTip.delay: 500
+        ToolTip.visible: hovered
+
         signal s_pageChange()
 
         onPageIndexChanged: {
@@ -312,12 +355,14 @@ Page {
         anchors.left: cal.right
         anchors.leftMargin: 5
         height: parent.height * 0.95
-        width: (parent.width * 0.25) - 5
+        width: (parent.width * 0.30) - 5
         id: view
         objectName: "entryView"
         model: defaultModel
 
-        property int maximumWidth: 4*100+40
+        property int maximumWidth: 4*100+60
+
+        horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
 
         sortIndicatorVisible:  true
         property string currentType
@@ -390,11 +435,11 @@ Page {
         TableViewColumn {
             role: "type"
             title: qsTr("[+/-]")
-            width: 40
+            width: 45
             movable: false
             resizable: false
             id: typeColumn
-            property string tipText: "*: estimated entry"
+            property string tipText: "*:" +  qsTr("estimated entry")
             delegate: Rectangle {
                 color: "transparent"
                 anchors.centerIn: parent
@@ -408,7 +453,7 @@ Page {
                 }
                 Label {
                     property string est: defaultModel.get(styleData.row).estimated ? "*" : ""
-                    text: styleData.value === "income" ? "+"+est:"-"+est
+                    text: styleData.value === qsTr("income") ? "+"+est:"-"+est
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
                     horizontalAlignment: Text.AlignHCenter
@@ -456,14 +501,60 @@ Page {
             width: 100
             movable: false
             resizable: false
+
+            delegate: Rectangle {
+                color: "transparent"
+                anchors.centerIn: parent
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    propagateComposedEvents: true
+                    onClicked: {
+                        view.setNewIndex(styleData.row)
+                    }
+                }
+
+                Label {
+                    text: styleData.value
+                    clip: true
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors.fill: parent
+                }
+            }
+
         }
 
         TableViewColumn {
             role: "label"
             title: qsTr("Label")
-            width: 100
+            width: 110
             movable: false
             resizable: false
+            id: labelHeader
+
+            delegate: Rectangle {
+                color: "transparent"
+                anchors.centerIn: parent
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    propagateComposedEvents: true
+                    onClicked: {
+                        view.setNewIndex(styleData.row)
+                    }
+                }
+
+                Label {
+                    text: styleData.value
+                    clip: true
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    verticalAlignment: Text.AlignVCenter
+                    anchors.fill: parent
+                }
+            }
         }
 
 
@@ -473,6 +564,29 @@ Page {
             width: 100
             movable: false
             resizable: false
+
+            delegate: Rectangle {
+                color: "transparent"
+                anchors.centerIn: parent
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    propagateComposedEvents: true
+                    onClicked: {
+                        view.setNewIndex(styleData.row)
+                    }
+                }
+
+                Label {
+                    text: styleData.value
+                    clip: true
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    horizontalAlignment: Text.AlignHCenter
+                    anchors.fill: parent
+                }
+            }
+
         }
 
 
@@ -485,6 +599,7 @@ Page {
             property bool isHovered: styleData.containsMouse
             property bool isClicked: styleData.pressed
 
+            border.color: "darkgoldenrod"
             Label {
                 id: headerText
                 height: parent.height*.8
@@ -526,25 +641,13 @@ Page {
         }
 
         itemDelegate: Rectangle {
-            width: parent.width
-            height: 20
-            anchors.fill: parent
-            color: "transparent"
-            Label {
-                id: textItem
-                text: styleData.value
-
-
-                anchors.centerIn: parent
-
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
-
-            }
-
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
+
+                ToolTip.text: styleData.value
+                ToolTip.visible: styleData.hovered
+                ToolTip.timeout: 500
 
                 onClicked: {
                     if(view.selection.contains(styleData.row)) {
@@ -573,7 +676,7 @@ Page {
             height: 20
 
 
-            gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
+            gradient: styleData.selected ? defaultModel.get(styleData.row).type === qsTr("outcome") ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
         }
 
         onCurrentIndexChanged: {
@@ -590,13 +693,13 @@ Page {
         contentWidth: infoView.width
         contentHeight: infoView.height
         anchors.left: view.right
-        width: (parent.width*0.55)-10
+        anchors.right: parent.right
         height: parent.height
 
 
         anchors.leftMargin: 10
 
-        ScrollBar.horizontal.policy: ScrollBar.AlwaysOn
+        ScrollBar.horizontal.policy: ScrollBar.AsNeeded
 
         clip: true
         InformationView {
@@ -607,10 +710,6 @@ Page {
             visible: false
             enabled: true
         }
-
-
-
     }
-
 }
 

@@ -43,7 +43,7 @@ void ControllerInformation::catChanged(QString cat)
     m_entry.setInfo(i);
 
     s_update(m_entry);
-    show();
+//    show();
 }
 
 void ControllerInformation::show()
@@ -84,6 +84,7 @@ void ControllerInformation::set(Entry e, QObject* v)
         QString type = e.type();
         QStringList cat = AbstractController::categories(type);
         cat<<"";
+
         combo->setProperty("model", cat);
         connect(combo, SIGNAL(s_addCategory(QString)), this, SLOT(addCategory(QString)));
         connect(combo, SIGNAL(s_currentTextChanged(QString)), this, SLOT(catChanged(QString)));

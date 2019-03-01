@@ -85,7 +85,7 @@ Rectangle {
 
         property string granularity: qsTr("month")
 
-        title: qsTr("Account evolution ") + granularity
+        title: qsTr("Account evolution") + " " + granularity
         titleFont.family: pageStyle.title.name
         titleFont.pixelSize: pageStyle.title.size
         objectName: "chart"
@@ -96,11 +96,11 @@ Rectangle {
         backgroundColor: "transparent"
 
         function addDataMain(td, t) {
-            series("main").append(td, t)
+            series(qsTr("past")).append(td, t)
         }
 
         function addDataEstimated(td, t) {
-            series("estimated").append(td, t)
+            series(qsTr("estimated")).append(td, t)
         }
 
         function setMinMaxDate(min, max) {
@@ -114,22 +114,22 @@ Rectangle {
         }
 
         function clear (){
-            series("main").clear()
-            series("estimated").clear()
+            series(qsTr("past")).clear()
+            series(qsTr("estimated")).clear()
         }
 
         function reset () {
         }
 
         Component.onCompleted: {
-            createSeries(ChartView.SeriesTypeLine, "main", dta,va)
-            createSeries(ChartView.SeriesTypeLine, "estimated", dta,va)
+            createSeries(ChartView.SeriesTypeLine, qsTr("past"), dta,va)
+            createSeries(ChartView.SeriesTypeLine, qsTr("estimated"), dta,va)
 
-            series("main").objectName = "mainChart"
-            series("main").pointsVisible = true
+            series(qsTr("past")).objectName = "mainChart"
+            series(qsTr("past")).pointsVisible = true
 
-            series("estimated").objectName = "estimatedChart"
-            series("estimated").pointsVisible = true
+            series(qsTr("estimated")).objectName = "estimatedChart"
+            series(qsTr("estimated")).pointsVisible = true
 
         }
 
