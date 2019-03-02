@@ -26,7 +26,7 @@ Popup {
 
     property real v_val: spinbox.realValue
     property string v_title: valueLabel.text
-    property string v_type: type.currentText
+    property string v_type: type.model.get(type.currentIndex).type
     property string v_date: dateLabel.text
     property bool newAccount: false
 
@@ -202,7 +202,7 @@ Popup {
                                 anchors.centerIn: parent
                                 text: Qt.locale().dayName(styleData.dayOfWeek, Locale.ShortFormat)
                                 font.family: pageStyle.title.name
-//                                font.pixelSize: height * 0.55
+                                //                                font.pixelSize: height * 0.55
                             }
                         }
                     }
@@ -244,7 +244,13 @@ Popup {
             ComboBox {
                 id: type
                 objectName: "type"
-                model: [qsTr("Income"), qsTr("Outcome")]
+                textRole: "name"
+                model: ListModel {
+                    id: typeModel
+                    ListElement {name: qsTr("Income"); type: "income"}
+                    ListElement {name: qsTr("Outcome"); type: "outcome"}
+                }
+
                 enabled: !addingid.newAccount
 
                 font.family: pageStyle.core.name
@@ -277,7 +283,7 @@ Popup {
                         }
                         Label {
                             color: "black"
-                            text: modelData
+                            text: model.name
                             anchors.centerIn: parent
                             font.family: pageStyle.core.name
                             font.pixelSize: pageStyle.core.size
