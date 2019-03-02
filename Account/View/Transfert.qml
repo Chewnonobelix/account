@@ -1,4 +1,5 @@
 import QtQuick 2.12
+import QtQuick.Controls 1.4
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
 
@@ -34,11 +35,10 @@ Popup {
         gradient: pageStyle.backgroundGradient
     }
 
-    TextField {
+    Calendar {
         id: dateField
         objectName: "dateField"
 
-        inputMask: "00-00-0000"
     }
 
     GridLayout {

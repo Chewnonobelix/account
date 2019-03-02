@@ -29,7 +29,7 @@ SOURCES += \
     Model/budget.cpp \
     Model/commonexpense.cpp \
     Controller/controllerxmlmulti.cpp \
-    Controller/languagecontroller.cpp
+    Controller/languagecontroller.cpp \
     Controller/controllertransfert.cpp
 
 RESOURCES += View/qml.qrc
@@ -65,4 +65,5 @@ HEADERS += \
     Model/commonexpense.h \
     Controller/controllerxmlmulti.h \
     Model/accountglobal.h \
+    Controller/controllertransfert.h \
     Controller/languagecontroller.h

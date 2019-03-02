@@ -31,7 +31,7 @@ void ControllerTransfert::set(QObject * view)
 void ControllerTransfert::accept()
 {
     QObject *to, *from, *val, *info, *dateField;
-    QString accountOut, accountIn, title, date;
+    QString accountOut, accountIn, title; QDate date;
     double transfertVal;
     to = m_view->findChild<QObject*>("toCombo");
     from = m_view->findChild<QObject*>("fromCombo");
@@ -43,12 +43,12 @@ void ControllerTransfert::accept()
     accountIn = to->property("currentText").toString();
     title = info->property("text").toString();
     transfertVal = val->property("value").toInt() / 100.0;
-    date = dateField->property("text").toString();
+    date = dateField->property("selectedDate").toDate();
 
     Entry in, out;
 
     out.setAccount(accountOut);
-    out.setDate(QDate::fromString(date, "dd-MM-yyyy"));
+    out.setDate(date);
     out.setValue(transfertVal);
     out.setType("outcome");
     Information inf;
