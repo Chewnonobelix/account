@@ -31,13 +31,13 @@
     </message>
     <message>
         <location filename="View/Adding.qml" line="226"/>
-        <location filename="View/Adding.qml" line="299"/>
+        <location filename="View/Adding.qml" line="305"/>
         <source>Please complete the entry&apos;s title</source>
         <translation></translation>
     </message>
     <message>
         <location filename="View/Adding.qml" line="226"/>
-        <location filename="View/Adding.qml" line="299"/>
+        <location filename="View/Adding.qml" line="305"/>
         <source>Please enter an account name</source>
         <translation></translation>
     </message>
@@ -52,27 +52,27 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="247"/>
+        <location filename="View/Adding.qml" line="250"/>
         <source>Income</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="247"/>
+        <location filename="View/Adding.qml" line="251"/>
         <source>Outcome</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="253"/>
+        <location filename="View/Adding.qml" line="259"/>
         <source>Specify income or outcome</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="295"/>
+        <location filename="View/Adding.qml" line="301"/>
         <source>Save</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="330"/>
+        <location filename="View/Adding.qml" line="336"/>
         <source>Cancel</source>
         <translation></translation>
     </message>
@@ -238,11 +238,6 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="456"/>
-        <source>income</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="View/Page1Form.qml" line="469"/>
         <source>Date</source>
         <translation></translation>
@@ -260,11 +255,6 @@
     <message>
         <location filename="View/Page1Form.qml" line="563"/>
         <source>Total</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="View/Page1Form.qml" line="679"/>
-        <source>outcome</source>
         <translation></translation>
     </message>
 </context>
@@ -376,7 +366,7 @@
         <oldsource>This application is made by Arnaud DUHAMEL
                             Current Version beta 0.9</oldsource>
         <translation>This application is made by Arnaud DUHAMEL
-                            Current Version 1.0</translation>
+                            Current Version 1.0.1</translation>
     </message>
     <message>
         <location filename="View/main.qml" line="276"/>
