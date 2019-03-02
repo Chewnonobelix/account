@@ -13,5 +13,6 @@
         <file>BASKVILL.TTF</file>
         <file>CASTELAR.TTF</file>
         <file>Transfert.qml</file>
+        <file>CalendarButton.qml</file>
     </qresource>
 </RCC>

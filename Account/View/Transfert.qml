@@ -9,7 +9,7 @@ Popup {
     }
 
     id: transfertView
-    closePolicy: Popup.NoAutoClose
+//    closePolicy: Popup.NoAutoClose
 
     signal s_accept()
 
@@ -35,10 +35,12 @@ Popup {
         gradient: pageStyle.backgroundGradient
     }
 
-    Calendar {
+    CalendarButton {
         id: dateField
         objectName: "dateField"
 
+        width: 80
+        height: 25
     }
 
     GridLayout {
