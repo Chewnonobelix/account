@@ -51,21 +51,30 @@ Popup {
         Label {
             id:fromLabel
             text: qsTr("From")
+            font.family: pageStyle.title.name
+            font.pixelSize: pageStyle.title.size
+            horizontalAlignment: Text.AlignHCenter
         }
 
         Label {
             id:toLabel
             text: qsTr("to")
+            font.family: pageStyle.title.name
+            font.pixelSize: pageStyle.title.size
         }
 
         Label {
             id:valueLabel
             text: qsTr("Value")
+            font.family: pageStyle.title.name
+            font.pixelSize: pageStyle.title.size
         }
 
         Label {
             id:infoLabel
             text: qsTr("Info")
+            font.family: pageStyle.title.name
+            font.pixelSize: pageStyle.title.size
         }
 
 
