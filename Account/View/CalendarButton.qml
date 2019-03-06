@@ -9,6 +9,8 @@ Button {
     }
 
     text: Qt.formatDate(dateAdding.selectedDate, "dd-MM-yyyy")
+    font.family: pageStyle.core.name
+    font.pixelSize: pageStyle.core.size
 
     background: Rectangle {
         gradient: pressed ? pageStyle.goldButton : pageStyle.darkGoldButton
@@ -16,6 +18,10 @@ Button {
 
     Popup {
         id: pop
+        background: Rectangle {
+            color: "transparent"
+        }
+
         Calendar {
             id: dateAdding
             selectedDate: new Date()
