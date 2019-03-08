@@ -4,6 +4,7 @@
 //TODO v2
 #include <QObject>
 #include <QSet>
+#include <QDebug>
 #include "total.h"
 #include "accountglobal.h"
 
@@ -12,6 +13,7 @@ class Budget
 public:
 
 private:
+    int m_id;
     Total m_current;
     double m_target;
     Account::FrequencyEnum m_frequency;
@@ -32,8 +34,8 @@ public:
     QDate next(QDate) const;
     QDate prev(QDate) const;
     bool in(QDate) const;
-    friend Budget& operator +(Budget&, Entry);
-    friend Budget& operator -(Budget&, Entry);
+    friend Budget& operator <<(Budget&, Entry&);
+    friend Budget& operator >>(Budget&, Entry&);
 
     Budget clone(QDate) const;
 

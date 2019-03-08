@@ -103,7 +103,7 @@ bool Budget::in(QDate d) const
    return (d >= start()) && (d < n);
 }
 
-Budget& operator+ (Budget& b, Entry e)
+Budget& operator<< (Budget& b, Entry& e)
 {
    if(!b.m_related.contains(e.id()))
    {
@@ -113,10 +113,11 @@ Budget& operator+ (Budget& b, Entry e)
        b.m_related<<e.id();
    }
 
+   qDebug()<<"Linked size"<<b.m_related.size()<<b.m_current.value();
     return b;
 }
 
-Budget& operator- (Budget& b, Entry e)
+Budget& operator>> (Budget& b, Entry& e)
 {
     if(b.m_related.remove(e.id()))
     {
@@ -125,8 +126,10 @@ Budget& operator- (Budget& b, Entry e)
 
         Total& t = b.m_current;
 
-        t = t + e;
+        t = t + e2;
     }
+
+    qDebug()<<"Linked size"<<b.m_related.size()<<b.m_current.value();
 
     return b;
 }
