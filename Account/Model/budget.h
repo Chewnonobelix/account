@@ -3,21 +3,20 @@
 
 //TODO v2
 #include <QObject>
+#include <QSet>
 #include "total.h"
+#include "accountglobal.h"
 
-class Budget: public QObject
+class Budget
 {
-    Q_OBJECT
-
 public:
-    enum class BudgetFrequency {unique, day, week, month, quarter, year};
-    Q_ENUM(BudgetFrequency)
 
 private:
     Total m_current;
     double m_target;
-    BudgetFrequency m_frequency;
+    Account::FrequencyEnum m_frequency;
     QDate m_start;
+    QSet<int> m_related;
 
 public:
     Budget();
@@ -25,8 +24,8 @@ public:
 
     double target() const;
     void setTarget(double);
-    BudgetFrequency frequency() const;
-    void setFrequency(BudgetFrequency);
+    Account::FrequencyEnum  frequency() const;
+    void setFrequency(Account::FrequencyEnum );
     QDate start() const;
     void setStart(QDate);
 

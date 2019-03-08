@@ -1,11 +1,11 @@
 #include "budget.h"
 
-Budget::Budget(): QObject(nullptr)
+Budget::Budget()
 {
 
 }
 
-Budget::Budget(const Budget & b): QObject(nullptr), m_target(b.target()), m_frequency(b.frequency())
+Budget::Budget(const Budget & b): m_target(b.target()), m_frequency(b.frequency())
 {
 
 }
@@ -20,12 +20,12 @@ void Budget::setTarget(double target)
     m_target = target;
 }
 
-Budget::BudgetFrequency Budget::frequency() const
+Account::FrequencyEnum  Budget::frequency() const
 {
     return m_frequency;
 }
 
-void Budget::setFrequency(BudgetFrequency frequency)
+void Budget::setFrequency(Account::FrequencyEnum  frequency)
 {
     m_frequency = frequency;
 }
@@ -42,23 +42,23 @@ void Budget::setStart(QDate start)
 
 QDate Budget::next(QDate d) const
 {
-    QDate ret = d;
+    QDate ret;
     switch(m_frequency)
     {
-    case BudgetFrequency::day:
-        ret.addDays(1);
+    case Account::FrequencyEnum::day:
+        ret = d.addDays(1);
         break;
-    case BudgetFrequency::week:
-        ret.addDays(8);
+    case Account::FrequencyEnum ::week:
+        ret = d.addDays(8);
         break;
-    case BudgetFrequency::month:
-        ret.addMonths(1);
+    case Account::FrequencyEnum ::month:
+        ret = d.addMonths(1);
         break;
-    case BudgetFrequency::quarter:
-        ret.addMonths(3);
+    case Account::FrequencyEnum ::quarter:
+        ret = d.addMonths(3);
         break;
-    case BudgetFrequency::year:
-        ret.addYears(1);
+    case Account::FrequencyEnum ::year:
+        ret = d.addYears(1);
         break;
 
     default:
@@ -73,20 +73,20 @@ QDate Budget::prev(QDate d) const
     QDate ret = d;
     switch(m_frequency)
     {
-    case BudgetFrequency::day:
-        ret.addDays(-1);
+    case Account::FrequencyEnum ::day:
+        ret = d.addDays(-1);
         break;
-    case BudgetFrequency::week:
-        ret.addDays(-8);
+    case Account::FrequencyEnum ::week:
+        ret = d.addDays(-8);
         break;
-    case BudgetFrequency::month:
-        ret.addMonths(-1);
+    case Account::FrequencyEnum ::month:
+        ret = d.addMonths(-1);
         break;
-    case BudgetFrequency::quarter:
-        ret.addMonths(-3);
+    case Account::FrequencyEnum ::quarter:
+        ret = d.addMonths(-3);
         break;
-    case BudgetFrequency::year:
-        ret.addYears(-1);
+    case Account::FrequencyEnum ::year:
+        ret = d.addYears(-1);
         break;
 
     default:
@@ -105,21 +105,28 @@ bool Budget::in(QDate d) const
 
 Budget& operator+ (Budget& b, Entry e)
 {
-    Total& t = b.m_current;
+   if(!b.m_related.contains(e.id()))
+   {
+       Total& t = b.m_current;
 
-    t = t + e;
+       t = t + e;
+       b.m_related<<e.id();
+   }
 
     return b;
 }
 
 Budget& operator- (Budget& b, Entry e)
 {
-    Entry e2 = e;
-    e2.setValue(-1*e.value());
+    if(b.m_related.remove(e.id()))
+    {
+        Entry e2 = e;
+        e2.setValue(-1*e.value());
 
-    Total& t = b.m_current;
+        Total& t = b.m_current;
 
-    t = t + e;
+        t = t + e;
+    }
 
     return b;
 }
