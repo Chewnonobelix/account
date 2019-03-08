@@ -8,8 +8,10 @@
 #include "total.h"
 #include "accountglobal.h"
 
-class Budget
+class Budget: public QObject
 {
+    Q_OBJECT
+
 public:
 
 private:

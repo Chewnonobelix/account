@@ -1,6 +1,6 @@
 #include "budget.h"
 
-Budget::Budget()
+Budget::Budget(): QObject(nullptr)
 {
 
 }
