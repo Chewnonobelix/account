@@ -14,5 +14,6 @@
         <file>CASTELAR.TTF</file>
         <file>Transfert.qml</file>
         <file>CalendarButton.qml</file>
+        <file>BudgetView.qml</file>
     </qresource>
 </RCC>
