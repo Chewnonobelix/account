@@ -1,6 +1,6 @@
 #include "budget.h"
 
-Budget::Budget(): QObject(nullptr)
+Budget::Budget()
 {
 
 }
@@ -8,6 +8,33 @@ Budget::Budget(): QObject(nullptr)
 Budget::Budget(const Budget & b): m_target(b.target()), m_frequency(b.frequency())
 {
 
+}
+
+Budget& Budget::operator =(const Budget& b)
+{
+    setId(b.id());
+    m_current = b.m_current;
+    setTarget(b.target());
+    setFrequency(b.frequency());
+    setStart(b.start());
+    m_related = b.m_related;
+
+    return *this;
+}
+
+int Budget::id() const
+{
+    return m_id;
+}
+
+void Budget::setId(int id)
+{
+    m_id = id;
+}
+
+double Budget::current() const
+{
+    return m_current.value();
 }
 
 double Budget::target() const

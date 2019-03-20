@@ -8,10 +8,8 @@
 #include "total.h"
 #include "accountglobal.h"
 
-class Budget: public QObject
+class Budget
 {
-    Q_OBJECT
-
 public:
 
 private:
@@ -26,18 +24,22 @@ public:
     Budget();
     Budget(const Budget&);
 
+    int id() const;
+    void setId(int);
     double target() const;
     void setTarget(double);
     Account::FrequencyEnum  frequency() const;
     void setFrequency(Account::FrequencyEnum );
     QDate start() const;
     void setStart(QDate);
+    double current() const;
 
     QDate next(QDate) const;
     QDate prev(QDate) const;
     bool in(QDate) const;
     friend Budget& operator <<(Budget&, Entry&);
     friend Budget& operator >>(Budget&, Entry&);
+    Budget& operator = (const Budget&);
 
     Budget clone(QDate) const;
 
