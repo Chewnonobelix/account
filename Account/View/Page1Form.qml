@@ -83,7 +83,7 @@ Page {
         id: group
         enabled: accountSelect.model.length > 0
 
-
+        onHeightChanged: console.log("group", height)
         Button {
             id: add
             text: qsTr("Add")
@@ -156,6 +156,17 @@ Page {
     }
 
     property int currentId: view.currentIndex > -1 && defaultModel.get(view.currentIndex).label !== "Initial" ? defaultModel.get(view.currentIndex).id : -1
+
+    Item {
+        anchors.top: group.bottom
+        anchors.topMargin: 210
+        anchors.right: view.left
+        anchors.left: parent.left
+
+        BudgetView {
+
+        }
+    }
 
     ListModel {
         id: defaultModel

@@ -34,7 +34,7 @@ bool ControllerBudget::addTo(int id)
     return ret;
 }
 
-bool ControllerBudget::removeFrom(int)
+bool ControllerBudget::removeFrom(int id)
 {
     bool ret = false;
     Entry e = entry(id);
