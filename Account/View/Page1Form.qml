@@ -27,72 +27,67 @@ Page {
         id: cal
         objectName: "cal"
         weekNumbersVisible: true
-        implicitHeight: parent.height /2
+        implicitHeight: parent.height / 2
         implicitWidth: parent.width * 0.2
     }
 
     /* */
-
     Adding {
         id: addingid
         objectName: "addingid"
-        y: pY > 0 ? (mainWindow.height * pY) - Math.max(0, mY) : (parent.height / 2 + add.height / 2 + 10)
-        x: pY > 0 ? (mainWindow.width * pX) - Math.max(0, mX): (add.width / 2)
+        y: pY > 0 ? (mainWindow.height * pY) - Math.max(
+                        0, mY) : (parent.height / 2 + add.height / 2 + 10)
+        x: pY > 0 ? (mainWindow.width * pX) - Math.max(0, mX) : (add.width / 2)
         property double pX: -1
         property double pY: -1
         property double mX: -1
         property double mY: -1
-        Component.onCompleted:   {
+        Component.onCompleted: {
             reset()
         }
 
-        function setSize(px, py) {
-            mX = ((mainWindow.width * px)+width)-mainWindow.width
-            mY = ((mainWindow.height * py)+height)-(mainWindow.height)
+        function setSize(pxpy) {
+            mX = ((mainWindow.width * px) + width) - mainWindow.width
+            mY = ((mainWindow.height * py) + height) - (mainWindow.height)
 
             pX = px
-            pY= py
+            pY = py
         }
     }
-
 
     Component.onCompleted: {
         addingid.close()
     }
 
-    function openAdding(pX, pY) {
+    function openAdding(pXpY) {
 
         addingid.setSize(pX, pY)
 
-        if(cal.selectedDates.length > 0) {
-            for(var index in cal.selectedDates){
+        if (cal.selectedDates.length > 0) {
+            for (index in cal.selectedDates) {
                 addingid.addDate(cal.selectedDates[index])
             }
-        }
-        else {
+        } else {
             addingid.addDate(Qt.formatDate(new Date(), "dd-MM-yyyy"))
         }
         addingid.open()
     }
 
-    Item {
+    RowLayout {
         anchors.top: cal.bottom
         anchors.topMargin: 10
-        width: cal.width
-        height: edit.height + add.height + 10
         id: group
+        spacing: 10
+        //        height: 50
+        width: cal.width
         enabled: accountSelect.model.length > 0
-
-        onHeightChanged: console.log("group", height)
+        Component.onCompleted: console.log("XXX", height)
         Button {
             id: add
             text: qsTr("Add")
             width: parent.width * .45
-            anchors.top: parent.top
-            anchors.left: parent.left
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
-
 
             ToolTip.text: qsTr("Add new transaction")
             ToolTip.visible: hovered
@@ -104,7 +99,6 @@ Page {
                 gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
             }
 
-
             MouseArea {
                 z: -1
                 anchors.fill: parent
@@ -112,19 +106,15 @@ Page {
                 acceptedButtons: Qt.NoButton
             }
 
-            onClicked:  {
+            onClicked: {
                 mainWindow.adding(false)
             }
-
         }
-
 
         Button {
             id: remove
             text: qsTr("Remove")
             width: parent.width * .45
-            anchors.left: add.right
-            anchors.leftMargin: (parent.width * .1)
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
             property int index: view.currentIndex
@@ -148,23 +138,27 @@ Page {
                 gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
             }
             onClicked: {
-                if(index > -1) {
+                if (index > -1) {
                     mainWindow.remove(defaultModel.get(index).id)
                 }
             }
         }
     }
 
-    property int currentId: view.currentIndex > -1 && defaultModel.get(view.currentIndex).label !== "Initial" ? defaultModel.get(view.currentIndex).id : -1
+    property int currentId: view.currentIndex > -1 && defaultModel.get(
+                                view.currentIndex).label
+                            !== "Initial" ? defaultModel.get(
+                                                view.currentIndex).id : -1
 
-    Item {
+    Rectangle {
+        color: "transparent"
         anchors.top: group.bottom
-        anchors.topMargin: 210
+        //        anchors.topMargin: 210
         anchors.right: view.left
         anchors.left: parent.left
 
         BudgetView {
-
+            anchors.fill: parent
         }
     }
 
@@ -172,21 +166,21 @@ Page {
         id: defaultModel
         objectName: "defaultModel"
 
-        function swap(i, j) {
-            move(j,i,1)
-            move(i+1,j,1)
+        function swap(ij) {
+            move(j, i, 1)
+            move(i + 1, j, 1)
         }
 
-        function sort(role, order) {
-            for(var i = 0; i < count; i++ ) {
-                for(var j = i; j < count; j++) {
-                    if(order === Qt.AscendingOrder) {
-                        if(get(j)[role] < get(i)[role]) {
-                            swap(i,j)
+        function sort(roleorder) {
+            for (; i < count; i++) {
+                for (; j < count; j++) {
+                    if (order === Qt.AscendingOrder) {
+                        if (get(j)[role] < get(i)[role]) {
+                            swap(i, j)
                         }
                     } else {
-                        if(get(j)[role] > get(i)[role]) {
-                            swap(i,j)
+                        if (get(j)[role] > get(i)[role]) {
+                            swap(i, j)
                         }
                     }
                 }
@@ -195,10 +189,9 @@ Page {
     }
 
     onWidthChanged: {
-        view.width = ((width * 0.25) - 5) < view.maximumWidth ? (width * 0.25) + 5 : view.maximumWidth
+        view.width = ((width * 0.25) - 5)
+                < view.maximumWidth ? (width * 0.25) + 5 : view.maximumWidth
     }
-
-
 
     Button {
         id: nextPages
@@ -231,7 +224,6 @@ Page {
             border.color: "darkgoldenrod"
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
         }
-
     }
 
     Button {
@@ -242,7 +234,7 @@ Page {
         height: parent.height * 0.05
         width: view.width * 0.20
 
-        onClicked: pageSkip.pageIndex ++
+        onClicked: pageSkip.pageIndex++
 
         enabled: pageSkip.maxPage > 1 || (pageSkip.pageIndex < pageSkip.maxPage)
 
@@ -264,7 +256,6 @@ Page {
             border.color: "darkgoldenrod"
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
         }
-
     }
 
     Button {
@@ -275,7 +266,7 @@ Page {
         height: parent.height * 0.05
         width: view.width * 0.20
 
-        onClicked: pageSkip.pageIndex --
+        onClicked: pageSkip.pageIndex--
 
         enabled: pageSkip.maxPage > 1 && (pageSkip.pageIndex > 1)
 
@@ -297,7 +288,6 @@ Page {
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
             border.color: "darkgoldenrod"
         }
-
     }
 
     Button {
@@ -330,9 +320,7 @@ Page {
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
             border.color: "darkgoldenrod"
         }
-
     }
-
 
     TextField {
         id: pageSkip
@@ -352,11 +340,13 @@ Page {
         ToolTip.delay: 500
         ToolTip.visible: hovered
 
-        signal s_pageChange()
+        signal s_pageChange
 
         onPageIndexChanged: {
-            if(pageIndex < 1) pageIndex = 1
-            if(pageIndex > maxPage) pageIndex = maxPage
+            if (pageIndex < 1)
+                pageIndex = 1
+            if (pageIndex > maxPage)
+                pageIndex = maxPage
 
             s_pageChange()
         }
@@ -371,18 +361,17 @@ Page {
         objectName: "entryView"
         model: defaultModel
 
-        property int maximumWidth: 4*100+60
+        property int maximumWidth: 4 * 100 + 60
 
         horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
 
-        sortIndicatorVisible:  true
+        sortIndicatorVisible: true
         property string currentType
         property int currentIndex: -1
 
         function fAdd(i) {
             defaultModel.append(i)
         }
-
 
         function unselectAll() {
             selection.clear()
@@ -403,7 +392,6 @@ Page {
             onS_datesChanged: {
                 view.reset()
             }
-
         }
 
         onWidthChanged: {
@@ -425,7 +413,7 @@ Page {
         }
 
         function setNewIndex(index) {
-            if(selection.contains(index)) {
+            if (selection.contains(index)) {
                 selection.clear()
                 currentIndex = -1
             } else {
@@ -436,8 +424,8 @@ Page {
         }
 
         function selectFromId(id) {
-            for(var i = 0; i < defaultModel.count; i++) {
-                if(defaultModel.get(i).id === id) {
+            for (; i < defaultModel.count; i++) {
+                if (defaultModel.get(i).id === id) {
                     setNewIndex(i)
                 }
             }
@@ -450,7 +438,7 @@ Page {
             movable: false
             resizable: false
             id: typeColumn
-            property string tipText: "*:" +  qsTr("estimated entry")
+            property string tipText: "*:" + qsTr("estimated entry")
             delegate: Rectangle {
                 color: "transparent"
                 anchors.centerIn: parent
@@ -463,17 +451,16 @@ Page {
                     }
                 }
                 Label {
-                    property string est: defaultModel.get(styleData.row).estimated ? "*" : ""
-                    text: styleData.value === "income" ? "+"+est:"-"+est
+                    property string est: defaultModel.get(
+                                             styleData.row).estimated ? "*" : ""
+                    text: styleData.value === "income" ? "+" + est : "-" + est
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
                     horizontalAlignment: Text.AlignHCenter
                     anchors.fill: parent
                 }
-
             }
         }
-
 
         TableViewColumn {
             role: "date"
@@ -482,7 +469,6 @@ Page {
             movable: false
             resizable: false
             id: columnDate
-
 
             delegate: Rectangle {
                 color: "transparent"
@@ -534,7 +520,6 @@ Page {
                     anchors.fill: parent
                 }
             }
-
         }
 
         TableViewColumn {
@@ -568,7 +553,6 @@ Page {
             }
         }
 
-
         TableViewColumn {
             role: "total"
             title: qsTr("Total")
@@ -597,12 +581,10 @@ Page {
                     anchors.fill: parent
                 }
             }
-
         }
 
-
         headerDelegate: Rectangle {
-            gradient: isClicked ? pageStyle.darkGoldButton :  pageStyle.goldHeader
+            gradient: isClicked ? pageStyle.darkGoldButton : pageStyle.goldHeader
 
             height: view.height * 0.03
             anchors.centerIn: parent
@@ -613,7 +595,7 @@ Page {
             border.color: "darkgoldenrod"
             Label {
                 id: headerText
-                height: parent.height*.8
+                height: parent.height * .8
                 anchors.centerIn: parent
                 text: styleData.value
                 font.family: pageStyle.title.name
@@ -622,29 +604,27 @@ Page {
                 ToolTip.visible: isHovered && (styleData.column === 2)
                 ToolTip.text: view.getToolTip(styleData.column)
                 ToolTip.delay: 500
-
-
             }
         }
 
-
         onSortIndicatorColumnChanged: {
-            defaultModel.sort( getColumn(sortIndicatorColumn).role , sortIndicatorOrder)
-            if(currentIndex !== -1) {
+            defaultModel.sort(getColumn(sortIndicatorColumn).role,
+                              sortIndicatorOrder)
+            if (currentIndex !== -1) {
                 s_view(defaultModel.get(currentIndex).id)
             }
         }
 
         onSortIndicatorOrderChanged: {
-            defaultModel.sort(getColumn(sortIndicatorColumn).role , sortIndicatorOrder)
-            if(currentIndex !== -1) {
+            defaultModel.sort(getColumn(sortIndicatorColumn).role,
+                              sortIndicatorOrder)
+            if (currentIndex !== -1) {
                 s_view(defaultModel.get(currentIndex).id)
             }
         }
 
-
         function getToolTip(index) {
-            if(index === 2) {
+            if (index === 2) {
                 return typeColumn.tipText
             }
 
@@ -661,39 +641,39 @@ Page {
                 ToolTip.timeout: 500
 
                 onClicked: {
-                    if(view.selection.contains(styleData.row)) {
+                    if (view.selection.contains(styleData.row)) {
                         view.selection.clear()
-                    }
-                    else {
+                    } else {
                         view.selection.clear()
                         view.selection.select(styleData.row)
                     }
 
-                    if(view.currentIndex !== styleData.row) {
+                    if (view.currentIndex !== styleData.row) {
                         view.currentIndex = styleData.row
-                    }
-                    else {
+                    } else {
                         view.unselectAll()
                     }
-
                 }
             }
         }
 
         rowDelegate: Rectangle {
-            id:rectRow
+            id: rectRow
 
             width: parent.width
             height: 20
 
-            gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
+            gradient: styleData.selected ? defaultModel.get(
+                                               styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
         }
 
         onCurrentIndexChanged: {
-            infoView.visible = (currentIndex !== -1) && (defaultModel.get(currentIndex).label !== "Initial")
-            remove.enabled = (view.currentIndex !== -1) && (defaultModel.get(view.currentIndex).label !== "Initial")
+            infoView.visible = (currentIndex !== -1)
+                    && (defaultModel.get(currentIndex).label !== "Initial")
+            remove.enabled = (view.currentIndex !== -1)
+                    && (defaultModel.get(view.currentIndex).label !== "Initial")
 
-            if(currentIndex !== -1)
+            if (currentIndex !== -1)
                 s_view(defaultModel.get(currentIndex).id)
         }
     }
@@ -705,7 +685,6 @@ Page {
         anchors.left: view.right
         anchors.right: parent.right
         height: parent.height
-
 
         anchors.leftMargin: 10
 
@@ -722,4 +701,3 @@ Page {
         }
     }
 }
-
