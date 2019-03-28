@@ -14,6 +14,7 @@
 #include "xmltosql.h"
 #include "languagecontroller.h"
 #include "controllertransfert.h"
+#include "controllerbudget.h"
 
 class MainController: public AbstractController
 {
@@ -25,6 +26,7 @@ private:
     GraphController m_graph;
     LanguageController m_lang;
     ControllerTransfert m_transfert;
+    ControllerBudget m_budget;
 
     void checkEstimated();
 

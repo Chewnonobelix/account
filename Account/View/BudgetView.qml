@@ -3,51 +3,49 @@ import QtQuick.Layouts 1.12
 import QtQml.Models 2.12
 
 Item {
+
+    function add(mapcol) {
+        if (col === 0)
+            budgetList1.add(map)
+        else
+            budgetList2.add(map)
+    }
+
     ListModel {
-        id: budgetModel
+        id: budgetModel1
+        //target, currentValue, name,date
+    }
 
-        ListElement {
-            target: 100
-            currentValue: 102
-            name: "B1"
-        }
-
-        ListElement {
-            target: 200
-            currentValue: 100
-            name: "B2"
-        }
-
-        ListElement {
-            target: 200
-            currentValue: 102
-            name: "B3"
-        }
-
-        ListElement {
-            target: 605
-            currentValue: 102
-            name: "B4"
-        }
-
-        ListElement {
-            target: 500
-            currentValue: 1102
-            name: "B5"
-        }
+    ListModel {
+        id: budgetModel2
+        //target, currentValue, name,date
     }
 
     Column {
-        id: budgetList
-        anchors.fill: parent
-
+        id: budgetList1
+        anchors.left: parent.left
+        width: (parent.width / 2) - 5
         Repeater {
-            model: budgetModel
+            model: budgetModel1
             delegate: BudgetViewItem {
                 to: target
                 realValue: currentValue
                 title: name
-                Component.onCompleted: console.log(name)
+            }
+        }
+    }
+
+    Column {
+        id: budgetList2
+        anchors.right: parent.right
+        anchors.rightMargin: 5
+        width: (parent.width / 2) - 5
+        Repeater {
+            model: budgetModel2
+            delegate: BudgetViewItem {
+                to: target
+                realValue: currentValue
+                title: name
             }
         }
     }

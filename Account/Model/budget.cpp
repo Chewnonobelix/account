@@ -5,7 +5,7 @@ Budget::Budget()
 
 }
 
-Budget::Budget(const Budget & b): m_target(b.target()), m_frequency(b.frequency())
+Budget::Budget(const Budget & b): m_target(b.target()), m_frequency(b.frequency()), m_category(b.category())
 {
 
 }
@@ -18,6 +18,7 @@ Budget& Budget::operator =(const Budget& b)
     setFrequency(b.frequency());
     setStart(b.start());
     m_related = b.m_related;
+    m_category = b.category();
 
     return *this;
 }
@@ -30,6 +31,16 @@ int Budget::id() const
 void Budget::setId(int id)
 {
     m_id = id;
+}
+
+QString Budget::category() const
+{
+    return m_category;
+}
+
+void Budget::setCategory(QString cat)
+{
+    m_category = cat;
 }
 
 double Budget::current() const

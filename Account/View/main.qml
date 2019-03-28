@@ -16,8 +16,8 @@ ApplicationWindow {
     signal remove(int index)
     signal edit(int index)
     signal accountChange(int index)
-    signal removeAccount (string name)
-    signal openTransfert()
+    signal removeAccount(string name)
+    signal openTransfert
 
     id: mainWindow
 
@@ -36,8 +36,8 @@ ApplicationWindow {
 
         onOpened: {
             addAccount(accountSelect.model)
-            x = swipeView.width/2 - width/2
-            y = swipeView.height/2 - height/2
+            x = swipeView.width / 2 - width / 2
+            y = swipeView.height / 2 - height / 2
         }
     }
 
@@ -60,7 +60,7 @@ ApplicationWindow {
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
                 enabled: false
-                signal s_xml()
+                signal s_xml
                 onClicked: {
                     s_xml()
                 }
@@ -185,7 +185,7 @@ ApplicationWindow {
                 font.pixelSize: pageStyle.core.size
                 enabled: dAccountMenu.enabled
                 onClicked: {
-                    if(enabled) {
+                    if (enabled) {
                         adding(false)
                     }
                 }
@@ -209,7 +209,6 @@ ApplicationWindow {
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
-
             }
 
             MenuItem {
@@ -237,7 +236,7 @@ ApplicationWindow {
                 }
 
                 onClicked: {
-                    if(enabled) {
+                    if (enabled) {
                         remove(table.currentId)
                     }
                 }
@@ -245,9 +244,7 @@ ApplicationWindow {
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
-
             }
-
         }
 
         background: Rectangle {
@@ -295,14 +292,14 @@ ApplicationWindow {
                     Label {
                         anchors.fill: parent
                         text: qsTr("This application is made by Arnaud DUHAMEL
-                            Current Version beta 0.9")
+Current Version beta 0.9")
                         font.family: pageStyle.title.name
                         font.pixelSize: pageStyle.title.size
                         verticalAlignment: Text.AlignVCenter
                         fontSizeMode: Text.Fit0
                     }
 
-                    background: Rectangle{
+                    background: Rectangle {
                         anchors.fill: parent
                         gradient: pageStyle.backgroundGradient
                         border.color: "gold"
@@ -314,10 +311,10 @@ ApplicationWindow {
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
 
-                         background: Rectangle {
-                             anchors.fill: parent
-                             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-                         }
+                        background: Rectangle {
+                            anchors.fill: parent
+                            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                        }
                     }
                 }
             }
@@ -343,7 +340,7 @@ ApplicationWindow {
                         fontSizeMode: Text.Fit
                     }
 
-                    background: Rectangle{
+                    background: Rectangle {
                         anchors.fill: parent
                         gradient: pageStyle.backgroundGradient
                         border.color: "gold"
@@ -355,18 +352,15 @@ ApplicationWindow {
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
 
-                         background: Rectangle {
-                             anchors.fill: parent
-                             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-                         }
+                        background: Rectangle {
+                            anchors.fill: parent
+                            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                        }
                     }
                 }
-
-
             }
         }
     }
-
 
     background: Rectangle {
         id: backRect
@@ -374,11 +368,11 @@ ApplicationWindow {
         gradient: pageStyle.backgroundGradient
     }
 
-    header:Rectangle {
+    header: Rectangle {
         height: 50
         color: "transparent"
         id: head
-        objectName:  "head"
+        objectName: "head"
         property string accountName
         property double total
         property double selectionTotal
@@ -395,18 +389,21 @@ ApplicationWindow {
                 font.family: pageStyle.title.name
                 padding: 10
                 fontSizeMode: Text.Fit
-                color: accountSelect.model.length > 0 ? head.total > 0 ? "green" : "red" : "transparent"
+                color: accountSelect.model.length
+                       > 0 ? head.total > 0 ? "green" : "red" : "transparent"
                 width: parent.width * .5
             }
 
             Label {
                 id: selectLabel
                 fontSizeMode: Text.Fit
-                text: qsTr("Selection total")+": " + head.selectionTotal + " €"
+                text: qsTr(
+                          "Selection total") + ": " + head.selectionTotal + " €"
                 font.pixelSize: pageStyle.title.size
                 font.family: pageStyle.title.name
                 padding: 10
-                color: accountSelect.model.length > 0 ? head.selectionTotal > 0 ? "green" : "red" : "transparent"
+                color: accountSelect.model.length
+                       > 0 ? head.selectionTotal > 0 ? "green" : "red" : "transparent"
                 width: parent.width * .5
             }
         }
@@ -473,17 +470,14 @@ ApplicationWindow {
         implicitWidth: parent.width
         implicitHeight: parent.height
         enabled: accountSelect.model.length > 0
-        anchors.top:  parent.header.bottom
+        anchors.top: parent.header.bottom
         background: Rectangle {
             color: "transparent"
-
-
         }
 
         Page1Form {
             id: table
             objectName: "table"
-
         }
 
         Page2Form {
@@ -497,7 +491,7 @@ ApplicationWindow {
             anchors.centerIn: swipeView
 
             width: labelDelete.width * 1.2
-            height: (labelDelete.height + delOk.height + 3*delOk.padding) * 1.1
+            height: (labelDelete.height + delOk.height + 3 * delOk.padding) * 1.1
 
             background: Rectangle {
                 anchors.fill: parent
@@ -505,11 +499,10 @@ ApplicationWindow {
                 border.color: "gold"
             }
 
-
             Label {
                 id: labelDelete
                 property string account: accountSelect.currentText
-                text: qsTr("Delete")+" " + account + " ?"
+                text: qsTr("Delete") + " " + account + " ?"
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
                 anchors.horizontalCenter: parent.width / 2
@@ -518,13 +511,12 @@ ApplicationWindow {
             Button {
                 id: delOk
                 text: qsTr("Ok")
-                anchors.top:labelDelete.bottom
+                anchors.top: labelDelete.bottom
                 anchors.topMargin: padding
                 font.pixelSize: pageStyle.core.size
                 font.family: pageStyle.core.name
 
-
-                onClicked:  {
+                onClicked: {
                     mainWindow.removeAccount(labelDelete.account)
                     deleteAccount.close()
                 }
@@ -533,22 +525,20 @@ ApplicationWindow {
                     id: rectEdit
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
-
-
             }
 
             Button {
                 id: delCancel
                 anchors.left: delOk.right
                 anchors.leftMargin: padding
-                anchors.top:labelDelete.bottom
+                anchors.top: labelDelete.bottom
                 anchors.topMargin: padding
                 font.pixelSize: pageStyle.core.size
                 font.family: pageStyle.core.name
 
                 text: qsTr("Cancel")
 
-                onClicked:  {
+                onClicked: {
                     deleteAccount.close()
                 }
 
@@ -559,7 +549,6 @@ ApplicationWindow {
                 }
             }
         }
-
     }
 
     footer: TabBar {
@@ -582,7 +571,6 @@ ApplicationWindow {
                 cursorShape: Qt.PointingHandCursor
                 acceptedButtons: Qt.NoButton
             }
-
 
             background: Rectangle {
                 color: tabBar.currentItem === parent ? "darkseagreen" : "white"
@@ -609,6 +597,5 @@ ApplicationWindow {
                 color: tabBar.currentItem === parent ? "darkseagreen" : "white"
             }
         }
-
     }
 }

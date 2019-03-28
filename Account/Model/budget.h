@@ -19,6 +19,7 @@ private:
     Account::FrequencyEnum m_frequency;
     QDate m_start;
     QSet<int> m_related;
+    QString m_category;
 
 public:
     Budget();
@@ -36,6 +37,8 @@ public:
 
     QDate next(QDate) const;
     QDate prev(QDate) const;
+    QString category() const;
+    void setCategory(QString);
     bool in(QDate) const;
     friend Budget& operator <<(Budget&, Entry&);
     friend Budget& operator >>(Budget&, Entry&);
@@ -43,6 +46,17 @@ public:
 
     Budget clone(QDate) const;
 
+};
+
+class OverBudget
+{
+private:
+    int m_id;
+    double m_target;
+    Account::FrequencyEnum m_frequency;
+    QDate m_start;
+    QSet<int> m_sub;
+    QString m_category;
 };
 
 #endif // BUDGET_H

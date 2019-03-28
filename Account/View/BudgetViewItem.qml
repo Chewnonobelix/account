@@ -10,6 +10,11 @@ MenuItem {
     property double realValue
     property double to
     property string title
+
+    onTriggered: {
+        console.log(budgetItem.title, to, realValue)
+    }
+
     contentItem: ProgressBar {
         id: budget
         //        anchors.top: title.bottom
@@ -42,7 +47,7 @@ MenuItem {
                 color: "black"
                 anchors.left: parent.left
                 anchors.leftMargin: 10
-                id: title
+                id: titleLab
                 font.family: pageStyle.title.name
                 font.pixelSize: 14
                 anchors.verticalCenter: parent.verticalCenter
