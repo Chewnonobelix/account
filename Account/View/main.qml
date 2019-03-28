@@ -255,6 +255,24 @@ ApplicationWindow {
         }
 
         Menu {
+            title: qsTr("Budget")
+            font.family: pageStyle.core.name
+            font.pixelSize: pageStyle.core.size
+
+            MenuItem {
+                text: qsTr("Budget list")
+            }
+
+            MenuItem {
+                text: qsTr("New budget")
+            }
+
+            MenuItem {
+                text: qsTr("Remove budget")
+            }
+        }
+
+        Menu {
             title: qsTr("?")
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
