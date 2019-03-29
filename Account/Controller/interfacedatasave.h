@@ -4,6 +4,7 @@
 #include <QString>
 #include <QList>
 #include "Model/entry.h"
+#include "Model/budget.h"
 
 class InterfaceDataSave
 {
@@ -22,6 +23,10 @@ public:
     virtual bool addCategory(QString, QString) = 0;
     virtual bool removeCategory(QString) = 0;
     virtual QMap<QString, QString> selectCategory() = 0;
+
+    virtual bool addBudget(QString) = 0;
+    virtual bool removeBudget(QString) = 0;
+    virtual QList<OverBudget> selectBudgets() = 0;
 
     virtual bool init() = 0;
 };

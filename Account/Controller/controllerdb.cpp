@@ -269,6 +269,21 @@ QMap<QString, QString> ControllerDB::selectCategory()
     return ret;
 }
 
+bool ControllerDB::addBudget(QString)
+{
+    //TODO
+}
+
+bool ControllerDB::removeBudget(QString)
+{
+    //TODO
+}
+
+QList<OverBudget> ControllerDB::selectBudgets()
+{
+    //TODO
+}
+
 bool ControllerDB::updateEntry(const Entry & e)
 {
 //    m_updateEntry->prepare("UPDATE account"

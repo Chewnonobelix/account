@@ -56,6 +56,10 @@ public:
     bool removeCategory(QString);
     QMap<QString, QString> selectCategory();
 
+    virtual bool addBudget(QString);
+    virtual bool removeBudget(QString);
+    virtual QList<OverBudget> selectBudgets();
+
     bool init();
 };
 

@@ -327,6 +327,24 @@ QMap<QString, QString> ControllerXMLMulti::selectCategory()
     return ret;
 }
 
+bool ControllerXMLMulti::addBudget(QString)
+{
+    //TODO
+    return false;
+}
+
+bool ControllerXMLMulti::removeBudget(QString)
+{
+    //TODO
+    return false;
+}
+
+QList<OverBudget> ControllerXMLMulti::selectBudgets()
+{
+    //TODO
+    return QList<OverBudget>();
+}
+
 
 bool ControllerXMLMulti::init()
 {

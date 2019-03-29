@@ -335,6 +335,21 @@ QMap<QString, QString> ControllerXML::selectCategory()
     return ret;
 }
 
+bool ControllerXML::addBudget(QString)
+{
+    //TODO
+}
+
+bool ControllerXML::removeBudget(QString)
+{
+    //TODO
+}
+
+QList<OverBudget> ControllerXML::selectBudgets()
+{
+    //TODO
+}
+
 bool ControllerXML::updateEntry(const Entry & e)
 {
     auto root = m_document.elementsByTagName("database").at(0).toElement();
