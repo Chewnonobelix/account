@@ -57,6 +57,29 @@ private:
     QDate m_start;
     QSet<int> m_sub;
     QString m_category;
+
+    OverBudget();
+    Budget createSub(QDate);
+
+public:
+    OverBudget(const OverBudget&);
+    ~OverBudget();
+
+    OverBudget& operator =(const OverBudget&);
+    bool add(Entry&);
+    bool remove(Entry&);
+    static OverBudget create(QString);
+
+    int id() const;
+    double target() const;
+    void setTarget(double);
+    Account::FrequencyEnum frequency() const;
+    void setFrequency(const Account::FrequencyEnum);
+    QDate start() const;
+    void setStart(QDate);
+    QString category() const;
+    void setCategory(QString);
+    void setId(int id);
 };
 
 #endif // BUDGET_H

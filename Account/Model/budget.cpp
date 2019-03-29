@@ -179,3 +179,90 @@ Budget Budget::clone(QDate d) const
 
     return ret;
 }
+
+double OverBudget::target() const
+{
+    return m_target;
+}
+
+void OverBudget::setTarget(double target)
+{
+    m_target = target;
+}
+
+Account::FrequencyEnum OverBudget::frequency() const
+{
+    return m_frequency;
+}
+
+void OverBudget::setFrequency(Account::FrequencyEnum frequency)
+{
+    m_frequency = frequency;
+}
+
+QDate OverBudget::start() const
+{
+    return m_start;
+}
+
+void OverBudget::setStart(QDate start)
+{
+    m_start = start;
+}
+
+QString OverBudget::category() const
+{
+    return m_category;
+}
+
+void OverBudget::setCategory(QString category)
+{
+    m_category = category;
+}
+
+void OverBudget::setId(int id)
+{
+    m_id = id;
+}
+
+int OverBudget::id() const
+{
+    return m_id;
+}
+
+OverBudget::OverBudget()
+{}
+
+OverBudget::OverBudget(const OverBudget & ob)
+{
+    //TODO
+}
+
+Budget OverBudget::createSub(QDate d)
+{
+    //TODO
+    return Budget();
+}
+OverBudget& OverBudget::operator =(const OverBudget& ob)
+{
+    //TODO
+    return *this;
+}
+
+bool OverBudget::add(Entry & e)
+{
+    //TODO
+    return false;
+}
+
+bool OverBudget::remove(Entry & e)
+{
+    //TODO
+    return false;
+}
+
+OverBudget OverBudget::create(QString cat)
+{
+    //TODO
+    return OverBudget();
+}
