@@ -1,106 +1,159 @@
 #include "budget.h"
 
-Budget::Budget()
+Budget::Budget(): m_id(-1)
 {
-    //TODO
 }
 
 Budget::Budget(const Budget & b)
 {
-//TODO
+    //TODO
 }
 
 int Budget::id() const
 {
-//TODO
-    return -2;
+    return m_id;
 }
 
-void Budget::setId(int)
+void Budget::setId(int i)
 {
-//TODO
+    m_id = i;
 }
 
 
-bool Budget::addEntry(Entry)
+bool Budget::addEntry(Entry e)
 {
-//TODO
-    return false;
+    bool ret = false;
+
+    for(auto it: m_subs)
+        if(it.begin() <= e.date() && e.date() <= it.end())
+            ret = it.addEntry(e);
+
+    return ret;
 }
 
-bool Budget::removeEntry(Entry)
+bool Budget::removeEntry(Entry e)
 {
-//TODO
-    return false;
+    bool ret = false;
+
+    for(auto it: m_subs)
+        if(it.begin() <= e.date() && e.date() <= it.end())
+            ret = it.removeEntry(e);
+
+    return ret;
 }
 
-bool Budget::updateEntry(Entry)
+bool Budget::updateEntry(Entry e)
 {
-//TODO
-    return false;
+    bool ret = false;
+
+    for(auto it: m_subs)
+        if(it.begin() <= e.date() && e.date() <= it.end())
+            ret = it.updateEntry(e);
+
+    return ret;
 }
 
 bool Budget::addTarget(QDate, double)
 {
-//TODO
     return false;
 }
 
 bool Budget::removeTarget(QDate)
 {
-//TODO
+    //TODO
     return false;
 }
 
-bool Budget::createSub(QDate)
+bool Budget::updateTarget(QDate, double)
 {
-//TODO
+    //TODO
+    return false;
+}
+
+bool Budget::createSub(QDate d)
+{
+    //TODO
     return false;
 }
 
 double Budget::current(QDate)
 {
-//TODO
+    //TODO
     return 0;
 }
 
 Account::FrequencyEnum Budget::frequency() const
 {
-//TODO
-    return Account::FrequencyEnum::unique;
+    return m_frequency;
 }
 
-void Budget::setFrequency(Account::FrequencyEnum)
+void Budget::setFrequency(Account::FrequencyEnum f)
 {
-//TODO
+    m_frequency = f;
 }
 
 QString Budget::category() const
 {
-//TODO
-    return QString();
+    return m_category;
 }
 
-void Budget::setCategory(QString)
+void Budget::setCategory(QString c)
 {
-//TODO
+    m_category = c;
 }
 
 Budget& Budget::operator = (const Budget&)
 {
-//TODO
+    //TODO
     return *this;
 }
 
 Budget& Budget::operator <<(Entry)
 {
-//TODO
+    //TODO
     return *this;
 }
 
 Budget& Budget::operator >>(Entry)
 {
-//TODO
+    //TODO
     return *this;
 }
 
+QDate Budget::next(QDate d) const
+{
+    switch(frequency())
+    {
+    case Account::FrequencyEnum::day:
+        return d.addDays(1);
+    case Account::FrequencyEnum::week:
+        return d.addDays(8);
+    case Account::FrequencyEnum::month:
+        return d.addMonths(1);
+    case Account::FrequencyEnum::quarter:
+        return d.addMonths(4);
+    case Account::FrequencyEnum::year:
+        return d.addYears(1);
+    default:
+        return d;
+    }
+}
+
+QDate Budget::previous(QDate d) const
+{
+    switch(frequency())
+    {
+    case Account::FrequencyEnum::day:
+        return d.addDays(-1);
+    case Account::FrequencyEnum::week:
+        return d.addDays(-8);
+    case Account::FrequencyEnum::month:
+        return d.addMonths(-1);
+    case Account::FrequencyEnum::quarter:
+        return d.addMonths(-4);
+    case Account::FrequencyEnum::year:
+        return d.addYears(-1);
+    default:
+        return d;
+    }
+}

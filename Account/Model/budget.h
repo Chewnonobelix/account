@@ -23,6 +23,9 @@ private:
     QMap<QDate, double> m_targets;
     QMap<QDate, SubBudget> m_subs;
 
+    QDate next(QDate) const;
+    QDate previous(QDate) const;
+
 public:
     Budget();
     Budget(const Budget&);
@@ -36,6 +39,7 @@ public:
 
     bool addTarget(QDate, double);
     bool removeTarget(QDate);
+    bool updateTarget(QDate, double);
 
     bool createSub(QDate);
     double current(QDate);
