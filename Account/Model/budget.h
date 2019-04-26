@@ -9,8 +9,8 @@
 #include <QDebug>
 #include "total.h"
 #include "accountglobal.h"
+#include "subbudget.h"
 
-class SubBudget;
 
 class Budget
 {

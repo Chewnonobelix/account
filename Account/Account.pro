@@ -15,6 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Controller/controllerbudget.cpp \
+    Model/subbudget.cpp \
         main.cpp \
     Model/entry.cpp \
     Model/information.cpp \
@@ -53,6 +54,7 @@ HEADERS += \
     Controller/controllerbudget.h \
     Model/entry.h \
     Model/information.h \
+    Model/subbudget.h \
     Model/total.h \
     Model/categories.h \
     Controller/abstractcontroller.h \
