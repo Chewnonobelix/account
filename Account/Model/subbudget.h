@@ -14,6 +14,7 @@ private:
     QDate m_end;
     QMap<int, double> m_values;
 
+    void update();
 public:
     SubBudget();
     SubBudget(const SubBudget&);
@@ -22,7 +23,7 @@ public:
 
     double current() const;
     double target() const;
-    void setTrget(double);
+    void setTarget(double);
     QDate begin() const;
     void setBegin(QDate);
     QDate end() const;
