@@ -345,7 +345,7 @@ bool ControllerXML::removeBudget(QString)
     //TODO
 }
 
-QList<OverBudget> ControllerXML::selectBudgets()
+QList<Budget> ControllerXML::selectBudgets()
 {
     //TODO
 }

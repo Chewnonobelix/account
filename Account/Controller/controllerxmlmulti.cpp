@@ -339,10 +339,10 @@ bool ControllerXMLMulti::removeBudget(QString)
     return false;
 }
 
-QList<OverBudget> ControllerXMLMulti::selectBudgets()
+QList<Budget> ControllerXMLMulti::selectBudgets()
 {
     //TODO
-    return QList<OverBudget>();
+    return QList<Budget>();
 }
 
 

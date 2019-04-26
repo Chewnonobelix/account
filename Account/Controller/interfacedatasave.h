@@ -26,7 +26,7 @@ public:
 
     virtual bool addBudget(QString) = 0;
     virtual bool removeBudget(QString) = 0;
-    virtual QList<OverBudget> selectBudgets() = 0;
+    virtual QList<Budget> selectBudgets() = 0;
 
     virtual bool init() = 0;
 };

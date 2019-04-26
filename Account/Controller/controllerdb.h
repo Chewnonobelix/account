@@ -58,7 +58,7 @@ public:
 
     virtual bool addBudget(QString);
     virtual bool removeBudget(QString);
-    virtual QList<OverBudget> selectBudgets();
+    virtual QList<Budget> selectBudgets();
 
     bool init();
 };

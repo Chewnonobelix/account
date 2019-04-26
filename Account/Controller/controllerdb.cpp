@@ -279,7 +279,7 @@ bool ControllerDB::removeBudget(QString)
     //TODO
 }
 
-QList<OverBudget> ControllerDB::selectBudgets()
+QList<Budget> ControllerDB::selectBudgets()
 {
     //TODO
 }
