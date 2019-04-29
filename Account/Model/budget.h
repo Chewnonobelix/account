@@ -41,6 +41,7 @@ public:
     bool addTarget(QDate, double);
     bool removeTarget(QDate);
     bool updateTarget(QDate, double);
+    QMap<QDate, double> targets() const;
 
     bool createSub(QDate);
     double current(QDate);
@@ -53,6 +54,8 @@ public:
 
     QDate reference() const;
     void setReference(QDate);
+
+    QMap<QDate, SubBudget> subs() const;
 
     Budget& operator = (const Budget&);
     Budget& operator <<(Entry);

@@ -228,3 +228,13 @@ void Budget::setReference(QDate d)
 {
     m_reference = d;
 }
+
+QMap<QDate, double> Budget::targets() const
+{
+    return m_targets;
+}
+
+QMap<QDate, SubBudget> Budget::subs() const
+{
+    return m_subs;
+}
