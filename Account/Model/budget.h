@@ -1,7 +1,6 @@
 #ifndef BUDGET_H
 #define BUDGET_H
 
-//TODO v2
 #include <QObject>
 #include <QSet>
 #include <QMap>
@@ -19,6 +18,8 @@ public:
 private:
     int m_id;
     QString m_category;
+    QDate m_reference;
+
     Account::FrequencyEnum m_frequency;
     QMap<QDate, double> m_targets;
     QMap<QDate, SubBudget> m_subs;
@@ -49,6 +50,9 @@ public:
 
     QString category() const;
     void setCategory(QString);
+
+    QDate reference() const;
+    void setReference(QDate);
 
     Budget& operator = (const Budget&);
     Budget& operator <<(Entry);
