@@ -28,6 +28,7 @@ public:
     void setBegin(QDate);
     QDate end() const;
     void setEnd(QDate);
+    double percent() const;
 
     bool addEntry(Entry);
     bool removeEntry(Entry);

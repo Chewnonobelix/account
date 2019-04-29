@@ -107,3 +107,9 @@ bool SubBudget::in(QDate d) const
 {
     return (begin() <= d) && (d <= end());
 }
+
+double SubBudget::percent() const
+{
+     int temp = current() / target() * 10000;
+     return temp / 100.0;
+}
