@@ -41,6 +41,10 @@ ApplicationWindow {
         }
     }
 
+    BudgetManager {
+        id: budgetManager
+    }
+
     Shortcut {
         sequence: "F"
         onActivated: openTransfert()
@@ -258,6 +262,7 @@ ApplicationWindow {
 
             MenuItem {
                 text: qsTr("Budget list")
+                onClicked: budgetManager.open()
             }
 
             MenuItem {
