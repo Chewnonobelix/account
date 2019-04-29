@@ -102,3 +102,8 @@ void SubBudget::update()
 
     m_current = temp;
 }
+
+bool SubBudget::in(QDate d) const
+{
+    return (begin() <= d) && (d <= end());
+}

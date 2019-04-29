@@ -32,6 +32,8 @@ public:
     bool addEntry(Entry);
     bool removeEntry(Entry);
     bool updateEntry(Entry);
+
+    bool in(QDate) const;
 };
 
 #endif // SUBBUDGET_H
