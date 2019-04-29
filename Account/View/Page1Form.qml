@@ -46,7 +46,7 @@ Page {
             reset()
         }
 
-        function setSize(pxpy) {
+        function setSize(px,py) {
             mX = ((mainWindow.width * px) + width) - mainWindow.width
             mY = ((mainWindow.height * py) + height) - (mainWindow.height)
 
@@ -59,7 +59,7 @@ Page {
         addingid.close()
     }
 
-    function openAdding(pXpY) {
+    function openAdding(pX, pY) {
 
         addingid.setSize(pX, pY)
 
