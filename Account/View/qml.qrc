@@ -16,5 +16,6 @@
         <file>CalendarButton.qml</file>
         <file>BudgetViewItem.qml</file>
         <file>BudgetView.qml</file>
+        <file>BudgetManager.qml</file>
     </qresource>
 </RCC>
