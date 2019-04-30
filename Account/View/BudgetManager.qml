@@ -1,31 +1,32 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
+import QtQuick.Window 2.12
 
-Popup {
+Window {
     Component.onCompleted: console.log("bb")
-        height: 640
-        width: 480
-
-        x: 640
-//        y: 480
+    height: 640
+    width: 480
+    flags: Qt.Window
+    x: 640
+    y: 50
+    //        y: 480
     AccountStyle {
         id: pageStyle
     }
-    background: Rectangle {
-        gradient: pageStyle.backgroundGradient
-    }
 
+    //    background: Rectangle {
+    //        gradient: pageStyle.backgroundGradient
+    //    }
     Rectangle {
-        color: "transparent"
+        //        color: "transparent"
         anchors.fill: parent
-
+        gradient: pageStyle.backgroundGradient
         ListModel {
             id: categoryModel
             ListElement {
                 catName: "Cat 1"
             }
-
         }
 
         ListModel {
@@ -34,14 +35,13 @@ Popup {
                 targetDate: "try1"
                 targetValue: 10.0
             }
-
         }
 
         ListModel {
             id: subModel
         }
 
-        ListView {
+        TableView {
             id: subView
             enabled: subModel.count != 0
             anchors.left: targetView.right
@@ -50,25 +50,25 @@ Popup {
 
             height: parent.height * .85
             width: parent.width * .35
-
+            //            flickingHorizontally: false
             Rectangle {
                 anchors.fill: parent
                 color: "transparent"
                 border.color: "gold"
             }
-
         }
 
-        ListView {
+        TableView {
             id: catView
             model: categoryModel
-//            enabled: subModel.count != 0
+            //            enabled: subModel.count != 0
             anchors.left: parent.left
             anchors.top: parent.top
 
             height: parent.height * .85
             width: parent.width * .30
 
+            flickableDirection: Flickable.VerticalFlick
             Rectangle {
                 anchors.fill: parent
                 color: "transparent"
@@ -76,16 +76,16 @@ Popup {
             }
 
             delegate: Rectangle {
-//                clip: true
-//                width: parent.width
-//                height: parent.height*0.10
-//                anchors.top: parent.top
-                anchors.fill: parent
-//                anchors.left: catView.left
+                //                clip: true
+                width: parent.width
+                //                height: parent.height * 0.2
+                //                anchors.top: parent.top
+                //                anchors.fill: parent
 
+                //                anchors.left: catView.left
                 Label {
 
-//                    clip: true
+                    //                    clip: true
                     anchors.fill: parent
                     text: catName
                     horizontalAlignment: Text.AlignHCenter
@@ -96,11 +96,8 @@ Popup {
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
                     acceptedButtons: Qt.NoButton
-
                 }
-
             }
-
         }
 
         Button {
@@ -135,8 +132,7 @@ Popup {
             }
         }
 
-
-        ListView {
+        TableView {
             id: targetView
             enabled: categoryModel.count != 0
             anchors.left: catView.right
@@ -157,11 +153,11 @@ Popup {
 
             delegate: Rectangle {
                 clip: true
-//                width: parent.width
-//                height: parent.height*0.10
-//                anchors.top: parent.top
-//                anchors.left: catView.left
-                anchors.fill: parent
+                //                width: parent.width
+                //                height: parent.height*0.10
+                //                anchors.top: parent.top
+                //                anchors.left: catView.left
+                //                anchors.fill: parent
                 Label {
                     anchors.fill: parent
                     text: targetDate + ": " + targetValue
@@ -169,7 +165,6 @@ Popup {
                     verticalAlignment: Text.AlignVCenter
                 }
             }
-
         }
 
         Button {
@@ -203,7 +198,5 @@ Popup {
                 gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
             }
         }
-
-
     }
 }
