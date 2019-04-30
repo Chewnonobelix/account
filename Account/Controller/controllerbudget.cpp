@@ -2,7 +2,18 @@
 
 ControllerBudget::ControllerBudget()
 {
-    //TODO
+    m_eng.load(QUrl(QStringLiteral("qrc:/BudgetManager.qml")));
+    m_view = m_eng.rootObjects().first();
+    QMetaObject::invokeMethod(m_view, "show");
+}
+
+ControllerBudget::~ControllerBudget()
+{
+}
+
+void ControllerBudget::closeManager()
+{
+    QMetaObject::invokeMethod(m_view, "close");
 }
 
 void ControllerBudget::update(int id)
