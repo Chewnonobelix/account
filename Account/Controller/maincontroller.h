@@ -61,6 +61,8 @@ public slots:
     void receiveSum();
 
     void openTransfert();
+
+    void openBudgetManager();
 };
 
 

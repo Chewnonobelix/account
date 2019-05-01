@@ -18,6 +18,7 @@ ApplicationWindow {
     signal accountChange(int index)
     signal removeAccount(string name)
     signal openTransfert
+    signal openBudgetManager()
 
     id: mainWindow
 
@@ -39,10 +40,6 @@ ApplicationWindow {
             x = swipeView.width / 2 - width / 2
             y = swipeView.height / 2 - height / 2
         }
-    }
-
-    BudgetManager {
-        id: budgetManager
     }
 
     Shortcut {
@@ -262,7 +259,7 @@ ApplicationWindow {
 
             MenuItem {
                 text: qsTr("Budget list")
-                onClicked: budgetManager.open()
+                onClicked: mainWindow.openBudgetManager()
             }
 
             MenuItem {
