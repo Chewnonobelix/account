@@ -424,7 +424,7 @@ Page {
         }
 
         function selectFromId(id) {
-            for (; i < defaultModel.count; i++) {
+            for (i = 0; i < defaultModel.count; i++) {
                 if (defaultModel.get(i).id === id) {
                     setNewIndex(i)
                 }

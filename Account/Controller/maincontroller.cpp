@@ -87,6 +87,8 @@ int MainController::exec()
         connect(&m_transfert, ControllerTransfert::s_finish, this, MainController::selection);
     }
 
+    connect(root, SIGNAL(openBudgetManager()), this, SLOT(openBudgetManager()));
+
     return 0;
 }
 
@@ -464,4 +466,9 @@ void MainController::receiveSum()
 void MainController::openTransfert()
 {
     m_transfert.exec();
+}
+
+void MainController::openBudgetManager()
+{
+    m_budget.exec();
 }

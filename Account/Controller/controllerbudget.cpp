@@ -4,7 +4,6 @@ ControllerBudget::ControllerBudget()
 {
     m_eng.load(QUrl(QStringLiteral("qrc:/BudgetManager.qml")));
     m_view = m_eng.rootObjects().first();
-    QMetaObject::invokeMethod(m_view, "show");
 }
 
 ControllerBudget::~ControllerBudget()
@@ -38,6 +37,12 @@ bool ControllerBudget::addTo(int id)
     return ret;
 }
 
+void ControllerBudget::openManager()
+{
+    if(m_view)
+        QMetaObject::invokeMethod(m_view, "show");
+}
+
 bool ControllerBudget::removeFrom(int id)
 {
     bool ret = false;
@@ -51,7 +56,7 @@ bool ControllerBudget::removeFrom(int id)
 
 int ControllerBudget::exec()
 {
-    //TODO
+    openManager();
     return 0;
 }
 

@@ -26,6 +26,7 @@ public:
     bool removeFrom(int);
 
     int exec();
+    void openManager();
 
 public slots:
     void open(QString);
