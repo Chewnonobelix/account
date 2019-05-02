@@ -253,16 +253,16 @@ bool ControllerDB::removeCategory(QString name)
     return false;
 }
 
-QMap<QString, QString> ControllerDB::selectCategory()
+QMultiMap<QString, QString> ControllerDB::selectCategory()
 {
-    QMap<QString, QString> ret;
+    QMultiMap<QString, QString> ret;
     if(isConnected() && m_selectCategory->exec())
     {
         while(m_selectCategory->next())
         {
             QString name = m_selectCategory->value("name").toString();
             QString type = m_selectCategory->value("type").toString();
-            ret[name] = type;
+            ret.insert(type, name);
         }
     }
 

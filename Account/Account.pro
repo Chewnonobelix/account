@@ -1,5 +1,5 @@
 QT += quick sql core xml widgets charts qml gui
-CONFIG += c++11
+CONFIG += c++14
 
 ##Command de deploiement: windeployeqt --qmldir %{sourceDir}\Account\View
 # The following define makes your compiler emit warnings if you use
@@ -20,7 +20,7 @@ SOURCES += \
     Model/entry.cpp \
     Model/information.cpp \
     Model/total.cpp \
-    Model/categories.cpp \
+#    Model/categories.cpp \
     Controller/abstractcontroller.cpp \
     Controller/controllerdb.cpp \
     Controller/maincontroller.cpp \
@@ -57,7 +57,7 @@ HEADERS += \
     Model/information.h \
     Model/subbudget.h \
     Model/total.h \
-    Model/categories.h \
+#    Model/categories.h \
     Controller/abstractcontroller.h \
     Controller/controllerdb.h \
     Controller/maincontroller.h \

@@ -3,6 +3,7 @@
 
 #include <QDate>
 #include <QString>
+#include <QMetaEnum>
 #include "entry.h"
 
 class Total

@@ -322,14 +322,15 @@ bool ControllerXML::removeCategory(QString name)
     return false;
 }
 
-QMap<QString, QString> ControllerXML::selectCategory()
+QMultiMap<QString, QString> ControllerXML::selectCategory()
 {
     auto categories = m_document.documentElement().elementsByTagName("category");
-    QMap<QString, QString> ret;
+    QMultiMap<QString, QString> ret;
     for(int i = 0; i < categories.size(); i++)
     {
         QDomElement el = categories.at(i).toElement();
-        ret[el.text()] = el.attribute("type");
+//        ret[el.text()] = el.attribute("type");
+        ret.insert(el.attribute("type"), el.text());
     }
 
     return ret;

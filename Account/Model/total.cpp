@@ -1,8 +1,10 @@
 #include "total.h"
+#include "accountglobal.h"
 
 
 #include <QDebug>
 
+using namespace Account;
 Total::Total(): m_value(0)
 {
 
@@ -26,7 +28,7 @@ Total operator+(const Entry& e1, const Entry& e2)
 {
     Total ret;
 
-    QMetaEnum qme = QMetaEnum::fromType<Categories::Type>();
+    QMetaEnum qme = QMetaEnum::fromType<TypeEnum>();
 
     ret.setValue((qme.keyToValue(e1.type().toLower().toLatin1())*e1.value()) + (qme.keyToValue(e1.type().toLower().toLatin1())*e2.value()));
     ret.setDate(Total::maxDate(e1.date(), e2.date()));
@@ -47,7 +49,7 @@ Total operator + (const Total& t, const Total& t2)
 
 Total operator + (const Total& t, const Entry& e)
 {
-    QMetaEnum qme = QMetaEnum::fromType<Categories::Type>();
+    QMetaEnum qme = QMetaEnum::fromType<TypeEnum>();
     Total ret;
     ret.setValue(t.value() + (qme.keyToValue(e.type().toLower().toLatin1())*e.value()));
     ret.setDate(Total::maxDate(t.date(), e.date()));
