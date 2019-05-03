@@ -64,7 +64,7 @@ Page {
         addingid.setSize(pX, pY)
 
         if (cal.selectedDates.length > 0) {
-            for (index in cal.selectedDates) {
+            for (var index in cal.selectedDates) {
                 addingid.addDate(cal.selectedDates[index])
             }
         } else {
@@ -172,7 +172,7 @@ Page {
         }
 
         function sort(roleorder) {
-            for (; i < count; i++) {
+            for (var i = 0; i < count; i++) {
                 for (; j < count; j++) {
                     if (order === Qt.AscendingOrder) {
                         if (get(j)[role] < get(i)[role]) {
@@ -636,25 +636,21 @@ Page {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
 
-                ToolTip.text: styleData.value
-                ToolTip.visible: styleData.hovered
-                ToolTip.timeout: 500
+//                ToolTip.text: styleData.value
+//                ToolTip.visible: styleData.hovered
+//                ToolTip.timeout: 500
 
                 onClicked: {
-                    if (view.selection.contains(styleData.row)) {
-                        view.selection.clear()
-                    } else {
-                        view.selection.clear()
-                        view.selection.select(styleData.row)
-                    }
-
-                    if (view.currentIndex !== styleData.row) {
-                        view.currentIndex = styleData.row
-                    } else {
-                        view.unselectAll()
-                    }
+                    view.setNewIndex(styleData.row)
+//                    if (view.selection.contains(styleData.row)) {
+////                        view.selection.clear()
+//                        view.unselectAll()                        
+//                    } else {
+//                        view.unselectAll()                        
+//                        view.selection.select(styleData.row)
+//                    }
                 }
-            }
+            }            
         }
 
         rowDelegate: Rectangle {
@@ -663,18 +659,18 @@ Page {
             width: parent.width
             height: 20
 
-            gradient: styleData.selected ? defaultModel.get(
-                                               styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
+            
+            gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
         }
 
         onCurrentIndexChanged: {
+            var cItem =  defaultModel.get(currentIndex)
             infoView.visible = (currentIndex !== -1)
-                    && (defaultModel.get(currentIndex).label !== "Initial")
-            remove.enabled = (view.currentIndex !== -1)
-                    && (defaultModel.get(view.currentIndex).label !== "Initial")
+                    && (cItem.label !== "Initial")
+            remove.enabled = infoView.visible
 
             if (currentIndex !== -1)
-                s_view(defaultModel.get(currentIndex).id)
+                s_view(cItem.id)
         }
     }
 
