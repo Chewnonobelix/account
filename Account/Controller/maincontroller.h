@@ -49,8 +49,6 @@ public slots:
 
     void update(Entry);
 
-    void addCategory(QString, QString);
-
     void loadAccount();
 
     void validateCheckEstimated();

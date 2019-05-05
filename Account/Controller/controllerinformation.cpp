@@ -1,119 +1,91 @@
 #include "controllerinformation.h"
 
-ControllerInformation::ControllerInformation(): QObject(nullptr)
+ControllerInformation::ControllerInformation(): AbstractController()
 {
 }
 
-ControllerInformation::~ControllerInformation() {}
-
-void ControllerInformation::labelEdit(QString l)
+ControllerInformation::~ControllerInformation()
 {
-    Information i = m_entry.info();
-    i.setTitle(l);
-
-    m_entry.setInfo(i);
-
-    show();
-    s_update(m_entry);
 }
 
-void ControllerInformation::estimatedEdit(bool e)
+int ControllerInformation::exec()
 {
-    Information i = m_entry.info();
-    i.setEstimated(e);
-
-    m_entry.setInfo(i);
-
-    s_update(m_entry);
-    show();
+    return 0;
 }
 
-void ControllerInformation::valueChanged(double value)
+void ControllerInformation::configure(QObject * view)
+{
+    m_view = view;
+
+    if(m_view)
+    {
+        connect(m_view, SIGNAL(s_titleChanged(QString)), this, SLOT(titleChange(QString)));
+        connect(m_view, SIGNAL(s_valueChanged(double)), this, SLOT(valueChange(double)));
+    }
+}
+
+void ControllerInformation::view(int id)
+{
+    m_entry = AbstractController::entry(id);
+
+    QObject * entryItem, * infoItem, *catItem;
+    entryItem = m_view->findChild<QObject*>("entry");
+    infoItem = m_view->findChild<QObject*>("infoModel");
+    catItem = m_view->findChild<QObject*>("category");
+
+    if(entryItem)
+    {
+        entryItem->setProperty("id", id);
+        entryItem->setProperty("value", m_entry.value());
+    }
+
+    if(infoItem)
+    {
+        infoItem->setProperty("estimated", m_entry.info().estimated());
+        infoItem->setProperty("title", m_entry.info().title());
+        infoItem->setProperty("type", m_entry.info().category());
+    }
+
+    QStringList catList = categories(m_entry.type());
+    catList<<"";
+    if(catItem)
+    {
+        catItem->setProperty("model", catList);
+        connect(catItem, SIGNAL(s_currentTextChanged(QString)), this, SLOT(categoryChange(QString)));
+        connect(catItem, SIGNAL(s_addCategory(QString)), this, SLOT(addNewCategory(QString)));
+    }
+}
+
+void ControllerInformation::titleChange(QString title)
+{
+    Information info = m_entry.info();
+    info.setTitle(title);
+    m_entry.setInfo(info);
+
+    updateEntry(m_entry);
+}
+
+void ControllerInformation::valueChange(double value)
 {
     m_entry.setValue(value);
-    s_update(m_entry);
-    show();
+
+    updateEntry(m_entry);
 }
 
-void ControllerInformation::catChanged(QString cat)
+void ControllerInformation::categoryChange(QString cat)
 {
-    Information i = m_entry.info();
-    i.setCategory(cat);
+    Information info = m_entry.info();
+    info.setCategory(cat);
+    m_entry.setInfo(info);
 
-    m_entry.setInfo(i);
-
-    s_update(m_entry);
-//    show();
+    updateEntry(m_entry);
 }
 
-void ControllerInformation::show()
+void ControllerInformation::addNewCategory(QString cat)
 {
-    m_view->setProperty("opening", true);
-    QObject* model =  m_view->findChild<QObject*>("entry");
-    if(model)
-    {
-        model->setProperty("id", m_entry.id());
-        model->setProperty("value", m_entry.value());
-    }
-
-    model = m_view->findChild<QObject*>("infoModel");
-    if(model)
-    {
-        model->setProperty("estimated", m_entry.info().estimated());
-        model->setProperty("title", m_entry.info().title());
-        model->setProperty("type", m_entry.info().category());
-    }
-
-    model = m_view->findChild<QObject*>("category");
-
-    if(model)
-        QMetaObject::invokeMethod(model, "setting", Q_ARG(QVariant, m_entry.info().category()));
-
-    m_view->setProperty("opening", false);
-
-}
-
-void ControllerInformation::set(Entry e, QObject* v)
-{
-    m_entry = e;
-    m_view = v;
-
-    QObject* combo = v->findChild<QObject*>("category");
-    if(combo)
-    {
-        QString type = e.type();
-        QStringList cat = AbstractController::categories(type);
-        cat<<"";
-
-        combo->setProperty("model", cat);
-        connect(combo, SIGNAL(s_addCategory(QString)), this, SLOT(addCategory(QString)));
-        connect(combo, SIGNAL(s_currentTextChanged(QString)), this, SLOT(catChanged(QString)));
-    }
-
-    connect(v, SIGNAL(s_titleChanged(QString)), this, SLOT(labelEdit(QString)));
-    connect(v, SIGNAL(s_estimatedChanged(bool)), this, SLOT(estimatedEdit(bool)));
-    connect(v, SIGNAL(s_valueChanged(double)), this, SLOT(valueChanged(double)));
-    show();
+    addCategory(cat, m_entry.type());
+    categoryChange(cat);
+    view(m_entry.id());
 }
 
 
-void ControllerInformation::addCategory(QString name)
-{
-    emit s_addCategory(name, m_entry.type());
-    Information i = m_entry.info();
-    i.setCategory(name);
-    m_entry.setInfo(i);
-
-    QObject* combo = m_view->findChild<QObject*>("category");
-    if(combo)
-    {
-        QString type = m_entry.type();
-        QStringList cat = AbstractController::categories(type);
-        cat<<"";
-        combo->setProperty("model", cat);
-        connect(combo, SIGNAL(s_addCategory(QString)), this, SLOT(addCategory(QString)));
-        connect(combo, SIGNAL(s_currentTextChanged(QString)), this, SLOT(catChanged(QString)));
-    }
-
-    show();
-}

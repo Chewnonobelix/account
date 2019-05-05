@@ -26,6 +26,10 @@ Item {
         property bool estimated
         property string title
         property string type
+
+        onTypeChanged: {
+            category.setting(type)
+        }
     }
 
     signal s_titleChanged(string title)

@@ -5,7 +5,6 @@ MainController::MainController(): AbstractController()
 {
     //AbstractController::initTestEntry();
 
-    connect(&m_info, ControllerInformation::s_addCategory, this, addCategory);
     connect(&m_graph, GraphController::s_sum, this, receiveSum);
 
 }
@@ -58,8 +57,6 @@ int MainController::exec()
     if(xml)
         connect(xml, SIGNAL(s_xml()), this, SLOT(toXml()));
 
-    connect(&m_info, SIGNAL(s_update(Entry)), this, SLOT(update(Entry)));
-
     QObject* graph = root->findChild<QObject*>("chart");
     if(graph)
     {
@@ -88,6 +85,13 @@ int MainController::exec()
     }
 
     connect(root, SIGNAL(openBudgetManager()), this, SLOT(openBudgetManager()));
+
+    QObject* info = root->findChild<QObject*>("infoView");
+
+    if(info)
+    {
+        m_info.configure(info);
+    }
 
     return 0;
 }
@@ -179,13 +183,7 @@ void MainController::remove(int id)
 
 void MainController::edit(int id)
 {
-    QObject* info = m_engine.rootObjects().first()->findChild<QObject*>("infoView");
-
-    if(info)
-    {
-        Entry e = AbstractController::entry(id);
-        m_info.set(e, info);
-    }
+    m_info.view(id);
 }
 
 void MainController::previewCalendar()
