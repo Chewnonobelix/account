@@ -81,7 +81,7 @@ Page {
         //        height: 50
         width: cal.width
         enabled: accountSelect.model.length > 0
-        Component.onCompleted: console.log("XXX", height)
+
         Button {
             id: add
             text: qsTr("Add")

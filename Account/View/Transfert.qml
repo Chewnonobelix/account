@@ -174,7 +174,6 @@ Popup {
             objectName: "fieldInfo"
             width: layoutButton.width
 
-            onWidthChanged: console.log("width", width)
             ToolTip.text: qsTr("Please complete the entry's title")
             ToolTip.visible: background.border.color === "#ff0000"
         }

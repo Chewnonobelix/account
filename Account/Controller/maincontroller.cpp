@@ -356,11 +356,6 @@ void MainController::toXml()
     qDebug()<<ret;
 }
 
-void MainController::addCategory(QString name, QString type)
-{
-    AbstractController::addCategory(name, type);
-}
-
 void MainController::loadAccount()
 {
     QObject* combo = m_engine.rootObjects().first()->findChild<QObject*>("accountSelect");
