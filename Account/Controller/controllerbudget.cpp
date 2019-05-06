@@ -2,8 +2,10 @@
 
 ControllerBudget::ControllerBudget()
 {
-    m_eng.load(QUrl(QStringLiteral("qrc:/BudgetManager.qml")));
+    m_eng.load(QUrl(QStringLiteral("qrc:/Budget/BudgetManager.qml")));
     m_view = m_eng.rootObjects().first();
+
+    connect(m_view, SIGNAL(s_budgetChanged(QString)), this, SLOT(addBudget(QString)));
 }
 
 ControllerBudget::~ControllerBudget()
@@ -45,17 +47,15 @@ void ControllerBudget::openManager()
         
         auto incomes = categories("income");
         auto outcomes = categories("outcome");
-        
-        qDebug()<<incomes<<outcomes;
-        
+                
         auto func = [&](QString type, QStringList list) {
             for(auto it: list)
             {
                 QVariantMap map;
                 map.insert("type", type);
                 map.insert("catName", it);
-//                map.insert("has", m_budgets.contains(it));
-                map.insert("has", true);
+                map.insert("has", m_budgets.contains(it));
+//                map.insert("has", true);
                 
                 QMetaObject::invokeMethod(m_view, "add", Q_ARG(QVariant, map));
             }
@@ -108,20 +108,33 @@ void ControllerBudget::removeTarget(QString cat, QDate date)
         m_budgets[cat].removeTarget(date);
 }
 
-void ControllerBudget::addBudget(QString cat, QDate date, Account::FrequencyEnum f)
+//void ControllerBudget::addBudget(QString cat, QDate date, Account::FrequencyEnum f)
+//{
+//    if(!m_budgets.contains(cat))
+//    {
+//        Budget b;
+//        b.setCategory(cat);
+//        b.setReference(date);
+//        b.setFrequency(f);
+//        m_budgets[cat] = b;
+//    }
+//}
+
+void ControllerBudget::addBudget(QString name)
 {
-    if(!m_budgets.contains(cat))
+    qDebug()<<name;
+
+    if(m_budgets.contains(name))
+        m_budgets.remove(name);
+    else
     {
         Budget b;
-        b.setCategory(cat);
-        b.setReference(date);
-        b.setFrequency(f);
-        m_budgets[cat] = b;
+        m_budgets[name] = b;
     }
+
+    openManager();
 }
 
-void ControllerBudget::removeBudget(QString cat)
+void ControllerBudget::editBudget(QString cat)
 {
-    if(m_budgets.contains(cat))
-        m_budgets.remove(cat);
 }

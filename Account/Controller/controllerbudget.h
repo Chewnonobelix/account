@@ -34,8 +34,11 @@ public slots:
     void closeManager();
     void addTarget(QString, QDate, double);
     void removeTarget(QString, QDate);
-    void addBudget(QString, QDate, Account::FrequencyEnum);
-    void removeBudget(QString);
+
+//    void addBudget(QString, QDate, Account::FrequencyEnum);
+
+    void addBudget(QString);
+    void editBudget(QString);
 };
 
 #endif // CONTROLLERBUDGET_H
