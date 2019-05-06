@@ -3,13 +3,14 @@ import QtCharts 2.2
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.4
+import "../Style" as S
 
 Rectangle {
     implicitWidth: parent.width
     implicitHeight: parent.height
     id: pageChart
 
-    AccountStyle {
+    S.AccountStyle {
         id: pageStyle
     }
 

@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 1.4
 import QtQuick.controls.Styles 1.4
+import "../Style"
 
 Window {
     height: 640
@@ -12,31 +13,21 @@ Window {
     x: 640
     y: 50
     
-    Menu {
-        id: catMenu
-        
-        MenuItem {
-            text: "menu1"
-        }
-        
-        MenuItem {
-            text: "menu2"
-        }
-        
-    }
-    
+    id: budgetManager
+
+    signal s_budgetChanged(string name)
+    signal s_budgetRefrence(string name)
+
     AccountStyle {
         id: pageStyle
     }
     
     function add(cat) {
-        console.log(cat.catName, cat.type, cat.has)
         categoryModel.append(cat)
     } 
     
     function clear() {
         categoryModel.clear()
-        console.log("Clear", categoryModel.count)
     }
     
     ListModel {
@@ -87,6 +78,7 @@ Window {
             
             backgroundVisible: false
             
+
             section.property: "type"
             section.criteria: ViewSection.FullString
             section.delegate: Rectangle {
@@ -109,7 +101,7 @@ Window {
                 color: "transparent"
                 Label {
                     id: catDisplay
-                    color: styleData.row !== -1 && categoryModel.get(styleData.row).has ? "green" : "red"
+                    color: styleData.row !== -1 && categoryModel.get(styleData.row).has ? "black" : "red"
                     anchors.fill: parent
                     text: styleData.value
                     horizontalAlignment: Text.AlignHCenter
@@ -124,14 +116,28 @@ Window {
                         if(mouse.button === Qt.LeftButton) {
                             catView.selection.clear()
                             catView.selection.select(styleData.row)
-                            console.log(styleData.row, catView.selection.count)
                         }
                         else {
                             catMenu.popup()
-                            catMenu.visible = true
-                            console.log("Row", styleData.row, styleData.value)
                         }
                     }
+                }
+
+                Menu {
+                    id: catMenu
+
+                    MenuItem {
+                        text: styleData.row !== -1 && categoryModel.get(styleData.row).has ? "Remove budget" : "Add budget"
+
+                        onTriggered: budgetManager.s_budgetChanged(styleData.value)
+                    }
+
+                    MenuItem {
+                        text: "Edit budget reference"
+                        visible: styleData.row !== -1 && categoryModel.get(styleData.row).has
+                        onTriggered: budgetManager.s_budgetReference(styleData.value)
+                    }
+
                 }
             }
             

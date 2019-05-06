@@ -2,9 +2,12 @@ import QtQuick 2.12
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
+import "../Style" as S
+import "../Core" as C
+//import Account 1.0
 
 Popup {
-    AccountStyle {
+    S.AccountStyle {
         id: pageStyle
     }
 
@@ -35,7 +38,7 @@ Popup {
         gradient: pageStyle.backgroundGradient
     }
 
-    CalendarButton {
+    C.CalendarButton {
         id: dateField
         objectName: "dateField"
 
@@ -164,7 +167,7 @@ Popup {
             }
         }
 
-        DoubleSpinBox {
+        C.DoubleSpinBox {
             id: spinVal
             objectName: "spinVal"
         }

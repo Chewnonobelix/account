@@ -2,13 +2,14 @@ import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.12
+import "../Style" as S
 
 Item {
     id: info
     objectName: "info"
 
     property bool opening: false
-    AccountStyle {
+    S.AccountStyle {
         id: pageStyle
     }
     property int maximum: Screen.width * .55 - 10

@@ -16,7 +16,7 @@ MainController::~MainController()
 
 int MainController::exec()
 {
-    m_engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    m_engine.load(QUrl(QStringLiteral("qrc:/Core/Main.qml")));
 
     if (m_engine.rootObjects().isEmpty())
         return -1;
