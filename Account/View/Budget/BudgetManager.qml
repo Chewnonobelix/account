@@ -18,6 +18,8 @@ Window {
     signal s_budgetChanged(string name)
     signal s_budgetRefrence(string name)
 
+    onWidthChanged: show()
+    onHeightChanged: show()
     AccountStyle {
         id: pageStyle
     }
@@ -84,8 +86,10 @@ Window {
             section.delegate: Rectangle {
                 gradient: pageStyle.goldHeader
                 width: parent.width
-                height: parent.height * 0.15
+                height: parent.height * .25
+                Component.onCompleted: console.log(parent, catView)
                 Label {
+
                     anchors.fill: parent
                     text: section
                     horizontalAlignment: Text.AlignHCenter
@@ -97,12 +101,12 @@ Window {
             
             itemDelegate: Rectangle {
                 width: parent.width
-                height: parent.height * 0.15
+//                height: catView.height * .20
                 color: "transparent"
                 Label {
                     id: catDisplay
                     color: styleData.row !== -1 && categoryModel.get(styleData.row).has ? "black" : "red"
-                    anchors.fill: parent
+                    anchors.centerIn: parent
                     text: styleData.value
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
@@ -137,7 +141,7 @@ Window {
 
                     Control2.MenuItem {
                         text: "Edit budget reference"
-                        visible: styleData.row !== -1 && categoryModel.get(styleData.row).has
+                        enabled: styleData.row !== -1 && categoryModel.get(styleData.row).has
                         onTriggered: budgetManager.s_budgetReference(styleData.value)
                         background: Rectangle {
                             gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
@@ -149,6 +153,7 @@ Window {
             
             rowDelegate: Rectangle {
                 gradient: styleData.selected ? pageStyle.calSelect : pageStyle.unselectView
+//                height: parent.height * .25
             }
             
             TableViewColumn {
@@ -165,6 +170,7 @@ Window {
             style: TableViewStyle {
                 rowDelegate: Rectangle {
                     color: "transparent"
+//                    height: parent.height * .25
                 }
             }
             
