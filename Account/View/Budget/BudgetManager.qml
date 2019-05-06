@@ -1,5 +1,5 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.5
+import QtQuick.Controls 2.5 as Control2
 import QtQuick.Layouts 1.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 1.4
@@ -24,7 +24,7 @@ Window {
     
     function add(cat) {
         categoryModel.append(cat)
-    } 
+    }
     
     function clear() {
         categoryModel.clear()
@@ -89,7 +89,7 @@ Window {
                     anchors.fill: parent
                     text: section
                     horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter                    
+                    verticalAlignment: Text.AlignVCenter
                 }
             }
             
@@ -123,21 +123,27 @@ Window {
                     }
                 }
 
-                Menu {
+                Control2.Menu {
                     id: catMenu
 
-                    MenuItem {
+                    Control2.MenuItem {
                         text: styleData.row !== -1 && categoryModel.get(styleData.row).has ? "Remove budget" : "Add budget"
 
                         onTriggered: budgetManager.s_budgetChanged(styleData.value)
+                        background: Rectangle {
+                            gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
+                        }
                     }
 
-                    MenuItem {
+                    Control2.MenuItem {
                         text: "Edit budget reference"
                         visible: styleData.row !== -1 && categoryModel.get(styleData.row).has
                         onTriggered: budgetManager.s_budgetReference(styleData.value)
-                    }
+                        background: Rectangle {
+                            gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
 
+                        }
+                    }
                 }
             }
             
