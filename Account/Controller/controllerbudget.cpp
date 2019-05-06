@@ -40,7 +40,32 @@ bool ControllerBudget::addTo(int id)
 void ControllerBudget::openManager()
 {
     if(m_view)
+    {
+        QMetaObject::invokeMethod(m_view, "clear");
+        
+        auto incomes = categories("income");
+        auto outcomes = categories("outcome");
+        
+        qDebug()<<incomes<<outcomes;
+        
+        auto func = [&](QString type, QStringList list) {
+            for(auto it: list)
+            {
+                QVariantMap map;
+                map.insert("type", type);
+                map.insert("catName", it);
+//                map.insert("has", m_budgets.contains(it));
+                map.insert("has", true);
+                
+                QMetaObject::invokeMethod(m_view, "add", Q_ARG(QVariant, map));
+            }
+        };
+        
+        func("income", incomes);
+        func("outcome", outcomes);
+        
         QMetaObject::invokeMethod(m_view, "show");
+    }
 }
 
 bool ControllerBudget::removeFrom(int id)
