@@ -20,6 +20,7 @@ Window {
 
     onWidthChanged: show()
     onHeightChanged: show()
+    
     AccountStyle {
         id: pageStyle
     }
@@ -86,14 +87,16 @@ Window {
             section.delegate: Rectangle {
                 gradient: pageStyle.goldHeader
                 width: parent.width
-                height: parent.height * .25
+                height: parent.height * .15
                 Component.onCompleted: console.log(parent, catView)
                 Label {
-
                     anchors.fill: parent
                     text: section
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
+                    fontSizeMode: Text.Fit
+                    font.family: pageStyle.title.name
+                    font.pixelSize: pageStyle.title.size2
                 }
             }
             
@@ -101,7 +104,7 @@ Window {
             
             itemDelegate: Rectangle {
                 width: parent.width
-//                height: catView.height * .20
+                height: 40
                 color: "transparent"
                 Label {
                     id: catDisplay
@@ -110,6 +113,9 @@ Window {
                     text: styleData.value
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
+                    fontSizeMode: Text.Fit
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
                 }
                 MouseArea {
                     anchors.fill: parent
@@ -168,6 +174,7 @@ Window {
             }
             
             style: TableViewStyle {
+ 
                 rowDelegate: Rectangle {
                     color: "transparent"
 //                    height: parent.height * .25
