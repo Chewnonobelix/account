@@ -17,5 +17,6 @@
         <file>Budget/BudgetViewItem.qml</file>
         <file>Budget/BudgetView.qml</file>
         <file>Budget/BudgetManager.qml</file>
+        <file>Budget/ReferenceView.qml</file>
     </qresource>
 </RCC>
