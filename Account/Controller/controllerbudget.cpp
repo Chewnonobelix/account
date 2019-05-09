@@ -6,6 +6,7 @@ ControllerBudget::ControllerBudget()
     m_view = m_eng.rootObjects().first();
 
     connect(m_view, SIGNAL(s_budgetChanged(QString)), this, SLOT(addBudget(QString)));
+    connect(m_view, SIGNAL(s_budgetReference(QString)), this, SLOT(editBudget(QString)));
 }
 
 ControllerBudget::~ControllerBudget()
@@ -137,4 +138,10 @@ void ControllerBudget::addBudget(QString name)
 
 void ControllerBudget::editBudget(QString cat)
 {
+    qDebug()<<"Reference"<<cat;
+    QQmlComponent referenceComp(&m_eng, QUrl(QStringLiteral("qrc:/Budget/ReferenceView.qml"))); 
+    QObject* obj = referenceComp.create();
+    qDebug()<<obj;
+    QMetaObject::invokeMethod(obj, "show");
+    
 }

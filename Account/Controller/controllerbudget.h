@@ -2,7 +2,8 @@
 #define CONTROLLERBUDGET_H
 
 #include <QQmlApplicationEngine>
-
+#include <QQmlComponent>
+#include <QQuickItem>
 
 #include "Model/budget.h"
 #include "abstractcontroller.h"

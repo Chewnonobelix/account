@@ -10,13 +10,13 @@ Window {
     height: 640
     width: 480
     flags: Qt.Window
-    x: 640
-    y: 50
+    x: screen.width / 2 - width / 2
+    y: screen.height / 2 - height / 2
     
     id: budgetManager
 
     signal s_budgetChanged(string name)
-    signal s_budgetRefrence(string name)
+    signal s_budgetReference(string name)
 
     onWidthChanged: show()
     onHeightChanged: show()
