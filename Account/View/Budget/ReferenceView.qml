@@ -26,8 +26,8 @@ Window {
     color: "transparent"
     
     Rectangle {
-        width: ( col2.x + col2.width) - col1.x
-        height: ( row1.y + row1.height) - col2.y        
+        width: (( col2.x + col2.width) - col1.x) * 1.05
+        height: (( row1.y + row1.height) - col2.y) * 1.05   
         
         border.color: "gold"
         gradient: pageStyle.backgroundGradient
