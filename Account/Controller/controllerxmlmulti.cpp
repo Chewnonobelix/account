@@ -341,12 +341,18 @@ bool ControllerXMLMulti::addBudget(const Budget& b)
     int id = maxId(m_budgetId) + 1;
     m_budgetId<<id;
     el.setAttribute("id", id);
-    QDomElement child = m_currentAccount.createElement("name");
-    auto t = m_currentAccount.createTextNode("");
-    t.setNodeValue(b.category());
-    child.appendChild(t);
-    el.appendChild(child);
-    //TODO
+
+    auto textNode = [&](QString tagname, QString value)
+    {
+        QDomElement el3 = m_currentAccount.createElement(tagname);
+        QDomText txt = m_currentAccount.createTextNode(value);
+        el3.appendChild(txt);
+        el.appendChild(el3);
+    };
+
+    textNode("name", b.category());
+    textNode("reference",  b.reference().toString("dd-MM-yyyy"));
+    textNode("frequency", QString::number((int)b.frequency()));
 
     root.appendChild(el);
     close();
