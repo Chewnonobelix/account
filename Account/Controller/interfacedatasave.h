@@ -25,9 +25,10 @@ public:
     virtual bool removeCategory(QString) = 0;
     virtual QMultiMap<QString, QString> selectCategory() = 0;
 
-    virtual bool addBudget(QString) = 0;
-    virtual bool removeBudget(QString) = 0;
+    virtual bool addBudget(const Budget&) = 0;
+    virtual bool removeBudget(const Budget&) = 0;
     virtual QList<Budget> selectBudgets() = 0;
+    virtual bool updateBudget(const Budget&) = 0;
 
     virtual bool init() = 0;
 };

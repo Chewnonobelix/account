@@ -44,10 +44,11 @@ public:
     virtual bool removeCategory(QString);
     virtual QMultiMap<QString, QString> selectCategory();
 
-    virtual bool addBudget(QString);
-    virtual bool removeBudget(QString);
+    virtual bool addBudget(const Budget&);
+    virtual bool removeBudget(const Budget&);
     virtual QList<Budget> selectBudgets();
-
+    virtual bool updateBudget(const Budget &);
+    
     virtual bool init();
 };
 

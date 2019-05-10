@@ -336,12 +336,12 @@ QMultiMap<QString, QString> ControllerXML::selectCategory()
     return ret;
 }
 
-bool ControllerXML::addBudget(QString)
+bool ControllerXML::addBudget(const Budget&)
 {
     //TODO
 }
 
-bool ControllerXML::removeBudget(QString)
+bool ControllerXML::removeBudget(const Budget &)
 {
     //TODO
 }
@@ -349,6 +349,12 @@ bool ControllerXML::removeBudget(QString)
 QList<Budget> ControllerXML::selectBudgets()
 {
     //TODO
+}
+
+bool ControllerXML::updateBudget(const Budget &)
+{
+    //TODO
+    return false;
 }
 
 bool ControllerXML::updateEntry(const Entry & e)
