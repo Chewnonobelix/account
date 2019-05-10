@@ -341,6 +341,13 @@ bool ControllerXMLMulti::addBudget(const Budget& b)
     int id = maxId(m_budgetId) + 1;
     m_budgetId<<id;
     el.setAttribute("id", id);
+    QDomElement child = m_currentAccount.createElement("name");
+    auto t = m_currentAccount.createTextNode("");
+    t.setNodeValue(b.category());
+    child.appendChild(t);
+    el.appendChild(child);
+    //TODO
+
     root.appendChild(el);
     close();
     return false;

@@ -133,6 +133,7 @@ void ControllerBudget::addBudget(QString name)
     else
     {
         Budget b;
+        b.setCategory(name);
         m_budgets[name] = b;
         m_db->addBudget(b);
     }
