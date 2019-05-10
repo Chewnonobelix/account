@@ -392,10 +392,16 @@ QList<Budget> ControllerXMLMulti::selectBudgets()
             b.setId(el.attribute("id").toInt());
             QDomElement child = el.elementsByTagName("name").at(0).toElement();
             b.setCategory(child.text());
-
+            child = el.elementsByTagName("reference").at(0).toElement();
+            b.setReference(QDate::fromString(child.text(), "dd-MM-yyyy"));
+            child = el.elementsByTagName("frequency").at(0).toElement();
+            int f = child.text().toInt();
+            b.setFrequency((Account::FrequencyEnum)f);
             //TODO
 
             ret<<b;
+
+            qDebug()<<"Load"<<b.id()<<b.category()<<b.reference()<<b.frequency();
     }
 
     return ret;;

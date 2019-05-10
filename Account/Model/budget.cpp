@@ -1,6 +1,6 @@
 #include "budget.h"
 
-Budget::Budget(): m_id(-1)
+Budget::Budget(): m_id(-1), m_reference(QDate::currentDate()), m_frequency(Account::FrequencyEnum::unique)
 {
 }
 
