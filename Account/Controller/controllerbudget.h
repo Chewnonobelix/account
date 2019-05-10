@@ -28,6 +28,8 @@ public:
 
     int exec();
     void openManager();
+    void reload();
+
 
 public slots:
     void open(QString);

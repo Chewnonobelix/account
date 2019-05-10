@@ -361,8 +361,29 @@ bool ControllerXMLMulti::removeBudget(const Budget &b)
 
 QList<Budget> ControllerXMLMulti::selectBudgets()
 {
-    //TODO
-    return QList<Budget>();
+    QList<Budget> ret;
+
+    QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+
+    if(root.isNull())
+        root = m_currentAccount.createElement("database");
+
+    QDomNodeList list = root.elementsByTagName("budget");
+
+    for(int i = 0; i < list.size(); i++)
+    {
+            QDomElement el = list.at(i).toElement();
+            Budget b;
+            b.setId(el.attribute("id").toInt());
+            QDomElement child = el.elementsByTagName("name").at(0).toElement();
+            b.setCategory(child.text());
+
+            //TODO
+
+            ret<<b;
+    }
+
+    return ret;;
 }
 
 bool ControllerXMLMulti::updateBudget(const Budget &)

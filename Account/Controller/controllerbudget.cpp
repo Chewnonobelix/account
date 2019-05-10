@@ -82,6 +82,7 @@ bool ControllerBudget::removeFrom(int id)
 
 int ControllerBudget::exec()
 {
+    reload();
     openManager();
     return 0;
 }
@@ -96,7 +97,19 @@ void ControllerBudget::show(QDate date)
     //TODO
 }
 
+void ControllerBudget::reload()
+{
+    m_budgets.clear();;
 
+    auto l = m_db->selectBudgets();
+
+    for(auto b: l)
+    {
+        m_budgets[b.category()] = b;
+    }
+
+    openManager();
+}
 void ControllerBudget::addTarget(QString cat, QDate date, double target)
 {
     if(m_budgets.contains(cat))
