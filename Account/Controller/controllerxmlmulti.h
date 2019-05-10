@@ -12,6 +12,8 @@ private:
     QMap<QString, QDomDocument> m_accounts;
     QSet<int> m_entriesId;
     QSet<int> m_infoId;
+    QSet<int> m_budgetId;
+    
     QDomDocument m_currentAccount;
 
     int m_timer;
@@ -48,10 +50,11 @@ public:
     virtual bool removeCategory(QString);
     virtual QMultiMap<QString, QString> selectCategory();
 
-    virtual bool addBudget(QString);
-    virtual bool removeBudget(QString);
+    virtual bool addBudget(const Budget &);
+    virtual bool removeBudget(const Budget&);
     virtual QList<Budget> selectBudgets();
-
+    virtual bool updateBudget(const Budget &);
+    
     virtual bool init();
 };
 

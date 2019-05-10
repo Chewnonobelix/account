@@ -37,6 +37,11 @@ void ControllerXMLMulti::close()
             auto write64 = it.value().toByteArray().toBase64();
             file.write(write64);
             file.close();
+            QFile file2("data\\" + it.key() + "_clear.xml");
+            file2.open(QIODevice::WriteOnly);
+            auto write642 = it.value().toByteArray();
+            file2.write(write642);
+            file2.close();
         }
     }
 
@@ -328,13 +333,20 @@ QMultiMap<QString, QString> ControllerXMLMulti::selectCategory()
     return ret;
 }
 
-bool ControllerXMLMulti::addBudget(QString)
+bool ControllerXMLMulti::addBudget(const Budget& b)
 {
-    //TODO
+    
+    QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+    QDomElement el = m_currentAccount.createElement("budget");
+    int id = maxId(m_budgetId) + 1;
+    m_budgetId<<id;
+    el.setAttribute("id", id);
+    root.appendChild(el);
+    close();
     return false;
 }
 
-bool ControllerXMLMulti::removeBudget(QString)
+bool ControllerXMLMulti::removeBudget(const Budget &b)
 {
     //TODO
     return false;
@@ -346,6 +358,11 @@ QList<Budget> ControllerXMLMulti::selectBudgets()
     return QList<Budget>();
 }
 
+bool ControllerXMLMulti::updateBudget(const Budget &)
+{
+    //TODO
+    return false;
+}
 
 bool ControllerXMLMulti::init()
 {
@@ -360,6 +377,9 @@ bool ControllerXMLMulti::init()
 
     for(auto filename: infoList)
     {
+        if(filename.contains("_clear"))
+            continue;
+        
         QDomDocument doc;
         QFile file;
         file.setFileName("data\\"+filename);

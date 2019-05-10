@@ -126,11 +126,15 @@ void ControllerBudget::addBudget(QString name)
     qDebug()<<name;
 
     if(m_budgets.contains(name))
+    {
+        m_db->removeBudget(m_budgets[name]);        
         m_budgets.remove(name);
+    }
     else
     {
         Budget b;
         m_budgets[name] = b;
+        m_db->addBudget(b);
     }
 
     openManager();
