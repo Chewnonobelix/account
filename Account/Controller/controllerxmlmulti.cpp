@@ -355,7 +355,16 @@ bool ControllerXMLMulti::addBudget(const Budget& b)
 
 bool ControllerXMLMulti::removeBudget(const Budget &b)
 {
-    //TODO
+    QDomElement root = m_currentAccount.firstChild().toElement();
+    QDomNodeList list = root.elementsByTagName("budget");
+
+    for(int i = 0; i < list.size(); i++)
+    {
+        QDomElement el = list.at(i).toElement();
+        if(el.attribute("id").toInt() == b.id())
+            return !root.removeChild(el).isNull();
+    }
+
     return false;
 }
 
