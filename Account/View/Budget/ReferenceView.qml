@@ -25,6 +25,8 @@ Window {
     id: main
     color: "transparent"
     
+    property string budgetName
+
     Rectangle {
         width: (( col2.x + col2.width) - col1.x) * 1.05
         height: (( row1.y + row1.height) - col2.y) * 1.05   
@@ -42,6 +44,8 @@ Window {
             }
             
             CalendarButton {
+                id: cButton
+                objectName: "cButton"
             }
         }
         
@@ -59,6 +63,7 @@ Window {
             
             ComboBox {
                 id: frequency
+                objectName: "frequency"
                 model: ["unique" ,"day", "week", "month", "quarter", "year"]
                 
             }
@@ -73,6 +78,7 @@ Window {
             spacing: 10
             Button {
                 text: "ok"
+                objectName: "okButton"
             }
             
             Button {            

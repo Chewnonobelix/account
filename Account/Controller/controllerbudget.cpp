@@ -4,6 +4,7 @@ ControllerBudget::ControllerBudget()
 {
     m_eng.load(QUrl(QStringLiteral("qrc:/Budget/BudgetManager.qml")));
     m_view = m_eng.rootObjects().first();
+    m_referenceView = nullptr;
 
     connect(m_view, SIGNAL(s_budgetChanged(QString)), this, SLOT(addBudget(QString)));
     connect(m_view, SIGNAL(s_budgetReference(QString)), this, SLOT(editBudget(QString)));
@@ -151,15 +152,39 @@ void ControllerBudget::addBudget(QString name)
         m_db->addBudget(b);
     }
 
-    openManager();
+    reload();
 }
 
 void ControllerBudget::editBudget(QString cat)
 {
     qDebug()<<"Reference"<<cat;
-    QQmlComponent referenceComp(&m_eng, QUrl(QStringLiteral("qrc:/Budget/ReferenceView.qml"))); 
-    QObject* obj = referenceComp.create();
-    qDebug()<<obj;
-    QMetaObject::invokeMethod(obj, "show");
+
+    if(!m_referenceView)
+    {
+        QQmlComponent referenceComp(&m_eng, QUrl(QStringLiteral("qrc:/Budget/ReferenceView.qml")));
+        m_referenceView = referenceComp.create();
+        QObject* ok = m_referenceView->findChild<QObject*>("okButton");
+        connect(ok, SIGNAL(clicked()), this , SLOT(editReference()));
+    }
+    m_referenceView->setProperty("budgetName", cat);
+    qDebug()<<m_referenceView;
+    QMetaObject::invokeMethod(m_referenceView, "show");
     
+}
+
+void ControllerBudget::editReference()
+{
+    QString cat = m_referenceView->property("budgetName").toString();
+    qDebug()<<"Edit"<<cat;
+    QDate d; QString freq;
+    QObject* obj = m_referenceView->findChild<QObject*>("cButton");
+    d = QDate::fromString(obj->property("text").toString(), "dd-MM-yyyy");
+    obj = m_referenceView->findChild<QObject*>("frequency");
+    freq = obj->property("currentText").toString();
+    QMetaObject::invokeMethod(m_referenceView, "close");
+    m_budgets[cat].setReference(d);
+    QMetaEnum qme = QMetaEnum::fromType<Account::FrequencyEnum>();
+    m_budgets[cat].setFrequency((Account::FrequencyEnum)qme.keysToValue(freq.toLatin1()));
+    qDebug()<<d<<freq;
+    m_db->updateBudget(m_budgets[cat]);
 }

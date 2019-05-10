@@ -14,7 +14,7 @@ class ControllerBudget: public AbstractController
 
 private:
     QQmlApplicationEngine m_eng;
-    QObject* m_view;
+    QObject* m_view, *m_referenceView;
     QMap<int, QObject*> m_views;
     QMap<QString, Budget> m_budgets;
     QDate m_currentDate;
@@ -37,6 +37,7 @@ public slots:
     void closeManager();
     void addTarget(QString, QDate, double);
     void removeTarget(QString, QDate);
+    void editReference();
 
 //    void addBudget(QString, QDate, Account::FrequencyEnum);
 
