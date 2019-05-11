@@ -35,6 +35,17 @@ Window {
     
     ListModel {
         id: categoryModel
+
+        function getIndex(name) {
+            var ret = -1;
+
+            for(var i = 0; i < count; i++) {
+                if(get(i).catName === name)
+                    ret = i;
+            }
+
+            return ret
+        }
     }
     
     ListModel {
@@ -70,7 +81,7 @@ Window {
         //            }
         //        }
         
-        TableView {
+        ListView {
             id: catView
             model: categoryModel
             anchors.left: parent.left
@@ -79,7 +90,7 @@ Window {
             height: parent.height * .85
             width: parent.width * .30
             
-            backgroundVisible: false
+//            backgroundVisible: false
             
 
             section.property: "type"
@@ -88,7 +99,6 @@ Window {
                 gradient: pageStyle.goldHeader
                 width: parent.width
                 height: parent.height * .15
-                Component.onCompleted: console.log(parent, catView)
                 Label {
                     anchors.fill: parent
                     text: section
@@ -102,15 +112,19 @@ Window {
             
             section.labelPositioning: ViewSection.InlineLabels
             
-            itemDelegate: Rectangle {
+            property int newCurrentIndex: -1
+
+            delegate: Rectangle {
                 width: parent.width
                 height: 40
-                color: "transparent"
+                id: delItem
+
+                gradient: categoryModel.getIndex(catName) === catView.newCurrentIndex ? pageStyle.calSelect : pageStyle.unselectView
                 Label {
                     id: catDisplay
-                    color: styleData.row !== -1 && categoryModel.get(styleData.row).has ? "black" : "red"
+                    color: has ? "black" : "red"
                     anchors.centerIn: parent
-                    text: styleData.value
+                    text: catName
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     fontSizeMode: Text.Fit
@@ -124,9 +138,8 @@ Window {
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
                     onClicked: {
                         if(mouse.button === Qt.LeftButton) {
-                            catView.selection.clear()
-                            catView.selection.select(styleData.row)
-                        }
+                            catView.newCurrentIndex = categoryModel.getIndex(catName)
+                                      }
                         else {
                             catMenu.popup()
                         }
@@ -137,9 +150,9 @@ Window {
                     id: catMenu
 
                     Control2.MenuItem {
-                        text: styleData.row !== -1 && categoryModel.get(styleData.row).has ? "Remove budget" : "Add budget"
+                        text: has ? "Remove budget" : "Add budget"
 
-                        onTriggered: budgetManager.s_budgetChanged(styleData.value)
+                        onTriggered: budgetManager.s_budgetChanged(catName)
                         background: Rectangle {
                             gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
                         }
@@ -147,8 +160,8 @@ Window {
 
                     Control2.MenuItem {
                         text: "Edit budget reference"
-                        enabled: styleData.row !== -1 && categoryModel.get(styleData.row).has
-                        onTriggered: budgetManager.s_budgetReference(styleData.value)
+                        enabled: has
+                        onTriggered: budgetManager.s_budgetReference(catName)
                         background: Rectangle {
                             gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
 
@@ -156,31 +169,13 @@ Window {
                     }
                 }
             }
-            
-            rowDelegate: Rectangle {
-                gradient: styleData.selected ? pageStyle.calSelect : pageStyle.unselectView
-//                height: parent.height * .25
-            }
-            
-            TableViewColumn {
-                title: "Category name"
-                role: "catName"
-            }
-            
+                        
+
             Rectangle {
                 anchors.fill: parent
                 color: "transparent"
                 border.color: "gold"
-            }
-            
-            style: TableViewStyle {
- 
-                rowDelegate: Rectangle {
-                    color: "transparent"
-//                    height: parent.height * .25
-                }
-            }
-            
+            }    
         }
         
         
