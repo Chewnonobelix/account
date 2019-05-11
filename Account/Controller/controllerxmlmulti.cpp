@@ -407,10 +407,46 @@ QList<Budget> ControllerXMLMulti::selectBudgets()
     return ret;;
 }
 
-bool ControllerXMLMulti::updateBudget(const Budget &)
+bool ControllerXMLMulti::updateBudget(const Budget & b)
 {
     //TODO
-    return false;
+    qDebug()<<"Edit budget"<<b.category()<<b.reference()<<b.frequency();
+    QDomElement root = m_currentAccount.firstChildElement();
+    QDomNodeList list = root.elementsByTagName("budget");
+
+    bool ret = false;
+    for(int i = 0; i < list.size(); i++)
+    {
+        QDomElement el = list.at(i).toElement();
+        auto setter = [&](QString tagname, QString value)
+        {
+
+            QDomElement child = el.elementsByTagName(tagname).at(0).toElement();
+            if(child.isNull())
+            {
+                child = m_currentAccount.createElement(tagname);
+                el.appendChild(child);
+            }
+            QDomText txt = child.firstChild().toText();
+            if(txt.isNull())
+            {
+                txt = m_currentAccount.createTextNode("");
+                el.appendChild(txt);
+            }
+            txt.setData(value);
+        };
+        qDebug()<<el.attribute("id")<<b.id();
+
+        if(el.attribute("id").toInt() == b.id())
+        {
+            ret = true;
+            setter("reference", b.reference().toString("dd-MM-yyyy"));
+            setter("frequency", QString::number((int)b.frequency()));
+        }
+    }
+
+    qDebug()<<ret;
+    return ret;
 }
 
 bool ControllerXMLMulti::init()
