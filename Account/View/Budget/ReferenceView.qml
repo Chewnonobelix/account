@@ -7,9 +7,7 @@ import "../Core"
 
 Window {
     flags: Qt.Popup | Qt.NoDropShadowWindowHint
-    
-    Component.onCompleted: console.log(screen, flags, Qt.Popup, Qt.FramelessWindowHint)
-    
+        
     x: screen.width / 2 - width / 2
     y: screen.height / 2 - height / 2
     
