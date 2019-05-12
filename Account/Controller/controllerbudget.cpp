@@ -6,6 +6,7 @@ ControllerBudget::ControllerBudget()
     m_view = m_eng.rootObjects().first();
     m_referenceView = nullptr;
 
+    connect(m_view, SIGNAL(s_loadTarget(QString)), this, SLOT(getTarget(QString)));
     connect(m_view, SIGNAL(s_budgetChanged(QString)), this, SLOT(addBudget(QString)));
     connect(m_view, SIGNAL(s_budgetReference(QString)), this, SLOT(editBudget(QString)));
 }
@@ -45,7 +46,7 @@ void ControllerBudget::openManager()
 {
     if(m_view)
     {
-        QMetaObject::invokeMethod(m_view, "clear");
+        QMetaObject::invokeMethod(m_view, "clearCat");
         
         auto incomes = categories("income");
         auto outcomes = categories("outcome");
@@ -59,7 +60,7 @@ void ControllerBudget::openManager()
                 map.insert("has", m_budgets.contains(it));
 //                map.insert("has", true);
                 
-                QMetaObject::invokeMethod(m_view, "add", Q_ARG(QVariant, map));
+                QMetaObject::invokeMethod(m_view, "addCat", Q_ARG(QVariant, map));
             }
         };
         
@@ -187,4 +188,32 @@ void ControllerBudget::editReference()
     m_budgets[cat].setFrequency((Account::FrequencyEnum)qme.keysToValue(freq.toLatin1()));
     qDebug()<<d<<freq;
     m_db->updateBudget(m_budgets[cat]);
+}
+
+void ControllerBudget::getTarget(QString catName)
+{
+    auto list = m_budgets[catName].targets();
+
+    qDebug()<<"Targets"<<catName<<list;
+    QMetaObject::invokeMethod(m_view, "clearTarget");
+    QDate d = QDate::currentDate();
+
+    for(auto i = 0; i < 10; i++)
+    {
+        QVariantMap map;
+        map.insert("date", d);
+        map.insert("target", i);
+        d = d.addDays(1);
+
+        QMetaObject::invokeMethod(m_view, "addTarget", Q_ARG(QVariant, map));
+    }
+
+    for(auto it = list.begin(); it != list.end(); it++)
+    {
+        QVariantMap map;
+        map.insert("date", it.key());
+        map.insert("target", it.value());
+
+        QMetaObject::invokeMethod(m_view, "addTarget", Q_ARG(QVariant, map));
+    }
 }

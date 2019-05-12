@@ -43,6 +43,7 @@ public slots:
 
     void addBudget(QString);
     void editBudget(QString);
+    void getTarget(QString);
 };
 
 #endif // CONTROLLERBUDGET_H

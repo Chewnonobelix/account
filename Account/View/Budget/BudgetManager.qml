@@ -17,6 +17,7 @@ Window {
 
     signal s_budgetChanged(string name)
     signal s_budgetReference(string name)
+    signal s_loadTarget(string cat)
 
     onWidthChanged: show()
     onHeightChanged: show()
@@ -25,14 +26,22 @@ Window {
         id: pageStyle
     }
     
-    function add(cat) {
+    function addCat(cat) {
         categoryModel.append(cat)
     }
+
+    function addTarget(targ) {
+        targetModel.append(targ)
+    }
     
-    function clear() {
+    function clearCat() {
         categoryModel.clear()
     }
     
+    function clearTarget() {
+        targetModel.clear()
+    }
+
     ListModel {
         id: categoryModel
 
@@ -50,10 +59,6 @@ Window {
     
     ListModel {
         id: targetModel
-        ListElement {
-            targetDate: "try1"
-            targetValue: 10.0
-        }
     }
     
     ListModel {
@@ -122,7 +127,10 @@ Window {
                     onClicked: {
                         if(mouse.button === Qt.LeftButton) {
                             catView.newCurrentIndex = categoryModel.getIndex(catName)
-                                      }
+
+                            if(categoryModel.get(catView.newCurrentIndex).has)
+                                budgetManager.s_loadTarget(catName)
+                        }
                         else {
                             catMenu.popup()
                         }
@@ -174,6 +182,15 @@ Window {
 
 
             model: targetModel
+
+            delegate: Rectangle {
+                width: parent.width
+                height: 40
+
+                Label {
+                    text: Qt.formatDate(date, "dd-MM-yyyy") + ", " + target
+                }
+            }
 
             Rectangle {
                 anchors.fill: parent
