@@ -63,24 +63,7 @@ Window {
     Rectangle {
         anchors.fill: parent
         gradient: pageStyle.backgroundGradient
-        
-        //        TableView {
-        //            id: subView
-        //            enabled: subModel.count != 0
-        //            anchors.left: targetView.right
-        //            anchors.leftMargin: 10
-        //            anchors.top: parent.top
-        
-        //            height: parent.height * .85
-        //            width: parent.width * .35
-        //            //            flickingHorizontally: false
-        //            Rectangle {
-        //                anchors.fill: parent
-        //                color: "transparent"
-        //                border.color: "gold"
-        //            }
-        //        }
-        
+
         ListView {
             id: catView
             model: categoryModel
@@ -178,44 +161,27 @@ Window {
             }    
         }
         
-        
-        //        Button {
-        //            id: addCat
-        //            width: catView.width / 2 - 5
-        //            height: parent.height * 0.10
-        
-        //            anchors.top: catView.bottom
-        //            anchors.topMargin: parent.height * 0.05
-        //            anchors.left: catView.left
-        
-        //            text: "+"
-        //            style: ButtonStyle {
-        //                background: Rectangle {
-        //                    gradient: addCat.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-        //                }
-        //            }
-        //        }
-        
-        //        Button {
-        //            id: removeCat
-        //            x: 77
-        //            y: 576
-        //            width: catView.width / 2 - 5
-        //            height: parent.height * 0.10
-        
-        //            anchors.top: catView.bottom
-        //            anchors.topMargin: parent.height * 0.05
-        //            anchors.left: addCat.right
-        //            anchors.leftMargin: 10
-        //            text: "-"
-        
-        //            style: ButtonStyle {
-        //                background: Rectangle {
-        //                    gradient: addCat.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-        //                }
-        //            }
-        //        }
-        
+        ListView {
+            id: targetView
+            objectName: "targetView"
+            anchors.left: catView.right
+            anchors.leftMargin: 10
+            anchors.top: parent.top
+
+            height: parent.height * .85
+            width: parent.width * .30
+            visible: catView.newCurrentIndex !== -1 && categoryModel.get(catView.newCurrentIndex).has
+
+
+            model: targetModel
+
+            Rectangle {
+                anchors.fill: parent
+                border.color: "blue"
+                color: "transparent"
+            }
+        }
+
         //        TableView {
         //            id: targetView
         //            enabled: categoryModel.count != 0
