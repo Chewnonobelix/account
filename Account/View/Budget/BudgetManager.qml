@@ -186,9 +186,14 @@ Window {
             delegate: Rectangle {
                 width: parent.width
                 height: 40
-
+                color: "transparent"
                 Label {
+                    id: targetText
                     text: Qt.formatDate(date, "dd-MM-yyyy") + ", " + target
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: console.log(targetText.text)
                 }
             }
 
