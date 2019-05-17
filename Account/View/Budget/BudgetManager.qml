@@ -183,6 +183,7 @@ Window {
 
             model: targetModel
 
+            onCurrentIndexChanged: console.log("new index")
             delegate: Rectangle {
                 width: parent.width
                 height: 40
@@ -193,7 +194,11 @@ Window {
                 }
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: console.log(targetText.text)
+                    onClicked: {
+                        mouse.accepted = false
+                        console.log(targetText.text)
+                    }
+                    propagateComposedEvents: true
                 }
             }
 
