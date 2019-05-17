@@ -128,18 +128,32 @@ QtObject {
     property Gradient calSelect: Gradient {
         id: gradientSelect
 
+//        GradientStop {
+//            color: "darkseagreen"
+//            position: 0.0
+//        }
+
+//        GradientStop {
+//            color: "seagreen"
+//            position: 0.5
+//        }
+
+//        GradientStop {
+//            color: "darkseagreen"
+//            position: 1.0
+//        }
         GradientStop {
-            color: "darkseagreen"
+            color: "lightsteelblue"
             position: 0.0
         }
-
+        
         GradientStop {
-            color: "seagreen"
+            color: "lightcyan"
             position: 0.5
         }
-
+        
         GradientStop {
-            color: "darkseagreen"
+            color: "lightsteelblue"
             position: 1.0
         }
     }
