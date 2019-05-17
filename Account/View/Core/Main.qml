@@ -21,9 +21,12 @@ ApplicationWindow {
     signal removeAccount(string name)
     signal openTransfert
     signal openBudgetManager()
-
+    signal s_closing()
+    
     id: mainWindow
 
+    onClosing: s_closing()
+    
     property int maximizedWidth: Screen.width
     Component.onCompleted: {
         showMaximized()

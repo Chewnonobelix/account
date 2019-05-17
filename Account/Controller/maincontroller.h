@@ -61,6 +61,8 @@ public slots:
     void openTransfert();
 
     void openBudgetManager();
+    
+    void close();
 };
 
 

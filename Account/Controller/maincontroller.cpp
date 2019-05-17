@@ -26,7 +26,8 @@ int MainController::exec()
     connect(root, SIGNAL(adding(bool)), this, SLOT(add(bool)));
     connect(root, SIGNAL(remove(int)), this, SLOT(remove(int)));
     connect(root, SIGNAL(removeAccount(QString)), this, SLOT(deleteAccount(QString)));
-
+    connect(root, SIGNAL(s_closing()), this, SLOT(close()));
+    
     QObject* calendar = root->findChild<QObject*>("cal");
 
     if(calendar)
@@ -94,6 +95,16 @@ int MainController::exec()
     }
 
     return 0;
+}
+
+void MainController::close()
+{
+    qDebug()<<QApplication::allWindows().size();
+    
+    for(auto it = 1; it < QApplication::allWindows().size(); it++)
+    {
+        QApplication::allWindows()[it]->close();
+    }
 }
 
 void MainController::update(Entry e)
