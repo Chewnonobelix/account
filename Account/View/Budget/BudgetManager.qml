@@ -149,13 +149,48 @@ Window {
                         }
                     }
 
-                    Control2.MenuItem {
-                        text: "Edit budget reference"
-                        enabled: has
-                        onTriggered: budgetManager.s_budgetReference(catName)
-                        background: Rectangle {
-                            gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
 
+                    Control2.Menu {
+                        id: freqMenu
+                        property string val: ""
+                        property int currentRole: -1
+
+                        title: qsTr("Set to: ") + val
+
+                        Control2.Action {
+                            text: "Day"
+                            onTriggered: {
+                                freqMenu.val = text
+                                freqMenu.currentRole = 1
+                            }
+                        }
+                        Control2.Action {
+                            text: "Week"
+                            onTriggered: {
+                                freqMenu.val = text
+                                freqMenu.currentRole = 2
+                            }
+                        }
+                        Control2.Action {
+                            text: "Month"
+                            onTriggered: {
+                                freqMenu.val = text
+                                freqMenu.currentRole = 3
+                            }
+                        }
+                        Control2.Action {
+                            text: "Quarter"
+                            onTriggered: {
+                                freqMenu.val = text
+                                freqMenu.currentRole = 4
+                            }
+                        }
+                        Control2.Action {
+                            text: "Year"
+                            onTriggered: {
+                                freqMenu.val = text
+                                freqMenu.currentRole = 5
+                            }
                         }
                     }
                 }
