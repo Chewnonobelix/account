@@ -370,7 +370,7 @@ bool ControllerXMLMulti::removeBudget(const Budget &b)
         if(el.attribute("id").toInt() == b.id())
             return !root.removeChild(el).isNull();
     }
-
+    close();
     return false;
 }
 
@@ -446,6 +446,7 @@ bool ControllerXMLMulti::updateBudget(const Budget & b)
     }
 
     qDebug()<<ret;
+    close();
     return ret;
 }
 

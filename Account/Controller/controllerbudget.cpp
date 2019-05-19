@@ -9,6 +9,7 @@ ControllerBudget::ControllerBudget()
     connect(m_view, SIGNAL(s_loadTarget(QString)), this, SLOT(getTarget(QString)));
     connect(m_view, SIGNAL(s_budgetChanged(QString)), this, SLOT(addBudget(QString)));
     connect(m_view, SIGNAL(s_budgetReference(QString)), this, SLOT(editBudget(QString)));
+    connect(m_view, SIGNAL(s_budgetRoleChange(QString, int)), this, SLOT(changeFrequency(QString, int)));
 }
 
 ControllerBudget::~ControllerBudget()
@@ -216,4 +217,11 @@ void ControllerBudget::getTarget(QString catName)
 
         QMetaObject::invokeMethod(m_view, "addTarget", Q_ARG(QVariant, map));
     }
+}
+
+void ControllerBudget::changeFrequency(QString cat, int freq)
+{
+    qDebug()<<cat<<(Account::FrequencyEnum)freq;
+    m_budgets[cat].setFrequency((Account::FrequencyEnum)freq);
+    m_db->updateBudget(m_budgets[cat]);
 }

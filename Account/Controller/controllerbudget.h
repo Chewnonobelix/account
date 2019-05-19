@@ -44,6 +44,8 @@ public slots:
     void addBudget(QString);
     void editBudget(QString);
     void getTarget(QString);
+
+    void changeFrequency(QString, int);
 };
 
 #endif // CONTROLLERBUDGET_H

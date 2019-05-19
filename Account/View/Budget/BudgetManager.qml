@@ -18,6 +18,7 @@ Window {
     signal s_budgetChanged(string name)
     signal s_budgetReference(string name)
     signal s_loadTarget(string cat)
+    signal s_budgetRoleChange(string nam, int role)
 
     onWidthChanged: show()
     onHeightChanged: show()
@@ -152,9 +153,11 @@ Window {
 
                     Control2.Menu {
                         id: freqMenu
+                        enabled: has
                         property string val: ""
                         property int currentRole: -1
 
+                        onCurrentRoleChanged: budgetManager.s_budgetRoleChange(catName, currentRole)
                         title: qsTr("Set to: ") + val
 
                         Control2.Action {
