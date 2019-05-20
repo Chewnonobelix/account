@@ -59,6 +59,7 @@ void ControllerBudget::openManager()
                 map.insert("type", type);
                 map.insert("catName", it);
                 map.insert("has", m_budgets.contains(it));
+                map.insert("frequency", m_budgets.contains(it) ? (int)m_budgets[it].frequency() : 0);
 //                map.insert("has", true);
                 
                 QMetaObject::invokeMethod(m_view, "addCat", Q_ARG(QVariant, map));
@@ -178,16 +179,14 @@ void ControllerBudget::editReference()
 {
     QString cat = m_referenceView->property("budgetName").toString();
     qDebug()<<"Edit"<<cat;
-    QDate d; QString freq;
+    QDate d; double val;
     QObject* obj = m_referenceView->findChild<QObject*>("cButton");
     d = QDate::fromString(obj->property("text").toString(), "dd-MM-yyyy");
-    obj = m_referenceView->findChild<QObject*>("frequency");
-    freq = obj->property("currentText").toString();
+    obj = m_referenceView->findChild<QObject*>("targetValue");
+    val = obj->property("realValue").toDouble();
     QMetaObject::invokeMethod(m_referenceView, "close");
     m_budgets[cat].setReference(d);
-    QMetaEnum qme = QMetaEnum::fromType<Account::FrequencyEnum>();
-    m_budgets[cat].setFrequency((Account::FrequencyEnum)qme.keysToValue(freq.toLatin1()));
-    qDebug()<<d<<freq;
+    qDebug()<<d<<val;
     m_db->updateBudget(m_budgets[cat]);
 }
 

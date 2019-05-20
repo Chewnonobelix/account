@@ -59,11 +59,9 @@ Window {
                 text: "Frequency"
             }
             
-            ComboBox {
-                id: frequency
-                objectName: "frequency"
-                model: ["unique" ,"day", "week", "month", "quarter", "year"]
-                
+            DoubleSpinBox {
+                id: targetValue
+                objectName: "targetValue"                
             }
         }
         
