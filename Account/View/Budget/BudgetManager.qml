@@ -157,42 +157,58 @@ Window {
                         property string val: ""
                         property int currentRole: -1
 
+                        Component.onCompleted: {                            
+                            if(frequency > 0) {
+                                for(var i = 0; i < count; i++) {
+                                    if(actionAt(i).role === frequency) {
+                                        currentRole = frequency
+                                        val = actionAt(i).text
+                                    }
+                                }
+                            }
+                        }
+
                         onCurrentRoleChanged: budgetManager.s_budgetRoleChange(catName, currentRole)
                         title: qsTr("Set to: ") + val
 
                         Control2.Action {
                             text: "Day"
+                            property int role: 1
                             onTriggered: {
                                 freqMenu.val = text
-                                freqMenu.currentRole = 1
+                                freqMenu.currentRole = role
                             }
                         }
                         Control2.Action {
                             text: "Week"
+                            property int role: 2
                             onTriggered: {
                                 freqMenu.val = text
-                                freqMenu.currentRole = 2
+                                freqMenu.currentRole = role
                             }
                         }
                         Control2.Action {
                             text: "Month"
+                            property int role: 3
                             onTriggered: {
                                 freqMenu.val = text
-                                freqMenu.currentRole = 3
+                                freqMenu.currentRole = role
                             }
                         }
                         Control2.Action {
+                            property int role: 4
                             text: "Quarter"
                             onTriggered: {
                                 freqMenu.val = text
-                                freqMenu.currentRole = 4
+                                freqMenu.currentRole = role
                             }
                         }
                         Control2.Action {
                             text: "Year"
+                            property int role: 5
                             onTriggered: {
                                 freqMenu.val = text
-                                freqMenu.currentRole = 5
+                                freqMenu.currentRole = role
                             }
                         }
                     }
@@ -221,7 +237,6 @@ Window {
 
             model: targetModel
 
-            onCurrentIndexChanged: console.log("new index")
             delegate: Rectangle {
                 width: parent.width
                 height: 40
@@ -234,7 +249,6 @@ Window {
                     anchors.fill: parent
                     onClicked: {
                         mouse.accepted = false
-                        console.log(targetText.text)
                     }
                     propagateComposedEvents: true
                 }
