@@ -236,18 +236,29 @@ Window {
 
 
             model: targetModel
-
+            currentIndex: -1
+            
             delegate: Rectangle {
                 width: parent.width
                 height: 40
-                color: "transparent"
+//                color: "transparent"
+                gradient: targetView.currentIndex === index ? pageStyle.calSelect : pageStyle.unselectView
                 Label {
                     id: targetText
+                    anchors.fill: parent
                     text: Qt.formatDate(date, "dd-MM-yyyy") + ", " + target
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    fontSizeMode: Text.Fit
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size                    
                 }
                 MouseArea {
                     anchors.fill: parent
+                    acceptedButtons: Qt.LeftButton
+                    z:1 
                     onClicked: {
+                        targetView.currentIndex = index
                         mouse.accepted = false
                     }
                     propagateComposedEvents: true
@@ -258,6 +269,17 @@ Window {
                 anchors.fill: parent
                 border.color: "blue"
                 color: "transparent"
+                
+                MouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.RightButton
+                    z: -1
+                    onClicked: {
+                        if(mouse.button === Qt.RightButton) {
+                            console.log("Right tartget")
+                        }
+                    }
+                }
             }
         }
 
