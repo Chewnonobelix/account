@@ -87,8 +87,8 @@ Window {
             section.delegate: Rectangle {
                 gradient: pageStyle.goldHeader
                 width: parent.width
-                height: parent.height * .15
-                Label {
+                height: 30
+                Text {
                     anchors.fill: parent
                     text: section
                     horizontalAlignment: Text.AlignHCenter
