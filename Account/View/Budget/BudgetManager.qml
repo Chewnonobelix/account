@@ -43,6 +43,7 @@ Window {
         targetModel.clear()
     }
 
+        
     ListModel {
         id: categoryModel
 
@@ -56,6 +57,8 @@ Window {
 
             return ret
         }
+        
+        onCountChanged: catView.currentIndex = -1
     }
     
     ListModel {
@@ -101,14 +104,14 @@ Window {
             
             section.labelPositioning: ViewSection.InlineLabels
             
-            property int newCurrentIndex: -1
-
+            currentIndex: -1
+            
             delegate: Rectangle {
                 width: parent.width
                 height: 40
                 id: delItem
 
-                gradient: categoryModel.getIndex(catName) === catView.newCurrentIndex ? pageStyle.calSelect : pageStyle.unselectView
+                gradient: categoryModel.getIndex(catName) === catView.currentIndex ? pageStyle.calSelect : pageStyle.unselectView
                 Label {
                     id: catDisplay
                     color: has ? "black" : "red"
@@ -127,9 +130,9 @@ Window {
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
                     onClicked: {
                         if(mouse.button === Qt.LeftButton) {
-                            catView.newCurrentIndex = categoryModel.getIndex(catName)
+                            catView.currentIndex = index
 
-                            if(categoryModel.get(catView.newCurrentIndex).has)
+                            if(categoryModel.get(catView.currentIndex).has)
                                 budgetManager.s_loadTarget(catName)
                         }
                         else {
@@ -232,7 +235,7 @@ Window {
 
             height: parent.height * .85
             width: parent.width * .30
-            visible: catView.newCurrentIndex !== -1 && categoryModel.get(catView.newCurrentIndex).has
+            visible: catView.currentIndex !== -1 && categoryModel.get(catView.currentIndex).has
 
 
             model: targetModel
