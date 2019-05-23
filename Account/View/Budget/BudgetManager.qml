@@ -19,7 +19,8 @@ Window {
     signal s_budgetReference(string name)
     signal s_loadTarget(string cat)
     signal s_budgetRoleChange(string nam, int role)
-
+    signal s_addTarget(string cat)
+    
     onWidthChanged: show()
     onHeightChanged: show()
     
@@ -244,10 +245,32 @@ Window {
             model: targetModel
             currentIndex: -1
             
+            
+            Component {
+                id: compRemoveAction
+                Control2.Action {
+                    id: removeAction
+                    text:  "Remove target"
+                    
+                    onTriggered: console.log(targetView.currentIndex, targetModel.get(targetView.currentIndex).date)
+                }
+            }
+
+            Control2.Menu {
+                id: targetItemMenu
+                
+                
+                Control2.Action {
+                    text: "Add target"
+                    onTriggered: budgetManager.s_addTarget(categoryModel.get(catView.currentIndex).catName)
+                }
+                                
+            }
+
             delegate: Rectangle {
                 width: parent.width
                 height: 40
-//                color: "transparent"
+
                 gradient: targetView.currentIndex === index ? pageStyle.calSelect : pageStyle.unselectView
                 Label {
                     id: targetText
@@ -262,12 +285,10 @@ Window {
                 MouseArea {
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton
-                    z:1 
+                    z:5
                     onClicked: {
-                        targetView.currentIndex = index
-                        mouse.accepted = false
+                        targetView.currentIndex = index                        
                     }
-                    propagateComposedEvents: true
                 }
             }
 
@@ -282,79 +303,20 @@ Window {
                     z: -1
                     onClicked: {
                         if(mouse.button === Qt.RightButton) {
-                            console.log("Right tartget")
+                                targetView.currentIndex = targetView.indexAt(mouse.x, mouse.y)
+                            if(targetView.currentIndex !== -1 && targetItemMenu.count === 1) {
+                                targetItemMenu.addAction(compRemoveAction.createObject())
+                            } else if (targetView.currentIndex === -1 && targetItemMenu.count === 2){
+                                targetItemMenu.takeAction(1)
+                            }   
+    
+                            targetItemMenu.popup()
                         }
                     }
                 }
             }
         }
 
-        //        TableView {
-        //            id: targetView
-        //            enabled: categoryModel.count != 0
-        //            anchors.left: catView.right
-        //            anchors.leftMargin: 10
-        //            anchors.top: parent.top
-        
-        //            height: parent.height * .85
-        //            width: parent.width * .30
-        
-        //            model: targetModel
-        
-        //            Component.onCompleted: console.log(model.count)
-        //            Rectangle {
-        //                anchors.fill: parent
-        //                color: "transparent"
-        //                border.color: "gold"
-        //            }
-        
-        //            delegate: Rectangle {
-        //                clip: true
-        //                //                width: parent.width
-        //                //                height: parent.height*0.10
-        //                //                anchors.top: parent.top
-        //                //                anchors.left: catView.left
-        //                //                anchors.fill: parent
-        //                Label {
-        //                    anchors.fill: parent
-        //                    text: targetDate + ": " + targetValue
-        //                    horizontalAlignment: Text.AlignHCenter
-        //                    verticalAlignment: Text.AlignVCenter
-        //                }
-        //            }
-        //        }
-        
-        //        Button {
-        //            id: addTarget
-        //            width: targetView.width / 2 - 5
-        //            height: parent.height * 0.10
-        
-        //            anchors.top: targetView.bottom
-        //            anchors.topMargin: parent.height * 0.05
-        //            anchors.left: targetView.left
-        
-        //            text: "+"
-        
-        //            background: Rectangle {
-        //                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-        //            }
-        //        }
-        
-        //        Button {
-        //            id: removeTarget
-        //            width: targetView.width / 2 - 5
-        //            height: parent.height * 0.10
-        
-        //            anchors.top: targetView.bottom
-        //            anchors.topMargin: parent.height * 0.05
-        //            anchors.left: addTarget.right
-        //            anchors.leftMargin: 10
-        //            text: "-"
-        
-        //            background: Rectangle {
-        //                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-        //            }
-        //        }
     }
 }
 

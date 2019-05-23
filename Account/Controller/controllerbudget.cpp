@@ -10,6 +10,7 @@ ControllerBudget::ControllerBudget()
     connect(m_view, SIGNAL(s_budgetChanged(QString)), this, SLOT(addBudget(QString)));
     connect(m_view, SIGNAL(s_budgetReference(QString)), this, SLOT(editBudget(QString)));
     connect(m_view, SIGNAL(s_budgetRoleChange(QString, int)), this, SLOT(changeFrequency(QString, int)));
+    connect(m_view, SIGNAL(s_addTarget(QString)), this, SLOT(addTarget(QString)));
 }
 
 ControllerBudget::~ControllerBudget()
@@ -117,10 +118,9 @@ void ControllerBudget::reload()
 
     openManager();
 }
-void ControllerBudget::addTarget(QString cat, QDate date, double target)
+void ControllerBudget::addTarget(QString cat)
 {
-    if(m_budgets.contains(cat))
-        m_budgets[cat].addTarget(date, target);
+    qDebug()<<"Add target to "<<cat;
 }
 
 void ControllerBudget::removeTarget(QString cat, QDate date)
@@ -143,8 +143,6 @@ void ControllerBudget::removeTarget(QString cat, QDate date)
 
 void ControllerBudget::addBudget(QString name)
 {
-    qDebug()<<name;
-
     if(m_budgets.contains(name))
     {
         m_db->removeBudget(m_budgets[name]);        
@@ -164,8 +162,6 @@ void ControllerBudget::addBudget(QString name)
 
 void ControllerBudget::editBudget(QString cat)
 {
-    qDebug()<<"Reference"<<cat;
-
     if(!m_referenceView)
     {
         QQmlComponent referenceComp(&m_eng, QUrl(QStringLiteral("qrc:/Budget/ReferenceView.qml")));
@@ -174,7 +170,7 @@ void ControllerBudget::editBudget(QString cat)
         connect(ok, SIGNAL(clicked()), this , SLOT(editReference()));
     }
     m_referenceView->setProperty("budgetName", cat);
-    qDebug()<<m_referenceView;
+
     QMetaObject::invokeMethod(m_referenceView, "show");
     
 }
@@ -224,7 +220,6 @@ void ControllerBudget::getTarget(QString catName)
 
 void ControllerBudget::changeFrequency(QString cat, int freq)
 {
-    qDebug()<<cat<<(Account::FrequencyEnum)freq;
     m_budgets[cat].setFrequency((Account::FrequencyEnum)freq);
     m_db->updateBudget(m_budgets[cat]);
 }

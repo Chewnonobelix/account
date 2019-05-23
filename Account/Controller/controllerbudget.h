@@ -21,6 +21,7 @@ private:
     QString m_selected;
     
     void update(int);
+    
 public:
     ControllerBudget();
     ~ControllerBudget();
@@ -36,7 +37,7 @@ public slots:
     void open(QString);
     void show(QDate);
     void closeManager();
-    void addTarget(QString, QDate, double);
+    void addTarget(QString);
     void removeTarget(QString, QDate);
     void editReference();
 
