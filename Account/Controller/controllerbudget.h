@@ -18,7 +18,8 @@ private:
     QMap<int, QObject*> m_views;
     QMap<QString, Budget> m_budgets;
     QDate m_currentDate;
-
+    QString m_selected;
+    
     void update(int);
 public:
     ControllerBudget();

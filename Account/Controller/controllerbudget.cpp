@@ -70,6 +70,9 @@ void ControllerBudget::openManager()
         func("outcome", outcomes);
         
         QMetaObject::invokeMethod(m_view, "show");
+        
+        if(!m_selected.isEmpty())
+            QMetaObject::invokeMethod(m_view, "selectCat", Q_ARG(QVariant, m_selected));
     }
 }
 
@@ -154,7 +157,8 @@ void ControllerBudget::addBudget(QString name)
         m_budgets[name] = b;
         m_db->addBudget(b);
     }
-
+    m_selected = name;
+    
     reload();
 }
 

@@ -43,7 +43,10 @@ Window {
         targetModel.clear()
     }
 
-        
+    function selectCat(name) {
+        catView.currentIndex = categoryModel.getIndex(name)
+    }
+
     ListModel {
         id: categoryModel
 
