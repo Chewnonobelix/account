@@ -400,8 +400,6 @@ QList<Budget> ControllerXMLMulti::selectBudgets()
             //TODO
 
             ret<<b;
-
-            qDebug()<<"Load"<<b.id()<<b.category()<<b.reference()<<b.frequency();
     }
 
     return ret;;
@@ -410,7 +408,6 @@ QList<Budget> ControllerXMLMulti::selectBudgets()
 bool ControllerXMLMulti::updateBudget(const Budget & b)
 {
     //TODO
-    qDebug()<<"Edit budget"<<b.category()<<b.reference()<<b.frequency();
     QDomElement root = m_currentAccount.firstChildElement();
     QDomNodeList list = root.elementsByTagName("budget");
 
@@ -435,7 +432,6 @@ bool ControllerXMLMulti::updateBudget(const Budget & b)
             }
             txt.setData(value);
         };
-        qDebug()<<el.attribute("id")<<b.id();
 
         if(el.attribute("id").toInt() == b.id())
         {
@@ -445,7 +441,6 @@ bool ControllerXMLMulti::updateBudget(const Budget & b)
         }
     }
 
-    qDebug()<<ret;
     close();
     return ret;
 }

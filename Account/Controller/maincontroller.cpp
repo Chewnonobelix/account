@@ -98,9 +98,7 @@ int MainController::exec()
 }
 
 void MainController::close()
-{
-    qDebug()<<QApplication::allWindows().size();
-    
+{    
     for(auto it = 1; it < QApplication::allWindows().size(); it++)
     {
         QApplication::allWindows()[it]->close();

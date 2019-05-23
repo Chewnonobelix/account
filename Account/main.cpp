@@ -21,8 +21,6 @@ void testCharge()
 
     while(itDate < cDate.addYears(30))
     {
-        qDebug()<<"Test days"<<itDate;
-
         for(i = 0; i < 5; i++)
         {
             Entry e;
