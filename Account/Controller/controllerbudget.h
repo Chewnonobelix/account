@@ -32,7 +32,7 @@ public:
     void openManager();
     void reload();
 
-
+    
 public slots:
     void open(QString);
     void show(QDate);

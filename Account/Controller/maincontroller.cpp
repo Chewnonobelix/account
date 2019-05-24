@@ -99,11 +99,8 @@ int MainController::exec()
 }
 
 void MainController::close()
-{    
-    for(auto it = 1; it < QApplication::allWindows().size(); it++)
-    {
-        QApplication::allWindows()[it]->close();
-    }
+{
+    m_budget.closeManager();
 }
 
 void MainController::update(Entry e)

@@ -18,8 +18,12 @@ ControllerBudget::~ControllerBudget()
 }
 
 void ControllerBudget::closeManager()
-{
-    QMetaObject::invokeMethod(m_view, "close");
+{    
+    if(m_referenceView)
+        QMetaObject::invokeMethod(m_referenceView, "close");
+    
+    if(m_view)
+        QMetaObject::invokeMethod(m_view, "close");        
 }
 
 void ControllerBudget::update(int id)
