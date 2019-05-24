@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 1.4 as C1
 import QtQuick.Controls 2.5
@@ -29,14 +29,21 @@ Window {
         width: (( col2.x + col2.width) - col1.x) * 1.05
         height: (( row1.y + row1.height) - col2.y) * 1.05   
         
+        anchors.leftMargin: 10
+        anchors.topMargin: 10
         border.color: "gold"
         gradient: pageStyle.backgroundGradient
         Column {
             id: col1
-            anchors.topMargin: 10
-            anchors.leftMargin: 10
-            
+            topPadding: 10
+            rightPadding: 10
+            leftPadding: 10
+
+            spacing: 10             
             Label {
+                anchors.topMargin: 10
+                anchors.leftMargin: 10
+                
                 id: l_reference
                 text: "Reference Date"
             }
@@ -49,14 +56,21 @@ Window {
         
         Column {
             id: col2
-            anchors.topMargin: 10        
+//            anchors.topMargin: 10        
             anchors.left: col1.right
             anchors.verticalCenter: col1.verticalCenter
-            anchors.leftMargin: 10
-            anchors.rightMargin: 10
+            
+            topPadding: 10
+            rightPadding: 10
+            leftPadding: 10
+            spacing: 10             
+            
             Label {
+                anchors.topMargin: 10
+                anchors.leftMargin: 10
+                
                 id: l_frequency
-                text: "Frequency"
+                text: "Target"
             }
             
             DoubleSpinBox {
