@@ -121,6 +121,7 @@ void ControllerBudget::reload()
 void ControllerBudget::addTarget(QString cat)
 {
     qDebug()<<"Add target to "<<cat;
+    editBudget(cat);
 }
 
 void ControllerBudget::removeTarget(QString cat, QDate date)
