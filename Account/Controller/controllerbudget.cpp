@@ -129,18 +129,6 @@ void ControllerBudget::removeTarget(QString cat, QDate date)
         m_budgets[cat].removeTarget(date);
 }
 
-//void ControllerBudget::addBudget(QString cat, QDate date, Account::FrequencyEnum f)
-//{
-//    if(!m_budgets.contains(cat))
-//    {
-//        Budget b;
-//        b.setCategory(cat);
-//        b.setReference(date);
-//        b.setFrequency(f);
-//        m_budgets[cat] = b;
-//    }
-//}
-
 void ControllerBudget::addBudget(QString name)
 {
     if(m_budgets.contains(name))
@@ -222,4 +210,23 @@ void ControllerBudget::changeFrequency(QString cat, int freq)
 {
     m_budgets[cat].setFrequency((Account::FrequencyEnum)freq);
     m_db->updateBudget(m_budgets[cat]);
+}
+
+void ControllerBudget::updateEntry(int id)
+{
+    Entry e = entry(id);
+    
+    if(m_budgets.contains(e.info().category()))
+        m_budgets[e.info().category()]<<e;
+}
+
+void ControllerBudget::changeEntry(QString old, int id)
+{
+    Entry e = entry(id);
+    
+    if(m_budgets.contains(old))
+        m_budgets[old]>>e;
+    
+    if(m_budgets.contains(e.info().category()))
+        m_budgets[e.info().category()]<<e;
 }

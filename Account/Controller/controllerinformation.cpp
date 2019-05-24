@@ -70,15 +70,18 @@ void ControllerInformation::valueChange(double value)
     m_entry.setValue(value);
 
     updateEntry(m_entry);
+    emit s_update(m_entry.id());
 }
 
 void ControllerInformation::categoryChange(QString cat)
 {
     Information info = m_entry.info();
+    QString old = info.category();   
     info.setCategory(cat);
     m_entry.setInfo(info);
 
     updateEntry(m_entry);
+    emit s_changeCat(old, m_entry.id());
 }
 
 void ControllerInformation::addNewCategory(QString cat)

@@ -6,7 +6,8 @@ MainController::MainController(): AbstractController()
     //AbstractController::initTestEntry();
 
     connect(&m_graph, GraphController::s_sum, this, receiveSum);
-
+    connect(&m_info, ControllerInformation::s_update, &m_budget, ControllerBudget::updateEntry);
+    connect(&m_info, ControllerInformation::s_changeCat, &m_budget, ControllerBudget::changeEntry);
 }
 
 MainController::~MainController()

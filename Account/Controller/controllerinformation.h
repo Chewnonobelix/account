@@ -31,7 +31,8 @@ public slots:
     void addNewCategory(QString);
 
 signals:
-
+    void s_update(int);
+    void s_changeCat(QString, int);
 };
 
 #endif // CONTROLLERINFORMATION_H

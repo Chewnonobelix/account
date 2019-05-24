@@ -171,7 +171,9 @@ Budget& Budget::operator = (const Budget& b)
 
 Budget& Budget::operator <<(Entry e)
 {
-    addEntry(e);
+    if(!addEntry(e))
+        updateEntry(e);
+    
     return *this;
 }
 
