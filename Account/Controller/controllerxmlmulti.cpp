@@ -399,6 +399,16 @@ QList<Budget> ControllerXMLMulti::selectBudgets()
             b.setFrequency((Account::FrequencyEnum)f);
             //TODO
 
+
+            auto targets = el.elementsByTagName("target");
+            for(auto j = 0; j < targets.size(); j++)
+            {
+                auto t = targets.at(j).toElement();
+                QDate d = QDate::fromString(t.attribute("date"), "dd-MM-yyyy");
+                double v = t.text().toDouble();
+                b.addTarget(d, v);
+            }
+
             ret<<b;
     }
 
@@ -438,6 +448,21 @@ bool ControllerXMLMulti::updateBudget(const Budget & b)
             ret = true;
             setter("reference", b.reference().toString("dd-MM-yyyy"));
             setter("frequency", QString::number((int)b.frequency()));
+
+            auto targets = el.elementsByTagName("target");
+            for(auto j = 0; i < targets.size(); j++)
+                el.removeChild(targets.at(j));
+
+            auto target = b.targets();
+
+            for(auto it: target.keys())
+            {
+                QDomElement child = m_currentAccount.createElement("target");
+                child.setAttribute("date", it.toString("dd-MM-yyyy"));
+                QDomText txt = m_currentAccount.createTextNode(QString::number(target[it]));
+                child.appendChild(txt);
+                el.appendChild(child);
+            }
         }
     }
 

@@ -36,12 +36,21 @@ Window {
         targetModel.append(targ)
     }
     
+    function addSub(sub) {
+        subModel.append(sub)
+        console.log("Sub model", subModel.count)
+    }
+
     function clearCat() {
         categoryModel.clear()
     }
     
     function clearTarget() {
         targetModel.clear()
+    }
+
+    function clearSub() {
+        subModel.clear()
     }
 
     function selectCat(name) {
@@ -317,6 +326,25 @@ Window {
             }
         }
 
+
+        ListView {
+            id: subView
+            anchors.left:  targetView.right
+            anchors.leftMargin: 10
+            height: parent.height * .85
+            width: parent.width * .30
+
+            visible: targetView.visible
+            Rectangle {
+                anchors.fill: parent
+                color: "transparent"
+                border.color: "gold"
+            }
+
+            delegate: BudgetViewItem {
+
+            }
+        }
     }
 }
 

@@ -91,9 +91,9 @@ int MainController::exec()
     QObject* info = root->findChild<QObject*>("infoView");
 
     if(info)
-    {
         m_info.configure(info);
-    }
+
+    m_budget.reload();
 
     return 0;
 }

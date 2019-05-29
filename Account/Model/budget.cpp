@@ -28,10 +28,16 @@ bool Budget::addEntry(Entry e)
 {
     bool ret = false;
 
-    for(auto it: m_subs)
-        if(it.begin() <= e.date() && e.date() <= it.end())
-            ret = it.addEntry(e);
+    while(!ret)
+    {
+        for(auto it: m_subs)
+            if(it.begin() <= e.date() && e.date() <= it.end())
+                ret = it.addEntry(e);
 
+        if(!ret)
+            if(!createSub(e.date()))
+                break;
+    }
     return ret;
 }
 
@@ -83,7 +89,10 @@ bool Budget::updateTarget(QDate d, double t)
 
 bool Budget::createSub(QDate d)
 {
-    QDate start = reference();
+    if(m_targets.isEmpty() || frequency() == Account::FrequencyEnum::unique)
+        return false;
+
+    QDate start = m_targets.begin().key();
     QDate end = next(start).addDays(-1);
     bool ret = false;
     SubBudget sub;
