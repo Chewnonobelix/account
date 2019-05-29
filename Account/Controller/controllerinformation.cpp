@@ -33,6 +33,17 @@ void ControllerInformation::view(int id)
     infoItem = m_view->findChild<QObject*>("infoModel");
     catItem = m_view->findChild<QObject*>("category");
 
+    QStringList catList = categories(m_entry.type());
+    catList<<"";
+    if(catItem)
+    {
+        catItem->setProperty("blocked", true);
+        catItem->setProperty("model", catList);
+        connect(catItem, SIGNAL(s_currentTextChanged(QString)), this, SLOT(categoryChange(QString)));
+        connect(catItem, SIGNAL(s_addCategory(QString)), this, SLOT(addNewCategory(QString)));
+        catItem->setProperty("blocked", false);
+    }
+
     if(entryItem)
     {
         entryItem->setProperty("id", id);
@@ -43,17 +54,9 @@ void ControllerInformation::view(int id)
     {
         infoItem->setProperty("estimated", m_entry.info().estimated());
         infoItem->setProperty("title", m_entry.info().title());
-        infoItem->setProperty("type", m_entry.info().category());
+        QMetaObject::invokeMethod(infoItem, "setType", Q_ARG(QVariant, m_entry.info().category()));
     }
 
-    QStringList catList = categories(m_entry.type());
-    catList<<"";
-    if(catItem)
-    {
-        catItem->setProperty("model", catList);
-        connect(catItem, SIGNAL(s_currentTextChanged(QString)), this, SLOT(categoryChange(QString)));
-        connect(catItem, SIGNAL(s_addCategory(QString)), this, SLOT(addNewCategory(QString)));
-    }
 }
 
 void ControllerInformation::titleChange(QString title)

@@ -175,8 +175,8 @@ Page {
 
         function sort(roleorder) {
             for (var i = 0; i < count; i++) {
-                for (; j < count; j++) {
-                    if (order === Qt.AscendingOrder) {
+                for (var j = 0; j < count; j++) {
+                    if (roleorder === Qt.AscendingOrder) {
                         if (get(j)[role] < get(i)[role]) {
                             swap(i, j)
                         }

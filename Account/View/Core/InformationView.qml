@@ -28,7 +28,8 @@ Item {
         property string title
         property string type
 
-        onTypeChanged: {
+        function setType(newType) {
+            type = newType
             category.setting(type)
         }
     }
@@ -155,10 +156,11 @@ Item {
         }
         signal s_addCategory(string cat)
         signal s_currentTextChanged(string cat)
-
+        property bool blocked: false
 
         onCurrentTextChanged: {
-            s_currentTextChanged(currentText)
+            if(!blocked)
+                s_currentTextChanged(currentText)
         }
 
         MouseArea {
