@@ -54,7 +54,7 @@ void ControllerBudget::openManager()
     if(m_view)
     {
         QMetaObject::invokeMethod(m_view, "clearCat");
-        
+        m_view->setProperty("blocked", true);
         auto incomes = categories("income");
         auto outcomes = categories("outcome");
                 
@@ -79,6 +79,8 @@ void ControllerBudget::openManager()
         
         if(!m_selected.isEmpty())
             QMetaObject::invokeMethod(m_view, "selectCat", Q_ARG(QVariant, m_selected));
+
+        m_view->setProperty("blocked", false);
     }
 }
 
@@ -128,7 +130,6 @@ void ControllerBudget::reload()
 
 void ControllerBudget::addTarget(QString cat)
 {
-    qDebug()<<"Add target to "<<cat;
     editBudget(cat);
 }
 
@@ -177,16 +178,13 @@ void ControllerBudget::editBudget(QString cat)
 void ControllerBudget::editReference()
 {
     QString cat = m_referenceView->property("budgetName").toString();
-    qDebug()<<"Target Edit"<<cat;
     QDate d; double val;
     QObject* obj = m_referenceView->findChild<QObject*>("cButton");
     d = QDate::fromString(obj->property("text").toString(), "dd-MM-yyyy");
     obj = m_referenceView->findChild<QObject*>("targetValue");
     val = obj->property("realValue").toDouble();
     QMetaObject::invokeMethod(m_referenceView, "close");
-//    m_budgets[cat].setReference(d);
     m_budgets[cat].addTarget(d, val);
-    qDebug()<<d<<val;
     m_db->updateBudget(m_budgets[cat]);
 }
 
@@ -214,9 +212,9 @@ void ControllerBudget::getTarget(QString catName)
         QVariantMap map;
         map["begin"] = it.begin();
         map["end"] = it.end();
-        map["percent"] = it.percent();
+        map["current"] = it.current();
         map["target"] = it.target();
-
+        map["cat"] = catName;
         QMetaObject::invokeMethod(m_view, "addSub", Q_ARG(QVariant, map));
     }
 }

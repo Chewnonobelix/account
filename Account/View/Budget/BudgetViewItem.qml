@@ -12,10 +12,6 @@ MenuItem {
     property double to
     property string title
 
-    onTriggered: {
-        console.log(budgetItem.title, to, realValue)
-    }
-
     contentItem: ProgressBar {
         id: budget
         //        anchors.top: title.bottom

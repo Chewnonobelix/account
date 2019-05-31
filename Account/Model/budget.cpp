@@ -30,8 +30,8 @@ bool Budget::addEntry(Entry e)
 
     while(!ret)
     {
-        for(auto it: m_subs)
-            if(it.begin() <= e.date() && e.date() <= it.end())
+        for(SubBudget& it: m_subs)
+            if(it.in(e.date()))
                 ret = it.addEntry(e);
 
         if(!ret)
@@ -118,7 +118,8 @@ bool Budget::createSub(QDate d)
 
     auto l = m_targets.keys();
 
-    double tar = -1;
+    double tar = m_targets.last();
+    ret = !l.isEmpty();
     if(l.size() == 1 || d < l.first())
         tar = m_targets.first();
     else

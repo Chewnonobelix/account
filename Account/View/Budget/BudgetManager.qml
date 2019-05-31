@@ -24,6 +24,8 @@ Window {
     onWidthChanged: show()
     onHeightChanged: show()
     
+    property bool blocked: false
+
     AccountStyle {
         id: pageStyle
     }
@@ -38,7 +40,6 @@ Window {
     
     function addSub(sub) {
         subModel.append(sub)
-        console.log("Sub model", subModel.count)
     }
 
     function clearCat() {
@@ -95,7 +96,7 @@ Window {
             height: parent.height * .85
             width: parent.width * .30
             
-//            backgroundVisible: false
+            //            backgroundVisible: false
             
 
             section.property: "type"
@@ -173,7 +174,7 @@ Window {
                         property string val: ""
                         property int currentRole: -1
 
-                        Component.onCompleted: {                            
+                        Component.onCompleted: {
                             if(frequency > 0) {
                                 for(var i = 0; i < count; i++) {
                                     if(actionAt(i).role === frequency) {
@@ -184,7 +185,10 @@ Window {
                             }
                         }
 
-                        onCurrentRoleChanged: budgetManager.s_budgetRoleChange(catName, currentRole)
+                        onCurrentRoleChanged: {
+                            if(!budgetManager.blocked)
+                               budgetManager.s_budgetRoleChange(catName, currentRole)
+                        }
                         title: qsTr("Set to: ") + val
 
                         Control2.Action {
@@ -230,13 +234,13 @@ Window {
                     }
                 }
             }
-                        
+
 
             Rectangle {
                 anchors.fill: parent
                 color: "transparent"
                 border.color: "gold"
-            }    
+            }
         }
         
         ListView {
@@ -273,7 +277,7 @@ Window {
                     text: "Add target"
                     onTriggered: budgetManager.s_addTarget(categoryModel.get(catView.currentIndex).catName)
                 }
-                                
+
             }
 
             delegate: Rectangle {
@@ -289,14 +293,14 @@ Window {
                     verticalAlignment: Text.AlignVCenter
                     fontSizeMode: Text.Fit
                     font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size                    
+                    font.pixelSize: pageStyle.core.size
                 }
                 MouseArea {
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton
                     z:5
                     onClicked: {
-                        targetView.currentIndex = index                        
+                        targetView.currentIndex = index
                     }
                 }
             }
@@ -312,13 +316,13 @@ Window {
                     z: -1
                     onClicked: {
                         if(mouse.button === Qt.RightButton) {
-                                targetView.currentIndex = targetView.indexAt(mouse.x, mouse.y)
+                            targetView.currentIndex = targetView.indexAt(mouse.x, mouse.y)
                             if(targetView.currentIndex !== -1 && targetItemMenu.count === 1) {
                                 targetItemMenu.addAction(compRemoveAction.createObject())
                             } else if (targetView.currentIndex === -1 && targetItemMenu.count === 2){
                                 targetItemMenu.takeAction(1)
-                            }   
-    
+                            }
+
                             targetItemMenu.popup()
                         }
                     }
@@ -335,14 +339,36 @@ Window {
             width: parent.width * .30
 
             visible: targetView.visible
+            model: subModel
+
             Rectangle {
                 anchors.fill: parent
                 color: "transparent"
                 border.color: "gold"
             }
 
-            delegate: BudgetViewItem {
+            delegate: Rectangle {
+                height: 40
+                width: subView.width
+                color: "transparent"
+                Column {
+                    anchors.fill: parent
+                    Label {
+                        width: parent.width
+                        text: Qt.formatDate(begin, "dd-MM-yyyy") + " -> " + Qt.formatDate(end, "dd-MM-yyyy")
+                    }
 
+                    BudgetViewItem {
+                        clip: true
+                        width: parent.width
+//                        anchors.fill: parent
+                        to: target
+                        realValue: current
+                        title: cat
+
+                        onClicked: console.log(width, parent.width, subView.width, to)
+                    }
+                }
             }
         }
     }

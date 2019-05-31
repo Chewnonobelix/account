@@ -1,4 +1,5 @@
 #include "subbudget.h"
+#include <QDebug>
 
 SubBudget::SubBudget()
 {
