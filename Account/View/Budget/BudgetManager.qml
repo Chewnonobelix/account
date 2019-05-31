@@ -348,11 +348,12 @@ Window {
             }
 
             delegate: Rectangle {
-                height: 40
+                height: 70
                 width: subView.width
                 color: "transparent"
                 Column {
                     anchors.fill: parent
+                    spacing: 10
                     Label {
                         width: parent.width
                         text: Qt.formatDate(begin, "dd-MM-yyyy") + " -> " + Qt.formatDate(end, "dd-MM-yyyy")
