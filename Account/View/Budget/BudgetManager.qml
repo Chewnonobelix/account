@@ -18,9 +18,10 @@ Window {
     signal s_budgetChanged(string name)
     signal s_budgetReference(string name)
     signal s_loadTarget(string cat)
-    signal s_budgetRoleChange(string nam, int role)
+    signal s_budgetRoleChange(string name, int role)
     signal s_addTarget(string cat)
-    
+    signal s_showTarget(string cat, string d, bool all)
+
     onWidthChanged: show()
     onHeightChanged: show()
     
@@ -187,7 +188,7 @@ Window {
 
                         onCurrentRoleChanged: {
                             if(!budgetManager.blocked)
-                               budgetManager.s_budgetRoleChange(catName, currentRole)
+                                budgetManager.s_budgetRoleChange(catName, currentRole)
                         }
                         title: qsTr("Set to: ") + val
 
@@ -259,6 +260,12 @@ Window {
             currentIndex: -1
             
             
+            onCurrentIndexChanged: {
+
+                var temp = currentIndex !== - 1 ? Qt.formatDate(targetModel.get(currentIndex).date, "dd-MM-yyyy") : ""
+                budgetManager.s_showTarget(categoryModel.get(catView.currentIndex).catName, temp, currentIndex === -1)
+            }
+
             Component {
                 id: compRemoveAction
                 Control2.Action {
@@ -300,7 +307,7 @@ Window {
                     acceptedButtons: Qt.LeftButton
                     z:5
                     onClicked: {
-                        targetView.currentIndex = index
+                        targetView.currentIndex = targetView.currentIndex === index ? -1 :  index
                     }
                 }
             }
@@ -362,12 +369,9 @@ Window {
                     BudgetViewItem {
                         clip: true
                         width: parent.width
-//                        anchors.fill: parent
                         to: target
                         realValue: current
                         title: cat
-
-                        onClicked: console.log(width, parent.width, subView.width, to)
                     }
                 }
             }

@@ -40,7 +40,7 @@ public slots:
     void addTarget(QString);
     void removeTarget(QString, QDate);
     void editReference();
-
+    void showTarget(QString, QString, bool);
 //    void addBudget(QString, QDate, Account::FrequencyEnum);
 
     void addBudget(QString);

@@ -11,6 +11,8 @@ ControllerBudget::ControllerBudget()
     connect(m_view, SIGNAL(s_budgetReference(QString)), this, SLOT(editBudget(QString)));
     connect(m_view, SIGNAL(s_budgetRoleChange(QString, int)), this, SLOT(changeFrequency(QString, int)));
     connect(m_view, SIGNAL(s_addTarget(QString)), this, SLOT(addTarget(QString)));
+    connect(m_view, SIGNAL(s_showTarget(QString, QString, bool)), this, SLOT(showTarget(QString,QString,bool)));
+
 }
 
 ControllerBudget::~ControllerBudget()
@@ -204,19 +206,7 @@ void ControllerBudget::getTarget(QString catName)
         QMetaObject::invokeMethod(m_view, "addTarget", Q_ARG(QVariant, map));
     }
 
-    auto list2 = m_budgets[catName].subs();
-    QMetaObject::invokeMethod(m_view, "clearSub");
-
-    for(auto it: list2)
-    {
-        QVariantMap map;
-        map["begin"] = it.begin();
-        map["end"] = it.end();
-        map["current"] = it.current();
-        map["target"] = it.target();
-        map["cat"] = catName;
-        QMetaObject::invokeMethod(m_view, "addSub", Q_ARG(QVariant, map));
-    }
+    showTarget(catName, "", true);
 }
 
 void ControllerBudget::changeFrequency(QString cat, int freq)
@@ -242,4 +232,36 @@ void ControllerBudget::changeEntry(QString old, int id)
     
     if(m_budgets.contains(e.info().category()))
         m_budgets[e.info().category()]<<e;
+}
+
+void ControllerBudget::showTarget(QString catName, QString date, bool all)
+{
+    QList<SubBudget> list2 ;
+    QMetaObject::invokeMethod(m_view, "clearSub");
+
+    auto list = m_budgets[catName].subs();
+    if(!all)
+    {
+        QDate d = QDate::fromString(date, "dd-MM-yyyy");
+        double target = m_budgets[catName].targets()[d];
+
+        for(auto it: list)
+            if(it.target() == target)
+                list2<<it;
+    }
+    else
+    {
+        list2 = list.values();
+    }
+
+    for(auto it: list2)
+    {
+        QVariantMap map;
+        map["begin"] = it.begin();
+        map["end"] = it.end();
+        map["current"] = it.current();
+        map["target"] = it.target();
+        map["cat"] = catName;
+        QMetaObject::invokeMethod(m_view, "addSub", Q_ARG(QVariant, map));
+    }
 }
