@@ -266,14 +266,6 @@ ApplicationWindow {
                 text: qsTr("Budget list")
                 onClicked: mainWindow.openBudgetManager()
             }
-
-            MenuItem {
-                text: qsTr("New budget")
-            }
-
-            MenuItem {
-                text: qsTr("Remove budget")
-            }
         }
 
         Menu {
