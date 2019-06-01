@@ -390,6 +390,7 @@ QList<Budget> ControllerXMLMulti::selectBudgets()
             QDomElement el = list.at(i).toElement();
             Budget b;
             b.setId(el.attribute("id").toInt());
+            m_budgetId<<b.id();
             QDomElement child = el.elementsByTagName("name").at(0).toElement();
             b.setCategory(child.text());
             child = el.elementsByTagName("reference").at(0).toElement();
