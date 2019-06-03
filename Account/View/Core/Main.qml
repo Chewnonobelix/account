@@ -262,9 +262,19 @@ ApplicationWindow {
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
 
+            height: budgetListItem.height //TOREMOVE 
             MenuItem {
+                id: budgetListItem
                 text: qsTr("Budget list")
                 onClicked: mainWindow.openBudgetManager()
+                
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+                
+                background: Rectangle {
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                }
+                
             }
         }
 
