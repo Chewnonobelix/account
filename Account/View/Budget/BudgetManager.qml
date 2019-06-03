@@ -161,16 +161,15 @@ Window {
                     
                     delegate: Control2.MenuItem {
                         background: Rectangle {
+                            
+                            width: removeSubAction.width > freqMenu.width ? removeSubAction.width: freqMenu.width
                             gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
                         }
                     }
                     Control2.Action {
                         text: has ? "Remove budget" : "Add budget"
-                        
+                        id: removeSubAction
                         onTriggered: budgetManager.s_budgetChanged(catName)
-                        //                        background: Rectangle {
-                        //                            gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
-                        //                        }
                     }
                     
                     
