@@ -159,13 +159,18 @@ Window {
                 Control2.Menu {
                     id: catMenu
                     
-                    Control2.MenuItem {
-                        text: has ? "Remove budget" : "Add budget"
-                        
-                        onTriggered: budgetManager.s_budgetChanged(catName)
+                    delegate: Control2.MenuItem {
                         background: Rectangle {
                             gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
                         }
+                    }
+                    Control2.Action {
+                        text: has ? "Remove budget" : "Add budget"
+                        
+                        onTriggered: budgetManager.s_budgetChanged(catName)
+                        //                        background: Rectangle {
+                        //                            gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
+                        //                        }
                     }
                     
                     
@@ -194,66 +199,66 @@ Window {
                         }
                         title: qsTr("Set to: ") + val
                         
-                            Control2.MenuItem {
-                                text: "Day"
-                                property int role: 1
-                                onTriggered: {
-                                    freqMenu.val = text
-                                    freqMenu.currentRole = role
-                                }
-                                
-                                background: Rectangle {
-                                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-                                }
+                        Control2.MenuItem {
+                            text: "Day"
+                            property int role: 1
+                            onTriggered: {
+                                freqMenu.val = text
+                                freqMenu.currentRole = role
                             }
-                            Control2.MenuItem {
-                                text: "Week"
-                                property int role: 2
-                                onTriggered: {
-                                    freqMenu.val = text
-                                    freqMenu.currentRole = role
-                                }
-                                
-                                background: Rectangle {
-                                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-                                }
-                                
+                            
+                            background: Rectangle {
+                                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                             }
-                            Control2.MenuItem {
-                                text: "Month"
-                                property int role: 3
-                                onTriggered: {
-                                    freqMenu.val = text
-                                    freqMenu.currentRole = role
-                                }
-                                
-                                background: Rectangle {
-                                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-                                }
-                                
+                        }
+                        Control2.MenuItem {
+                            text: "Week"
+                            property int role: 2
+                            onTriggered: {
+                                freqMenu.val = text
+                                freqMenu.currentRole = role
                             }
-                            Control2.MenuItem {
-                                property int role: 4
-                                text: "Quarter"
-                                onTriggered: {
-                                    freqMenu.val = text
-                                    freqMenu.currentRole = role
-                                }
-                                background: Rectangle {
-                                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-                                }
+                            
+                            background: Rectangle {
+                                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                             }
-                            Control2.MenuItem {
-                                text: "Year"
-                                property int role: 5
-                                onTriggered: {
-                                    freqMenu.val = text
-                                    freqMenu.currentRole = role
-                                }
-                                
-                                background: Rectangle {
-                                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-                                }
+                            
+                        }
+                        Control2.MenuItem {
+                            text: "Month"
+                            property int role: 3
+                            onTriggered: {
+                                freqMenu.val = text
+                                freqMenu.currentRole = role
+                            }
+                            
+                            background: Rectangle {
+                                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                            }
+                            
+                        }
+                        Control2.MenuItem {
+                            property int role: 4
+                            text: "Quarter"
+                            onTriggered: {
+                                freqMenu.val = text
+                                freqMenu.currentRole = role
+                            }
+                            background: Rectangle {
+                                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                            }
+                        }
+                        Control2.MenuItem {
+                            text: "Year"
+                            property int role: 5
+                            onTriggered: {
+                                freqMenu.val = text
+                                freqMenu.currentRole = role
+                            }
+                            
+                            background: Rectangle {
+                                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                            }
                             
                         }
                     }
