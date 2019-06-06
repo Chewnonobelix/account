@@ -160,6 +160,9 @@ Window {
                     id: catMenu
                     
                     delegate: Control2.MenuItem {
+                        font.family: pageStyle.core.name
+                        font.pixelSize: pageStyle.core.size
+                        
                         background: Rectangle {
                             
                             width: removeSubAction.width > freqMenu.width ? removeSubAction.width: freqMenu.width
@@ -201,6 +204,9 @@ Window {
                         Control2.MenuItem {
                             text: "Day"
                             property int role: 1
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            
                             onTriggered: {
                                 freqMenu.val = text
                                 freqMenu.currentRole = role
@@ -213,6 +219,9 @@ Window {
                         Control2.MenuItem {
                             text: "Week"
                             property int role: 2
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            
                             onTriggered: {
                                 freqMenu.val = text
                                 freqMenu.currentRole = role
@@ -226,6 +235,9 @@ Window {
                         Control2.MenuItem {
                             text: "Month"
                             property int role: 3
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            
                             onTriggered: {
                                 freqMenu.val = text
                                 freqMenu.currentRole = role
@@ -238,6 +250,9 @@ Window {
                         }
                         Control2.MenuItem {
                             property int role: 4
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            
                             text: "Quarter"
                             onTriggered: {
                                 freqMenu.val = text
@@ -250,6 +265,9 @@ Window {
                         Control2.MenuItem {
                             text: "Year"
                             property int role: 5
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            
                             onTriggered: {
                                 freqMenu.val = text
                                 freqMenu.currentRole = role
