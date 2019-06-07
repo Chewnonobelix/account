@@ -169,6 +169,7 @@ Window {
                             gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
                         }
                     }
+                    
                     Control2.Action {
                         text: has ? "Remove budget" : "Add budget"
                         id: removeSubAction
@@ -286,7 +287,7 @@ Window {
             Rectangle {
                 anchors.fill: parent
                 color: "transparent"
-                border.color: "gold"
+                border.color: "darkseagreen"
             }
         }
         
@@ -325,8 +326,19 @@ Window {
             Control2.Menu {
                 id: targetItemMenu
                 
+                delegate: Control2.MenuItem {
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    height: 40                    
+                    background: Rectangle {
+                        
+                        //                        width: removeSubAction.width > freqMenu.width ? removeSubAction.width: freqMenu.width
+                        gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    }
+                }
                 
                 Control2.Action {
+                    id: addSubTarget
                     text: "Add target"
                     onTriggered: budgetManager.s_addTarget(categoryModel.get(catView.currentIndex).catName)
                 }
@@ -337,11 +349,12 @@ Window {
                 width: parent.width
                 height: 40
                 
+                border.color: "gray"
                 gradient: targetView.currentIndex === index ? pageStyle.calSelect : pageStyle.unselectView
                 Label {
                     id: targetText
                     anchors.fill: parent
-                    text: Qt.formatDate(date, "dd-MM-yyyy") + ", " + target
+                    text: qsTr("Date") + ": " + Qt.formatDate(date, "dd-MM-yyyy") + "\n" + qsTr("Target") + ": " + target + qsTr("€")
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     fontSizeMode: Text.Fit
@@ -360,7 +373,7 @@ Window {
             
             Rectangle {
                 anchors.fill: parent
-                border.color: "blue"
+                border.color: "darkseagreen"
                 color: "transparent"
                 
                 MouseArea {
@@ -397,19 +410,27 @@ Window {
             Rectangle {
                 anchors.fill: parent
                 color: "transparent"
-                border.color: "gold"
+                border.color: "darkseagreen"
             }
             
+            spacing: 10
             delegate: Rectangle {
-                height: 70
+                height: 60
                 width: subView.width
                 color: "transparent"
+                border.color: "gray"
+                
                 Column {
                     anchors.fill: parent
-                    spacing: 10
                     Label {
                         width: parent.width
+                        height: 25
                         text: Qt.formatDate(begin, "dd-MM-yyyy") + " -> " + Qt.formatDate(end, "dd-MM-yyyy")
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        fontSizeMode: Text.Fit
+                        font.family: pageStyle.core.name
+                        font.pixelSize: pageStyle.title.size   
                     }
                     
                     BudgetViewItem {
