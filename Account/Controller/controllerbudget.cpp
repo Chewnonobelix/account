@@ -111,7 +111,14 @@ void ControllerBudget::open(QString cat)
 
 void ControllerBudget::show(QDate date)
 {
-    //TODO
+    QList<SubBudget> list;
+    
+    for(auto it: m_budgets)
+        for(auto it2: it.subs())
+            if(it2.in(date))
+                list<<it2;
+    
+    qDebug()<<"Budget show"<<list.size();
 }
 
 void ControllerBudget::reload()
