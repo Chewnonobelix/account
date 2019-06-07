@@ -326,10 +326,12 @@ Window {
             Control2.Menu {
                 id: targetItemMenu
                 
+                height: count * 20
+                
                 delegate: Control2.MenuItem {
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
-                    height: 40                    
+                    height: 20                    
                     background: Rectangle {
                         
                         //                        width: removeSubAction.width > freqMenu.width ? removeSubAction.width: freqMenu.width
@@ -342,7 +344,6 @@ Window {
                     text: "Add target"
                     onTriggered: budgetManager.s_addTarget(categoryModel.get(catView.currentIndex).catName)
                 }
-                
             }
             
             delegate: Rectangle {
