@@ -351,7 +351,7 @@ Window {
                 height: 40
                 
                 border.color: "gray"
-                gradient: targetView.currentIndex === index ? pageStyle.calSelect : pageStyle.unselectView
+                gradient: targetView.currentIndex === index ? pageStyle.calSelect : pageStyle.backgroundGradient
                 Label {
                     id: targetText
                     anchors.fill: parent
@@ -418,7 +418,7 @@ Window {
             delegate: Rectangle {
                 height: 60
                 width: subView.width
-                color: "transparent"
+                gradient: pageStyle.backgroundGradient
                 border.color: "gray"
                 
                 Column {
@@ -435,7 +435,9 @@ Window {
                     }
                     
                     BudgetViewItem {
+                        anchors.bottomMargin: 5
                         clip: true
+                        height: 30
                         width: parent.width
                         to: target
                         realValue: current

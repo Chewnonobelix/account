@@ -14,8 +14,8 @@ class ControllerBudget: public AbstractController
 
 private:
     QQmlApplicationEngine m_eng;
-    QObject* m_view, *m_referenceView;
-    QMap<int, QObject*> m_views;
+    QObject* m_view, *m_referenceView, *m_quickView;
+    QMap<QString, QObject*> m_views;
     QMap<QString, Budget> m_budgets;
     QDate m_currentDate;
     QString m_selected;
@@ -31,7 +31,7 @@ public:
     int exec();
     void openManager();
     void reload();
-
+    void setQuickView(QObject* );
     
 public slots:
     void open(QString);

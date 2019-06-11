@@ -75,13 +75,19 @@ Page {
         addingid.open()
     }
 
-    RowLayout {
+    Row {
         anchors.top: cal.bottom
         anchors.topMargin: 10
+//        anchors.right: cal.right
+//        anchors.rightMargin: 5
+        anchors.left: parent.left
+        anchors.leftMargin: 5
+
+        width: cal.width
         id: group
         spacing: 10
         //        height: 50
-        width: cal.width
+//        width: cal.width
         enabled: accountSelect.model.length > 0
 
         Button {
@@ -115,6 +121,7 @@ Page {
 
         Button {
             id: remove
+//            anchors.right: parent.right
             text: qsTr("Remove")
             width: parent.width * .45
             font.family: pageStyle.core.name
@@ -145,6 +152,15 @@ Page {
                 }
             }
         }
+    }
+
+    B.BudgetView {
+        id: budgetQuick
+        objectName: "budgetQuick"
+        anchors.bottom: parent.bottom
+        anchors.top: group.bottom
+        anchors.left: parent.left
+        anchors.right: group.right
     }
 
     property int currentId: view.currentIndex > -1 && defaultModel.get(

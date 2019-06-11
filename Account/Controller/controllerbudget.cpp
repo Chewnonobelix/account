@@ -5,7 +5,8 @@ ControllerBudget::ControllerBudget()
     m_eng.load(QUrl(QStringLiteral("qrc:/Budget/BudgetManager.qml")));
     m_view = m_eng.rootObjects().first();
     m_referenceView = nullptr;
-
+    m_eng.load(QUrl(QStringLiteral("qrc:/Budget/BudgetView.qml")));
+    m_quickView = m_eng.rootObjects().last();
     connect(m_view, SIGNAL(s_loadTarget(QString)), this, SLOT(getTarget(QString)));
     connect(m_view, SIGNAL(s_budgetChanged(QString)), this, SLOT(addBudget(QString)));
     connect(m_view, SIGNAL(s_budgetReference(QString)), this, SLOT(editBudget(QString)));
@@ -30,7 +31,7 @@ void ControllerBudget::closeManager()
 
 void ControllerBudget::update(int id)
 {
-    QObject* view = m_views[id];
+    QObject* view = nullptr/* = m_views[id]*/;
 
     if(view)
     {
@@ -111,14 +112,24 @@ void ControllerBudget::open(QString cat)
 
 void ControllerBudget::show(QDate date)
 {
-    QList<SubBudget> list;
+    QList<QPair<QString,SubBudget>> list;
     
     for(auto it: m_budgets)
         for(auto it2: it.subs())
             if(it2.in(date))
-                list<<it2;
-    
-    qDebug()<<"Budget show"<<list.size();
+                list<<qMakePair(it.category(), it2);
+
+    qDebug()<<"Budget show"<<list.size()<<m_quickView->objectName();
+
+    for(int i = 0; i < list.size(); i++)
+    {
+        QVariantMap map;
+        map.insert("target", list[i].second.target());
+        map.insert("currentValue", list[i].second.current());
+        map.insert("name", list[i].first);
+
+        QMetaObject::invokeMethod(m_quickView, "add", Q_ARG(QVariant, map), Q_ARG(QVariant, i%2));
+    }
 }
 
 void ControllerBudget::reload()
@@ -271,4 +282,9 @@ void ControllerBudget::showTarget(QString catName, QString date, bool all)
         map["cat"] = catName;
         QMetaObject::invokeMethod(m_view, "addSub", Q_ARG(QVariant, map));
     }
+}
+
+void ControllerBudget::setQuickView(QObject *qv)
+{
+    m_quickView = qv;
 }

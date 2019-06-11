@@ -95,6 +95,13 @@ int MainController::exec()
 
     m_budget.reload();
 
+    QObject* rectQuickView = root->findChild<QObject*>("budgetQuick");
+
+    if(rectQuickView)
+    {
+        m_budget.setQuickView(rectQuickView);
+        m_budget.show(QDate::currentDate());
+    }
     return 0;
 }
 
