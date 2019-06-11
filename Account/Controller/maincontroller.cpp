@@ -336,7 +336,13 @@ void MainController::selection(int)
     QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
     if(head)
         head->setProperty("selectionTotal", t.value());
+    
+    ld.isEmpty() ? m_budget.show(QDate::currentDate()) : m_budget.show(ld.first());
 
+    QObject* quickView = m_engine.rootObjects().first()->findChild<QObject*>("quickViewDate");
+    
+    if(quickView)
+        quickView->setProperty("currentDate", ld.isEmpty() ? QDate::currentDate(): ld.first());
 }
 
 void MainController::accountChange(QString acc)

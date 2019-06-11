@@ -154,14 +154,42 @@ Page {
         }
     }
 
-    B.BudgetView {
-        id: budgetQuick
-        objectName: "budgetQuick"
+    Column {
         anchors.bottom: parent.bottom
         anchors.top: group.bottom
         anchors.left: parent.left
-        anchors.right: group.right
+        anchors.topMargin: 5
+        width: cal.width
+        spacing: 5
+        Label {
+            id: quickViewDate
+            objectName: "quickViewDate"
+            property date currentDate
+            background: Rectangle {
+                gradient: pageStyle.goldHeader
+            }
+            
+            text: qsTr("Budget quick view") + ": " + Qt.formatDate(currentDate, "dd-MM-yyyy")
+            width: parent.width
+            height: parent.height * .10
+            fontSizeMode: Text.Fit
+            font.family: pageStyle.title.name
+            font.pixelSize: pageStyle.title.size
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        B.BudgetView {
+            id: budgetQuick
+            objectName: "budgetQuick"
+          
+            width: parent.width
+            
+            anchors.top: quickViewDate.bottom
+//            height: parent.height * .90
+        }        
     }
+
 
     property int currentId: view.currentIndex > -1 && defaultModel.get(
                                 view.currentIndex).label
