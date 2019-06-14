@@ -41,16 +41,21 @@ Window {
 
             spacing: 10             
             Label {
+                Layout.alignment: Qt.AlignCenter
                 anchors.topMargin: 10
                 anchors.leftMargin: 10
                 
                 id: l_reference
-                text: "Reference Date"
+                text: qsTr("Reference Date")
+                fontSizeMode: Text.Fit
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
             }
             
             CalendarButton {
                 id: cButton
                 objectName: "cButton"
+                Layout.alignment: Qt.AlignCenter
             }
         }
         
@@ -70,12 +75,18 @@ Window {
                 anchors.leftMargin: 10
                 
                 id: l_frequency
-                text: "Target"
+                text: qsTr("Target")
+                fontSizeMode: Text.Fit
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
+                
+                Layout.alignment: Qt.AlignCenter
             }
             
             DoubleSpinBox {
                 id: targetValue
                 objectName: "targetValue"                
+                Layout.alignment: Qt.AlignCenter
             }
         }
         
@@ -89,11 +100,20 @@ Window {
             Button {
                 text: "ok"
                 objectName: "okButton"
+                
+                background: Rectangle {
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                }
             }
             
             Button {            
                 text: "Cancel"
                 onClicked: main.close()
+
+                background: Rectangle {
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                }
+                
             }
         }
     }
