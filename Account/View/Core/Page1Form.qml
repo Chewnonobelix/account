@@ -177,6 +177,7 @@ Page {
             font.pixelSize: pageStyle.title.size
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
+            clip: true
         }
 
         B.BudgetView {
