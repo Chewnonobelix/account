@@ -7,6 +7,7 @@ ControllerBudget::ControllerBudget()
     m_referenceView = nullptr;
     m_eng.load(QUrl(QStringLiteral("qrc:/Budget/BudgetView.qml")));
     m_quickView = m_eng.rootObjects().last();
+    
     connect(m_view, SIGNAL(s_loadTarget(QString)), this, SLOT(getTarget(QString)));
     connect(m_view, SIGNAL(s_budgetChanged(QString)), this, SLOT(addBudget(QString)));
     connect(m_view, SIGNAL(s_budgetReference(QString)), this, SLOT(editBudget(QString)));
@@ -119,7 +120,6 @@ void ControllerBudget::show(QDate date)
             if(it2.in(date))
                 list<<qMakePair(it.category(), it2);
 
-    qDebug()<<"Budget show"<<list.size()<<m_quickView->objectName();
 
     for(int i = 0; i < list.size(); i++)
     {
@@ -185,6 +185,7 @@ void ControllerBudget::editBudget(QString cat)
     if(!m_referenceView)
     {
         QQmlComponent referenceComp(&m_eng, QUrl(QStringLiteral("qrc:/Budget/ReferenceView.qml")));
+
         m_referenceView = referenceComp.create();
         QObject* ok = m_referenceView->findChild<QObject*>("okButton");
         connect(ok, SIGNAL(clicked()), this , SLOT(editReference()));
