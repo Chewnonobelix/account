@@ -19,15 +19,16 @@ Window {
         id: pageStyle
     }
     
-    //    width: (col1.width + col2.width) * 1.10
+    width: rectWindow.width * 2 
     //    height: (col2.height)* 1.10
     id: main
     color: "transparent"
     Rectangle {
+        id: rectWindow
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        width: (calendarLabel.width + targetValue.width)*1.2
+        width: (calendarLabel.width + targetValue.width)*1.3
         gradient: pageStyle.backgroundGradient
         
         property string budgetName
@@ -78,8 +79,6 @@ Window {
             DoubleSpinBox {
                 id: targetValue
                 objectName: "targetValue"                
-                
-                onWidthChanged: console.log(width, cButton.width, calendarLabel.width)
             }
             
             Label {
@@ -91,7 +90,66 @@ Window {
                 font.pixelSize: pageStyle.title.size
             }
             
+            ListModel {
+                id: freqModel
+                ListElement {
+                    name: qsTr("Day")
+                    role: 1
+                }
+                ListElement {
+                    name: qsTr("Week")
+                    role: 2
+                }
+                ListElement {
+                    name: qsTr("Month")
+                    role: 3
+                }
+                ListElement {
+                    name: qsTr("Quarter")
+                    role: 4
+                }
+                ListElement {
+                    name: qsTr("Year")
+                    role: 5
+                }                
+            }
+            
             ComboBox {
+                id: freqCombo
+                model: freqModel
+                textRole: "name"
+                Rectangle {
+                    gradient: pageStyle.goldButton
+                    anchors.fill: parent
+                }
+
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+                
+                onCurrentTextChanged: console.log(currentIndex, currentText)
+                delegate: ItemDelegate{
+                    width: freqCombo.width
+                    contentItem: Rectangle {
+                        anchors.fill: parent
+                        gradient: pageStyle.goldButton
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            acceptedButtons: Qt.NoButton
+                        }
+
+                        Label {
+                            anchors.centerIn: parent
+                            verticalAlignment: Qt.AlignVCenter
+                            horizontalAlignment: Qt.AlignHCenter
+                            text: name
+                            fontSizeMode: Text.Fit
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            
+                        }
+                    }
+                }
             }
             
             Button {
@@ -226,3 +284,4 @@ Window {
     //        }
     //    }
 }
+
