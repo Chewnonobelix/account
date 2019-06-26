@@ -352,7 +352,7 @@ bool ControllerXMLMulti::addBudget(const Budget& b)
 
     textNode("name", b.category());
     textNode("reference",  b.reference().toString("dd-MM-yyyy"));
-    textNode("frequency", QString::number((int)b.frequency()));
+//    textNode("frequency", QString::number((int)b.frequency()));
 
     root.appendChild(el);
     close();
@@ -395,9 +395,9 @@ QList<Budget> ControllerXMLMulti::selectBudgets()
             b.setCategory(child.text());
             child = el.elementsByTagName("reference").at(0).toElement();
             b.setReference(QDate::fromString(child.text(), "dd-MM-yyyy"));
-            child = el.elementsByTagName("frequency").at(0).toElement();
-            int f = child.text().toInt();
-            b.setFrequency((Account::FrequencyEnum)f);
+//            child = el.elementsByTagName("frequency").at(0).toElement();
+//            int f = child.text().toInt();
+//            b.setFrequency((Account::FrequencyEnum)f);
             //TODO
 
 
@@ -448,7 +448,7 @@ bool ControllerXMLMulti::updateBudget(const Budget & b)
         {
             ret = true;
             setter("reference", b.reference().toString("dd-MM-yyyy"));
-            setter("frequency", QString::number((int)b.frequency()));
+//            setter("frequency", QString::number((int)b.frequency()));
 
             auto targets = el.elementsByTagName("target");
             for(auto j = 0; i < targets.size(); j++)

@@ -1,6 +1,6 @@
 #include "budget.h"
 
-Budget::Budget(): m_id(-1), m_reference(QDate::currentDate()), m_frequency(Account::FrequencyEnum::unique)
+Budget::Budget(): m_id(-1), m_reference(QDate::currentDate())
 {
 }
 
@@ -9,7 +9,7 @@ Budget::Budget(const Budget & b)
     m_id = b.id();
     m_category = b.category();
     m_reference = b.reference();
-    m_frequency = b.frequency();
+    m_frequency = b.m_frequency;
     m_targets = b.m_targets;
     m_subs = b.m_subs;
 }
@@ -89,7 +89,7 @@ bool Budget::updateTarget(QDate d, double t)
 
 bool Budget::createSub(QDate d)
 {
-    if(m_targets.isEmpty() || frequency() == Account::FrequencyEnum::unique)
+    if(m_targets.isEmpty())
         return false;
 
     QDate start = m_targets.begin().key();
@@ -147,14 +147,14 @@ double Budget::current(QDate d)
     return ret;
 }
 
-Account::FrequencyEnum Budget::frequency() const
+Account::FrequencyEnum Budget::frequency(QDate d) const
 {
-    return m_frequency;
+    return m_frequency.value(d, Account::FrequencyEnum::unique);
 }
 
-void Budget::setFrequency(Account::FrequencyEnum f)
+void Budget::setFrequency(QDate d, Account::FrequencyEnum f)
 {
-    m_frequency = f;
+    m_frequency[d] = f;
 }
 
 QString Budget::category() const
@@ -172,7 +172,7 @@ Budget& Budget::operator = (const Budget& b)
     m_id = b.id();
     m_category = b.category();
     m_reference = b.reference();
-    m_frequency = b.frequency();
+    m_frequency = b.m_frequency;
     m_targets = b.m_targets;
     m_subs = b.m_subs;
 
@@ -195,7 +195,7 @@ Budget& Budget::operator >>(Entry e)
 
 QDate Budget::next(QDate d) const
 {
-    switch(frequency())
+    switch(frequency(d))
     {
     case Account::FrequencyEnum::day:
         return d.addDays(1);
@@ -214,7 +214,7 @@ QDate Budget::next(QDate d) const
 
 QDate Budget::previous(QDate d) const
 {
-    switch(frequency())
+    switch(frequency(d))
     {
     case Account::FrequencyEnum::day:
         return d.addDays(-1);

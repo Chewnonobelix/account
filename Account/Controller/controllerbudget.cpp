@@ -69,7 +69,7 @@ void ControllerBudget::openManager()
                 map.insert("type", type);
                 map.insert("catName", it);
                 map.insert("has", m_budgets.contains(it));
-                map.insert("frequency", m_budgets.contains(it) ? (int)m_budgets[it].frequency() : 0);
+//                map.insert("frequency", m_budgets.contains(it) ? (int)m_budgets[it].frequency() : 0);
 //                map.insert("has", true);
                 
                 QMetaObject::invokeMethod(m_view, "addCat", Q_ARG(QVariant, map));
@@ -230,8 +230,8 @@ void ControllerBudget::getTarget(QString catName)
 
 void ControllerBudget::changeFrequency(QString cat, int freq)
 {
-    m_budgets[cat].setFrequency((Account::FrequencyEnum)freq);
-    m_db->updateBudget(m_budgets[cat]);
+//    m_budgets[cat].setFrequency((Account::FrequencyEnum)freq);
+//    m_db->updateBudget(m_budgets[cat]);
 }
 
 void ControllerBudget::updateEntry(int id)

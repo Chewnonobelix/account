@@ -126,7 +126,10 @@ Window {
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
                 
-                onCurrentTextChanged: console.log(currentIndex, currentText)
+                property int currentRole: 0
+                
+                onCurrentIndexChanged: currentRole = freqModel.get(currentIndex).role
+                
                 delegate: ItemDelegate{
                     width: freqCombo.width
                     contentItem: Rectangle {

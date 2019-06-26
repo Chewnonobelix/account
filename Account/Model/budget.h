@@ -20,7 +20,7 @@ private:
     QString m_category;
     QDate m_reference;
 
-    Account::FrequencyEnum m_frequency;
+    QMap<QDate, Account::FrequencyEnum> m_frequency;
     QMap<QDate, double> m_targets;
     QMap<QDate, SubBudget> m_subs;
 
@@ -46,8 +46,8 @@ public:
     bool createSub(QDate);
     double current(QDate);
 
-    Account::FrequencyEnum frequency() const;
-    void setFrequency(Account::FrequencyEnum);
+    Account::FrequencyEnum frequency(QDate) const;
+    void setFrequency(QDate, Account::FrequencyEnum);
 
     QString category() const;
     void setCategory(QString);
