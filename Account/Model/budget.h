@@ -17,6 +17,7 @@ public:
 
 private:
     int m_id;
+
     QString m_category;
     QDate m_reference;
 

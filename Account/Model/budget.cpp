@@ -75,7 +75,11 @@ bool Budget::addTarget(QDate d, double t)
 
 bool Budget::removeTarget(QDate d)
 {
-    return m_targets.remove(d) != 0;
+    bool ret = m_targets.remove(d) != 0 && m_frequency.remove(d) != 0;
+    m_subs.clear();
+
+
+    return ret;
 }
 
 bool Budget::updateTarget(QDate d, double t)
@@ -128,6 +132,7 @@ bool Budget::createSub(QDate d)
         {
             if(d < *it)
             {
+                sub.setReference(*(it-1));
                 tar = m_targets[*(it-1)];
             }
         }

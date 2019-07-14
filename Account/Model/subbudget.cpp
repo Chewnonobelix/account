@@ -7,7 +7,7 @@ SubBudget::SubBudget()
 }
 
 SubBudget::SubBudget(const SubBudget& sb): m_target(sb.target()), m_begin(sb.begin()),
-    m_end(sb.end()), m_values(sb.m_values)
+    m_end(sb.end()), m_values(sb.m_values), m_reference(sb.reference())
 {
     update();
 }
@@ -18,6 +18,7 @@ SubBudget& SubBudget::operator = (const SubBudget& sb)
     m_begin = sb.begin();
     m_end = sb.end();
     m_values = sb.m_values;
+    m_reference = sb.reference();
     update();
 
     return *this;
@@ -38,6 +39,15 @@ void SubBudget::setTarget(double t)
     m_target = t;
 }
 
+void SubBudget::setReference(QDate ref)
+{
+    m_reference = ref;
+}
+
+QDate SubBudget::reference() const
+{
+    return m_reference;
+}
 QDate SubBudget::begin() const
 {
     return m_begin;

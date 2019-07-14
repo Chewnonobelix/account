@@ -14,7 +14,7 @@ ControllerBudget::ControllerBudget()
     connect(m_view, SIGNAL(s_budgetRoleChange(QString, int)), this, SLOT(changeFrequency(QString, int)));
     connect(m_view, SIGNAL(s_addTarget(QString)), this, SLOT(addTarget(QString)));
     connect(m_view, SIGNAL(s_showTarget(QString, QString, bool)), this, SLOT(showTarget(QString,QString,bool)));
-
+    connect(m_view, SIGNAL(s_removeTarget(QString, QString)), this, SLOT(removeTarget(QString,QString)));
 }
 
 ControllerBudget::~ControllerBudget()
@@ -114,7 +114,7 @@ void ControllerBudget::open(QString cat)
 void ControllerBudget::show(QDate date)
 {
     QList<QPair<QString,SubBudget>> list;
-    
+    m_currentDate = date;
     for(auto it: m_budgets)
         for(auto it2: it.subs())
             if(it2.in(date))
@@ -146,6 +146,9 @@ void ControllerBudget::reload()
     auto e = m_db->selectEntry(currentAccount());
     for(auto it: e)
         addTo(it.id());
+
+    qDebug()<<"reload"<<m_currentDate;
+    show(m_currentDate);
 }
 
 void ControllerBudget::addTarget(QString cat)
@@ -153,10 +156,18 @@ void ControllerBudget::addTarget(QString cat)
     editBudget(cat);
 }
 
-void ControllerBudget::removeTarget(QString cat, QDate date)
+void ControllerBudget::removeTarget(QString cat, QString date)
 {
-    if(m_budgets.contains(cat))
-        m_budgets[cat].removeTarget(date);
+      if(m_budgets.contains(cat))
+        if(m_budgets[cat].removeTarget(QDate::fromString(date, "dd-MM-yyyy")))
+        {
+            m_db->updateBudget(m_budgets[cat]);
+
+            reload();
+            getTarget(cat);
+
+            showTarget(cat, "", true);
+        }
 }
 
 void ControllerBudget::addBudget(QString name)
@@ -177,7 +188,6 @@ void ControllerBudget::addBudget(QString name)
     
     reload();
     openManager();
-
 }
 
 void ControllerBudget::editBudget(QString cat)
@@ -193,7 +203,6 @@ void ControllerBudget::editBudget(QString cat)
     m_referenceView->setProperty("budgetName", cat);
 
     QMetaObject::invokeMethod(m_referenceView, "show");
-    
 }
 
 void ControllerBudget::editReference()
@@ -204,9 +213,15 @@ void ControllerBudget::editReference()
     d = QDate::fromString(obj->property("text").toString(), "dd-MM-yyyy");
     obj = m_referenceView->findChild<QObject*>("targetValue");
     val = obj->property("realValue").toDouble();
+    obj = m_referenceView->findChild<QObject*>("freqCombo");
+    int role = obj->property("currentRole").toInt();
+    m_budgets[cat].setFrequency(d, (Account::FrequencyEnum)role);
+
     QMetaObject::invokeMethod(m_referenceView, "close");
     m_budgets[cat].addTarget(d, val);
     m_db->updateBudget(m_budgets[cat]);
+    reload();
+    getTarget(cat);
 }
 
 void ControllerBudget::getTarget(QString catName)
@@ -221,6 +236,7 @@ void ControllerBudget::getTarget(QString catName)
         QVariantMap map;
         map.insert("date", it.key());
         map.insert("target", it.value());
+        map.insert("frequency", (int)m_budgets[catName].frequency(it.key()));
 
         QMetaObject::invokeMethod(m_view, "addTarget", Q_ARG(QVariant, map));
     }
@@ -245,12 +261,14 @@ void ControllerBudget::updateEntry(int id)
 void ControllerBudget::changeEntry(QString old, int id)
 {
     Entry e = entry(id);
-    
+    qDebug()<<"??"<<old<<e.info().category();
     if(m_budgets.contains(old))
         m_budgets[old]>>e;
     
     if(m_budgets.contains(e.info().category()))
         m_budgets[e.info().category()]<<e;
+
+    reload();
 }
 
 void ControllerBudget::showTarget(QString catName, QString date, bool all)
@@ -262,11 +280,12 @@ void ControllerBudget::showTarget(QString catName, QString date, bool all)
     if(!all)
     {
         QDate d = QDate::fromString(date, "dd-MM-yyyy");
-        double target = m_budgets[catName].targets()[d];
 
         for(auto it: list)
-            if(it.target() == target)
+        {
+            if(it.reference() == d)
                 list2<<it;
+        }
     }
     else
     {

@@ -24,6 +24,8 @@ private:
 
     void createAccount(QString);
 
+    void adder(QDomElement&, QString , QString, QMap<QString, QString> = QMap<QString, QString>());
+    void setter(QDomElement&, QString , QString, QMap<QString, QString> = QMap<QString, QString>() );
 protected:
     void timerEvent(QTimerEvent*);
 

@@ -8,6 +8,7 @@
 class SubBudget
 {
 private:
+    QDate m_reference;
     double m_current;
     double m_target;
     QDate m_begin;
@@ -21,6 +22,8 @@ public:
 
     SubBudget& operator = (const SubBudget&);
 
+    QDate reference() const;
+    void setReference(QDate);
     double current() const;
     double target() const;
     void setTarget(double);

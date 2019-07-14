@@ -38,7 +38,7 @@ public slots:
     void show(QDate);
     void closeManager();
     void addTarget(QString);
-    void removeTarget(QString, QDate);
+    void removeTarget(QString, QString);
     void editReference();
     void showTarget(QString, QString, bool);
 //    void addBudget(QString, QDate, Account::FrequencyEnum);

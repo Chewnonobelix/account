@@ -19,7 +19,7 @@ Window {
         id: pageStyle
     }
     
-    width: rectWindow.width * 2 
+    width: rectWindow.width * 2
     //    height: (col2.height)* 1.10
     id: main
     color: "transparent"
@@ -27,7 +27,8 @@ Window {
         id: rectWindow
         anchors.left: parent.left
         anchors.top: parent.top
-        anchors.bottom: parent.bottom
+
+        height:  (20*3 + calendarLabel.height * 5) * 1.15
         width: (calendarLabel.width + targetValue.width)*1.3
         gradient: pageStyle.backgroundGradient
         
@@ -42,24 +43,19 @@ Window {
             
             
             anchors.fill: parent
-            anchors.leftMargin: 10 
-            anchors.topMargin: 10 
+            anchors.leftMargin: 10
+            anchors.topMargin: 10
             horizontalItemAlignment: Qt.AlignHCenter
             verticalItemAlignment: Qt.AlignVCenter
             
             Label {
                 id: calendarLabel
-                //            anchors.fill: parent
                 text: qsTr("From")
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 fontSizeMode: Text.Fit
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
-                
-                background: Rectangle {
-                    border.color: "gold"
-                }
             }
             CalendarButton {
                 id: cButton
@@ -73,18 +69,18 @@ Window {
                 verticalAlignment: Qt.AlignVCenter
                 fontSizeMode: Text.Fit
                 font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size                
+                font.pixelSize: pageStyle.title.size
             }
             
             DoubleSpinBox {
                 id: targetValue
-                objectName: "targetValue"                
+                objectName: "targetValue"
             }
             
             Label {
                 text: qsTr("Every")
                 horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter            
+                verticalAlignment: Qt.AlignVCenter
                 fontSizeMode: Text.Fit
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
@@ -111,11 +107,13 @@ Window {
                 ListElement {
                     name: qsTr("Year")
                     role: 5
-                }                
+                }
             }
             
             ComboBox {
                 id: freqCombo
+                objectName: "freqCombo"
+
                 model: freqModel
                 textRole: "name"
                 Rectangle {
@@ -157,6 +155,7 @@ Window {
             
             Button {
                 text: "ok"
+                id: okButton
                 objectName: "okButton"
                 
                 background: Rectangle {
@@ -164,7 +163,7 @@ Window {
                 }
             }
             
-            Button {            
+            Button {
                 text: "Cancel"
                 onClicked: main.close()
                 
@@ -179,7 +178,7 @@ Window {
     
     //    Rectangle {
     //        width: (( col2.x + col2.width) - col1.x) * 1.05
-    //        height: (( row1.y + row1.height) - col2.y) * 1.05   
+    //        height: (( row1.y + row1.height) - col2.y) * 1.05
     
     //        anchors.leftMargin: 10
     //        anchors.topMargin: 10
@@ -198,7 +197,7 @@ Window {
     //                border.color: "gold"
     //            }
     
-    //            spacing: 10             
+    //            spacing: 10
     //            Label {
     //                Layout.alignment: Qt.AlignCenter
     //                anchors.topMargin: 10
@@ -227,7 +226,7 @@ Window {
     
     //        ColumnLayout {
     //            id: col2
-    ////            anchors.topMargin: 10        
+    ////            anchors.topMargin: 10
     //            anchors.left: col1.right
     //            anchors.leftMargin: 10
     //            anchors.verticalCenter: col1.verticalCenter
@@ -235,7 +234,7 @@ Window {
     ////            topPadding: 10
     ////            rightPadding: 10
     ////            leftPadding: 10
-    //            spacing: 10             
+    //            spacing: 10
     
     
     //            Label {
@@ -253,7 +252,7 @@ Window {
     
     //            DoubleSpinBox {
     //                id: targetValue
-    //                objectName: "targetValue"                
+    //                objectName: "targetValue"
     //                Layout.alignment: Qt.AlignCenter
     //            }
     //        }
@@ -275,7 +274,7 @@ Window {
     //                }
     //            }
     
-    //            Button {            
+    //            Button {
     //                text: "Cancel"
     //                onClicked: main.close()
     

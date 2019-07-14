@@ -21,7 +21,8 @@ Window {
     signal s_budgetRoleChange(string name, int role)
     signal s_addTarget(string cat)
     signal s_showTarget(string cat, string d, bool all)
-    
+    signal s_removeTarget(string cat, string d)
+
     onWidthChanged: show()
     onHeightChanged: show()
     
@@ -49,6 +50,7 @@ Window {
     
     function clearTarget() {
         targetModel.clear()
+        targetView.currentIndex = -1
     }
     
     function clearSub() {
@@ -165,7 +167,7 @@ Window {
                         
                         background: Rectangle {
                             
-//                            width: removeSubAction.width > freqMenu.width ? removeSubAction.width: freqMenu.width
+                            //                            width: removeSubAction.width > freqMenu.width ? removeSubAction.width: freqMenu.width
                             gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
                         }
                     }
@@ -176,110 +178,6 @@ Window {
                         onTriggered: budgetManager.s_budgetChanged(catName)
                     }
                     
-                    
-//                    Control2.Menu {
-//                        id: freqMenu
-//                        enabled: has
-//                        property string val: ""
-//                        property int currentRole: -1
-                        
-                        
-//                        Component.onCompleted: {
-//                            if(frequency > 0) {
-//                                for(var i = 0; i < count; i++) {
-//                                    if(itemAt(i).role === frequency) {
-//                                        currentRole = frequency
-//                                        val = itemAt(i).text
-//                                    }
-//                                }
-//                            }
-//                        }
-                        
-                        
-//                        onCurrentRoleChanged: {
-//                            if(!budgetManager.blocked)
-//                                budgetManager.s_budgetRoleChange(catName, currentRole)
-//                        }
-//                        title: qsTr("Set to: ") + val
-                        
-//                        Control2.MenuItem {
-//                            text: "Day"
-//                            property int role: 1
-//                            font.family: pageStyle.core.name
-//                            font.pixelSize: pageStyle.core.size
-                            
-//                            onTriggered: {
-//                                freqMenu.val = text
-//                                freqMenu.currentRole = role
-//                            }
-                            
-//                            background: Rectangle {
-//                                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-//                            }
-//                        }
-//                        Control2.MenuItem {
-//                            text: "Week"
-//                            property int role: 2
-//                            font.family: pageStyle.core.name
-//                            font.pixelSize: pageStyle.core.size
-                            
-//                            onTriggered: {
-//                                freqMenu.val = text
-//                                freqMenu.currentRole = role
-//                            }
-                            
-//                            background: Rectangle {
-//                                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-//                            }
-                            
-//                        }
-//                        Control2.MenuItem {
-//                            text: "Month"
-//                            property int role: 3
-//                            font.family: pageStyle.core.name
-//                            font.pixelSize: pageStyle.core.size
-                            
-//                            onTriggered: {
-//                                freqMenu.val = text
-//                                freqMenu.currentRole = role
-//                            }
-                            
-//                            background: Rectangle {
-//                                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-//                            }
-                            
-//                        }
-//                        Control2.MenuItem {
-//                            property int role: 4
-//                            font.family: pageStyle.core.name
-//                            font.pixelSize: pageStyle.core.size
-                            
-//                            text: "Quarter"
-//                            onTriggered: {
-//                                freqMenu.val = text
-//                                freqMenu.currentRole = role
-//                            }
-//                            background: Rectangle {
-//                                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-//                            }
-//                        }
-//                        Control2.MenuItem {
-//                            text: "Year"
-//                            property int role: 5
-//                            font.family: pageStyle.core.name
-//                            font.pixelSize: pageStyle.core.size
-                            
-//                            onTriggered: {
-//                                freqMenu.val = text
-//                                freqMenu.currentRole = role
-//                            }
-                            
-//                            background: Rectangle {
-//                                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-//                            }
-                            
-//                        }
-//                    }
                 }
             }
             
@@ -319,7 +217,9 @@ Window {
                     id: removeAction
                     text:  "Remove target"
                     
-                    onTriggered: console.log(targetView.currentIndex, targetModel.get(targetView.currentIndex).date)
+                    onTriggered: {
+                        s_removeTarget(categoryModel.get(catView.currentIndex).catName, Qt.formatDate(targetModel.get(targetView.currentIndex).date, "dd-MM-yyyy"))
+                    }
                 }
             }
             
@@ -331,7 +231,7 @@ Window {
                 delegate: Control2.MenuItem {
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
-                    height: 20                    
+                    height: 20
                     background: Rectangle {
                         
                         //                        width: removeSubAction.width > freqMenu.width ? removeSubAction.width: freqMenu.width
@@ -431,7 +331,7 @@ Window {
                         verticalAlignment: Text.AlignVCenter
                         fontSizeMode: Text.Fit
                         font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.title.size   
+                        font.pixelSize: pageStyle.title.size
                     }
                     
                     BudgetViewItem {
