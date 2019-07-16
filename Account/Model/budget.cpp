@@ -31,8 +31,14 @@ bool Budget::addEntry(Entry e)
     while(!ret)
     {
         for(SubBudget& it: m_subs)
+        {
             if(it.in(e.date()))
                 ret = it.addEntry(e);
+            
+            if(it.in(e.date()) && !ret)
+                return false;
+        }
+            
 
         if(!ret)
             if(!createSub(e.date()))

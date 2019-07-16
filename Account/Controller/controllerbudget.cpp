@@ -121,6 +121,7 @@ void ControllerBudget::show(QDate date)
                 list<<qMakePair(it.category(), it2);
 
 
+    QMetaObject::invokeMethod(m_quickView, "clear");
     for(int i = 0; i < list.size(); i++)
     {
         QVariantMap map;
@@ -147,7 +148,6 @@ void ControllerBudget::reload()
     for(auto it: e)
         addTo(it.id());
 
-    qDebug()<<"reload"<<m_currentDate;
     show(m_currentDate);
 }
 
@@ -256,6 +256,8 @@ void ControllerBudget::updateEntry(int id)
     
     if(m_budgets.contains(e.info().category()))
         m_budgets[e.info().category()]<<e;
+    
+    reload();
 }
 
 void ControllerBudget::changeEntry(QString old, int id)

@@ -11,6 +11,11 @@ Item {
             budgetModel2.append(map)
     }
 
+    function clear() {
+        budgetModel1.clear()
+        budgetModel2.clear()
+    }
+
 //    Rectangle {
 //        anchors.fill: parent
 //    }
