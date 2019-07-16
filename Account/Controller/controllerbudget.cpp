@@ -263,7 +263,7 @@ void ControllerBudget::updateEntry(int id)
 void ControllerBudget::changeEntry(QString old, int id)
 {
     Entry e = entry(id);
-    qDebug()<<"??"<<old<<e.info().category();
+
     if(m_budgets.contains(old))
         m_budgets[old]>>e;
     
