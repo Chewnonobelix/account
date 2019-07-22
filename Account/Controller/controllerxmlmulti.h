@@ -26,6 +26,8 @@ private:
 
     void adder(QDomElement&, QString , QString, QMap<QString, QString> = QMap<QString, QString>());
     void setter(QDomElement&, QString , QString, QMap<QString, QString> = QMap<QString, QString>() );
+    void deleter(QDomElement&, QString);
+    
 protected:
     void timerEvent(QTimerEvent*);
 

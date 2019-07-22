@@ -384,19 +384,22 @@ void ControllerXMLMulti::setter(QDomElement& el, QString tagname, QString value,
     QDomElement child = el.elementsByTagName(tagname).at(0).toElement();
     if(child.isNull())
     {
-        child = m_currentAccount.createElement(tagname);
-        el.appendChild(child);
+        adder(el, tagname, value, attr);
+        return;
     }
+    
     QDomText txt = child.firstChild().toText();
-    if(txt.isNull())
-    {
-        txt = m_currentAccount.createTextNode("");
-        el.appendChild(txt);
-    }
     txt.setData(value);
 
     for(auto it = attr.begin(); it != attr.end(); it++)
         child.setAttribute(it.key(), it.key());
+}
+
+void ControllerXMLMulti::deleter(QDomElement & el, QString tagname)
+{
+    auto old = el.elementsByTagName(tagname);
+    if(old.size() == 1)
+        el.removeChild(old.at(0));
 }
 
 bool ControllerXMLMulti::updateBudget(const Budget & b)
