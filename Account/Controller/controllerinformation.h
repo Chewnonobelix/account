@@ -6,6 +6,7 @@
 #include "Model/entry.h"
 #include "Model/information.h"
 #include "abstractcontroller.h"
+#include "controllerfrequency.h"
 
 class ControllerInformation: public AbstractController
 {
@@ -14,7 +15,8 @@ class ControllerInformation: public AbstractController
 private:
     Entry m_entry;
     QObject* m_view;
-
+    ControllerFrequency* m_controllerFrequency;
+    
 public:
     ControllerInformation();
     ~ControllerInformation();
@@ -23,13 +25,15 @@ public:
 
     void configure(QObject*);
     void view(int);
-
+    void setControllerFrequency(ControllerFrequency*);
+    
 public slots:
     void titleChange(QString);
     void valueChange(double);
     void categoryChange(QString);
     void addNewCategory(QString);
-
+    void enableFreq(bool);
+    
 signals:
     void s_update(int);
     void s_changeCat(QString, int);

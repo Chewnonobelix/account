@@ -57,6 +57,12 @@ void ControllerInformation::view(int id)
         QMetaObject::invokeMethod(infoItem, "setType", Q_ARG(QVariant, m_entry.info().category()));
     }
 
+    QObject* freqItem = m_view->findChild<QObject*>("freqCheck");
+    
+    if(freqItem)
+    {
+        connect(freqItem, SIGNAL(s_check(bool)), this, SLOT(enableFreq(bool)));
+    }
 }
 
 void ControllerInformation::titleChange(QString title)
@@ -94,4 +100,20 @@ void ControllerInformation::addNewCategory(QString cat)
     view(m_entry.id());
 }
 
+void ControllerInformation::setControllerFrequency(ControllerFrequency * cf)
+{
+    m_controllerFrequency = cf;
+}
+
+void ControllerInformation::enableFreq(bool enable)
+{
+    qDebug()<<"Enable freq"<<enable;
+    if(enable)
+    {
+        Frequency f;
+        m_db->addFrequency(f);
+        m_entry.setFrequency(f.id());
+        m_controllerFrequency->exec();
+    }
+}
 

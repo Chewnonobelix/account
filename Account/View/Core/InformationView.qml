@@ -3,7 +3,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.12
 import "../Style" as S
-
+import "../Frequency" as F
 Item {
     id: info
     objectName: "info"
@@ -225,10 +225,35 @@ Item {
     }
 
 
-    Label {
+//    Label {
+//        anchors.top:title.bottom
+//        anchors.topMargin: 10
+//        text: qsTr("Coming Soon")
+//    }
+    //Frequency
+    GroupBox {
         anchors.top:title.bottom
         anchors.topMargin: 10
-        text: qsTr("Coming Soon")
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
+        
+        
+        label:  CheckBox {
+            id: freqCheck
+            objectName: "freqCheck"
+            text:  qsTr("Frequency")
+            
+            signal s_check(bool check)
+            
+            onCheckedChanged: s_check(checked) 
+        }
+        
+        contentItem: F.Frequency {
+            id: freq
+            enabled: freqCheck.checked
+            objectName: "freq"
+        }
     }
-    //Frequency
 }
