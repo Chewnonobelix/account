@@ -2,6 +2,7 @@
 #define ACCOUNTGLOBAL_H
 
 #include <QObject>
+#include <QDate>
 
 namespace Account
 {
@@ -12,6 +13,8 @@ namespace Account
 
     enum TypeEnum {outcome = -1, income = 1};
     Q_ENUM_NS(TypeEnum)
+    
+    int nbDay(QDate, FrequencyEnum);
 }
 
 #endif // ACCOUNTGLOBAL_H
