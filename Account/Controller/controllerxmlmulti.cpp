@@ -141,6 +141,13 @@ QList<Entry> ControllerXMLMulti::selectEntry(QString account)
         inf.setIdEntry(e.id());
         e.setInfo(inf);
 
+        auto freqs = el.elementsByTagName("frequency");
+        if(!freqs.isEmpty())
+        {
+            child = freqs.at(0).toElement();
+            e.setFrequency(child.text().toInt());
+        }
+        
         m_entriesId<<e.id();
         m_infoId<<inf.id();
 
@@ -225,6 +232,11 @@ bool ControllerXMLMulti::updateEntry(const Entry & e)
             setter(el, "date", e.date().toString("dd-MM-yyyy"));
             setter(el, "value",QString::number(e.value()));
 
+            if(e.frequency() == -1)
+                deleter(el, "frequency");
+            else
+                setter(el, "frequency", QString::number(e.frequency()));
+            
             return true;
         }
     }
