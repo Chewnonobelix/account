@@ -13,5 +13,11 @@ void ControllerFrequency::addEntry(int e)
 
 int ControllerFrequency::exec()
 {
+    auto freqs = m_db->selectFrequency();
+    
+    m_freqs.clear();
+    for(auto it: freqs)
+        m_freqs[it.id()] = it;
+    
     return 0;
 }
