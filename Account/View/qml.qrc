@@ -4,17 +4,6 @@
         <file>Core/Page1Form.qml</file>
         <file>Core/Page2Form.qml</file>
         <file>qtquickcontrols2.conf</file>
-<<<<<<< HEAD
-        <file>InformationView.qml</file>
-        <file>Adding.qml</file>
-        <file>DoubleSpinBox.qml</file>
-        <file>MultiCalendar.qml</file>
-        <file>AccountStyle.qml</file>
-        <file>CheckEstimated.qml</file>
-        <file>BASKVILL.TTF</file>
-        <file>CASTELAR.TTF</file>
-        <file>Frequency.qml</file>
-=======
         <file>Core/InformationView.qml</file>
         <file>Core/Adding.qml</file>
         <file>Core/DoubleSpinBox.qml</file>
@@ -30,6 +19,5 @@
         <file>Budget/BudgetManager.qml</file>
         <file>Budget/ReferenceView.qml</file>
         <file>Frequency/Frequency.qml</file>
->>>>>>> e8af6630c83e32b0bae3d9f85f001576ada41043
     </qresource>
 </RCC>
