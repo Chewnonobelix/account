@@ -5,6 +5,7 @@
 #include <QList>
 #include "Model/entry.h"
 #include "Model/budget.h"
+#include "Model/frequency.h"
 #include "Model/accountglobal.h"
 
 class InterfaceDataSave
@@ -30,6 +31,12 @@ public:
     virtual QList<Budget> selectBudgets() = 0;
     virtual bool updateBudget(const Budget&) = 0;
 
+    
+    virtual bool addFrequency(const Frequency&) = 0;
+    virtual bool removeFrequency(const Frequency&) = 0;
+    virtual bool updateFrequency(const Frequency&) = 0;
+    virtual QList<Frequency> selectFrequency() = 0;
+    
     virtual bool init() = 0;
 };
 

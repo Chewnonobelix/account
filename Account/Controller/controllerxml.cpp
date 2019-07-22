@@ -394,3 +394,23 @@ bool ControllerXML::updateEntry(const Entry & e)
 
     return false;
 }
+
+bool ControllerXML::addFrequency(const Frequency&)
+{
+    return false; //TODO
+}
+
+bool ControllerXML::removeFrequency(const Frequency&)
+{
+    return false; //TODO
+}
+
+bool ControllerXML::updateFrequency(const Frequency&)
+{
+    return false; //TODO
+}
+
+QList<Frequency> ControllerXML::selectFrequency()
+{
+    return QList<Frequency>(); //TODO
+}

@@ -318,7 +318,7 @@ bool ControllerXMLMulti::addBudget(const Budget& b)
 
     root.appendChild(el);
     close();
-    return false;
+    return true;
 }
 
 bool ControllerXMLMulti::removeBudget(const Budget &b)
@@ -514,6 +514,68 @@ Information ControllerXMLMulti::selectInformation(const QDomElement& el) const
     ret.setCategory(cat);
     ret.setTitle(title);
 
+    return ret;
+}
+
+bool ControllerXMLMulti::addFrequency(const Frequency& f)
+{
+    QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+
+    int id = maxId(m_freqId) + 1;
+    m_freqId<<id;
+    QMap<QString, QString> attr;
+    attr["id"] = QString::number(id);
+    adder(root, "frequency", QString::number((int)f.freq()), attr);
+
+    close();
+    return true;
+}
+
+bool ControllerXMLMulti::removeFrequency(const Frequency& f)
+{
+    auto freqs = m_currentAccount.elementsByTagName("frequency");
+    
+    for(int i = 0; i < freqs.size(); i++)
+        if(freqs.at(i).toElement().attribute("id").toInt() == f.id())
+        {
+            m_currentAccount.removeChild(freqs.at(i));
+            return true;
+        }
+    
+    return false;
+}
+
+bool ControllerXMLMulti::updateFrequency(const Frequency& f)
+{
+    auto freqs = m_currentAccount.elementsByTagName("frequency");
+    
+    for(int i = 0; i < freqs.size(); i++)
+        if(freqs.at(i).toElement().attribute("id").toInt() == f.id())
+        {
+            freqs.at(i).setNodeValue(QString::number((int)f.freq()));
+            return true;
+        }
+    
+    return false;
+}
+
+QList<Frequency> ControllerXMLMulti::selectFrequency()
+{
+    QList<Frequency> ret;
+    auto freqs = m_currentAccount.elementsByTagName("frequency");
+    
+    for(int i = 0; i < freqs.size(); i++)
+    {
+        if(freqs.at(i).toElement().hasAttribute("id"))
+        {
+            auto child = freqs.at(i).toElement();
+            Frequency f;
+            f.setId(child.attribute("id").toInt());
+            f.setFreq((Account::FrequencyEnum)(child.nodeValue().toInt()));
+            ret<<f;
+        }
+    }
+    
     return ret;
 }
 

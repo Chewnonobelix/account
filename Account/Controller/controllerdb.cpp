@@ -314,3 +314,23 @@ bool ControllerDB::updateEntry(const Entry & e)
 
     return ret;
 }
+
+bool ControllerDB::addFrequency(const Frequency&)
+{
+    return false; //TODO
+}
+
+bool ControllerDB::removeFrequency(const Frequency&)
+{
+    return false; //TODO
+}
+
+bool ControllerDB::updateFrequency(const Frequency&)
+{
+    return false; //TODO
+}
+
+QList<Frequency> ControllerDB::selectFrequency()
+{
+    return QList<Frequency>(); //TODO
+}

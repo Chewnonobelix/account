@@ -13,6 +13,7 @@ private:
     QSet<int> m_entriesId;
     QSet<int> m_infoId;
     QSet<int> m_budgetId;
+    QSet<int> m_freqId;
     
     QDomDocument m_currentAccount;
 
@@ -58,6 +59,11 @@ public:
     virtual bool removeBudget(const Budget&);
     virtual QList<Budget> selectBudgets();
     virtual bool updateBudget(const Budget &);
+    
+    virtual bool addFrequency(const Frequency&);
+    virtual bool removeFrequency(const Frequency&);
+    virtual bool updateFrequency(const Frequency&);
+    virtual QList<Frequency> selectFrequency();
     
     virtual bool init();
 };
