@@ -363,6 +363,9 @@ void MainController::accountChange(QString acc)
     if(pageSkip)
         pageSkip->setProperty("maxPage", maxPage);
 
+    for(auto it: entries())
+        m_freqs.addEntry(it.id());
+    
     selection();
     checkEstimated();
 }

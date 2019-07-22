@@ -15,6 +15,7 @@
 #include "languagecontroller.h"
 #include "controllertransfert.h"
 #include "controllerbudget.h"
+#include "controllerfrequency.h"
 
 class MainController: public AbstractController
 {
@@ -27,7 +28,8 @@ private:
     LanguageController m_lang;
     ControllerTransfert m_transfert;
     ControllerBudget m_budget;
-
+    ControllerFrequency m_freqs;
+    
     void checkEstimated();
 
 public:
