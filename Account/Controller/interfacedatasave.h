@@ -32,7 +32,7 @@ public:
     virtual bool updateBudget(const Budget&) = 0;
 
     
-    virtual bool addFrequency(const Frequency&) = 0;
+    virtual bool addFrequency(Frequency&) = 0;
     virtual bool removeFrequency(const Frequency&) = 0;
     virtual bool updateFrequency(const Frequency&) = 0;
     virtual QList<Frequency> selectFrequency() = 0;

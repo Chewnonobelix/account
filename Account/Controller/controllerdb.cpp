@@ -315,7 +315,7 @@ bool ControllerDB::updateEntry(const Entry & e)
     return ret;
 }
 
-bool ControllerDB::addFrequency(const Frequency&)
+bool ControllerDB::addFrequency(Frequency&)
 {
     return false; //TODO
 }

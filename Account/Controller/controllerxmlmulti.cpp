@@ -517,7 +517,7 @@ Information ControllerXMLMulti::selectInformation(const QDomElement& el) const
     return ret;
 }
 
-bool ControllerXMLMulti::addFrequency(const Frequency& f)
+bool ControllerXMLMulti::addFrequency(Frequency& f)
 {
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
 
@@ -526,7 +526,7 @@ bool ControllerXMLMulti::addFrequency(const Frequency& f)
     QMap<QString, QString> attr;
     attr["id"] = QString::number(id);
     adder(root, "frequency", QString::number((int)f.freq()), attr);
-
+    f.setId(id);
     close();
     return true;
 }

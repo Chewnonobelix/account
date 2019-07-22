@@ -395,7 +395,7 @@ bool ControllerXML::updateEntry(const Entry & e)
     return false;
 }
 
-bool ControllerXML::addFrequency(const Frequency&)
+bool ControllerXML::addFrequency(Frequency&)
 {
     return false; //TODO
 }
