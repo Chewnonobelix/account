@@ -32,3 +32,15 @@ Entry Frequency::clone(const Entry & e) const
     ret.setDate(e.date().addDays(t));
     return ret;
 }
+
+QSet<int> Frequency::entries() const
+{
+    return m_entriesId;    
+}
+
+Frequency& Frequency::operator<< (const Entry& e)
+{
+    
+    m_entriesId<<e.id();
+    return *this;
+}
