@@ -16,6 +16,27 @@ Item {
     ListModel {
         id: occurancyModel
         objectName: "occurancyModel"
+        
+        ListElement {
+            role: 1
+            name: qsTr("Day")
+        }
+        ListElement {
+            role: 2
+            name: qsTr("Week")
+        }
+        ListElement {
+            role: 3
+            name: qsTr("Month")
+        }
+        ListElement {
+            role: 4
+            name: qsTr("Quarter")
+        }
+        ListElement {
+            role: 5
+            name: qsTr("Year")
+        }
     }
 
     ListView {
@@ -31,5 +52,6 @@ Item {
     ComboBox {
         id: occurancy
         model: occurancyModel
+        textRole: "name"
     }
 }
