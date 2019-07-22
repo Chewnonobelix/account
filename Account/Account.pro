@@ -15,6 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Controller/controllerbudget.cpp \
+    Controller/controllerfrequency.cpp \
     Model/accountglobal.cpp \
     Model/frequency.cpp \
     Model/subbudget.cpp \
@@ -55,6 +56,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     Controller/controllerbudget.h \
+    Controller/controllerfrequency.h \
     Model/entry.h \
     Model/frequency.h \
     Model/information.h \
