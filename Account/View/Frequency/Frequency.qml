@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 
+import "../Core" as C
 Item {
 
     ListModel {
@@ -53,5 +54,20 @@ Item {
         id: occurancy
         model: occurancyModel
         textRole: "name"
+        anchors.left: parent.left
     }
+
+    CheckBox {
+        id: unlimited
+        anchors.left: occurancy.right
+        anchors.top: parent.top
+        text: qsTr("Unlimited")
+    }
+
+    C.CalendarButton {
+        anchors.left: unlimited.right
+        enabled: !unlimited.checked
+        anchors.top: parent.top
+    }
+
 }
