@@ -102,6 +102,9 @@ int MainController::exec()
         m_budget.setQuickView(rectQuickView);
         m_budget.show(QDate::currentDate());
     }
+    
+    m_info.setControllerFrequency(&m_freqs);
+    
     return 0;
 }
 
