@@ -42,11 +42,6 @@ void AbstractController::setCurrentAccount(QString a)
         m_accountTotal = m_accountTotal + it;
         m_entry.insert(it.date(), it);
     }
-
-    auto x = m_db->selectCategory();
-    for(auto it = x.begin(); it != x.end(); it++)
-        Categories::addType(it.key(), it.value());
-
 }
 
 QString AbstractController::currentAccount()
@@ -70,7 +65,7 @@ void AbstractController::addEntry(const Entry& e)
 
         if(et.date() < init.date())
         {
-            QMetaEnum qme = QMetaEnum::fromType<Categories::Type>();
+            QMetaEnum qme = QMetaEnum::fromType<Account::TypeEnum>();
             QDate nd = et.date().addDays(-1);
 
 
@@ -173,26 +168,26 @@ void AbstractController::updateEntry(const Entry & e)
 void AbstractController::addCategory(QString name, QString type)
 {
     m_db->addCategory(name, type);
-    Categories::clear();
-    auto c = m_db->selectCategory();
+//    Categories::clear();
+//    auto c = m_db->selectCategory();
 
-    for(auto it = c.begin(); it != c.end(); it++)
-        Categories::addType(it.key(), it.value());
+//    for(auto it = c.begin(); it != c.end(); it++)
+//        Categories::addType(it.key(), it.value());
 
 }
 
 QStringList AbstractController::categories(QString type)
 {
-    QMetaEnum enume = QMetaEnum::fromType<Categories::Type>();
-    int t = enume.keyToValue(type.toLower().toLatin1());
+//    QMetaEnum enume = QMetaEnum::fromType<Account::Type>();
+//    int t = enume.keyToValue(type.toLower().toLatin1());
 
-    QStringList list = Categories::categories();
+    QStringList ret = m_db->selectCategory().values(type);
 
-    QStringList ret;
+//    QStringList ret;
 
-    for(auto it: list)
-        if(Categories::type(it) == t)
-            ret<<it;
+//    for(auto it: list)
+//        if(Categories::type(it) == t)
+//            ret<<it;
 
     return ret;
 }

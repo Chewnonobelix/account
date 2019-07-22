@@ -4,6 +4,9 @@
 #include <QString>
 #include <QList>
 #include "Model/entry.h"
+#include "Model/budget.h"
+#include "Model/frequency.h"
+#include "Model/accountglobal.h"
 
 class InterfaceDataSave
 {
@@ -21,8 +24,19 @@ public:
 
     virtual bool addCategory(QString, QString) = 0;
     virtual bool removeCategory(QString) = 0;
-    virtual QMap<QString, QString> selectCategory() = 0;
+    virtual QMultiMap<QString, QString> selectCategory() = 0;
 
+    virtual bool addBudget(const Budget&) = 0;
+    virtual bool removeBudget(const Budget&) = 0;
+    virtual QList<Budget> selectBudgets() = 0;
+    virtual bool updateBudget(const Budget&) = 0;
+
+    
+    virtual bool addFrequency(Frequency&) = 0;
+    virtual bool removeFrequency(const Frequency&) = 0;
+    virtual bool updateFrequency(const Frequency&) = 0;
+    virtual QList<Frequency> selectFrequency() = 0;
+    
     virtual bool init() = 0;
 };
 

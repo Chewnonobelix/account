@@ -1,5 +1,5 @@
 QT += quick sql core xml widgets charts qml gui
-CONFIG += c++11
+CONFIG += c++17
 
 ##Command de deploiement: windeployeqt --qmldir %{sourceDir}\Account\View
 # The following define makes your compiler emit warnings if you use
@@ -14,11 +14,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Controller/controllerbudget.cpp \
+    Controller/controllerfrequency.cpp \
+    Model/accountglobal.cpp \
+    Model/frequency.cpp \
+    Model/subbudget.cpp \
         main.cpp \
     Model/entry.cpp \
     Model/information.cpp \
     Model/total.cpp \
-    Model/categories.cpp \
+#    Model/categories.cpp \
     Controller/abstractcontroller.cpp \
     Controller/controllerdb.cpp \
     Controller/maincontroller.cpp \
@@ -29,15 +34,17 @@ SOURCES += \
     Model/budget.cpp \
     Model/commonexpense.cpp \
     Controller/controllerxmlmulti.cpp \
-    Controller/languagecontroller.cpp
+    Controller/languagecontroller.cpp \
+    Controller/controllertransfert.cpp
 
 RESOURCES += View/qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
+QML_IMPORT_PATH = $${PWD}\View
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
-QML_DESIGNER_IMPORT_PATH =
+QML_DESIGNER_IMPORT_PATH = $${PWD}\View
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -48,10 +55,14 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 #                account_en.ts \
 
 HEADERS += \
+    Controller/controllerbudget.h \
+    Controller/controllerfrequency.h \
     Model/entry.h \
+    Model/frequency.h \
     Model/information.h \
+    Model/subbudget.h \
     Model/total.h \
-    Model/categories.h \
+#    Model/categories.h \
     Controller/abstractcontroller.h \
     Controller/controllerdb.h \
     Controller/maincontroller.h \
@@ -64,5 +75,6 @@ HEADERS += \
     Model/commonexpense.h \
     Controller/controllerxmlmulti.h \
     Model/accountglobal.h \
+    Controller/controllertransfert.h \
     Controller/languagecontroller.h
     Model/frequency.h

@@ -1,9 +1,10 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>Page1Form.qml</file>
-        <file>Page2Form.qml</file>
+        <file>Core/Main.qml</file>
+        <file>Core/Page1Form.qml</file>
+        <file>Core/Page2Form.qml</file>
         <file>qtquickcontrols2.conf</file>
+<<<<<<< HEAD
         <file>InformationView.qml</file>
         <file>Adding.qml</file>
         <file>DoubleSpinBox.qml</file>
@@ -13,5 +14,22 @@
         <file>BASKVILL.TTF</file>
         <file>CASTELAR.TTF</file>
         <file>Frequency.qml</file>
+=======
+        <file>Core/InformationView.qml</file>
+        <file>Core/Adding.qml</file>
+        <file>Core/DoubleSpinBox.qml</file>
+        <file>Core/MultiCalendar.qml</file>
+        <file>Style/AccountStyle.qml</file>
+        <file>Core/CheckEstimated.qml</file>
+        <file>Style/BASKVILL.TTF</file>
+        <file>Style/CASTELAR.TTF</file>
+        <file>Transfert/Transfert.qml</file>
+        <file>Core/CalendarButton.qml</file>
+        <file>Budget/BudgetViewItem.qml</file>
+        <file>Budget/BudgetView.qml</file>
+        <file>Budget/BudgetManager.qml</file>
+        <file>Budget/ReferenceView.qml</file>
+        <file>Frequency/Frequency.qml</file>
+>>>>>>> e8af6630c83e32b0bae3d9f85f001576ada41043
     </qresource>
 </RCC>

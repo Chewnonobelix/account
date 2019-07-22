@@ -322,17 +322,39 @@ bool ControllerXML::removeCategory(QString name)
     return false;
 }
 
-QMap<QString, QString> ControllerXML::selectCategory()
+QMultiMap<QString, QString> ControllerXML::selectCategory()
 {
     auto categories = m_document.documentElement().elementsByTagName("category");
-    QMap<QString, QString> ret;
+    QMultiMap<QString, QString> ret;
     for(int i = 0; i < categories.size(); i++)
     {
         QDomElement el = categories.at(i).toElement();
-        ret[el.text()] = el.attribute("type");
+//        ret[el.text()] = el.attribute("type");
+        ret.insert(el.attribute("type"), el.text());
     }
 
     return ret;
+}
+
+bool ControllerXML::addBudget(const Budget&)
+{
+    //TODO
+}
+
+bool ControllerXML::removeBudget(const Budget &)
+{
+    //TODO
+}
+
+QList<Budget> ControllerXML::selectBudgets()
+{
+    //TODO
+}
+
+bool ControllerXML::updateBudget(const Budget &)
+{
+    //TODO
+    return false;
 }
 
 bool ControllerXML::updateEntry(const Entry & e)
@@ -371,4 +393,24 @@ bool ControllerXML::updateEntry(const Entry & e)
     }
 
     return false;
+}
+
+bool ControllerXML::addFrequency(Frequency&)
+{
+    return false; //TODO
+}
+
+bool ControllerXML::removeFrequency(const Frequency&)
+{
+    return false; //TODO
+}
+
+bool ControllerXML::updateFrequency(const Frequency&)
+{
+    return false; //TODO
+}
+
+QList<Frequency> ControllerXML::selectFrequency()
+{
+    return QList<Frequency>(); //TODO
 }

@@ -2,13 +2,19 @@
 #define ACCOUNTGLOBAL_H
 
 #include <QObject>
-class AccountEnum
-{
-    Q_GADGET
+#include <QDate>
 
-public:
-    enum FrequencyEnum { never, daily, weekly, bimonthly, monthly, annualy};
-    Q_ENUM(FrequencyEnum)
-};
+namespace Account
+{
+    Q_NAMESPACE
+
+    enum class FrequencyEnum {unique, day, week, month, quarter, year};
+    Q_ENUM_NS(FrequencyEnum)
+
+    enum TypeEnum {outcome = -1, income = 1};
+    Q_ENUM_NS(TypeEnum)
+    
+    int nbDay(QDate, FrequencyEnum);
+}
 
 #endif // ACCOUNTGLOBAL_H

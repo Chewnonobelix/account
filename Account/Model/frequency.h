@@ -1,6 +1,7 @@
 #ifndef FREQUENCY_H
 #define FREQUENCY_H
 
+#include <QSet>
 #include "accountglobal.h"
 #include "entry.h"
 
@@ -8,30 +9,22 @@ class Frequency
 {
 private:
     int m_id;
-    AccountEnum::FrequencyEnum m_occurancy;
-    Entry m_template;
-    QMap<QDate, Entry> m_past;
-
-    int toDayNumber(AccountEnum::FrequencyEnum, QDate) const;
-
+    Account::FrequencyEnum m_freq;
+    QSet<int> m_entriesId;
+    
 public:
     Frequency();
-    Frequency(const Frequency&);
-    ~Frequency();
-
-    Frequency& operator=(const Frequency&);
-
-    QMap<QDate,Entry> getNew(QDate) const;
-    QMap<QDate, Entry> getPrev(QDate) const;
-
-    AccountEnum::FrequencyEnum occurancy() const;
-    void setOccurancy(AccountEnum::FrequencyEnum );
-    Entry getTemplate() const;
-    void setTemplate(Entry);
-    QMap<QDate, Entry> past() const;
-    void setPast(QMap<QDate, Entry>);
+    
     int id() const;
-    void setId(int id);
+    void setId(int);
+    
+    Account::FrequencyEnum freq() const;
+    void setFreq(Account::FrequencyEnum);
+    
+    QSet<int> entries() const;
+    Frequency& operator<< (const Entry&);
+    
+    Entry clone(const Entry&) const;
 };
 
 #endif // FREQUENCY_H

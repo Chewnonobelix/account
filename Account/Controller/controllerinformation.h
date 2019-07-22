@@ -6,32 +6,37 @@
 #include "Model/entry.h"
 #include "Model/information.h"
 #include "abstractcontroller.h"
+#include "controllerfrequency.h"
 
-class ControllerInformation: public QObject
+class ControllerInformation: public AbstractController
 {
     Q_OBJECT
 
 private:
     Entry m_entry;
     QObject* m_view;
-
+    ControllerFrequency* m_controllerFrequency;
+    
 public:
     ControllerInformation();
     ~ControllerInformation();
 
-    void show();
-    void set(Entry, QObject*);
+    int exec();
 
+    void configure(QObject*);
+    void view(int);
+    void setControllerFrequency(ControllerFrequency*);
+    
 public slots:
-    void labelEdit(QString);
-    void estimatedEdit(bool);
-    void addCategory(QString);
-    void catChanged(QString);
-    void valueChanged(double);
+    void titleChange(QString);
+    void valueChange(double);
+    void categoryChange(QString);
+    void addNewCategory(QString);
+    void enableFreq(bool);
+    
 signals:
-    void s_update(const Entry&);
-    void s_addCategory(QString, QString);
-
+    void s_update(int);
+    void s_changeCat(QString, int);
 };
 
 #endif // CONTROLLERINFORMATION_H

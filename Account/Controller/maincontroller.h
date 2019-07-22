@@ -13,6 +13,9 @@
 #include "controllerxmlmulti.h"
 #include "xmltosql.h"
 #include "languagecontroller.h"
+#include "controllertransfert.h"
+#include "controllerbudget.h"
+#include "controllerfrequency.h"
 
 class MainController: public AbstractController
 {
@@ -23,7 +26,10 @@ private:
     ControllerInformation m_info;
     GraphController m_graph;
     LanguageController m_lang;
-
+    ControllerTransfert m_transfert;
+    ControllerBudget m_budget;
+    ControllerFrequency m_freqs;
+    
     void checkEstimated();
 
 public:
@@ -45,8 +51,6 @@ public slots:
 
     void update(Entry);
 
-    void addCategory(QString, QString);
-
     void loadAccount();
 
     void validateCheckEstimated();
@@ -55,6 +59,12 @@ public slots:
     void previewCalendar();
 
     void receiveSum();
+
+    void openTransfert();
+
+    void openBudgetManager();
+    
+    void close();
 };
 
 

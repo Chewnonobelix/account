@@ -253,20 +253,41 @@ bool ControllerDB::removeCategory(QString name)
     return false;
 }
 
-QMap<QString, QString> ControllerDB::selectCategory()
+QMultiMap<QString, QString> ControllerDB::selectCategory()
 {
-    QMap<QString, QString> ret;
+    QMultiMap<QString, QString> ret;
     if(isConnected() && m_selectCategory->exec())
     {
         while(m_selectCategory->next())
         {
             QString name = m_selectCategory->value("name").toString();
             QString type = m_selectCategory->value("type").toString();
-            ret[name] = type;
+            ret.insert(type, name);
         }
     }
 
     return ret;
+}
+
+bool ControllerDB::addBudget(const Budget&)
+{
+    //TODO
+}
+
+bool ControllerDB::removeBudget(const Budget &)
+{
+    //TODO
+}
+
+QList<Budget> ControllerDB::selectBudgets()
+{
+    //TODO
+}
+
+bool ControllerDB::updateBudget(const Budget &)
+{
+    //TODO
+    return false;
 }
 
 bool ControllerDB::updateEntry(const Entry & e)
@@ -292,4 +313,24 @@ bool ControllerDB::updateEntry(const Entry & e)
 
 
     return ret;
+}
+
+bool ControllerDB::addFrequency(Frequency&)
+{
+    return false; //TODO
+}
+
+bool ControllerDB::removeFrequency(const Frequency&)
+{
+    return false; //TODO
+}
+
+bool ControllerDB::updateFrequency(const Frequency&)
+{
+    return false; //TODO
+}
+
+QList<Frequency> ControllerDB::selectFrequency()
+{
+    return QList<Frequency>(); //TODO
 }

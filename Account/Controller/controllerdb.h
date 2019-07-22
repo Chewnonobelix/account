@@ -54,8 +54,18 @@ public:
 
     bool addCategory(QString, QString);
     bool removeCategory(QString);
-    QMap<QString, QString> selectCategory();
+    QMultiMap<QString, QString> selectCategory();
 
+    virtual bool addBudget(const Budget&);
+    virtual bool removeBudget(const Budget&);
+    virtual QList<Budget> selectBudgets();
+    virtual bool updateBudget(const Budget &);
+
+    virtual bool addFrequency(Frequency&);
+    virtual bool removeFrequency(const Frequency&);
+    virtual bool updateFrequency(const Frequency&);
+    virtual QList<Frequency> selectFrequency();
+    
     bool init();
 };
 

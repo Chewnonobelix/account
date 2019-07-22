@@ -4,6 +4,8 @@
 #include <QDebug>
 #include <QRandomGenerator>
 #include "Controller/maincontroller.h"
+#include "Model/budget.h"
+
 //#include "Test/xmltest.h"
 
 void testCharge()
@@ -19,8 +21,6 @@ void testCharge()
 
     while(itDate < cDate.addYears(30))
     {
-        qDebug()<<"Test days"<<itDate;
-
         for(i = 0; i < 5; i++)
         {
             Entry e;
@@ -40,6 +40,17 @@ void testCharge()
     }
 }
 
+void testBudget()
+{
+    Entry e1, e2;
+    e1.setId(1); e2.setId(2);
+    e1.setValue(2); e2.setValue(3);
+    e1.setType("outcome"); e2.setType("outcome");
+    Budget b;
+
+    b<<e1<<e1<<e2;
+    b>>e1>>e2>>e2;
+}
 
 int main(int argc, char *argv[])
 {
@@ -56,7 +67,8 @@ int main(int argc, char *argv[])
 
     if(argc > 1 && QString(argv[1]) == "--test")
     {
-        testCharge();
+//        testCharge();
+        testBudget();
     }
 
     MainController mc;

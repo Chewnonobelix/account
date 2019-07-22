@@ -8,7 +8,7 @@
 #include <QDebug>
 #include <QRandomGenerator>
 #include "Model/entry.h"
-#include "Model/categories.h"
+//#include "Model/categories.h"
 #include "Model/total.h"
 
 #include "interfacedatasave.h"

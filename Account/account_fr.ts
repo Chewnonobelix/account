@@ -31,13 +31,13 @@
     </message>
     <message>
         <location filename="View/Adding.qml" line="226"/>
-        <location filename="View/Adding.qml" line="299"/>
+        <location filename="View/Adding.qml" line="305"/>
         <source>Please complete the entry&apos;s title</source>
         <translation>Veuillez remplir l&apos;intituler</translation>
     </message>
     <message>
         <location filename="View/Adding.qml" line="226"/>
-        <location filename="View/Adding.qml" line="299"/>
+        <location filename="View/Adding.qml" line="305"/>
         <source>Please enter an account name</source>
         <translation>Entré le nom du compte</translation>
     </message>
@@ -52,27 +52,27 @@
         <translation>Indiqué la valeur du compte à l&apos;ouverture</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="247"/>
+        <location filename="View/Adding.qml" line="250"/>
         <source>Income</source>
         <translation>Revenu</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="247"/>
+        <location filename="View/Adding.qml" line="251"/>
         <source>Outcome</source>
         <translation>Dépense</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="253"/>
+        <location filename="View/Adding.qml" line="259"/>
         <source>Specify income or outcome</source>
         <translation>Spécifié revenu ou dépense</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="295"/>
+        <location filename="View/Adding.qml" line="301"/>
         <source>Save</source>
         <translation>Sauvegarder</translation>
     </message>
     <message>
-        <location filename="View/Adding.qml" line="330"/>
+        <location filename="View/Adding.qml" line="336"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -238,9 +238,8 @@
         <translation>Entrées prévisionnelle</translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="456"/>
         <source>income</source>
-        <translation>Revenu</translation>
+        <translation type="vanished">Revenu</translation>
     </message>
     <message>
         <location filename="View/Page1Form.qml" line="469"/>
@@ -263,9 +262,8 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="View/Page1Form.qml" line="679"/>
         <source>outcome</source>
-        <translation>Dépense</translation>
+        <translation type="vanished">Dépense</translation>
     </message>
 </context>
 <context>
@@ -376,7 +374,7 @@
         <oldsource>This application is made by Arnaud DUHAMEL
                             Current Version beta 0.9</oldsource>
         <translation>Cette application a était crée par Arnaud DUHAMEL 
-Version actuel:1.0</translation>
+Version actuel:1.0.1</translation>
     </message>
     <message>
         <location filename="View/main.qml" line="276"/>

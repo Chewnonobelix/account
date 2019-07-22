@@ -40,10 +40,7 @@ bool XmltoSql::transfertcategories()
     auto categoriesXml = m_xml.selectCategory();
     auto categoriesDb = m_db.selectCategory();
 
-    for(auto it = categoriesXml.begin(); it != categoriesXml.end(); it++)
-            if(categoriesDb[it.key()] != it.value())
-                m_db.addCategory(it.key(), it.value());
-
+    //TODO
     return ret;
 
 }

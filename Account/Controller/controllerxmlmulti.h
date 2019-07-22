@@ -12,6 +12,9 @@ private:
     QMap<QString, QDomDocument> m_accounts;
     QSet<int> m_entriesId;
     QSet<int> m_infoId;
+    QSet<int> m_budgetId;
+    QSet<int> m_freqId;
+    
     QDomDocument m_currentAccount;
 
     int m_timer;
@@ -22,6 +25,10 @@ private:
 
     void createAccount(QString);
 
+    void adder(QDomElement&, QString , QString, QMap<QString, QString> = QMap<QString, QString>());
+    void setter(QDomElement&, QString , QString, QMap<QString, QString> = QMap<QString, QString>() );
+    void deleter(QDomElement&, QString);
+    
 protected:
     void timerEvent(QTimerEvent*);
 
@@ -46,9 +53,18 @@ public:
 
     virtual bool addCategory(QString, QString);
     virtual bool removeCategory(QString);
-    virtual QMap<QString, QString> selectCategory();
+    virtual QMultiMap<QString, QString> selectCategory();
 
-
+    virtual bool addBudget(const Budget &);
+    virtual bool removeBudget(const Budget&);
+    virtual QList<Budget> selectBudgets();
+    virtual bool updateBudget(const Budget &);
+    
+    virtual bool addFrequency(Frequency&);
+    virtual bool removeFrequency(const Frequency&);
+    virtual bool updateFrequency(const Frequency&);
+    virtual QList<Frequency> selectFrequency();
+    
     virtual bool init();
 };
 

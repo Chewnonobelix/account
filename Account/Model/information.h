@@ -4,7 +4,7 @@
 #include <QString>
 #include <QObject>
 
-#include "categories.h"
+//#include "categories.h"
 
 class Information
 {

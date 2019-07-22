@@ -5,9 +5,9 @@ MainController::MainController(): AbstractController()
 {
     //AbstractController::initTestEntry();
 
-    connect(&m_info, ControllerInformation::s_addCategory, this, addCategory);
     connect(&m_graph, GraphController::s_sum, this, receiveSum);
-
+    connect(&m_info, ControllerInformation::s_update, &m_budget, ControllerBudget::updateEntry);
+    connect(&m_info, ControllerInformation::s_changeCat, &m_budget, ControllerBudget::changeEntry);
 }
 
 MainController::~MainController()
@@ -17,7 +17,7 @@ MainController::~MainController()
 
 int MainController::exec()
 {
-    m_engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    m_engine.load(QUrl(QStringLiteral("qrc:/Core/Main.qml")));
 
     if (m_engine.rootObjects().isEmpty())
         return -1;
@@ -27,7 +27,8 @@ int MainController::exec()
     connect(root, SIGNAL(adding(bool)), this, SLOT(add(bool)));
     connect(root, SIGNAL(remove(int)), this, SLOT(remove(int)));
     connect(root, SIGNAL(removeAccount(QString)), this, SLOT(deleteAccount(QString)));
-
+    connect(root, SIGNAL(s_closing()), this, SLOT(close()));
+    
     QObject* calendar = root->findChild<QObject*>("cal");
 
     if(calendar)
@@ -58,8 +59,6 @@ int MainController::exec()
     if(xml)
         connect(xml, SIGNAL(s_xml()), this, SLOT(toXml()));
 
-    connect(&m_info, SIGNAL(s_update(Entry)), this, SLOT(update(Entry)));
-
     QObject* graph = root->findChild<QObject*>("chart");
     if(graph)
     {
@@ -78,7 +77,40 @@ int MainController::exec()
     if(skipper)
         connect(skipper, SIGNAL(s_pageChange()), this, SLOT(selection()));
 
+    QObject* transfert = root->findChild<QObject*>("transfert");
+
+    if(transfert)
+    {
+        m_transfert.set(transfert);
+        connect(root, SIGNAL(openTransfert()), this, SLOT(openTransfert()));
+        connect(&m_transfert, ControllerTransfert::s_finish, this, MainController::selection);
+    }
+
+    connect(root, SIGNAL(openBudgetManager()), this, SLOT(openBudgetManager()));
+
+    QObject* info = root->findChild<QObject*>("infoView");
+
+    if(info)
+        m_info.configure(info);
+
+    m_budget.reload();
+
+    QObject* rectQuickView = root->findChild<QObject*>("budgetQuick");
+
+    if(rectQuickView)
+    {
+        m_budget.setQuickView(rectQuickView);
+        m_budget.show(QDate::currentDate());
+    }
+    
+    m_info.setControllerFrequency(&m_freqs);
+    
     return 0;
+}
+
+void MainController::close()
+{
+    m_budget.closeManager();
 }
 
 void MainController::update(Entry e)
@@ -168,13 +200,7 @@ void MainController::remove(int id)
 
 void MainController::edit(int id)
 {
-    QObject* info = m_engine.rootObjects().first()->findChild<QObject*>("infoView");
-
-    if(info)
-    {
-        Entry e = AbstractController::entry(id);
-        m_info.set(e, info);
-    }
+    m_info.view(id);
 }
 
 void MainController::previewCalendar()
@@ -313,7 +339,13 @@ void MainController::selection(int)
     QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
     if(head)
         head->setProperty("selectionTotal", t.value());
+    
+    ld.isEmpty() ? m_budget.show(QDate::currentDate()) : m_budget.show(ld.first());
 
+    QObject* quickView = m_engine.rootObjects().first()->findChild<QObject*>("quickViewDate");
+    
+    if(quickView)
+        quickView->setProperty("currentDate", ld.isEmpty() ? QDate::currentDate(): ld.first());
 }
 
 void MainController::accountChange(QString acc)
@@ -334,6 +366,9 @@ void MainController::accountChange(QString acc)
     if(pageSkip)
         pageSkip->setProperty("maxPage", maxPage);
 
+    for(auto it: entries())
+        m_freqs.addEntry(it.id());
+    
     selection();
     checkEstimated();
 }
@@ -345,11 +380,6 @@ void MainController::toXml()
 
     bool ret = xts.exec();
     qDebug()<<ret;
-}
-
-void MainController::addCategory(QString name, QString type)
-{
-    AbstractController::addCategory(name, type);
 }
 
 void MainController::loadAccount()
@@ -450,4 +480,14 @@ void MainController::deleteAccount(QString account)
 void MainController::receiveSum()
 {
     previewCalendar();
+}
+
+void MainController::openTransfert()
+{
+    m_transfert.exec();
+}
+
+void MainController::openBudgetManager()
+{
+    m_budget.exec();
 }
