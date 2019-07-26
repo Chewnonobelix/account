@@ -11,6 +11,8 @@ private:
     int m_id;
     Account::FrequencyEnum m_freq;
     QSet<int> m_entriesId;
+    QDate m_end;
+    int m_referenceEntry;
     
 public:
     Frequency();
@@ -25,6 +27,9 @@ public:
     Frequency& operator<< (const Entry&);
     
     Entry clone(const Entry&) const;
+    QDate end() const;
+    void setEnd(QDate);
+    bool isUnlimited() const;
 };
 
 #endif // FREQUENCY_H
