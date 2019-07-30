@@ -517,7 +517,7 @@ Information ControllerXMLMulti::selectInformation(const QDomElement& el) const
     return ret;
 }
 
-bool ControllerXMLMulti::addFrequency(Frequency& f)
+bool ControllerXMLMulti::addFrequency(const Frequency &f)
 {
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
 
@@ -526,7 +526,18 @@ bool ControllerXMLMulti::addFrequency(Frequency& f)
     QMap<QString, QString> attr;
     attr["id"] = QString::number(id);
     adder(root, "frequency", QString::number((int)f.freq()), attr);
-    f.setId(id);
+//    f.setId(id);
+    
+    auto entries = root.elementsByTagName("entry");
+    int ide = *(f.entries().begin());
+    
+    for(int i = 0; i < entries.size(); i++)
+    {
+        QDomElement el = entries.at(0).toElement();
+        if(el.attribute("id") == ide)
+            setter(el, "frequency", QString::number(id));
+    }
+    
     close();
     return true;
 }
@@ -539,6 +550,14 @@ bool ControllerXMLMulti::removeFrequency(const Frequency& f)
         if(freqs.at(i).toElement().attribute("id").toInt() == f.id())
         {
             m_currentAccount.removeChild(freqs.at(i));
+            
+            auto entries = m_currentAccount.elementsByTagName("entry");
+            for(int i = 0; i < entries.size(); i++)
+            {
+                QDomElement e = entries.at(i).toElement();
+                if(f.entries().contains(e.attribute("id").toInt()))
+                    deleter(e, "frequency");
+            }
             return true;
         }
     
