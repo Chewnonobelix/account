@@ -225,35 +225,35 @@ Item {
     }
 
 
-//    Label {
-//        anchors.top:title.bottom
-//        anchors.topMargin: 10
-//        text: qsTr("Coming Soon")
-//    }
-    //Frequency
-    GroupBox {
+    Label {
         anchors.top:title.bottom
         anchors.topMargin: 10
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 10
-        
-        
-        label:  CheckBox {
-            id: freqCheck
-            objectName: "freqCheck"
-            text:  qsTr("Frequency")
-            
-            signal s_check(bool check)
-            
-            onCheckedChanged: s_check(checked) 
-        }
-        
-        contentItem: F.Frequency {
-            id: freq
-            enabled: freqCheck.checked
-            objectName: "freq"
-        }
+        text: qsTr("Coming Soon")
     }
+    //Frequency
+//    GroupBox {
+//        anchors.top:title.bottom
+//        anchors.topMargin: 10
+//        anchors.left: parent.left
+//        anchors.right: parent.right
+//        anchors.bottom: parent.bottom
+//        anchors.bottomMargin: 10
+        
+        
+//        label:  CheckBox {
+//            id: freqCheck
+//            objectName: "freqCheck"
+//            text:  qsTr("Frequency")
+            
+//            signal s_check(bool check)
+            
+//            onCheckedChanged: s_check(checked) 
+//        }
+        
+//        contentItem: F.Frequency {
+//            id: freq
+//            enabled: freqCheck.checked
+//            objectName: "freq"
+//        }
+//    }
 }

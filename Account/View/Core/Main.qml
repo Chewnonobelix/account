@@ -10,10 +10,10 @@ import "../Transfert" as T
 
 ApplicationWindow {
     visible: true
-
+    
     width: 800
     height: 640
-
+    
     signal adding(bool account)
     signal remove(int index)
     signal edit(int index)
@@ -22,40 +22,41 @@ ApplicationWindow {
     signal openTransfert
     signal openBudgetManager()
     signal s_closing()
+    signal s_openFrequencyManager()
     
     id: mainWindow
-
+    
     onClosing: s_closing()
     
     property int maximizedWidth: Screen.width
     Component.onCompleted: {
         showMaximized()
     }
-
+    
     S.AccountStyle {
         id: pageStyle
     }
-
+    
     T.Transfert {
         id: tranfert
         objectName: "transfert"
-
+        
         onOpened: {
             addAccount(accountSelect.model)
             x = swipeView.width / 2 - width / 2
             y = swipeView.height / 2 - height / 2
         }
     }
-
+    
     Shortcut {
         sequence: "F"
         onActivated: openTransfert()
     }
-
+    
     menuBar: MenuBar {
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
-
+        
         objectName: "menuBar"
         Menu {
             title: qsTr("&File")
@@ -70,18 +71,18 @@ ApplicationWindow {
                 onClicked: {
                     s_xml()
                 }
-
+                
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
             }
-
+            
             MenuItem {
                 text: qsTr("&Quit")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
                 id: quitMenu
-
+                
                 indicator: Label {
                     text: quitShort.nativeText
                     anchors.rightMargin: 10
@@ -90,24 +91,24 @@ ApplicationWindow {
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
                 }
-
+                
                 Shortcut {
                     id: quitShort
                     sequence: "CTRL+Q"
                     context: Qt.ApplicationShortcut
                     onActivated: quitMenu.clicked()
                 }
-
+                
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
-
+                
                 onClicked: {
                     mainWindow.close()
                 }
             }
         }
-
+        
         Menu {
             title: qsTr("Account")
             font.family: pageStyle.core.name
@@ -118,11 +119,11 @@ ApplicationWindow {
                 text: qsTr("&New account")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
-
+                
                 onClicked: {
                     adding(true)
                 }
-
+                
                 indicator: Label {
                     text: accountAddShort.nativeText
                     anchors.rightMargin: 10
@@ -131,16 +132,16 @@ ApplicationWindow {
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
                 }
-
+                
                 Shortcut {
                     id: accountAddShort
                     sequence: "CTRL+N"
-
+                    
                     onActivated: {
                         nAccountMenu.clicked()
                     }
                 }
-
+                
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
@@ -154,7 +155,7 @@ ApplicationWindow {
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
-
+                
                 indicator: Label {
                     text: accountDelShort.nativeText
                     anchors.rightMargin: 10
@@ -163,27 +164,27 @@ ApplicationWindow {
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
                 }
-
+                
                 Shortcut {
                     id: accountDelShort
                     sequence: "CTRL+SHIFT+D"
-
+                    
                     onActivated: {
                         dAccountMenu.clicked()
                     }
                 }
-
+                
                 onClicked: {
                     deleteAccount.open()
                 }
             }
         }
-
+        
         Menu {
             title: qsTr("Current account")
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
-
+            
             MenuItem {
                 id: addEntryMenu
                 text: qsTr("&Add transaction")
@@ -195,7 +196,7 @@ ApplicationWindow {
                         adding(false)
                     }
                 }
-
+                
                 indicator: Label {
                     text: addShort.nativeText
                     anchors.rightMargin: 10
@@ -204,25 +205,25 @@ ApplicationWindow {
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
                 }
-
+                
                 Shortcut {
                     id: addShort
                     sequence: "CTRL+A"
                     context: Qt.ApplicationShortcut
                     onActivated: addEntryMenu.clicked()
                 }
-
+                
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
             }
-
+            
             MenuItem {
                 id: removeEntryMenu
                 text: qsTr("&Remove transaction")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
-
+                
                 enabled: table.currentId !== -1
                 indicator: Label {
                     text: delShort.nativeText
@@ -233,36 +234,36 @@ ApplicationWindow {
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
                 }
-
+                
                 Shortcut {
                     id: delShort
                     sequence: "CTRL+D"
                     context: Qt.ApplicationShortcut
                     onActivated: removeEntryMenu.clicked()
                 }
-
+                
                 onClicked: {
                     if (enabled) {
                         remove(table.currentId)
                     }
                 }
-
+                
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
             }
         }
-
+        
         background: Rectangle {
             gradient: pageStyle.goldHeader
         }
-
+        
         Menu {
-            title: qsTr("Budget")
+            title: qsTr("Feature")
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
-
-            height: budgetListItem.height //TOREMOVE 
+            
+            height: budgetListItem.height * 2//TOREMOVE 
             MenuItem {
                 id: budgetListItem
                 text: qsTr("Budget list")
@@ -276,24 +277,38 @@ ApplicationWindow {
                 }
                 
             }
+            
+            MenuItem {
+                id: frequencyList
+                text: qsTr("Frequency list")
+                onClicked: mainWindow.s_openFrequencyManager()
+                
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+                
+                background: Rectangle {
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    
+                }
+            }
         }
-
+        
         Menu {
             title: qsTr("?")
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
-
+            
             MenuItem {
                 text: qsTr("About")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
-
+                
                 background: Rectangle {
                     gradient: pageStyle.goldButton
                 }
-
+                
                 onClicked: about.open()
-
+                
                 Popup {
                     id: about
                     height: 200
@@ -307,19 +322,19 @@ Current Version beta 0.9")
                         verticalAlignment: Text.AlignVCenter
                         fontSizeMode: Text.Fit0
                     }
-
+                    
                     background: Rectangle {
                         anchors.fill: parent
                         gradient: pageStyle.backgroundGradient
                         border.color: "gold"
                     }
-
+                    
                     Button {
                         text: qsTr("Ok")
                         onClicked: about.close()
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
-
+                        
                         background: Rectangle {
                             anchors.fill: parent
                             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
@@ -327,15 +342,15 @@ Current Version beta 0.9")
                     }
                 }
             }
-
+            
             MenuItem {
                 text: qsTr("Licence")
                 background: Rectangle {
                     gradient: pageStyle.goldButton
                 }
-
+                
                 onTriggered: aboutQt.open()
-
+                
                 Popup {
                     id: aboutQt
                     height: 200
@@ -348,19 +363,19 @@ Current Version beta 0.9")
                         verticalAlignment: Text.AlignVCenter
                         fontSizeMode: Text.Fit
                     }
-
+                    
                     background: Rectangle {
                         anchors.fill: parent
                         gradient: pageStyle.backgroundGradient
                         border.color: "gold"
                     }
-
+                    
                     Button {
                         text: qsTr("Ok")
                         onClicked: aboutQt.close()
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
-
+                        
                         background: Rectangle {
                             anchors.fill: parent
                             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
@@ -370,13 +385,13 @@ Current Version beta 0.9")
             }
         }
     }
-
+    
     background: Rectangle {
         id: backRect
         anchors.fill: parent
         gradient: pageStyle.backgroundGradient
     }
-
+    
     header: Rectangle {
         height: 50
         color: "transparent"
@@ -385,11 +400,11 @@ Current Version beta 0.9")
         property string accountName
         property double total
         property double selectionTotal
-
+        
         Row {
             anchors.left: parent.left
             anchors.right: accountSelect.left
-
+            
             Label {
                 id: accountTitle
                 objectName: "accountTitle"
@@ -402,7 +417,7 @@ Current Version beta 0.9")
                        > 0 ? head.total > 0 ? "green" : "red" : "transparent"
                 width: parent.width * .5
             }
-
+            
             Label {
                 id: selectLabel
                 fontSizeMode: Text.Fit
@@ -416,7 +431,7 @@ Current Version beta 0.9")
                 width: parent.width * .5
             }
         }
-
+        
         ComboBox {
             id: accountSelect
             objectName: "accountSelect"
@@ -425,11 +440,11 @@ Current Version beta 0.9")
             font.pixelSize: pageStyle.core.size
             enabled: accountSelect.model.length > 0
             signal s_currentTextChange(string text)
-
+            
             ToolTip.text: qsTr("Select account")
             ToolTip.delay: 500
             ToolTip.visible: hovered
-
+            
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
@@ -439,10 +454,10 @@ Current Version beta 0.9")
                 gradient: pageStyle.goldButton
                 anchors.fill: parent
             }
-
+            
             delegate: ItemDelegate {
                 width: accountSelect.width
-
+                
                 contentItem: Rectangle {
                     gradient: pageStyle.goldButton
                     anchors.fill: parent
@@ -459,20 +474,20 @@ Current Version beta 0.9")
                         font.pixelSize: pageStyle.core.size
                     }
                 }
-
+                
                 highlighted: accountSelect.highlightedIndex === index
             }
-
+            
             onCurrentTextChanged: {
                 s_currentTextChange(currentText)
             }
         }
     }
-
+    
     CheckEstimated {
         objectName: "cEstimated"
     }
-
+    
     SwipeView {
         id: swipeView
         currentIndex: tabBar.currentIndex
@@ -483,31 +498,31 @@ Current Version beta 0.9")
         background: Rectangle {
             color: "transparent"
         }
-
+        
         Page1Form {
             id: table
             objectName: "table"
         }
-
+        
         Page2Form {
             id: graph
             month: table.v_dateMonth
             year: table.v_dateYear
         }
-
+        
         Popup {
             id: deleteAccount
             anchors.centerIn: swipeView
-
+            
             width: labelDelete.width * 1.2
             height: (labelDelete.height + delOk.height + 3 * delOk.padding) * 1.1
-
+            
             background: Rectangle {
                 anchors.fill: parent
                 gradient: pageStyle.backgroundGradient
                 border.color: "gold"
             }
-
+            
             Label {
                 id: labelDelete
                 property string account: accountSelect.currentText
@@ -516,7 +531,7 @@ Current Version beta 0.9")
                 font.pixelSize: pageStyle.title.size
                 anchors.horizontalCenter: parent.width / 2
             }
-
+            
             Button {
                 id: delOk
                 text: qsTr("Ok")
@@ -524,18 +539,18 @@ Current Version beta 0.9")
                 anchors.topMargin: padding
                 font.pixelSize: pageStyle.core.size
                 font.family: pageStyle.core.name
-
+                
                 onClicked: {
                     mainWindow.removeAccount(labelDelete.account)
                     deleteAccount.close()
                 }
-
+                
                 background: Rectangle {
                     id: rectEdit
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
             }
-
+            
             Button {
                 id: delCancel
                 anchors.left: delOk.right
@@ -544,29 +559,29 @@ Current Version beta 0.9")
                 anchors.topMargin: padding
                 font.pixelSize: pageStyle.core.size
                 font.family: pageStyle.core.name
-
+                
                 text: qsTr("Cancel")
-
+                
                 onClicked: {
                     deleteAccount.close()
                 }
-
+                
                 background: Rectangle {
                     id: rectEdit2
-
+                    
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
             }
         }
     }
-
+    
     footer: TabBar {
         id: tabBar
         currentIndex: swipeView.currentIndex
-
+        
         TabButton {
             id: listTabButton
-
+            
             contentItem: Label {
                 text: qsTr("List")
                 horizontalAlignment: Qt.AlignHCenter
@@ -574,20 +589,20 @@ Current Version beta 0.9")
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
             }
-
+            
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 acceptedButtons: Qt.NoButton
             }
-
+            
             background: Rectangle {
                 color: tabBar.currentItem === parent ? "darkseagreen" : "white"
             }
         }
         TabButton {
             id: graphTabButton
-
+            
             contentItem: Label {
                 text: qsTr("Graph")
                 horizontalAlignment: Qt.AlignHCenter
@@ -595,13 +610,13 @@ Current Version beta 0.9")
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
             }
-
+            
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 acceptedButtons: Qt.NoButton
             }
-
+            
             background: Rectangle {
                 color: tabBar.currentItem === parent ? "darkseagreen" : "white"
             }
