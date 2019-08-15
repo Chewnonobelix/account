@@ -147,7 +147,12 @@ QList<Entry> ControllerXMLMulti::selectEntry(QString account)
             child = freqs.at(0).toElement();
             e.setFrequency(child.text().toInt());
         }
+
+        auto attr = el.attributes();
+        for(int j = 0; j < attr.count(); j++)
+            e.setMetadata(attr.item(j).nodeName(), attr.item(j).nodeValue());
         
+        qDebug()<<e.hasMetadata()<<e.metaDataList();
         m_entriesId<<e.id();
         m_infoId<<inf.id();
 
@@ -236,6 +241,10 @@ bool ControllerXMLMulti::updateEntry(const Entry & e)
                 deleter(el, "frequency");
             else
                 setter(el, "frequency", QString::number(e.frequency()));
+
+
+            for(auto it: e.metaDataList())
+                el.setAttribute(it, e.metaData<QString>(it));
             
             return true;
         }

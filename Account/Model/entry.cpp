@@ -1,13 +1,13 @@
 #include "entry.h"
 
-Entry::Entry(): m_id(-1), m_frequency(-1)
+Entry::Entry(): m_frequency(-1)
 {
-    
+    setMetadata("id", -1);
 }
 
 Entry::Entry(const Entry& e):
-    m_id(e.id()), m_account(e.account()), m_value(e.value()), m_date(e.date()),
-    m_type(e.type()), m_info(e.info()), m_frequency(e.frequency())
+    m_account(e.account()), m_value(e.value()), m_date(e.date()),
+    m_type(e.type()), m_info(e.info()), m_metaData(e.m_metaData), m_frequency(e.frequency())
 {
 
 }
@@ -19,26 +19,26 @@ Entry::~Entry()
 
 Entry& Entry::operator = (const Entry& e)
 {
-    setId(e.id());
     setAccount(e.account());
     setValue(e.value());
     setDate(e.date());
     setType(e.type());
     setInfo(e.info());
     setFrequency(e.frequency());
-    
+    m_metaData = e.m_metaData;
+
     return *this;
 }
 
 
 int Entry::id() const
 {
-    return m_id;
+    return metaData<int>("id");
 }
 
 void Entry::setId(int id)
 {
-    m_id = id;
+    setMetadata("id", id);
 }
 
 QString Entry::account() const
@@ -115,4 +115,19 @@ void Entry::setFrequency(int f)
 int Entry::frequency() const
 {
     return m_frequency;
+}
+
+bool Entry::hasMetadata() const
+{
+    return !m_metaData.isEmpty();
+}
+
+bool Entry::hasMetadata(QString name) const
+{
+    return m_metaData.contains(name);
+}
+
+QStringList Entry::metaDataList() const
+{
+    return m_metaData.keys();
 }
