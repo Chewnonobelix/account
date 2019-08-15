@@ -18,6 +18,7 @@ SOURCES += \
     Controller/controllerfrequency.cpp \
     Model/accountglobal.cpp \
     Model/frequency.cpp \
+    Model/metadata.cpp \
     Model/subbudget.cpp \
         main.cpp \
     Model/entry.cpp \
@@ -60,6 +61,7 @@ HEADERS += \
     Model/entry.h \
     Model/frequency.h \
     Model/information.h \
+    Model/metadata.h \
     Model/subbudget.h \
     Model/total.h \
 #    Model/categories.h \

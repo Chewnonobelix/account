@@ -5,9 +5,9 @@ Entry::Entry(): m_frequency(-1)
     setMetadata("id", -1);
 }
 
-Entry::Entry(const Entry& e):
+Entry::Entry(const Entry& e): MetaData(e),
     m_account(e.account()), m_value(e.value()), m_date(e.date()),
-    m_type(e.type()), m_info(e.info()), m_metaData(e.m_metaData), m_frequency(e.frequency())
+    m_type(e.type()), m_info(e.info()), m_frequency(e.frequency())
 {
 
 }
@@ -19,13 +19,15 @@ Entry::~Entry()
 
 Entry& Entry::operator = (const Entry& e)
 {
+    MetaData& md = *this;
+
+    md = e;
     setAccount(e.account());
     setValue(e.value());
     setDate(e.date());
     setType(e.type());
     setInfo(e.info());
     setFrequency(e.frequency());
-    m_metaData = e.m_metaData;
 
     return *this;
 }
@@ -117,17 +119,3 @@ int Entry::frequency() const
     return m_frequency;
 }
 
-bool Entry::hasMetadata() const
-{
-    return !m_metaData.isEmpty();
-}
-
-bool Entry::hasMetadata(QString name) const
-{
-    return m_metaData.contains(name);
-}
-
-QStringList Entry::metaDataList() const
-{
-    return m_metaData.keys();
-}

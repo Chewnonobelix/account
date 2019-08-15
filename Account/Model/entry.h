@@ -7,13 +7,12 @@
 #include <QtMath>
 #include <QVariant>
 #include "information.h"
+#include "metadata.h"
 
-
-class Entry
+class Entry: public MetaData
 {
     Q_GADGET
 
-    Q_PROPERTY(int id READ id)
     Q_PROPERTY(QString account READ account)
     Q_PROPERTY(double value READ value)
     Q_PROPERTY(QDate date READ date)
@@ -29,7 +28,6 @@ private:
     QString m_type;
     Information m_info;
 
-    QMap<QString, QVariant> m_metaData;
     //Frequency
     int m_frequency;
     
@@ -58,21 +56,6 @@ public:
     void setFrequency(int);
     int frequency() const;
 
-    bool hasMetadata() const;
-    bool hasMetadata(QString) const;
-    QStringList metaDataList() const;
-
-    template<class T>
-    void setMetadata(QString name, T val)
-    {
-        m_metaData[name] = val;
-    }
-
-    template<class T>
-    T metaData(QString name) const
-    {
-        return m_metaData[name].value<T>();
-    }
 
 };
 
