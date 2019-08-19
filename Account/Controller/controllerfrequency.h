@@ -16,6 +16,7 @@ public:
     void addEntry(int);
     
     int exec();
+
 };
 
 #endif // CONTROLLERFREQUENCY_H

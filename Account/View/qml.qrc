@@ -20,5 +20,6 @@
         <file>Budget/ReferenceView.qml</file>
         <file>Frequency/Frequency.qml</file>
         <file>Frequency/FrequencyManager.qml</file>
+        <file>Frequency/FrequencyReference.qml</file>
     </qresource>
 </RCC>

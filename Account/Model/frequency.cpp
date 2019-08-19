@@ -40,6 +40,8 @@ Entry Frequency::clone(const Entry & e) const
     Entry ret(e);
     int t = Account::nbDay(e.date(), freq());
     ret.setDate(e.date().addDays(t));
+    ret.setMetadata("frequency", id());
+
     return ret;
 }
 
