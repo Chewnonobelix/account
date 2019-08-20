@@ -20,7 +20,7 @@ public:
 
 public slots:
     void accept();
-
+    
 signals:
     void s_finish(int = -1);
 

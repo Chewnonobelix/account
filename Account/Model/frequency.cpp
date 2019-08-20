@@ -30,6 +30,26 @@ void Frequency::setEnd(QDate end)
     m_end = end;
 }
 
+int Frequency::referenceEntry() const
+{
+    return m_referenceEntry;
+}
+
+void Frequency::setReferenceEntry(int referenceEntry)
+{
+    m_referenceEntry = referenceEntry;
+}
+
+int Frequency::nbGroup() const
+{
+    return m_nbGroup;
+}
+
+void Frequency::setNbGroup(int nbGroup)
+{
+    m_nbGroup = nbGroup;
+}
+
 Frequency::Frequency()
 {
     
@@ -41,7 +61,7 @@ Entry Frequency::clone(const Entry & e) const
     int t = Account::nbDay(e.date(), freq());
     ret.setDate(e.date().addDays(t));
     ret.setMetadata("frequency", id());
-
+    ret.setId(-1);
     return ret;
 }
 

@@ -13,6 +13,7 @@ private:
     QSet<int> m_entriesId;
     QDate m_end;
     int m_referenceEntry;
+    int m_nbGroup;
     
 public:
     Frequency();
@@ -30,6 +31,10 @@ public:
     QDate end() const;
     void setEnd(QDate);
     bool isUnlimited() const;
+    int referenceEntry() const;
+    void setReferenceEntry(int referenceEntry);
+    int nbGroup() const;
+    void setNbGroup(int nbGroup);
 };
 
 #endif // FREQUENCY_H
