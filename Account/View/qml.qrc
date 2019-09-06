@@ -22,5 +22,6 @@
         <file>Frequency/FrequencyManager.qml</file>
         <file>Frequency/FrequencyReference.qml</file>
         <file>Frequency/Generate.qml</file>
+        <file>Core/CategoryItem.qml</file>
     </qresource>
 </RCC>
