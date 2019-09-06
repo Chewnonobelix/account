@@ -152,7 +152,6 @@ QList<Entry> ControllerXMLMulti::selectEntry(QString account)
         for(int j = 0; j < attr.count(); j++)
             e.setMetadata(attr.item(j).nodeName(), attr.item(j).nodeValue());
         
-        qDebug()<<e.hasMetadata()<<e.metaDataList();
         m_entriesId<<e.id();
         m_infoId<<inf.id();
 
@@ -217,6 +216,7 @@ bool ControllerXMLMulti::updateInfo(const Entry& e)
             setter(info, "categoryName", inf.category());
             setter(info, "title", inf.title());
 
+            close();
             return true;
         }
     }
@@ -246,6 +246,7 @@ bool ControllerXMLMulti::updateEntry(const Entry & e)
             for(auto it: e.metaDataList())
                 el.setAttribute(it, e.metaData<QString>(it));
             
+            close();
             return true;
         }
     }
@@ -391,18 +392,10 @@ void ControllerXMLMulti::setter(QDomElement& el, QString tagname, QString value,
 {
 
     QDomElement child = el.elementsByTagName(tagname).at(0).toElement();
-    if(child.isNull())
-    {
-        adder(el, tagname, value, attr);
-        return;
-    }
-    
-    QDomText txt = child.firstChild().toText();
-    txt.setData(value);
 
-    for(auto it = attr.begin(); it != attr.end(); it++)
-        child.setAttribute(it.key(), it.key());
-}
+    el.removeChild(child);
+    adder(el, tagname, value, attr);
+ }
 
 void ControllerXMLMulti::deleter(QDomElement & el, QString tagname)
 {
