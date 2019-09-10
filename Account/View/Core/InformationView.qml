@@ -8,151 +8,22 @@ import "../Frequency" as F
 Item {
     id: info
     objectName: "info"
-
-    property bool opening: false
+    property int maximum: Screen.width * .55 - 10
+    width: ee.width
+    
+    
     S.AccountStyle {
         id: pageStyle
     }
-    property int maximum: Screen.width * .55 - 10
-    width: spinbox.width + category.width + title.width
-    Item {
-        id: entry
-        objectName: "entry"
-        property double value
-        property int id
-    }
-
-    Item {
-        id: infoModel
-        objectName: "infoModel"
-        property bool estimated
-        property string title
-        property string type
-
-        function setType(newType) {
-            type = newType
-            category.setting(type)
-        }
-    }
-
-    signal s_titleChanged(string title)
-    signal s_estimatedChanged(bool title)
-    signal s_valueChanged(real value)
-
-    onEnabledChanged: {
-        titleLabel.enabled = true
-        categoryLabel.enabled = true
-        valueLabel.enabled = true
+    
+    EntryEdit {
+        id: ee
+        objectName: "entryEdit"
+        visible: parent.visible
     }
 
     Label {
-        id: titleLabel
-        text: qsTr("Title")
-        width: title.width
-        font.pixelSize: pageStyle.title.size
-        font.family: pageStyle.title.name
-        horizontalAlignment: Qt.AlignHCenter
-        background: Rectangle {
-            gradient: pageStyle.goldHeader
-            border.color: "darkgoldenrod"
-        }
-    }
-
-    Label {
-        id: valueLabel
-        text: qsTr("Value")
-        width: spinbox.width +10
-        anchors.left: titleLabel.right
-        font.pixelSize: pageStyle.title.size
-        font.family: pageStyle.title.name
-        horizontalAlignment: Qt.AlignHCenter
-        background: Rectangle {
-            gradient: pageStyle.goldHeader
-            border.color: "darkgoldenrod"
-        }
-    }
-    Label {
-        id: categoryLabel
-        text: qsTr("Category")
-        width: category.width
-        anchors.left: valueLabel.right
-        font.pixelSize: pageStyle.title.size
-        font.family: pageStyle.title.name
-        horizontalAlignment: Qt.AlignHCenter
-        background: Rectangle {
-            gradient: pageStyle.goldHeader
-            border.color: "darkgoldenrod"
-        }
-    }
-    TextField {
-        id: title
-        width: maximum / 3
-        anchors.top:titleLabel.bottom
-        anchors.topMargin: 5
-        text: infoModel.title
-        font.family: pageStyle.core.name
-        font.pixelSize: pageStyle.core.size
-        onEditingFinished: {
-            s_titleChanged(text)
-        }
-
-        ToolTip.text: qsTr("Change transaction's title")
-        ToolTip.visible: hovered
-        ToolTip.delay: 500
-    }
-
-    DoubleSpinBox {
-        id: spinbox
-        width: maximum / 3
-
-        value: entry.value*100
-        anchors.top: valueLabel.bottom
-        anchors.topMargin: 5
-        anchors.left: title.right
-        anchors.leftMargin: 5
-//        anchors.rightMargin: 5
-        font.family:  pageStyle.core.name
-        font.pixelSize: pageStyle.core.size
-
-        ToolTip.text: qsTr("Change transaction's value")
-        ToolTip.visible: hovered
-        ToolTip.delay: 500
-
-        property date s_date
-        Timer {
-            id: timer
-            repeat: false
-
-            onTriggered: {
-                if(!parent.opening)
-                    info.s_valueChanged(parent.realValue)
-
-            }
-        }
-
-        onRealValueChanged: {
-            timer.restart()
-        }
-    }
-
-    CategoryItem {
-        id: category
-        objectName: "category"
-        width: maximum / 3
-        height: spinbox.height
-
-        anchors.top: categoryLabel.bottom
-        anchors.topMargin: 5
-        anchors.left: spinbox.right
-        anchors.leftMargin: 5
-        editable: currentText === ""
-        model: [""]
-
-    }
-
-
-    Label {
-        anchors.top:title.bottom
+        anchors.top:ee.bottom
         anchors.topMargin: 10
         text: qsTr("Coming Soon")
     }

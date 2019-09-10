@@ -23,5 +23,6 @@
         <file>Frequency/FrequencyReference.qml</file>
         <file>Frequency/Generate.qml</file>
         <file>Core/CategoryItem.qml</file>
+        <file>Core/EntryEdit.qml</file>
     </qresource>
 </RCC>

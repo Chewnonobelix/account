@@ -19,22 +19,25 @@ void ControllerInformation::configure(QObject * view)
 
     if(m_view)
     {
-        connect(m_view, SIGNAL(s_titleChanged(QString)), this, SLOT(titleChange(QString)));
-        connect(m_view, SIGNAL(s_valueChanged(double)), this, SLOT(valueChange(double)));
+        QObject* child = m_view->findChild<QObject*>("entryEdit");
+        
+        connect(child, SIGNAL(s_titleChanged(QString)), this, SLOT(titleChange(QString)));
+        connect(child, SIGNAL(s_valueChanged(double)), this, SLOT(valueChange(double)));
     }
 }
 
 void ControllerInformation::view(int id)
 {
     m_entry = AbstractController::entry(id);
-
+    auto child = m_view->findChild<QObject*>("entryEdit");
     QObject * entryItem, * infoItem, *catItem;
-    entryItem = m_view->findChild<QObject*>("entry");
-    infoItem = m_view->findChild<QObject*>("infoModel");
-    catItem = m_view->findChild<QObject*>("category");
+    entryItem = child->findChild<QObject*>("entry");
+    infoItem = child->findChild<QObject*>("infoModel");
+    catItem = child->findChild<QObject*>("category");
 
     QStringList catList = categories(m_entry.type());
     catList<<"";
+
     if(catItem)
     {
         catItem->setProperty("blocked", true);
