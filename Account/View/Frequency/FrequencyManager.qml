@@ -2,6 +2,7 @@ import QtQuick 2.12
 import QtQuick.Window 2.12
 
 import "../Style"
+import "../Core"
 
 Window {
     AccountStyle {
@@ -14,10 +15,6 @@ Window {
     
     Frequency {
         id: reference
-    }
-    
-    ListView {
-        id: freqquencySubList
     }
     
 }

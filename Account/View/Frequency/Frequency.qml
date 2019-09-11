@@ -10,6 +10,11 @@ Item {
         id: pageStyle
     }
 
+    FrequencyReference {
+        id: freqReference
+        objectName: "reference"
+    }
+
     ListModel {
         id: pastModel
         objectName: "pastModel"
