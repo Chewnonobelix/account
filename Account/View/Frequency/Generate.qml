@@ -9,4 +9,37 @@ Popup {
     property int freqGroup: -1
     
     signal s_generate(date begin, date end)
+    
+    Frequency {
+        id: freq
+        enabled: false
+    }
+
+    Column {
+        anchors.top: freq.bottom
+        anchors.left: freq.left
+        width: freq.width /2 - 5
+        Label {
+            text: qsTr("From")
+        }
+
+        C.CalendarButton {
+            id: from
+        }
+    }
+    
+    Column {   
+        anchors.top: freq.bottom
+        anchors.right: freq.right
+        anchors.leftMargin: 10
+        width: freq.width /2 - 5
+        
+        Label {
+            text:qsTr("To")
+        }
+
+        C.CalendarButton {
+            id: to
+        }
+    }
 }
