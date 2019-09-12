@@ -68,8 +68,9 @@ Frequency& Frequency::operator =(const Frequency& f)
     setId(f.id());
     setFreq(f.freq());
     
+    m_entriesId.clear();
     for(auto it: f.entries())
-        (*this)<<it;
+        m_entriesId<<it;
     
     setEnd(f.end());
     setReferenceEntry(f.referenceEntry());

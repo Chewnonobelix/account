@@ -5,7 +5,8 @@ ControllerFrequency::ControllerFrequency()
     m_eng.load(QUrl(QStringLiteral("qrc:/Frequency/Generate.qml")));
     m_generate = m_eng.rootObjects().first();
     m_eng.load(QUrl(QStringLiteral("qrc:/Frequency/FrequencyManager.qml")));
-    m_manager = m_eng.rootObjects().first();
+
+    m_manager = m_eng.rootObjects().last();
     
     connect(m_generate, SLOT(s_generate(QDate, QDate)), this, SIGNAL(generate(QDate, QDate)));
 }
@@ -38,7 +39,7 @@ void ControllerFrequency::generate(QDate begin, QDate end)
     
     m_freqs[freqId].setNbGroup(freqGroup);
     
-    Entry ref = entry(m_freqs[freqId].referenceEntry());
+    Entry ref = m_freqs[freqId].referenceEntry();
     
     do
     {
@@ -60,4 +61,24 @@ void ControllerFrequency::openGenerate(int id)
     m_generate->setProperty("freqGroup", m_freqs[id].nbGroup() + 1);
     
     QMetaObject::invokeMethod(m_generate, "open");
+}
+
+void ControllerFrequency::openManager()
+{
+    QObject* model = m_manager->findChild<QObject*>("frequencyModel");
+    
+    if(model)
+    {
+        QMetaObject::invokeMethod(model, "clear");
+        
+        for(auto it: m_freqs)
+        {
+            QString json = "{'id': '" + QString::number(it.id()) + "', 'name': '" + it.referenceEntry().info().category() + "'}";
+            
+            QMetaObject::invokeMethod(model, "append", Q_ARG(QVariant, json));
+        }
+        
+        QMetaObject::invokeMethod(m_manager, "show");
+        
+    }
 }

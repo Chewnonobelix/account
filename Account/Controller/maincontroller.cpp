@@ -29,6 +29,7 @@ int MainController::exec()
     connect(root, SIGNAL(removeAccount(QString)), this, SLOT(deleteAccount(QString)));
     connect(root, SIGNAL(s_closing()), this, SLOT(close()));
     
+    connect(root, SIGNAL(s_openFrequencyManager()), &m_freqs, SLOT(openManager()));
     QObject* calendar = root->findChild<QObject*>("cal");
 
     if(calendar)

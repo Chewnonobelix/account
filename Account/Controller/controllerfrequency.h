@@ -11,6 +11,7 @@
 
 class ControllerFrequency: public AbstractController
 {
+    Q_OBJECT 
 private:
     QMap<int, Frequency> m_freqs;
     QObject* m_manager, *m_generate;
@@ -18,6 +19,7 @@ private:
     
 public:
     ControllerFrequency();
+    ~ControllerFrequency() = default;
     
     void addEntry(int);
     
@@ -27,6 +29,7 @@ public slots:
     void generate(QDate, QDate);
     void openGenerate(int);
     
+    void openManager();
 };
 
 #endif // CONTROLLERFREQUENCY_H
