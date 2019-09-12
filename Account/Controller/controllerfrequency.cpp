@@ -73,7 +73,7 @@ void ControllerFrequency::openManager()
         
         for(auto it: m_freqs)
         {
-            QString json = "{'id': '" + QString::number(it.id()) + "', 'name': '" + it.referenceEntry().info().category() + "'}";
+            QString json = "{'idFreq': '" + QString::number(it.id()) + "', 'name': '" + it.referenceEntry().info().category() + "'}";
             
             QMetaObject::invokeMethod(model, "append", Q_ARG(QVariant, json));
         }
