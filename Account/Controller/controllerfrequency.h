@@ -4,7 +4,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
 #include <QQuickItem>
-
+#include <QQmlPropertyMap>
 #include "abstractcontroller.h"
 #include "Model/frequency.h"
 #include "Model/entry.h"
@@ -14,8 +14,11 @@ class ControllerFrequency: public AbstractController
     Q_OBJECT 
 private:
     QMap<int, Frequency> m_freqs;
+    
     QObject* m_manager, *m_generate;
     QQmlApplicationEngine m_eng;
+    
+    QList<QObject*> m_model; 
     
 public:
     ControllerFrequency();

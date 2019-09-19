@@ -5,10 +5,14 @@ ControllerFrequency::ControllerFrequency()
     m_eng.load(QUrl(QStringLiteral("qrc:/Frequency/Generate.qml")));
     m_generate = m_eng.rootObjects().first();
     m_eng.load(QUrl(QStringLiteral("qrc:/Frequency/FrequencyManager.qml")));
-
+    
     m_manager = m_eng.rootObjects().last();
     
+    
     connect(m_generate, SLOT(s_generate(QDate, QDate)), this, SIGNAL(generate(QDate, QDate)));
+    QObject* model = m_manager->findChild<QObject*>("frequencyList");
+    model->setProperty("model", QVariant::fromValue(m_model));    
+    
 }
 
 void ControllerFrequency::addEntry(int e)
@@ -22,9 +26,25 @@ int ControllerFrequency::exec()
     auto freqs = m_db->selectFrequency();
     
     m_freqs.clear();
+    Frequency t, t2;
+    t.setId(3);
+    Entry e;
+    Information i;
+    i.setCategory("Test freq");
+    e.setInfo(i);
+    t.setReferenceEntry(e);
+    m_freqs[3] = t;
+    
+    t2.setId(4);
+    i.setCategory("Test 2");
+    e.setInfo(i);
+    t2.setReferenceEntry(e);
+    
+    m_freqs[4] = t2;
     for(auto it: freqs)
         m_freqs[it.id()] = it;
     
+    qDebug()<<"Freq size 2"<<m_freqs.size();
     return 0;
 }
 
@@ -43,11 +63,11 @@ void ControllerFrequency::generate(QDate begin, QDate end)
     
     do
     {
-         auto n = m_freqs[freqId].clone(ref);
-         n.setMetadata("freqGroup", freqGroup);
-         it = n.date();
-         AbstractController::addEntry(n);
-         
+        auto n = m_freqs[freqId].clone(ref);
+        n.setMetadata("freqGroup", freqGroup);
+        it = n.date();
+        AbstractController::addEntry(n);
+        
     }
     while(freq != Account::FrequencyEnum::unique && it <= end);
     
@@ -65,20 +85,32 @@ void ControllerFrequency::openGenerate(int id)
 
 void ControllerFrequency::openManager()
 {
-    QObject* model = m_manager->findChild<QObject*>("frequencyModel");
+    exec();
+  
+    m_model.clear();;
     
-    if(model)
-    {
-        QMetaObject::invokeMethod(model, "clear");
-        
-        for(auto it: m_freqs)
-        {
-            QString json = "{'idFreq': '" + QString::number(it.id()) + "', 'name': '" + it.referenceEntry().info().category() + "'}";
-            
-            QMetaObject::invokeMethod(model, "append", Q_ARG(QVariant, json));
-        }
-        
-        QMetaObject::invokeMethod(m_manager, "show");
-        
-    }
+    for(auto it = m_freqs.begin(); it != m_freqs.end(); it++)
+        m_model<<it.operator ->();
+    qDebug()<<m_model;
+    QObject* model = m_manager->findChild<QObject*>("frequencyList");
+    model->setProperty("model", QVariant::fromValue(m_model));    
+//    QMetaObject::invokeMethod(model, "sync");
+    
+    QMetaObject::invokeMethod(m_manager, "show");    
+    //    if(model)
+    //    {
+    //        QMetaObject::invokeMethod(model, "clear");
+    
+    //        qDebug()<<"Freq size"<<m_freqs.size();
+    //        for(auto it: m_freqs)
+    //        {
+    ////            QString json = "{'idFreq': '" + QString::number(it.id()) + "', 'name': '" + it.referenceEntry().info().category() + "'}";
+    //            QVariantMap json;
+    //            json.insert("idFreq", it.id());
+    //            json.insert("name", it.referenceEntry().info().category());
+    //            QMetaObject::invokeMethod(model, "append", Q_ARG(QVariant, QVariant::fromValue(json)));
+    //        }
+    
+    
+    //    }
 }
