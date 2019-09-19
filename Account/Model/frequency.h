@@ -5,8 +5,13 @@
 #include "accountglobal.h"
 #include "entry.h"
 
-class Frequency
+class Frequency: public QObject
 {
+    Q_OBJECT
+    
+    Q_PROPERTY(int id READ id)
+    Q_PROPERTY(QString name READ name)
+    
 private:
     int m_id;
     Account::FrequencyEnum m_freq;
@@ -39,6 +44,9 @@ public:
     void setReferenceEntry(Entry referenceEntry);
     int nbGroup() const;
     void setNbGroup(int nbGroup);
+    QString name() const;
 };
+
+Q_DECLARE_METATYPE(Frequency)
 
 #endif // FREQUENCY_H

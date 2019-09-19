@@ -50,12 +50,12 @@ void Frequency::setNbGroup(int nbGroup)
     m_nbGroup = nbGroup;
 }
 
-Frequency::Frequency()
+Frequency::Frequency(): QObject(nullptr)
 {
     
 }
 
-Frequency::Frequency(const Frequency& f): m_id(f.id()), m_freq(f.freq()),
+Frequency::Frequency(const Frequency& f): QObject(nullptr), m_id(f.id()), m_freq(f.freq()),
     m_entriesId(f.entries()), m_end(f.end()), m_referenceEntry(f.referenceEntry()),
     m_nbGroup(f.nbGroup())
 {}
@@ -104,4 +104,9 @@ Frequency& Frequency::operator<< (const Entry& e)
 bool Frequency::isUnlimited() const
 {
     return !m_end.isValid();
+}
+
+QString Frequency::name() const
+{
+    return m_referenceEntry.info().category();
 }
