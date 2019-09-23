@@ -12,25 +12,11 @@ Item {
     }
     property int maximum: Screen.width * .55 - 10
     width: spinbox.width + category.width + title.width
-    Item {
-        id: entry
-        objectName: "entry"
-        property double value
-        property int id
-    }
-
-    Item {
-        id: infoModel
-        objectName: "infoModel"
-        property bool estimated
-        property string title
-        property string type
-
+    
+    property var entry
+    property var infoModel: entry.info
+    
         function setType(newType) {
-            type = newType
-            category.setting(type)
-        }
-    }
 
     signal s_titleChanged(string title)
     signal s_estimatedChanged(bool title)

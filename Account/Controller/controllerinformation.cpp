@@ -30,9 +30,8 @@ void ControllerInformation::view(int id)
 {
     m_entry = AbstractController::entry(id);
     auto child = m_view->findChild<QObject*>("entryEdit");
-    QObject * entryItem, * infoItem, *catItem;
-    entryItem = child->findChild<QObject*>("entry");
-    infoItem = child->findChild<QObject*>("infoModel");
+    QObject  *catItem;
+
     catItem = child->findChild<QObject*>("category");
 
     QStringList catList = categories(m_entry.type());
@@ -47,19 +46,9 @@ void ControllerInformation::view(int id)
         catItem->setProperty("blocked", false);
     }
 
-    if(entryItem)
-    {
-        entryItem->setProperty("id", id);
-        entryItem->setProperty("value", m_entry.value());
-    }
+    child->setProperty("entry", QVariant::fromValue(m_entry));
 
-    if(infoItem)
-    {
-        infoItem->setProperty("estimated", m_entry.info().estimated());
-        infoItem->setProperty("title", m_entry.info().title());
-        QMetaObject::invokeMethod(infoItem, "setType", Q_ARG(QVariant, m_entry.info().category()));
-    }
-
+    
     QObject* freqItem = m_view->findChild<QObject*>("freqCheck");
     
     if(freqItem)

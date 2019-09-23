@@ -45,4 +45,5 @@ public:
     void setCategory(QString category);
 };
 
+Q_DECLARE_METATYPE(Information)
 #endif // INFORMATION_H

@@ -17,7 +17,7 @@ class Entry: public MetaData
     Q_PROPERTY(double value READ value)
     Q_PROPERTY(QDate date READ date)
     Q_PROPERTY(QString type READ type)
-//    Q_PROPERTY(Information info READ info)
+    Q_PROPERTY(Information info READ info)
     Q_PROPERTY(QString label READ label)
 
 private:
@@ -58,5 +58,7 @@ public:
 
 
 };
+
+Q_DECLARE_METATYPE(Entry)
 
 #endif // ENTRY_H
