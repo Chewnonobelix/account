@@ -5,9 +5,9 @@
 #include "accountglobal.h"
 #include "entry.h"
 
-class Frequency: public QObject
+class Frequency
 {
-    Q_OBJECT
+    Q_GADGET
     
     Q_PROPERTY(int id READ id)
     Q_PROPERTY(QString name READ name)
@@ -48,5 +48,6 @@ public:
 };
 
 Q_DECLARE_METATYPE(Frequency)
+Q_DECLARE_METATYPE(QList<Frequency*>)
 
 #endif // FREQUENCY_H

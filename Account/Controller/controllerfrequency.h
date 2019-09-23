@@ -18,7 +18,7 @@ private:
     QObject* m_manager, *m_generate;
     QQmlApplicationEngine m_eng;
     
-    QList<QObject*> m_model; 
+    QList<QVariant> m_model; 
     
 public:
     ControllerFrequency();
