@@ -18,47 +18,47 @@ Window {
         anchors.fill: parent        
         gradient: pageStyle.backgroundGradient
         ColumnLayout {
-//            column: 1    
             id: colFreqList
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             anchors.left: parent.left
-            anchors.leftMargin: 20
-            width: parent.width * .3
+            anchors.topMargin: 10
+            width: parent.width * .15
 
+            onWidthChanged: console.log("Width", width)
             Component.onCompleted: console.log("layout", children.length)
             Label {
                 text: qsTr("Frequency list")
                 Layout.maximumHeight: parent.height * .10
-                onHeightChanged: console.log(height)
-                MouseArea {
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onHoveredChanged: console.log("Vsas chier")
-                }
+                Layout.fillWidth: true
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
+                fontSizeMode: Text.Fit
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
                 
             }
             
         
             ListView {                
-//                anchors.fill: parent
                 id: frequencyList
                 objectName: "frequencyList"
                 model: []
-                MouseArea {
+                anchors.leftMargin: 10
+                onWidthChanged: console.log("list", width)
+                clip: true
+                Rectangle {
                     anchors.fill: parent
-                    hoverEnabled: true
-                    onHoveredChanged: console.log("Vsas chier2")
+                    border.color: "gold"
+                    color: "transparent"
                 }
 
-                onCountChanged: console.log("Count", count)
                 Layout.fillHeight: true
-//                height: parent.height * .8
+                Layout.fillWidth: true
+                height: parent.height * .8
                 width: parent.width
                 section.property:  "name"
-//                onHeightChanged: console.log( model, model.length, model[1].name )
                 delegate: Label {
-//                    color: "red"
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
                     fontSizeMode: Text.Fit
@@ -67,15 +67,10 @@ Window {
                     
                     height: 40
                     width: frequencyList.width
-//                    anchors.centerIn: parent    
                     text: modelData.name + "//" + modelData.id
-//                    width: frequencyList.width
-//                    onWidthChanged: console.log(width)
-//                    onHeightChanged: console.log(height)
                     Component.onCompleted: console.log("Del ", text, index, modelData.name)
                 }
-            }
-            
+            }            
         }
         
 //        Frequency {
