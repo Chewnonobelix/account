@@ -11,56 +11,72 @@ Window {
     AccountStyle {
         id: pageStyle
     }
+    title: qsTr("Frequency manager")
     
-    
-    
+    visible: false
     Rectangle {
         anchors.fill: parent        
-//        gradient: pageStyle.backgroundGradient
-//        Layout {
+        gradient: pageStyle.backgroundGradient
+        ColumnLayout {
 //            column: 1    
-//            id: colFreqList
-//            anchors.top: parent.top
-//            anchors.bottom: parent.bottom
-//            anchors.left: parent.left
-//            width: parent.width * .3
+            id: colFreqList
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            width: parent.width * .3
 
-//            Component.onCompleted: console.log("layout", children.length)
-//            Label {
-//                text: qsTr("Frequency list")
-////                Layout.maximumHeight: parent.height * .10
-//                onHeightChanged: console.log(height)
-//            }
+            Component.onCompleted: console.log("layout", children.length)
+            Label {
+                text: qsTr("Frequency list")
+                Layout.maximumHeight: parent.height * .10
+                onHeightChanged: console.log(height)
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onHoveredChanged: console.log("Vsas chier")
+                }
+                
+            }
             
-            
-            ListView {
-                anchors.fill: parent
+        
+            ListView {                
+//                anchors.fill: parent
                 id: frequencyList
                 objectName: "frequencyList"
-//                model: frequencyModel
-                
-//                Layout.fillHeight: true
+                model: []
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onHoveredChanged: console.log("Vsas chier2")
+                }
+
+                onCountChanged: console.log("Count", count)
+                Layout.fillHeight: true
 //                height: parent.height * .8
                 width: parent.width
                 section.property:  "name"
-                onHeightChanged: console.log( model )
-                delegate: Rectangle {
-                    color: "red"
-//                    font.family: pageStyle.core.name
-//                    font.pixelSize: pageStyle.core.size
-//                    fontSizeMode: Text.Fit
-//                    horizontalAlignment: Text.AlignHCenter
-//                    verticalAlignment: Text.AlignVCenter
+//                onHeightChanged: console.log( model, model.length, model[1].name )
+                delegate: Label {
+//                    color: "red"
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    fontSizeMode: Text.Fit
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    
+                    height: 40
+                    width: frequencyList.width
 //                    anchors.centerIn: parent    
-//                    text: name
+                    text: modelData.name + "//" + modelData.id
 //                    width: frequencyList.width
 //                    onWidthChanged: console.log(width)
 //                    onHeightChanged: console.log(height)
-                    Component.onCompleted: console.log("Del ", text, frequencyList.model.count)
+                    Component.onCompleted: console.log("Del ", text, index, modelData.name)
                 }
             }
             
-//        }
+        }
         
 //        Frequency {
 //            id: reference
@@ -71,4 +87,4 @@ Window {
 //            anchors.right: parent.right        
 //        }
     }    
-}
+}/**/
