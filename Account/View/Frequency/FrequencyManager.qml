@@ -24,9 +24,7 @@ Window {
             anchors.left: parent.left
             anchors.topMargin: 10
             width: parent.width * .15
-
-            onWidthChanged: console.log("Width", width)
-            Component.onCompleted: console.log("layout", children.length)
+            
             Label {
                 text: qsTr("Frequency list")
                 Layout.maximumHeight: parent.height * .10
@@ -35,24 +33,23 @@ Window {
                 font.pixelSize: pageStyle.title.size
                 fontSizeMode: Text.Fit
                 horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                
+                verticalAlignment: Text.AlignVCenter         
             }
             
-        
+            
             ListView {                
                 id: frequencyList
                 objectName: "frequencyList"
                 model: []
                 anchors.leftMargin: 10
-                onWidthChanged: console.log("list", width)
+                
                 clip: true
                 Rectangle {
                     anchors.fill: parent
                     border.color: "gold"
                     color: "transparent"
                 }
-
+                
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 height: parent.height * .8
@@ -70,16 +67,67 @@ Window {
                     text: modelData.name + "//" + modelData.id
                     Component.onCompleted: console.log("Del ", text, index, modelData.name)
                 }
+            }
+            
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.maximumHeight: parent.height * 0.03
+                spacing: 5               
+                Control2.Button {
+                    Layout.preferredWidth: parent * 0.5
+                    Layout.fillHeight: true
+                    
+                    text: qsTr("+")
+                    onClicked: console.log(text)
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    
+                    MouseArea {
+                        z: -1
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        acceptedButtons: Qt.NoButton
+                    }
+                    
+                    Rectangle {
+                        anchors.fill: parent
+                        gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton 
+                    }
+                }
+                
+                Control2.Button {
+                    Layout.preferredWidth: parent * 0.5
+                    Layout.fillHeight: true
+                    
+                    text: qsTr("-")
+                    onClicked: console.log(text)
+                    
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    
+                    MouseArea {
+                        z: -1
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        acceptedButtons: Qt.NoButton
+                    }
+                    
+                    Rectangle {
+                        anchors.fill: parent
+                        gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton 
+                    }
+                    
+                }
             }            
         }
         
-//        Frequency {
-//            id: reference
-//            anchors.top: parent.top
-//            anchors.bottom: parent.bottom
-//            anchors.left: colFreqList.right
-//            anchors.leftMargin: 10
-//            anchors.right: parent.right        
-//        }
+        //        Frequency {
+        //            id: reference
+        //            anchors.top: parent.top
+        //            anchors.bottom: parent.bottom
+        //            anchors.left: colFreqList.right
+        //            anchors.leftMargin: 10
+        //            anchors.right: parent.right        
+        //        }
     }    
 }/**/

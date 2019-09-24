@@ -16,7 +16,6 @@ Item {
     property var entry
     property var infoModel: entry.info
     
-        function setType(newType) {
 
     signal s_titleChanged(string title)
     signal s_estimatedChanged(bool title)
