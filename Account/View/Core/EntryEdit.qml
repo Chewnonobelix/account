@@ -11,125 +11,144 @@ Item {
         id: pageStyle
     }
     property int maximum: Screen.width * .55 - 10
-    width: spinbox.width + category.width + title.width
     
+    width: maximum
     property var entry
     property var infoModel: entry.info
     
-
+    
     signal s_titleChanged(string title)
     signal s_estimatedChanged(bool title)
     signal s_valueChanged(real value)
-
+    
     onEnabledChanged: {
         titleLabel.enabled = true
         categoryLabel.enabled = true
         valueLabel.enabled = true
     }
-
-    Label {
-        id: titleLabel
-        text: qsTr("Title")
-        width: title.width
-        font.pixelSize: pageStyle.title.size
-        font.family: pageStyle.title.name
-        horizontalAlignment: Qt.AlignHCenter
-        background: Rectangle {
-            gradient: pageStyle.goldHeader
-            border.color: "darkgoldenrod"
+    
+    GridLayout {
+        rows: 3
+        columns: 3
+        anchors.fill: parent
+        rowSpacing: 0
+        Label {
+            id: titleLabel
+            text: qsTr("Title")
+            font.pixelSize: pageStyle.title.size
+            font.family: pageStyle.title.name
+            fontSizeMode: Text.Fit
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+            background: Rectangle {
+                gradient: pageStyle.goldHeader
+                border.color: "darkgoldenrod"
+            }
+            
+            Layout.preferredWidth: parent.width * 0.33
+            Layout.preferredHeight: parent.height * 0.2
+            Layout.row: 0
+            Layout.column: 0
         }
-    }
-
-    Label {
-        id: valueLabel
-        text: qsTr("Value")
-        width: spinbox.width +10
-        anchors.left: titleLabel.right
-        font.pixelSize: pageStyle.title.size
-        font.family: pageStyle.title.name
-        horizontalAlignment: Qt.AlignHCenter
-        background: Rectangle {
-            gradient: pageStyle.goldHeader
-            border.color: "darkgoldenrod"
+        
+        Label {
+            id: valueLabel
+            text: qsTr("Value")
+            font.pixelSize: pageStyle.title.size
+            font.family: pageStyle.title.name
+            fontSizeMode: Text.Fit
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+            background: Rectangle {
+                gradient: pageStyle.goldHeader
+                border.color: "darkgoldenrod"
+            }
+            Layout.preferredWidth:  parent.width * 0.34
+            Layout.preferredHeight: parent.height * 0.2
+            Layout.row: 0
+            Layout.column: 1
         }
-    }
-    Label {
-        id: categoryLabel
-        text: qsTr("Category")
-        width: category.width
-        anchors.left: valueLabel.right
-        font.pixelSize: pageStyle.title.size
-        font.family: pageStyle.title.name
-        horizontalAlignment: Qt.AlignHCenter
-        background: Rectangle {
-            gradient: pageStyle.goldHeader
-            border.color: "darkgoldenrod"
+        Label {
+            id: categoryLabel
+            text: qsTr("Category")
+            font.pixelSize: pageStyle.title.size
+            font.family: pageStyle.title.name
+            fontSizeMode: Text.Fit
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+            background: Rectangle {
+                gradient: pageStyle.goldHeader
+                border.color: "darkgoldenrod"
+            }
+            Layout.preferredWidth: parent.width * 0.33
+            Layout.preferredHeight: parent.height * 0.2
+            Layout.row: 0
+            Layout.column: 2
         }
-    }
-    TextField {
-        id: title
-        width: maximum / 3
-        anchors.top:titleLabel.bottom
-        anchors.topMargin: 5
-        text: infoModel.title
-        font.family: pageStyle.core.name
-        font.pixelSize: pageStyle.core.size
-        onEditingFinished: {
-            s_titleChanged(text)
+        TextField {
+            id: title
+            Layout.maximumWidth: parent.width * 0.33
+            Layout.maximumHeight: parent.height * 0.3
+            Layout.fillHeight: true
+            Layout.preferredWidth: parent.width * 0.33
+            text: infoModel.title
+            font.family: pageStyle.core.name
+            font.pixelSize: pageStyle.core.size
+            onEditingFinished: {
+                s_titleChanged(text)
+            }
+            
+            ToolTip.text: qsTr("Change transaction's title")
+            ToolTip.visible: hovered
+            ToolTip.delay: 500
+            Layout.row: 1
+            Layout.column: 0
         }
-
-        ToolTip.text: qsTr("Change transaction's title")
-        ToolTip.visible: hovered
-        ToolTip.delay: 500
-    }
-
-    DoubleSpinBox {
-        id: spinbox
-        width: maximum / 3
-
-        value: entry.value*100
-        anchors.top: valueLabel.bottom
-        anchors.topMargin: 5
-        anchors.left: title.right
-        anchors.leftMargin: 5
-//        anchors.rightMargin: 5
-        font.family:  pageStyle.core.name
-        font.pixelSize: pageStyle.core.size
-
-        ToolTip.text: qsTr("Change transaction's value")
-        ToolTip.visible: hovered
-        ToolTip.delay: 500
-
-        property date s_date
-        Timer {
-            id: timer
-            repeat: false
-
-            onTriggered: {
-                if(!info.opening)
-                    info.s_valueChanged(spinbox.realValue)
-
+        
+        DoubleSpinBox {
+            id: spinbox
+            Layout.maximumWidth: parent.width * 0.34
+            Layout.fillHeight: true
+            Layout.maximumHeight: parent.height * 0.3
+            Layout.preferredWidth: parent.width * 0.34
+            
+            value: entry.value*100
+            font.family:  pageStyle.core.name
+            font.pixelSize: pageStyle.core.size
+            
+            ToolTip.text: qsTr("Change transaction's value")
+            ToolTip.visible: hovered
+            ToolTip.delay: 500
+            Layout.row: 1
+            Layout.column: 1
+            property date s_date
+            Timer {
+                id: timer
+                repeat: false
+                
+                onTriggered: {
+                    if(!info.opening)
+                        info.s_valueChanged(spinbox.realValue)
+                    
+                }
+            }
+            
+            onRealValueChanged: {
+                timer.restart()
             }
         }
-
-        onRealValueChanged: {
-            timer.restart()
+        
+        CategoryItem {
+            id: category
+            objectName: "category"
+            Layout.maximumWidth: parent.width * 0.33
+            Layout.fillHeight: true
+            Layout.maximumHeight: parent.height * 0.3
+            Layout.preferredWidth: parent.width * 0.33
+            editable: currentText === ""
+            model: [""]
+            Layout.row: 1
+            Layout.column: 2
         }
     }
-
-    CategoryItem {
-        id: category
-        objectName: "category"
-        width: maximum / 3
-        height: spinbox.height
-
-        anchors.top: categoryLabel.bottom
-        anchors.topMargin: 5
-        anchors.left: spinbox.right
-        anchors.leftMargin: 5
-        editable: currentText === ""
-        model: [""]
-
-    }
-    
 }

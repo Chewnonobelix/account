@@ -8,23 +8,23 @@ import "../Budget" as B
 import "../Style" as S
 
 Page {
-
+    
     implicitWidth: parent.width
     implicitHeight: parent.height
-
+    
     id: pageTable
-
+    
     property int v_dateMonth: cal.currentMonth + 1
     property int v_dateYear: cal.currentYear
-
+    
     S.AccountStyle {
         id: pageStyle
     }
-
+    
     background: Rectangle {
         color: "transparent"
     }
-
+    
     MultiCalendar {
         id: cal
         objectName: "cal"
@@ -32,7 +32,7 @@ Page {
         implicitHeight: parent.height / 2
         implicitWidth: parent.width * 0.2
     }
-
+    
     /* */
     Adding {
         id: addingid
@@ -47,24 +47,24 @@ Page {
         Component.onCompleted: {
             reset()
         }
-
+        
         function setSize(px,py) {
             mX = ((mainWindow.width * px) + width) - mainWindow.width
             mY = ((mainWindow.height * py) + height) - (mainWindow.height)
-
+            
             pX = px
             pY = py
         }
     }
-
+    
     Component.onCompleted: {
         addingid.close()
     }
-
+    
     function openAdding(pX, pY) {
-
+        
         addingid.setSize(pX, pY)
-
+        
         if (cal.selectedDates.length > 0) {
             for (var index in cal.selectedDates) {
                 addingid.addDate(cal.selectedDates[index])
@@ -74,75 +74,75 @@ Page {
         }
         addingid.open()
     }
-
+    
     Row {
         anchors.top: cal.bottom
         anchors.topMargin: 10
-//        anchors.right: cal.right
-//        anchors.rightMargin: 5
+        //        anchors.right: cal.right
+        //        anchors.rightMargin: 5
         anchors.left: parent.left
         anchors.leftMargin: 5
-
+        
         width: cal.width
         id: group
         spacing: 10
         //        height: 50
-//        width: cal.width
+        //        width: cal.width
         enabled: accountSelect.model.length > 0
-
+        
         Button {
             id: add
             text: qsTr("Add")
             width: parent.width * .45
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
-
+            
             ToolTip.text: qsTr("Add new transaction")
             ToolTip.visible: hovered
             ToolTip.delay: 500
-
+            
             Rectangle {
                 id: rectAdd
                 anchors.fill: parent
                 gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
             }
-
+            
             MouseArea {
                 z: -1
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 acceptedButtons: Qt.NoButton
             }
-
+            
             onClicked: {
                 mainWindow.adding(false)
             }
         }
-
+        
         Button {
             id: remove
-//            anchors.right: parent.right
+            //            anchors.right: parent.right
             text: qsTr("Remove")
             width: parent.width * .45
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
             property int index: view.currentIndex
             enabled: view.currentIndex !== -1
-
+            
             ToolTip.text: qsTr("Remove select transaction")
             ToolTip.visible: hovered
             ToolTip.delay: 500
-
+            
             MouseArea {
                 z: -1
                 anchors.fill: parent
                 cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
                 acceptedButtons: Qt.NoButton
             }
-
+            
             Rectangle {
                 id: rectRemove
-
+                
                 anchors.fill: parent
                 gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
             }
@@ -153,7 +153,7 @@ Page {
             }
         }
     }
-
+    
     Column {
         anchors.bottom: parent.bottom
         anchors.top: group.bottom
@@ -179,45 +179,45 @@ Page {
             verticalAlignment: Text.AlignVCenter
             clip: true
         }
-
+        
         B.BudgetView {
             id: budgetQuick
             objectName: "budgetQuick"
-          
+            
             width: parent.width
             
             anchors.top: quickViewDate.bottom
-//            height: parent.height * .90
+            //            height: parent.height * .90
         }        
     }
-
-
+    
+    
     property int currentId: view.currentIndex > -1 && defaultModel.get(
                                 view.currentIndex).label
                             !== "Initial" ? defaultModel.get(
                                                 view.currentIndex).id : -1
-
+    
     Rectangle {
         color: "transparent"
         anchors.top: group.bottom
         //        anchors.topMargin: 210
         anchors.right: view.left
         anchors.left: parent.left
-
+        
         B.BudgetView {
             anchors.fill: parent
         }
     }
-
+    
     ListModel {
         id: defaultModel
         objectName: "defaultModel"
-
+        
         function swap(ij) {
             move(j, i, 1)
             move(i + 1, j, 1)
         }
-
+        
         function sort(roleorder) {
             for (var i = 0; i < count; i++) {
                 for (var j = 0; j < count; j++) {
@@ -234,12 +234,12 @@ Page {
             }
         }
     }
-
+    
     onWidthChanged: {
         view.width = ((width * 0.25) - 5)
                 < view.maximumWidth ? (width * 0.25) + 5 : view.maximumWidth
     }
-
+    
     Button {
         id: nextPages
         anchors.top: view.bottom
@@ -247,32 +247,32 @@ Page {
         text: ">>"
         height: parent.height * 0.05
         width: view.width * 0.20
-
+        
         onClicked: pageSkip.pageIndex += 10
-
+        
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
-
+        
         enabled: pageSkip.maxPage > 1 || (pageSkip.pageIndex < pageSkip.maxPage)
-
+        
         ToolTip.text: qsTr("Next 10 pages")
         ToolTip.delay: 500
         ToolTip.visible: hovered
-
+        
         MouseArea {
             z: -1
             anchors.fill: parent
             cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
             acceptedButtons: Qt.NoButton
         }
-
+        
         Rectangle {
             anchors.fill: parent
             border.color: "darkgoldenrod"
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
         }
     }
-
+    
     Button {
         id: nextPage
         anchors.top: view.bottom
@@ -280,15 +280,15 @@ Page {
         text: ">"
         height: parent.height * 0.05
         width: view.width * 0.20
-
+        
         onClicked: pageSkip.pageIndex++
-
+        
         enabled: pageSkip.maxPage > 1 || (pageSkip.pageIndex < pageSkip.maxPage)
-
+        
         ToolTip.text: qsTr("Next page")
         ToolTip.delay: 500
         ToolTip.visible: hovered
-
+        
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
         MouseArea {
@@ -297,14 +297,14 @@ Page {
             cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
             acceptedButtons: Qt.NoButton
         }
-
+        
         Rectangle {
             anchors.fill: parent
             border.color: "darkgoldenrod"
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
         }
     }
-
+    
     Button {
         id: previousPage
         anchors.top: view.bottom
@@ -312,15 +312,15 @@ Page {
         text: "<"
         height: parent.height * 0.05
         width: view.width * 0.20
-
+        
         onClicked: pageSkip.pageIndex--
-
+        
         enabled: pageSkip.maxPage > 1 && (pageSkip.pageIndex > 1)
-
+        
         ToolTip.text: qsTr("Previous page")
         ToolTip.delay: 500
         ToolTip.visible: hovered
-
+        
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
         MouseArea {
@@ -329,14 +329,14 @@ Page {
             cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
             acceptedButtons: Qt.NoButton
         }
-
+        
         Rectangle {
             anchors.fill: parent
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
             border.color: "darkgoldenrod"
         }
     }
-
+    
     Button {
         id: previousPages
         anchors.top: view.bottom
@@ -344,15 +344,15 @@ Page {
         text: "<<"
         height: parent.height * 0.05
         width: view.width * 0.20
-
+        
         onClicked: pageSkip.pageIndex -= 10
-
+        
         enabled: pageSkip.maxPage > 1 && (pageSkip.pageIndex > 1)
-
+        
         ToolTip.text: qsTr("Previous 10 pages")
         ToolTip.delay: 500
         ToolTip.visible: hovered
-
+        
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
         MouseArea {
@@ -361,14 +361,14 @@ Page {
             cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
             acceptedButtons: Qt.NoButton
         }
-
+        
         Rectangle {
             anchors.fill: parent
             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
             border.color: "darkgoldenrod"
         }
     }
-
+    
     TextField {
         id: pageSkip
         objectName: "pageSkip"
@@ -380,25 +380,25 @@ Page {
         height: parent.height * 0.05
         text: pageIndex
         horizontalAlignment: Qt.AlignHCenter
-
+        
         enabled: maxPage > 1
-
+        
         ToolTip.text: qsTr("Current page")
         ToolTip.delay: 500
         ToolTip.visible: hovered
-
+        
         signal s_pageChange
-
+        
         onPageIndexChanged: {
             if (pageIndex < 1)
                 pageIndex = 1
             if (pageIndex > maxPage)
                 pageIndex = maxPage
-
+            
             s_pageChange()
         }
     }
-
+    
     TableView {
         anchors.left: cal.right
         anchors.leftMargin: 5
@@ -407,32 +407,32 @@ Page {
         id: view
         objectName: "entryView"
         model: defaultModel
-
+        
         property int maximumWidth: 4 * 100 + 60
-
+        
         horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
-
+        
         sortIndicatorVisible: true
         property string currentType
         property int currentIndex: -1
-
+        
         function fAdd(i) {
             defaultModel.append(i)
         }
-
+        
         function unselectAll() {
             selection.clear()
             currentIndex = -1
         }
-
+        
         function reset() {
             defaultModel.clear()
             currentIndex = -1
             infoView.visible = false
         }
-
+        
         signal s_view(int index)
-
+        
         backgroundVisible: false
         Connections {
             target: cal
@@ -440,25 +440,25 @@ Page {
                 view.reset()
             }
         }
-
+        
         onWidthChanged: {
             flickableItem.contentX = 0
         }
-
+        
         onHeightChanged: {
             flickableItem.contentY = 0
         }
-
+        
         TableViewColumn {
             role: "id"
             visible: false
         }
-
+        
         TableViewColumn {
             role: "estimated"
             visible: false
         }
-
+        
         function setNewIndex(index) {
             if (selection.contains(index)) {
                 selection.clear()
@@ -469,7 +469,7 @@ Page {
                 selection.select(index)
             }
         }
-
+        
         function selectFromId(id) {
             for (var i = 0; i < defaultModel.count; i++) {
                 if (defaultModel.get(i).id === id) {
@@ -477,7 +477,7 @@ Page {
                 }
             }
         }
-
+        
         TableViewColumn {
             role: "type"
             title: qsTr("[+/-]")
@@ -508,7 +508,7 @@ Page {
                 }
             }
         }
-
+        
         TableViewColumn {
             role: "date"
             title: qsTr("Date")
@@ -516,7 +516,7 @@ Page {
             movable: false
             resizable: false
             id: columnDate
-
+            
             delegate: Rectangle {
                 color: "transparent"
                 anchors.centerIn: parent
@@ -528,7 +528,7 @@ Page {
                         view.setNewIndex(styleData.row)
                     }
                 }
-
+                
                 Label {
                     text: Qt.formatDate(styleData.value, "dd-MM-yyyy")
                     font.family: pageStyle.core.name
@@ -538,14 +538,14 @@ Page {
                 }
             }
         }
-
+        
         TableViewColumn {
             role: "value"
             title: qsTr("Value")
             width: 100
             movable: false
             resizable: false
-
+            
             delegate: Rectangle {
                 color: "transparent"
                 anchors.centerIn: parent
@@ -557,7 +557,7 @@ Page {
                         view.setNewIndex(styleData.row)
                     }
                 }
-
+                
                 Label {
                     text: styleData.value
                     clip: true
@@ -568,7 +568,7 @@ Page {
                 }
             }
         }
-
+        
         TableViewColumn {
             role: "label"
             title: qsTr("Label")
@@ -576,7 +576,7 @@ Page {
             movable: false
             resizable: false
             id: labelHeader
-
+            
             delegate: Rectangle {
                 color: "transparent"
                 anchors.centerIn: parent
@@ -588,7 +588,7 @@ Page {
                         view.setNewIndex(styleData.row)
                     }
                 }
-
+                
                 Label {
                     text: styleData.value
                     clip: true
@@ -599,14 +599,14 @@ Page {
                 }
             }
         }
-
+        
         TableViewColumn {
             role: "total"
             title: qsTr("Total")
             width: 100
             movable: false
             resizable: false
-
+            
             delegate: Rectangle {
                 color: "transparent"
                 anchors.centerIn: parent
@@ -618,7 +618,7 @@ Page {
                         view.setNewIndex(styleData.row)
                     }
                 }
-
+                
                 Label {
                     text: styleData.value
                     clip: true
@@ -629,16 +629,16 @@ Page {
                 }
             }
         }
-
+        
         headerDelegate: Rectangle {
             gradient: isClicked ? pageStyle.darkGoldButton : pageStyle.goldHeader
-
+            
             height: view.height * 0.03
             anchors.centerIn: parent
             anchors.leftMargin: 10
             property bool isHovered: styleData.containsMouse
             property bool isClicked: styleData.pressed
-
+            
             border.color: "darkgoldenrod"
             Label {
                 id: headerText
@@ -647,13 +647,13 @@ Page {
                 text: styleData.value
                 font.family: pageStyle.title.name
                 font.pixelSize: height * 0.85
-
+                
                 ToolTip.visible: isHovered && (styleData.column === 2)
                 ToolTip.text: view.getToolTip(styleData.column)
                 ToolTip.delay: 500
             }
         }
-
+        
         onSortIndicatorColumnChanged: {
             defaultModel.sort(getColumn(sortIndicatorColumn).role,
                               sortIndicatorOrder)
@@ -661,7 +661,7 @@ Page {
                 s_view(defaultModel.get(currentIndex).id)
             }
         }
-
+        
         onSortIndicatorOrderChanged: {
             defaultModel.sort(getColumn(sortIndicatorColumn).role,
                               sortIndicatorOrder)
@@ -669,75 +669,76 @@ Page {
                 s_view(defaultModel.get(currentIndex).id)
             }
         }
-
+        
         function getToolTip(index) {
             if (index === 2) {
                 return typeColumn.tipText
             }
-
+            
             return ""
         }
-
+        
         itemDelegate: Rectangle {
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
-
-//                ToolTip.text: styleData.value
-//                ToolTip.visible: styleData.hovered
-//                ToolTip.timeout: 500
-
+                
+                //                ToolTip.text: styleData.value
+                //                ToolTip.visible: styleData.hovered
+                //                ToolTip.timeout: 500
+                
                 onClicked: {
                     view.setNewIndex(styleData.row)
-//                    if (view.selection.contains(styleData.row)) {
-////                        view.selection.clear()
-//                        view.unselectAll()                        
-//                    } else {
-//                        view.unselectAll()                        
-//                        view.selection.select(styleData.row)
-//                    }
+                    //                    if (view.selection.contains(styleData.row)) {
+                    ////                        view.selection.clear()
+                    //                        view.unselectAll()                        
+                    //                    } else {
+                    //                        view.unselectAll()                        
+                    //                        view.selection.select(styleData.row)
+                    //                    }
                 }
             }            
         }
-
+        
         rowDelegate: Rectangle {
             id: rectRow
-
+            
             width: parent.width
             height: 20
-
+            
             
             gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
         }
-
+        
         onCurrentIndexChanged: {
             var cItem =  defaultModel.get(currentIndex)
             infoView.visible = (currentIndex !== -1)
                     && (cItem.label !== "Initial")
             remove.enabled = infoView.visible
-
+            
             if (currentIndex !== -1)
                 s_view(cItem.id)
         }
     }
-
+    
     ScrollView {
-
-        contentWidth: infoView.width
-        contentHeight: infoView.height
+        
+        contentWidth: infoView.maximum
+        contentHeight: height * 1.5
         anchors.left: view.right
         anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.top: parent.top
         height: parent.height
-
+        
         anchors.leftMargin: 10
-
+        
         ScrollBar.horizontal.policy: ScrollBar.AsNeeded
-
+        
         clip: true
-        InformationView {
+        contentItem: InformationView {
             id: infoView
             objectName: "infoView"
-            height: pageTable.height
             clip: true
             visible: false
             enabled: true
