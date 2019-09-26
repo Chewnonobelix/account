@@ -15,119 +15,160 @@ Window {
     
     visible: false
     Rectangle {
-        anchors.fill: parent        
+        anchors.fill: parent
         gradient: pageStyle.backgroundGradient
-        ColumnLayout {
-            id: colFreqList
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.left: parent.left
-            anchors.topMargin: 10
-            width: parent.width * .15
-            
+        GridLayout {
+
+            anchors.fill: parent
             Label {
                 text: qsTr("Frequency list")
-                Layout.maximumHeight: parent.height * .10
-                Layout.fillWidth: true
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
                 fontSizeMode: Text.Fit
                 horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter         
+                verticalAlignment: Text.AlignVCenter
+
+                Layout.columnSpan:  2
+                Layout.row: 0
+                Layout.column: 0
+                Layout.preferredWidth: parent.width * .15
             }
-            
-            
-            ListView {                
+
+
+            ListView {
                 id: frequencyList
                 objectName: "frequencyList"
                 model: []
                 anchors.leftMargin: 10
-                
+                Layout.columnSpan:  2
+                Layout.row: 1
+                Layout.column: 0
+
                 clip: true
                 Rectangle {
                     anchors.fill: parent
                     border.color: "gold"
                     color: "transparent"
                 }
-                
+
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                height: parent.height * .8
-                width: parent.width
                 section.property:  "name"
-                delegate: Label {
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
-                    fontSizeMode: Text.Fit
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    
+                delegate: Rectangle {
                     height: 40
                     width: frequencyList.width
-                    text: modelData.name + "//" + modelData.id
-                    Component.onCompleted: console.log("Del ", text, index, modelData.name)
+
+                    gradient: index === frequencyList.currentIndex ? pageStyle.calSelect : pageStyle.unselectView
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: frequencyList.currentIndex = index
+
+                        cursorShape: Qt.PointingHandCursor
+                    }
+
+                    Label {
+                        anchors.fill: parent
+                        font.family: pageStyle.core.name
+                        font.pixelSize: pageStyle.core.size
+                        fontSizeMode: Text.Fit
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        text: modelData.name
+                    }
                 }
             }
-            
-            RowLayout {
-                Layout.fillWidth: true
-                Layout.maximumHeight: parent.height * 0.03
-                spacing: 5               
-                Control2.Button {
-                    Layout.preferredWidth: parent * 0.5
-                    Layout.fillHeight: true
-                    
-                    text: qsTr("+")
-                    onClicked: console.log(text)
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
-                    
-                    MouseArea {
-                        z: -1
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        acceptedButtons: Qt.NoButton
-                    }
-                    
-                    Rectangle {
-                        anchors.fill: parent
-                        gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton 
+
+            Control2.Button {
+
+                text: qsTr("+")
+                onClicked: console.log(text)
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+
+                Layout.columnSpan:  1
+                Layout.row: 2
+                Layout.column: 0
+                //                Layout.preferredHeight: parent.height * .05
+                MouseArea {
+                    z: -1
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
+                }
+
+                Rectangle {
+                    anchors.fill: parent
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                }
+            }
+
+            Control2.Button {
+
+                text: qsTr("-")
+                onClicked: console.log(text)
+
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+
+                Layout.columnSpan:  1
+                Layout.row: 2
+                Layout.column: 1
+
+                MouseArea {
+                    z: -1
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
+                }
+
+                Rectangle {
+                    anchors.fill: parent
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                }
+
+            }
+
+
+            EntryEdit {
+                id: ref
+                objectName: "ref"
+
+                Layout.preferredHeight: parent.height * .10
+                Layout.preferredWidth: parent.width * .83
+                Layout.columnSpan:  1
+                Layout.row: 0
+                Layout.column: 2
+
+            }
+
+            ListView {
+                id: entryList
+                objectName: "entryList"
+                Layout.columnSpan:  1
+                Layout.rowSpan: 2
+                Layout.row: 1
+                Layout.column: 2
+
+
+                model: ["1"]
+
+                delegate: Rectangle {
+                    color: "transparent"
+                    Label {
+                        text: modelData
                     }
                 }
-                
-                Control2.Button {
-                    Layout.preferredWidth: parent * 0.5
-                    Layout.fillHeight: true
-                    
-                    text: qsTr("-")
-                    onClicked: console.log(text)
-                    
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
-                    
-                    MouseArea {
-                        z: -1
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        acceptedButtons: Qt.NoButton
-                    }
-                    
-                    Rectangle {
-                        anchors.fill: parent
-                        gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton 
-                    }
-                    
-                }
-            }            
+            }
         }
-        
+
         //        Frequency {
         //            id: reference
         //            anchors.top: parent.top
         //            anchors.bottom: parent.bottom
         //            anchors.left: colFreqList.right
         //            anchors.leftMargin: 10
-        //            anchors.right: parent.right        
+        //            anchors.right: parent.right
         //        }
-    }    
+    }
 }/**/
