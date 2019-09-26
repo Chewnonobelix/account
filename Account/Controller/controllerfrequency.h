@@ -27,6 +27,7 @@ public:
     void addEntry(int);
     
     int exec();
+    void closeManager();
 
 public slots:
     void generate(QDate, QDate);

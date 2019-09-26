@@ -97,3 +97,8 @@ void ControllerFrequency::openManager()
 
     QMetaObject::invokeMethod(m_manager, "show");    
 }
+
+void ControllerFrequency::closeManager()
+{
+    QMetaObject::invokeMethod(m_manager, "close");
+}

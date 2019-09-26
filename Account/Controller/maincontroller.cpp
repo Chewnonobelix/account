@@ -112,6 +112,7 @@ int MainController::exec()
 void MainController::close()
 {
     m_budget.closeManager();
+    m_freqs.closeManager();
 }
 
 void MainController::update(Entry e)
