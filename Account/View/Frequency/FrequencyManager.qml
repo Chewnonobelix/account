@@ -28,7 +28,7 @@ Window {
             anchors.fill: parent
             Rectangle {
                 gradient: pageStyle.goldHeader
-                    
+                
                 Label {
                     anchors.fill: parent
                     text: qsTr("Reference") + " ->"
@@ -40,17 +40,18 @@ Window {
                 }
                 
                 
-                Layout.alignment: Qt.AlignTop
+                Layout.alignment: Qt.AlignCenter
                 Layout.columnSpan:  2
                 Layout.row: 0
                 Layout.column: 0
                 Layout.preferredWidth: parent.width * .20
-                Layout.preferredHeight: parent.height * .10
+                Layout.preferredHeight: parent.height * .05
             }
+            
             
             Rectangle {
                 gradient: pageStyle.goldHeader
-                    
+                
                 Label {
                     anchors.fill: parent
                     text: qsTr("Frequency list")
@@ -62,14 +63,13 @@ Window {
                 }
                 
                 
-                Layout.alignment: Qt.AlignBottom
-                Layout.columnSpan:  2
-                Layout.row: 1
-                Layout.column: 0
-                Layout.preferredWidth: parent.width * .20
-                Layout.preferredHeight: parent.height * .10
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.columnSpan:  2
+                    Layout.row: 1
+                    Layout.column: 0
+                    Layout.preferredWidth: parent.width * .20
+                    Layout.preferredHeight: parent.height * .05
             }
-            
             
             ListView {
                 id: frequencyList
@@ -87,10 +87,19 @@ Window {
                     color: "transparent"
                 }
                 
+                
+                Layout.alignment: Qt.AlignCenter
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 Layout.maximumWidth: parent.width * .20
-                section.property:  "name"
+                section.property:  "id"
+                section.labelPositioning: ViewSection.CurrentLabelAtStart
+                section.delegate: Label {
+                    height: 40
+                    width: frequencyList.width
+                    text: modelData
+                }
+
                 delegate: Rectangle {
                     height: 40
                     width: frequencyList.width
@@ -183,33 +192,33 @@ Window {
                 onWidthChanged: console.log(width)
             }
             
-            //            ListView {
-            //                id: entryList
-            //                objectName: "entryList"
-            ////                Layout.columnSpan:  1
-            ////                Layout.rowSpan: 2
-            ////                Layout.row: 1
-            ////                Layout.column: 2
-            
-            
-            //                model: ["1", "2", "3"]
-            //                Rectangle {
-            //                    anchors.fill: parent
-            //                    border.color: "gold"
-            //                    color: "transparent"
-            //                }
-            
-            //                delegate: Rectangle {
-            //                    color: "transparent"
-            //                    Label {
-            //                        height: 40
-            //                        anchors.fill: parent
-            //                        text: modelData
-            //                        horizontalAlignment: Qt.AlignHCenter
-            //                        verticalAlignment: Qt.AlignVCenter
-            //                    }
-            //                }
-            //            }
+            ListView {
+                id: entryList
+                objectName: "entryList"
+//                                Layout.columnSpan:  1
+//                                Layout.rowSpan: 2
+                                Layout.row: 2
+                                Layout.column: 2
+                
+                
+                model: ["1", "2", "3"]
+                Rectangle {
+                    anchors.fill: parent
+                    border.color: "gold"
+                    color: "transparent"
+                }
+                
+                delegate: Rectangle {
+                    color: "transparent"
+                    Label {
+                        height: 40
+                        anchors.fill: parent
+                        text: modelData
+                        horizontalAlignment: Qt.AlignHCenter
+                        verticalAlignment: Qt.AlignVCenter
+                    }
+                }
+            }
         }
         
         //        Frequency {
