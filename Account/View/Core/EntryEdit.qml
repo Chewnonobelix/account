@@ -12,7 +12,7 @@ Item {
     }
     property int maximum: Screen.width * .55 - 10
     
-    width: maximum
+//    width: maximum
     property var entry
     property var infoModel: entry.info
     
