@@ -282,7 +282,7 @@ void MainController::selection(int)
     for(int i = 0; i < ld.size(); i++)
         for(int j = i; j < ld.size(); j++)
             if(ld[j] < ld[i])
-                ld.swap(i,j);
+                ld.swapItemsAt(i,j);
 
     QList<Entry> ret;
 

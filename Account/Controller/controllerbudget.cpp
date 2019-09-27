@@ -30,7 +30,7 @@ void ControllerBudget::closeManager()
         QMetaObject::invokeMethod(m_view, "close");        
 }
 
-void ControllerBudget::update(int id)
+void ControllerBudget::update(int)
 {
     QObject* view = nullptr/* = m_views[id]*/;
 
@@ -106,7 +106,7 @@ int ControllerBudget::exec()
     return 0;
 }
 
-void ControllerBudget::open(QString cat)
+void ControllerBudget::open(QString)
 {
     //TODO0
 }
@@ -244,7 +244,7 @@ void ControllerBudget::getTarget(QString catName)
     showTarget(catName, "", true);
 }
 
-void ControllerBudget::changeFrequency(QString cat, int freq)
+void ControllerBudget::changeFrequency(QString, int)
 {
 //    m_budgets[cat].setFrequency((Account::FrequencyEnum)freq);
 //    m_db->updateBudget(m_budgets[cat]);

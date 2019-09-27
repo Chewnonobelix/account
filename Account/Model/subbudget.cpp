@@ -6,8 +6,8 @@ SubBudget::SubBudget()
 
 }
 
-SubBudget::SubBudget(const SubBudget& sb): m_target(sb.target()), m_begin(sb.begin()),
-    m_end(sb.end()), m_values(sb.m_values), m_reference(sb.reference())
+SubBudget::SubBudget(const SubBudget& sb): m_reference(sb.reference()), m_target(sb.target()), m_begin(sb.begin()),
+    m_end(sb.end()), m_values(sb.m_values) 
 {
     update();
 }

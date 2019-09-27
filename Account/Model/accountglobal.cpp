@@ -29,6 +29,9 @@ int Account::nbDay(QDate d, FrequencyEnum f)
         t = d.addYears(1);
         ret = d.daysTo(t);
         break;
+        
+    default:
+        ret = 0;
     }
     
     return ret;

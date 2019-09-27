@@ -272,16 +272,19 @@ QMultiMap<QString, QString> ControllerDB::selectCategory()
 bool ControllerDB::addBudget(const Budget&)
 {
     //TODO
+    return false;
 }
 
 bool ControllerDB::removeBudget(const Budget &)
 {
     //TODO
+    return false;
 }
 
 QList<Budget> ControllerDB::selectBudgets()
 {
     //TODO
+    return QList<Budget>();
 }
 
 bool ControllerDB::updateBudget(const Budget &)
