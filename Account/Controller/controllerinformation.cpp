@@ -40,7 +40,7 @@ void ControllerInformation::view(int id)
     if(catItem)
     {
         catItem->setProperty("blocked", true);
-        catItem->setProperty("model", catList);
+        child->setProperty("catModel", catList);
         connect(catItem, SIGNAL(s_currentTextChanged(QString)), this, SLOT(categoryChange(QString)));
         connect(catItem, SIGNAL(s_addCategory(QString)), this, SLOT(addNewCategory(QString)));
         catItem->setProperty("blocked", false);

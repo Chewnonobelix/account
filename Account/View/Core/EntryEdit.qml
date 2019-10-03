@@ -15,7 +15,8 @@ Item {
 //    width: maximum
     property var entry
     property var infoModel: entry.info
-    
+
+    property var catModel: []
     
     signal s_titleChanged(string title)
     signal s_estimatedChanged(bool title)
@@ -138,6 +139,7 @@ Item {
             }
         }
         
+
         CategoryItem {
             id: category
             objectName: "category"
@@ -146,7 +148,7 @@ Item {
             Layout.maximumHeight: parent.height * 0.3
             Layout.preferredWidth: parent.width * 0.33
             editable: currentText === ""
-            model: [""]
+            model: catModel
             Layout.row: 1
             Layout.column: 2
         }

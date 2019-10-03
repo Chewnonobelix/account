@@ -109,8 +109,10 @@ Window {
                     
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: frequencyList.currentIndex = index
-                        
+                        onClicked: {
+                            console.log(modelData.reference.type)
+                            frequencyList.currentIndex = index
+                        }
                         cursorShape: Qt.PointingHandCursor
                     }
                     
@@ -129,7 +131,7 @@ Window {
             Control2.Button {
                 objectName: "addFreq"
                 text: qsTr("+")
-//                onClicked: console.log(text)
+
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
                 
@@ -159,7 +161,6 @@ Window {
             Control2.Button {
                 objectName: "removeFreq"
                 text: qsTr("-")
-//                onClicked: console.log(text)
                 
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
@@ -187,7 +188,6 @@ Window {
                 
             }
             
-            
             EntryEdit {
                 id: ref
                 objectName: "ref"
@@ -198,8 +198,14 @@ Window {
                 Layout.rowSpan: 2
                 Layout.row: 0
                 Layout.column: 2
-                
+                property var incomeList: []
+                property var outcomeList: []
+
                 onWidthChanged: console.log(width)
+
+                catModel: frequencyList.model[frequencyList.currentIndex].reference.type === "income" ? incomeList : outcomeList
+
+                onCatModelChanged: console.log("cat", catModel,frequencyList.model[frequencyList.currentIndex].reference.type)
             }
             
             ListView {

@@ -385,7 +385,7 @@ QList<Budget> ControllerXMLMulti::selectBudgets()
             ret<<b;
     }
 
-    return ret;;
+    return ret;
 }
 
 void ControllerXMLMulti::setter(QDomElement& el, QString tagname, QString value, QMap<QString, QString> attr)

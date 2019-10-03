@@ -39,6 +39,17 @@ int ControllerFrequency::exec()
     for(auto it: freqs)
         m_freqs[it.id()] = it;
     
+    auto cat = m_db->selectCategory();
+    qDebug()<<cat;
+    auto income = cat.values("income");
+    income<<"";
+    auto outcome = cat.values("outcome");
+    outcome<<"";
+
+    qDebug()<<income<< outcome;
+    auto ee = m_manager->findChild<QObject*>("ref");
+    ee->setProperty("incomeList", QVariant::fromValue(income));
+    ee->setProperty("outcomeList", QVariant::fromValue(outcome));
     qDebug()<<"Freq size 2"<<m_freqs.size();
     return 0;
 }
@@ -82,13 +93,14 @@ void ControllerFrequency::openManager()
 {
     exec();
   
-    m_model.clear();;
+    m_model.clear();
     
     for(auto it = m_freqs.begin(); it != m_freqs.end(); it++)
         m_model<<QVariant::fromValue(*it);
 
     QObject* model = m_manager->findChild<QObject*>("frequencyList");
     model->setProperty("model", m_model);    
+    auto categories = m_db->selectCategory();
 
     QMetaObject::invokeMethod(m_manager, "show");    
 }
