@@ -11,6 +11,10 @@ class Frequency
     
     Q_PROPERTY(int id READ id)
     Q_PROPERTY(QString name READ name)
+    Q_PROPERTY(Entry reference READ referenceEntry)
+    Q_PROPERTY(QDate end READ end)
+    Q_PROPERTY(int nbGroup READ nbGroup)
+    Q_PROPERTY(QList<int> entries READ listEntries)
     
 private:
     int m_id;
@@ -19,6 +23,8 @@ private:
     QDate m_end;
     Entry m_referenceEntry;
     int m_nbGroup;
+    
+    QList<int> listEntries() const;
     
 public:
     Frequency();
@@ -39,7 +45,7 @@ public:
     Entry clone(const Entry&) const;
     QDate end() const;
     void setEnd(QDate);
-    bool isUnlimited() const;
+    Q_INVOKABLE bool isUnlimited() const;
     Entry referenceEntry() const;
     void setReferenceEntry(Entry referenceEntry);
     int nbGroup() const;
@@ -48,6 +54,5 @@ public:
 };
 
 Q_DECLARE_METATYPE(Frequency)
-Q_DECLARE_METATYPE(QList<Frequency*>)
 
 #endif // FREQUENCY_H

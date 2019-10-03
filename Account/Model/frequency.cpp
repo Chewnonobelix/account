@@ -110,3 +110,8 @@ QString Frequency::name() const
 {
     return m_referenceEntry.info().category();
 }
+
+QList<int> Frequency::listEntries() const
+{
+    return entries().toList();
+}
