@@ -34,6 +34,9 @@ public slots:
     void openGenerate(int);
     
     void openManager();
+    
+    void addFrequency();
+    void removeFrequency(int);
 };
 
 #endif // CONTROLLERFREQUENCY_H

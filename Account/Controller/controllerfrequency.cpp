@@ -10,6 +10,16 @@ ControllerFrequency::ControllerFrequency()
     
     
     connect(m_generate, SLOT(s_generate(QDate, QDate)), this, SIGNAL(generate(QDate, QDate)));
+    
+    QObject* add, *remove;
+    
+    add = m_manager->findChild<QObject*>("addFreq");
+    remove = m_manager->findChild<QObject*>("removeFreq");
+    
+    if(add)
+        connect(add, SIGNAL(s_addFrequency()), this, SLOT(addFrequency()));
+    if(remove)
+        connect(remove, SIGNAL(s_removeFrequency(int)), this, SLOT(removeFrequency(int)));
 //    QObject* model = m_manager->findChild<QObject*>("frequencyList");
 //    model->setProperty("model", QVariant::fromValue(m_model));    
     
@@ -26,21 +36,6 @@ int ControllerFrequency::exec()
     auto freqs = m_db->selectFrequency();
     
     m_freqs.clear();
-    Frequency t, t2;
-    t.setId(3);
-    Entry e;
-    Information i;
-    i.setCategory("Test freq");
-    e.setInfo(i);
-    t.setReferenceEntry(e);
-    m_freqs[3] = t;
-    
-    t2.setId(4);
-    i.setCategory("Test 2");
-    e.setInfo(i);
-    t2.setReferenceEntry(e);
-    
-    m_freqs[4] = t2;
     for(auto it: freqs)
         m_freqs[it.id()] = it;
     
@@ -101,4 +96,18 @@ void ControllerFrequency::openManager()
 void ControllerFrequency::closeManager()
 {
     QMetaObject::invokeMethod(m_manager, "close");
+}
+
+void ControllerFrequency::addFrequency()
+{
+    Frequency f;
+    qDebug()<<"Add freq"<<m_db->addFrequency(f);
+    openManager();
+}
+
+void ControllerFrequency::removeFrequency(int id)
+{
+    qDebug()<<"Remove freq"<<m_db->removeFrequency(m_freqs[id]);
+//    exec();
+    openManager();
 }
