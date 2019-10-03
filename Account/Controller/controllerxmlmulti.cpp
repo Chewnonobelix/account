@@ -546,14 +546,16 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
 
 bool ControllerXMLMulti::removeFrequency(const Frequency& f)
 {
+    QDomElement root = m_currentAccount.firstChild().toElement();
+    QDomNodeList list = root.elementsByTagName("frequency");
     auto freqs = m_currentAccount.elementsByTagName("frequency");
     
-    for(int i = 0; i < freqs.size(); i++)
-        if(freqs.at(i).toElement().attribute("id").toInt() == f.id())
+    for(int i = 0; i < list.size(); i++)
+        if(list.at(i).toElement().attribute("id").toInt() == f.id())
         {
-            m_currentAccount.removeChild(freqs.at(i));
+            root.removeChild(list.at(i));
             
-            auto entries = m_currentAccount.elementsByTagName("entry");
+            auto entries = root.elementsByTagName("entry");
             for(int i = 0; i < entries.size(); i++)
             {
                 QDomElement e = entries.at(i).toElement();
