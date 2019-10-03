@@ -63,12 +63,12 @@ Window {
                 }
                 
                 
-                    Layout.alignment: Qt.AlignCenter
-                    Layout.columnSpan:  2
-                    Layout.row: 1
-                    Layout.column: 0
-                    Layout.preferredWidth: parent.width * .20
-                    Layout.preferredHeight: parent.height * .05
+                Layout.alignment: Qt.AlignCenter
+                Layout.columnSpan:  2
+                Layout.row: 1
+                Layout.column: 0
+                Layout.preferredWidth: parent.width * .20
+                Layout.preferredHeight: parent.height * .05
             }
             
             ListView {
@@ -79,6 +79,7 @@ Window {
                 Layout.columnSpan:  2
                 Layout.row: 2
                 Layout.column: 0
+                Layout.rowSpan: 2
                 
                 clip: true
                 Rectangle {
@@ -92,14 +93,14 @@ Window {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 Layout.maximumWidth: parent.width * .20
-                section.property:  "id"
-                section.labelPositioning: ViewSection.CurrentLabelAtStart
-                section.delegate: Label {
-                    height: 40
-                    width: frequencyList.width
-                    text: modelData
-                }
-
+//                section.property:  "id"
+//                section.labelPositioning: ViewSection.CurrentLabelAtStart
+//                section.delegate: Label {
+//                    height: 40
+//                    width: frequencyList.width
+//                    text: modelData
+//                }
+                
                 delegate: Rectangle {
                     height: 40
                     width: frequencyList.width
@@ -120,23 +121,28 @@ Window {
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
-                        text: modelData.name
+                        text: modelData.id
                     }
                 }
             }
             
             Control2.Button {
-                
+                objectName: "addFreq"
                 text: qsTr("+")
-                onClicked: console.log(text)
+//                onClicked: console.log(text)
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
                 
                 Layout.columnSpan:  1
-                Layout.row: 3
+                Layout.row: 4
                 Layout.column: 0
                 Layout.maximumWidth: parent.width * .10
                 //                Layout.preferredHeight: parent.height * .05
+                
+                signal s_addFrequency()
+                
+                onClicked: s_addFrequency()
+                
                 MouseArea {
                     z: -1
                     anchors.fill: parent
@@ -151,17 +157,21 @@ Window {
             }
             
             Control2.Button {
-                
+                objectName: "removeFreq"
                 text: qsTr("-")
-                onClicked: console.log(text)
+//                onClicked: console.log(text)
                 
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
                 
                 Layout.columnSpan:  1
-                Layout.row: 3
+                Layout.row: 4
                 Layout.column: 1
                 Layout.maximumWidth: parent.width * .10
+                
+                signal s_removeFrequency(int freq)
+                
+                onClicked: s_removeFrequency(frequencyList.model[frequencyList.currentIndex].id)
                 
                 MouseArea {
                     z: -1
@@ -181,9 +191,9 @@ Window {
             EntryEdit {
                 id: ref
                 objectName: "ref"
-                
+                entry: frequencyList.model[frequencyList.currentIndex].reference
                 Layout.preferredHeight: parent.height * .20
-                Layout.preferredWidth: parent.width * .75
+                Layout.preferredWidth: parent.width * .77
                 Layout.columnSpan:  1
                 Layout.rowSpan: 2
                 Layout.row: 0
@@ -195,13 +205,17 @@ Window {
             ListView {
                 id: entryList
                 objectName: "entryList"
-//                                Layout.columnSpan:  1
-//                                Layout.rowSpan: 2
-                                Layout.row: 2
-                                Layout.column: 2
-                
-                
-                model: ["1", "2", "3"]
+                //                                Layout.columnSpan:  1
+                //                                Layout.rowSpan: 2
+                Layout.row: 3
+                Layout.column: 2
+                Layout.alignment: Qt.Center
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                model: frequencyList.model[frequencyList.currentIndex].entries
+                clip: true
+             
+
                 Rectangle {
                     anchors.fill: parent
                     border.color: "gold"
@@ -210,8 +224,9 @@ Window {
                 
                 delegate: Rectangle {
                     color: "transparent"
+                    height: 40
+                    width: entryList.width                    
                     Label {
-                        height: 40
                         anchors.fill: parent
                         text: modelData
                         horizontalAlignment: Qt.AlignHCenter
@@ -219,15 +234,33 @@ Window {
                     }
                 }
             }
+            
+            Control2.Button {
+                text: qsTr("Generate")
+                
+                Layout.row: 2
+                Layout.column: 2
+                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                Layout.maximumWidth: parent.width * 0.15            
+                onClicked: console.log("wesh")
+                
+                MouseArea {
+                    z: -1
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
+                }
+                
+                Rectangle {
+                    anchors.fill: parent
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    
+                }
+                
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+            }        
         }
-        
-        //        Frequency {
-        //            id: reference
-        //            anchors.top: parent.top
-        //            anchors.bottom: parent.bottom
-        //            anchors.left: colFreqList.right
-        //            anchors.leftMargin: 10
-        //            anchors.right: parent.right
-        //        }
-    }
-}/**/
+    }/**/
+    
+}
