@@ -93,13 +93,6 @@ Window {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 Layout.maximumWidth: parent.width * .20
-//                section.property:  "id"
-//                section.labelPositioning: ViewSection.CurrentLabelAtStart
-//                section.delegate: Label {
-//                    height: 40
-//                    width: frequencyList.width
-//                    text: modelData
-//                }
                 
                 delegate: Rectangle {
                     height: 40
@@ -110,9 +103,9 @@ Window {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            console.log(modelData.reference.type)
                             frequencyList.currentIndex = index
                         }
+
                         cursorShape: Qt.PointingHandCursor
                     }
                     
@@ -200,8 +193,6 @@ Window {
                 Layout.column: 2
                 property var incomeList: []
                 property var outcomeList: []
-
-                onWidthChanged: console.log(width)
 
                 catModel: frequencyList.model[frequencyList.currentIndex].reference.type === "income" ? incomeList : outcomeList
 
