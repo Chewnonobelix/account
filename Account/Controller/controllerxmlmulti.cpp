@@ -527,18 +527,20 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
     m_freqId<<id;
     QMap<QString, QString> attr;
     attr["id"] = QString::number(id);
-    adder(root, "frequency", QString::number((int)f.freq()), attr);
-//    f.setId(id);
+    adder(root, "frequency", "", attr);
     
-    auto entries = root.elementsByTagName("entry");
-    int ide = *(f.entries().begin());
+    auto freqs = root.elementsByTagName("frequency");
     
-    for(int i = 0; i < entries.size(); i++)
+    for(int i = 0; i < freqs.size(); i++)
     {
-        QDomElement el = entries.at(0).toElement();
-        if(el.attribute("id") == ide)
-            setter(el, "frequency", QString::number(id));
+        if(freqs.at(i).toElement().attribute("id") == id)
+        {
+            Entry e;
+            e.setType("outcome");
+            
+        }
     }
+    
     
     close();
     return true;
