@@ -60,6 +60,22 @@ void ControllerXMLMulti::setCurrentAccount(QString a)
         m_currentAccount = m_accounts[a];
 }
 
+bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root )
+{
+    QDomElement el = m_currentAccount.createElement("entry");
+    el.setAttribute("id", e.id());
+
+    adder(el, "date", e.date().toString("dd-MM-yyyy"));
+    adder(el, "value", QString::number(e.value()));
+    adder(el, "account", e.account());
+    adder(el, "type", e.type());
+
+    addInfo(el, e.info());
+    root.appendChild(el);
+
+    return true;
+}
+
 bool ControllerXMLMulti::addEntry(const Entry& e)
 {
     int ide = maxId(m_entriesId) + 1;
@@ -67,6 +83,12 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
 
     m_entriesId<<ide;
     m_infoId<<idi;
+    Entry et = e;
+    Information info = e.info();
+    info.setId(idi);
+    info.setIdEntry(ide);
+    et.setInfo(info);
+    et.setId(ide);
 
     if(!m_accounts.contains(e.account()))
         createAccount(e.account());
@@ -74,20 +96,8 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     setCurrentAccount(e.account());
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
 
-    QDomElement el = m_currentAccount.createElement("entry");
-    el.setAttribute("id", ide);
+    addEntryNode(et, root);
 
-    adder(el, "date", e.date().toString("dd-MM-yyyy"));
-    adder(el, "value", QString::number(e.value()));
-    adder(el, "account", e.account());
-    adder(el, "type", e.type());
-
-    Information info = e.info();
-    info.setId(idi);
-    info.setIdEntry(ide);
-
-    addInfo(el, info);
-    root.appendChild(el);
     close();
     return true;
 }
@@ -527,17 +537,23 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
     m_freqId<<id;
     QMap<QString, QString> attr;
     attr["id"] = QString::number(id);
+    attr["freq"] = QString::number((int)f.freq());
     adder(root, "frequency", "", attr);
     
     auto freqs = root.elementsByTagName("frequency");
     
     for(int i = 0; i < freqs.size(); i++)
     {
-        if(freqs.at(i).toElement().attribute("id") == id)
+        if(freqs.at(i).toElement().attribute("id").toInt() == id)
         {
+            auto current = freqs.at(i).toElement();
             Entry e;
             e.setType("outcome");
-            
+            addEntryNode(e, current);
+            adder(current, "end", f.end().toString("dd-MM-yyyy"));
+
+            for(auto it: f.entries())
+                adder(current, "refEntry", QString::number(it));
         }
     }
     

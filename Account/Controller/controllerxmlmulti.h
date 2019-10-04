@@ -29,6 +29,8 @@ private:
     void setter(QDomElement&, QString , QString, QMap<QString, QString> = QMap<QString, QString>() );
     void deleter(QDomElement&, QString);
     
+    bool addEntryNode(const Entry&, QDomElement& );
+
 protected:
     void timerEvent(QTimerEvent*);
 
