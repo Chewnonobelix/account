@@ -37,6 +37,8 @@ public slots:
     
     void addFrequency();
     void removeFrequency(int);
+    
+    void addNewCategory(QString);
 };
 
 #endif // CONTROLLERFREQUENCY_H

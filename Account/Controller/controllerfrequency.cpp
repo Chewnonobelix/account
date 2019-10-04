@@ -20,9 +20,11 @@ ControllerFrequency::ControllerFrequency()
         connect(add, SIGNAL(s_addFrequency()), this, SLOT(addFrequency()));
     if(remove)
         connect(remove, SIGNAL(s_removeFrequency(int)), this, SLOT(removeFrequency(int)));
-//    QObject* model = m_manager->findChild<QObject*>("frequencyList");
-//    model->setProperty("model", QVariant::fromValue(m_model));    
     
+    QObject* cat = m_manager->findChild<QObject*>("category");
+    
+    if(cat)
+        connect(cat, SIGNAL(s_addCategory(QString)), this, SLOT(addNewCategory(QString)));
 }
 
 void ControllerFrequency::addEntry(int e)
@@ -40,17 +42,15 @@ int ControllerFrequency::exec()
         m_freqs[it.id()] = it;
     
     auto cat = m_db->selectCategory();
-    qDebug()<<cat;
-    auto income = cat.values("income");
+    QStringList income = cat.values("income");
     income<<"";
-    auto outcome = cat.values("outcome");
+    QStringList outcome = cat.values("outcome");
     outcome<<"";
 
-    qDebug()<<income<< outcome;
     auto ee = m_manager->findChild<QObject*>("ref");
-    ee->setProperty("incomeList", QVariant::fromValue(income));
-    ee->setProperty("outcomeList", QVariant::fromValue(outcome));
-    qDebug()<<"Freq size 2"<<m_freqs.size();
+    ee->setProperty("incomeList", income);
+    ee->setProperty("outcomeList", outcome);
+
     return 0;
 }
 
@@ -100,7 +100,6 @@ void ControllerFrequency::openManager()
 
     QObject* model = m_manager->findChild<QObject*>("frequencyList");
     model->setProperty("model", m_model);    
-    auto categories = m_db->selectCategory();
 
     QMetaObject::invokeMethod(m_manager, "show");    
 }
@@ -113,13 +112,21 @@ void ControllerFrequency::closeManager()
 void ControllerFrequency::addFrequency()
 {
     Frequency f;
-    qDebug()<<"Add freq"<<m_db->addFrequency(f);
+    m_db->addFrequency(f);
     openManager();
 }
 
 void ControllerFrequency::removeFrequency(int id)
 {
-    qDebug()<<"Remove freq"<<m_db->removeFrequency(m_freqs[id]);
-//    exec();
+    m_db->removeFrequency(m_freqs[id]);
     openManager();
+}
+
+void ControllerFrequency::addNewCategory(QString cat)
+{
+    QObject* ref = m_manager->findChild<QObject*>("ref");
+    QString type = ref->property("entry").value<Entry>().type();
+
+    m_db->addCategory(type, cat);
+    exec();
 }
