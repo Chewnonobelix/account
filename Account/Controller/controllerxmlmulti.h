@@ -10,10 +10,6 @@ class ControllerXMLMulti: public InterfaceDataSave, public QObject
 
 private:
     QMap<QString, QDomDocument> m_accounts;
-    QSet<int> m_entriesId;
-    QSet<int> m_infoId;
-    QSet<int> m_budgetId;
-    QSet<int> m_freqId;
     
     QMap<QString, QSet<int>> m_ids;
 
@@ -33,6 +29,7 @@ private:
     
     bool addEntryNode(const Entry&, QDomElement& );
     bool updateEntryNode(const Entry&, QDomElement&);
+    Entry selectEntryNode(QDomElement&);
 
 protected:
     void timerEvent(QTimerEvent*);

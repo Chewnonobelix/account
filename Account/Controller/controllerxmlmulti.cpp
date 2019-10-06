@@ -78,11 +78,11 @@ bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root )
 
 bool ControllerXMLMulti::addEntry(const Entry& e)
 {
-    int ide = maxId(m_entriesId) + 1;
-    int idi = maxId(m_infoId) + 1;
+    int ide = maxId(m_ids["entry"]) + 1;
+    int idi = maxId(m_ids["info"]) + 1;
 
-    m_entriesId<<ide;
-    m_infoId<<idi;
+    m_ids["entry"]<<ide;
+    m_ids["info"]<<idi;
     Entry et = e;
     Information info = e.info();
     info.setId(idi);
@@ -115,6 +115,46 @@ void ControllerXMLMulti::addInfo(QDomElement& el, const Information & i)
     el.appendChild(el2);
 }
 
+Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
+{
+    Entry e;
+
+    e.setId(el.attribute("id").toInt());
+    QDomElement child = el.elementsByTagName("date").at(0).toElement();
+
+    e.setDate(QDate::fromString(child.text(), "dd-MM-yyyy"));
+    child = el.elementsByTagName("account").at(0).toElement();
+    e.setAccount(child.text());
+    child = el.elementsByTagName("value").at(0).toElement();
+    e.setValue(child.text().toDouble());
+    child = el.elementsByTagName("type").at(0).toElement();
+    e.setType(child.text());
+
+    child = el.elementsByTagName("information").at(0).toElement();
+
+    Information inf = selectInformation(child);
+    inf.setIdEntry(e.id());
+    e.setInfo(inf);
+
+    auto freqs = el.elementsByTagName("frequency");
+    if(!freqs.isEmpty())
+    {
+        child = freqs.at(0).toElement();
+        e.setFrequency(child.text().toInt());
+    }
+
+    auto attr = el.attributes();
+    for(int j = 0; j < attr.count(); j++)
+        e.setMetadata(attr.item(j).nodeName(), attr.item(j).nodeValue());
+
+
+
+    m_ids["entry"]<<e.id();
+    m_ids["info"]<<inf.id();
+
+    return e;
+}
+
 QList<Entry> ControllerXMLMulti::selectEntry(QString account)
 {
     setCurrentAccount(account);
@@ -133,38 +173,7 @@ QList<Entry> ControllerXMLMulti::selectEntry(QString account)
     for(int i = 0; i < children.size(); i ++)
     {
         QDomElement el = children.at(i).toElement();
-        Entry e;
-        e.setId(el.attribute("id").toInt());
-        QDomElement child = el.elementsByTagName("date").at(0).toElement();
-
-        e.setDate(QDate::fromString(child.text(), "dd-MM-yyyy"));
-        child = el.elementsByTagName("account").at(0).toElement();
-        e.setAccount(child.text());
-        child = el.elementsByTagName("value").at(0).toElement();
-        e.setValue(child.text().toDouble());
-        child = el.elementsByTagName("type").at(0).toElement();
-        e.setType(child.text());
-
-        child = el.elementsByTagName("information").at(0).toElement();
-
-        Information inf = selectInformation(child);
-        inf.setIdEntry(e.id());
-        e.setInfo(inf);
-
-        auto freqs = el.elementsByTagName("frequency");
-        if(!freqs.isEmpty())
-        {
-            child = freqs.at(0).toElement();
-            e.setFrequency(child.text().toInt());
-        }
-
-        auto attr = el.attributes();
-        for(int j = 0; j < attr.count(); j++)
-            e.setMetadata(attr.item(j).nodeName(), attr.item(j).nodeValue());
-
-        m_entriesId<<e.id();
-        m_infoId<<inf.id();
-
+        Entry e = selectEntryNode(el);
         ret<<e;
     }
 
@@ -334,8 +343,9 @@ bool ControllerXMLMulti::addBudget(const Budget& b)
     
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
     QDomElement el = m_currentAccount.createElement("budget");
-    int id = maxId(m_budgetId) + 1;
-    m_budgetId<<id;
+    int id = maxId(m_ids["budget"]) + 1;
+
+    m_ids["budget"]<<id;
     el.setAttribute("id", id);
 
 
@@ -378,7 +388,9 @@ QList<Budget> ControllerXMLMulti::selectBudgets()
             QDomElement el = list.at(i).toElement();
             Budget b;
             b.setId(el.attribute("id").toInt());
-            m_budgetId<<b.id();
+
+            m_ids["budget"]<<b.id();
+
             QDomElement child = el.elementsByTagName("name").at(0).toElement();
             b.setCategory(child.text());
             child = el.elementsByTagName("reference").at(0).toElement();
@@ -539,8 +551,8 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
 {
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
 
-    int id = maxId(m_freqId) + 1;
-    m_freqId<<id;
+    int id = maxId(m_ids["frequency"]) + 1;
+    m_ids["frequency"]<<id;
     QMap<QString, QString> attr;
     attr["id"] = QString::number(id);
     attr["freq"] = QString::number((int)f.freq());
@@ -617,7 +629,7 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
         auto el = freqs.at(i).toElement();
         Frequency f;
         f.setId(el.attribute("id").toInt());
-        m_freqId<<f.id();
+        m_ids["frequency"]<<f.id();
         f.setFreq((Account::FrequencyEnum)el.attribute("freq").toInt());
         auto list = el.elementsByTagName("entry");
         for(auto j = 0; j < list.size(); j++)
@@ -627,7 +639,9 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
         f.setEnd(QDate::fromString(child.text(), "dd-MM-yyyy"));
 
         child = el.elementsByTagName("refEntry").at(0).toElement();
-        //TODO read ref entry
+
+        Entry ref = selectEntryNode(child);
+        f.setReferenceEntry(ref);
 
         ret<<f;
 
