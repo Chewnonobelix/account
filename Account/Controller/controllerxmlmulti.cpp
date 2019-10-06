@@ -607,14 +607,20 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
     
     for(int i = 0; i < freqs.size(); i++)
     {
-        if(freqs.at(i).toElement().hasAttribute("id"))
-        {
-            auto child = freqs.at(i).toElement();
-            Frequency f;
-            f.setId(child.attribute("id").toInt());
-            f.setFreq((Account::FrequencyEnum)(child.nodeValue().toInt()));
-            ret<<f;
-        }
+        auto el = freqs.at(i).toElement();
+        Frequency f;
+        f.setId(el.attribute("id").toInt());
+        m_freqId<<f.id();
+        f.setFreq((Account::FrequencyEnum)el.attribute("freq").toInt());
+        auto list = el.elementsByTagName("refEntry");
+        for(auto j = 0; j < list.size(); j++)
+            f<<list.at(j).toElement().text().toInt();
+
+        auto child = el.elementsByTagName("end").at(0).toElement();
+        f.setEnd(QDate::fromString(child.text(), "dd-MM-yyyy"));
+
+        child = el.elementsByTagName("entry").at(0).toElement();
+        //TODO read ref entry
     }
     
     return ret;
