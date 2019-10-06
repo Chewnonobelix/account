@@ -574,11 +574,13 @@ bool ControllerXMLMulti::removeFrequency(const Frequency& f)
             root.removeChild(list.at(i));
             
             auto entries = root.elementsByTagName("entry");
-            for(int i = 0; i < entries.size(); i++)
+
+            for(auto j = 0; j < entries.size(); j++)
             {
-                QDomElement e = entries.at(i).toElement();
-                if(f.entries().contains(e.attribute("id").toInt()))
-                    deleter(e, "frequency");
+                if(entries.at(i).toElement().attribute("freq").toInt() == f.id())
+                {
+                    entries.at(i).toElement().removeAttribute("freq");
+                }
             }
             return true;
         }
