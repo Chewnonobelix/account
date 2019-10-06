@@ -161,7 +161,7 @@ QList<Entry> ControllerXMLMulti::selectEntry(QString account)
         auto attr = el.attributes();
         for(int j = 0; j < attr.count(); j++)
             e.setMetadata(attr.item(j).nodeName(), attr.item(j).nodeValue());
-        
+
         m_entriesId<<e.id();
         m_infoId<<inf.id();
 
@@ -234,6 +234,25 @@ bool ControllerXMLMulti::updateInfo(const Entry& e)
     return false;
 }
 
+bool ControllerXMLMulti::updateEntryNode(const Entry & e, QDomElement & el)
+{
+
+    setter(el, "date", e.date().toString("dd-MM-yyyy"));
+    setter(el, "value",QString::number(e.value()));
+
+    if(e.frequency() == -1)
+        deleter(el, "frequency");
+    else
+        setter(el, "frequency", QString::number(e.frequency()));
+
+
+    for(auto it: e.metaDataList())
+        el.setAttribute(it, e.metaData<QString>(it));
+
+    close();
+    return true;
+}
+
 bool ControllerXMLMulti::updateEntry(const Entry & e)
 {
     auto root = m_currentAccount.elementsByTagName("database").at(0).toElement();
@@ -244,20 +263,7 @@ bool ControllerXMLMulti::updateEntry(const Entry & e)
         QDomElement el = list.at(i).toElement();
         if(el.attribute("id").toInt() == e.id())
         {
-            setter(el, "date", e.date().toString("dd-MM-yyyy"));
-            setter(el, "value",QString::number(e.value()));
-
-            if(e.frequency() == -1)
-                deleter(el, "frequency");
-            else
-                setter(el, "frequency", QString::number(e.frequency()));
-
-
-            for(auto it: e.metaDataList())
-                el.setAttribute(it, e.metaData<QString>(it));
-            
-            close();
-            return true;
+            updateEntryNode(e, el);
         }
     }
 
@@ -595,7 +601,6 @@ bool ControllerXMLMulti::updateFrequency(const Frequency& f)
     for(int i = 0; i < freqs.size(); i++)
         if(freqs.at(i).toElement().attribute("id").toInt() == f.id())
         {
-            freqs.at(i).setNodeValue(QString::number((int)f.freq()));
             return true;
         }
     
@@ -614,15 +619,18 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
         f.setId(el.attribute("id").toInt());
         m_freqId<<f.id();
         f.setFreq((Account::FrequencyEnum)el.attribute("freq").toInt());
-        auto list = el.elementsByTagName("refEntry");
+        auto list = el.elementsByTagName("entry");
         for(auto j = 0; j < list.size(); j++)
             f<<list.at(j).toElement().text().toInt();
 
         auto child = el.elementsByTagName("end").at(0).toElement();
         f.setEnd(QDate::fromString(child.text(), "dd-MM-yyyy"));
 
-        child = el.elementsByTagName("entry").at(0).toElement();
+        child = el.elementsByTagName("refEntry").at(0).toElement();
         //TODO read ref entry
+
+        ret<<f;
+
     }
     
     return ret;

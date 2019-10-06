@@ -15,6 +15,8 @@ private:
     QSet<int> m_budgetId;
     QSet<int> m_freqId;
     
+    QMap<QString, QSet<int>> m_ids;
+
     QDomDocument m_currentAccount;
 
     int m_timer;
@@ -30,6 +32,7 @@ private:
     void deleter(QDomElement&, QString);
     
     bool addEntryNode(const Entry&, QDomElement& );
+    bool updateEntryNode(const Entry&, QDomElement&);
 
 protected:
     void timerEvent(QTimerEvent*);
