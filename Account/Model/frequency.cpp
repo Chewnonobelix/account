@@ -95,9 +95,15 @@ QSet<int> Frequency::entries() const
 }
 
 Frequency& Frequency::operator<< (const Entry& e)
-{
-    
+{   
     m_entriesId<<e.id();
+    return *this;
+}
+
+
+Frequency& Frequency::operator<< (int e)
+{
+    m_entriesId<<e;
     return *this;
 }
 
