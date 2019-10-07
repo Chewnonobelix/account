@@ -116,7 +116,7 @@ Window {
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
-                        text: modelData.id
+                        text: modelData.name === "" ? modelData.id : modelData.name
                     }
                 }
             }
