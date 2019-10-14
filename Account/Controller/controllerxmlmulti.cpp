@@ -60,9 +60,9 @@ void ControllerXMLMulti::setCurrentAccount(QString a)
         m_currentAccount = m_accounts[a];
 }
 
-bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root )
+bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root, QString name )
 {
-    QDomElement el = m_currentAccount.createElement("entry");
+    QDomElement el = m_currentAccount.createElement(name);
     el.setAttribute("id", e.id());
 
     adder(el, "date", e.date().toString("dd-MM-yyyy"));
@@ -567,7 +567,7 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
             auto current = freqs.at(i).toElement();
             Entry e;
             e.setType("outcome");
-            addEntryNode(e, current);
+            addEntryNode(e, current, "referenceEntry");
             adder(current, "end", f.end().toString("dd-MM-yyyy"));
 
             for(auto it: f.entries())
@@ -638,7 +638,7 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
         auto child = el.elementsByTagName("end").at(0).toElement();
         f.setEnd(QDate::fromString(child.text(), "dd-MM-yyyy"));
 
-        child = el.elementsByTagName("refEntry").at(0).toElement();
+        child = el.elementsByTagName("referenceEntry").at(0).toElement();
 
         Entry ref = selectEntryNode(child);
         f.setReferenceEntry(ref);
