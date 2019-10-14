@@ -127,6 +127,6 @@ void ControllerFrequency::addNewCategory(QString cat)
     QObject* ref = m_manager->findChild<QObject*>("ref");
     QString type = ref->property("entry").value<Entry>().type();
 
-    m_db->addCategory(type, cat);
+    m_db->addCategory(cat, type);
     exec();
 }
