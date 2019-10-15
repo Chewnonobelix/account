@@ -114,7 +114,7 @@ bool Frequency::isUnlimited() const
 
 QString Frequency::name() const
 {
-    return m_referenceEntry.info().category();
+    return m_referenceEntry.info().title();
 }
 
 QList<int> Frequency::listEntries() const
