@@ -39,6 +39,10 @@ public slots:
     void removeFrequency(int);
     
     void addNewCategory(QString);
+    
+    void updateFreqName(int, QString);
+    void updateFreqValue(int, double);
+    void updateFreqCat(int, QString);
 };
 
 #endif // CONTROLLERFREQUENCY_H

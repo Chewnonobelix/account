@@ -11,7 +11,7 @@ ControllerFrequency::ControllerFrequency()
     
     connect(m_generate, SLOT(s_generate(QDate, QDate)), this, SIGNAL(generate(QDate, QDate)));
     
-    QObject* add, *remove;
+    QObject* add, *remove, *ref;
     
     add = m_manager->findChild<QObject*>("addFreq");
     remove = m_manager->findChild<QObject*>("removeFreq");
@@ -25,6 +25,16 @@ ControllerFrequency::ControllerFrequency()
     
     if(cat)
         connect(cat, SIGNAL(s_addCategory(QString)), this, SLOT(addNewCategory(QString)));
+    
+    
+    ref = m_manager->findChild<QObject*>("ref");
+    
+    if(ref)
+    {
+        connect(ref, SIGNAL(valueChanged(int, double)), this, SLOT(updateFreqValue(int,double)));
+        connect(ref, SIGNAL(titleChanged(int, QString)), this, SLOT(updateFreqName(int,QString)));
+        connect(ref, SIGNAL(catChanged(int, QString)), this, SLOT(updateFreqCat(int,QString)));
+    }
 }
 
 void ControllerFrequency::addEntry(int e)
@@ -46,11 +56,11 @@ int ControllerFrequency::exec()
     income<<"";
     QStringList outcome = cat.values("outcome");
     outcome<<"";
-
+    
     auto ee = m_manager->findChild<QObject*>("ref");
     ee->setProperty("incomeList", income);
     ee->setProperty("outcomeList", outcome);
-
+    
     return 0;
 }
 
@@ -92,15 +102,15 @@ void ControllerFrequency::openGenerate(int id)
 void ControllerFrequency::openManager()
 {
     exec();
-  
+    
     m_model.clear();
     
     for(auto it = m_freqs.begin(); it != m_freqs.end(); it++)
         m_model<<QVariant::fromValue(*it);
-
+    
     QObject* model = m_manager->findChild<QObject*>("frequencyList");
     model->setProperty("model", m_model);    
-
+    
     QMetaObject::invokeMethod(m_manager, "show");    
 }
 
@@ -126,7 +136,43 @@ void ControllerFrequency::addNewCategory(QString cat)
 {
     QObject* ref = m_manager->findChild<QObject*>("ref");
     QString type = ref->property("entry").value<Entry>().type();
-
+    
     m_db->addCategory(cat, type);
+    exec();
+}
+
+void ControllerFrequency::updateFreqName(int id, QString name)
+{
+    Entry ref = m_freqs[id].referenceEntry();
+    Information inf = ref.info();
+    inf.setTitle(name);
+    ref.setInfo(inf);
+    
+    m_freqs[id].setReferenceEntry(ref);
+    
+    m_db->updateFrequency(m_freqs[id]);
+    exec();
+}
+
+void ControllerFrequency::updateFreqValue(int id, double value)
+{
+    Entry ref = m_freqs[id].referenceEntry();
+    ref.setValue(value);
+    m_freqs[id].setReferenceEntry(ref);
+    
+    m_db->updateFrequency(m_freqs[id]);
+    exec();
+}
+
+void ControllerFrequency::updateFreqCat(int id, QString cat)
+{
+    Entry ref = m_freqs[id].referenceEntry();
+    Information inf = ref.info();
+    inf.setCategory(cat);
+    ref.setInfo(inf);
+    
+    m_freqs[id].setReferenceEntry(ref);
+    
+    m_db->updateFrequency(m_freqs[id]);
     exec();
 }

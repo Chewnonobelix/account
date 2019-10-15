@@ -12,15 +12,16 @@ Item {
     }
     property int maximum: Screen.width * .55 - 10
     
-//    width: maximum
+    //    width: maximum
     property var entry
     property var infoModel: entry.info
-
+    
     property var catModel: []
     
     signal s_titleChanged(string title)
     signal s_estimatedChanged(bool title)
     signal s_valueChanged(real value)
+    signal s_catChanged(string cat)
     
     onEnabledChanged: {
         titleLabel.enabled = true
@@ -139,7 +140,7 @@ Item {
             }
         }
         
-
+        
         CategoryItem {
             id: category
             objectName: "category"
@@ -151,6 +152,11 @@ Item {
             model: catModel
             Layout.row: 1
             Layout.column: 2
+            onS_currentTextChanged: {
+                if(currentText !== "")
+                   info.s_catChanged(currentText)
+            }
         }
+        
     }
 }

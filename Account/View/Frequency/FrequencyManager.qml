@@ -194,6 +194,14 @@ Window {
                 property var incomeList: []
                 property var outcomeList: []
 
+                signal titleChanged(int id, string title)
+                signal valueChanged(int id, real value)
+                signal catChanged(int id, string cat)
+                
+                onS_valueChanged: valueChanged(frequencyList.model[frequencyList.currentIndex].id, value)
+                onS_titleChanged: titleChanged(frequencyList.model[frequencyList.currentIndex].id, title)
+                onS_catChanged: catChanged(frequencyList.model[frequencyList.currentIndex].id, cat, "manager")
+                    
                 catModel: frequencyList.model[frequencyList.currentIndex].reference.type === "income" ? incomeList : outcomeList
 
                 onCatModelChanged: console.log("cat", catModel,frequencyList.model[frequencyList.currentIndex].reference.type)
