@@ -61,6 +61,14 @@ int ControllerFrequency::exec()
     ee->setProperty("incomeList", income);
     ee->setProperty("outcomeList", outcome);
     
+    m_model.clear();
+    
+    for(auto it = m_freqs.begin(); it != m_freqs.end(); it++)
+        m_model<<QVariant::fromValue(*it);
+    
+    QObject* model = m_manager->findChild<QObject*>("frequencyList");
+    model->setProperty("model", m_model);    
+    
     return 0;
 }
 
@@ -103,13 +111,6 @@ void ControllerFrequency::openManager()
 {
     exec();
     
-    m_model.clear();
-    
-    for(auto it = m_freqs.begin(); it != m_freqs.end(); it++)
-        m_model<<QVariant::fromValue(*it);
-    
-    QObject* model = m_manager->findChild<QObject*>("frequencyList");
-    model->setProperty("model", m_model);    
     
     QMetaObject::invokeMethod(m_manager, "show");    
 }
