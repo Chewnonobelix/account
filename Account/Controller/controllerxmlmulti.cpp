@@ -618,7 +618,7 @@ bool ControllerXMLMulti::removeFrequency(const Frequency& f)
 bool ControllerXMLMulti::updateFrequency(const Frequency& f)
 {
     auto freqs = m_currentAccount.elementsByTagName("frequency");
-    qDebug()<<"Update freq"<<f.id()<<f.referenceEntry().info().title()<<f.referenceEntry().value()<<f.referenceEntry().info().category();
+
     for(int i = 0; i < freqs.size(); i++)
         if(freqs.at(i).toElement().attribute("id").toInt() == f.id())
         {

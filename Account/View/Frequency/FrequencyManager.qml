@@ -203,8 +203,6 @@ Window {
                 onS_catChanged: catChanged(frequencyList.model[frequencyList.currentIndex].id, cat, "manager")
                     
                 catModel: frequencyList.model[frequencyList.currentIndex].reference.type === "income" ? incomeList : outcomeList
-
-                onCatModelChanged: console.log("cat", catModel,frequencyList.model[frequencyList.currentIndex].reference.type)
             }
             
             ListView {
@@ -247,7 +245,6 @@ Window {
                 Layout.column: 2
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
                 Layout.maximumWidth: parent.width * 0.15            
-                onClicked: console.log("wesh")
                 
                 MouseArea {
                     z: -1

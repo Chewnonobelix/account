@@ -29,6 +29,8 @@ Item {
         valueLabel.enabled = true
     }
     
+    onInfoModelChanged: category.setting(infoModel.category)
+    
     GridLayout {
         rows: 3
         columns: 3
