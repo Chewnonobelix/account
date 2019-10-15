@@ -20,6 +20,7 @@ private:
     int maxId(const QSet<int> &) const;
     Information selectInformation(const QDomElement&) const;
     void addInfo(QDomElement&, const Information&);
+    void updateInfo(QDomElement&, const Information&);
 
     void createAccount(QString);
 

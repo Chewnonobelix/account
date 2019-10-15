@@ -231,17 +231,24 @@ bool ControllerXMLMulti::updateInfo(const Entry& e)
             QDomElement info = el.elementsByTagName("information").at(0).toElement();
 
             Information inf = e.info();
-            setter(info, "estimated", QString::number(inf.estimated()));
-            setter(info, "categoryName", inf.category());
-            setter(info, "title", inf.title());
-
-            close();
+            updateInfo(info, inf);
             return true;
         }
     }
 
     return false;
 }
+
+void ControllerXMLMulti::updateInfo(QDomElement &info , const Information & inf)
+{
+    setter(info, "estimated", QString::number(inf.estimated()));
+    setter(info, "categoryName", inf.category());
+    setter(info, "title", inf.title());
+
+    close();
+    
+}
+
 
 bool ControllerXMLMulti::updateEntryNode(const Entry & e, QDomElement & el)
 {
@@ -258,6 +265,8 @@ bool ControllerXMLMulti::updateEntryNode(const Entry & e, QDomElement & el)
     for(auto it: e.metaDataList())
         el.setAttribute(it, e.metaData<QString>(it));
 
+    auto i = el.elementsByTagName("information").at(0).toElement();
+    updateInfo(i, e.info());
     close();
     return true;
 }
@@ -609,10 +618,13 @@ bool ControllerXMLMulti::removeFrequency(const Frequency& f)
 bool ControllerXMLMulti::updateFrequency(const Frequency& f)
 {
     auto freqs = m_currentAccount.elementsByTagName("frequency");
-    
+    qDebug()<<"Update freq"<<f.id()<<f.referenceEntry().info().title()<<f.referenceEntry().value()<<f.referenceEntry().info().category();
     for(int i = 0; i < freqs.size(); i++)
         if(freqs.at(i).toElement().attribute("id").toInt() == f.id())
         {
+            auto child = freqs.at(i).toElement();
+            auto ref = child.elementsByTagName("referenceEntry").at(0).toElement();
+            updateEntryNode(f.referenceEntry(), ref);
             return true;
         }
     
