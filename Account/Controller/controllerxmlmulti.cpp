@@ -575,7 +575,11 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
         {
             auto current = freqs.at(i).toElement();
             Entry e;
+            e.setId(id);
             e.setType("outcome");
+            Information in = e.info();
+            in.setId(id);
+            e.setInfo(in);
             addEntryNode(e, current, "referenceEntry");
             adder(current, "end", f.end().toString("dd-MM-yyyy"));
 

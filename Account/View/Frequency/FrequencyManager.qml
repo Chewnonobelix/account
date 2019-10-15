@@ -80,7 +80,7 @@ Window {
                 Layout.row: 2
                 Layout.column: 0
                 Layout.rowSpan: 2
-                
+                                                      
                 clip: true
                 Rectangle {
                     anchors.fill: parent
@@ -88,7 +88,8 @@ Window {
                     color: "transparent"
                 }
                 
-                
+
+                onCurrentIndexChanged: ref.entry = model[currentIndex].reference
                 Layout.alignment: Qt.AlignCenter
                 Layout.fillHeight: true
                 Layout.fillWidth: true
@@ -184,7 +185,7 @@ Window {
             EntryEdit {
                 id: ref
                 objectName: "ref"
-                entry: frequencyList.model[frequencyList.currentIndex].reference
+                //entry: frequencyList.model[frequencyList.currentIndex].reference
                 Layout.preferredHeight: parent.height * .20
                 Layout.preferredWidth: parent.width * .77
                 Layout.columnSpan:  1
@@ -202,7 +203,7 @@ Window {
                 onS_titleChanged: titleChanged(frequencyList.model[frequencyList.currentIndex].id, title)
                 onS_catChanged: catChanged(frequencyList.model[frequencyList.currentIndex].id, cat, "manager")
                     
-                catModel: frequencyList.model[frequencyList.currentIndex].reference.type === "income" ? incomeList : outcomeList
+                catModel: entry.type === "income" ? incomeList : outcomeList
             }
             
             ListView {

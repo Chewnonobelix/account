@@ -20,6 +20,7 @@ private:
     
     QList<QVariant> m_model; 
     
+    void loadCat();
 public:
     ControllerFrequency();
     ~ControllerFrequency() = default;

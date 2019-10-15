@@ -43,14 +43,8 @@ void ControllerFrequency::addEntry(int e)
         m_freqs[entry(e).frequency()]<<entry(e);
 }
 
-int ControllerFrequency::exec()
+void ControllerFrequency::loadCat()
 {
-    auto freqs = m_db->selectFrequency();
-    
-    m_freqs.clear();
-    for(auto it: freqs)
-        m_freqs[it.id()] = it;
-    
     auto cat = m_db->selectCategory();
     QStringList income = cat.values("income");
     income<<"";
@@ -59,7 +53,18 @@ int ControllerFrequency::exec()
     
     auto ee = m_manager->findChild<QObject*>("ref");
     ee->setProperty("incomeList", income);
-    ee->setProperty("outcomeList", outcome);
+    ee->setProperty("outcomeList", outcome);    
+}
+
+int ControllerFrequency::exec()
+{
+    auto freqs = m_db->selectFrequency();
+    
+    m_freqs.clear();
+    for(auto it: freqs)
+        m_freqs[it.id()] = it;
+    
+    loadCat();
     
     m_model.clear();
     
@@ -139,7 +144,7 @@ void ControllerFrequency::addNewCategory(QString cat)
     QString type = ref->property("entry").value<Entry>().type();
     
     m_db->addCategory(cat, type);
-    exec();
+    loadCat();
 }
 
 void ControllerFrequency::updateFreqName(int id, QString name)
@@ -153,6 +158,11 @@ void ControllerFrequency::updateFreqName(int id, QString name)
     
     m_db->updateFrequency(m_freqs[id]);
     exec();
+
+    auto list = m_manager->findChild<QObject*>("frequencyList");
+    for(int i = 0; i < m_model.size(); i++)
+        if(m_model[i].value<Frequency>().id() == id)
+            list->setProperty("currentIndex", i);
 }
 
 void ControllerFrequency::updateFreqValue(int id, double value)
@@ -163,6 +173,11 @@ void ControllerFrequency::updateFreqValue(int id, double value)
     
     m_db->updateFrequency(m_freqs[id]);
     exec();
+    
+    auto list = m_manager->findChild<QObject*>("frequencyList");
+    for(int i = 0; i < m_model.size(); i++)
+        if(m_model[i].value<Frequency>().id() == id)
+            list->setProperty("currentIndex", i);   
 }
 
 void ControllerFrequency::updateFreqCat(int id, QString cat)
@@ -176,4 +191,10 @@ void ControllerFrequency::updateFreqCat(int id, QString cat)
     
     m_db->updateFrequency(m_freqs[id]);
     exec();
+    
+    auto list = m_manager->findChild<QObject*>("frequencyList");
+    for(int i = 0; i < m_model.size(); i++)
+        if(m_model[i].value<Frequency>().id() == id)
+            list->setProperty("currentIndex", i);
+    
 }
