@@ -145,6 +145,8 @@ void ControllerFrequency::addNewCategory(QString cat)
     
     m_db->addCategory(cat, type);
     loadCat();
+    int id = ref->property("entry").value<Entry>().id();
+    updateFreqCat(id, cat);
 }
 
 void ControllerFrequency::updateFreqName(int id, QString name)
