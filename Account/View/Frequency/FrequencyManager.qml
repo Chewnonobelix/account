@@ -80,7 +80,8 @@ Window {
                 Layout.row: 2
                 Layout.column: 0
                 Layout.rowSpan: 2
-                                                      
+                            
+                onCountChanged: currentIndex = count === 0 ? -1 : currentIndex
                 clip: true
                 Rectangle {
                     anchors.fill: parent
@@ -192,6 +193,7 @@ Window {
                 Layout.rowSpan: 2
                 Layout.row: 0
                 Layout.column: 2
+                enabled: frequencyList.count !== 0 
                 property var incomeList: []
                 property var outcomeList: []
 
@@ -199,11 +201,16 @@ Window {
                 signal valueChanged(int id, real value)
                 signal catChanged(int id, string cat)
                 
-                onS_valueChanged: valueChanged(frequencyList.model[frequencyList.currentIndex].id, value)
-                onS_titleChanged: titleChanged(frequencyList.model[frequencyList.currentIndex].id, title)
-                onS_catChanged: catChanged(frequencyList.model[frequencyList.currentIndex].id, cat, "manager")
+                onS_valueChanged: if(enabled) valueChanged(frequencyList.model[frequencyList.currentIndex].id, value)
+                onS_titleChanged: if(enabled) titleChanged(frequencyList.model[frequencyList.currentIndex].id, title)
+                onS_catChanged: if(enabled) catChanged(frequencyList.model[frequencyList.currentIndex].id, cat, "manager")
                     
-                catModel: entry.type === "income" ? incomeList : outcomeList
+                onEntryChanged: {
+                    catModel = entry && entry.type === "income" ? incomeList : outcomeList
+                }
+                
+                onIncomeListChanged: catModel = entry && entry.type === "income" ? incomeList : outcomeList
+                onOutcomeListChanged: catModel = entry && entry.type === "income" ? incomeList : outcomeList
             }
             
             ListView {
