@@ -80,7 +80,7 @@ Window {
                 Layout.row: 2
                 Layout.column: 0
                 Layout.rowSpan: 2
-                            
+                
                 onCountChanged: currentIndex = count === 0 ? -1 : currentIndex
                 clip: true
                 Rectangle {
@@ -89,7 +89,7 @@ Window {
                     color: "transparent"
                 }
                 
-
+                
                 onCurrentIndexChanged: ref.entry = model[currentIndex].reference
                 Layout.alignment: Qt.AlignCenter
                 Layout.fillHeight: true
@@ -107,7 +107,7 @@ Window {
                         onClicked: {
                             frequencyList.currentIndex = index
                         }
-
+                        
                         cursorShape: Qt.PointingHandCursor
                     }
                     
@@ -126,7 +126,7 @@ Window {
             Control2.Button {
                 objectName: "addFreq"
                 text: qsTr("+")
-
+                
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
                 
@@ -189,14 +189,14 @@ Window {
                 //entry: frequencyList.model[frequencyList.currentIndex].reference
                 Layout.preferredHeight: parent.height * .20
                 Layout.preferredWidth: parent.width * .77
-                Layout.columnSpan:  1
+                Layout.columnSpan:  2
                 Layout.rowSpan: 2
                 Layout.row: 0
                 Layout.column: 2
                 enabled: frequencyList.count !== 0 
                 property var incomeList: []
                 property var outcomeList: []
-
+                
                 signal titleChanged(int id, string title)
                 signal valueChanged(int id, real value)
                 signal catChanged(int id, string cat)
@@ -204,7 +204,7 @@ Window {
                 onS_valueChanged: if(enabled) valueChanged(frequencyList.model[frequencyList.currentIndex].id, value)
                 onS_titleChanged: if(enabled) titleChanged(frequencyList.model[frequencyList.currentIndex].id, title)
                 onS_catChanged: if(enabled) catChanged(frequencyList.model[frequencyList.currentIndex].id, cat, "manager")
-                    
+                
                 onEntryChanged: {
                     catModel = entry && entry.type === "income" ? incomeList : outcomeList
                 }
@@ -225,8 +225,8 @@ Window {
                 Layout.fillHeight: true
                 model: frequencyList.model[frequencyList.currentIndex].entries
                 clip: true
-             
-
+                
+                
                 Rectangle {
                     anchors.fill: parent
                     border.color: "gold"
@@ -246,12 +246,65 @@ Window {
                 }
             }
             
+            ListModel {
+                id: typeModel
+                ListElement {
+                    name: qsTr("Outcome")
+                    type: "outcome"
+                }
+                
+                ListElement {
+                    name: qsTr("Income")
+                    type: "income"
+                }
+                
+            }
+            
+            Control2.ComboBox {
+                id: type
+                objectName: "type"
+                
+                model: typeModel
+                
+                Layout.row: 2
+                Layout.column: 2
+                Layout.columnSpan: 1
+                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                Layout.maximumWidth: parent.width * 0.15            
+                textRole: "name"
+                delegate: Control2.ItemDelegate {
+                    width: type.width
+//                    height: type.height
+//                    text: name
+                    contentItem: Rectangle {
+                        anchors.fill: parent
+                        gradient: pageStyle.goldButton
+                        Label {
+                            text: name
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            fontSizeMode: Text.Fit 
+                            anchors.fill: parent
+                            horizontalAlignment: Qt.AlignHCenter
+                            verticalAlignment: Qt.AlignVCenter
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            acceptedButtons: Qt.NoButton
+                            cursorShape: Qt.PointingHandCursor
+                        }
+                    }
+                }
+            }
+            
+            
             Control2.Button {
                 text: qsTr("Generate")
                 
                 Layout.row: 2
-                Layout.column: 2
-                Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                Layout.column: 3
+                Layout.columnSpan: 1
+                Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
                 Layout.maximumWidth: parent.width * 0.15            
                 
                 MouseArea {
@@ -272,5 +325,6 @@ Window {
             }        
         }
     }/**/
+    
     
 }
