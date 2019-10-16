@@ -261,7 +261,7 @@ Window {
             }
             
             Control2.ComboBox {
-                id: type
+                id: typeCombo
                 objectName: "type"
                 
                 model: typeModel
@@ -270,10 +270,18 @@ Window {
                 Layout.column: 2
                 Layout.columnSpan: 1
                 Layout.alignment: Qt.AlignTop | Qt.AlignRight
-                Layout.maximumWidth: parent.width * 0.15            
+                Layout.preferredWidth: parent.width * 0.15    
+                Layout.preferredHeight: parent.height * .07
+                
                 textRole: "name"
+                
+                background: Rectangle {
+                    anchors.fill: parent
+                    gradient: pageStyle.goldButton
+                }
+
                 delegate: Control2.ItemDelegate {
-                    width: type.width
+                    width: typeCombo.width
 //                    height: type.height
 //                    text: name
                     contentItem: Rectangle {
@@ -306,6 +314,7 @@ Window {
                 Layout.columnSpan: 1
                 Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
                 Layout.maximumWidth: parent.width * 0.15            
+                Layout.preferredHeight: parent.height * .07
                 
                 MouseArea {
                     z: -1
