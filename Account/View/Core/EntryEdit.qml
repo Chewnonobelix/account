@@ -14,10 +14,11 @@ Item {
     
     //    width: maximum
     property var entry
-    property var infoModel: entry.info
+    //property var infoModel: entry.info
     
     property var catModel: []
     
+    onCatModelChanged: category.model = catModel
     signal s_titleChanged(string title)
     signal s_estimatedChanged(bool title)
     signal s_valueChanged(real value)
@@ -29,7 +30,7 @@ Item {
         valueLabel.enabled = true
     }
     
-    onInfoModelChanged: category.setting(infoModel.category)
+    onEntryChanged: category.setting(entry.info.category)
     
     GridLayout {
         rows: 3
@@ -95,7 +96,7 @@ Item {
             Layout.maximumHeight: parent.height * 0.3
             Layout.fillHeight: true
             Layout.preferredWidth: parent.width * 0.33
-            text: infoModel.title
+            text: entry.info.title
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
             onEditingFinished: {
