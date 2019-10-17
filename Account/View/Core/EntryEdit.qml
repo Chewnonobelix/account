@@ -30,8 +30,14 @@ Item {
         valueLabel.enabled = true
     }
     
-    onEntryChanged: category.setting(entry.info.category)
+    onEntryChanged: {
+        category.setting(entry.info.category)
+    }
     
+    function reloadCat() {
+        category.setting(entry.info.category)
+    }
+
     GridLayout {
         rows: 3
         columns: 3

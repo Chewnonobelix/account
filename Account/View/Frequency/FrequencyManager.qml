@@ -81,7 +81,11 @@ Window {
                 Layout.column: 0
                 Layout.rowSpan: 2
                 
-                onCountChanged: currentIndex = count === 0 ? -1 : currentIndex
+                onCountChanged: {           
+                    currentIndex = count === 0 ? -1 : currentIndex
+                    ref.enabled = count !== 0
+                }
+                
                 clip: true
                 Rectangle {
                     anchors.fill: parent
@@ -209,7 +213,8 @@ Window {
                     enabled = false
                     catModel = entry && entry.type === "income" ? incomeList : outcomeList
                     typeCombo.currentIndex = entry && entry.type === "income" ? 1 : 0
-                    enabled = frequencyList.count !== 0 
+                    reloadCat()
+                    enabled = frequencyList.count !== 0          
                 }
                 
                 onIncomeListChanged: catModel = entry && entry.type === "income" ? incomeList : outcomeList
