@@ -138,7 +138,6 @@ Window {
                 Layout.row: 4
                 Layout.column: 0
                 Layout.maximumWidth: parent.width * .10
-                //                Layout.preferredHeight: parent.height * .05
                 
                 signal s_addFrequency()
                 
@@ -190,7 +189,6 @@ Window {
             EntryEdit {
                 id: ref
                 objectName: "ref"
-                //entry: frequencyList.model[frequencyList.currentIndex].reference
                 Layout.preferredHeight: parent.height * .20
                 Layout.preferredWidth: parent.width * .77
                 Layout.columnSpan:  2
@@ -224,8 +222,6 @@ Window {
             ListView {
                 id: entryList
                 objectName: "entryList"
-                //                                Layout.columnSpan:  1
-                //                                Layout.rowSpan: 2
                 Layout.row: 3
                 Layout.column: 2
                 Layout.alignment: Qt.Center
@@ -268,84 +264,99 @@ Window {
                 
             }
             
-            Control2.ComboBox {
-                id: typeCombo
-                objectName: "type"
-                
-                model: typeModel
-                
+            Row {
                 Layout.row: 2
                 Layout.column: 2
-                Layout.columnSpan: 1
-                Layout.alignment: Qt.AlignTop | Qt.AlignRight
-                Layout.preferredWidth: parent.width * 0.15    
+                Layout.columnSpan: 3
+                spacing: 1
+                Layout.fillWidth: true    
                 Layout.preferredHeight: parent.height * .07
-                
-                textRole: "name"
-                
-                background: Rectangle {
-                    anchors.fill: parent
-                    gradient: pageStyle.goldButton
-                }
-
-                signal s_updateType(int id, string nType)
-                
-                onCurrentIndexChanged: {
-                    if(ref.enabled) s_updateType(ref.entry.id, model.get(currentIndex).type)
+                onWidthChanged: console.log(width, height)
+                Control2.ComboBox { 
+                    id: whenCombo
+                    objectName: "whenCombo"
+                    height: parent.height
+                    width: parent.width / parent.children.length
+                    model: ["Unique", "Days", "Weeks"]
                 }
                 
-                delegate: Control2.ItemDelegate {
-                    width: typeCombo.width
-//                    height: type.height
-//                    text: name
-                    contentItem: Rectangle {
+                Control2.ComboBox {
+                    id: typeCombo
+                    objectName: "type"
+                    
+                    model: typeModel
+                    
+                    height: parent.height
+                    width: parent.width / parent.children.length
+                    
+                    //                    Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                    //                    Layout.preferredWidth: parent.width * 0.15    
+                    //                    Layout.preferredHeight: parent.height * .07
+                    
+                    textRole: "name"
+                    
+                    background: Rectangle {
                         anchors.fill: parent
                         gradient: pageStyle.goldButton
-                        Label {
-                            text: name
-                            font.family: pageStyle.core.name
-                            font.pixelSize: pageStyle.core.size
-                            fontSizeMode: Text.Fit 
+                    }
+                    
+                    signal s_updateType(int id, string nType)
+                    
+                    onCurrentIndexChanged: {
+                        if(ref.enabled) s_updateType(ref.entry.id, model.get(currentIndex).type)
+                    }
+                    
+                    delegate: Control2.ItemDelegate {
+                        width: typeCombo.width
+                        contentItem: Rectangle {
                             anchors.fill: parent
-                            horizontalAlignment: Qt.AlignHCenter
-                            verticalAlignment: Qt.AlignVCenter
-                        }
-                        MouseArea {
-                            anchors.fill: parent
-                            acceptedButtons: Qt.NoButton
-                            cursorShape: Qt.PointingHandCursor
+                            gradient: pageStyle.goldButton
+                            Label {
+                                text: name
+                                font.family: pageStyle.core.name
+                                font.pixelSize: pageStyle.core.size
+                                fontSizeMode: Text.Fit 
+                                anchors.fill: parent
+                                horizontalAlignment: Qt.AlignHCenter
+                                verticalAlignment: Qt.AlignVCenter
+                            }
+                            MouseArea {
+                                anchors.fill: parent
+                                acceptedButtons: Qt.NoButton
+                                cursorShape: Qt.PointingHandCursor
+                            }
                         }
                     }
                 }
-            }
-            
-            
-            Control2.Button {
-                text: qsTr("Generate")
                 
-                Layout.row: 2
-                Layout.column: 3
-                Layout.columnSpan: 1
-                Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
-                Layout.maximumWidth: parent.width * 0.15            
-                Layout.preferredHeight: parent.height * .07
                 
-                MouseArea {
-                    z: -1
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    acceptedButtons: Qt.NoButton
-                }
-                
-                Rectangle {
-                    anchors.fill: parent
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                Control2.Button {
+                    text: qsTr("Generate")
                     
-                }
-                
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
-            }        
+                    //                    Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
+                    //                    Layout.maximumWidth: parent.width * 0.15            
+                    //                    Layout.preferredHeight: parent.height * .07
+                    
+                    height: parent.height
+                    width: parent.width / parent.children.len
+                    
+                    MouseArea {
+                        z: -1
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                        acceptedButtons: Qt.NoButton
+                    }
+                    
+                    Rectangle {
+                        anchors.fill: parent
+                        gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                        
+                    }
+                    
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                }    
+            }
         }
     }/**/
     
