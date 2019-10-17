@@ -11,7 +11,7 @@ ControllerFrequency::ControllerFrequency()
     
     connect(m_generate, SLOT(s_generate(QDate, QDate)), this, SIGNAL(generate(QDate, QDate)));
     
-    QObject* add, *remove, *ref;
+    QObject* add, *remove, *ref, *type;
     
     add = m_manager->findChild<QObject*>("addFreq");
     remove = m_manager->findChild<QObject*>("removeFreq");
@@ -35,6 +35,10 @@ ControllerFrequency::ControllerFrequency()
         connect(ref, SIGNAL(titleChanged(int, QString)), this, SLOT(updateFreqName(int,QString)));
         connect(ref, SIGNAL(catChanged(int, QString)), this, SLOT(updateFreqCat(int,QString)));
     }
+    
+    type = m_manager->findChild<QObject*>("type");
+    if(type)
+        connect(type, SIGNAL(s_updateType(int, QString)), this, SLOT(updateFreqType(int,QString)));
 }
 
 void ControllerFrequency::addEntry(int e)
@@ -200,3 +204,22 @@ void ControllerFrequency::updateFreqCat(int id, QString cat)
             list->setProperty("currentIndex", i);
     
 }
+
+void ControllerFrequency::updateFreqType(int id, QString type)
+{
+    Entry ref = m_freqs[id].referenceEntry();
+    ref.setType(type);
+    Information in = ref.info();
+    in.setCategory("");
+    ref.setInfo(in);
+    m_freqs[id].setReferenceEntry(ref);
+    
+    m_db->updateFrequency(m_freqs[id]);
+    exec();
+    
+    auto list = m_manager->findChild<QObject*>("frequencyList");
+    for(int i = 0; i < m_model.size(); i++)
+        if(m_model[i].value<Frequency>().id() == id)
+            list->setProperty("currentIndex", i);   
+}
+

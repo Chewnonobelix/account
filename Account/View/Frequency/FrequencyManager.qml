@@ -206,7 +206,10 @@ Window {
                 onS_catChanged: if(enabled) catChanged(frequencyList.model[frequencyList.currentIndex].id, cat, "manager")
                 
                 onEntryChanged: {
+                    enabled = false
                     catModel = entry && entry.type === "income" ? incomeList : outcomeList
+                    typeCombo.currentIndex = entry && entry.type === "income" ? 1 : 0
+                    enabled = frequencyList.count !== 0 
                 }
                 
                 onIncomeListChanged: catModel = entry && entry.type === "income" ? incomeList : outcomeList
@@ -280,6 +283,12 @@ Window {
                     gradient: pageStyle.goldButton
                 }
 
+                signal s_updateType(int id, string nType)
+                
+                onCurrentIndexChanged: {
+                    if(ref.enabled) s_updateType(ref.entry.id, model.get(currentIndex).type)
+                }
+                
                 delegate: Control2.ItemDelegate {
                     width: typeCombo.width
 //                    height: type.height

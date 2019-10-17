@@ -255,7 +255,8 @@ bool ControllerXMLMulti::updateEntryNode(const Entry & e, QDomElement & el)
 
     setter(el, "date", e.date().toString("dd-MM-yyyy"));
     setter(el, "value",QString::number(e.value()));
-
+    setter(el, "type", e.type());
+    
     if(e.frequency() == -1)
         deleter(el, "frequency");
     else

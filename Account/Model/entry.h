@@ -19,6 +19,7 @@ class Entry: public MetaData
     Q_PROPERTY(QString type READ type)
     Q_PROPERTY(Information info READ info)
     Q_PROPERTY(QString label READ label)
+    Q_PROPERTY(int id READ id)
 
 private:
 
