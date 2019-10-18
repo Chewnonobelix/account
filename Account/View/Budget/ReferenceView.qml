@@ -19,6 +19,10 @@ Window {
         id: pageStyle
     }
     
+    CoreModel {
+        id: models
+    }
+
     width: rectWindow.width * 2
     //    height: (col2.height)* 1.10
     id: main
@@ -86,35 +90,13 @@ Window {
                 font.pixelSize: pageStyle.title.size
             }
             
-            ListModel {
-                id: freqModel
-                ListElement {
-                    name: qsTr("Day")
-                    role: 1
-                }
-                ListElement {
-                    name: qsTr("Week")
-                    role: 2
-                }
-                ListElement {
-                    name: qsTr("Month")
-                    role: 3
-                }
-                ListElement {
-                    name: qsTr("Quarter")
-                    role: 4
-                }
-                ListElement {
-                    name: qsTr("Year")
-                    role: 5
-                }
-            }
+            
             
             ComboBox {
                 id: freqCombo
                 objectName: "freqCombo"
 
-                model: freqModel
+                model: models.freqModel
                 textRole: "name"
                 Rectangle {
                     gradient: pageStyle.goldButton
@@ -126,7 +108,7 @@ Window {
                 
                 property int currentRole: 0
                 
-                onCurrentIndexChanged: currentRole = freqModel.get(currentIndex).role
+                onCurrentIndexChanged: currentRole = models.freqModel.get(currentIndex).role
                 
                 delegate: ItemDelegate{
                     width: freqCombo.width

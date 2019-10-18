@@ -11,6 +11,11 @@ Window {
     AccountStyle {
         id: pageStyle
     }
+    
+    CoreModel {
+        id: models
+    }
+
     title: qsTr("Frequency manager")
     
     maximumHeight: Screen.height / 2
@@ -250,19 +255,6 @@ Window {
                 }
             }
             
-            ListModel {
-                id: typeModel
-                ListElement {
-                    name: qsTr("Outcome")
-                    type: "outcome"
-                }
-                
-                ListElement {
-                    name: qsTr("Income")
-                    type: "income"
-                }
-                
-            }
             
             Row {
                 Layout.row: 2
@@ -277,14 +269,15 @@ Window {
                     objectName: "whenCombo"
                     height: parent.height
                     width: parent.width / parent.children.length
-                    model: ["Unique", "Days", "Weeks"]
+                    model: models.freqModel
+                    textRole: "name"
                 }
                 
                 Control2.ComboBox {
                     id: typeCombo
                     objectName: "type"
                     
-                    model: typeModel
+                    model: models.typeModel
                     
                     height: parent.height
                     width: parent.width / parent.children.length

@@ -22,6 +22,9 @@ Popup {
         id: pageStyle
     }
 
+    CoreModel {
+        id: models
+    }
 
     signal accept()
 
@@ -103,11 +106,7 @@ Popup {
                 id: type
                 objectName: "type"
                 textRole: "name"
-                model: ListModel {
-                    id: typeModel
-                    ListElement {name: qsTr("Income"); type: "income"}
-                    ListElement {name: qsTr("Outcome"); type: "outcome"}
-                }
+                model: models.typeModel
 
                 enabled: !addingid.newAccount
 

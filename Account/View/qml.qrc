@@ -24,5 +24,6 @@
         <file>Frequency/Generate.qml</file>
         <file>Core/CategoryItem.qml</file>
         <file>Core/EntryEdit.qml</file>
+        <file>Core/CoreModel.qml</file>
     </qresource>
 </RCC>
