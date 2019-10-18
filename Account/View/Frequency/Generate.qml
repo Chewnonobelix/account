@@ -8,7 +8,7 @@ Popup {
     property int freqId: -1
     property int freqGroup: -1
     
-    signal s_generate(date begin, date end)
+    signal s_generate(date fBegin, date fEnd)
     
     Frequency {
         id: freq

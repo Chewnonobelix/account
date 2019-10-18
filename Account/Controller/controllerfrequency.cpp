@@ -9,7 +9,7 @@ ControllerFrequency::ControllerFrequency()
     m_manager = m_eng.rootObjects().last();
     
     
-    connect(m_generate, SLOT(s_generate(QDate, QDate)), this, SIGNAL(generate(QDate, QDate)));
+    connect(m_generate, SIGNAL(s_generate(QDateTime, QDateTime)), this, SLOT(generate(QDateTime, QDateTime)));
     
     QObject* add, *remove, *ref, *type;
     
@@ -81,9 +81,9 @@ int ControllerFrequency::exec()
     return 0;
 }
 
-void ControllerFrequency::generate(QDate begin, QDate end)
+void ControllerFrequency::generate(QDateTime begin, QDateTime end)
 {
-    QDate it = begin;
+    QDate it = begin.date();
     Account::FrequencyEnum freq = Account::FrequencyEnum::unique;
     int freqId, freqGroup = 0;
     
@@ -102,7 +102,7 @@ void ControllerFrequency::generate(QDate begin, QDate end)
         AbstractController::addEntry(n);
         
     }
-    while(freq != Account::FrequencyEnum::unique && it <= end);
+    while(freq != Account::FrequencyEnum::unique && it <= end.date());
     
     QMetaObject::invokeMethod(m_generate, "close");
     exec();

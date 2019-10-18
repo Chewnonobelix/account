@@ -31,7 +31,7 @@ public:
     void closeManager();
 
 public slots:
-    void generate(QDate, QDate);
+    void generate(QDateTime, QDateTime);
     void openGenerate(int);
     
     void openManager();
