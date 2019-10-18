@@ -260,10 +260,11 @@ Window {
                 Layout.row: 2
                 Layout.column: 2
                 Layout.columnSpan: 3
-                spacing: 1
+                spacing: width * 0.01
                 Layout.fillWidth: true    
                 Layout.preferredHeight: parent.height * .07
-                onWidthChanged: console.log(width, height)
+
+                
                 Control2.ComboBox { 
                     id: whenCombo
                     objectName: "whenCombo"
@@ -281,11 +282,7 @@ Window {
                     
                     height: parent.height
                     width: parent.width / parent.children.length
-                    
-                    //                    Layout.alignment: Qt.AlignTop | Qt.AlignRight
-                    //                    Layout.preferredWidth: parent.width * 0.15    
-                    //                    Layout.preferredHeight: parent.height * .07
-                    
+                                        
                     textRole: "name"
                     
                     background: Rectangle {
@@ -324,6 +321,7 @@ Window {
                 
                 
                 Control2.Button {
+                    objectName: "generateButton"
                     text: qsTr("Generate")
                     
                     //                    Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
@@ -332,6 +330,10 @@ Window {
                     
                     height: parent.height
                     width: parent.width / parent.children.len
+                    
+                    signal s_open(int fId)
+                    
+                    onReleased: s_open(ref.entry.id)
                     
                     MouseArea {
                         z: -1

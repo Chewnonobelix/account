@@ -8,6 +8,7 @@ ControllerFrequency::ControllerFrequency()
     
     m_manager = m_eng.rootObjects().last();
     
+    m_generate->setProperty("parent", QVariant::fromValue(m_manager));
     
     connect(m_generate, SIGNAL(s_generate(QDateTime, QDateTime)), this, SLOT(generate(QDateTime, QDateTime)));
     
@@ -34,11 +35,17 @@ ControllerFrequency::ControllerFrequency()
         connect(ref, SIGNAL(valueChanged(int, double)), this, SLOT(updateFreqValue(int,double)));
         connect(ref, SIGNAL(titleChanged(int, QString)), this, SLOT(updateFreqName(int,QString)));
         connect(ref, SIGNAL(catChanged(int, QString)), this, SLOT(updateFreqCat(int,QString)));
+    
     }
     
     type = m_manager->findChild<QObject*>("type");
     if(type)
         connect(type, SIGNAL(s_updateType(int, QString)), this, SLOT(updateFreqType(int,QString)));
+
+    QObject* button = m_manager->findChild<QObject*>("generateButton");
+    if(button)
+        connect(button, SIGNAL(s_open(int)), this, SLOT(openGenerate(int)));
+    
 }
 
 void ControllerFrequency::addEntry(int e)
@@ -110,10 +117,11 @@ void ControllerFrequency::generate(QDateTime begin, QDateTime end)
 
 void ControllerFrequency::openGenerate(int id)
 {
+    qDebug()<<"Generate for"<<id;
     m_generate->setProperty("freqId", id);
     m_generate->setProperty("freqGroup", m_freqs[id].nbGroup() + 1);
     
-    QMetaObject::invokeMethod(m_generate, "open");
+    QMetaObject::invokeMethod(m_generate, "show");
 }
 
 void ControllerFrequency::openManager()

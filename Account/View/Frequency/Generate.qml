@@ -1,14 +1,17 @@
 import QtQuick 2.13
 import QtQuick.Controls 2.5
+import QtQuick.Window 2.12
 
 import "../Style" as S
 import "../Core" as C
 
-Popup {
+Window {
     property int freqId: -1
     property int freqGroup: -1
     
     signal s_generate(date fBegin, date fEnd)
+
+    flags: Qt.Dialog
     
     Frequency {
         id: freq
