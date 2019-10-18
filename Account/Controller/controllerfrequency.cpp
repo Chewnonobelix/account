@@ -117,11 +117,12 @@ void ControllerFrequency::generate(QDateTime begin, QDateTime end)
 
 void ControllerFrequency::openGenerate(int id)
 {
-    qDebug()<<"Generate for"<<id;
     m_generate->setProperty("freqId", id);
     m_generate->setProperty("freqGroup", m_freqs[id].nbGroup() + 1);
     
     QMetaObject::invokeMethod(m_generate, "show");
+    
+    qDebug()<<"Size"<<m_generate->property("width")<<m_generate->property("height");
 }
 
 void ControllerFrequency::openManager()
@@ -135,6 +136,8 @@ void ControllerFrequency::openManager()
 void ControllerFrequency::closeManager()
 {
     QMetaObject::invokeMethod(m_manager, "close");
+    QMetaObject::invokeMethod(m_generate, "close");
+    
 }
 
 void ControllerFrequency::addFrequency()

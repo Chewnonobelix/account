@@ -1,7 +1,7 @@
 import QtQuick 2.13
 import QtQuick.Controls 2.5
 import QtQuick.Window 2.12
-
+import QtQuick.Layouts 1.13
 import "../Style" as S
 import "../Core" as C
 
@@ -10,39 +10,77 @@ Window {
     property int freqGroup: -1
     
     signal s_generate(date fBegin, date fEnd)
-
-    flags: Qt.Dialog
     
-    Frequency {
-        id: freq
-        enabled: false
-    }
-
-    Column {
-        anchors.top: freq.bottom
-        anchors.left: freq.left
-        width: freq.width /2 - 5
-        Label {
-            text: qsTr("From")
-        }
-
-        C.CalendarButton {
-            id: from
-        }
-    }
-    
-    Column {   
-        anchors.top: freq.bottom
-        anchors.right: freq.right
-        anchors.leftMargin: 10
-        width: freq.width /2 - 5
+    flags: Qt.Popup | Qt.NoDropShadowWindowHint
         
-        Label {
-            text:qsTr("To")
-        }
+    
+    maximumHeight: Screen.height - 1
+    maximumWidth: Screen.width - 1
+    minimumHeight: Screen.height - 1
+    minimumWidth: Screen.width - 1
+    x: 0
+    y: 0
+    color: "transparent"
+    
+    Component.onCompleted: console.log("generate", maximumHeight, maximumWidth)
+//    onVisibleChanged: visibility = Window.Maximized
+    S.AccountStyle{
+        id: pageStyle
+    }
+    
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.NoButton
+        propagateComposedEvents: true
+        preventStealing: false
+    }
 
-        C.CalendarButton {
-            id: to
+    Rectangle {
+        gradient: pageStyle.backgroundGradient
+//        anchors.fill: parent
+        anchors.centerIn: parent
+        width: 300
+        height: 200
+        
+        GridLayout {
+            
+            
+            Label {
+                Layout.row: 0
+                Layout.column: 0
+                text: qsTr("From")
+            }
+            
+            C.CalendarButton {
+                Layout.row: 1
+                Layout.column: 0
+                id: from
+                
+            }
+            
+            Label {
+                Layout.row: 0
+                Layout.column: 1
+                text:qsTr("To")
+            }
+            
+            C.CalendarButton {
+                Layout.row: 1
+                Layout.column: 1
+                id: to
+            }
+            
+            Button {
+                Layout.row: 2
+                Layout.column: 0
+                text: qsTr("Generate")
+            }
+            
+            Button {
+                Layout.row: 2
+                Layout.column: 1
+                text: qsTr("Cancel")
+            }
         }
     }
 }
