@@ -54,6 +54,7 @@ void testBudget()
 
 int main(int argc, char *argv[])
 {
+    using namespace Account;
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QApplication app(argc, argv);
@@ -61,7 +62,8 @@ int main(int argc, char *argv[])
     qDebug()<<"ControllerDB"<<qRegisterMetaType<ControllerDB>()<<sizeof(int*);
     qDebug()<<"ControllerXML"<<qRegisterMetaType<ControllerXML>();
     qDebug()<<"ControllerXMLMulti"<<qRegisterMetaType<ControllerXMLMulti>();
-
+    qDebug()<<"Account::FrequencyEnum QML"<<qmlRegisterUncreatableMetaObject(Account::staticMetaObject, "Account", 1,0, "Account", "This is Account's flags");
+    qDebug()<<"Account::FrequencyEnum"<<qRegisterMetaType<Account::FrequencyEnum>();
 
 //    XmlTest test1;
 

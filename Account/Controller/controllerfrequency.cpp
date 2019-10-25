@@ -38,6 +38,11 @@ ControllerFrequency::ControllerFrequency()
     
     }
     
+    QObject* when = m_manager->findChild<QObject*>("whenCombo");
+
+    if(when)
+        connect(when, SIGNAL(s_freq(int, int)), this, SLOT(updateFreqFreq(int, int)));
+
     type = m_manager->findChild<QObject*>("type");
     if(type)
         connect(type, SIGNAL(s_updateType(int, QString)), this, SLOT(updateFreqType(int,QString)));
@@ -121,9 +126,7 @@ void ControllerFrequency::openGenerate(int id)
     m_generate->setProperty("freqGroup", m_freqs[id].nbGroup() + 1);
     
     QMetaObject::invokeMethod(m_generate, "show");
-    
-    qDebug()<<"Size"<<m_generate->property("width")<<m_generate->property("height");
-}
+    }
 
 void ControllerFrequency::openManager()
 {
@@ -234,3 +237,16 @@ void ControllerFrequency::updateFreqType(int id, QString type)
             list->setProperty("currentIndex", i);   
 }
 
+void ControllerFrequency::updateFreqFreq(int id, int f)
+{
+    m_freqs[id].setFreq((Account::FrequencyEnum)f);
+    m_db->updateFrequency(m_freqs[id]);
+
+    exec();
+
+    auto list = m_manager->findChild<QObject*>("frequencyList");
+    for(int i = 0; i < m_model.size(); i++)
+        if(m_model[i].value<Frequency>().id() == id)
+            list->setProperty("currentIndex", i);
+
+}

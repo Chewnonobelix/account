@@ -630,6 +630,8 @@ bool ControllerXMLMulti::updateFrequency(const Frequency& f)
             auto child = freqs.at(i).toElement();
             auto ref = child.elementsByTagName("referenceEntry").at(0).toElement();
             updateEntryNode(f.referenceEntry(), ref);
+
+            child.setAttribute("freq", (int)f.freq());
             return true;
         }
     

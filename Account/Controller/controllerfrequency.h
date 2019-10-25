@@ -45,6 +45,7 @@ public slots:
     void updateFreqValue(int, double);
     void updateFreqCat(int, QString);
     void updateFreqType(int, QString);
+    void updateFreqFreq(int, int);
 };
 
 #endif // CONTROLLERFREQUENCY_H

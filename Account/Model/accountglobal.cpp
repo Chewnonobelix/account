@@ -7,25 +7,25 @@ int Account::nbDay(QDate d, FrequencyEnum f)
     
     switch(f)
     {
-    case FrequencyEnum::day:
+    case FrequencyEnum::Day:
         ret = 1;
         break;
         
-    case FrequencyEnum::week:
+    case FrequencyEnum::Week:
         ret = 7;
         break;
         
-    case FrequencyEnum::month:
+    case FrequencyEnum::Month:
         t = d.addMonths(1);
         ret = d.daysTo(t);
         break;
         
-    case FrequencyEnum::quarter:
+    case FrequencyEnum::Quarter:
         t = d.addMonths(3);
         ret = d.daysTo(t);
         break;
         
-    case FrequencyEnum::year:
+    case FrequencyEnum::Year:
         t = d.addYears(1);
         ret = d.daysTo(t);
         break;

@@ -15,6 +15,7 @@ class Frequency
     Q_PROPERTY(QDate end READ end)
     Q_PROPERTY(int nbGroup READ nbGroup)
     Q_PROPERTY(QList<int> entries READ listEntries)
+    Q_PROPERTY(Account::FrequencyEnum freq READ freq)
     
 private:
     int m_id;

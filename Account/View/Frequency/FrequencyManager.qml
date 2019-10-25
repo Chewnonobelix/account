@@ -4,6 +4,8 @@ import QtQuick.Window 2.13
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.13
 
+import Account 1.0
+
 import "../Style"
 import "../Core"
 
@@ -99,7 +101,14 @@ Window {
                 }
                 
                 
-                onCurrentIndexChanged: ref.entry = model[currentIndex].reference
+                onCurrentIndexChanged: {
+                    whenCombo.enabled = false
+                    ref.entry = model[currentIndex].reference
+                    var t = model[currentIndex].freq + 0
+                    whenCombo.currentIndex = whenCombo.model.findIndex(t)
+                    whenCombo.enabled = count !== 0
+                }
+
                 Layout.alignment: Qt.AlignCenter
                 Layout.fillHeight: true
                 Layout.fillWidth: true
@@ -272,6 +281,11 @@ Window {
                     width: parent.width / parent.children.length
                     model: models.freqModel
                     textRole: "name"
+                    signal s_freq(int i, int f)
+
+                    onCurrentIndexChanged: {
+                        if(enabled && ref.entry) s_freq(ref.entry.id, model.get(currentIndex).role)
+                    }
                 }
                 
                 Control2.ComboBox {

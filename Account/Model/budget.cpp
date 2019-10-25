@@ -160,7 +160,7 @@ double Budget::current(QDate d)
 
 Account::FrequencyEnum Budget::frequency(QDate d) const
 {
-    return m_frequency.value(d, Account::FrequencyEnum::unique);
+    return m_frequency.value(d, Account::FrequencyEnum::Unique);
 }
 
 void Budget::setFrequency(QDate d, Account::FrequencyEnum f)
@@ -208,15 +208,15 @@ QDate Budget::next(QDate d) const
 {
     switch(frequency(d))
     {
-    case Account::FrequencyEnum::day:
+    case Account::FrequencyEnum::Day:
         return d.addDays(1);
-    case Account::FrequencyEnum::week:
+    case Account::FrequencyEnum::Week:
         return d.addDays(8);
-    case Account::FrequencyEnum::month:
+    case Account::FrequencyEnum::Month:
         return d.addMonths(1);
-    case Account::FrequencyEnum::quarter:
+    case Account::FrequencyEnum::Quarter:
         return d.addMonths(4);
-    case Account::FrequencyEnum::year:
+    case Account::FrequencyEnum::Year:
         return d.addYears(1);
     default:
         return d;
@@ -227,15 +227,15 @@ QDate Budget::previous(QDate d) const
 {
     switch(frequency(d))
     {
-    case Account::FrequencyEnum::day:
+    case Account::FrequencyEnum::Day:
         return d.addDays(-1);
-    case Account::FrequencyEnum::week:
+    case Account::FrequencyEnum::Week:
         return d.addDays(-8);
-    case Account::FrequencyEnum::month:
+    case Account::FrequencyEnum::Month:
         return d.addMonths(-1);
-    case Account::FrequencyEnum::quarter:
+    case Account::FrequencyEnum::Quarter:
         return d.addMonths(-4);
-    case Account::FrequencyEnum::year:
+    case Account::FrequencyEnum::Year:
         return d.addYears(-1);
     default:
         return d;
