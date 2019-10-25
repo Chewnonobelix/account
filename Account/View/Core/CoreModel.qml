@@ -39,6 +39,11 @@ QtObject {
     
     property ListModel typeModel: ListModel {
         id: typeModel
+
+        function find (role) {
+             return role === "income" ? 0 : 1
+        }
+
         ListElement {name: qsTr("Income"); type: "income"}
         ListElement {name: qsTr("Outcome"); type: "outcome"}
     }

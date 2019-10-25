@@ -107,6 +107,7 @@ Item {
             font.pixelSize: pageStyle.core.size
             onEditingFinished: {
                 s_titleChanged(text)
+                info.opening = false
             }
             
             ToolTip.text: qsTr("Change transaction's title")
@@ -114,6 +115,10 @@ Item {
             ToolTip.delay: 500
             Layout.row: 1
             Layout.column: 0
+
+            onTextEdited: {
+                info.opening = true
+            }
         }
         
         DoubleSpinBox {
@@ -136,11 +141,11 @@ Item {
             Timer {
                 id: timer
                 repeat: false
-                
+
                 onTriggered: {
                     if(!info.opening)
                         info.s_valueChanged(spinbox.realValue)
-                    
+
                 }
             }
             

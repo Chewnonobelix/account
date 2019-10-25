@@ -217,14 +217,14 @@ Window {
                 signal valueChanged(int id, real value)
                 signal catChanged(int id, string cat)
                 
-                onS_valueChanged: if(enabled) valueChanged(frequencyList.model[frequencyList.currentIndex].id, value)
-                onS_titleChanged: if(enabled) titleChanged(frequencyList.model[frequencyList.currentIndex].id, title)
-                onS_catChanged: if(enabled) catChanged(frequencyList.model[frequencyList.currentIndex].id, cat, "manager")
+                onS_valueChanged: if(entry && enabled) valueChanged(entry.id, value)
+                onS_titleChanged: if(entry && enabled) titleChanged(entry.id, title)
+                onS_catChanged: if(entry && enabled) catChanged(entry.id, cat, "manager")
                 
                 onEntryChanged: {
                     enabled = false
                     catModel = entry && entry.type === "income" ? incomeList : outcomeList
-                    typeCombo.currentIndex = entry && entry.type === "income" ? 1 : 0
+                    typeCombo.currentIndex = entry && entry.type === "income" ? 0 : 1
                     reloadCat()
                     enabled = frequencyList.count !== 0          
                 }
