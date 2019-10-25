@@ -10,7 +10,7 @@ ControllerFrequency::ControllerFrequency()
     
     m_generate->setProperty("parent", QVariant::fromValue(m_manager));
     
-    connect(m_generate, SIGNAL(s_generate(QDateTime, QDateTime)), this, SLOT(generate(QDateTime, QDateTime)));
+    connect(m_generate, SIGNAL(s_generate(QString, QString)), this, SLOT(generate(QString, QString)));
     
     QObject* add, *remove, *ref, *type;
     
@@ -93,15 +93,15 @@ int ControllerFrequency::exec()
     return 0;
 }
 
-void ControllerFrequency::generate(QDateTime begin, QDateTime end)
+void ControllerFrequency::generate(QString begin, QString end)
 {
-    QDate it = begin.date();
-    Account::FrequencyEnum freq = Account::FrequencyEnum::unique;
+    QDate it = QDate::fromString(begin, "dd-MM-yyyy");
+    Account::FrequencyEnum freq = Account::FrequencyEnum::Unique;
     int freqId, freqGroup = 0;
     
     freqId = m_generate->property("freqId").toInt();
     freqGroup = m_generate->property("freqGroup").toInt();
-    
+    freq = m_freqs[freqId].freq();
     m_freqs[freqId].setNbGroup(freqGroup);
     
     Entry ref = m_freqs[freqId].referenceEntry();
@@ -114,7 +114,7 @@ void ControllerFrequency::generate(QDateTime begin, QDateTime end)
         AbstractController::addEntry(n);
         
     }
-    while(freq != Account::FrequencyEnum::unique && it <= end.date());
+    while(freq != Account::FrequencyEnum::Unique && it <= QDate::fromString(end, "dd-MM-yyyy"));
     
     QMetaObject::invokeMethod(m_generate, "close");
     exec();

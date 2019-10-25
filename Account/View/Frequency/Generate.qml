@@ -9,10 +9,10 @@ Window {
     property int freqId: -1
     property int freqGroup: -1
     
-    signal s_generate(date fBegin, date fEnd)
+    signal s_generate(string fBegin, string fEnd)
     
     flags: Qt.Popup | Qt.NoDropShadowWindowHint
-        
+
     
     maximumHeight: Screen.height - 1
     maximumWidth: Screen.width - 1
@@ -23,7 +23,7 @@ Window {
     color: "transparent"
     
     Component.onCompleted: console.log("generate", maximumHeight, maximumWidth)
-//    onVisibleChanged: visibility = Window.Maximized
+    //    onVisibleChanged: visibility = Window.Maximized
     S.AccountStyle{
         id: pageStyle
     }
@@ -37,14 +37,12 @@ Window {
 
     Rectangle {
         gradient: pageStyle.backgroundGradient
-//        anchors.fill: parent
+        //        anchors.fill: parent
         anchors.centerIn: parent
-        width: 300
-        height: 200
+        width: 200
+        height: 150
         
         GridLayout {
-            
-            
             Label {
                 Layout.row: 0
                 Layout.column: 0
@@ -71,15 +69,21 @@ Window {
             }
             
             Button {
+                objectName: "generateButton"
                 Layout.row: 2
                 Layout.column: 0
                 text: qsTr("Generate")
+                onClicked: {
+                    s_generate(from.text, to.text)
+                    close();
+                }
             }
             
             Button {
                 Layout.row: 2
                 Layout.column: 1
                 text: qsTr("Cancel")
+                onClicked: close()
             }
         }
     }
