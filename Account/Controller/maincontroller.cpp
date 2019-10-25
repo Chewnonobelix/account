@@ -8,6 +8,7 @@ MainController::MainController(): AbstractController()
     connect(&m_graph, GraphController::s_sum, this, receiveSum);
     connect(&m_info, ControllerInformation::s_update, &m_budget, ControllerBudget::updateEntry);
     connect(&m_info, ControllerInformation::s_changeCat, &m_budget, ControllerBudget::changeEntry);
+    connect(&m_freqs, ControllerFrequency::s_addEntry, this, MainController::addEntryMain);
 }
 
 MainController::~MainController()
@@ -193,6 +194,23 @@ void MainController::adding()
 
     selection();
 }
+
+void MainController::addEntryMain(Entry  e)
+{
+    Information i = e.info();
+
+    if(e.date() > QDate::currentDate())
+        i.setEstimated(true);
+    e.setAccount(currentAccount());
+
+    e.setInfo(i);
+
+    AbstractController::addEntry(e);
+    accountChange(currentAccount());
+
+    selection();
+}
+
 void MainController::remove(int id)
 {
     Entry e = AbstractController::entry(id);

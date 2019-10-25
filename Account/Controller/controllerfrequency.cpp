@@ -105,14 +105,13 @@ void ControllerFrequency::generate(QString begin, QString end)
     m_freqs[freqId].setNbGroup(freqGroup);
     
     Entry ref = m_freqs[freqId].referenceEntry();
-    
     do
     {
+        ref.setDate(it);
         auto n = m_freqs[freqId].clone(ref);
         n.setMetadata("freqGroup", freqGroup);
         it = n.date();
-        AbstractController::addEntry(n);
-        
+        emit s_addEntry(n);
     }
     while(freq != Account::FrequencyEnum::Unique && it <= QDate::fromString(end, "dd-MM-yyyy"));
     

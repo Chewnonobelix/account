@@ -14,10 +14,10 @@ Window {
     flags: Qt.Popup | Qt.NoDropShadowWindowHint
 
     
-    maximumHeight: Screen.height - 1
-    maximumWidth: Screen.width - 1
-    minimumHeight: Screen.height - 1
-    minimumWidth: Screen.width - 1
+    maximumHeight: Screen.height /2
+    maximumWidth: Screen.width /2
+    minimumHeight: Screen.height /2
+    minimumWidth: Screen.width /2
     x: 0
     y: 0
     color: "transparent"

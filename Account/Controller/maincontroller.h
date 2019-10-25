@@ -46,6 +46,7 @@ public slots:
     void adding();
     void selection(int = -1);
     void accountChange(QString);
+    void addEntryMain(Entry);
 
     void toXml();
 

@@ -30,6 +30,9 @@ public:
     int exec();
     void closeManager();
 
+signals:
+    void s_addEntry(Entry);
+
 public slots:
     void generate(QString, QString);
     void openGenerate(int);
