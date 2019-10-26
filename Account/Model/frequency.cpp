@@ -50,7 +50,7 @@ void Frequency::setNbGroup(int nbGroup)
     m_nbGroup = nbGroup;
 }
 
-Frequency::Frequency()
+Frequency::Frequency(): m_nbGroup(0)
 {
     
 }

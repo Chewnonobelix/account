@@ -13,11 +13,11 @@ Window {
     
     flags: Qt.Popup | Qt.NoDropShadowWindowHint
 
-    
-    maximumHeight: Screen.height /2
-    maximumWidth: Screen.width /2
-    minimumHeight: Screen.height /2
-    minimumWidth: Screen.width /2
+    visibility: Window.Hidden
+    maximumHeight: Screen.height
+    maximumWidth: Screen.width
+    minimumHeight: Screen.height
+    minimumWidth: Screen.width
     x: 0
     y: 0
     color: "transparent"
@@ -27,7 +27,7 @@ Window {
     S.AccountStyle{
         id: pageStyle
     }
-    
+    z: -50
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.NoButton

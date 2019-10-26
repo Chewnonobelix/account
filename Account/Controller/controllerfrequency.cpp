@@ -169,7 +169,6 @@ void ControllerFrequency::addNewCategory(QString cat)
 void ControllerFrequency::updateFreqName(int id, QString name)
 {
 
-    qDebug()<<id<<name;
     Entry ref = m_freqs[id].referenceEntry();
     Information inf = ref.info();
     inf.setTitle(name);

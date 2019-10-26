@@ -63,7 +63,11 @@ void ControllerXMLMulti::setCurrentAccount(QString a)
 bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root, QString name )
 {
     QDomElement el = m_currentAccount.createElement(name);
-    el.setAttribute("id", e.id());
+    //el.setAttribute("id", e.id());
+
+    auto meta = e.metaDataList();
+    for(auto it: meta)
+        el.setAttribute(it, e.metaData<QString>(it));
 
     adder(el, "date", e.date().toString("dd-MM-yyyy"));
     adder(el, "value", QString::number(e.value()));
@@ -119,7 +123,7 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
 {
     Entry e;
 
-    e.setId(el.attribute("id").toInt());
+//    e.setId(el.attribute("id").toInt());
     QDomElement child = el.elementsByTagName("date").at(0).toElement();
 
     e.setDate(QDate::fromString(child.text(), "dd-MM-yyyy"));
@@ -583,9 +587,6 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
             e.setInfo(in);
             addEntryNode(e, current, "referenceEntry");
             adder(current, "end", f.end().toString("dd-MM-yyyy"));
-
-            for(auto it: f.entries())
-                adder(current, "refEntry", QString::number(it));
         }
     }
     
@@ -650,9 +651,6 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
         f.setId(el.attribute("id").toInt());
         m_ids["frequency"]<<f.id();
         f.setFreq((Account::FrequencyEnum)el.attribute("freq").toInt());
-        auto list = el.elementsByTagName("entry");
-        for(auto j = 0; j < list.size(); j++)
-            f<<list.at(j).toElement().text().toInt();
 
         auto child = el.elementsByTagName("end").at(0).toElement();
         f.setEnd(QDate::fromString(child.text(), "dd-MM-yyyy"));
@@ -666,6 +664,12 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
 
     }
     
+    auto entries = selectEntry(m_accounts.key(m_currentAccount));
+
+    for(auto it: entries)
+        if(it.metaDataList().contains("freqId"))
+            ret[it.metaData<int>("freqId")] << it;
+
     return ret;
 }
 
