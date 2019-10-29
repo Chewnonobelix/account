@@ -10,24 +10,23 @@ Window {
     property int freqGroup: -1
     
     signal s_generate(string fBegin, string fEnd)
-    
+    id: generateWin
     flags: Qt.Popup | Qt.NoDropShadowWindowHint
 
     visibility: Window.Hidden
-    maximumHeight: Screen.height
-    maximumWidth: Screen.width
-    minimumHeight: Screen.height
-    minimumWidth: Screen.width
-    x: 0
-    y: 0
+    width: visbleRect.width + 1 + (from.isOpen ? from.cRight + from.x + from.width : to.isOpen ? to.cRight + to.x + to.width  : 0)
+
+    height: visbleRect.height + 1 + (from.isOpen ? from.cBottom  + from.y + from.height : to.isOpen ? to.cBottom + to.y + to.height : 0)
+
     color: "transparent"
+
+    x: Screen.width / 2
+    y: Screen.height / 2
     
-    Component.onCompleted: console.log("generate", maximumHeight, maximumWidth)
-    //    onVisibleChanged: visibility = Window.Maximized
     S.AccountStyle{
         id: pageStyle
     }
-    z: -50
+    
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
@@ -36,13 +35,16 @@ Window {
     }
 
     Rectangle {
+        id: visbleRect
         gradient: pageStyle.backgroundGradient
-        //        anchors.fill: parent
-        anchors.centerIn: parent
-        width: 200
-        height: 150
-        
+
+        border.color: "gold"
+        width: l.width * 1.02
+        height: l.height * 1.02
+        clip: false     
         GridLayout {
+            id: l
+            clip: false
             Label {
                 Layout.row: 0
                 Layout.column: 0
@@ -53,7 +55,7 @@ Window {
                 Layout.row: 1
                 Layout.column: 0
                 id: from
-                
+                clip: false
             }
             
             Label {

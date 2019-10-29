@@ -17,12 +17,16 @@ Button {
         gradient: pressed ? pageStyle.goldButton : pageStyle.darkGoldButton
     }
 
+    property int cBottom: dateAdding.height + dateAdding.y
+    property int cRight: dateAdding.width + dateAdding.x
+    property bool isOpen: pop.opened
+    
     Popup {
         id: pop
         background: Rectangle {
             color: "transparent"
         }
-
+        
         Calendar {
             id: dateAdding
             selectedDate: new Date()
