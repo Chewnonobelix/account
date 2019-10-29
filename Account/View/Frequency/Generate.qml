@@ -39,15 +39,23 @@ Window {
         gradient: pageStyle.backgroundGradient
 
         border.color: "gold"
-        width: l.width * 1.02
-        height: l.height * 1.02
+        width: l.width * 1.10
+        height: l.height * 1.10
         clip: false     
         GridLayout {
             id: l
             clip: false
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.leftMargin: width * 0.03
+            anchors.rightMargin: width * 0.03
             Label {
                 Layout.row: 0
                 Layout.column: 0
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size2
+                fontSizeMode: Text.Fit
                 text: qsTr("From")
             }
             
@@ -62,6 +70,10 @@ Window {
                 Layout.row: 0
                 Layout.column: 1
                 text:qsTr("To")
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size2
+                fontSizeMode: Text.Fit
             }
             
             C.CalendarButton {
@@ -74,18 +86,32 @@ Window {
                 objectName: "generateButton"
                 Layout.row: 2
                 Layout.column: 0
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                
                 text: qsTr("Generate")
                 onClicked: {
                     s_generate(from.text, to.text)
                     close();
+                }
+                
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
                 }
             }
             
             Button {
                 Layout.row: 2
                 Layout.column: 1
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+                
                 text: qsTr("Cancel")
                 onClicked: close()
+
+                                
+                background: Rectangle {
+                    gradient: pageStyle.goldButton
+                }
+                
             }
         }
     }

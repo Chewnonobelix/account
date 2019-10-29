@@ -35,18 +35,18 @@ ControllerFrequency::ControllerFrequency()
         connect(ref, SIGNAL(valueChanged(int, double)), this, SLOT(updateFreqValue(int,double)));
         connect(ref, SIGNAL(titleChanged(int, QString)), this, SLOT(updateFreqName(int,QString)));
         connect(ref, SIGNAL(catChanged(int, QString)), this, SLOT(updateFreqCat(int,QString)));
-    
+        
     }
     
     QObject* when = m_manager->findChild<QObject*>("whenCombo");
-
+    
     if(when)
         connect(when, SIGNAL(s_freq(int, int)), this, SLOT(updateFreqFreq(int, int)));
-
+    
     type = m_manager->findChild<QObject*>("type");
     if(type)
         connect(type, SIGNAL(s_updateType(int, QString)), this, SLOT(updateFreqType(int,QString)));
-
+    
     QObject* button = m_manager->findChild<QObject*>("generateButton");
     if(button)
         connect(button, SIGNAL(s_open(int)), this, SLOT(openGenerate(int)));
@@ -125,7 +125,7 @@ void ControllerFrequency::openGenerate(int id)
     m_generate->setProperty("freqGroup", m_freqs[id].nbGroup() + 1);
     
     QMetaObject::invokeMethod(m_generate, "show");
-    }
+}
 
 void ControllerFrequency::openManager()
 {
@@ -168,7 +168,7 @@ void ControllerFrequency::addNewCategory(QString cat)
 
 void ControllerFrequency::updateFreqName(int id, QString name)
 {
-
+    
     Entry ref = m_freqs[id].referenceEntry();
     Information inf = ref.info();
     inf.setTitle(name);
@@ -178,7 +178,7 @@ void ControllerFrequency::updateFreqName(int id, QString name)
     
     m_db->updateFrequency(m_freqs[id]);
     exec();
-
+    
     auto list = m_manager->findChild<QObject*>("frequencyList");
     for(int i = 0; i < m_model.size(); i++)
         if(m_model[i].value<Frequency>().id() == id)
@@ -241,12 +241,12 @@ void ControllerFrequency::updateFreqFreq(int id, int f)
 {
     m_freqs[id].setFreq((Account::FrequencyEnum)f);
     m_db->updateFrequency(m_freqs[id]);
-
+    
     exec();
-
+    
     auto list = m_manager->findChild<QObject*>("frequencyList");
     for(int i = 0; i < m_model.size(); i++)
         if(m_model[i].value<Frequency>().id() == id)
             list->setProperty("currentIndex", i);
-
+    
 }
