@@ -1,4 +1,5 @@
 #include "frequency.h"
+#include <QDebug>
 
 int Frequency::id() const
 {
@@ -117,7 +118,12 @@ QString Frequency::name() const
     return m_referenceEntry.info().title();
 }
 
-QList<int> Frequency::listEntries() const
+QVariantList  Frequency::listEntries() const
 {
-    return entries().toList();
+    QVariantList ret;
+    
+    for(auto it: entries())
+        ret<<QVariant::fromValue(it);
+    
+    return ret;
 }

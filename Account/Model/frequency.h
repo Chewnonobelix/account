@@ -2,6 +2,7 @@
 #define FREQUENCY_H
 
 #include <QSet>
+#include <QJSValue>
 #include "accountglobal.h"
 #include "entry.h"
 
@@ -14,7 +15,7 @@ class Frequency
     Q_PROPERTY(Entry reference READ referenceEntry)
     Q_PROPERTY(QDate end READ end)
     Q_PROPERTY(int nbGroup READ nbGroup)
-    Q_PROPERTY(QList<int> entries READ listEntries)
+    Q_PROPERTY(QVariantList entries READ listEntries)
     Q_PROPERTY(Account::FrequencyEnum freq READ freq)
     
 private:
@@ -25,7 +26,6 @@ private:
     Entry m_referenceEntry;
     int m_nbGroup;
     
-    QList<int> listEntries() const;
     
 public:
     Frequency();
@@ -41,6 +41,8 @@ public:
     void setFreq(Account::FrequencyEnum);
     
     QSet<int> entries() const;
+    Q_INVOKABLE QVariantList listEntries() const;
+    
     Frequency& operator<< (const Entry&);
     Frequency& operator<< (int);
     

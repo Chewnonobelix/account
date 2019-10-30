@@ -106,6 +106,7 @@ Window {
                     ref.entry = model[currentIndex].reference
                     var t = model[currentIndex].freq + 0
                     whenCombo.currentIndex = whenCombo.model.findIndex(t)
+                    entryList.model = model[currentIndex].listEntries()
                     whenCombo.enabled = count !== 0
                 }
 
@@ -118,7 +119,7 @@ Window {
                     height: 40
                     width: frequencyList.width
                     
-                    gradient: index === frequencyList.currentIndex ? pageStyle.calSelect : pageStyle.unselectView
+                    gradient: index === frequencyList.currentIndex ? ref.entry.type === "income" ? pageStyle.selectViewIn : pageStyle.selectViewOut : pageStyle.unselectView
                     
                     MouseArea {
                         anchors.fill: parent
@@ -241,21 +242,21 @@ Window {
                 Layout.alignment: Qt.Center
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                model: frequencyList.model[frequencyList.currentIndex].entries
+                model: []
                 clip: true
-                
+                                
                 
                 Rectangle {
                     anchors.fill: parent
                     border.color: "gold"
                     color: "transparent"
                 }
-                
+                                
                 delegate: Rectangle {
                     color: "transparent"
                     height: 40
                     width: entryList.width                    
-                    Label {
+                    Label {                        
                         anchors.fill: parent
                         text: modelData
                         horizontalAlignment: Qt.AlignHCenter
