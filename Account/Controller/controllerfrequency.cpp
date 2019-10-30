@@ -103,6 +103,7 @@ void ControllerFrequency::generate(QString begin, QString end)
     freqGroup = m_generate->property("freqGroup").toInt();
     freq = m_freqs[freqId].freq();
     m_freqs[freqId].setNbGroup(freqGroup);
+    m_db->updateFrequency(m_freqs[freqId]);
     
     Entry ref = m_freqs[freqId].referenceEntry();
     do

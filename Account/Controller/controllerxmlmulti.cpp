@@ -633,6 +633,9 @@ bool ControllerXMLMulti::updateFrequency(const Frequency& f)
             updateEntryNode(f.referenceEntry(), ref);
 
             child.setAttribute("freq", (int)f.freq());
+            
+            setter(child, "nbGroup", QString::number(f.nbGroup()));
+            
             return true;
         }
     
@@ -641,7 +644,7 @@ bool ControllerXMLMulti::updateFrequency(const Frequency& f)
 
 QList<Frequency> ControllerXMLMulti::selectFrequency()
 {
-    QList<Frequency> ret;
+    QMap<int, Frequency> ret;
     auto freqs = m_currentAccount.elementsByTagName("frequency");
     
     for(int i = 0; i < freqs.size(); i++)
@@ -654,23 +657,26 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
 
         auto child = el.elementsByTagName("end").at(0).toElement();
         f.setEnd(QDate::fromString(child.text(), "dd-MM-yyyy"));
-
+        auto nb = el.elementsByTagName("nbGroup");
+        
+        if(!nb.isEmpty())
+            f.setNbGroup(nb.at(0).toElement().text().toInt());
+            
         child = el.elementsByTagName("referenceEntry").at(0).toElement();
 
         Entry ref = selectEntryNode(child);
         f.setReferenceEntry(ref);
 
-        ret<<f;
+        ret[f.id()] = f;
 
     }
     
     auto entries = selectEntry(m_accounts.key(m_currentAccount));
-
+    
     for(auto it: entries)
-        if(it.metaDataList().contains("freqId"))
-            ret[it.metaData<int>("freqId")] << it;
-
-    return ret;
+        if(it.metaDataList().contains("frequency"))
+            ret[it.metaData<int>("frequency")] << it;
+    return ret.values();
 }
 
 void ControllerXMLMulti::timerEvent(QTimerEvent *)
