@@ -16,6 +16,11 @@ QtObject {
         }
 
         ListElement {
+            name: qsTr("Unique")
+            role: Account.Unique
+        }
+
+        ListElement {
             name: qsTr("Day")
             role: Account.Day
         }
