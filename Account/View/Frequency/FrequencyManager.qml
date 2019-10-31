@@ -119,7 +119,7 @@ Window {
                     height: 40
                     width: frequencyList.width
                     
-                    gradient: index === frequencyList.currentIndex ? ref.entry.type === "income" ? pageStyle.selectViewIn : pageStyle.selectViewOut : pageStyle.unselectView
+                    gradient: ListView.isCurrentItem ? ref.entry.type === "income" ? pageStyle.selectViewIn : pageStyle.selectViewOut : pageStyle.unselectView
                     
                     MouseArea {
                         anchors.fill: parent
@@ -244,8 +244,25 @@ Window {
                 Layout.fillHeight: true
                 model: []
                 clip: true
-                                
                 
+                
+                section.property: "modelData.g()"  
+                section.criteria: ViewSection.FullString
+                section.labelPositioning: ViewSection.InlineLabels
+                section.delegate: Rectangle {
+                    gradient: pageStyle.goldHeader
+                    width: entryList.width
+                    height: 30
+                    Text {
+                        anchors.fill: parent
+                        text: "x"
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        fontSizeMode: Text.Fit
+                        font.family: pageStyle.title.name
+                        font.pixelSize: pageStyle.title.size2
+                    }
+                }
                 Rectangle {
                     anchors.fill: parent
                     border.color: "gold"
@@ -255,10 +272,18 @@ Window {
                 delegate: Rectangle {
                     color: "transparent"
                     height: 40
-                    width: entryList.width                    
+                    width: entryList.width      
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            entryList.forceLayout()       
+                            console.log(modelData.g(), ListView.section, ",", ListView.nextSection,",", ListView.previousSection)
+                    }
+                    }
+
                     Label {                        
                         anchors.fill: parent
-                        text: modelData
+                        text: modelData.id + ":" + modelData.nbgroup +"  - " + modelData.date
                         horizontalAlignment: Qt.AlignHCenter
                         verticalAlignment: Qt.AlignVCenter
                     }

@@ -90,21 +90,25 @@ Entry Frequency::clone(const Entry & e) const
     return ret;
 }
 
-QSet<int> Frequency::entries() const
+QList<LinkedEntry> Frequency::entries() const
 {
     return m_entriesId;    
 }
 
 Frequency& Frequency::operator<< (const Entry& e)
 {   
-    m_entriesId<<e.id();
+    LinkedEntry le;
+    le.m_id = e.id();
+    le.m_date = e.date();
+    le.m_group = e.metaData<int>("freqGroup");
+    m_entriesId<<le;
     return *this;
 }
 
 
 Frequency& Frequency::operator<< (int e)
 {
-    m_entriesId<<e;
+//    m_entriesId<<e;
     return *this;
 }
 
@@ -123,7 +127,9 @@ QVariantList  Frequency::listEntries() const
     QVariantList ret;
     
     for(auto it: entries())
+    {
         ret<<QVariant::fromValue(it);
+    }
     
     return ret;
 }

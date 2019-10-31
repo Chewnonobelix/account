@@ -6,6 +6,23 @@
 #include "accountglobal.h"
 #include "entry.h"
 
+struct LinkedEntry{
+    Q_GADGET
+    
+    Q_PROPERTY(int id MEMBER m_id)
+    Q_PROPERTY(int nbgroup MEMBER m_group CONSTANT)
+    Q_PROPERTY(QDate date MEMBER m_date)
+    
+public:    
+    int m_id;
+    QDate m_date;
+    int m_group;   
+    
+    Q_INVOKABLE QString g() const {return QString::number(m_group);}
+};
+
+Q_DECLARE_METATYPE(LinkedEntry)
+
 class Frequency
 {
     Q_GADGET
@@ -15,18 +32,21 @@ class Frequency
     Q_PROPERTY(Entry reference READ referenceEntry)
     Q_PROPERTY(QDate end READ end)
     Q_PROPERTY(int nbGroup READ nbGroup)
-    Q_PROPERTY(QVariantList entries READ listEntries)
+    Q_PROPERTY(QList<LinkedEntry> entries READ entries)
     Q_PROPERTY(Account::FrequencyEnum freq READ freq)
     
+public:
+    
 private:
+    
     int m_id;
     Account::FrequencyEnum m_freq;
-    QSet<int> m_entriesId;
+    QList<LinkedEntry> m_entriesId;
     QDate m_end;
     Entry m_referenceEntry;
     int m_nbGroup;
     
-    
+
 public:
     Frequency();
     Frequency(const Frequency&);
@@ -40,7 +60,7 @@ public:
     Account::FrequencyEnum freq() const;
     void setFreq(Account::FrequencyEnum);
     
-    QSet<int> entries() const;
+    QList<LinkedEntry> entries() const;
     Q_INVOKABLE QVariantList listEntries() const;
     
     Frequency& operator<< (const Entry&);
