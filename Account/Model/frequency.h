@@ -8,11 +8,10 @@
 
 struct LinkedEntry{
     Q_GADGET
-    
     Q_PROPERTY(int id MEMBER m_id)
-    Q_PROPERTY(int nbgroup MEMBER m_group CONSTANT)
     Q_PROPERTY(QDate date MEMBER m_date)
-    
+    Q_PROPERTY(int group MEMBER m_group)
+        
 public:    
     int m_id;
     QDate m_date;
@@ -32,7 +31,7 @@ class Frequency
     Q_PROPERTY(Entry reference READ referenceEntry)
     Q_PROPERTY(QDate end READ end)
     Q_PROPERTY(int nbGroup READ nbGroup)
-    Q_PROPERTY(QList<LinkedEntry> entries READ entries)
+    Q_PROPERTY(QList<QVariant> entries READ listEntries)
     Q_PROPERTY(Account::FrequencyEnum freq READ freq)
     
 public:

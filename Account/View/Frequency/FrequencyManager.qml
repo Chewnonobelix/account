@@ -106,7 +106,12 @@ Window {
                     ref.entry = model[currentIndex].reference
                     var t = model[currentIndex].freq + 0
                     whenCombo.currentIndex = whenCombo.model.findIndex(t)
-                    entryList.model = model[currentIndex].listEntries()
+                    
+                    testModel.clear()
+                    for(var i = 0; i < model[currentIndex].entries.length; i++) {
+                        testModel.append(model[currentIndex].entries[i])
+                    }
+
                     whenCombo.enabled = count !== 0
                 }
 
@@ -234,6 +239,15 @@ Window {
                 onOutcomeListChanged: catModel = entry && entry.type === "income" ? incomeList : outcomeList
             }
             
+            ListModel {
+                id: testModel
+                objectName: "testModel"
+                
+                function addNewElement(el) {
+                    append(el)
+                }
+            }
+
             ListView {
                 id: entryList
                 objectName: "entryList"
@@ -242,20 +256,21 @@ Window {
                 Layout.alignment: Qt.Center
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                model: []
+                model: testModel
                 clip: true
                 
+//                onModelChanged: console.log(model)
                 
-                section.property: "modelData.g()"  
+                section.property: "group" 
                 section.criteria: ViewSection.FullString
                 section.labelPositioning: ViewSection.InlineLabels
                 section.delegate: Rectangle {
                     gradient: pageStyle.goldHeader
                     width: entryList.width
-                    height: 30
+                    height: 100
                     Text {
                         anchors.fill: parent
-                        text: "x"
+                        text: section
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         fontSizeMode: Text.Fit
@@ -277,13 +292,13 @@ Window {
                         anchors.fill: parent
                         onClicked: {
                             entryList.forceLayout()       
-                            console.log(modelData.g(), ListView.section, ",", ListView.nextSection,",", ListView.previousSection)
+                            console.log(model.con, model.modelData, ListView.section, ",", ListView.nextSection,",", ListView.previousSection)
                     }
                     }
 
                     Label {                        
                         anchors.fill: parent
-                        text: modelData.id + ":" + modelData.nbgroup +"  - " + modelData.date
+                        text: id + ":" + group +"  - " + date
                         horizontalAlignment: Qt.AlignHCenter
                         verticalAlignment: Qt.AlignVCenter
                     }
