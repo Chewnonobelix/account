@@ -17,7 +17,7 @@ Window {
     CoreModel {
         id: models
     }
-
+    
     title: qsTr("Frequency manager")
     
     maximumHeight: Screen.height / 2
@@ -111,10 +111,10 @@ Window {
                     for(var i = 0; i < model[currentIndex].entries.length; i++) {
                         testModel.append(model[currentIndex].entries[i])
                     }
-
+                    
                     whenCombo.enabled = count !== 0
                 }
-
+                
                 Layout.alignment: Qt.AlignCenter
                 Layout.fillHeight: true
                 Layout.fillWidth: true
@@ -241,13 +241,8 @@ Window {
             
             ListModel {
                 id: testModel
-                objectName: "testModel"
-                
-                function addNewElement(el) {
-                    append(el)
-                }
             }
-
+            
             ListView {
                 id: entryList
                 objectName: "entryList"
@@ -259,15 +254,13 @@ Window {
                 model: testModel
                 clip: true
                 
-//                onModelChanged: console.log(model)
-                
                 section.property: "group" 
                 section.criteria: ViewSection.FullString
                 section.labelPositioning: ViewSection.InlineLabels
                 section.delegate: Rectangle {
                     gradient: pageStyle.goldHeader
-                    width: entryList.width
-                    height: 100
+                    width: ListView.view.width
+                    height: ListView.view.height * 0.10
                     Text {
                         anchors.fill: parent
                         text: section
@@ -283,24 +276,20 @@ Window {
                     border.color: "gold"
                     color: "transparent"
                 }
-                                
+                
                 delegate: Rectangle {
                     color: "transparent"
-                    height: 40
-                    width: entryList.width      
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            entryList.forceLayout()       
-                            console.log(model.con, model.modelData, ListView.section, ",", ListView.nextSection,",", ListView.previousSection)
-                    }
-                    }
-
+                    width: ListView.view.width
+                    height: ListView.view.height * 0.05
+                    
                     Label {                        
                         anchors.fill: parent
                         text: id + ":" + group +"  - " + date
                         horizontalAlignment: Qt.AlignHCenter
                         verticalAlignment: Qt.AlignVCenter
+                        fontSizeMode: Text.Fit
+                        font.family: pageStyle.core.name
+                        font.pixelSize: pageStyle.core.size
                     }
                 }
             }
@@ -313,7 +302,7 @@ Window {
                 spacing: width * 0.01
                 Layout.fillWidth: true    
                 Layout.preferredHeight: parent.height * .07
-
+                
                 
                 Control2.ComboBox { 
                     id: whenCombo
@@ -323,7 +312,7 @@ Window {
                     model: models.freqModel
                     textRole: "name"
                     signal s_freq(int i, int f)
-
+                    
                     onCurrentIndexChanged: {
                         if(enabled && ref.entry) s_freq(ref.entry.id, model.get(currentIndex).role)
                     }
@@ -337,7 +326,7 @@ Window {
                     
                     height: parent.height
                     width: parent.width / parent.children.length
-                                        
+                    
                     textRole: "name"
                     
                     background: Rectangle {
