@@ -7,17 +7,9 @@
 #include "entry.h"
 
 struct LinkedEntry{
-    Q_GADGET
-    Q_PROPERTY(int id MEMBER m_id)
-    Q_PROPERTY(QDate date MEMBER m_date)
-    Q_PROPERTY(int group MEMBER m_group)
-        
-public:    
     int m_id;
     QDate m_date;
-    int m_group;   
-    
-    Q_INVOKABLE QString g() const {return QString::number(m_group);}
+    int m_group;       
 };
 
 Q_DECLARE_METATYPE(LinkedEntry)
