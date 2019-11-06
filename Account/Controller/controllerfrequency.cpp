@@ -117,7 +117,12 @@ void ControllerFrequency::generate(QString begin, QString end)
         n.setMetadata("freqGroup", freqGroup);
         int t = Account::nbDay(it, m_freqs[freqId].freq());
         
+        QString lab = n.info().title();
+        Information inf = n.info();
+        inf.setTitle(lab+"_"+it.toString("dd-MM-yyyy"));
+        n.setInfo(inf);
         it = n.date().addDays(t);
+        
         emit s_addEntry(n);
     }
     while(freq != Account::FrequencyEnum::Unique && it <= QDate::fromString(end, "dd-MM-yyyy"));
