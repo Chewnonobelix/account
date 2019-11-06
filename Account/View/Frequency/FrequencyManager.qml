@@ -287,13 +287,14 @@ Window {
                     color: "transparent"
                     property var entry
                     onEntryChanged: {   
-                        valText.val = entry.value
+                        linked.entry = entry
                     }
                     
-                    Text {
-                        id: valText
-                        property real val
-                        text: qsTr("Current value") + ": " + val
+                    EntryEdit {
+                        id: linked
+                        anchors.fill: parent
+                        Component.onCompleted: changeDirection()
+                        enabled: false
                     }
                 }                
             }

@@ -30,6 +30,10 @@ Item {
             text: qsTr("Coming Soon")
             Layout.fillHeight: true
             Layout.fillWidth: true
+            MouseArea {
+                anchors.fill: parent
+                onClicked: ee.changeDirection()
+            }
         }
     }
     //Frequency

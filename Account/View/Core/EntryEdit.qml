@@ -39,139 +39,162 @@ Item {
     function reloadCat() {
         category.setting(entry.info.category)
     }
-
+    
+    function changeDirection() {
+        grid.flow = grid.flow === GridLayout.LeftToRight ? GridLayout.TopToBottom : GridLayout.LeftToRight
+        
+    }
+    
+    
     GridLayout {
+        id: grid
         rows: 3
         columns: 3
         anchors.fill: parent
         rowSpacing: 0
-        Label {
-            id: titleLabel
-            text: qsTr("Title")
-            font.pixelSize: pageStyle.title.size
-            font.family: pageStyle.title.name
-            fontSizeMode: Text.Fit
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment: Qt.AlignVCenter
-            background: Rectangle {
-                gradient: pageStyle.goldHeader
-                border.color: "darkgoldenrod"
-            }
-            
-            Layout.preferredWidth: parent.width * 0.33
-            Layout.preferredHeight: parent.height * 0.2
-            Layout.row: 0
-            Layout.column: 0
-        }
         
-        Label {
-            id: valueLabel
-            text: qsTr("Value")
-            font.pixelSize: pageStyle.title.size
-            font.family: pageStyle.title.name
-            fontSizeMode: Text.Fit
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment: Qt.AlignVCenter
-            background: Rectangle {
-                gradient: pageStyle.goldHeader
-                border.color: "darkgoldenrod"
-            }
-            Layout.preferredWidth:  parent.width * 0.34
-            Layout.preferredHeight: parent.height * 0.2
-            Layout.row: 0
-            Layout.column: 1
-        }
-        Label {
-            id: categoryLabel
-            text: qsTr("Category")
-            font.pixelSize: pageStyle.title.size
-            font.family: pageStyle.title.name
-            fontSizeMode: Text.Fit
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment: Qt.AlignVCenter
-            background: Rectangle {
-                gradient: pageStyle.goldHeader
-                border.color: "darkgoldenrod"
-            }
-            Layout.preferredWidth: parent.width * 0.33
-            Layout.preferredHeight: parent.height * 0.2
-            Layout.row: 0
-            Layout.column: 2
-        }
-        TextField {
-            id: title
-            Layout.maximumWidth: parent.width * 0.33
-            Layout.maximumHeight: parent.height * 0.3
-            Layout.fillHeight: true
-            Layout.preferredWidth: parent.width * 0.33
-            text: ""
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
-            onEditingFinished: {
-                s_titleChanged(text)
-                info.opening = false
+        property var tWidth: flow === GridLayout.LeftToRight ? 0.33 : 0.5
+        property var tHeight: flow === GridLayout.LeftToRight ? 0.5 : 0.33
+        
+        Column {
+            Layout.preferredWidth: parent.width * parent.tWidth
+            Layout.preferredHeight: parent.height *parent.tHeight
+            spacing: height * 0.05
+            Label {
+                id: titleLabel
+                text: qsTr("Title")
+                font.pixelSize: pageStyle.title.size
+                font.family: pageStyle.title.name
+                fontSizeMode: Text.Fit
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                background: Rectangle {
+                    gradient: pageStyle.goldHeader
+                    border.color: "darkgoldenrod"
+                }
+
+                width: parent.width
+                height: parent.height * 0.40
             }
             
-            ToolTip.text: qsTr("Change transaction's title")
-            ToolTip.visible: hovered
-            ToolTip.delay: 500
-            Layout.row: 1
-            Layout.column: 0
-
-            onTextEdited: {
-                info.opening = true
+            TextField {
+                id: title
+                
+                width: parent.width
+                height: parent.height * 0.60
+                text: ""
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+                onEditingFinished: {
+                    s_titleChanged(text)
+                    info.opening = false
+                }
+                
+                ToolTip.text: qsTr("Change transaction's title")
+                ToolTip.visible: hovered
+                ToolTip.delay: 500
+                
+                onTextEdited: {
+                    info.opening = true
+                }
             }
         }
         
-        DoubleSpinBox {
-            id: spinbox
-            Layout.maximumWidth: parent.width * 0.34
-            Layout.fillHeight: true
-            Layout.maximumHeight: parent.height * 0.3
-            Layout.preferredWidth: parent.width * 0.34
+        Column {
+            spacing: height * 0.05
+            Layout.preferredWidth: parent.width * parent.tWidth
+            Layout.preferredHeight: parent.height *parent.tHeight
             
-            value: 0
-            font.family:  pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+            Label {
+                id: valueLabel
+                text: qsTr("Value")
+                font.pixelSize: pageStyle.title.size
+                font.family: pageStyle.title.name
+                fontSizeMode: Text.Fit
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                background: Rectangle {
+                    gradient: pageStyle.goldHeader
+                    border.color: "darkgoldenrod"
+                }
+                
+                height: parent.height * .40
+                width: parent.width
+            }
             
-            ToolTip.text: qsTr("Change transaction's value")
-            ToolTip.visible: hovered
-            ToolTip.delay: 500
-            Layout.row: 1
-            Layout.column: 1
-            property date s_date
-            
-            Timer {
-                id: timer
-                repeat: false
+            DoubleSpinBox {
+                id: spinbox
+                
+                height: parent.height * 0.60
+                width: parent.width
+                
+                value: 0
+                font.family:  pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+                
+                ToolTip.text: qsTr("Change transaction's value")
+                ToolTip.visible: hovered
+                ToolTip.delay: 500
 
-                onTriggered: {
-                    if(!info.opening && !spinbox.isEditing)
-                        info.s_valueChanged(spinbox.realValue)
-
+                property date s_date
+                
+                Timer {
+                    id: timer
+                    repeat: false
+                    
+                    onTriggered: {
+                        if(!info.opening && !spinbox.isEditing)
+                            info.s_valueChanged(spinbox.realValue)
+                        
+                    }
+                }
+                
+                onRealValueChanged: {
+                    timer.restart()
                 }
             }
             
-            onRealValueChanged: {
-                timer.restart()
-            }
         }
         
-        
-        CategoryItem {
-            id: category
-            objectName: "category"
-            Layout.maximumWidth: parent.width * 0.33
-            Layout.fillHeight: true
-            Layout.maximumHeight: parent.height * 0.3
-            Layout.preferredWidth: parent.width * 0.33
-            editable: currentText === ""
-            model: catModel
-            Layout.row: 1
-            Layout.column: 2
-            onS_currentTextChanged: {
-                if(currentText !== "")
-                   info.s_catChanged(currentText)
+        Column {
+            spacing: height * 0.05
+            Layout.preferredWidth: parent.width * parent.tWidth
+            Layout.preferredHeight: parent.height *parent.tHeight
+            
+            Label {
+                id: categoryLabel
+                text: qsTr("Category")
+                font.pixelSize: pageStyle.title.size
+                font.family: pageStyle.title.name
+                fontSizeMode: Text.Fit
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                background: Rectangle {
+                    gradient: pageStyle.goldHeader
+                    border.color: "darkgoldenrod"
+                }
+                
+                height: parent.height * 0.40
+                width: parent.width
+            }
+            
+            
+            
+            
+            CategoryItem {
+                id: category
+                objectName: "category"
+                
+                height: parent.height * 0.60
+                width: parent.width
+                
+                editable: currentText === ""
+                model: catModel
+
+                onS_currentTextChanged: {
+                    if(currentText !== "")
+                        info.s_catChanged(currentText)
+                }
             }
         }
         
