@@ -213,14 +213,14 @@ Page {
         id: defaultModel
         objectName: "defaultModel"
         
-        function swap(ij) {
+        function swap(i,j) {
             move(j, i, 1)
             move(i + 1, j, 1)
         }
         
-        function sort(roleorder) {
+        function sort(role, roleorder) {
             for (var i = 0; i < count; i++) {
-                for (var j = 0; j < count; j++) {
+                for (var j = i; j < count; j++) {
                     if (roleorder === Qt.AscendingOrder) {
                         if (get(j)[role] < get(i)[role]) {
                             swap(i, j)
