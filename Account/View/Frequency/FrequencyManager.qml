@@ -242,7 +242,6 @@ Window {
             
             ListModel {
                 id: testModel
-                //                dynamicRoles: true
             }
             
             Column {
@@ -332,6 +331,20 @@ Window {
                         font.pixelSize: pageStyle.title.size2
                     }
                     
+                    Text {
+                        id: arrow
+                        anchors.right: parent.right
+                        anchors.rightMargin: parent.width * 0.05
+                        height: parent.height
+                        text: ">"
+                        rotation: 90
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        fontSizeMode: Text.Fit
+                        font.family: pageStyle.title.name
+                        font.pixelSize: pageStyle.title.size2                        
+                    }
+
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -340,6 +353,8 @@ Window {
                             for(var j = 0; j < testModel.count; j++) {
                                 if(testModel.get(j).group == section ) testModel.setProperty(j, "isVisible", entryList.enabledSection[section]);
                             }
+                            
+                            arrow.rotation = arrow.rotation + 180 
                         }
                     }
                     
