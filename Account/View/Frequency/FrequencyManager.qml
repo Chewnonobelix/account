@@ -33,6 +33,8 @@ Window {
         GridLayout {
             
             anchors.fill: parent
+            rowSpacing: height * 0.02
+            columnSpacing: width * 0.01
             Rectangle {
                 gradient: pageStyle.goldHeader
                 
@@ -233,6 +235,8 @@ Window {
                 onEntryChanged: {
                     catModel = entry && entry.type === "income" ? incomeList : outcomeList
                     typeCombo.currentIndex = entry && entry.type === "income" ? 0 : 1
+                    linked.catModel = catModel
+                    linked.reloadCat()
                     reloadCat()
                 }
                 
