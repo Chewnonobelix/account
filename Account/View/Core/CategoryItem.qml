@@ -48,15 +48,26 @@ ComboBox {
         gradient: pageStyle.goldButton
     }
     
-    contentItem: Label {
+    contentItem: TextInput {
         horizontalAlignment: Qt.AlignHCenter
         verticalAlignment: Qt.AlignVCenter
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
-        fontSizeMode: Text.Fit
-        text: currentText            
+//        fontSizeMode: Text.Fit
+        text: currentText
+        readOnly: !editable
+        onAccepted: s_addCategory(text)
+        MouseArea {
+            anchors.fill: parent
+            propagateComposedEvents: true
+            acceptedButtons: editable ? Qt.NoButton : Qt.LeftButton
+            onClicked: popup.open()
+            cursorShape: editable ? Qt.IBeamCursor : Qt.PointingHandCursor
+        }
     }        
     
+    
+    editable: currentText === ""
     delegate: ItemDelegate {
         width: category.width
         contentItem: Rectangle  {
