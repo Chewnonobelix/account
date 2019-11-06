@@ -37,7 +37,7 @@ Item {
     }
     
     function reloadCat() {
-        category.setting(entry.info.category)
+        if(entry) category.setting(entry.info.category)
     }
     
     function changeDirection() {
