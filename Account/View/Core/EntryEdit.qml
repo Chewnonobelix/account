@@ -53,7 +53,7 @@ Item {
         anchors.fill: parent
         rowSpacing: 0
         
-        property var tWidth: flow === GridLayout.LeftToRight ? 0.33 : 0.5
+        property var tWidth: flow === GridLayout.LeftToRight ? 0.33 : 1
         property var tHeight: flow === GridLayout.LeftToRight ? 0.5 : 0.33
         
         Column {
