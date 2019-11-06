@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.13
 import QtQuick.Controls 2.4
 
 SpinBox {
@@ -11,7 +11,8 @@ SpinBox {
 
     property int decimals: 2
     property real realValue: value / 100
-
+    property bool isEditing: input.cursorVisible
+    
     validator: DoubleValidator {
         bottom: Math.min(spinbox.from, spinbox.to)
         top:  Math.max(spinbox.from, spinbox.to)
@@ -26,6 +27,7 @@ SpinBox {
     }
 
     contentItem: TextInput {
+            id: input
             z: 2
             text: spinbox.textFromValue(spinbox.value, spinbox.locale)
 
@@ -39,7 +41,10 @@ SpinBox {
             readOnly: !spinbox.editable
             validator: spinbox.validator
             inputMethodHints: Qt.ImhFormattedNumbersOnly
-
+            onEditingFinished: {
+                spinbox.value = spinbox.valueFromText(text, spinbox.locale)
+                cursorVisible = false
+            }
         }
 
 

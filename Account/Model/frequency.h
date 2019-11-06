@@ -23,7 +23,7 @@ class Frequency
     Q_PROPERTY(Entry reference READ referenceEntry)
     Q_PROPERTY(QDate end READ end)
     Q_PROPERTY(int nbGroup READ nbGroup)
-    Q_PROPERTY(QList<QVariant> entries READ listEntries)
+    //Q_PROPERTY(QList<QVariant> entries READ listEntries)
     Q_PROPERTY(Account::FrequencyEnum freq READ freq)
     
 public:

@@ -25,13 +25,15 @@ Item {
     signal s_catChanged(string cat)
     
     onEnabledChanged: {
-        titleLabel.enabled = true
-        categoryLabel.enabled = true
-        valueLabel.enabled = true
+        titleLabel.enabled = enabled
+        categoryLabel.enabled = enabled
+        valueLabel.enabled = enabled
     }
     
     onEntryChanged: {
         category.setting(entry.info.category)
+        title.text = entry.info.title
+        spinbox.value =  entry.value*100
     }
     
     function reloadCat() {
@@ -102,7 +104,7 @@ Item {
             Layout.maximumHeight: parent.height * 0.3
             Layout.fillHeight: true
             Layout.preferredWidth: parent.width * 0.33
-            text: entry.info.title
+            text: ""
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
             onEditingFinished: {
@@ -128,7 +130,7 @@ Item {
             Layout.maximumHeight: parent.height * 0.3
             Layout.preferredWidth: parent.width * 0.34
             
-            value: entry.value*100
+            value: 0
             font.family:  pageStyle.core.name
             font.pixelSize: pageStyle.core.size
             
@@ -138,12 +140,13 @@ Item {
             Layout.row: 1
             Layout.column: 1
             property date s_date
+            
             Timer {
                 id: timer
                 repeat: false
 
                 onTriggered: {
-                    if(!info.opening)
+                    if(!info.opening && !spinbox.isEditing)
                         info.s_valueChanged(spinbox.realValue)
 
                 }

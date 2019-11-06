@@ -32,7 +32,7 @@ public:
 
 signals:
     void s_addEntry(Entry);
-
+    
 public slots:
     void generate(QString, QString);
     void openGenerate(int);
@@ -49,6 +49,8 @@ public slots:
     void updateFreqCat(int, QString);
     void updateFreqType(int, QString);
     void updateFreqFreq(int, int);
+    
+    void displayEntry(int);
 };
 
 #endif // CONTROLLERFREQUENCY_H

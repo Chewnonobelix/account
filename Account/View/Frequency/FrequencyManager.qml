@@ -1,5 +1,5 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.5 as Control2
+import QtQuick.Controls 2.13 as Control2
 import QtQuick.Window 2.13
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.13
@@ -102,19 +102,22 @@ Window {
                 
                 
                 onCurrentIndexChanged: {
-                    whenCombo.enabled = false
-                    ref.entry = model[currentIndex].reference
-                    var t = model[currentIndex].freq + 0
-                    whenCombo.currentIndex = whenCombo.model.findIndex(t)
-                    
-                    testModel.clear()
-                    for(var i = 0; i < model[currentIndex].entries.length; i++) {
-                        testModel.append(model[currentIndex].entries[i])
+                    if(enabled) {
+                        whenCombo.enabled = false
+                        ref.entry = model[currentIndex].reference
+                        var t = model[currentIndex].freq + 0
+                        whenCombo.currentIndex = whenCombo.model.findIndex(t)
+                        
+                        testModel.clear()
+                        for(var i = 0; i < model[currentIndex].listEntries().length; i++) {
+                            testModel.append(model[currentIndex].listEntries()[i])
+                        }
+                        
+                        groupText.nb = model[currentIndex].nbGroup
+                        countText.nb = model[currentIndex].listEntries().length
+                        whenCombo.enabled = count !== 0                    
                     }
-                    
-                    whenCombo.enabled = count !== 0
                 }
-                
                 Layout.alignment: Qt.AlignCenter
                 Layout.fillHeight: true
                 Layout.fillWidth: true
@@ -215,7 +218,7 @@ Window {
                 Layout.rowSpan: 2
                 Layout.row: 0
                 Layout.column: 2
-                enabled: frequencyList.count !== 0 
+                enabled: frequencyList.count !== 0  && whenCombo.enabled
                 property var incomeList: []
                 property var outcomeList: []
                 
@@ -228,11 +231,9 @@ Window {
                 onS_catChanged: if(entry && enabled) catChanged(entry.id, cat, "manager")
                 
                 onEntryChanged: {
-                    enabled = false
                     catModel = entry && entry.type === "income" ? incomeList : outcomeList
                     typeCombo.currentIndex = entry && entry.type === "income" ? 0 : 1
                     reloadCat()
-                    enabled = frequencyList.count !== 0          
                 }
                 
                 onIncomeListChanged: catModel = entry && entry.type === "income" ? incomeList : outcomeList
@@ -241,6 +242,60 @@ Window {
             
             ListModel {
                 id: testModel
+                //                dynamicRoles: true
+            }
+            
+            Column {
+                Layout.row: 3
+                Layout.column: 3
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.preferredWidth: ref.width / 2
+                
+                Rectangle {
+                    width: parent.width
+                    height: parent.height * .20
+                    color: "transparent"
+                    Text {
+                        id: groupText
+                        property int nb: 0
+                        text: qsTr(" Number of generation") + ": " + nb 
+                        fontSizeMode: Text.Fit
+                        font.family: pageStyle.core.name
+                        font.pixelSize: pageStyle.core.size
+                        width: parent.width
+                        height: parent.height * 0.50                    
+                    }                
+                    Text {
+                        id: countText
+                        anchors.top: groupText.bottom
+                        
+                        property int nb: 0
+                        text: qsTr(" Number of entries") + ": " + nb 
+                        fontSizeMode: Text.Fit
+                        font.family: pageStyle.core.name
+                        font.pixelSize: pageStyle.core.size
+                        width: parent.width
+                        height: parent.height * 0.50                    
+                    }                
+                }
+                
+                Rectangle {
+                    objectName: "linkedDisplayer"
+                    width: parent.width
+                    height: parent.height * .80
+                    color: "transparent"
+                    property var entry
+                    onEntryChanged: {   
+                        valText.val = entry.value
+                    }
+                    
+                    Text {
+                        id: valText
+                        property real val
+                        text: qsTr("Current value") + ": " + val
+                    }
+                }                
             }
             
             ListView {
@@ -249,11 +304,16 @@ Window {
                 Layout.row: 3
                 Layout.column: 2
                 Layout.alignment: Qt.Center
-                Layout.fillWidth: true
+                //                Layout.fillWidth: true
                 Layout.fillHeight: true
+                
+                Layout.preferredWidth: ref.width / 2
                 model: testModel
                 clip: true
                 
+                signal s_display(int entryId)
+                
+                property var enabledSection: []
                 section.property: "group" 
                 section.criteria: ViewSection.FullString
                 section.labelPositioning: ViewSection.InlineLabels
@@ -270,6 +330,19 @@ Window {
                         font.family: pageStyle.title.name
                         font.pixelSize: pageStyle.title.size2
                     }
+                    
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            entryList.enabledSection[section] = !entryList.enabledSection[section]  
+                            
+                            for(var j = 0; j < testModel.count; j++) {
+                                if(testModel.get(j).group == section ) testModel.setProperty(j, "isVisible", entryList.enabledSection[section]);
+                            }
+                        }
+                    }
+                    
+                    Component.onCompleted: entryList.enabledSection[section] = true
                 }
                 Rectangle {
                     anchors.fill: parent
@@ -277,14 +350,24 @@ Window {
                     color: "transparent"
                 }
                 
-                delegate: Rectangle {
-                    color: "transparent"
+                delegate: Control2.ItemDelegate {
+                    objectName: "entryDel"
+                    background: Rectangle {color: "transparent" }
                     width: ListView.view.width
-                    height: ListView.view.height * 0.05
+                    height: isVisible ? ListView.view.height * 0.07 : 0
+                    visible: isVisible
+                    
+                           
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            entryList.s_display(id)
+                        }
+                    }
                     
                     Label {                        
                         anchors.fill: parent
-                        text: id + ":" + group +"  - " + date
+                        text: date
                         horizontalAlignment: Qt.AlignHCenter
                         verticalAlignment: Qt.AlignVCenter
                         fontSizeMode: Text.Fit
@@ -316,6 +399,34 @@ Window {
                     onCurrentIndexChanged: {
                         if(enabled && ref.entry) s_freq(ref.entry.id, model.get(currentIndex).role)
                     }
+                    
+                    background: Rectangle {
+                        anchors.fill: parent
+                        gradient: pageStyle.goldButton
+                    }
+                    
+                    delegate: Control2.ItemDelegate {
+                        width: typeCombo.width
+                        contentItem: Rectangle {
+                            anchors.fill: parent
+                            gradient: pageStyle.goldButton
+                            Label {
+                                text: name
+                                font.family: pageStyle.core.name
+                                font.pixelSize: pageStyle.core.size
+                                fontSizeMode: Text.Fit 
+                                anchors.fill: parent
+                                horizontalAlignment: Qt.AlignHCenter
+                                verticalAlignment: Qt.AlignVCenter
+                            }
+                            MouseArea {
+                                anchors.fill: parent
+                                acceptedButtons: Qt.NoButton
+                                cursorShape: Qt.PointingHandCursor
+                            }
+                        }
+                    }
+                    
                 }
                 
                 Control2.ComboBox {
@@ -323,7 +434,7 @@ Window {
                     objectName: "type"
                     
                     model: models.typeModel
-                    
+                    enabled: whenCombo.enabled
                     height: parent.height
                     width: parent.width / parent.children.length
                     

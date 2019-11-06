@@ -83,8 +83,6 @@ Frequency& Frequency::operator =(const Frequency& f)
 Entry Frequency::clone(const Entry & e) const
 {
     Entry ret(e);
-    int t = Account::nbDay(e.date(), freq());
-    ret.setDate(e.date().addDays(t));
     ret.setMetadata("frequency", id());
     ret.setId(-1);
     return ret;
@@ -132,6 +130,7 @@ QVariantList  Frequency::listEntries() const
         m["id"] = QString::number(it.m_id);
         m["date"] = (it.m_date.toString());
         m["group"] = it.m_group;
+        m["isVisible"] = true;
         ret<<QVariant::fromValue(m);;
     }
     

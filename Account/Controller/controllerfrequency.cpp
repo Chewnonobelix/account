@@ -50,7 +50,11 @@ ControllerFrequency::ControllerFrequency()
     QObject* button = m_manager->findChild<QObject*>("generateButton");
     if(button)
         connect(button, SIGNAL(s_open(int)), this, SLOT(openGenerate(int)));
+ 
+    QObject* el = m_manager->findChild<QObject*>("entryList");
     
+    if(el)
+        connect(el, SIGNAL(s_display(int)), this, SLOT(displayEntry(int)));
 }
 
 void ControllerFrequency::addEntry(int e)
@@ -111,7 +115,9 @@ void ControllerFrequency::generate(QString begin, QString end)
         ref.setDate(it);
         auto n = m_freqs[freqId].clone(ref);
         n.setMetadata("freqGroup", freqGroup);
-        it = n.date();
+        int t = Account::nbDay(it, m_freqs[freqId].freq());
+        
+        it = n.date().addDays(t);
         emit s_addEntry(n);
     }
     while(freq != Account::FrequencyEnum::Unique && it <= QDate::fromString(end, "dd-MM-yyyy"));
@@ -178,12 +184,14 @@ void ControllerFrequency::updateFreqName(int id, QString name)
     m_freqs[id].setReferenceEntry(ref);
     
     m_db->updateFrequency(m_freqs[id]);
+    auto list = m_manager->findChild<QObject*>("frequencyList");
+    list->setProperty("enabled", false);    
     exec();
     
-    auto list = m_manager->findChild<QObject*>("frequencyList");
     for(int i = 0; i < m_model.size(); i++)
         if(m_model[i].value<Frequency>().id() == id)
             list->setProperty("currentIndex", i);
+    list->setProperty("enabled", true);        
 }
 
 void ControllerFrequency::updateFreqValue(int id, double value)
@@ -193,12 +201,14 @@ void ControllerFrequency::updateFreqValue(int id, double value)
     m_freqs[id].setReferenceEntry(ref);
     
     m_db->updateFrequency(m_freqs[id]);
+    auto list = m_manager->findChild<QObject*>("frequencyList");
+    list->setProperty("enabled", false);    
     exec();
     
-    auto list = m_manager->findChild<QObject*>("frequencyList");
     for(int i = 0; i < m_model.size(); i++)
         if(m_model[i].value<Frequency>().id() == id)
             list->setProperty("currentIndex", i);   
+    list->setProperty("enabled", true);        
 }
 
 void ControllerFrequency::updateFreqCat(int id, QString cat)
@@ -211,12 +221,14 @@ void ControllerFrequency::updateFreqCat(int id, QString cat)
     m_freqs[id].setReferenceEntry(ref);
     
     m_db->updateFrequency(m_freqs[id]);
+    auto list = m_manager->findChild<QObject*>("frequencyList");
+    list->setProperty("enabled", false);    
     exec();
     
-    auto list = m_manager->findChild<QObject*>("frequencyList");
     for(int i = 0; i < m_model.size(); i++)
         if(m_model[i].value<Frequency>().id() == id)
             list->setProperty("currentIndex", i);
+    list->setProperty("enabled", true);        
     
 }
 
@@ -230,24 +242,33 @@ void ControllerFrequency::updateFreqType(int id, QString type)
     m_freqs[id].setReferenceEntry(ref);
     
     m_db->updateFrequency(m_freqs[id]);
+    auto list = m_manager->findChild<QObject*>("frequencyList");
+    list->setProperty("enabled", false);    
     exec();
     
-    auto list = m_manager->findChild<QObject*>("frequencyList");
     for(int i = 0; i < m_model.size(); i++)
         if(m_model[i].value<Frequency>().id() == id)
             list->setProperty("currentIndex", i);   
+    list->setProperty("enabled", true);        
 }
 
 void ControllerFrequency::updateFreqFreq(int id, int f)
 {
     m_freqs[id].setFreq((Account::FrequencyEnum)f);
     m_db->updateFrequency(m_freqs[id]);
-    
+    auto list = m_manager->findChild<QObject*>("frequencyList");
+    list->setProperty("enabled", false);    
     exec();
     
-    auto list = m_manager->findChild<QObject*>("frequencyList");
     for(int i = 0; i < m_model.size(); i++)
         if(m_model[i].value<Frequency>().id() == id)
             list->setProperty("currentIndex", i);
-    
+    list->setProperty("enabled", true);        
+}
+
+void ControllerFrequency::displayEntry(int id)
+{
+    Entry e = entry(id);
+    QObject* view = m_manager->findChild<QObject*>("linkedDisplayer");
+    view->setProperty("entry", QVariant::fromValue(e));
 }
