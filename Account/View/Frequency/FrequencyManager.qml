@@ -255,6 +255,7 @@ Window {
                     width: parent.width
                     height: parent.height * .20
                     color: "transparent"
+                    border.color: "gold"
                     Text {
                         id: groupText
                         property int nb: 0
