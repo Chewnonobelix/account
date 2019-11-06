@@ -54,7 +54,7 @@ Item {
         rowSpacing: 0
         
         property var tWidth: flow === GridLayout.LeftToRight ? 0.33 : 1
-        property var tHeight: flow === GridLayout.LeftToRight ? 0.5 : 0.33
+        property var tHeight: flow === GridLayout.LeftToRight ? 1 : 0.33
         
         Column {
             Layout.preferredWidth: parent.width * parent.tWidth
@@ -85,6 +85,8 @@ Item {
                 text: ""
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
                 onEditingFinished: {
                     s_titleChanged(text)
                     info.opening = false
@@ -131,7 +133,7 @@ Item {
                 value: 0
                 font.family:  pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
-                
+                               
                 ToolTip.text: qsTr("Change transaction's value")
                 ToolTip.visible: hovered
                 ToolTip.delay: 500
