@@ -11,7 +11,7 @@ Item {
     property int maximum: Screen.width * .55 - 10
     width: maximum
     
-
+    
     S.AccountStyle {
         id: pageStyle
     }
@@ -32,34 +32,11 @@ Item {
             Layout.fillWidth: true
             MouseArea {
                 anchors.fill: parent
-                onClicked: ee.changeDirection()
+                onClicked:  {
+                    console.log(screen.desktopAvailableHeight, screen.desktopAvailableWidth)                    
+                    ee.changeDirection()
+                }
             }
         }
     }
-    //Frequency
-    //    GroupBox {
-    //        anchors.top:title.bottom
-    //        anchors.topMargin: 10
-    //        anchors.left: parent.left
-    //        anchors.right: parent.right
-    //        anchors.bottom: parent.bottom
-    //        anchors.bottomMargin: 10
-    
-    
-    //        label:  CheckBox {
-    //            id: freqCheck
-    //            objectName: "freqCheck"
-    //            text:  qsTr("Frequency")
-    
-    //            signal s_check(bool check)
-    
-    //            onCheckedChanged: s_check(checked) 
-    //        }
-    
-    //        contentItem: F.Frequency {
-    //            id: freq
-    //            enabled: freqCheck.checked
-    //            objectName: "freq"
-    //        }
-    //    }
 }

@@ -23,8 +23,8 @@ Window {
 
     onActiveChanged: if(!active) close()
 
-    x: Screen.width / 2
-    y: Screen.height / 2
+    x: screen.width / 2
+    y: screen.height / 2
     
     S.AccountStyle{
         id: pageStyle
@@ -89,7 +89,6 @@ Window {
                 id: to
                 
                 onTextChanged: {
-                    console.log(text)
                     parent.checkDate()
                 }
             }
@@ -98,7 +97,7 @@ Window {
                 var t = Date.fromLocaleDateString(Qt.locale(), to.text, "dd-MM-yyyy")
                 var f = Date.fromLocaleDateString(Qt.locale(),from.text, "dd-MM-yyyy")
                 
-                if(t < f) {
+                if(t < f ||  to.text === "" ) {
                     to.extern(f)
                 } 
             }
