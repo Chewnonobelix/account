@@ -128,7 +128,7 @@ QVariantList  Frequency::listEntries() const
     {
         QVariantMap m;
         m["id"] = QString::number(it.m_id);
-        m["date"] = (it.m_date.toString());
+        m["date"] = (it.m_date);
         m["group"] = it.m_group;
         m["isVisible"] = true;
         ret<<QVariant::fromValue(m);;

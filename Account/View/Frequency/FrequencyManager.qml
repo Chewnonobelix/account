@@ -20,10 +20,11 @@ Window {
     
     title: qsTr("Frequency manager")
     
-    maximumHeight: Screen.height / 2
-    maximumWidth: Screen.width * 0.4
+    maximumHeight: screen.height / 2
+    maximumWidth: screen.width * 0.4
     visible: false
     
+    onScreenChanged: console.log(screen)
     
     width: maximumWidth
     height: maximumHeight
@@ -111,8 +112,18 @@ Window {
                         whenCombo.currentIndex = whenCombo.model.findIndex(t)
                         
                         testModel.clear()
+                        dateText.from = model[currentIndex].listEntries()[0].date
+                        dateText.to = dateText.from
+                        
                         for(var i = 0; i < model[currentIndex].listEntries().length; i++) {
                             testModel.append(model[currentIndex].listEntries()[i])
+                            
+                            if(testModel.get(i).date < dateText.from)
+                                dateText.from = testModel.get(i).date
+                            
+                            if(testModel.get(i).date > dateText.to)
+                                dateText.to = testModel.get(i).date
+                            
                         }
                         
                         groupText.nb = model[currentIndex].nbGroup
@@ -268,7 +279,9 @@ Window {
                         font.family: pageStyle.core.name
                         font.pixelSize: pageStyle.core.size
                         width: parent.width
-                        height: parent.height * 0.50                    
+                        height: parent.height / parent.children.length
+                        horizontalAlignment: Qt.AlignHCenter
+                        verticalAlignment: Qt.AlignVCenter
                     }                
                     Text {
                         id: countText
@@ -280,8 +293,25 @@ Window {
                         font.family: pageStyle.core.name
                         font.pixelSize: pageStyle.core.size
                         width: parent.width
-                        height: parent.height * 0.50                    
-                    }                
+                        horizontalAlignment: Qt.AlignHCenter
+                        verticalAlignment: Qt.AlignVCenter
+                        height: parent.height / parent.children.length                    
+                    }
+                    Text {
+                        
+                        id: dateText
+                        property var from
+                        property var to
+                        anchors.top: countText.bottom
+                        text: qsTr("From") + " " + Qt.formatDate(from, "dd-MM-yyyy") + ", " + qsTr("to") + " " + Qt.formatDate(to, "dd-MM-yyyy")
+                        fontSizeMode: Text.Fit
+                        font.family: pageStyle.core.name
+                        font.pixelSize: pageStyle.core.size
+                        width: parent.width
+                        height: parent.height / parent.children.length
+                        horizontalAlignment: Qt.AlignHCenter
+                        verticalAlignment: Qt.AlignVCenter
+                    }
                 }
                 
                 Rectangle {
@@ -309,7 +339,6 @@ Window {
                 Layout.row: 3
                 Layout.column: 2
                 Layout.alignment: Qt.Center
-                //                Layout.fillWidth: true
                 Layout.fillHeight: true
                 
                 Layout.preferredWidth: ref.width / 2
@@ -403,7 +432,7 @@ Window {
                     
                     Label {                        
                         anchors.fill: parent
-                        text: date
+                        text: Qt.formatDate(date, "dd-MM-yyyy")
                         horizontalAlignment: Qt.AlignHCenter
                         verticalAlignment: Qt.AlignVCenter
                         fontSizeMode: Text.Fit
@@ -515,9 +544,6 @@ Window {
                     objectName: "generateButton"
                     text: qsTr("Generate")
                     
-                    //                    Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
-                    //                    Layout.maximumWidth: parent.width * 0.15            
-                    //                    Layout.preferredHeight: parent.height * .07
                     
                     height: parent.height
                     width: parent.width / parent.children.len
