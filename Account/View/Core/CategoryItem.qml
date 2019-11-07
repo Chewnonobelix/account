@@ -53,7 +53,7 @@ ComboBox {
         verticalAlignment: Qt.AlignVCenter
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
-//        fontSizeMode: Text.Fit
+
         text: currentText
         readOnly: !editable
         onAccepted: s_addCategory(text)

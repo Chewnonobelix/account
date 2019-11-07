@@ -25,9 +25,9 @@ Item {
     signal s_catChanged(string cat)
     
     onEnabledChanged: {
-        titleLabel.enabled = enabled
-        categoryLabel.enabled = enabled
-        valueLabel.enabled = enabled
+        titleLabel.enabled = true
+        categoryLabel.enabled = true
+        valueLabel.enabled = true
     }
     
     onEntryChanged: {
@@ -79,7 +79,7 @@ Item {
             
             TextField {
                 id: title
-                
+                enabled: !info.opening
                 width: parent.width
                 height: parent.height * 0.60
                 text: ""
@@ -129,6 +129,7 @@ Item {
                 
                 height: parent.height * 0.60
                 width: parent.width
+                enabled: !info.opening
                 
                 value: 0
                 font.family:  pageStyle.core.name
@@ -186,6 +187,7 @@ Item {
             CategoryItem {
                 id: category
                 objectName: "category"
+                enabled: !info.opening
                 
                 height: parent.height * 0.60
                 width: parent.width
