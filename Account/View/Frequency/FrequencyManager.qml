@@ -298,7 +298,7 @@ Window {
                         id: linked
                         anchors.fill: parent
                         Component.onCompleted: changeDirection()
-                        enabled: false
+                        opening: true
                     }
                 }                
             }
@@ -371,18 +371,33 @@ Window {
                     color: "transparent"
                 }
                 
+                highlight: Rectangle {
+                    gradient: pageStyle.calSelect
+                }
+                
+                highlightMoveDuration: 0
                 delegate: Control2.ItemDelegate {
                     objectName: "entryDel"
-                    background: Rectangle {color: "transparent" }
+                    background: Rectangle {
+                        anchors.fill: parent
+                        property var index: parent.index
+                        gradient: pageStyle.unselectView  
+                    }
+                    
+                    highlighted: ListView.isCurrentItem
                     width: ListView.view.width
                     height: isVisible ? ListView.view.height * 0.07 : 0
                     visible: isVisible
                     
-                           
+                    function f() {
+                        entryList.s_display(id)
+                        ListView.view.currentIndex = index 
+                    }
+
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            entryList.s_display(id)
+                            parent.f()
                         }
                     }
                     
@@ -469,7 +484,7 @@ Window {
                     signal s_updateType(int id, string nType)
                     
                     onCurrentIndexChanged: {
-                        if(ref.enabled) s_updateType(ref.entry.id, model.get(currentIndex).type)
+                        if(ref && ref.enabled) s_updateType(ref.entry.id, model.get(currentIndex).type)
                     }
                     
                     delegate: Control2.ItemDelegate {

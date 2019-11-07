@@ -137,6 +137,7 @@ void ControllerFrequency::openGenerate(int id)
     m_generate->setProperty("freqGroup", m_freqs[id].nbGroup() + 1);
     
     QMetaObject::invokeMethod(m_generate, "show");
+    QMetaObject::invokeMethod(m_generate, "requestActivate");
 }
 
 void ControllerFrequency::openManager()
