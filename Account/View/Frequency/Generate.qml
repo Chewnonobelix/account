@@ -10,6 +10,7 @@ Window {
     property int freqGroup: -1
     
     signal s_generate(string fBegin, string fEnd)
+    
     id: generateWin
     flags: Qt.Popup | Qt.NoDropShadowWindowHint
 
@@ -19,6 +20,8 @@ Window {
     height: visbleRect.height + 1 + (from.isOpen ? from.cBottom  + from.y + from.height : to.isOpen ? to.cBottom + to.y + to.height : 0)
 
     color: "transparent"
+
+    onActiveChanged: if(!active) close()
 
     x: Screen.width / 2
     y: Screen.height / 2
@@ -64,6 +67,10 @@ Window {
                 Layout.column: 0
                 id: from
                 clip: false
+                onTextChanged: {
+                    parent.checkDate()
+                }
+                
             }
             
             Label {
@@ -80,8 +87,22 @@ Window {
                 Layout.row: 1
                 Layout.column: 1
                 id: to
+                
+                onTextChanged: {
+                    console.log(text)
+                    parent.checkDate()
+                }
             }
             
+            function checkDate() {
+                var t = Date.fromLocaleDateString(Qt.locale(), to.text, "dd-MM-yyyy")
+                var f = Date.fromLocaleDateString(Qt.locale(),from.text, "dd-MM-yyyy")
+                
+                if(t < f) {
+                    to.extern(f)
+                } 
+            }
+
             Button {
                 objectName: "generateButton"
                 Layout.row: 2

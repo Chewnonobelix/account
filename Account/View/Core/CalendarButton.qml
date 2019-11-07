@@ -9,7 +9,8 @@ Button {
         id: pageStyle
     }
 
-    text: Qt.formatDate(dateAdding.selectedDate, "dd-MM-yyyy")
+    id: button
+    text: ""
     font.family: pageStyle.core.name
     font.pixelSize: pageStyle.core.size
 
@@ -21,6 +22,10 @@ Button {
     property int cRight: dateAdding.width + dateAdding.x
     property bool isOpen: pop.opened
     
+    function extern(d) {
+        dateAdding.selectedDate = d
+    }
+
     Popup {
         id: pop
         background: Rectangle {
@@ -33,6 +38,10 @@ Button {
             onClicked: pop.close()
             height: 250
             width: 250
+
+            onSelectedDateChanged: {
+                button.text = Qt.formatDate(dateAdding.selectedDate, "dd-MM-yyyy")
+            }
 
             style: CalendarStyle {
                 gridColor: "goldenrod"
@@ -140,7 +149,6 @@ Button {
                         anchors.centerIn: parent
                         text: Qt.locale().dayName(styleData.dayOfWeek, Locale.ShortFormat)
                         font.family: pageStyle.title.name
-                        //                                font.pixelSize: height * 0.55
                     }
                 }
 
