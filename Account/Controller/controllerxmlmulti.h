@@ -3,12 +3,14 @@
 
 #include <QDir>
 #include <QDebug>
+#include <QMutex>
 #include "controllerxml.h"
 
 class ControllerXMLMulti: public InterfaceDataSave, public QObject
 {
 
 private:
+    QMutex m_locker;
     QMap<QString, QDomDocument> m_accounts;
     
     QMap<QString, QSet<int>> m_ids;

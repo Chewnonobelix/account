@@ -65,7 +65,7 @@ void ControllerInformation::view(int id)
                 if(it.id() == f)
                 {
                     auto le = it.listEntries(g);
-                    qDebug()<<"Leg"<<le.size();
+
                     QObject* lf = freqItem->findChild<QObject*>("frequencyPast");
                     if(lf)
                         lf->setProperty("model", QVariant::fromValue(le));

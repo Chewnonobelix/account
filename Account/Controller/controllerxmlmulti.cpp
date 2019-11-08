@@ -82,6 +82,9 @@ bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root, QStrin
 
 bool ControllerXMLMulti::addEntry(const Entry& e)
 {
+    m_locker.lock();
+    static int i = 0;
+    qDebug()<<"Lock"<<i++<<thread();
     int ide = maxId(m_ids["entry"]) + 1;
     int idi = maxId(m_ids["info"]) + 1;
 
@@ -103,6 +106,7 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     addEntryNode(et, root);
 
     close();
+    m_locker.unlock();
     return true;
 }
 

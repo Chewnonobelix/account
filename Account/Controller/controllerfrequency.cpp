@@ -1,5 +1,24 @@
 #include "controllerfrequency.h"
 
+void Worker::run()
+{
+    for(auto it = 0; it < list.size(); it++)
+    {
+        emit s_add(list[it]);
+        if((it/list.size() * 100 ) % 10 == 0) qDebug()<<name<<(double)it/list.size()*100<<thread();
+    }
+
+    emit s_finish(name);
+}
+
+Worker& Worker::operator =(const Worker&)
+{
+    return *this;
+}
+
+Worker::Worker(const Worker &)
+{}
+
 ControllerFrequency::ControllerFrequency()
 {
     m_eng.load(QUrl(QStringLiteral("qrc:/Frequency/Generate.qml")));
@@ -55,6 +74,14 @@ ControllerFrequency::ControllerFrequency()
     
     if(el)
         connect(el, SIGNAL(s_display(int)), this, SLOT(displayEntry(int)));
+
+//    connect(&m_thread, Worker::finished, this, ControllerFrequency::endThread);
+}
+
+void ControllerFrequency::endThread(QString name)
+{
+    qDebug()<<"LOL"<<name;
+    delete m_threads[name];
 }
 
 void ControllerFrequency::addEntry(int e)
@@ -110,6 +137,7 @@ void ControllerFrequency::generate(QString begin, QString end)
     m_db->updateFrequency(m_freqs[freqId]);
     
     Entry ref = m_freqs[freqId].referenceEntry();
+    QList<Entry> lr;
     do
     {
         ref.setDate(it);
@@ -123,12 +151,27 @@ void ControllerFrequency::generate(QString begin, QString end)
         n.setInfo(inf);
         it = n.date().addDays(t);
         
-        emit s_addEntry(n);
+        lr<<n;
+//        emit s_addEntry(n);
     }
     while(freq != Account::FrequencyEnum::Unique && it <= QDate::fromString(end, "dd-MM-yyyy"));
     
+    m_threads[m_freqs[freqId].name()] = new Worker;
+    m_threads[m_freqs[freqId].name()]->list = lr;
+    m_threads[m_freqs[freqId].name()]->name =  m_freqs[freqId].name();
+    connect(m_threads[m_freqs[freqId].name()], Worker::s_add, this, ControllerFrequency::addFEntry);
+    connect(m_threads[m_freqs[freqId].name()], Worker::s_finish, this, ControllerFrequency::endThread);
+
+    m_threads[m_freqs[freqId].name()]->start();
+
     QMetaObject::invokeMethod(m_generate, "close");
     exec();
+}
+
+
+void ControllerFrequency::addFEntry(Entry e)
+{
+    m_db->addEntry(e);
 }
 
 void ControllerFrequency::openGenerate(int id)
