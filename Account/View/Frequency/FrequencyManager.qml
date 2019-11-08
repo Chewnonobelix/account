@@ -112,7 +112,7 @@ Window {
                         whenCombo.currentIndex = whenCombo.model.findIndex(t)
                         
                         testModel.clear()
-                        dateText.from = model[currentIndex].listEntries()[0].date
+                        dateText.from = model[currentIndex].listEntries()[0] ? model[currentIndex].listEntries()[0].date : new Date()
                         dateText.to = dateText.from
                         
                         for(var i = 0; i < model[currentIndex].listEntries().length; i++) {

@@ -1,46 +1,79 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
+import QtQuick.Layouts 1.13
 
 import "../Core" as C
 import "../Style" as S
 
-Item {
-    
+Rectangle {    
     S.AccountStyle {
         id: pageStyle
     }
     
-    FrequencyReference {
-        id: freqReference
-        objectName: "reference"
-        width: parent.width
-        height: parent.height * .20
-    }
+    color: "transparent"
+    border.color: "gold"
     
-    ListModel {
-        id: pastModel
-        objectName: "pastModel"
-    }
-    
-    function add(element) {
-        pastModel.append(element)
-    }
-    
-    ListView {
-        id: pastView
-        anchors.top: freqReference.bottom
-        anchors.topMargin: 10
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        
-        model: pastModel
-        
-        delegate: Text {
-            text: dateRef
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+    ColumnLayout {
+        anchors.fill: parent
+        spacing: height * 0.02
+        Label {
+            text: qsTr("Frequency")
+            font.family: pageStyle.title.name
+            font.pixelSize: pageStyle.title.size
             fontSizeMode: Text.Fit
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+            background: Rectangle {
+                gradient: pageStyle.goldHeader
+            }
+            
+            Layout.preferredHeight: parent.height * 0.05
+            Layout.fillWidth: true
+        }
+        
+        ListView {
+            id: pastView
+            objectName: "frequencyPast"
+            model: []
+            clip: true
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            
+            signal s_showFromFrequency(int id)
+            
+            delegate: ItemDelegate {
+                highlighted: ListView.isCurrentItem
+                
+                width: ListView.view.width
+                height: ListView.view.height * 0.07
+                
+                background: Rectangle {
+                    color: "transparent"
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked:  {
+                        pastView.currentIndex = index
+                        pastView.s_showFromFrequency(modelData.id)
+                    }
+                }
+                contentItem: Label {
+                    text: Qt.formatDate(modelData.date, "dd-MM-yyyy")
+                    fontSizeMode: Text.Fit
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    horizontalAlignment: Qt.AlignHCenter
+                    verticalAlignment: Qt.AlignVCenter
+                    
+                   
+                }
+            }
+            
+            highlightMoveDuration: 0            
+            highlight: Rectangle {
+                gradient: pageStyle.calSelect
+            }
         }
     }
 }

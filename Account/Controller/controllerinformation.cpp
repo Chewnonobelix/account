@@ -29,6 +29,7 @@ void ControllerInformation::configure(QObject * view)
 void ControllerInformation::view(int id)
 {
     m_entry = AbstractController::entry(id);
+
     auto child = m_view->findChild<QObject*>("entryEdit");
     QObject  *catItem;
 
@@ -49,11 +50,28 @@ void ControllerInformation::view(int id)
     child->setProperty("entry", QVariant::fromValue(m_entry));
 
     
-    QObject* freqItem = m_view->findChild<QObject*>("freqCheck");
+    QObject* freqItem = m_view->findChild<QObject*>("frequency");
     
     if(freqItem)
     {
-        connect(freqItem, SIGNAL(s_check(bool)), this, SLOT(enableFreq(bool)));
+        freqItem->setProperty("visible", m_entry.hasMetadata("frequency"));
+        if(m_entry.hasMetadata("frequency"))
+        {
+            int f = m_entry.metaData<int>("frequency");
+            int g = m_entry.metaData<int>("freqGroup");
+            auto freqs = m_db->selectFrequency();
+            for(auto it: freqs)
+            {
+                if(it.id() == f)
+                {
+                    auto le = it.listEntries(g);
+                    qDebug()<<"Leg"<<le.size();
+                    QObject* lf = freqItem->findChild<QObject*>("frequencyPast");
+                    if(lf)
+                        lf->setProperty("model", QVariant::fromValue(le));
+                }
+            }
+        }
     }
 }
 

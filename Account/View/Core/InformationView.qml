@@ -28,14 +28,26 @@ Item {
         spacing: 10
         Label {
             text: qsTr("Coming Soon")
-            Layout.fillHeight: true
             Layout.fillWidth: true
+            Layout.preferredHeight: parent.height * 0.10
             MouseArea {
                 anchors.fill: parent
                 onClicked:  {
                     console.log(screen.desktopAvailableHeight, screen.desktopAvailableWidth)                    
                     ee.changeDirection()
                 }
+            }
+        }
+        
+        Row {
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            
+            F.Frequency {
+                enabled: visible
+                objectName: "frequency"
+                width: parent.width * 0.48
+                height: parent.height
             }
         }
     }

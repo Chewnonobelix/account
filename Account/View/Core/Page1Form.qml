@@ -6,6 +6,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Controls.Styles 1.4
 import "../Budget" as B
 import "../Style" as S
+import "../Frequency" as F
 
 Page {
     
@@ -683,19 +684,9 @@ Page {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 
-                //                ToolTip.text: styleData.value
-                //                ToolTip.visible: styleData.hovered
-                //                ToolTip.timeout: 500
                 
                 onClicked: {
                     view.setNewIndex(styleData.row)
-                    //                    if (view.selection.contains(styleData.row)) {
-                    ////                        view.selection.clear()
-                    //                        view.unselectAll()                        
-                    //                    } else {
-                    //                        view.unselectAll()                        
-                    //                        view.selection.select(styleData.row)
-                    //                    }
                 }
             }            
         }

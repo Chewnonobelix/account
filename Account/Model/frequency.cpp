@@ -136,3 +136,23 @@ QVariantList  Frequency::listEntries() const
     
     return ret;
 }
+
+QVariantList  Frequency::listEntries(int group) const
+{
+    QVariantList ret;
+    
+    for(auto it: entries())
+    {
+        if(it.m_group == group)
+        {
+            QVariantMap m;
+            m["id"] = QString::number(it.m_id);
+            m["date"] = (it.m_date);
+            m["group"] = it.m_group;
+            ret<<QVariant::fromValue(m);
+        }
+    }
+    
+    return ret;
+}
+
