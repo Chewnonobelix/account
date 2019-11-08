@@ -23,9 +23,7 @@ Window {
     maximumHeight: screen.height / 2
     maximumWidth: screen.width * 0.4
     visible: false
-    
-    onScreenChanged: console.log(screen)
-    
+        
     width: maximumWidth
     height: maximumHeight
     Rectangle {
