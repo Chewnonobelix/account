@@ -14,6 +14,7 @@
 class ControllerDB: public InterfaceDataSave
 {
     typedef QSharedPointer<QSqlQuery> SqlQuery;
+    Q_OBJECT
 
 private:
     QSqlDatabase m_db;
@@ -41,7 +42,8 @@ public:
     ~ControllerDB();
 
     bool isConnected() const;
-
+public slots:
+    bool addEntry(QSharedPointer<Entry>) {}
     bool addEntry(const Entry&);
     QList<Entry> selectEntry(QString);
     bool removeEntry(const Entry&);

@@ -8,10 +8,16 @@
 #include "Model/frequency.h"
 #include "Model/accountglobal.h"
 
-class InterfaceDataSave
+class InterfaceDataSave: public QObject
 {
+    Q_OBJECT
 public:
+    InterfaceDataSave() = default;
+    inline InterfaceDataSave(const InterfaceDataSave&): QObject(nullptr) {}
     virtual ~InterfaceDataSave() {}
+public slots:
+
+    virtual bool addEntry(QSharedPointer<Entry>) = 0;
     virtual bool addEntry(const Entry&) = 0;
     virtual QList<Entry> selectEntry(QString) = 0;
     virtual bool removeEntry(const Entry&) = 0;

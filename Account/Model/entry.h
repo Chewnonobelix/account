@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QtMath>
 #include <QVariant>
+#include <QSharedPointer>
 #include "information.h"
 #include "metadata.h"
 
@@ -61,5 +62,5 @@ public:
 };
 
 Q_DECLARE_METATYPE(Entry)
-
+Q_DECLARE_METATYPE(QSharedPointer<Entry>)
 #endif // ENTRY_H

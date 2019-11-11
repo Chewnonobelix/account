@@ -4,7 +4,9 @@ void Worker::run()
 {
     for(auto it = 0; it < list.size(); it++)
     {
-        emit s_add(list[it]);
+        QSharedPointer<Entry> p = QSharedPointer<Entry>::create(list[it]);
+
+        emit s_add(p);
         if((it/list.size() * 100 ) % 10 == 0) qDebug()<<name<<(double)it/list.size()*100<<thread();
     }
 
@@ -81,7 +83,7 @@ ControllerFrequency::ControllerFrequency()
 void ControllerFrequency::endThread(QString name)
 {
     qDebug()<<"LOL"<<name;
-    delete m_threads[name];
+//    delete m_threads[name];
 }
 
 void ControllerFrequency::addEntry(int e)
@@ -138,6 +140,7 @@ void ControllerFrequency::generate(QString begin, QString end)
     
     Entry ref = m_freqs[freqId].referenceEntry();
     QList<Entry> lr;
+
     do
     {
         ref.setDate(it);
@@ -147,29 +150,34 @@ void ControllerFrequency::generate(QString begin, QString end)
         
         QString lab = n.info().title();
         Information inf = n.info();
+        inf.setEstimated(it > QDate::currentDate());
         inf.setTitle(lab+"_"+it.toString("dd-MM-yyyy"));
         n.setInfo(inf);
         it = n.date().addDays(t);
         
         lr<<n;
+        qDebug()<<"acc"<<n.account();
 //        emit s_addEntry(n);
     }
     while(freq != Account::FrequencyEnum::Unique && it <= QDate::fromString(end, "dd-MM-yyyy"));
     
-    m_threads[m_freqs[freqId].name()] = new Worker;
-    m_threads[m_freqs[freqId].name()]->list = lr;
-    m_threads[m_freqs[freqId].name()]->name =  m_freqs[freqId].name();
-    connect(m_threads[m_freqs[freqId].name()], Worker::s_add, this, ControllerFrequency::addFEntry);
-    connect(m_threads[m_freqs[freqId].name()], Worker::s_finish, this, ControllerFrequency::endThread);
+    Worker* w= new Worker;
+    w->list = lr;
+    w->name = m_freqs[freqId].name();
 
-    m_threads[m_freqs[freqId].name()]->start();
-
+    connect(w, Worker::s_add, this, ControllerFrequency::addFEntry, Qt::QueuedConnection);
+    connect(w, Worker::s_finish, this, ControllerFrequency::endThread);
+    connect(&m_thread, QThread::started, w, Worker::run);
+    w->moveToThread(&m_thread);
+    m_thread.start();
     QMetaObject::invokeMethod(m_generate, "close");
     exec();
+
+    qDebug()<<"XXXX"<<thread()<<&m_thread;
 }
 
 
-void ControllerFrequency::addFEntry(Entry e)
+void ControllerFrequency::addFEntry(QSharedPointer<Entry> e)
 {
     m_db->addEntry(e);
 }

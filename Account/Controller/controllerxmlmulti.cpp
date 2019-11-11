@@ -1,12 +1,12 @@
 #include "controllerxmlmulti.h"
 
 
-ControllerXMLMulti::ControllerXMLMulti(): InterfaceDataSave(), QObject(nullptr), m_timer(-1)
+ControllerXMLMulti::ControllerXMLMulti(): InterfaceDataSave(), m_timer(-1)
 {
 
 }
 
-ControllerXMLMulti::ControllerXMLMulti(const ControllerXMLMulti& c): InterfaceDataSave(c), QObject(nullptr), m_timer(-1)
+ControllerXMLMulti::ControllerXMLMulti(const ControllerXMLMulti& c): InterfaceDataSave(c), m_timer(-1)
 {
 
 }
@@ -80,33 +80,35 @@ bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root, QStrin
     return true;
 }
 
+bool ControllerXMLMulti::addEntry(QSharedPointer<Entry> e)
+{
+    return addEntry(*e);
+}
+
 bool ControllerXMLMulti::addEntry(const Entry& e)
 {
-    m_locker.lock();
-    static int i = 0;
-    qDebug()<<"Lock"<<i++<<thread();
     int ide = maxId(m_ids["entry"]) + 1;
     int idi = maxId(m_ids["info"]) + 1;
 
     m_ids["entry"]<<ide;
     m_ids["info"]<<idi;
     Entry et = e;
-    Information info = e.info();
+    Information info = et.info();
     info.setId(idi);
     info.setIdEntry(ide);
     et.setInfo(info);
     et.setId(ide);
 
-    if(!m_accounts.contains(e.account()))
-        createAccount(e.account());
+    if(!m_accounts.contains(et.account()))
+        createAccount(et.account());
 
-    setCurrentAccount(e.account());
+    setCurrentAccount(et.account());
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
 
     addEntryNode(et, root);
 
     close();
-    m_locker.unlock();
+
     return true;
 }
 
@@ -583,9 +585,10 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
         if(freqs.at(i).toElement().attribute("id").toInt() == id)
         {
             auto current = freqs.at(i).toElement();
-            Entry e;
+            Entry e(f.referenceEntry());
             e.setId(id);
             e.setType("outcome");
+            e.setAccount(m_accounts.key(m_currentAccount));
             Information in = e.info();
             in.setId(id);
             e.setInfo(in);

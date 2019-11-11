@@ -6,11 +6,10 @@
 #include <QMutex>
 #include "controllerxml.h"
 
-class ControllerXMLMulti: public InterfaceDataSave, public QObject
+class ControllerXMLMulti: public InterfaceDataSave
 {
-
+    Q_OBJECT
 private:
-    QMutex m_locker;
     QMap<QString, QDomDocument> m_accounts;
     
     QMap<QString, QSet<int>> m_ids;
@@ -46,6 +45,9 @@ public:
 
     void setCurrentAccount(QString);
 
+public slots:
+
+    virtual bool addEntry(QSharedPointer<Entry>);
     virtual bool addEntry(const Entry&);
     virtual QList<Entry> selectEntry(QString);
     virtual bool removeEntry(const Entry&);

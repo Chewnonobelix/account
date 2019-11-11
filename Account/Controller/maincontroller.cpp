@@ -8,7 +8,7 @@ MainController::MainController(): AbstractController()
     connect(&m_graph, GraphController::s_sum, this, receiveSum);
     connect(&m_info, ControllerInformation::s_update, &m_budget, ControllerBudget::updateEntry);
     connect(&m_info, ControllerInformation::s_changeCat, &m_budget, ControllerBudget::changeEntry);
-    connect(&m_freqs, ControllerFrequency::s_addEntry, this, MainController::addEntryMain);
+    connect(&m_freqs, ControllerFrequency::s_addEntry, this, MainController::addEntryMain, Qt::QueuedConnection);
 }
 
 MainController::~MainController()

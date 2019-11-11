@@ -10,6 +10,7 @@
 
 class ControllerXML: public InterfaceDataSave
 {
+    Q_OBJECT
 private:
     QString m_filename;
     QDomDocument m_document;
@@ -29,7 +30,8 @@ public:
     ~ControllerXML();
 
     void setFilename(QString);
-
+public slots:
+    virtual bool addEntry(QSharedPointer<Entry>) {}
     virtual bool addEntry(const Entry&);
     virtual QList<Entry> selectEntry(QString);
     virtual bool removeEntry(const Entry&);
