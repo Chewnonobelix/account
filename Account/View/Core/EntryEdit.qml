@@ -90,6 +90,7 @@ Item {
                 onEditingFinished: {
                     s_titleChanged(text)
                     info.opening = false
+                    enabled = true
                 }
                 
                 ToolTip.text: qsTr("Change transaction's title")
@@ -97,6 +98,7 @@ Item {
                 ToolTip.delay: 500
                 
                 onTextEdited: {
+                    enabled = false
                     info.opening = true
                 }
             }
