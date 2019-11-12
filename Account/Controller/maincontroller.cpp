@@ -3,16 +3,34 @@
 
 MainController::MainController(): AbstractController()
 {
-    //AbstractController::initTestEntry();
+    try
+    {
+        setDb("ControllerXMLMulti");
+        m_db->init();
+    }
+    catch(QString except)
+    {
+        qDebug()<<except;
+    }
     
+    m_db->moveToThread(&m_dbThread);
     connect(&m_graph, GraphController::s_sum, this, receiveSum);
     connect(&m_info, ControllerInformation::s_update, &m_budget, ControllerBudget::updateEntry);
     connect(&m_info, ControllerInformation::s_changeCat, &m_budget, ControllerBudget::changeEntry);
     connect(&m_freqs, ControllerFrequency::s_addEntry, this, MainController::addEntryMain, Qt::QueuedConnection);
+    connect(&m_dbThread, QThread::started, m_db, InterfaceDataSave::exec);
+    connect(&m_freqs, ControllerFrequency::s_select, this, MainController::selection);
+    
+    m_dbThread.start();    
 }
 
 MainController::~MainController()
 {
+    if(m_dbThread.isRunning())
+    {
+        m_dbThread.terminate();
+        m_dbThread.wait();
+    }
     AbstractController::deleteDb();
 }
 
@@ -364,7 +382,7 @@ void MainController::selection(int id)
                     found |= (id == -1) || (ret[i].id() == id);
                     
                     if(ret[i].id() == id) fIndex = i - first;
-                        
+                    
                     map.insert("id", ret[i].id());
                     map.insert("date", ret[i].date());
                     map.insert("value", ret[i].value());

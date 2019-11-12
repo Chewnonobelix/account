@@ -4,9 +4,8 @@ void Worker::run()
 {
     for(auto it = 0; it < list.size(); it++)
     {
-        QSharedPointer<Entry> p = QSharedPointer<Entry>::create(list[it]);
 
-        emit s_add(p);
+        emit s_add(list[it]);
         if((it/list.size() * 100 ) % 10 == 0) qDebug()<<name<<(double)it/list.size()*100<<thread();
     }
 
@@ -83,7 +82,16 @@ ControllerFrequency::ControllerFrequency()
 void ControllerFrequency::endThread(QString name)
 {
     qDebug()<<"LOL"<<name;
-//    delete m_threads[name];
+    if(m_workers[name])
+    {
+        m_workers[name]->terminate();
+        m_workers[name]->wait();
+        delete m_workers[name];        
+    }
+    
+    m_workers.remove(name);
+    exec();
+    emit s_select();
 }
 
 void ControllerFrequency::addEntry(int e)
@@ -156,31 +164,20 @@ void ControllerFrequency::generate(QString begin, QString end)
         it = n.date().addDays(t);
         
         lr<<n;
-        qDebug()<<"acc"<<n.account();
-//        emit s_addEntry(n);
     }
     while(freq != Account::FrequencyEnum::Unique && it <= QDate::fromString(end, "dd-MM-yyyy"));
     
-    Worker* w= new Worker;
-    w->list = lr;
-    w->name = m_freqs[freqId].name();
+    m_workers[m_freqs[freqId].name()]= new Worker;
+    m_workers[m_freqs[freqId].name()]->list = lr;
+    m_workers[m_freqs[freqId].name()]->name = m_freqs[freqId].name();
 
-    connect(w, Worker::s_add, this, ControllerFrequency::addFEntry, Qt::QueuedConnection);
-    connect(w, Worker::s_finish, this, ControllerFrequency::endThread);
-    connect(&m_thread, QThread::started, w, Worker::run);
-    w->moveToThread(&m_thread);
-    m_thread.start();
+    connect(m_workers[m_freqs[freqId].name()], Worker::s_add, m_db, InterfaceDataSave::addEntry, Qt::DirectConnection);
+    connect(m_workers[m_freqs[freqId].name()], Worker::s_finish, this, ControllerFrequency::endThread);
+
+    m_workers[m_freqs[freqId].name()]->start();
     QMetaObject::invokeMethod(m_generate, "close");
-    exec();
-
-    qDebug()<<"XXXX"<<thread()<<&m_thread;
 }
 
-
-void ControllerFrequency::addFEntry(QSharedPointer<Entry> e)
-{
-    m_db->addEntry(e);
-}
 
 void ControllerFrequency::openGenerate(int id)
 {

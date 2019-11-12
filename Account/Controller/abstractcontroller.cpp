@@ -8,15 +8,6 @@ Total AbstractController::m_accountTotal = Total();
 AbstractController::AbstractController(): QObject(nullptr)
 {
 
-    try
-    {
-        setDb("ControllerXMLMulti");
-        m_db->init();
-    }
-    catch(QString except)
-    {
-        qDebug()<<except;
-    }
 }
 
 
@@ -168,26 +159,11 @@ void AbstractController::updateEntry(const Entry & e)
 void AbstractController::addCategory(QString name, QString type)
 {
     m_db->addCategory(name, type);
-//    Categories::clear();
-//    auto c = m_db->selectCategory();
-
-//    for(auto it = c.begin(); it != c.end(); it++)
-//        Categories::addType(it.key(), it.value());
-
 }
 
 QStringList AbstractController::categories(QString type)
 {
-//    QMetaEnum enume = QMetaEnum::fromType<Account::Type>();
-//    int t = enume.keyToValue(type.toLower().toLatin1());
-
     QStringList ret = m_db->selectCategory().values(type);
-
-//    QStringList ret;
-
-//    for(auto it: list)
-//        if(Categories::type(it) == t)
-//            ret<<it;
 
     return ret;
 }

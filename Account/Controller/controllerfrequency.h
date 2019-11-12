@@ -10,7 +10,7 @@
 #include "Model/frequency.h"
 #include "Model/entry.h"
 
-class Worker: public QObject
+class Worker: public QThread
 {
     Q_OBJECT
 public:
@@ -26,7 +26,7 @@ public slots:
 
 signals:
     void s_finish(QString);
-    void s_add(QSharedPointer<Entry>);
+    void s_add(const Entry&);
 };
 
 class ControllerFrequency: public AbstractController
@@ -34,9 +34,8 @@ class ControllerFrequency: public AbstractController
     Q_OBJECT 
 private:
     QMap<int, Frequency> m_freqs;
-//    QMap<QString, Worker*> m_threads;
-//    Worker m_thread;
-    QThread m_thread;
+    QMap<QString, Worker*> m_workers;
+
     QObject* m_manager, *m_generate;
     QQmlApplicationEngine m_eng;
     
@@ -54,6 +53,7 @@ public:
 
 signals:
     void s_addEntry(Entry);
+    void s_select(int = -1);
     
 public slots:
     void endThread(QString);
@@ -74,8 +74,6 @@ public slots:
     void updateFreqFreq(int, int);
     
     void displayEntry(int);
-
-    void addFEntry(QSharedPointer<Entry>);
 };
 
 #endif // CONTROLLERFREQUENCY_H

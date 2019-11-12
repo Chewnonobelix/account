@@ -6,6 +6,7 @@
 #include <QQuickView>
 #include <QVariant>
 #include <QJSValue>
+#include <QThread>
 #include "abstractcontroller.h"
 #include "controllerinformation.h"
 #include "controllerxml.h"
@@ -29,6 +30,7 @@ private:
     ControllerTransfert m_transfert;
     ControllerBudget m_budget;
     ControllerFrequency m_freqs;
+    QThread m_dbThread;
     
     void checkEstimated();
 

@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     Controller/controllerbudget.cpp \
     Controller/controllerfrequency.cpp \
+    Controller/interfacedatasave.cpp \
     Model/accountglobal.cpp \
     Model/frequency.cpp \
     Model/metadata.cpp \
