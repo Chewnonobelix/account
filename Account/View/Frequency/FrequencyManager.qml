@@ -262,7 +262,7 @@ Window {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Layout.preferredWidth: ref.width / 2
-                
+                spacing: parent.height * 0.02
                 Rectangle {
                     width: parent.width
                     height: parent.height * .20

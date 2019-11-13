@@ -51,7 +51,8 @@ Item {
         rows: 3
         columns: 3
         anchors.fill: parent
-        rowSpacing: 0
+        rowSpacing: height * 0.02
+        columnSpacing: 0
         
         property var tWidth: flow === GridLayout.LeftToRight ? 0.33 : 1
         property var tHeight: flow === GridLayout.LeftToRight ? 1 : 0.33
