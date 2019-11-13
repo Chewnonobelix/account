@@ -10,6 +10,39 @@ ControllerInformation::~ControllerInformation()
 
 int ControllerInformation::exec()
 {
+    QObject* freqItem = m_view->findChild<QObject*>("frequency");
+    
+    if(freqItem)
+    {
+        freqItem->setProperty("visible", m_entry.hasMetadata("frequency"));
+        if(m_entry.hasMetadata("frequency"))
+        {
+            int f = m_entry.metaData<int>("frequency");
+            int g = m_entry.metaData<int>("freqGroup");
+            auto freqs = m_db->selectFrequency();
+            QObject* skipper = m_view->findChild<QObject*>("pageSwipper");
+            int page = skipper->property("pageIndex").toInt();
+            page--;
+            for(auto it: freqs)
+            {
+                if(it.id() == f)
+                {
+                    auto le = it.listEntries(g);
+                    QVariantList model;
+
+                    skipper->setProperty("maxPage", le.size() / 100 + 1);
+                    
+                    for(int i = (page*100); i < le.size() && i < (page+1)*100; i++)
+                        model<<le[i];
+                    
+                    QObject* lf = freqItem->findChild<QObject*>("frequencyPast");
+                    if(lf)
+                        lf->setProperty("model", QVariant::fromValue(model));
+                }
+            }
+        }
+    }
+    
     return 0;
 }
 
@@ -23,6 +56,10 @@ void ControllerInformation::configure(QObject * view)
         
         connect(child, SIGNAL(s_titleChanged(QString)), this, SLOT(titleChange(QString)));
         connect(child, SIGNAL(s_valueChanged(double)), this, SLOT(valueChange(double)));
+        
+        QObject* skip = m_view->findChild<QObject*>("pageSwipper");
+        
+        connect(skip, SIGNAL(s_pageChange()), this , SLOT(pageChange()));        
     }
 }
 
@@ -49,30 +86,7 @@ void ControllerInformation::view(int id)
 
     child->setProperty("entry", QVariant::fromValue(m_entry));
 
-    
-    QObject* freqItem = m_view->findChild<QObject*>("frequency");
-    
-    if(freqItem)
-    {
-        freqItem->setProperty("visible", m_entry.hasMetadata("frequency"));
-        if(m_entry.hasMetadata("frequency"))
-        {
-            int f = m_entry.metaData<int>("frequency");
-            int g = m_entry.metaData<int>("freqGroup");
-            auto freqs = m_db->selectFrequency();
-            for(auto it: freqs)
-            {
-                if(it.id() == f)
-                {
-                    auto le = it.listEntries(g);
-
-                    QObject* lf = freqItem->findChild<QObject*>("frequencyPast");
-                    if(lf)
-                        lf->setProperty("model", QVariant::fromValue(le));
-                }
-            }
-        }
-    }
+    exec();
 }
 
 void ControllerInformation::titleChange(QString title)
@@ -127,3 +141,7 @@ void ControllerInformation::enableFreq(bool enable)
     }
 }
 
+void ControllerInformation::pageChange()
+{
+    exec();
+}

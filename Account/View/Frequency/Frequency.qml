@@ -75,5 +75,13 @@ Rectangle {
                 gradient: pageStyle.calSelect
             }
         }
+        
+        C.PageChanger {
+            id: pageSwipper
+            objectName: "pageSwipper"
+            Layout.fillWidth: true
+            Layout.preferredHeight: parent.height * 0.05
+            
+        }
     }
 }
