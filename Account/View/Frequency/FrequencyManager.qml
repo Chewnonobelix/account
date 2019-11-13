@@ -466,6 +466,7 @@ Window {
                 Layout.fillWidth: true    
                 Layout.preferredHeight: parent.height * .07
                 
+                enabled: ref.enabled
                 
                 Control2.ComboBox { 
                     id: whenCombo
