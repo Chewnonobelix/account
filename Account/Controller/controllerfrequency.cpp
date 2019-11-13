@@ -75,8 +75,6 @@ ControllerFrequency::ControllerFrequency()
     
     if(el)
         connect(el, SIGNAL(s_display(int)), this, SLOT(displayEntry(int)));
-
-//    connect(&m_thread, Worker::finished, this, ControllerFrequency::endThread);
 }
 
 void ControllerFrequency::endThread(QString name)

@@ -23,7 +23,7 @@ Window {
     maximumHeight: screen.height / 2
     maximumWidth: screen.width * 0.4
     visible: false
-        
+    
     width: maximumWidth
     height: maximumHeight
     Rectangle {
@@ -109,23 +109,22 @@ Window {
                         var t = model[currentIndex].freq + 0
                         whenCombo.currentIndex = whenCombo.model.findIndex(t)
                         
-                        testModel.clear()
+                        pageChanger.pageIndex = 1
                         dateText.from = model[currentIndex].listEntries()[0] ? model[currentIndex].listEntries()[0].date : new Date()
                         dateText.to = dateText.from
                         
-                        for(var i = 0; i < model[currentIndex].listEntries().length; i++) {
-                            testModel.append(model[currentIndex].listEntries()[i])
+                        for(var i = 0; i < model[currentIndex].listEntries().length; i++) {                            
+                            if(model[currentIndex].listEntries()[i].date < dateText.from)
+                                dateText.from = model[currentIndex].listEntries()[i].date
                             
-                            if(testModel.get(i).date < dateText.from)
-                                dateText.from = testModel.get(i).date
-                            
-                            if(testModel.get(i).date > dateText.to)
-                                dateText.to = testModel.get(i).date
-                            
+                            if(model[currentIndex].listEntries()[i].date > dateText.to)
+                                dateText.to = model[currentIndex].listEntries()[i].date
                         }
                         
                         groupText.nb = model[currentIndex].nbGroup
                         countText.nb = model[currentIndex].listEntries().length
+                        pageChanger.maxPage = countText.nb / 100 + 1 
+                        pageChanger.s_pageChange()
                         whenCombo.enabled = count !== 0                    
                     }
                 }
@@ -331,6 +330,24 @@ Window {
                 }                
             }
             
+            PageChanger {
+                id: pageChanger
+                Layout.row: 4
+                Layout.column: 2
+                Layout.preferredWidth: ref.width / 2
+                Layout.fillHeight: true
+                
+                onS_pageChange: {
+                    testModel.clear()
+                    
+                    var i = pageIndex - 1
+                    
+                    for(var j = 0 ; j < 100; j++) {
+                        if(j+100*i < frequencyList.model[frequencyList.currentIndex].listEntries().length) testModel.append(frequencyList.model[frequencyList.currentIndex].listEntries()[j+100*i])
+                    }
+                }
+            }
+            
             ListView {
                 id: entryList
                 objectName: "entryList"
@@ -376,7 +393,7 @@ Window {
                         font.family: pageStyle.title.name
                         font.pixelSize: pageStyle.title.size2                        
                     }
-
+                    
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -420,7 +437,7 @@ Window {
                         entryList.s_display(id)
                         ListView.view.currentIndex = index 
                     }
-
+                    
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {

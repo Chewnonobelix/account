@@ -339,7 +339,7 @@ void MainController::selection(int id)
         for(auto it: ld)
             ret<<AbstractController::entries(it);
     
-    int maxPage = ret.size() < 100 ? 1 : (ret.size() / 100);
+    int maxPage = ret.size() < 100 ? 1 : (ret.size() / 100 + 1);
     QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");   
     
     if(skipper)
