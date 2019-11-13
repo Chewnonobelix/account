@@ -340,23 +340,22 @@ void MainController::selection(int id)
             ret<<AbstractController::entries(it);
     
     int maxPage = ret.size() < 100 ? 1 : (ret.size() / 100);
-    QObject* pageSkip = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
+    QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");   
     
-    if(pageSkip)
+    if(skipper)
     {
-        int cMaxPage = pageSkip->property("maxPage").toInt();
+        int cMaxPage = skipper->property("maxPage").toInt();
         
         if(maxPage != cMaxPage || id != -1)
         {
-            pageSkip->setProperty("pageIndex", 1);
-            pageSkip->setProperty("maxPage", maxPage);
+            skipper->setProperty("pageIndex", 1);
+            skipper->setProperty("maxPage", maxPage);
         }
     }
     
     Total t;
     
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
-    QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
     if(tab && skipper)
     {
         bool found = (id == -1);
@@ -402,7 +401,7 @@ void MainController::selection(int id)
         }
         while(!found && skipper->property("pageIndex").toInt() <= maxPage);
     }
-    
+        
     QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
     if(head)
         head->setProperty("selectionTotal", t.value());

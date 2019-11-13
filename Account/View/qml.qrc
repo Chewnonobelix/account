@@ -25,5 +25,6 @@
         <file>Core/CategoryItem.qml</file>
         <file>Core/EntryEdit.qml</file>
         <file>Core/CoreModel.qml</file>
+        <file>Core/PageChanger.qml</file>
     </qresource>
 </RCC>
