@@ -17,7 +17,8 @@ private:
     QDomDocument m_currentAccount;
 
     int m_timer;
-
+    QMutex m_mutex;
+    
     int maxId(const QSet<int> &) const;
     Information selectInformation(const QDomElement&) const;
     void addInfo(QDomElement&, const Information&);
