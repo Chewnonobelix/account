@@ -10,11 +10,8 @@ Item {
     S.AccountStyle {
         id: pageStyle
     }
-    property int maximum: Screen.width * .55 - 10
-    
-    //    width: maximum
+
     property var entry
-    //property var infoModel: entry.info
     
     property var catModel: []
     
@@ -44,23 +41,23 @@ Item {
         grid.flow = grid.flow === GridLayout.LeftToRight ? GridLayout.TopToBottom : GridLayout.LeftToRight
         
     }
-    
-    
+       
     GridLayout {
         id: grid
         rows: 3
         columns: 3
         anchors.fill: parent
         rowSpacing: height * 0.02
-        columnSpacing: 0
+        columnSpacing: width * 0.02
         
-        property var tWidth: flow === GridLayout.LeftToRight ? 0.33 : 1
-        property var tHeight: flow === GridLayout.LeftToRight ? 1 : 0.33
+        property var tWidth: flow === GridLayout.LeftToRight ? 0.32 : 1
+        property var tHeight: flow === GridLayout.LeftToRight ? 1 : 0.32
         
         Column {
             Layout.preferredWidth: parent.width * parent.tWidth
             Layout.preferredHeight: parent.height *parent.tHeight
-            spacing: height * 0.05
+            spacing: parent.height * 0.02
+            
             Label {
                 id: titleLabel
                 text: qsTr("Title")
@@ -75,14 +72,14 @@ Item {
                 }
 
                 width: parent.width
-                height: parent.height * 0.40
+                height: parent.height * 0.39
             }
             
             TextField {
                 id: title
                 enabled: !info.opening
                 width: parent.width
-                height: parent.height * 0.60
+                height: parent.height * 0.59
                 text: ""
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
@@ -106,7 +103,7 @@ Item {
         }
         
         Column {
-            spacing: height * 0.05
+            spacing: parent.height * 0.02
             Layout.preferredWidth: parent.width * parent.tWidth
             Layout.preferredHeight: parent.height *parent.tHeight
             
@@ -123,14 +120,14 @@ Item {
                     border.color: "darkgoldenrod"
                 }
                 
-                height: parent.height * .40
+                height: parent.height * .39
                 width: parent.width
             }
             
             DoubleSpinBox {
                 id: spinbox
                 
-                height: parent.height * 0.60
+                height: parent.height * 0.59
                 width: parent.width
                 enabled: !info.opening
                 
@@ -163,7 +160,7 @@ Item {
         }
         
         Column {
-            spacing: height * 0.05
+            spacing: parent.height * 0.02
             Layout.preferredWidth: parent.width * parent.tWidth
             Layout.preferredHeight: parent.height *parent.tHeight
             
@@ -180,19 +177,16 @@ Item {
                     border.color: "darkgoldenrod"
                 }
                 
-                height: parent.height * 0.40
+                height: parent.height * 0.39
                 width: parent.width
             }
-            
-            
-            
-            
+                     
             CategoryItem {
                 id: category
                 objectName: "category"
                 enabled: !info.opening
                 
-                height: parent.height * 0.60
+                height: parent.height * 0.59
                 width: parent.width
                 
                 editable: currentText === ""
@@ -203,7 +197,6 @@ Item {
                         info.s_catChanged(currentText)
                 }
             }
-        }
-        
+        }        
     }
 }
