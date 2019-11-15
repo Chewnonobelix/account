@@ -20,6 +20,7 @@ Item {
     RowLayout
     {
         anchors.fill: parent
+        spacing: 0
         Button {
             id: previousPages
             
