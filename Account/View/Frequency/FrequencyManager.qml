@@ -18,6 +18,10 @@ Window {
         id: models
     }
     
+    ListModel {
+        id: testModel
+    }
+    
     title: qsTr("Frequency manager")
     
     maximumHeight: screen.height / 2
@@ -26,72 +30,88 @@ Window {
     
     width: maximumWidth
     height: maximumHeight
+    
+    id: root
+    
+    Component.onCompleted: {
+        layout.usableHeight = Qt.binding(function() {return height})
+        layout.usableWidth = Qt.binding(function() {return width})      
+    }
+    
     Rectangle {
         anchors.fill: parent
         gradient: pageStyle.backgroundGradient
+        
+        
         GridLayout {
-            
             anchors.fill: parent
-            rowSpacing: height * 0.02
-            columnSpacing: width * 0.01
-            Rectangle {
-                gradient: pageStyle.goldHeader
+            anchors.topMargin: usableHeight * 0.02
+            anchors.bottomMargin: usableHeight * 0.02
+            anchors.rightMargin: usableWidth * 0.02
+            anchors.leftMargin: usableWidth * 0.02
+            id: layout
+            
+            property int usableHeight
+            property int usableWidth
+            
+            rowSpacing: usableHeight * 0.02
+            columnSpacing: usableWidth * 0.02
+            
+            Control2.Label {
+                text: qsTr("Reference") + " ->"
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
+                fontSizeMode: Text.Fit
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
                 
-                Label {
-                    anchors.fill: parent
-                    text: qsTr("Reference") + " ->"
-                    font.family: pageStyle.title.name
-                    font.pixelSize: pageStyle.title.size
-                    fontSizeMode: Text.Fit
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-                
-                
-                Layout.alignment: Qt.AlignCenter
-                Layout.columnSpan:  2
+                Layout.preferredHeight: parent.usableHeight * 0.05
+                Layout.preferredWidth: parent.usableWidth * 0.20
                 Layout.row: 0
                 Layout.column: 0
-                Layout.preferredWidth: parent.width * .20
-                Layout.preferredHeight: parent.height * .05
-            }
-            
-            
-            Rectangle {
-                gradient: pageStyle.goldHeader
+                Layout.columnSpan: 2
+                Layout.rowSpan: 1
                 
-                Label {
-                    anchors.fill: parent
-                    text: qsTr("Frequency list")
-                    font.family: pageStyle.title.name
-                    font.pixelSize: pageStyle.title.size
-                    fontSizeMode: Text.Fit
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
+                background: Rectangle {
+                    gradient: pageStyle.goldHeader
                 }
-                
-                
-                Layout.alignment: Qt.AlignCenter
-                Layout.columnSpan:  2
-                Layout.row: 1
-                Layout.column: 0
-                Layout.preferredWidth: parent.width * .20
-                Layout.preferredHeight: parent.height * .05
             }
             
             ListView {
                 id: frequencyList
                 objectName: "frequencyList"
                 model: []
-                anchors.leftMargin: 10
-                Layout.columnSpan:  2
-                Layout.row: 2
-                Layout.column: 0
-                Layout.rowSpan: 2
                 
-                onCountChanged: {           
-                    currentIndex = count === 0 ? -1 : currentIndex
-                    ref.enabled = count !== 0
+                Layout.preferredHeight: parent.usableHeight * 0.77
+                Layout.preferredWidth: parent.usableWidth * 0.20
+                Layout.row: 1
+                Layout.column: 0
+                Layout.columnSpan: 2
+                Layout.rowSpan: 3
+                
+                header:  Control2.Label {
+                    text: qsTr("Frequency list")
+                    font.family: pageStyle.title.name
+                    font.pixelSize: pageStyle.title.size2
+                    fontSizeMode: Text.Fit
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    
+                    background: Rectangle {
+                        gradient: pageStyle.goldHeader
+                    }
+                }
+                                
+                Component.onCompleted: {
+                    currentIndex = Qt.binding(function(){ return count === 0 ? -1 : currentIndex })                   
+                    ref.entry = Qt.binding(function() {if(currentIndex !== -1)return model[currentIndex].reference})
+                    
+                    
+                    whenCombo.currentIndex = Qt.binding(function() {return whenCombo.model.findIndex(model[currentIndex].freq + 0)})         
+                    groupText.nb = Qt.binding(function() {return model[currentIndex].nbGroup})
+                    countText.nb = Qt.binding(function() {return model[currentIndex].listEntries().length})
+                    pageChanger.maxPage = Qt.binding(function() {return countText.nb / 100 + 1})
+                    whenCombo.enabled = Qt.binding(function() {return count !== 0})                                    
                 }
                 
                 clip: true
@@ -103,13 +123,9 @@ Window {
                 
                 
                 onCurrentIndexChanged: {
-                    if(enabled) {
-                        whenCombo.enabled = false
-                        ref.entry = model[currentIndex].reference
-                        var t = model[currentIndex].freq + 0
-                        whenCombo.currentIndex = whenCombo.model.findIndex(t)
-                        
+                    if(enabled) {                        
                         pageChanger.pageIndex = 1
+                        
                         dateText.from = model[currentIndex].listEntries()[0] ? model[currentIndex].listEntries()[0].date : new Date()
                         dateText.to = dateText.from
                         
@@ -121,17 +137,9 @@ Window {
                                 dateText.to = model[currentIndex].listEntries()[i].date
                         }
                         
-                        groupText.nb = model[currentIndex].nbGroup
-                        countText.nb = model[currentIndex].listEntries().length
-                        pageChanger.maxPage = countText.nb / 100 + 1 
                         pageChanger.s_pageChange()
-                        whenCombo.enabled = count !== 0                    
                     }
                 }
-                Layout.alignment: Qt.AlignCenter
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                Layout.maximumWidth: parent.width * .20
                 
                 delegate: Rectangle {
                     height: 40
@@ -167,10 +175,12 @@ Window {
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
                 
-                Layout.columnSpan:  1
+                Layout.preferredHeight: parent.usableHeight * 0.05
+                Layout.preferredWidth: parent.usableWidth * 0.09
                 Layout.row: 4
                 Layout.column: 0
-                Layout.maximumWidth: parent.width * .10
+                Layout.columnSpan: 1
+                Layout.rowSpan: 1
                 
                 signal s_addFrequency()
                 
@@ -196,10 +206,12 @@ Window {
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
                 
-                Layout.columnSpan:  1
+                Layout.preferredHeight: parent.usableHeight * 0.05
+                Layout.preferredWidth: parent.usableWidth * 0.09
                 Layout.row: 4
                 Layout.column: 1
-                Layout.maximumWidth: parent.width * .10
+                Layout.columnSpan: 1
+                Layout.rowSpan: 1
                 
                 signal s_removeFrequency(int freq)
                 
@@ -222,12 +234,15 @@ Window {
             EntryEdit {
                 id: ref
                 objectName: "ref"
-                Layout.preferredHeight: parent.height * .20
-                Layout.preferredWidth: parent.width * .77
-                Layout.columnSpan:  2
-                Layout.rowSpan: 2
+                
+                Layout.preferredHeight: parent.usableHeight * 0.10
+                Layout.preferredWidth: parent.usableWidth * 0.74
                 Layout.row: 0
                 Layout.column: 2
+                Layout.columnSpan: 3
+                Layout.rowSpan: 1
+                
+                
                 enabled: frequencyList.count !== 0  && whenCombo.enabled
                 property var incomeList: []
                 property var outcomeList: []
@@ -241,122 +256,241 @@ Window {
                 onS_catChanged: if(entry && enabled) catChanged(entry.id, cat, "manager")
                 
                 onEntryChanged: {
-                    catModel = entry && entry.type === "income" ? incomeList : outcomeList
-                    typeCombo.currentIndex = entry && entry.type === "income" ? 0 : 1
-                    linked.catModel = catModel
                     linked.reloadCat()
                     reloadCat()
                 }
                 
-                onIncomeListChanged: catModel = entry && entry.type === "income" ? incomeList : outcomeList
-                onOutcomeListChanged: catModel = entry && entry.type === "income" ? incomeList : outcomeList
+                Component.onCompleted: {
+                    enabled = Qt.binding(function() {return frequencyList.count !== 0})
+                    entry = Qt.binding(function() {if(frequencyList.currentIndex !== -1)return frequencyList.model[frequencyList.currentIndex].reference})
+                    
+                    catModel = Qt.binding(function(){return (entry && entry.type === "income") ? incomeList : outcomeList})
+                    typeCombo.currentIndex = Qt.binding(function(){return (entry && entry.type === "income") ? 0 : 1})
+                    linked.catModel = Qt.binding(function() { return catModel})             
+                }
             }
             
-            ListModel {
-                id: testModel
+            Control2.ComboBox { 
+                id: whenCombo
+                objectName: "whenCombo"
+                
+                Layout.preferredHeight: parent.usableHeight * 0.05
+                Layout.preferredWidth: parent.usableWidth * 0.23
+                Layout.row: 1
+                Layout.column: 2
+                Layout.columnSpan: 1
+                Layout.rowSpan: 1
+                
+                enabled: ref.enabled
+                
+                
+                model: models.freqModel
+                textRole: "name"
+                signal s_freq(int i, int f)
+                
+                onCurrentIndexChanged: {
+                    if(down && ref.entry) s_freq(ref.entry.id, model.get(currentIndex).role)
+                }
+                
+                background: Rectangle {
+                    anchors.fill: parent
+                    gradient: pageStyle.goldButton
+                }
+                
+                delegate: Control2.ItemDelegate {
+                    width: typeCombo.width
+                    contentItem: Rectangle {
+                        anchors.fill: parent
+                        gradient: pageStyle.goldButton
+                        Label {
+                            text: name
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            fontSizeMode: Text.Fit 
+                            anchors.fill: parent
+                            horizontalAlignment: Qt.AlignHCenter
+                            verticalAlignment: Qt.AlignVCenter
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            acceptedButtons: Qt.NoButton
+                            cursorShape: Qt.PointingHandCursor
+                        }
+                    }
+                }
+                
             }
             
-            Column {
+            Control2.ComboBox {
+                id: typeCombo
+                objectName: "type"
+                
+                model: models.typeModel
+                
+                Layout.preferredHeight: parent.usableHeight * 0.05
+                Layout.preferredWidth: parent.usableWidth * 0.24
+                Layout.row: 1
+                Layout.column: 3
+                Layout.columnSpan: 1
+                Layout.rowSpan: 1
+                
+                enabled: ref.enabled
+                
+                
+                textRole: "name"
+                
+                background: Rectangle {
+                    anchors.fill: parent
+                    gradient: pageStyle.goldButton
+                }
+                
+                signal s_updateType(int id, string nType)
+                
+                onCurrentIndexChanged: {
+                    if(ref.enabled) s_updateType(ref.entry.id, model.get(currentIndex).type)
+                }
+                
+                delegate: Control2.ItemDelegate {
+                    width: typeCombo.width
+                    contentItem: Rectangle {
+                        anchors.fill: parent
+                        gradient: pageStyle.goldButton
+                        Label {
+                            text: name
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            fontSizeMode: Text.Fit 
+                            anchors.fill: parent
+                            horizontalAlignment: Qt.AlignHCenter
+                            verticalAlignment: Qt.AlignVCenter
+                        }
+                        MouseArea {
+                            anchors.fill: parent
+                            acceptedButtons: Qt.NoButton
+                            cursorShape: Qt.PointingHandCursor
+                        }
+                    }
+                }
+            }
+            
+            Control2.Button {
+                objectName: "generateButton"
+                text: qsTr("Generate")
+                
+                Layout.preferredHeight: parent.usableHeight * 0.05
+                Layout.preferredWidth: parent.usableWidth * 0.23
+                Layout.row: 1
+                Layout.column: 4
+                Layout.columnSpan: 1
+                Layout.rowSpan: 1
+                
+                enabled: ref.enabled
+                
+                signal s_open(int fId)
+                
+                onReleased: s_open(ref.entry.id)
+                
+                MouseArea {
+                    z: -1
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
+                }
+                
+                Rectangle {
+                    anchors.fill: parent
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    
+                }
+                
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+            }    
+            
+            Rectangle {
+                Layout.preferredHeight: parent.usableHeight * 0.20
+                Layout.preferredWidth: parent.usableWidth * 0.49
+                Layout.row: 2
+                Layout.column: 3
+                Layout.columnSpan: 2
+                Layout.rowSpan: 1
+                
+                visible: frequencyList.currentIndex !== -1
+                color: "transparent"
+                border.color: "gold"
+                
+                Text {
+                    id: groupText
+                    property int nb: 0
+                    text: qsTr(" Number of generation") + ": " + nb 
+                    fontSizeMode: Text.Fit
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    width: parent.width
+                    height: parent.height / parent.children.length
+                    horizontalAlignment: Qt.AlignHCenter
+                    verticalAlignment: Qt.AlignVCenter
+                }                
+                Text {
+                    id: countText
+                    anchors.top: groupText.bottom
+                    
+                    property int nb: 0
+                    text: qsTr(" Number of entries") + ": " + nb 
+                    fontSizeMode: Text.Fit
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    width: parent.width
+                    horizontalAlignment: Qt.AlignHCenter
+                    verticalAlignment: Qt.AlignVCenter
+                    height: parent.height / parent.children.length                    
+                }
+                Text {
+                    
+                    id: dateText
+                    property var from
+                    property var to
+                    anchors.top: countText.bottom
+                    text: qsTr("From") + " " + Qt.formatDate(from, "dd-MM-yyyy") + ", " + qsTr("to") + " " + Qt.formatDate(to, "dd-MM-yyyy")
+                    fontSizeMode: Text.Fit
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    width: parent.width
+                    height: parent.height / parent.children.length
+                    horizontalAlignment: Qt.AlignHCenter
+                    verticalAlignment: Qt.AlignVCenter
+                }
+            }
+            
+            
+            EntryEdit {
+                id: linked
+                objectName: "linkedDisplayer"
+                
+                Component.onCompleted: changeDirection()
+                opening: true
+                visible: entryList.currentIndex !== -1 && frequencyList.currentIndex !== -1
+                
+                Layout.preferredHeight: parent.usableHeight * 0.53
+                Layout.preferredWidth: parent.usableWidth * 0.49
                 Layout.row: 3
                 Layout.column: 3
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.preferredWidth: ref.width / 2
-                spacing: parent.height * 0.02
-                Rectangle {
-                    width: parent.width
-                    height: parent.height * .20
-                    color: "transparent"
-                    border.color: "gold"
-                    Text {
-                        id: groupText
-                        property int nb: 0
-                        text: qsTr(" Number of generation") + ": " + nb 
-                        fontSizeMode: Text.Fit
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
-                        width: parent.width
-                        height: parent.height / parent.children.length
-                        horizontalAlignment: Qt.AlignHCenter
-                        verticalAlignment: Qt.AlignVCenter
-                    }                
-                    Text {
-                        id: countText
-                        anchors.top: groupText.bottom
-                        
-                        property int nb: 0
-                        text: qsTr(" Number of entries") + ": " + nb 
-                        fontSizeMode: Text.Fit
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
-                        width: parent.width
-                        horizontalAlignment: Qt.AlignHCenter
-                        verticalAlignment: Qt.AlignVCenter
-                        height: parent.height / parent.children.length                    
-                    }
-                    Text {
-                        
-                        id: dateText
-                        property var from
-                        property var to
-                        anchors.top: countText.bottom
-                        text: qsTr("From") + " " + Qt.formatDate(from, "dd-MM-yyyy") + ", " + qsTr("to") + " " + Qt.formatDate(to, "dd-MM-yyyy")
-                        fontSizeMode: Text.Fit
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
-                        width: parent.width
-                        height: parent.height / parent.children.length
-                        horizontalAlignment: Qt.AlignHCenter
-                        verticalAlignment: Qt.AlignVCenter
-                    }
-                }
+                Layout.columnSpan: 2
+                Layout.rowSpan: 2
                 
-                Rectangle {
-                    objectName: "linkedDisplayer"
-                    width: parent.width
-                    height: parent.height * .80
-                    color: "transparent"
-                    property var entry
-                    onEntryChanged: {   
-                        linked.entry = entry
-                    }
-                    
-                    EntryEdit {
-                        id: linked
-                        anchors.fill: parent
-                        Component.onCompleted: changeDirection()
-                        opening: true
-                    }
-                }                
-            }
-            
-            PageChanger {
-                id: pageChanger
-                Layout.row: 4
-                Layout.column: 2
-                Layout.preferredWidth: ref.width / 2
-                Layout.fillHeight: true
-                
-                onS_pageChange: {
-                    testModel.clear()
-                    
-                    var i = pageIndex - 1
-                    
-                    for(var j = 0 ; j < 100; j++) {
-                        if(j+100*i < frequencyList.model[frequencyList.currentIndex].listEntries().length) testModel.append(frequencyList.model[frequencyList.currentIndex].listEntries()[j+100*i])
-                    }
-                }
             }
             
             ListView {
                 id: entryList
                 objectName: "entryList"
-                Layout.row: 3
-                Layout.column: 2
-                Layout.alignment: Qt.Center
-                Layout.fillHeight: true
                 
-                Layout.preferredWidth: ref.width / 2
+                Layout.preferredHeight: parent.usableHeight * 0.70
+                Layout.preferredWidth: parent.usableWidth * 0.23
+                Layout.row: 2
+                Layout.column: 2
+                Layout.columnSpan: 1
+                Layout.rowSpan: 2
+                
                 model: testModel
                 clip: true
                 
@@ -457,133 +591,25 @@ Window {
                 }
             }
             
-            
-            Row {
-                Layout.row: 2
+            PageChanger {
+                id: pageChanger
+                
+                Layout.preferredHeight: parent.usableHeight * 0.05
+                Layout.preferredWidth: parent.usableWidth * 0.23
+                Layout.row: 4
                 Layout.column: 2
-                Layout.columnSpan: 3
-                spacing: width * 0.01
-                Layout.fillWidth: true    
-                Layout.preferredHeight: parent.height * .07
+                Layout.columnSpan: 1
+                Layout.rowSpan: 1
                 
-                enabled: ref.enabled
-                
-                Control2.ComboBox { 
-                    id: whenCombo
-                    objectName: "whenCombo"
-                    height: parent.height
-                    width: parent.width / parent.children.length
-                    model: models.freqModel
-                    textRole: "name"
-                    signal s_freq(int i, int f)
+                onS_pageChange: {
+                    testModel.clear()
                     
-                    onCurrentIndexChanged: {
-                        if(enabled && ref.entry) s_freq(ref.entry.id, model.get(currentIndex).role)
-                    }
+                    var i = pageIndex - 1
                     
-                    background: Rectangle {
-                        anchors.fill: parent
-                        gradient: pageStyle.goldButton
-                    }
-                    
-                    delegate: Control2.ItemDelegate {
-                        width: typeCombo.width
-                        contentItem: Rectangle {
-                            anchors.fill: parent
-                            gradient: pageStyle.goldButton
-                            Label {
-                                text: name
-                                font.family: pageStyle.core.name
-                                font.pixelSize: pageStyle.core.size
-                                fontSizeMode: Text.Fit 
-                                anchors.fill: parent
-                                horizontalAlignment: Qt.AlignHCenter
-                                verticalAlignment: Qt.AlignVCenter
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                acceptedButtons: Qt.NoButton
-                                cursorShape: Qt.PointingHandCursor
-                            }
-                        }
-                    }
-                    
-                }
-                
-                Control2.ComboBox {
-                    id: typeCombo
-                    objectName: "type"
-                    
-                    model: models.typeModel
-                    enabled: whenCombo.enabled
-                    height: parent.height
-                    width: parent.width / parent.children.length
-                    
-                    textRole: "name"
-                    
-                    background: Rectangle {
-                        anchors.fill: parent
-                        gradient: pageStyle.goldButton
-                    }
-                    
-                    signal s_updateType(int id, string nType)
-                    
-                    onCurrentIndexChanged: {
-                        if(ref && ref.enabled) s_updateType(ref.entry.id, model.get(currentIndex).type)
-                    }
-                    
-                    delegate: Control2.ItemDelegate {
-                        width: typeCombo.width
-                        contentItem: Rectangle {
-                            anchors.fill: parent
-                            gradient: pageStyle.goldButton
-                            Label {
-                                text: name
-                                font.family: pageStyle.core.name
-                                font.pixelSize: pageStyle.core.size
-                                fontSizeMode: Text.Fit 
-                                anchors.fill: parent
-                                horizontalAlignment: Qt.AlignHCenter
-                                verticalAlignment: Qt.AlignVCenter
-                            }
-                            MouseArea {
-                                anchors.fill: parent
-                                acceptedButtons: Qt.NoButton
-                                cursorShape: Qt.PointingHandCursor
-                            }
-                        }
+                    for(var j = 0 ; j < 100; j++) {
+                        if(j+100*i < frequencyList.model[frequencyList.currentIndex].listEntries().length) testModel.append(frequencyList.model[frequencyList.currentIndex].listEntries()[j+100*i])
                     }
                 }
-                
-                
-                Control2.Button {
-                    objectName: "generateButton"
-                    text: qsTr("Generate")
-                    
-                    
-                    height: parent.height
-                    width: parent.width / parent.children.len
-                    
-                    signal s_open(int fId)
-                    
-                    onReleased: s_open(ref.entry.id)
-                    
-                    MouseArea {
-                        z: -1
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        acceptedButtons: Qt.NoButton
-                    }
-                    
-                    Rectangle {
-                        anchors.fill: parent
-                        gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-                        
-                    }
-                    
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
-                }    
             }
         }
     }/**/
