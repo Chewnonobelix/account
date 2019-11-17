@@ -8,46 +8,35 @@ import "../Frequency" as F
 Item {
     id: info
     objectName: "info"
-    property int maximum: Screen.width * .55 - 10
-    width: maximum
-    
-    
     S.AccountStyle {
         id: pageStyle
     }
     
-    ColumnLayout {
+    GridLayout {
         anchors.fill: parent
         EntryEdit {
             id: ee
             objectName: "entryEdit"
             visible: parent.visible
-            Layout.fillWidth: true
-            Layout.preferredHeight: parent.height * .15
+            Layout.preferredWidth: info.width
+            Layout.preferredHeight: info.height * .30
+            Layout.row: 0
+            Layout.column: 0
+            Layout.rowSpan: 1
+            Layout.columnSpan: 2
         }
-        spacing: 10
-        Label {
-            text: qsTr("Coming Soon")
-            Layout.fillWidth: true
-            Layout.preferredHeight: parent.height * 0.10
-            MouseArea {
-                anchors.fill: parent
-                onClicked:  {
-                    ee.changeDirection()
-                }
-            }
-        }
+        rowSpacing: info.height * 0.02
+        columnSpacing: info.width * 0.02
         
-        Row {
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            
-            F.Frequency {
-                enabled: visible
-                objectName: "frequency"
-                width: parent.width * 0.48
-                height: parent.height
-            }
+        F.Frequency {
+            enabled: visible
+            objectName: "frequency"
+            Layout.preferredWidth: info.width * 49
+            Layout.preferredHeight: info.height * .68
+            Layout.row: 1
+            Layout.column: 0
+            Layout.rowSpan: 1
+            Layout.columnSpan: 1
         }
     }
 }
