@@ -89,7 +89,7 @@ void ControllerFrequency::endThread(QString name)
     
     m_workers.remove(name);
     exec();
-    emit s_select();
+    emit s_select(-2);
 }
 
 void ControllerFrequency::addEntry(int e)

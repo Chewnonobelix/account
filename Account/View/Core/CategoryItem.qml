@@ -19,7 +19,7 @@ ComboBox {
     property bool blocked: false
     
     onCurrentTextChanged: {
-        if(!blocked)
+        if(down)
             s_currentTextChanged(currentText)
     }
     
@@ -35,12 +35,7 @@ ComboBox {
     function setting(type) {
         var index = find(type)
         
-        if(index >= 0) {
-            currentIndex = index
-        }
-        else {
-            currentIndex = model.length-1
-        }
+        return index >= 0 ? index : model.lenth - 1
     }
     
     background: Rectangle {

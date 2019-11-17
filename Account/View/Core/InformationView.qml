@@ -33,7 +33,6 @@ Item {
             MouseArea {
                 anchors.fill: parent
                 onClicked:  {
-                    console.log(screen.desktopAvailableHeight, screen.desktopAvailableWidth)                    
                     ee.changeDirection()
                 }
             }

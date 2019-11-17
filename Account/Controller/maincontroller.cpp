@@ -318,6 +318,12 @@ void MainController::previewCalendar()
 
 void MainController::selection(int id)
 {
+    if(id == -2)
+    {
+        id = -1;
+        setCurrentAccount(currentAccount());
+    }
+
     m_graph.exec();
     QObject* calendar = m_engine.rootObjects().first()->findChild<QObject*>("cal");
     QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));

@@ -504,11 +504,11 @@ Current Version beta 0.9")
             objectName: "table"
         }
         
-        Page2Form {
-            id: graph
-            month: table.v_dateMonth
-            year: table.v_dateYear
-        }
+//        Page2Form {
+//            id: graph
+//            month: table.v_dateMonth
+//            year: table.v_dateYear
+//        }
         
         Popup {
             id: deleteAccount

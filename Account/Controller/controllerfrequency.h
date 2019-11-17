@@ -54,7 +54,8 @@ public:
 signals:
     void s_addEntry(Entry);
     void s_select(int = -1);
-    
+    void s_show();
+
 public slots:
     void endThread(QString);
     void generate(QString, QString);

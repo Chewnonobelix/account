@@ -8,23 +8,21 @@ GridLayout {
     id: grid
     rows: 3
     columns: 3
-    //        anchors.fill: parent
+
     rowSpacing: height * 0.03
     columnSpacing: 0
     
-    onColumnSpacingChanged: console.log("connard", columnSpacing)
-    
+
     
     property bool opening: false
     S.AccountStyle {
         id: pageStyle
     }
     
-    property var entry
+    property var entry: null
     
     property var catModel: []
     
-    onCatModelChanged: category.model = catModel
     signal s_titleChanged(string title)
     signal s_estimatedChanged(bool title)
     signal s_valueChanged(real value)
@@ -35,17 +33,12 @@ GridLayout {
         categoryLabel.enabled = true
         valueLabel.enabled = true
     }
-    
-    onEntryChanged: {
-        if(entry) {
-            category.setting(entry.info.category)
-            title.text = entry.info.title
-            spinbox.value =  entry.value*100
-        }
-    }
-    
-    function reloadCat() {
-        if(entry) category.setting(entry.info.category)
+        
+    Component.onCompleted: {
+        title.text = Qt.binding(function() {return entry ? entry.info.title : ""})
+        spinbox.value = Qt.binding(function() {return entry ? entry.value * 100 : 0})
+        category.model = Qt.binding(function() {return catModel})
+        category.currentIndex = Qt.binding(function() {return entry ? category.setting(entry.info.category) : category.model.length - 1})
     }
     
     function changeDirection() {
@@ -196,8 +189,7 @@ GridLayout {
             width: parent.width
             
             editable: currentText === ""
-            model: catModel
-            
+
             onS_currentTextChanged: {
                 if(currentText !== "")
                     s_catChanged(currentText)

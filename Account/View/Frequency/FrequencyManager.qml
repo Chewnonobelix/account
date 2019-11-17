@@ -103,15 +103,13 @@ Window {
                 }
                                 
                 Component.onCompleted: {
-                    currentIndex = Qt.binding(function(){ return count === 0 ? -1 : currentIndex })                   
-                    ref.entry = Qt.binding(function() {if(currentIndex !== -1)return model[currentIndex].reference})
-                    
-                    
-                    whenCombo.currentIndex = Qt.binding(function() {return whenCombo.model.findIndex(model[currentIndex].freq + 0)})         
+//                    currentIndex = Qt.binding(function(){ return count === 0 ? -1 : currentIndex })
+                    ref.entry = Qt.binding(function() {return currentIndex !== -1 ? model[currentIndex].reference : null})
+
                     groupText.nb = Qt.binding(function() {return model[currentIndex].nbGroup})
                     countText.nb = Qt.binding(function() {return model[currentIndex].listEntries().length})
                     pageChanger.maxPage = Qt.binding(function() {return countText.nb / 100 + 1})
-                    whenCombo.enabled = Qt.binding(function() {return count !== 0})                                    
+                    whenCombo.enabled = Qt.binding(function() {return count !== 0})
                 }
                 
                 clip: true
@@ -126,10 +124,11 @@ Window {
                     if(enabled) {                        
                         pageChanger.pageIndex = 1
                         
+                        whenCombo.currentIndex = whenCombo.model.findIndex(model[currentIndex].freq + 0)
                         dateText.from = model[currentIndex].listEntries()[0] ? model[currentIndex].listEntries()[0].date : new Date()
                         dateText.to = dateText.from
                         
-                        for(var i = 0; i < model[currentIndex].listEntries().length; i++) {                            
+                        for(var i = 0; i < model[currentIndex].listEntries().length; i++) {
                             if(model[currentIndex].listEntries()[i].date < dateText.from)
                                 dateText.from = model[currentIndex].listEntries()[i].date
                             
@@ -256,21 +255,20 @@ Window {
                 onS_catChanged: if(entry && enabled) catChanged(entry.id, cat, "manager")
                 
                 onEntryChanged: {
-                    linked.reloadCat()
-                    reloadCat()
+                    typeCombo.currentIndex = Qt.binding(function(){return (entry && entry.type === "income") ? 0 : 1})
+
                 }
                 
                 Component.onCompleted: {
                     enabled = Qt.binding(function() {return frequencyList.count !== 0})
-                    entry = Qt.binding(function() {if(frequencyList.currentIndex !== -1)return frequencyList.model[frequencyList.currentIndex].reference})
-                    
+                    typeCombo.currentIndex = entry && entry.type === "income" ? 0 : 1
+
                     catModel = Qt.binding(function(){return (entry && entry.type === "income") ? incomeList : outcomeList})
-                    typeCombo.currentIndex = Qt.binding(function(){return (entry && entry.type === "income") ? 0 : 1})
-                    linked.catModel = Qt.binding(function() { return catModel})             
+                                    linked.catModel = Qt.binding(function() { return catModel})
                 }
             }
-            
-            Control2.ComboBox { 
+
+            Control2.ComboBox {
                 id: whenCombo
                 objectName: "whenCombo"
                 
@@ -306,7 +304,7 @@ Window {
                             text: name
                             font.family: pageStyle.core.name
                             font.pixelSize: pageStyle.core.size
-                            fontSizeMode: Text.Fit 
+                            fontSizeMode: Text.Fit
                             anchors.fill: parent
                             horizontalAlignment: Qt.AlignHCenter
                             verticalAlignment: Qt.AlignVCenter
@@ -347,7 +345,7 @@ Window {
                 signal s_updateType(int id, string nType)
                 
                 onCurrentIndexChanged: {
-                    if(ref.enabled) s_updateType(ref.entry.id, model.get(currentIndex).type)
+                    if(ref.enabled && down) s_updateType(ref.entry.id, model.get(currentIndex).type)
                 }
                 
                 delegate: Control2.ItemDelegate {
@@ -359,7 +357,7 @@ Window {
                             text: name
                             font.family: pageStyle.core.name
                             font.pixelSize: pageStyle.core.size
-                            fontSizeMode: Text.Fit 
+                            fontSizeMode: Text.Fit
                             anchors.fill: parent
                             horizontalAlignment: Qt.AlignHCenter
                             verticalAlignment: Qt.AlignVCenter
@@ -405,7 +403,7 @@ Window {
                 
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
-            }    
+            }
             
             Rectangle {
                 Layout.preferredHeight: parent.usableHeight * 0.20
@@ -422,7 +420,7 @@ Window {
                 Text {
                     id: groupText
                     property int nb: 0
-                    text: qsTr(" Number of generation") + ": " + nb 
+                    text: qsTr(" Number of generation") + ": " + nb
                     fontSizeMode: Text.Fit
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
@@ -430,20 +428,20 @@ Window {
                     height: parent.height / parent.children.length
                     horizontalAlignment: Qt.AlignHCenter
                     verticalAlignment: Qt.AlignVCenter
-                }                
+                }
                 Text {
                     id: countText
                     anchors.top: groupText.bottom
                     
                     property int nb: 0
-                    text: qsTr(" Number of entries") + ": " + nb 
+                    text: qsTr(" Number of entries") + ": " + nb
                     fontSizeMode: Text.Fit
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
                     width: parent.width
                     horizontalAlignment: Qt.AlignHCenter
                     verticalAlignment: Qt.AlignVCenter
-                    height: parent.height / parent.children.length                    
+                    height: parent.height / parent.children.length
                 }
                 Text {
                     
@@ -461,8 +459,7 @@ Window {
                     verticalAlignment: Qt.AlignVCenter
                 }
             }
-            
-            
+                        
             EntryEdit {
                 id: linked
                 objectName: "linkedDisplayer"
@@ -497,7 +494,7 @@ Window {
                 signal s_display(int entryId)
                 
                 property var enabledSection: []
-                section.property: "group" 
+                section.property: "group"
                 section.criteria: ViewSection.FullString
                 section.labelPositioning: ViewSection.InlineLabels
                 section.delegate: Rectangle {
@@ -525,19 +522,19 @@ Window {
                         verticalAlignment: Text.AlignVCenter
                         fontSizeMode: Text.Fit
                         font.family: pageStyle.title.name
-                        font.pixelSize: pageStyle.title.size2                        
+                        font.pixelSize: pageStyle.title.size2
                     }
                     
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            entryList.enabledSection[section] = !entryList.enabledSection[section]  
+                            entryList.enabledSection[section] = !entryList.enabledSection[section]
                             
                             for(var j = 0; j < testModel.count; j++) {
                                 if(testModel.get(j).group == section ) testModel.setProperty(j, "isVisible", entryList.enabledSection[section]);
                             }
                             
-                            arrow.rotation = arrow.rotation + 180 
+                            arrow.rotation = arrow.rotation + 180
                         }
                     }
                     
@@ -559,7 +556,7 @@ Window {
                     background: Rectangle {
                         anchors.fill: parent
                         property var index: parent.index
-                        gradient: pageStyle.unselectView  
+                        gradient: pageStyle.unselectView
                     }
                     
                     highlighted: ListView.isCurrentItem
@@ -569,7 +566,7 @@ Window {
                     
                     function f() {
                         entryList.s_display(id)
-                        ListView.view.currentIndex = index 
+                        ListView.view.currentIndex = index
                     }
                     
                     MouseArea {
@@ -579,7 +576,7 @@ Window {
                         }
                     }
                     
-                    Label {                        
+                    Label {
                         anchors.fill: parent
                         text: Qt.formatDate(date, "dd-MM-yyyy")
                         horizontalAlignment: Qt.AlignHCenter
