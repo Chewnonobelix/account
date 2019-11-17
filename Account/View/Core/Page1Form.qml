@@ -26,13 +26,493 @@ Page {
         color: "transparent"
     }
     
-    MultiCalendar {
-        id: cal
-        objectName: "cal"
-        weekNumbersVisible: true
-        implicitHeight: parent.height / 2
-        implicitWidth: parent.width * 0.2
+    GridLayout {
+        id: grid
+        anchors.fill: parent
+        rowSpacing: height * 0.02
+        columnSpacing: width * 0.02
+
+        MultiCalendar {
+            id: cal
+            objectName: "cal"
+            weekNumbersVisible: true
+
+            Layout.column: 0
+            Layout.row: 0
+            Layout.rowSpan: 1
+            Layout.columnSpan: 2
+            Layout.preferredHeight: grid.height * 0.30
+            Layout.preferredWidth: grid.width * 0.20
+        }
+
+        Button {
+            id: add
+            text: qsTr("Add")
+            font.family: pageStyle.core.name
+            font.pixelSize: pageStyle.core.size
+            enabled: accountSelect.model.length > 0
+            Layout.column: 0
+            Layout.row: 1
+            Layout.rowSpan: 1
+            Layout.columnSpan: 1
+            Layout.preferredHeight: grid.height * 0.05
+            Layout.preferredWidth: grid.width * 0.09
+
+            ToolTip.text: qsTr("Add new transaction")
+            ToolTip.visible: hovered
+            ToolTip.delay: 500
+
+            Rectangle {
+                id: rectAdd
+                anchors.fill: parent
+                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+            }
+
+            MouseArea {
+                z: -1
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                acceptedButtons: Qt.NoButton
+            }
+
+            onClicked: {
+                mainWindow.adding(false)
+            }
+        }
+
+        Button {
+            id: remove
+            text: qsTr("Remove")
+            font.family: pageStyle.core.name
+            font.pixelSize: pageStyle.core.size
+            property int index: view.currentIndex
+            enabled: view.currentIndex !== -1 && accountSelect.model.length > 0
+
+            Layout.column: 1
+            Layout.row: 1
+            Layout.rowSpan: 1
+            Layout.columnSpan: 1
+            Layout.preferredHeight: grid.height * 0.05
+            Layout.preferredWidth: grid.width * 0.09
+
+            ToolTip.text: qsTr("Remove select transaction")
+            ToolTip.visible: hovered
+            ToolTip.delay: 500
+
+            MouseArea {
+                z: -1
+                anchors.fill: parent
+                cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                acceptedButtons: Qt.NoButton
+            }
+
+            Rectangle {
+                id: rectRemove
+
+                anchors.fill: parent
+                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+            }
+            onClicked: {
+                if (index > -1) {
+                    mainWindow.remove(defaultModel.get(index).id)
+                }
+            }
+        }
+
+        Column {
+            Layout.column: 1
+            Layout.row: 1
+            Layout.rowSpan: 1
+            Layout.columnSpan: 1
+            Layout.preferredHeight: grid.height * 0.61
+            Layout.preferredWidth: grid.width * 0.20
+            spacing: grid.height * .02
+
+            Label {
+                id: quickViewDate
+                objectName: "quickViewDate"
+                property date currentDate
+                background: Rectangle {
+                    gradient: pageStyle.goldHeader
+                }
+
+                text: qsTr("Budget quick view") + ": " + Qt.formatDate(currentDate, "dd-MM-yyyy")
+                height: parent.height * .10
+                width: parent.width
+                fontSizeMode: Text.Fit
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                clip: true
+            }
+
+            B.BudgetView {
+                id: budgetQuick
+                objectName: "budgetQuick"
+
+                width: parent.width
+                height: parent.height - parent.spacing - quickViewDate.height
+            }
+        }
+
+        Column {
+            Layout.column: 2
+            Layout.row: 0
+            Layout.rowSpan: 3
+            Layout.columnSpan: 1
+            Layout.preferredHeight: grid.height
+            Layout.preferredWidth: grid.width * 0.20
+            spacing: grid.height * .02
+            TableView {
+                anchors.left: cal.right
+                anchors.leftMargin: 5
+                height: parent.height * 0.95
+                width: parent.width
+                id: view
+                objectName: "entryView"
+                model: defaultModel
+
+                property int maximumWidth: 4 * 100 + 60
+
+                horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
+
+                sortIndicatorVisible: true
+                property string currentType
+                property int currentIndex: -1
+
+                function fAdd(i) {
+                    defaultModel.append(i)
+                }
+
+                function unselectAll() {
+                    selection.clear()
+                    currentIndex = -1
+                }
+
+                function reset() {
+                    defaultModel.clear()
+                    currentIndex = -1
+                    infoView.visible = false
+                }
+
+                signal s_view(int index)
+
+                backgroundVisible: false
+                Connections {
+                    target: cal
+                    onS_datesChanged: {
+                        view.reset()
+                    }
+                }
+
+                onWidthChanged: {
+                    flickableItem.contentX = 0
+                }
+
+                onHeightChanged: {
+                    flickableItem.contentY = 0
+                }
+
+                TableViewColumn {
+                    role: "id"
+                    visible: false
+                }
+
+                TableViewColumn {
+                    role: "estimated"
+                    visible: false
+                }
+
+                function setNewIndex(index) {
+                    if (selection.contains(index)) {
+                        selection.clear()
+                        currentIndex = -1
+                    } else {
+                        selection.clear()
+                        currentIndex = index
+                        selection.select(index)
+                    }
+                }
+
+                function selectFromId(id) {
+                    for (var i = 0; i < defaultModel.count; i++) {
+                        if (defaultModel.get(i).id === id) {
+                            setNewIndex(i)
+                        }
+                    }
+                }
+
+                TableViewColumn {
+                    role: "type"
+                    title: qsTr("[+/-]")
+                    width: 45
+                    movable: false
+                    resizable: false
+                    id: typeColumn
+                    property string tipText: "*:" + qsTr("estimated entry")
+                    delegate: Rectangle {
+                        color: "transparent"
+                        anchors.centerIn: parent
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            propagateComposedEvents: true
+                            onClicked: {
+                                view.setNewIndex(styleData.row)
+                            }
+                        }
+                        Label {
+                            property string est: defaultModel.get(
+                                                     styleData.row).estimated ? "*" : ""
+                            text: styleData.value === "income" ? "+" + est : "-" + est
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            horizontalAlignment: Text.AlignHCenter
+                            anchors.fill: parent
+                        }
+                    }
+                }
+
+                TableViewColumn {
+                    role: "date"
+                    title: qsTr("Date")
+                    width: 100
+                    movable: false
+                    resizable: false
+                    id: columnDate
+
+                    delegate: Rectangle {
+                        color: "transparent"
+                        anchors.centerIn: parent
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            propagateComposedEvents: true
+                            onClicked: {
+                                view.setNewIndex(styleData.row)
+                            }
+                        }
+
+                        Label {
+                            text: Qt.formatDate(styleData.value, "dd-MM-yyyy")
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            horizontalAlignment: Text.AlignHCenter
+                            anchors.fill: parent
+                        }
+                    }
+                }
+
+                TableViewColumn {
+                    role: "value"
+                    title: qsTr("Value")
+                    width: 100
+                    movable: false
+                    resizable: false
+
+                    delegate: Rectangle {
+                        color: "transparent"
+                        anchors.centerIn: parent
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            propagateComposedEvents: true
+                            onClicked: {
+                                view.setNewIndex(styleData.row)
+                            }
+                        }
+
+                        Label {
+                            text: styleData.value
+                            clip: true
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            horizontalAlignment: Text.AlignHCenter
+                            anchors.fill: parent
+                        }
+                    }
+                }
+
+                TableViewColumn {
+                    role: "label"
+                    title: qsTr("Label")
+                    width: 110
+                    movable: false
+                    resizable: false
+                    id: labelHeader
+
+                    delegate: Rectangle {
+                        color: "transparent"
+                        anchors.centerIn: parent
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            propagateComposedEvents: true
+                            onClicked: {
+                                view.setNewIndex(styleData.row)
+                            }
+                        }
+
+                        Label {
+                            text: styleData.value
+                            clip: true
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            verticalAlignment: Text.AlignVCenter
+                            anchors.fill: parent
+                        }
+                    }
+                }
+
+                TableViewColumn {
+                    role: "total"
+                    title: qsTr("Total")
+                    width: 100
+                    movable: false
+                    resizable: false
+
+                    delegate: Rectangle {
+                        color: "transparent"
+                        anchors.centerIn: parent
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            propagateComposedEvents: true
+                            onClicked: {
+                                view.setNewIndex(styleData.row)
+                            }
+                        }
+
+                        Label {
+                            text: styleData.value
+                            clip: true
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            horizontalAlignment: Text.AlignHCenter
+                            anchors.fill: parent
+                        }
+                    }
+                }
+
+                headerDelegate: Rectangle {
+                    gradient: isClicked ? pageStyle.darkGoldButton : pageStyle.goldHeader
+
+                    height: view.height * 0.03
+                    anchors.centerIn: parent
+                    anchors.leftMargin: 10
+                    property bool isHovered: styleData.containsMouse
+                    property bool isClicked: styleData.pressed
+
+                    border.color: "darkgoldenrod"
+                    Label {
+                        id: headerText
+                        height: parent.height * .8
+                        anchors.centerIn: parent
+                        text: styleData.value
+                        font.family: pageStyle.title.name
+                        font.pixelSize: height * 0.85
+
+                        ToolTip.visible: isHovered && (styleData.column === 2)
+                        ToolTip.text: view.getToolTip(styleData.column)
+                        ToolTip.delay: 500
+                    }
+                }
+
+                onSortIndicatorColumnChanged: {
+                    defaultModel.sort(getColumn(sortIndicatorColumn).role,
+                                      sortIndicatorOrder)
+                    if (currentIndex !== -1) {
+                        s_view(defaultModel.get(currentIndex).id)
+                    }
+                }
+
+                onSortIndicatorOrderChanged: {
+                    defaultModel.sort(getColumn(sortIndicatorColumn).role,
+                                      sortIndicatorOrder)
+                    if (currentIndex !== -1) {
+                        s_view(defaultModel.get(currentIndex).id)
+                    }
+                }
+
+                function getToolTip(index) {
+                    if (index === 2) {
+                        return typeColumn.tipText
+                    }
+
+                    return ""
+                }
+
+                itemDelegate: Rectangle {
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+
+
+                        onClicked: {
+                            view.setNewIndex(styleData.row)
+                        }
+                    }
+                }
+
+                rowDelegate: Rectangle {
+                    id: rectRow
+
+                    width: parent.width
+                    height: 20
+
+
+                    gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
+                }
+
+                onCurrentIndexChanged: {
+                    var cItem =  defaultModel.get(currentIndex)
+                    infoView.visible = (currentIndex !== -1)
+                            && (cItem.label !== "Initial")
+                    remove.enabled = infoView.visible
+
+                    if (currentIndex !== -1)
+                        s_view(cItem.id)
+                }
+            }
+
+            PageChanger {
+                id: changer
+                objectName: "pageSkip"
+                anchors.top: view.bottom
+                anchors.left: view.left
+                anchors.right: view.right
+                height: parent.height * 0.05
+            }
+
+        }
+
+        ScrollView {
+
+            contentWidth: infoView.maximum
+            contentHeight: height * 1.5
+            anchors.left: view.right
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.top: parent.top
+            height: parent.height
+
+            anchors.leftMargin: 10
+
+            ScrollBar.horizontal.policy: ScrollBar.AsNeeded
+
+            clip: true
+            contentItem: InformationView {
+                id: infoView
+                objectName: "infoView"
+                clip: true
+                visible: false
+                enabled: true
+            }
+        }
+
     }
+
     
     /* */
     Adding {
@@ -76,139 +556,25 @@ Page {
         addingid.open()
     }
     
-    Row {
-        anchors.top: cal.bottom
-        anchors.topMargin: 10
-        //        anchors.right: cal.right
-        //        anchors.rightMargin: 5
-        anchors.left: parent.left
-        anchors.leftMargin: 5
-        
-        width: cal.width
-        id: group
-        spacing: 10
-        //        height: 50
-        //        width: cal.width
-        enabled: accountSelect.model.length > 0
-        
-        Button {
-            id: add
-            text: qsTr("Add")
-            width: parent.width * .45
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
-            
-            ToolTip.text: qsTr("Add new transaction")
-            ToolTip.visible: hovered
-            ToolTip.delay: 500
-            
-            Rectangle {
-                id: rectAdd
-                anchors.fill: parent
-                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-            }
-            
-            MouseArea {
-                z: -1
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                acceptedButtons: Qt.NoButton
-            }
-            
-            onClicked: {
-                mainWindow.adding(false)
-            }
-        }
-        
-        Button {
-            id: remove
-            //            anchors.right: parent.right
-            text: qsTr("Remove")
-            width: parent.width * .45
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
-            property int index: view.currentIndex
-            enabled: view.currentIndex !== -1
-            
-            ToolTip.text: qsTr("Remove select transaction")
-            ToolTip.visible: hovered
-            ToolTip.delay: 500
-            
-            MouseArea {
-                z: -1
-                anchors.fill: parent
-                cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
-                acceptedButtons: Qt.NoButton
-            }
-            
-            Rectangle {
-                id: rectRemove
-                
-                anchors.fill: parent
-                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-            }
-            onClicked: {
-                if (index > -1) {
-                    mainWindow.remove(defaultModel.get(index).id)
-                }
-            }
-        }
-    }
     
-    Column {
-        anchors.bottom: parent.bottom
-        anchors.top: group.bottom
-        anchors.left: parent.left
-        anchors.topMargin: 5
-        width: cal.width
-        spacing: 5
-        Label {
-            id: quickViewDate
-            objectName: "quickViewDate"
-            property date currentDate
-            background: Rectangle {
-                gradient: pageStyle.goldHeader
-            }
-            
-            text: qsTr("Budget quick view") + ": " + Qt.formatDate(currentDate, "dd-MM-yyyy")
-            width: parent.width
-            height: parent.height * .10
-            fontSizeMode: Text.Fit
-            font.family: pageStyle.title.name
-            font.pixelSize: pageStyle.title.size
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            clip: true
-        }
-        
-        B.BudgetView {
-            id: budgetQuick
-            objectName: "budgetQuick"
-            
-            width: parent.width
-            
-            anchors.top: quickViewDate.bottom
-            //            height: parent.height * .90
-        }        
-    }
-    
+
     
     property int currentId: view.currentIndex > -1 && defaultModel.get(
                                 view.currentIndex).label
                             !== "Initial" ? defaultModel.get(
                                                 view.currentIndex).id : -1
     
-    Rectangle {
-        color: "transparent"
-        anchors.top: group.bottom
-        //        anchors.topMargin: 210
-        anchors.right: view.left
-        anchors.left: parent.left
+//    Rectangle {
+//        color: "transparent"
+//        anchors.top: group.bottom
+//        //        anchors.topMargin: 210
+//        anchors.right: view.left
+//        anchors.left: parent.left
         
-        B.BudgetView {
-            anchors.fill: parent
-        }
-    }
+//        B.BudgetView {
+//            anchors.fill: parent
+//        }
+//    }
     
     ListModel {
         id: defaultModel
@@ -242,349 +608,6 @@ Page {
     }
     
     
-    PageChanger {
-        id: changer
-        objectName: "pageSkip"
-        anchors.top: view.bottom
-        anchors.left: view.left
-        anchors.right: view.right
-        height: parent.height * 0.05
-        
-    }
     
-    TableView {
-        anchors.left: cal.right
-        anchors.leftMargin: 5
-        height: parent.height * 0.95
-        width: (parent.width * 0.30) - 5
-        id: view
-        objectName: "entryView"
-        model: defaultModel
-        
-        property int maximumWidth: 4 * 100 + 60
-        
-        horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
-        
-        sortIndicatorVisible: true
-        property string currentType
-        property int currentIndex: -1
-        
-        function fAdd(i) {
-            defaultModel.append(i)
-        }
-        
-        function unselectAll() {
-            selection.clear()
-            currentIndex = -1
-        }
-        
-        function reset() {
-            defaultModel.clear()
-            currentIndex = -1
-            infoView.visible = false
-        }
-        
-        signal s_view(int index)
-        
-        backgroundVisible: false
-        Connections {
-            target: cal
-            onS_datesChanged: {
-                view.reset()
-            }
-        }
-        
-        onWidthChanged: {
-            flickableItem.contentX = 0
-        }
-        
-        onHeightChanged: {
-            flickableItem.contentY = 0
-        }
-        
-        TableViewColumn {
-            role: "id"
-            visible: false
-        }
-        
-        TableViewColumn {
-            role: "estimated"
-            visible: false
-        }
-        
-        function setNewIndex(index) {
-            if (selection.contains(index)) {
-                selection.clear()
-                currentIndex = -1
-            } else {
-                selection.clear()
-                currentIndex = index
-                selection.select(index)
-            }
-        }
-        
-        function selectFromId(id) {
-            for (var i = 0; i < defaultModel.count; i++) {
-                if (defaultModel.get(i).id === id) {
-                    setNewIndex(i)
-                }
-            }
-        }
-        
-        TableViewColumn {
-            role: "type"
-            title: qsTr("[+/-]")
-            width: 45
-            movable: false
-            resizable: false
-            id: typeColumn
-            property string tipText: "*:" + qsTr("estimated entry")
-            delegate: Rectangle {
-                color: "transparent"
-                anchors.centerIn: parent
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    propagateComposedEvents: true
-                    onClicked: {
-                        view.setNewIndex(styleData.row)
-                    }
-                }
-                Label {
-                    property string est: defaultModel.get(
-                                             styleData.row).estimated ? "*" : ""
-                    text: styleData.value === "income" ? "+" + est : "-" + est
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
-                    horizontalAlignment: Text.AlignHCenter
-                    anchors.fill: parent
-                }
-            }
-        }
-        
-        TableViewColumn {
-            role: "date"
-            title: qsTr("Date")
-            width: 100
-            movable: false
-            resizable: false
-            id: columnDate
-            
-            delegate: Rectangle {
-                color: "transparent"
-                anchors.centerIn: parent
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    propagateComposedEvents: true
-                    onClicked: {
-                        view.setNewIndex(styleData.row)
-                    }
-                }
-                
-                Label {
-                    text: Qt.formatDate(styleData.value, "dd-MM-yyyy")
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
-                    horizontalAlignment: Text.AlignHCenter
-                    anchors.fill: parent
-                }
-            }
-        }
-        
-        TableViewColumn {
-            role: "value"
-            title: qsTr("Value")
-            width: 100
-            movable: false
-            resizable: false
-            
-            delegate: Rectangle {
-                color: "transparent"
-                anchors.centerIn: parent
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    propagateComposedEvents: true
-                    onClicked: {
-                        view.setNewIndex(styleData.row)
-                    }
-                }
-                
-                Label {
-                    text: styleData.value
-                    clip: true
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
-                    horizontalAlignment: Text.AlignHCenter
-                    anchors.fill: parent
-                }
-            }
-        }
-        
-        TableViewColumn {
-            role: "label"
-            title: qsTr("Label")
-            width: 110
-            movable: false
-            resizable: false
-            id: labelHeader
-            
-            delegate: Rectangle {
-                color: "transparent"
-                anchors.centerIn: parent
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    propagateComposedEvents: true
-                    onClicked: {
-                        view.setNewIndex(styleData.row)
-                    }
-                }
-                
-                Label {
-                    text: styleData.value
-                    clip: true
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
-                    verticalAlignment: Text.AlignVCenter
-                    anchors.fill: parent
-                }
-            }
-        }
-        
-        TableViewColumn {
-            role: "total"
-            title: qsTr("Total")
-            width: 100
-            movable: false
-            resizable: false
-            
-            delegate: Rectangle {
-                color: "transparent"
-                anchors.centerIn: parent
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    propagateComposedEvents: true
-                    onClicked: {
-                        view.setNewIndex(styleData.row)
-                    }
-                }
-                
-                Label {
-                    text: styleData.value
-                    clip: true
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
-                    horizontalAlignment: Text.AlignHCenter
-                    anchors.fill: parent
-                }
-            }
-        }
-        
-        headerDelegate: Rectangle {
-            gradient: isClicked ? pageStyle.darkGoldButton : pageStyle.goldHeader
-            
-            height: view.height * 0.03
-            anchors.centerIn: parent
-            anchors.leftMargin: 10
-            property bool isHovered: styleData.containsMouse
-            property bool isClicked: styleData.pressed
-            
-            border.color: "darkgoldenrod"
-            Label {
-                id: headerText
-                height: parent.height * .8
-                anchors.centerIn: parent
-                text: styleData.value
-                font.family: pageStyle.title.name
-                font.pixelSize: height * 0.85
-                
-                ToolTip.visible: isHovered && (styleData.column === 2)
-                ToolTip.text: view.getToolTip(styleData.column)
-                ToolTip.delay: 500
-            }
-        }
-        
-        onSortIndicatorColumnChanged: {
-            defaultModel.sort(getColumn(sortIndicatorColumn).role,
-                              sortIndicatorOrder)
-            if (currentIndex !== -1) {
-                s_view(defaultModel.get(currentIndex).id)
-            }
-        }
-        
-        onSortIndicatorOrderChanged: {
-            defaultModel.sort(getColumn(sortIndicatorColumn).role,
-                              sortIndicatorOrder)
-            if (currentIndex !== -1) {
-                s_view(defaultModel.get(currentIndex).id)
-            }
-        }
-        
-        function getToolTip(index) {
-            if (index === 2) {
-                return typeColumn.tipText
-            }
-            
-            return ""
-        }
-        
-        itemDelegate: Rectangle {
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                
-                
-                onClicked: {
-                    view.setNewIndex(styleData.row)
-                }
-            }            
-        }
-        
-        rowDelegate: Rectangle {
-            id: rectRow
-            
-            width: parent.width
-            height: 20
-            
-            
-            gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
-        }
-        
-        onCurrentIndexChanged: {
-            var cItem =  defaultModel.get(currentIndex)
-            infoView.visible = (currentIndex !== -1)
-                    && (cItem.label !== "Initial")
-            remove.enabled = infoView.visible
-            
-            if (currentIndex !== -1)
-                s_view(cItem.id)
-        }
-    }
     
-    ScrollView {
-        
-        contentWidth: infoView.maximum
-        contentHeight: height * 1.5
-        anchors.left: view.right
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.top: parent.top
-        height: parent.height
-        
-        anchors.leftMargin: 10
-        
-        ScrollBar.horizontal.policy: ScrollBar.AsNeeded
-        
-        clip: true
-        contentItem: InformationView {
-            id: infoView
-            objectName: "infoView"
-            clip: true
-            visible: false
-            enabled: true
-        }
-    }
 }

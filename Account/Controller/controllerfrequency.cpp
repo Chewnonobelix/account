@@ -79,7 +79,6 @@ ControllerFrequency::ControllerFrequency()
 
 void ControllerFrequency::endThread(QString name)
 {
-    qDebug()<<"LOL"<<name;
     if(m_workers[name])
     {
         m_workers[name]->terminate();
