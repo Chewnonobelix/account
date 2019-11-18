@@ -4,6 +4,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Styles 1.4
+import QtQuick.Window 2.13
+
 import "../Budget" as B
 import "../Style" as S
 import "../Frequency" as F
@@ -29,9 +31,14 @@ Page {
     GridLayout {
         id: grid
         anchors.fill: parent
-        rowSpacing: height * 0.02
-        columnSpacing: width * 0.02
-
+        rowSpacing: ageTable.height * 0.02
+        columnSpacing: pageTable.width * 0.02
+        anchors.topMargin: pageTable.height * 0.02
+        anchors.bottomMargin: pageTable.height * 0.02
+        anchors.rightMargin: pageTable.width * 0.02
+        anchors.leftMargin: pageTable.width * 0.02
+        
+        
         MultiCalendar {
             id: cal
             objectName: "cal"
@@ -41,8 +48,8 @@ Page {
             Layout.row: 0
             Layout.rowSpan: 1
             Layout.columnSpan: 2
-            Layout.preferredHeight: grid.height * 0.30
-            Layout.preferredWidth: grid.width * 0.20
+            Layout.preferredHeight: pageTable.height * 0.30
+            Layout.preferredWidth: pageTable.width * 0.20
         }
 
         Button {
@@ -55,8 +62,8 @@ Page {
             Layout.row: 1
             Layout.rowSpan: 1
             Layout.columnSpan: 1
-            Layout.preferredHeight: grid.height * 0.05
-            Layout.preferredWidth: grid.width * 0.09
+            Layout.preferredHeight: pageTable.height * 0.05
+            Layout.preferredWidth: pageTable.width * 0.09
 
             ToolTip.text: qsTr("Add new transaction")
             ToolTip.visible: hovered
@@ -92,8 +99,8 @@ Page {
             Layout.row: 1
             Layout.rowSpan: 1
             Layout.columnSpan: 1
-            Layout.preferredHeight: grid.height * 0.05
-            Layout.preferredWidth: grid.width * 0.09
+            Layout.preferredHeight: pageTable.height * 0.05
+            Layout.preferredWidth: pageTable.width * 0.09
 
             ToolTip.text: qsTr("Remove select transaction")
             ToolTip.visible: hovered
@@ -120,13 +127,13 @@ Page {
         }
 
         Column {
-            Layout.column: 1
-            Layout.row: 1
+            Layout.column: 0
+            Layout.row: 2
             Layout.rowSpan: 1
-            Layout.columnSpan: 1
-            Layout.preferredHeight: grid.height * 0.61
-            Layout.preferredWidth: grid.width * 0.20
-            spacing: grid.height * .02
+            Layout.columnSpan: 2
+            Layout.preferredHeight: pageTable.height * 0.61
+            Layout.preferredWidth: pageTable.width * 0.20
+            spacing: pageTable.height * .02
 
             Label {
                 id: quickViewDate
@@ -157,16 +164,16 @@ Page {
         }
 
         Column {
+            id: colTable
             Layout.column: 2
             Layout.row: 0
             Layout.rowSpan: 3
             Layout.columnSpan: 1
-            Layout.preferredHeight: grid.height
-            Layout.preferredWidth: grid.width * 0.20
-            spacing: grid.height * .02
+//            Layout.preferredHeight: grid.height
+            Layout.fillHeight: true
+            Layout.preferredWidth: pageTable.width * 0.20
+            spacing: 0
             TableView {
-                anchors.left: cal.right
-                anchors.leftMargin: 5
                 height: parent.height * 0.95
                 width: parent.width
                 id: view
@@ -217,11 +224,13 @@ Page {
                 TableViewColumn {
                     role: "id"
                     visible: false
+                    width: 0
                 }
 
                 TableViewColumn {
                     role: "estimated"
                     visible: false
+                    width: 0
                 }
 
                 function setNewIndex(index) {
@@ -277,7 +286,7 @@ Page {
                 TableViewColumn {
                     role: "date"
                     title: qsTr("Date")
-                    width: 100
+                    width: (Screen.width * .20 - 45) / 4
                     movable: false
                     resizable: false
                     id: columnDate
@@ -307,7 +316,7 @@ Page {
                 TableViewColumn {
                     role: "value"
                     title: qsTr("Value")
-                    width: 100
+                    width: (Screen.width * .20 - 45) / 4
                     movable: false
                     resizable: false
 
@@ -337,7 +346,7 @@ Page {
                 TableViewColumn {
                     role: "label"
                     title: qsTr("Label")
-                    width: 110
+                    width: (Screen.width * .20 - 45) / 4
                     movable: false
                     resizable: false
                     id: labelHeader
@@ -368,10 +377,10 @@ Page {
                 TableViewColumn {
                     role: "total"
                     title: qsTr("Total")
-                    width: 100
+                    width: (Screen.width * .20 - 45) / 4
                     movable: false
                     resizable: false
-
+                    
                     delegate: Rectangle {
                         color: "transparent"
                         anchors.centerIn: parent
@@ -382,6 +391,7 @@ Page {
                             onClicked: {
                                 view.setNewIndex(styleData.row)
                             }
+                            hoverEnabled: true
                         }
 
                         Label {
@@ -458,7 +468,7 @@ Page {
                 rowDelegate: Rectangle {
                     id: rectRow
 
-                    width: parent.width
+                    width: view.width
                     height: 20
 
 
@@ -479,35 +489,37 @@ Page {
             PageChanger {
                 id: changer
                 objectName: "pageSkip"
-                anchors.top: view.bottom
-                anchors.left: view.left
-                anchors.right: view.right
                 height: parent.height * 0.05
+                width: parent.width
             }
 
         }
 
         ScrollView {
 
-            contentWidth: infoView.maximum
-            contentHeight: height * 1.5
-            anchors.left: view.right
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
-            height: parent.height
-
-            anchors.leftMargin: 10
+            
+            Layout.column: 3
+            Layout.row: 0
+            Layout.rowSpan: 3
+            Layout.columnSpan: 1
+//            Layout.preferredHeight: grid.height
+            
+            Layout.preferredWidth: pageTable.width * 0.52
+            
 
             ScrollBar.horizontal.policy: ScrollBar.AsNeeded
 
             clip: true
-            contentItem: InformationView {
+            InformationView {
                 id: infoView
                 objectName: "infoView"
                 clip: true
                 visible: false
                 enabled: true
+                
+                implicitWidth: Screen.width * 0.52
+                implicitHeight: grid.height
+                
             }
         }
 
@@ -563,19 +575,7 @@ Page {
                                 view.currentIndex).label
                             !== "Initial" ? defaultModel.get(
                                                 view.currentIndex).id : -1
-    
-//    Rectangle {
-//        color: "transparent"
-//        anchors.top: group.bottom
-//        //        anchors.topMargin: 210
-//        anchors.right: view.left
-//        anchors.left: parent.left
         
-//        B.BudgetView {
-//            anchors.fill: parent
-//        }
-//    }
-    
     ListModel {
         id: defaultModel
         objectName: "defaultModel"
@@ -602,10 +602,6 @@ Page {
         }
     }
     
-    onWidthChanged: {
-        view.width = ((width * 0.25) - 5)
-                < view.maximumWidth ? (width * 0.25) + 5 : view.maximumWidth
-    }
     
     
     
