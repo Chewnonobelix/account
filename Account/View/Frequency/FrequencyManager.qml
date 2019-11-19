@@ -38,11 +38,17 @@ Window {
         layout.usableWidth = Qt.binding(function() {return width})      
     }
     
+
     Rectangle {
         anchors.fill: parent
         gradient: pageStyle.backgroundGradient
         
+        Generate {
+            objectName: "generate"
+            anchors.centerIn: rect
+        }
         
+        id: rect
         GridLayout {
             anchors.fill: parent
             anchors.topMargin: usableHeight * 0.02
@@ -372,7 +378,7 @@ Window {
             }
             
             Control2.Button {
-                objectName: "generateButton"
+                objectName: "generateOpen"
                 text: qsTr("Generate")
                 
                 Layout.preferredHeight: parent.usableHeight * 0.05

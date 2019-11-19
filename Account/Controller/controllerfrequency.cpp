@@ -22,14 +22,12 @@ Worker::Worker(const Worker &)
 
 ControllerFrequency::ControllerFrequency()
 {
-    m_eng.load(QUrl(QStringLiteral("qrc:/Frequency/Generate.qml")));
-    m_generate = m_eng.rootObjects().first();
     m_eng.load(QUrl(QStringLiteral("qrc:/Frequency/FrequencyManager.qml")));
     
     m_manager = m_eng.rootObjects().last();
-    
-    m_generate->setProperty("parent", QVariant::fromValue(m_manager));
-    
+
+    m_generate = m_manager->findChild<QObject*>("generate");
+        
     connect(m_generate, SIGNAL(s_generate(QString, QString)), this, SLOT(generate(QString, QString)));
     
     QObject* add, *remove, *ref, *type;
@@ -67,7 +65,8 @@ ControllerFrequency::ControllerFrequency()
     if(type)
         connect(type, SIGNAL(s_updateType(int, QString)), this, SLOT(updateFreqType(int,QString)));
     
-    QObject* button = m_manager->findChild<QObject*>("generateButton");
+    QObject* button = m_manager->findChild<QObject*>("generateOpen");
+
     if(button)
         connect(button, SIGNAL(s_open(int)), this, SLOT(openGenerate(int)));
  
@@ -181,8 +180,7 @@ void ControllerFrequency::openGenerate(int id)
     m_generate->setProperty("freqId", id);
     m_generate->setProperty("freqGroup", m_freqs[id].nbGroup() + 1);
     
-    QMetaObject::invokeMethod(m_generate, "show");
-    QMetaObject::invokeMethod(m_generate, "requestActivate");
+    QMetaObject::invokeMethod(m_generate, "open");
 }
 
 void ControllerFrequency::openManager()

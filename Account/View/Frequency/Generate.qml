@@ -5,26 +5,15 @@ import QtQuick.Layouts 1.13
 import "../Style" as S
 import "../Core" as C
 
-Window {
+Popup {
     property int freqId: -1
     property int freqGroup: -1
     
     signal s_generate(string fBegin, string fEnd)
     
     id: generateWin
-    flags: Qt.Popup | Qt.NoDropShadowWindowHint
-
-    visibility: Window.Hidden
-    width: visbleRect.width + 1 + (from.isOpen ? from.cRight + from.x + from.width : to.isOpen ? to.cRight + to.x + to.width  : 0)
-
-    height: visbleRect.height + 1 + (from.isOpen ? from.cBottom  + from.y + from.height : to.isOpen ? to.cBottom + to.y + to.height : 0)
-
-    color: "transparent"
-
-    onActiveChanged: if(!active) close()
-
-    x: screen.width / 2
-    y: screen.height / 2
+    
+    property var pcenter
     
     S.AccountStyle{
         id: pageStyle
@@ -35,23 +24,30 @@ Window {
         acceptedButtons: Qt.NoButton
         propagateComposedEvents: true
         preventStealing: false
+        hoverEnabled: true
+    }
+    contentWidth: l.width
+    contentHeight: l.height
+    leftPadding: l.width * 0.05
+    rightPadding: l.width * 0.05
+    topPadding: l.height * 0.05
+    bottomPadding: l.height * 0.05
+    
+    background: Rectangle {
+        gradient: pageStyle.backgroundGradient
+        border.color: "gold"        
     }
 
-    Rectangle {
+    contentItem: Rectangle {
         id: visbleRect
-        gradient: pageStyle.backgroundGradient
+        gradient: pageStyle.unselectView
 
-        border.color: "gold"
-        width: l.width * 1.10
-        height: l.height * 1.10
+        anchors.centerIn: parent
         clip: false     
         GridLayout {
             id: l
             clip: false
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.leftMargin: width * 0.03
-            anchors.rightMargin: width * 0.03
+            
             Label {
                 Layout.row: 0
                 Layout.column: 0
@@ -101,7 +97,7 @@ Window {
                     to.extern(f)
                 } 
             }
-
+            
             Button {
                 objectName: "generateButton"
                 Layout.row: 2
@@ -126,12 +122,11 @@ Window {
                 
                 text: qsTr("Cancel")
                 onClicked: close()
-
-                                
+                
+                
                 background: Rectangle {
                     gradient: pageStyle.goldButton
                 }
-                
             }
         }
     }
