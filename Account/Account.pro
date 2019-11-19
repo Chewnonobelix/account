@@ -18,6 +18,7 @@ SOURCES += \
     Controller/controllerfrequency.cpp \
     Controller/interfacedatasave.cpp \
     Model/accountglobal.cpp \
+    Model/commonexpanse.cpp \
     Model/frequency.cpp \
     Model/metadata.cpp \
     Model/subbudget.cpp \
@@ -59,6 +60,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     Controller/controllerbudget.h \
     Controller/controllerfrequency.h \
+    Model/commonexpanse.h \
     Model/entry.h \
     Model/frequency.h \
     Model/information.h \

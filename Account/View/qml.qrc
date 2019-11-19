@@ -26,5 +26,6 @@
         <file>Core/EntryEdit.qml</file>
         <file>Core/CoreModel.qml</file>
         <file>Core/PageChanger.qml</file>
+        <file>CommonExpanseView.qml</file>
     </qresource>
 </RCC>
