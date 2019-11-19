@@ -102,7 +102,7 @@ Window {
                     fontSizeMode: Text.Fit
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
-                    
+                    height: frequencyList.height * .10
                     background: Rectangle {
                         gradient: pageStyle.goldHeader
                     }
