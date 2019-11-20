@@ -104,11 +104,11 @@ Frequency& Frequency::operator<< (const Entry& e)
 }
 
 
-Frequency& Frequency::operator<< (int e)
-{
-//    m_entriesId<<e;
-    return *this;
-}
+//Frequency& Frequency::operator<< (int e)
+//{
+////    m_entriesId<<e;
+//    return *this;
+//}
 
 bool Frequency::isUnlimited() const
 {

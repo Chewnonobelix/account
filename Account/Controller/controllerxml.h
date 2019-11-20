@@ -31,7 +31,7 @@ public:
 
     void setFilename(QString);
 public slots:
-    virtual bool addEntry(QSharedPointer<Entry>) {}
+    virtual bool addEntry(QSharedPointer<Entry>) {return false;}
     virtual bool addEntry(const Entry&);
     virtual QList<Entry> selectEntry(QString);
     virtual bool removeEntry(const Entry&);

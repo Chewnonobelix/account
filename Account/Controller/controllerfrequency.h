@@ -18,7 +18,7 @@ public:
     QString name;
 
     Worker& operator =(const Worker&);
-    Worker(const Worker&);
+    Worker(const Worker&) = delete;
     Worker() = default;
 
 public slots:

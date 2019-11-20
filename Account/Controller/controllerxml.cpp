@@ -8,7 +8,8 @@ ControllerXML::ControllerXML()
 
 }
 
-ControllerXML::ControllerXML(const ControllerXML& cxml): m_filename(cxml.m_filename)
+ControllerXML::ControllerXML(const ControllerXML& cxml): InterfaceDataSave(cxml),
+    m_filename(cxml.m_filename)
 {
     m_file = new QFile;
 }

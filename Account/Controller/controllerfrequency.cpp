@@ -6,7 +6,6 @@ void Worker::run()
     {
 
         emit s_add(list[it]);
-        if((it/list.size() * 100 ) % 10 == 0) qDebug()<<name<<(double)it/list.size()*100<<thread();
     }
 
     emit s_finish(name);
@@ -17,8 +16,6 @@ Worker& Worker::operator =(const Worker&)
     return *this;
 }
 
-Worker::Worker(const Worker &)
-{}
 
 ControllerFrequency::ControllerFrequency()
 {

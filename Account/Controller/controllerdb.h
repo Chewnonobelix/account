@@ -38,12 +38,12 @@ private:
 
 public:
     ControllerDB();
-    ControllerDB(const ControllerDB&);
+    ControllerDB(const ControllerDB&d);
     ~ControllerDB();
 
     bool isConnected() const;
 public slots:
-    bool addEntry(QSharedPointer<Entry>) {}
+    bool addEntry(QSharedPointer<Entry>) {return false;}
     bool addEntry(const Entry&);
     QList<Entry> selectEntry(QString);
     bool removeEntry(const Entry&);

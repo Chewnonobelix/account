@@ -55,7 +55,7 @@ public:
     Q_INVOKABLE QVariantList listEntries(int) const;
     
     Frequency& operator<< (const Entry&);
-    Frequency& operator<< (int);
+//    Frequency& operator<< (int);
     
     Entry clone(const Entry&) const;
     QDate end() const;

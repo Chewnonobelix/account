@@ -4,7 +4,8 @@ ControllerDB::ControllerDB()
 {
 }
 
-ControllerDB::ControllerDB(const ControllerDB&) {}
+ControllerDB::ControllerDB(const ControllerDB& d): InterfaceDataSave(d)
+{}
 
 
 ControllerDB::~ControllerDB()
