@@ -53,8 +53,6 @@ public:
 
     static void deletAccount(QString);
 
-    static void initTestEntry();
-
     static Total accountTotal();
 };
 

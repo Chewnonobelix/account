@@ -15,6 +15,7 @@ public:
     InterfaceDataSave() = default;
     inline InterfaceDataSave(const InterfaceDataSave&): QObject(nullptr) {}
     virtual ~InterfaceDataSave() {}
+    
 public slots:
     void exec();
     virtual bool addEntry(const Entry&) = 0;

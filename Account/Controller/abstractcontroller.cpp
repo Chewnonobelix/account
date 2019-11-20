@@ -106,30 +106,6 @@ QList<Entry> AbstractController::entries(QDate d)
         return m_entry.values(d);
 }
 
-void AbstractController::initTestEntry()
-{
-    for(int i = 0; i < 5; i++)
-    {
-        Entry e;
-        QRandomGenerator::global()->bounded(999.8);
-        e.setId(QRandomGenerator::global()->generate() % 264);
-        e.setAccount(currentAccount());
-        e.setValue(QRandomGenerator::global()->generateDouble() *100);
-        e.setDate(QDate::currentDate());
-
-        if(i%5 < 3)
-            e.setType("income");
-        else
-            e.setType("outcome");
-
-        Information in;
-        in.setTitle(QString::number(e.id()));
-        e.setInfo(in);
-
-        m_entry.insert(e.date(), e);
-    }
-}
-
 void AbstractController::setDb(QString name)
 {
     int type = QMetaType::type(name.toLatin1());
