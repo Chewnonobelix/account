@@ -166,10 +166,11 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
     return e;
 }
 
-QList<Entry> ControllerXMLMulti::selectEntry(QString account)
+QMultiMap<QDate, Entry> ControllerXMLMulti::selectEntry(QString account)
 {
     setCurrentAccount(account);
-    QList<Entry> ret;
+
+    QMultiMap<QDate, Entry> ret;
 
 
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
@@ -185,7 +186,7 @@ QList<Entry> ControllerXMLMulti::selectEntry(QString account)
     {
         QDomElement el = children.at(i).toElement();
         Entry e = selectEntryNode(el);
-        ret<<e;
+        ret.insert(e.date(), e);
     }
 
     return ret;

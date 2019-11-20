@@ -19,7 +19,7 @@ public:
 public slots:
     void exec();
     virtual bool addEntry(const Entry&) = 0;
-    virtual QList<Entry> selectEntry(QString) = 0;
+    virtual QMultiMap<QDate, Entry> selectEntry(QString) = 0;
     virtual bool removeEntry(const Entry&) = 0;
 
     virtual QStringList selectAccount() = 0;

@@ -119,7 +119,7 @@ void ControllerInformation::categoryChange(QString cat)
 
 void ControllerInformation::addNewCategory(QString cat)
 {
-    addCategory(cat, m_entry.type());
+    m_db->addCategory(cat, m_entry.type());
     categoryChange(cat);
     view(m_entry.id());
 }

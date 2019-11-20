@@ -19,7 +19,6 @@ class AbstractController: public QObject
 
 private:
     static QString m_account;
-    static QMultiMap<QDate, Entry> m_entry;
     static Total m_accountTotal;
 
 protected:
@@ -31,24 +30,18 @@ public:
 
     virtual int exec() = 0;
 
-    static void setAccountList(QStringList);
-    static QStringList accountList();
-
     static void setCurrentAccount(QString);
     static QString currentAccount();
 
     static void addEntry(const Entry&);
-    static void removeEntry(const Entry&);
     static void updateEntry(const Entry&);
 
     static Entry entry(int);
-    static QList<Entry> entries(QDate = QDate());
     static QList<QDate> allDate();
 
     static void setDb(QString);
     static void deleteDb();
 
-    static void addCategory(QString, QString);
     static QStringList categories(QString);
 
     static void deletAccount(QString);

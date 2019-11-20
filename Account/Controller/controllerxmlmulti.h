@@ -52,7 +52,7 @@ public slots:
 
     virtual bool addEntry(QSharedPointer<Entry>);
     virtual bool addEntry(const Entry&);
-    virtual QList<Entry> selectEntry(QString);
+    virtual QMultiMap<QDate, Entry> selectEntry(QString = "");
     virtual bool removeEntry(const Entry&);
 
     virtual QStringList selectAccount();

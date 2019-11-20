@@ -242,7 +242,8 @@ void MainController::addEntryMain(Entry  e)
 void MainController::remove(int id)
 {
     Entry e = AbstractController::entry(id);
-    AbstractController::removeEntry(e);
+    m_db->removeEntry(e);
+    setCurrentAccount(currentAccount());
     selection();
 }
 
@@ -340,10 +341,10 @@ void MainController::selection(int id)
     QList<Entry> ret;
     
     if(ld.isEmpty())
-        ret = AbstractController::entries();
+        ret = m_db->selectEntry(currentAccount()).values();
     else
         for(auto it: ld)
-            ret<<AbstractController::entries(it);
+            ret<<m_db->selectEntry(currentAccount()).values(it);
     
     int maxPage = ret.size() < 100 ? 1 : (ret.size() / 100 + 1);
     QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");   
@@ -433,13 +434,13 @@ void MainController::accountChange(QString acc)
         head->setProperty("total", accountTotal().value());
     }
     
-    int maxPage = entries().size() / 100;
+    int maxPage = m_db->selectEntry(currentAccount()).size() / 100;
     QObject* pageSkip = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
     
     if(pageSkip)
         pageSkip->setProperty("maxPage", maxPage);
     
-    for(auto it: entries())
+    for(auto it: m_db->selectEntry(currentAccount()))
         m_freqs.addEntry(it.id());
     
     selection();
@@ -461,7 +462,7 @@ void MainController::loadAccount()
     
     if(combo)
     {
-        QStringList t = AbstractController::accountList();
+        QStringList t = m_db->selectAccount();
         if(t.size() == 0)
         {
             add(true);
@@ -483,7 +484,7 @@ void MainController::checkEstimated()
 {
     QList<Entry> list;
     
-    for(auto it: entries())
+    for(auto it: m_db->selectEntry(currentAccount()))
     {
         if(it.info().estimated() && it.date() <= QDate::currentDate())
             list<<it;
@@ -536,7 +537,7 @@ void MainController::validateCheckEstimated()
         }
         else
         {
-            removeEntry(e);
+            m_db->removeEntry(e);
         }
     }
     

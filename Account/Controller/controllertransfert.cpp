@@ -12,7 +12,7 @@ int ControllerTransfert::exec()
 {
     if(m_view)
     {
-        auto accounts = accountList();
+        auto accounts = m_db->selectAccount();
         QMetaObject::invokeMethod(m_view, "addAccount", Q_ARG(QVariant, accounts));
         QMetaObject::invokeMethod(m_view, "open");
     }

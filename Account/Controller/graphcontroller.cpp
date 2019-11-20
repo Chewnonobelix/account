@@ -57,7 +57,7 @@ int GraphController::exec()
     QList<QPair<Total, bool>> sum;
     for(auto it: keysT)
     {
-        auto l = entries(it);
+        auto l = m_db->selectEntry(currentAccount()).values(it);
         if(l.isEmpty())
         {
             Entry e;

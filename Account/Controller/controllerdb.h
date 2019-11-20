@@ -45,7 +45,7 @@ public:
 public slots:
     bool addEntry(QSharedPointer<Entry>) {return false;}
     bool addEntry(const Entry&);
-    QList<Entry> selectEntry(QString);
+    QMultiMap<QDate, Entry> selectEntry(QString);
     bool removeEntry(const Entry&);
 
     QStringList selectAccount();

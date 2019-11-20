@@ -127,9 +127,9 @@ bool ControllerDB::addEntry(const Entry & e)
     return ret;
 }
 
-QList<Entry> ControllerDB::selectEntry(QString account)
+QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
 {
-    QList<Entry> res;
+    QMultiMap<QDate, Entry> res;
 
     if(!isConnected())
         return res;
@@ -161,7 +161,7 @@ QList<Entry> ControllerDB::selectEntry(QString account)
             i.setTitle(m_selectInformation->value("info").toString());
 
             t.setInfo(i);
-            res<<t;
+            res.insert(t.date(), t);
         }
     }
 
