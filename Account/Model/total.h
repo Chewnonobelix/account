@@ -8,6 +8,11 @@
 
 class Total
 {
+    Q_GADGET
+    
+    Q_PROPERTY(QDate date READ date)
+    Q_PROPERTY(double value READ value)
+    
 private:
     QDate m_date;
     double m_value;
