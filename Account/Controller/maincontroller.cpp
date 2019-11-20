@@ -449,7 +449,7 @@ void MainController::accountChange(QString acc)
 void MainController::toXml()
 {
     qDebug()<<"To Sql";
-    XmltoSql xts(*dynamic_cast<ControllerXML*>(m_db));
+    XmltoSql xts(*dynamic_cast<ControllerXMLMulti*>(m_db));
     
     bool ret = xts.exec();
     qDebug()<<ret;

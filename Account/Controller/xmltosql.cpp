@@ -1,6 +1,6 @@
 #include "xmltosql.h"
 
-XmltoSql::XmltoSql(ControllerXML& xml): m_xml(xml)
+XmltoSql::XmltoSql(ControllerXMLMulti& xml): m_xml(xml)
 {
 
 }

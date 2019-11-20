@@ -9,7 +9,6 @@
 #include <QThread>
 #include "abstractcontroller.h"
 #include "controllerinformation.h"
-#include "controllerxml.h"
 #include "graphcontroller.h"
 #include "controllerxmlmulti.h"
 #include "xmltosql.h"

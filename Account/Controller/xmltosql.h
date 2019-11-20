@@ -2,18 +2,18 @@
 #define XMLTOSQL_H
 
 #include "controllerdb.h"
-#include "controllerxml.h"
+#include "controllerxmlmulti.h"
 
 class XmltoSql
 {
     ControllerDB m_db;
-    ControllerXML& m_xml;
+    ControllerXMLMulti& m_xml;
 
     bool transfertEntries();
     bool transfertcategories();
 
 public:
-    XmltoSql(ControllerXML&);
+    XmltoSql(ControllerXMLMulti&);
 
     bool exec();
 };

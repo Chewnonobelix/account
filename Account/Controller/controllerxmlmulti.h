@@ -4,7 +4,9 @@
 #include <QDir>
 #include <QDebug>
 #include <QMutex>
-#include "controllerxml.h"
+#include <QDomDocument>
+
+#include "interfacedatasave.h"
 
 class ControllerXMLMulti: public InterfaceDataSave
 {

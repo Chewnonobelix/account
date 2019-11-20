@@ -103,13 +103,6 @@ Frequency& Frequency::operator<< (const Entry& e)
     return *this;
 }
 
-
-//Frequency& Frequency::operator<< (int e)
-//{
-////    m_entriesId<<e;
-//    return *this;
-//}
-
 bool Frequency::isUnlimited() const
 {
     return !m_end.isValid();

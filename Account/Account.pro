@@ -25,12 +25,10 @@ SOURCES += \
     Model/entry.cpp \
     Model/information.cpp \
     Model/total.cpp \
-#    Model/categories.cpp \
     Controller/abstractcontroller.cpp \
     Controller/controllerdb.cpp \
     Controller/maincontroller.cpp \
     Controller/controllerinformation.cpp \
-    Controller/controllerxml.cpp \
     Controller/graphcontroller.cpp \
     Controller/xmltosql.cpp \
     Model/budget.cpp \
@@ -65,13 +63,11 @@ HEADERS += \
     Model/metadata.h \
     Model/subbudget.h \
     Model/total.h \
-#    Model/categories.h \
     Controller/abstractcontroller.h \
     Controller/controllerdb.h \
     Controller/maincontroller.h \
     Controller/controllerinformation.h \
     Controller/interfacedatasave.h \
-    Controller/controllerxml.h \
     Controller/graphcontroller.h \
     Controller/xmltosql.h \
     Model/budget.h \
