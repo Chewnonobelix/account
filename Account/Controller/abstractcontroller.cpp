@@ -18,11 +18,8 @@ AbstractController::~AbstractController()
 void AbstractController::setCurrentAccount(QString a)
 {
     m_account = a;
-    m_accountTotal = Total();
-
-    auto l = m_db->selectEntry(a);
-    for(auto it: l)
-        m_accountTotal = m_accountTotal + it;
+  
+    calculTotal();
 }
 
 QString AbstractController::currentAccount()
@@ -30,6 +27,14 @@ QString AbstractController::currentAccount()
     return m_account;
 }
 
+void AbstractController::calculTotal()
+{
+    m_accountTotal = Total();
+    
+    auto l = m_db->selectEntry(currentAccount());
+    for(auto it: l)
+        m_accountTotal = m_accountTotal + it;    
+}
 
 void AbstractController::addEntry(const Entry& e)
 {
@@ -55,9 +60,10 @@ void AbstractController::addEntry(const Entry& e)
             val -= (et.value()*qme.keysToValue(et.type().toLower().toLatin1()));
             init.setValue(val);
             updateEntry(init);
-            setCurrentAccount(init.account());
         }
     }
+    
+    calculTotal();
 }
 
 Entry AbstractController::entry(int id)
@@ -94,23 +100,10 @@ void AbstractController::updateEntry(const Entry & e)
     m_db->updateEntry(e);
     m_db->updateInfo(e);
 
-    setCurrentAccount(currentAccount());
+    calculTotal();
 }
-
-void AbstractController::deletAccount(QString account)
-{
-    m_db->removeAccount(account);
-}
-
 
 Total AbstractController::accountTotal()
 {
     return m_accountTotal;
-}
-
-QList<QDate> AbstractController::allDate()
-{
-    auto ret = m_db->selectEntry(currentAccount()).keys();
-    std::sort(ret.begin(), ret.end());
-    return ret;
 }

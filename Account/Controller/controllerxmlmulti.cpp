@@ -223,9 +223,16 @@ bool ControllerXMLMulti::removeAccount(QString account)
     QDir dir;
     dir.cd("data");
     QFile file;
-    file.setFileName("data\\" + account+".xml");
+    file.setFileName("data\\" + account + ".xml");
 
-    return (m_accounts.remove(account) > 0 && file.remove());
+    bool ret = (m_accounts.remove(account) > 0 && file.remove());
+    
+    
+    if(ret && m_accounts.size() == 0)
+        while (m_ids.size()) 
+            m_ids.remove(m_ids.keys().first());
+    
+    return ret;
 }
 
 bool ControllerXMLMulti::updateInfo(const Entry& e)
@@ -533,17 +540,9 @@ bool ControllerXMLMulti::init()
 
 int ControllerXMLMulti::maxId(const QSet<int> & l) const
 {
-    int ret = -1;
-
-    for(int i: l)
-    {
-        if(i > ret)
-        {
-            ret = i;
-        }
-    }
-
-    return ret;
+    auto list = l.toList();
+    std::sort(list.begin(), list.end());
+    return list.isEmpty() ? -1 : list.last();
 }
 
 Information ControllerXMLMulti::selectInformation(const QDomElement& el) const

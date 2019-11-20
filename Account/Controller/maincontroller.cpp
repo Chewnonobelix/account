@@ -243,7 +243,7 @@ void MainController::remove(int id)
 {
     Entry e = AbstractController::entry(id);
     m_db->removeEntry(e);
-    setCurrentAccount(currentAccount());
+    accountChange(currentAccount());
     selection();
 }
 
@@ -322,7 +322,7 @@ void MainController::selection(int id)
     if(id == -2)
     {
         id = -1;
-        setCurrentAccount(currentAccount());
+        calculTotal();
     }
 
     m_graph.exec();
@@ -547,7 +547,7 @@ void MainController::validateCheckEstimated()
 
 void MainController::deleteAccount(QString account)
 {
-    AbstractController::deletAccount(account);
+    m_db->removeAccount(account);
     loadAccount();
 }
 

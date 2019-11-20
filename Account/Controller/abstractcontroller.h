@@ -37,14 +37,12 @@ public:
     static void updateEntry(const Entry&);
 
     static Entry entry(int);
-    static QList<QDate> allDate();
 
     static void setDb(QString);
     static void deleteDb();
 
-    static void deletAccount(QString);
-
     static Total accountTotal();
+    static void calculTotal();
 };
 
 #endif // ABSTRACTCONTROLLER_H

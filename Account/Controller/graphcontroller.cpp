@@ -34,7 +34,8 @@ int GraphController::exec()
         return -1;
 
     QMetaObject::invokeMethod(m_view, "clear");
-    auto dateList = allDate();
+    auto dateList = m_db->selectEntry(currentAccount()).uniqueKeys();
+    std::sort(dateList.begin(), dateList.end());
     QList<QDate> keysT;
     QDate minDate , maxDate;
 
