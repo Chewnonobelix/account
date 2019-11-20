@@ -59,8 +59,8 @@ void ControllerBudget::openManager()
     {
         QMetaObject::invokeMethod(m_view, "clearCat");
         m_view->setProperty("blocked", true);
-        auto incomes = categories("income");
-        auto outcomes = categories("outcome");
+        auto incomes = m_db->selectCategory().values("income");
+        auto outcomes = m_db->selectCategory().values("outcome");
                 
         auto func = [&](QString type, QStringList list) {
             for(auto it: list)

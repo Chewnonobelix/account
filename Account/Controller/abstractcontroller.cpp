@@ -97,13 +97,6 @@ void AbstractController::updateEntry(const Entry & e)
     setCurrentAccount(currentAccount());
 }
 
-QStringList AbstractController::categories(QString type)
-{
-    QStringList ret = m_db->selectCategory().values(type);
-
-    return ret;
-}
-
 void AbstractController::deletAccount(QString account)
 {
     m_db->removeAccount(account);

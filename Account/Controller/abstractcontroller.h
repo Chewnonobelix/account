@@ -42,8 +42,6 @@ public:
     static void setDb(QString);
     static void deleteDb();
 
-    static QStringList categories(QString);
-
     static void deletAccount(QString);
 
     static Total accountTotal();

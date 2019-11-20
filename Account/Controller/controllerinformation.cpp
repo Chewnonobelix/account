@@ -72,7 +72,7 @@ void ControllerInformation::view(int id)
 
     catItem = child->findChild<QObject*>("category");
 
-    QStringList catList = categories(m_entry.type());
+    QStringList catList = m_db->selectCategory().values(m_entry.type());
     catList<<"";
 
     if(catItem)
