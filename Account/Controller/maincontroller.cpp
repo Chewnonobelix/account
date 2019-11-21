@@ -376,28 +376,25 @@ void MainController::selection(int id)
             
             first -= 1;
             first *= 100;
+
+            QVariantList modelList;
+            
             for(auto i = 0 ; i < ret.size(); i++)
             {
                 t = t + ret[i];
                 
                 if(i >= first && i < qMin(ret.size(), first+100))
                 {
-                    QVariantMap map;
+                    QVariantMap map = ret[i];
                     
                     
                     found |= (id == -1) || (ret[i].id() == id);
                     
                     if(ret[i].id() == id) fIndex = i - first;
                     
-                    map.insert("id", ret[i].id());
-                    map.insert("date", ret[i].date());
-                    map.insert("value", ret[i].value());
-                    map.insert("label", ret[i].label());
-                    map.insert("type", ret[i].type().toLower());
                     map.insert("total", t.value());
-                    map.insert("estimated", ret[i].info().estimated());
                     map.insert("isSelected", (ret[i].id() == id));
-                    QMetaObject::invokeMethod(tab, "fAdd", Q_ARG(QVariant, map));                    
+                    modelList<<QVariant::fromValue(map);
                 }
                 
             }
@@ -405,13 +402,15 @@ void MainController::selection(int id)
                 skipper->setProperty("pageIndex", skipper->property("pageIndex").toInt() + 1);
             else
                 QMetaObject::invokeMethod(tab, "setNewIndex", Q_ARG(QVariant, fIndex));
+            
+            tab->setProperty("model", modelList);
         }
         while(!found && skipper->property("pageIndex").toInt() <= maxPage);
     }
         
     QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
     if(head)
-        head->setProperty("selectionTotal", t.value());
+        head->setProperty("selectionTotal", QVariant::fromValue(t));
     
     ld.isEmpty() ? m_budget.show(QDate::currentDate()) : m_budget.show(ld.first());
     
@@ -431,7 +430,7 @@ void MainController::accountChange(QString acc)
     if(head)
     {
         head->setProperty("accountName", acc);
-        head->setProperty("total", accountTotal().value());
+        head->setProperty("total", QVariant::fromValue(accountTotal()));
     }
     
     int maxPage = m_db->selectEntry(currentAccount()).size() / 100;

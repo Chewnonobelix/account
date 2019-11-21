@@ -119,3 +119,16 @@ int Entry::frequency() const
     return m_frequency;
 }
 
+Entry::operator QVariantMap() const
+{
+    QVariantMap ret;
+    ret.insert("id", id());
+    ret.insert("account", account());
+    ret.insert("value", value());
+    ret.insert("date", date());
+    ret.insert("type", type());
+    ret.insert("info", QVariant::fromValue(info()));
+    ret.insert("label", label());
+    
+    return ret;
+}

@@ -58,7 +58,7 @@ public:
     void setFrequency(int);
     int frequency() const;
 
-
+    operator QVariantMap() const;
 };
 
 Q_DECLARE_METATYPE(Entry)
