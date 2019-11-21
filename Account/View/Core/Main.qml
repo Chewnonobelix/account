@@ -1,10 +1,11 @@
 import QtQuick 2.11
 import QtQuick.Controls 1.4
 import QtQuick.Window 2.12
-import QtQuick.Controls 2.2
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Dialogs 1.3
+import QtQuick.Layouts 1.13
+
 import "../Style" as S
 import "../Transfert" as T
 
@@ -41,10 +42,9 @@ ApplicationWindow {
         id: tranfert
         objectName: "transfert"
         
+        anchors.centerIn: parent
         onOpened: {
             addAccount(accountSelect.model)
-            x = swipeView.width / 2 - width / 2
-            y = swipeView.height / 2 - height / 2
         }
     }
     
@@ -393,42 +393,42 @@ Current Version beta 0.9")
     }
     
     header: Rectangle {
-        height: 50
+        height: mainWindow.height * .02
         color: "transparent"
         id: head
         objectName: "head"
         property string accountName
-        property double total
-        property double selectionTotal
+        property var total
+        property var selectionTotal
         
-        Row {
+        RowLayout {
             anchors.left: parent.left
             anchors.right: accountSelect.left
             
             Label {
                 id: accountTitle
                 objectName: "accountTitle"
-                text: qsTr("Account") + ": " + head.accountName + " = " + head.total + "€"
+                text: qsTr("Account") + ": " + head.accountName + " = " + head.total.value + "€"
                 font.pixelSize: pageStyle.title.size
                 font.family: pageStyle.title.name
                 padding: 10
                 fontSizeMode: Text.Fit
                 color: accountSelect.model.length
-                       > 0 ? head.total > 0 ? "green" : "red" : "transparent"
-                width: parent.width * .5
+                       > 0 ? head.total.value > 0 ? "green" : "red" : "transparent"
+                Layout.preferredWidth: parent.width * .5
             }
             
             Label {
                 id: selectLabel
                 fontSizeMode: Text.Fit
                 text: qsTr(
-                          "Selection total") + ": " + head.selectionTotal + " €"
+                          "Selection total") + ": " + head.selectionTotal.value + " €"
                 font.pixelSize: pageStyle.title.size
                 font.family: pageStyle.title.name
                 padding: 10
                 color: accountSelect.model.length
-                       > 0 ? head.selectionTotal > 0 ? "green" : "red" : "transparent"
-                width: parent.width * .5
+                       > 0 ? head.selectionTotal.value > 0 ? "green" : "red" : "transparent"
+                Layout.preferredWidth: parent.width * .5
             }
         }
         
@@ -440,6 +440,7 @@ Current Version beta 0.9")
             font.pixelSize: pageStyle.core.size
             enabled: accountSelect.model.length > 0
             signal s_currentTextChange(string text)
+            
             
             ToolTip.text: qsTr("Select account")
             ToolTip.delay: 500
@@ -491,10 +492,10 @@ Current Version beta 0.9")
     SwipeView {
         id: swipeView
         currentIndex: tabBar.currentIndex
-        implicitWidth: parent.width
-        implicitHeight: parent.height
+        
+        
         enabled: accountSelect.model.length > 0
-        anchors.top: parent.header.bottom
+        anchors.fill: parent
         background: Rectangle {
             color: "transparent"
         }
