@@ -1,9 +1,9 @@
-import QtQuick 2.9
-import QtQuick.Controls 2.2
+import QtQuick 2.13
 import QtQuick.Controls 1.4
-import QtQuick.Layouts 1.11
-import QtQuick.Controls 2.4
+import QtQuick.Layouts 1.13
 import QtQuick.Controls.Styles 1.4
+
+import QtQuick.Controls 2.4
 import QtQuick.Window 2.13
 
 import "../Budget" as B
@@ -121,7 +121,7 @@ Page {
             }
             onClicked: {
                 if (index > -1) {
-                    mainWindow.remove(defaultModel.get(index).id)
+                    mainWindow.remove(pageTable.currentId)
                 }
             }
         }
@@ -178,7 +178,7 @@ Page {
                 width: parent.width
                 id: view
                 objectName: "entryView"
-                model: defaultModel
+                model: []
 
                 property int maximumWidth: 4 * 100 + 60
 
@@ -188,17 +188,12 @@ Page {
                 property string currentType
                 property int currentIndex: -1
 
-                function fAdd(i) {
-                    defaultModel.append(i)
-                }
-
                 function unselectAll() {
                     selection.clear()
                     currentIndex = -1
                 }
 
                 function reset() {
-                    defaultModel.clear()
                     currentIndex = -1
                     infoView.visible = false
                 }
@@ -245,8 +240,8 @@ Page {
                 }
 
                 function selectFromId(id) {
-                    for (var i = 0; i < defaultModel.count; i++) {
-                        if (defaultModel.get(i).id === id) {
+                    for (var i = 0; i < model.length; i++) {
+                        if (model[i].id === id) {
                             setNewIndex(i)
                         }
                     }
@@ -272,8 +267,8 @@ Page {
                             }
                         }
                         Label {
-                            property string est: defaultModel.get(
-                                                     styleData.row).estimated ? "*" : ""
+                            property string est: view.model[styleData.row].info.estimated ? "*" : ""
+
                             text: styleData.value === "income" ? "+" + est : "-" + est
                             font.family: pageStyle.core.name
                             font.pixelSize: pageStyle.core.size
@@ -430,18 +425,19 @@ Page {
                 }
 
                 onSortIndicatorColumnChanged: {
-                    defaultModel.sort(getColumn(sortIndicatorColumn).role,
+                    sort(getColumn(sortIndicatorColumn).role,
                                       sortIndicatorOrder)
                     if (currentIndex !== -1) {
-                        s_view(defaultModel.get(currentIndex).id)
+                        s_view(model[currentIndex].id)
                     }
                 }
 
                 onSortIndicatorOrderChanged: {
-                    defaultModel.sort(getColumn(sortIndicatorColumn).role,
+                    sort(getColumn(sortIndicatorColumn).role,
                                       sortIndicatorOrder)
+
                     if (currentIndex !== -1) {
-                        s_view(defaultModel.get(currentIndex).id)
+                        s_view(model[currentIndex].id)
                     }
                 }
 
@@ -471,19 +467,42 @@ Page {
                     width: view.width
                     height: 20
 
-
-                    gradient: styleData.selected ? defaultModel.get(styleData.row).type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
+                    gradient: styleData.selected ? view.model[styleData.row].type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
+                    
                 }
 
                 onCurrentIndexChanged: {
-                    var cItem =  defaultModel.get(currentIndex)
-                    infoView.visible = (currentIndex !== -1)
-                            && (cItem.label !== "Initial")
+                    var cItem =  model[currentIndex]
+                    infoView.visible = (currentIndex !== -1) && (cItem.label !== "Initial")
+                            
                     remove.enabled = infoView.visible
 
                     if (currentIndex !== -1)
                         s_view(cItem.id)
                 }
+                
+                function swap(i,j) {               
+                    var t = model[i]                  
+                    model[i] = model[j]
+                    model[j] = t
+                }
+                
+                function sort(role, roleorder) {
+                    for (var i = 0; i < rowCount; i++) {
+                        for (var j = i; j < rowCount; j++) {
+                            if (roleorder === Qt.AscendingOrder) {
+                                if (model[j][role] < model[i][role]) {
+                                    swap(i, j)
+                                }
+                            } else {
+                                if (model[j][role] > model[i][role]) {
+                                    swap(i, j)
+                                }
+                            }
+                        }
+                    }
+                    model = model
+                }             
             }
 
             PageChanger {
@@ -568,42 +587,6 @@ Page {
         addingid.open()
     }
     
-    
-
-    
-    property int currentId: view.currentIndex > -1 && defaultModel.get(
-                                view.currentIndex).label
-                            !== "Initial" ? defaultModel.get(
-                                                view.currentIndex).id : -1
+    property int currentId: view.currentIndex > -1 && model[view.currentIndex].label !== "Initial" ? model[view.currentIndex].id : -1
         
-    ListModel {
-        id: defaultModel
-        objectName: "defaultModel"
-        
-        function swap(i,j) {
-            move(j, i, 1)
-            move(i + 1, j, 1)
-        }
-        
-        function sort(role, roleorder) {
-            for (var i = 0; i < count; i++) {
-                for (var j = i; j < count; j++) {
-                    if (roleorder === Qt.AscendingOrder) {
-                        if (get(j)[role] < get(i)[role]) {
-                            swap(i, j)
-                        }
-                    } else {
-                        if (get(j)[role] > get(i)[role]) {
-                            swap(i, j)
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    
-    
-    
 }
