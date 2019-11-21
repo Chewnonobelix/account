@@ -40,4 +40,5 @@ public:
     static QDate maxDate(const QDate&, const QDate&);
 };
 
+Q_DECLARE_METATYPE(Total)
 #endif // TOTAL_H
