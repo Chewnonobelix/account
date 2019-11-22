@@ -8,14 +8,11 @@ import QtQuick.Controls.Styles 1.4
 import "../Style" as S
 
 Popup {
-    //    closePolicy: Popup.NoAutoClose
-
     id: addingPage
 
     function reset() {
         valueLabel.text = ""
         spinbox.value = 0
-        dateModel.clear()
     }
 
     S.AccountStyle {
@@ -35,7 +32,6 @@ Popup {
     property bool newAccount: false
 
     onClosed: {
-        dateModel.clear()
         valueLabel.background.border.color = "#bdbdbd"
     }
 
@@ -46,15 +42,6 @@ Popup {
     background: Rectangle {
         gradient: pageStyle.backgroundGradient
         border.color: "darkgoldenrod"
-    }
-
-
-    ListModel {
-        id: dateModel
-    }
-
-    function addDate(d) {
-        dateModel.append({"text:": d})
     }
 
     ColumnLayout {

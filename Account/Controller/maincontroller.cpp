@@ -171,7 +171,8 @@ void MainController::add(bool account)
     pY /= m->property("height").toDouble();
     QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("addingid");
     popup->setProperty("newAccount", account);
-    QMetaObject::invokeMethod(item, "openAdding", Q_ARG(QVariant, pX), Q_ARG(QVariant, pY));
+    popup->setProperty("pY", pY); popup->setProperty("pX", pX);
+    QMetaObject::invokeMethod(popup, "open");
 }
 
 void MainController::adding()

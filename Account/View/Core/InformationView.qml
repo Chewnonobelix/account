@@ -12,6 +12,8 @@ Item {
         id: pageStyle
     }
     
+    property var model: ee.entry
+    
     GridLayout {
         anchors.fill: parent
         EntryEdit {
