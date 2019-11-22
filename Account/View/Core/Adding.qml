@@ -72,11 +72,10 @@ Popup {
                 font.pixelSize: pageStyle.core.size
 
                 ToolTip.text: addingPage.newAccount ? qsTr("Please enter an account name") : qsTr("Please complete the entry's title")
-                ToolTip.visible: !valid || ttVisible
+                ToolTip.visible: !valid
                 ToolTip.delay: 100
 
                 property bool valid: text.length !== 0
-                property bool ttVisible: false
             }
 
             DoubleSpinBox {
