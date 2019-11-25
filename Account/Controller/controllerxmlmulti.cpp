@@ -691,3 +691,93 @@ void ControllerXMLMulti::timerEvent(QTimerEvent *)
 {
     close();
 }
+
+QMap<int, CommonExpanse> ControllerXMLMulti::selectCommon()
+{
+    QMap<int, CommonExpanse> ret;
+    QList<QString> tag;
+    tag<<"begin"<<"title"<<"close";
+    auto list = m_currentAccount.elementsByTagName("common");
+    
+    for(int i = 0; i < list.size(); i++)
+    {
+        QDomElement el = list.at(i).toElement();
+        
+        CommonExpanse ce;
+        ce.setId(el.attribute("id").toInt());
+        
+        QDomElement child = el.elementsByTagName("begin").at(0).toElement();
+        ce.setBegin(QDate::fromString(child.text(), "dd-MM-yyyy"));
+        
+        child = el.elementsByTagName("title").at(0).toElement();
+        ce.setTitle(child.text());
+        
+        child = el.elementsByTagName("close").at(0).toElement();
+        ce.setIsClose(child.text().toInt());
+        
+        child = el.firstChild();
+        
+       for(;!child.isNull(); child = child.nextSibling())
+       {
+           if(tag.contains(child.tagName()))
+               continue;
+           
+           QString member = child.tagName();
+           Entry e = selectEntryNode(child);
+           ce.addEntries(member, e);
+       }
+       
+       ret[ce.id()] = ce;
+    }
+    
+    return ret;
+}
+
+bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
+{
+    QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+    int id = maxId(m_ids["common"]) + 1;
+    
+    QMap<QString, QString> att;
+    att["id"] = QString::number(id);
+    adder(root, "common", "", attr);
+    
+    auto cel = root.elementsByTagName("common");
+    
+    for(auto i = 0; i < cel.size(); i++)
+    {
+        QDomElement el = cel.at(i).toElement();
+        if(el.attribute("id").toInt() == id)
+        {
+            adder(el, "begin", ce.begin().toString("dd-MM-yyyy"));
+            adder(el, "title", ce.title());
+            adder(el, "close", QString::number(ce.isClose()));
+            
+            for(auto it = ce.entries().begin(); it != ce.entries().end(); it++)
+            {
+                addEntryNode(it.value(), el, it.key());
+            }           
+        }
+    }
+    return true;
+}
+
+bool ControllerXMLMulti::removeCommon(const CommonExpanse& ce)
+{
+    bool ret = false;
+    auto root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+    auto list = root.elementsByTagName("common");
+    
+    for(auto i = 0; i < list.size(); i++)
+        if(list.at(i).toElement().attribute("id").toInt() == ce.id())
+            ret = !root.removeChild(list.at(i)).isNull();
+    
+    return ret;
+}
+
+bool ControllerXMLMulti::updateCommon(const CommonExpanse&)
+{
+    //TODO
+    return false;
+}
+

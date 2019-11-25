@@ -1,6 +1,7 @@
 #include "controllercommon.h"
 
-ControllerCommon::ControllerCommon()
+int ControllerCommon::exec()
 {
     
+    return 0;
 }
