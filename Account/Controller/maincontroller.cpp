@@ -87,10 +87,9 @@ int MainController::exec()
     }
     
     QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
-    QObject* checker = popup->findChild<QObject*>("checkerModel");
     
-    if(checker)
-        connect(checker, SIGNAL(validate()), this, SLOT(validateCheckEstimated()));
+    if(popup)
+        connect(popup, SIGNAL(validate()), this, SLOT(validateCheckEstimated()));
     
     QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
     
@@ -490,45 +489,32 @@ void MainController::checkEstimated()
             list<<it;
     }
     QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
-    QObject* checker = popup->findChild<QObject*>("checkerModel");
+    QVariantList vl;
     
-    if(checker)
-    {
-        QMetaObject::invokeMethod(checker, "clear");
-        for(auto it: list)
-        {
-            QVariantMap map;
-            map.insert("id", it.id());
-            map.insert("edate", it.date().toString("dd-MM-yyyy"));
-            map.insert("label", it.label());
-            map.insert("isChecked", false);
-            map.insert("value", it.value());
-            QMetaObject::invokeMethod(checker, "fAdd", Q_ARG(QVariant, map));
-        }
-        
-        int count = checker->property("count").toInt();
-        
-        if( count > 0)
-            QMetaObject::invokeMethod(popup, "open");
-    }
+    for(auto it: list)
+        vl<<QVariant::fromValue(it);
+    
+    QObject* v = popup->findChild<QObject*>("repeater");
+    
+    if(v)
+        v->setProperty("model", vl);
+    
+    if(!vl.isEmpty())
+        QMetaObject::invokeMethod(popup, "open");
 }
 
 void MainController::validateCheckEstimated()
 {
     QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
-    QObject* checker = popup->findChild<QObject*>("checkerModel");
-    
-    int count = checker->property("count").toInt();
-    
-    for(int i = 0; i < count; i++)
+        
+    for(int i = 0; i < popup->property("tab").toList().size(); i++)
     {
-        QVariant id ,isChecked;
-        QMetaObject::invokeMethod(checker, "idE", Q_RETURN_ARG(QVariant, id), Q_ARG(QVariant, i));
-        QMetaObject::invokeMethod(checker, "isChecked", Q_RETURN_ARG(QVariant, isChecked), Q_ARG(QVariant, i));
+        if(!popup->property("tab").toList()[i].isValid())
+            continue;
         
-        Entry e = entry(id.toInt());
-        
-        if(isChecked.toBool())
+        Entry e = entry(i);
+
+        if(popup->property("tab").toList()[i].toBool())
         {
             Information inf = e.info();
             inf.setEstimated(false);

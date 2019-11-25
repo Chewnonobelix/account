@@ -8,6 +8,8 @@ Popup {
     anchors.centerIn: parent
     id: checker
 
+    signal validate()
+    
     Label {
         text: qsTr("Entry to check")
         font.pixelSize: pageStyle.title.size
@@ -27,24 +29,8 @@ Popup {
         id: pageStyle
     }
 
-    ListModel {
-        signal validate()
-
-        id: checkerModel
-        objectName: "checkerModel"
-        function fAdd(i) {
-            append(i)
-        }
-
-        function idE(i) {
-            return get(i).id
-        }
-
-        function isChecked(i) {
-            return get(i).isChecked
-        }
-    }
-
+    property var tab: []
+    
     ScrollView {
         id: listChecker
         width: parent.width
@@ -58,14 +44,18 @@ Popup {
         Column {
             clip: true
             Repeater {
+                objectName: "repeater"
                 model: checkerModel
                 clip: true
                 delegate: Row {
                     id: row
                     clip: true
+                    
+                    Component.onCompleted: tab[modelData.id] = false
+                    
                     CheckBox {
                         id: rowChecked
-                        checked: isChecked
+                        checked: false
                         font.family: pageStyle.core.name
                         font.pointSize: pageStyle.core.size
 
@@ -77,7 +67,7 @@ Popup {
                         }
 
                         onCheckedChanged: {
-                            isChecked = checked
+                            tab[modelData.id] = checked;
                         }
                     }
 
@@ -86,7 +76,7 @@ Popup {
                         font.family: pageStyle.core.name
                         font.pointSize: pageStyle.core.size
                         anchors.verticalCenter: rowChecked.verticalCenter
-                        text: label + " " + edate + " " + value + "€"
+                        text: modelData.label + " " + Qt.formatDate(modelData.date, "dd-MM-yyyy") + " " + modelData.value + "€"
 
                         MouseArea {
                             acceptedButtons: Qt.LeftButton
@@ -100,7 +90,6 @@ Popup {
                             ToolTip.delay: 500
                             ToolTip.visible: containsMouse
                         }
-
                     }
                 }
             }
@@ -129,7 +118,7 @@ Popup {
 
 
         onClicked:  {
-            checkerModel.validate()
+            checker.validate()
         }
     }
 
