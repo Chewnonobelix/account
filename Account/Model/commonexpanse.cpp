@@ -68,4 +68,4 @@ QVariantList CommonExpanse::entries(QString name) const
 void CommonExpanse::addEntries(QString name, Entry ee)
 {
     m_entries.insert(name, ee);
-+}
+}

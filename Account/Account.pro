@@ -15,6 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Controller/controllerbudget.cpp \
+    Controller/controllercommon.cpp \
     Controller/controllerfrequency.cpp \
     Controller/interfacedatasave.cpp \
     Model/accountglobal.cpp \
@@ -33,7 +34,6 @@ SOURCES += \
     Controller/graphcontroller.cpp \
     Controller/xmltosql.cpp \
     Model/budget.cpp \
-    Model/commonexpense.cpp \
     Controller/controllerxmlmulti.cpp \
     Controller/languagecontroller.cpp \
     Controller/controllertransfert.cpp
@@ -57,6 +57,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     Controller/controllerbudget.h \
+    Controller/controllercommon.h \
     Controller/controllerfrequency.h \
     Model/commonexpanse.h \
     Model/entry.h \
@@ -73,7 +74,6 @@ HEADERS += \
     Controller/graphcontroller.h \
     Controller/xmltosql.h \
     Model/budget.h \
-    Model/commonexpense.h \
     Controller/controllerxmlmulti.h \
     Model/accountglobal.h \
     Controller/controllertransfert.h \
