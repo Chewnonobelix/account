@@ -715,9 +715,9 @@ QMap<int, CommonExpanse> ControllerXMLMulti::selectCommon()
         child = el.elementsByTagName("close").at(0).toElement();
         ce.setIsClose(child.text().toInt());
         
-        child = el.firstChild();
+        child = el.firstChild().toElement();
         
-       for(;!child.isNull(); child = child.nextSibling())
+       for(;!child.isNull(); child = child.nextSibling().toElement())
        {
            if(tag.contains(child.tagName()))
                continue;
@@ -740,7 +740,7 @@ bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
     
     QMap<QString, QString> att;
     att["id"] = QString::number(id);
-    adder(root, "common", "", attr);
+    adder(root, "common", "", att);
     
     auto cel = root.elementsByTagName("common");
     
@@ -775,9 +775,38 @@ bool ControllerXMLMulti::removeCommon(const CommonExpanse& ce)
     return ret;
 }
 
-bool ControllerXMLMulti::updateCommon(const CommonExpanse&)
+bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
 {
-    //TODO
-    return false;
+    auto root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+    auto common = root.elementsByTagName("common");
+    bool ret = false;
+    for(auto i = 0; i < common.size(); i++)
+    {
+        QDomElement el = common.at(i).toElement();
+        if(el.attribute("id").toInt() != ce.id())
+            continue;
+        
+        QStringList members = ce.members();
+        
+        for(auto it: members)
+        {
+            auto memberslist = el.elementsByTagName(it);
+            
+            while(!memberslist.isEmpty())
+                el.removeChild(memberslist.at(0));
+        }
+        
+        for(auto it = ce.entries().begin(); it != ce.entries().end(); it++)
+        {
+            addEntryNode(it.value(), el, it.key());
+        }           
+
+        setter(el, "close", QString::number(ce.isClose()));
+        setter(el, "title", ce.title());
+        setter(el, "begin", ce.begin().toString("dd-MM-yyyy"));
+        
+        ret = true;
+    }
+    return ret;
 }
 
