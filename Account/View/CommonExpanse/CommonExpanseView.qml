@@ -3,7 +3,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.13
 
-import "../"
+import "../Style"
+
 Rectangle {
     id: root
 
@@ -11,11 +12,20 @@ Rectangle {
     signal s_remove(int id)
     signal s_close(int id)
     
-    property var model: null
+    property var cModel
     
-    Component.onCompleted: {
-        title.text = Qt.binding(function() {return model ? model.begin + ": " + model.title : ""})
-        table.membersList = Qt.binding(function() {return model ? model.members() : []})
+    onCModelChanged: {
+        console.log(cModel, cModel.title, cModel.begin, Qt.formatDate(cModel.begin, "dd-MM-yyyy"))
+//        title.text = Qt.binding(function() {return model ? Qt.formatDate(model.begin, "dd-MM-yyyy") + ": " + model.title : ""})
+        table.membersList = Qt.binding(function() {return cModel ? cModel.members : []})
+    }
+    
+    AccountStyle {
+        id: pageStyle
+    }    
+    MouseArea {
+        anchors.fill: parent
+        onClicked: console.log("top", cModel)
     }
 
     color: "transparent"
@@ -119,6 +129,27 @@ Rectangle {
             Layout.column: 2 
             Layout.rowSpan: 1
             Layout.columnSpan: 1 
+            
+            font.family: pageStyle.core.name
+            font.pixelSize: pageStyle.core.size
+            fontSizeMode: Text.Fit
+            
+            verticalAlignment: Qt.AlignVCenter
+            horizontalAlignment: Qt.AlignHCenter
+            
+//            onModelChanged: console.log(model)
+            text: root.model ? /*Qt.formatDate(model.begin, "dd-MM-yyyy") + ": " + */root.model.title : ""
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    console.log(parent.text, root.model)
+                }
+            }
+
+            background: Rectangle{
+                color: "transparent"
+                border.color: "red"
+            }
         }
     }
 }

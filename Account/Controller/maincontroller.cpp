@@ -22,6 +22,8 @@ MainController::MainController(): AbstractController()
     connect(&m_freqs, ControllerFrequency::s_select, this, MainController::selection);
     
     m_dbThread.start();    
+    
+    
 }
 
 MainController::~MainController()
@@ -476,6 +478,8 @@ void MainController::loadAccount()
         }
         else
             accountChange(t[0]);
+        
+        m_common.exec();        
     }
 }
 

@@ -737,7 +737,7 @@ bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
 {
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
     int id = maxId(m_ids["common"]) + 1;
-    
+        
     QMap<QString, QString> att;
     att["id"] = QString::number(id);
     adder(root, "common", "", att);
@@ -759,6 +759,8 @@ bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
             }           
         }
     }
+    
+    close();
     return true;
 }
 
@@ -772,6 +774,7 @@ bool ControllerXMLMulti::removeCommon(const CommonExpanse& ce)
         if(list.at(i).toElement().attribute("id").toInt() == ce.id())
             ret = !root.removeChild(list.at(i)).isNull();
     
+    close();
     return ret;
 }
 
@@ -807,6 +810,7 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
         
         ret = true;
     }
+    close();
     return ret;
 }
 

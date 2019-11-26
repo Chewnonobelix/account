@@ -16,6 +16,7 @@
 #include "controllertransfert.h"
 #include "controllerbudget.h"
 #include "controllerfrequency.h"
+#include "controllercommon.h"
 
 class MainController: public AbstractController
 {
@@ -29,6 +30,8 @@ private:
     ControllerTransfert m_transfert;
     ControllerBudget m_budget;
     ControllerFrequency m_freqs;
+    ControllerCommon m_common;
+    
     QThread m_dbThread;
     
     void checkEstimated();
