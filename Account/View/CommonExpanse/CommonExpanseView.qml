@@ -1,4 +1,5 @@
 import QtQuick 2.13
+import QtQuick.Controls 1.4
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.13
 
@@ -6,32 +7,118 @@ import "../"
 Rectangle {
     id: root
 
+    signal s_add()
+    signal s_remove(int id)
+    signal s_close(int id)
+    
+    property var model: null
+    
+    Component.onCompleted: {
+        title.text = Qt.binding(function() {return model ? model.begin + ": " + model.title : ""})
+        table.membersList = Qt.binding(function() {return model ? model.members() : []})
+    }
 
+    color: "transparent"
     GridLayout {
         anchors.fill: parent
-
-        TableView {
+        rowSpacing: height * 0.02
+        columnSpacing:  width * 0.02
+        
+        ScrollView {
             id: table
+            Layout.preferredHeight: root.height * 0.93
+            Layout.preferredWidth: root.width * .78
+            Layout.row: 0
+            Layout.column: 0 
+            Layout.rowSpan: 1
+            Layout.columnSpan: 3
+            
+            property var membersList
+            
+            Repeater {
+                model: table.membersList
+                ListView {
+                    id: listComponent
+                    height: table.height
+                    width: table.width * .20
+                    
+                    model: root.model.entries(modelData)
+                    header: Rectangle {
+                        height: listComponent.height * .05
+                        width: listComponent.width
+                    }
+                    
+                    footer: Rectangle {
+                        height: listComponent.height * .05
+                        width: listComponent.width
+                    }
+                    
+                    delegate: Rectangle {
+                        height: listComponent.height * .10
+                        width: listComponent.width
+                    }
+                }
+            }
         }
 
         Button {
             id: add
+            objectName: "add"
+            Layout.preferredHeight: root.height * 0.05
+            Layout.preferredWidth: root.width * .09
+            Layout.row: 1
+            Layout.column: 0 
+            Layout.rowSpan: 1
+            Layout.columnSpan: 1 
+            text: qsTr("Add")
         }
 
         Button{
             id: remove
+            objectName: "remove"
+            Layout.preferredHeight: root.height * 0.05
+            Layout.preferredWidth: root.width * .09
+            Layout.row: 1
+            Layout.column: 1
+            Layout.rowSpan: 1
+            Layout.columnSpan: 1 
+            text: qsTr("Remove")
         }
 
         ListView{
             id: recap
+            Layout.preferredHeight: root.height * 0.93
+            Layout.preferredWidth: root.width * .20
+            Layout.row: 0
+            Layout.column: 3 
+            Layout.rowSpan: 1
+            Layout.columnSpan: 1 
+            Rectangle {
+                anchors.fill: parent
+                border.color: "gold"
+                color: "transparent"
+            }
         }
 
         Button {
             id: close
+            Layout.preferredHeight: root.height * 0.05
+            Layout.preferredWidth: root.width * .20
+            Layout.row: 1
+            Layout.column: 3 
+            Layout.rowSpan: 1
+            Layout.columnSpan: 1 
+            text: qsTr("Close")
         }
 
         Label {
             id: title
+            Layout.preferredHeight: root.height * 0.05
+            Layout.preferredWidth: root.width * .56
+            Layout.row: 1
+            Layout.column: 2 
+            Layout.rowSpan: 1
+            Layout.columnSpan: 1 
         }
     }
 }

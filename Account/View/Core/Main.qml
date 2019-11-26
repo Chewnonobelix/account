@@ -8,6 +8,7 @@ import QtQuick.Layouts 1.13
 
 import "../Style" as S
 import "../Transfert" as T
+import "../CommonExpanse"
 
 ApplicationWindow {
     visible: true
@@ -393,7 +394,7 @@ Current Version beta 0.9")
     }
     
     header: Rectangle {
-        height: mainWindow.height * .02
+        height: mainWindow.height * .03
         color: "transparent"
         id: head
         objectName: "head"
@@ -436,6 +437,7 @@ Current Version beta 0.9")
             id: accountSelect
             objectName: "accountSelect"
             anchors.right: parent.right
+            height: parent.height
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
             enabled: accountSelect.model.length > 0
@@ -493,9 +495,12 @@ Current Version beta 0.9")
         id: swipeView
         currentIndex: tabBar.currentIndex
         
-        
+        anchors.fill: parent        
+        anchors.topMargin: mainWindow.height * 0.01
+        anchors.bottomMargin: mainWindow.height * 0.01
+
         enabled: accountSelect.model.length > 0
-        anchors.fill: parent
+        
         background: Rectangle {
             color: "transparent"
         }
@@ -509,6 +514,12 @@ Current Version beta 0.9")
             id: graph
             month: table.v_dateMonth
             year: table.v_dateYear
+        }
+        
+        CommonExpanseView {
+            id: commonExpanse
+            
+            //            anchors.fill: parent
         }
         
         Popup {
@@ -622,5 +633,28 @@ Current Version beta 0.9")
                 color: tabBar.currentItem === parent ? "darkseagreen" : "white"
             }
         }
+        
+        TabButton {
+            id: commonTabButton
+            
+            contentItem: Label {
+                text: qsTr("Common expanse")
+                horizontalAlignment: Qt.AlignHCenter
+                color: tabBar.currentItem === commonTabButton ? "black" : "darkseagreen"
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
+            }
+            
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                acceptedButtons: Qt.NoButton
+            }
+            
+            background: Rectangle {
+                color: tabBar.currentItem === parent ? "darkseagreen" : "white"
+            }
+        }
+        
     }
 }
