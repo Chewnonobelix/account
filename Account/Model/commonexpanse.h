@@ -4,7 +4,7 @@
 #include <QMultiMap>
 #include <QDate>
 #include <QString>
-
+#include <QDebug>
 #include "entry.h"
 #include "total.h"
 
@@ -47,8 +47,9 @@ public:
 
     QStringList members() const;
     Q_INVOKABLE Total totalForMember(QString) const;
-    
+    Q_INVOKABLE QVariantMap totalForMembers() const;
     Q_INVOKABLE QVariantList entries(QString) const;
+    Q_INVOKABLE void equilibrate();
 };
 
 #endif // COMMONEXPANSE_H

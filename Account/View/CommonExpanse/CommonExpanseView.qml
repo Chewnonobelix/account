@@ -17,6 +17,16 @@ Rectangle {
     Component.onCompleted: {
         title.text = Qt.binding(function() {return model ? Qt.formatDate(model.begin, "dd-MM-yyyy") + ": " + model.title : ""})
         table.membersList = Qt.binding(function() {return model ? model.members : []})
+        recap.model = Qt.binding(function() {if(model) {
+                var ret = []
+                for(var it in model.members) {
+                    ret[ret.length] = ({"id": model.members[it], "total": model.totalForMember(model.members[it])})
+                }
+                return ret
+            }
+            return []})
+        
+        close.checked = Qt.binding(function() { return model ? model.isClose : false})
     }
     
     AccountStyle {
@@ -145,17 +155,39 @@ Rectangle {
                 border.color: "gold"
                 color: "transparent"
             }
+                        
+            delegate: Rectangle {
+                gradient: pageStyle.unselectView
+                width: recap.width
+                height: recap.height * .07
+
+                Label {
+                    anchors.fill: parent
+                    text: modelData.id + ": " + modelData.total.value + "€"
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+                    fontSizeMode: Text.Fit
+                    horizontalAlignment: Qt.AlignHCenter
+                    verticalAlignment: Qt.AlignVCenter
+                }
+                
+            }
         }
         
-        Button {
+        CheckBox {
             id: close
+            objectName: "close"
             Layout.preferredHeight: root.height * 0.05
             Layout.preferredWidth: root.width * .20
             Layout.row: 1
             Layout.column: 3 
             Layout.rowSpan: 1
             Layout.columnSpan: 1 
+            Layout.alignment: Qt.AlignRight
             text: qsTr("Close")
+            
+            signal s_checked(bool check)
+            onCheckedChanged: s_checked(checked)
         }
         
         Label {
@@ -167,8 +199,8 @@ Rectangle {
             Layout.rowSpan: 1
             Layout.columnSpan: 1 
             
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+            font.family: pageStyle.title.name
+            font.pixelSize: pageStyle.title.size
             fontSizeMode: Text.Fit
             
             verticalAlignment: Qt.AlignVCenter
@@ -176,7 +208,6 @@ Rectangle {
             
             background: Rectangle{
                 color: "transparent"
-                border.color: "red"
             }
         }
     }

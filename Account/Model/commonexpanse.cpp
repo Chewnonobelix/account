@@ -81,3 +81,27 @@ Total CommonExpanse::totalForMember(QString member) const
     
     return ret;
 }
+
+QVariantMap CommonExpanse::totalForMembers() const
+{
+    QVariantMap ret; 
+    auto list = members();
+    for(auto it: list)
+    {
+        ret[it] = QVariant::fromValue(totalForMember(it));
+    }
+    
+    return ret;    
+}
+
+void CommonExpanse::equilibrate()
+{
+    Total t;
+    
+    for(auto it: members())
+        t = t + totalForMember(it);
+    
+    t.setValue(t.value() / members().size());
+    
+    qDebug()<<"Median"<<t.value();
+}

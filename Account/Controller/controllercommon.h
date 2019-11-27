@@ -18,6 +18,10 @@ public:
     ~ControllerCommon() = default;
     
     int exec();
+    
+public slots:
+    void closeCommon(bool);
+    
 };
 
 #endif // CONTROLLERCOMMON_H
