@@ -57,23 +57,51 @@ Rectangle {
                             color: "transparent"
                             border.color: "black"
                         }
-
+                        
                         header: Rectangle {
                             height: listComponent.height * .05
                             width: listComponent.width
-                            color: "blue"
+                            gradient: pageStyle.goldHeader
+                            Label {
+                                anchors.fill: parent
+                                text: modelData
+                                font.pixelSize: pageStyle.title.size
+                                font.family: pageStyle.title.name
+                                fontSizeMode: Text.fit
+                                horizontalAlignment: Qt.AlignHCenter
+                                verticalAlignment: Qt.AlignVCenter
+                            }
                         }
                         
                         footer: Rectangle {
                             height: listComponent.height * .05
                             width: listComponent.width
-                            color: "red"
+                            gradient: pageStyle.goldHeader
+                            Label {
+                                anchors.fill: parent
+                                text: root.model.totalForMember(modelData).value
+                                font.pixelSize: pageStyle.title.size
+                                font.family: pageStyle.title.name
+                                fontSizeMode: Text.fit
+                                horizontalAlignment: Qt.AlignHCenter
+                                verticalAlignment: Qt.AlignVCenter
+                            }                     
                         }
                         
                         delegate: Rectangle {
                             height: listComponent.height * .10
                             width: listComponent.width
-                            color: "pink"
+                            gradient: pageStyle.unselectView
+                            Label {
+                                anchors.fill: parent
+                                text: modelData.value
+                                font.pixelSize: pageStyle.title.size
+                                font.family: pageStyle.title.name
+                                fontSizeMode: Text.fit
+                                horizontalAlignment: Qt.AlignHCenter
+                                verticalAlignment: Qt.AlignVCenter
+                            }                     
+                            
                         }
                     }
                 }
@@ -145,7 +173,7 @@ Rectangle {
             
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
-                        
+            
             background: Rectangle{
                 color: "transparent"
                 border.color: "red"

@@ -69,3 +69,15 @@ void CommonExpanse::addEntries(QString name, Entry ee)
 {
     m_entries.insert(name, ee);
 }
+
+Total CommonExpanse::totalForMember(QString member) const
+{
+    Total ret;
+    
+    auto el = m_entries.values(member);
+    
+    for(auto it: el)
+        ret = ret + it;
+    
+    return ret;
+}

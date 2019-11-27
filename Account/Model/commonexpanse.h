@@ -46,6 +46,8 @@ public:
     void setIsClose(bool isClose);
 
     QStringList members() const;
+    Q_INVOKABLE Total totalForMember(QString) const;
+    
     Q_INVOKABLE QVariantList entries(QString) const;
 };
 
