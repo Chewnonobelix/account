@@ -44,6 +44,8 @@ Popup {
         border.color: "darkgoldenrod"
     }
 
+    property bool common: false
+
     ColumnLayout {
         RowLayout {
             Label {
@@ -55,6 +57,15 @@ Popup {
 
             CalendarButton {
                 id: dateLabel
+            }
+
+            Label{
+                visible: addingPage.common
+                text: qsTr("Member")
+            }
+
+            TextInput {
+                objectName: "member"
             }
         }
 

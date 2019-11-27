@@ -512,17 +512,49 @@ Current Version beta 0.9")
         }
         
         Rectangle {}
-//        Page2Form {
-//            id: graph
-//            month: table.v_dateMonth
-//            year: table.v_dateYear
-//        }
+        //        Page2Form {
+        //            id: graph
+        //            month: table.v_dateMonth
+        //            year: table.v_dateYear
+        //        }
         
         Rectangle {
             color: "transparent"
 
             Popup {
                 id: popAddCommon
+
+                onOpened: commonTitle.clear()
+                signal s_accepted()
+
+                GridLayout {
+                    TextInput{
+                        id: commonTitle
+                        objectName: "commonTitle"
+                        Layout.columnSpan: 4
+                        Layout.row: 0
+                        Layout.column: 1
+                    }
+
+                    Button {
+                        objectName: "commonAddOk"
+                        text: qsTr("Ok")
+                        Layout.column: 2
+                        Layout.row: 1
+                        onClicked: {
+                            popAddCommon.close()
+                            popAddCommon.s_accepted()
+                        }
+                    }
+                    Button {
+                        text: qsTr("Cancel")
+                        Layout.column: 3
+                        Layout.row: 1
+
+                        onClicked: popAddCommon.close()
+                    }
+                }
+
             }
 
             Row {
@@ -545,6 +577,7 @@ Current Version beta 0.9")
                             width: parent.width * .49
                             height: parent.height
                             text: qsTr("Add common expanse")
+                            onClicked: popAddCommon.open()
                         }
                         Button {
                             width: parent.width * .49
