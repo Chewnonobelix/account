@@ -518,8 +518,7 @@ Current Version beta 0.9")
         
         CommonExpanseView {
             id: commonExpanse
-            
-            //            anchors.fill: parent
+            objectName: "common"
         }
         
         Popup {

@@ -59,6 +59,12 @@ int MainController::exec()
         connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(selection()));
     }
     
+    QObject* common = root->findChild<QObject*>("common");
+    if(common)
+    {
+        m_common.m_view = common;
+//        m_common.exec();
+    }
     QObject* combo = root->findChild<QObject*>("accountSelect");
     
     if(combo)
@@ -135,6 +141,7 @@ int MainController::exec()
     }
     
     m_info.setControllerFrequency(&m_freqs);
+    
     
     return 0;
 }
@@ -326,7 +333,7 @@ void MainController::selection(int id)
         id = -1;
         calculTotal();
     }
-
+    
     m_graph.exec();
     QObject* calendar = m_engine.rootObjects().first()->findChild<QObject*>("cal");
     QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));
@@ -378,7 +385,7 @@ void MainController::selection(int id)
             
             first -= 1;
             first *= 100;
-
+            
             QVariantList modelList;
             
             for(auto i = 0 ; i < ret.size(); i++)
@@ -409,7 +416,7 @@ void MainController::selection(int id)
         }
         while(!found && skipper->property("pageIndex").toInt() <= maxPage);
     }
-        
+    
     QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
     if(head)
         head->setProperty("selectionTotal", QVariant::fromValue(t));
@@ -479,7 +486,8 @@ void MainController::loadAccount()
         else
             accountChange(t[0]);
         
-        m_common.exec();        
+        if(m_common.m_view)
+            m_common.exec();        
     }
 }
 
@@ -510,14 +518,14 @@ void MainController::checkEstimated()
 void MainController::validateCheckEstimated()
 {
     QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
-        
+    
     for(int i = 0; i < popup->property("tab").toList().size(); i++)
     {
         if(!popup->property("tab").toList()[i].isValid())
             continue;
         
         Entry e = entry(i);
-
+        
         if(popup->property("tab").toList()[i].toBool())
         {
             Information inf = e.info();

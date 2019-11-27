@@ -7,27 +7,22 @@ import "../Style"
 
 Rectangle {
     id: root
-
+    
     signal s_add()
     signal s_remove(int id)
     signal s_close(int id)
     
-    property var cModel
+    property var model
     
-    onCModelChanged: {
-        console.log(cModel, cModel.title, cModel.begin, Qt.formatDate(cModel.begin, "dd-MM-yyyy"))
-//        title.text = Qt.binding(function() {return model ? Qt.formatDate(model.begin, "dd-MM-yyyy") + ": " + model.title : ""})
-        table.membersList = Qt.binding(function() {return cModel ? cModel.members : []})
+    Component.onCompleted: {
+        title.text = Qt.binding(function() {return model ? Qt.formatDate(model.begin, "dd-MM-yyyy") + ": " + model.title : ""})
+        table.membersList = Qt.binding(function() {return model ? model.members : []})
     }
     
     AccountStyle {
         id: pageStyle
     }    
-    MouseArea {
-        anchors.fill: parent
-        onClicked: console.log("top", cModel)
-    }
-
+    
     color: "transparent"
     GridLayout {
         anchors.fill: parent
@@ -42,35 +37,49 @@ Rectangle {
             Layout.column: 0 
             Layout.rowSpan: 1
             Layout.columnSpan: 3
-            
+            clip: true
             property var membersList
-            
-            Repeater {
-                model: table.membersList
-                ListView {
-                    id: listComponent
-                    height: table.height
-                    width: table.width * .20
-                    
-                    model: root.model.entries(modelData)
-                    header: Rectangle {
-                        height: listComponent.height * .05
-                        width: listComponent.width
-                    }
-                    
-                    footer: Rectangle {
-                        height: listComponent.height * .05
-                        width: listComponent.width
-                    }
-                    
-                    delegate: Rectangle {
-                        height: listComponent.height * .10
-                        width: listComponent.width
+            Row {
+                anchors.fill: parent
+                clip: true
+                
+                Repeater {
+                    model: table.membersList
+                    ListView {
+                        id: listComponent
+                        height: table.height
+                        width: table.width * .20
+                        clip: true
+                        model: root.model.entries(modelData)
+                        
+                        Rectangle {
+                            anchors.fill: parent
+                            color: "transparent"
+                            border.color: "black"
+                        }
+
+                        header: Rectangle {
+                            height: listComponent.height * .05
+                            width: listComponent.width
+                            color: "blue"
+                        }
+                        
+                        footer: Rectangle {
+                            height: listComponent.height * .05
+                            width: listComponent.width
+                            color: "red"
+                        }
+                        
+                        delegate: Rectangle {
+                            height: listComponent.height * .10
+                            width: listComponent.width
+                            color: "pink"
+                        }
                     }
                 }
             }
         }
-
+        
         Button {
             id: add
             objectName: "add"
@@ -82,7 +91,7 @@ Rectangle {
             Layout.columnSpan: 1 
             text: qsTr("Add")
         }
-
+        
         Button{
             id: remove
             objectName: "remove"
@@ -94,7 +103,7 @@ Rectangle {
             Layout.columnSpan: 1 
             text: qsTr("Remove")
         }
-
+        
         ListView{
             id: recap
             Layout.preferredHeight: root.height * 0.93
@@ -109,7 +118,7 @@ Rectangle {
                 color: "transparent"
             }
         }
-
+        
         Button {
             id: close
             Layout.preferredHeight: root.height * 0.05
@@ -120,7 +129,7 @@ Rectangle {
             Layout.columnSpan: 1 
             text: qsTr("Close")
         }
-
+        
         Label {
             id: title
             Layout.preferredHeight: root.height * 0.05
@@ -136,16 +145,7 @@ Rectangle {
             
             verticalAlignment: Qt.AlignVCenter
             horizontalAlignment: Qt.AlignHCenter
-            
-//            onModelChanged: console.log(model)
-            text: root.model ? /*Qt.formatDate(model.begin, "dd-MM-yyyy") + ": " + */root.model.title : ""
-            MouseArea{
-                anchors.fill: parent
-                onClicked: {
-                    console.log(parent.text, root.model)
-                }
-            }
-
+                        
             background: Rectangle{
                 color: "transparent"
                 border.color: "red"

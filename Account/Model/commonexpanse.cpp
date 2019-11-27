@@ -52,7 +52,7 @@ void CommonExpanse::setIsClose(bool isClose)
 
 QStringList CommonExpanse::members() const
 {
-    return m_entries.keys();
+    return m_entries.uniqueKeys();
 }
 
 QVariantList CommonExpanse::entries(QString name) const
