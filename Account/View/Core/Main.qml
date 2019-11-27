@@ -264,7 +264,7 @@ ApplicationWindow {
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
             
-            height: budgetListItem.height * 2//TOREMOVE 
+            height: budgetListItem.height * 2//TOREMOVE
             MenuItem {
                 id: budgetListItem
                 text: qsTr("Budget list")
@@ -496,7 +496,7 @@ Current Version beta 0.9")
         id: swipeView
         currentIndex: tabBar.currentIndex
         
-        anchors.fill: parent        
+        anchors.fill: parent
         anchors.topMargin: mainWindow.height * 0.01
         anchors.bottomMargin: mainWindow.height * 0.01
 
@@ -511,17 +511,58 @@ Current Version beta 0.9")
             objectName: "table"
         }
         
-        Page2Form {
-            id: graph
-            month: table.v_dateMonth
-            year: table.v_dateYear
-        }
+        Rectangle {}
+//        Page2Form {
+//            id: graph
+//            month: table.v_dateMonth
+//            year: table.v_dateYear
+//        }
         
-        CommonExpanseView {
-            id: commonExpanse
-            objectName: "common"
+        Rectangle {
+            color: "transparent"
+
+            Popup {
+                id: popAddCommon
+            }
+
+            Row {
+                anchors.fill: parent
+                spacing: width * 0.02
+                Column{
+                    height: parent.height
+                    width: parent.width * 0.20
+                    spacing: height * .02
+                    ListView {
+                        width: parent.width
+                        height: parent.height * 0.93
+                    }
+
+                    Row {
+                        width: parent.width
+                        height: parent.height * 0.05
+                        spacing: width * 0.02
+                        Button {
+                            width: parent.width * .49
+                            height: parent.height
+                            text: qsTr("Add common expanse")
+                        }
+                        Button {
+                            width: parent.width * .49
+                            height: parent.height
+                            text: qsTr("Remove common expanse")
+                        }
+
+                    }
+                }
+
+                CommonExpanseView {
+                    id: commonExpanse
+                    objectName: "common"
+                    height: parent.height
+                    width: parent.width * .78
+                }
+            }
         }
-        
         Popup {
             id: deleteAccount
             anchors.centerIn: swipeView
