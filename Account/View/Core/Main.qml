@@ -394,7 +394,7 @@ Current Version beta 0.9")
     }
     
     header: Rectangle {
-        height: mainWindow.height * .03
+        height: mainWindow.height * .05
         color: "transparent"
         id: head
         objectName: "head"
@@ -405,6 +405,7 @@ Current Version beta 0.9")
         RowLayout {
             anchors.left: parent.left
             anchors.right: accountSelect.left
+            Layout.preferredHeight: parent.height
             
             Label {
                 id: accountTitle
