@@ -499,7 +499,7 @@ Current Version beta 0.9")
         anchors.fill: parent
         anchors.topMargin: mainWindow.height * 0.01
         anchors.bottomMargin: mainWindow.height * 0.01
-
+        
         enabled: accountSelect.model.length > 0
         
         background: Rectangle {
@@ -520,43 +520,57 @@ Current Version beta 0.9")
         
         Rectangle {
             color: "transparent"
-
+            objectName: "commonRect"
+            
             Popup {
                 id: popAddCommon
-
+                objectName: "popAddCommon"
                 onOpened: commonTitle.clear()
-                signal s_accepted()
-
+                signal s_accepted(string name)
+                
+                anchors.centerIn: parent
+                background: Rectangle {
+                    gradient: pageStyle.backgroundGradient
+                    border.color: "gold"
+                }
+                
                 GridLayout {
-                    TextInput{
+                    anchors.fill: parent
+                    Label {
+                        text: qsTr("Session name")
+                        Layout.row: 0
+                        Layout.column: 0                            
+                    }
+                    
+                    TextField{
                         id: commonTitle
                         objectName: "commonTitle"
-                        Layout.columnSpan: 4
+                        Layout.columnSpan: 3
                         Layout.row: 0
                         Layout.column: 1
                     }
-
+                    
                     Button {
                         objectName: "commonAddOk"
                         text: qsTr("Ok")
                         Layout.column: 2
                         Layout.row: 1
+                        
                         onClicked: {
                             popAddCommon.close()
-                            popAddCommon.s_accepted()
+                            popAddCommon.s_accepted(commonTitle.text)
                         }
                     }
                     Button {
                         text: qsTr("Cancel")
                         Layout.column: 3
                         Layout.row: 1
-
+                        
                         onClicked: popAddCommon.close()
                     }
                 }
-
             }
-
+            
             Row {
                 anchors.fill: parent
                 spacing: width * 0.02
@@ -565,10 +579,49 @@ Current Version beta 0.9")
                     width: parent.width * 0.20
                     spacing: height * .02
                     ListView {
+                        id: listCommon
+                        objectName: "listCommon"
                         width: parent.width
                         height: parent.height * 0.93
-                    }
+                        clip: true
+                        
+                        Component.onCompleted: {
+                            currentModel = Qt.binding(function() {return currentIndex > -1 ? model[currentIndex] : null })
+                            commonExpanse.model = currentModel                        
+                        }
 
+                        property var currentModel
+                        Rectangle{
+                            anchors.fill: parent
+                            color: "transparent"
+                            border.color: "gold"
+                        }
+                        
+                        highlight: Rectangle {
+                            gradient: pageStyle.calSelect
+                        }
+                        
+                        highlightMoveDuration: 0
+                        
+                        delegate: Label {
+                            text: modelData.title
+                            height: listCommon.height * 0.07
+                            width: listCommon.width
+                            
+                            horizontalAlignment: Qt.AlignHCenter
+                            verticalAlignment: Qt.AlignVCenter
+                            
+                            fontSizeMode: Text.Fit
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: listCommon.currentIndex = index
+                            }
+                        }
+                    }
+                    
                     Row {
                         width: parent.width
                         height: parent.height * 0.05
@@ -580,14 +633,17 @@ Current Version beta 0.9")
                             onClicked: popAddCommon.open()
                         }
                         Button {
+                            objectName: "removeCommon"
                             width: parent.width * .49
                             height: parent.height
                             text: qsTr("Remove common expanse")
-                        }
-
+                            
+                            signal s_remove(int id)
+                            onClicked: s_remove(listCommon.currentModel.id)
+                        }         
                     }
                 }
-
+                
                 CommonExpanseView {
                     id: commonExpanse
                     objectName: "common"

@@ -28,3 +28,21 @@ void ControllerCommon::closeCommon(bool isClose)
     m_db->updateCommon(ce);
     ce.equilibrate();
 }
+
+void ControllerCommon::addCommon(QString name)
+{
+    qDebug()<<"Add common"<<name;
+    
+    CommonExpanse ce;
+    ce.setTitle(name);
+    ce.setBegin(QDate::currentDate());
+    ce.setIsClose(false);
+    m_db->addCommon(ce);
+}
+
+void ControllerCommon::removeCommon(int id)
+{
+    CommonExpanse ce = m_db->selectCommon()[id];
+    m_db->removeCommon(ce);
+    exec();
+}

@@ -18,9 +18,12 @@ public:
     ~ControllerCommon() = default;
     
     int exec();
+    void init();
     
 public slots:
     void closeCommon(bool);
+    void addCommon(QString);
+    void removeCommon(int);
     
 };
 

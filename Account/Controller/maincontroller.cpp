@@ -59,12 +59,22 @@ int MainController::exec()
         connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(selection()));
     }
     
-    QObject* common = root->findChild<QObject*>("common");
+    QObject* common = root->findChild<QObject*>("commonRect");
     if(common)
     {
         m_common.m_view = common;
-//        m_common.exec();
+        m_common.init();
     }
+    
+    QObject* commonpop = root->findChild<QObject*>("popAddCommon");
+    if(commonpop)
+        connect(commonpop, SIGNAL(s_accepted(QString)), &m_common, SLOT(addCommon(QString)));
+    
+    QObject* removeCommon = root->findChild<QObject*>("removeCommon");
+    
+    if(removeCommon)
+        connect(removeCommon, SIGNAL(s_remove(int)), &m_common, SLOT(removeCommon(int)));
+    
     QObject* combo = root->findChild<QObject*>("accountSelect");
     
     if(combo)
@@ -451,6 +461,8 @@ void MainController::accountChange(QString acc)
     for(auto it: m_db->selectEntry(currentAccount()))
         m_freqs.addEntry(it.id());
     
+    m_common.exec();
+    
     selection();
     checkEstimated();
 }
@@ -485,9 +497,6 @@ void MainController::loadAccount()
         }
         else
             accountChange(t[0]);
-        
-        if(m_common.m_view)
-            m_common.exec();        
     }
 }
 
