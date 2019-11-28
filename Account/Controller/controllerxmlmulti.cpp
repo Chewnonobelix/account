@@ -58,6 +58,10 @@ void ControllerXMLMulti::setCurrentAccount(QString a)
 {
     if(m_accounts.contains(a))
         m_currentAccount = m_accounts[a];
+    
+    auto root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+    for(auto it = root.firstChildElement(); !it.isNull(); it = it.nextSiblingElement())
+        m_ids[it.tagName()]<<it.attribute("id").toInt();
 }
 
 bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root, QString name )
@@ -157,12 +161,7 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
     auto attr = el.attributes();
     for(int j = 0; j < attr.count(); j++)
         e.setMetadata(attr.item(j).nodeName(), attr.item(j).nodeValue());
-    
-    
-    
-    m_ids["entry"]<<e.id();
-    m_ids["info"]<<inf.id();
-    
+        
     return e;
 }
 
@@ -188,6 +187,7 @@ QMultiMap<QDate, Entry> ControllerXMLMulti::selectEntry(QString account)
         Entry e = selectEntryNode(el);
         ret.insert(e.date(), e);
     }
+
     
     return ret;
 }
@@ -264,8 +264,7 @@ void ControllerXMLMulti::updateInfo(QDomElement &info , const Information & inf)
     setter(info, "categoryName", inf.category());
     setter(info, "title", inf.title());
     
-    close();
-    
+    close();  
 }
 
 
@@ -417,9 +416,7 @@ QList<Budget> ControllerXMLMulti::selectBudgets()
         QDomElement el = list.at(i).toElement();
         Budget b;
         b.setId(el.attribute("id").toInt());
-        
-        m_ids["budget"]<<b.id();
-        
+                
         QDomElement child = el.elementsByTagName("name").at(0).toElement();
         b.setCategory(child.text());
         child = el.elementsByTagName("reference").at(0).toElement();
@@ -660,7 +657,6 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
         auto el = freqs.at(i).toElement();
         Frequency f;
         f.setId(el.attribute("id").toInt());
-        m_ids["frequency"]<<f.id();
         f.setFreq((Account::FrequencyEnum)el.attribute("freq").toInt());
         
         auto child = el.elementsByTagName("end").at(0).toElement();
@@ -705,7 +701,7 @@ QMap<int, CommonExpanse> ControllerXMLMulti::selectCommon()
         
         CommonExpanse ce;
         ce.setId(el.attribute("id").toInt());
-        
+
         QDomElement child = el.elementsByTagName("begin").at(0).toElement();
         ce.setBegin(QDate::fromString(child.text(), "dd-MM-yyyy"));
         
