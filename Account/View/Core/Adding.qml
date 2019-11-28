@@ -60,12 +60,23 @@ Popup {
             }
 
             Label{
-                visible: addingPage.common
+                visible: common
                 text: qsTr("Member")
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size2
+                fontSizeMode: Text.Fit
             }
 
-            TextInput {
+            TextField {
+                id: member
                 objectName: "member"
+                visible: common
+                property bool isValid: (common && length > 0) || !common
+                background: Rectangle {
+                    anchors.fill: parent
+                    color: "transparent"
+                    border.color: member.isValid ? "blue" : "red"
+                }
             }
         }
 
@@ -173,7 +184,7 @@ Popup {
                 property bool ttVisible: false
                 onClicked: {
 
-                    if(valueLabel.valid) {
+                    if(valueLabel.valid && member.isValid) {
                         addingid.accept()
                         reset()
                         close()
