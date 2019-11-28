@@ -29,7 +29,9 @@ Popup {
     property string v_title: valueLabel.text
     property string v_type: type.model.get(type.currentIndex).type
     property string v_date: dateLabel.text
+    property string v_member: member.text
     property bool newAccount: false
+    property bool common: false
 
     onClosed: {
         valueLabel.background.border.color = "#bdbdbd"
@@ -44,7 +46,6 @@ Popup {
         border.color: "darkgoldenrod"
     }
 
-    property bool common: false
 
     ColumnLayout {
         RowLayout {

@@ -24,6 +24,7 @@ public slots:
     void closeCommon(bool);
     void addCommon(QString);
     void removeCommon(int);
+    void addCommonEntry();
     
 };
 

@@ -692,7 +692,7 @@ QMap<int, CommonExpanse> ControllerXMLMulti::selectCommon()
 {
     QMap<int, CommonExpanse> ret;
     QList<QString> tag;
-    tag<<"begin"<<"title"<<"close";
+    tag<<"begin"<<"titleCommon"<<"close";
     auto list = m_currentAccount.elementsByTagName("common");
     
     for(int i = 0; i < list.size(); i++)
@@ -705,7 +705,7 @@ QMap<int, CommonExpanse> ControllerXMLMulti::selectCommon()
         QDomElement child = el.elementsByTagName("begin").at(0).toElement();
         ce.setBegin(QDate::fromString(child.text(), "dd-MM-yyyy"));
         
-        child = el.elementsByTagName("title").at(0).toElement();
+        child = el.elementsByTagName("titleCommon").at(0).toElement();
         ce.setTitle(child.text());
         
         child = el.elementsByTagName("close").at(0).toElement();
@@ -719,6 +719,7 @@ QMap<int, CommonExpanse> ControllerXMLMulti::selectCommon()
                 continue;
             
             QString member = child.tagName();
+            member.replace("_", " ");
             Entry e = selectEntryNode(child);
             ce.addEntries(member, e);
         }
@@ -746,7 +747,7 @@ bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
         if(el.attribute("id").toInt() == id)
         {
             adder(el, "begin", ce.begin().toString("dd-MM-yyyy"));
-            adder(el, "title", ce.title());
+            adder(el, "titleCommon", ce.title());
             adder(el, "close", QString::number(ce.isClose()));
         }
     }
@@ -793,11 +794,13 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
         auto map = ce.entries();
         for(auto it = map.begin(); it != map.end(); it++)
         {
-            addEntryNode(it.value(), el, it.key());
+            QString tag = it.key();
+            tag.replace(" ", "_");
+            addEntryNode(it.value(), el, tag);
         }           
         
         setter(el, "close", QString::number(ce.isClose()));
-        setter(el, "title", ce.title());
+        setter(el, "titleCommon", ce.title());
         setter(el, "begin", ce.begin().toString("dd-MM-yyyy"));
         
         ret = true;

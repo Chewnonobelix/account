@@ -9,7 +9,7 @@ import "../Core"
 Rectangle {
     id: root
     
-    signal s_add()
+    signal s_add(int id)
     signal s_remove(int id)
     signal s_close(int id)
     
@@ -37,10 +37,10 @@ Rectangle {
     color: "transparent"
     
     Adding {
-       common: true
-       id: addingid
-       objectName: "commonAdding"
-       anchors.centerIn: parent
+        common: true
+        id: addingid
+        objectName: "commonAdding"
+        anchors.centerIn: parent
     }
     
     GridLayout {
@@ -166,12 +166,12 @@ Rectangle {
                 border.color: "gold"
                 color: "transparent"
             }
-                        
+            
             delegate: Rectangle {
                 gradient: pageStyle.unselectView
                 width: recap.width
                 height: recap.height * .07
-
+                
                 Label {
                     anchors.fill: parent
                     text: modelData.id + ": " + modelData.total.value + "€"

@@ -587,7 +587,7 @@ Current Version beta 0.9")
                         
                         Component.onCompleted: {
                             currentModel = Qt.binding(function() {return currentIndex > -1 ? model[currentIndex] : null })
-                            commonExpanse.model = currentModel                        
+                            commonExpanse.model = Qt.binding(function() {return currentModel})                        
                         }
 
                         property var currentModel
