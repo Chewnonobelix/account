@@ -4,6 +4,7 @@ import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.13
 
 import "../Style"
+import "../Core"
 
 Rectangle {
     id: root
@@ -34,6 +35,14 @@ Rectangle {
     }    
     
     color: "transparent"
+    
+    Adding {
+       common: true
+       id: addingid
+       objectName: "commonAdding"
+       anchors.centerIn: parent
+    }
+    
     GridLayout {
         anchors.fill: parent
         rowSpacing: height * 0.02
@@ -128,6 +137,8 @@ Rectangle {
             Layout.rowSpan: 1
             Layout.columnSpan: 1 
             text: qsTr("Add")
+            
+            onClicked: addingid.open()
         }
         
         Button{
