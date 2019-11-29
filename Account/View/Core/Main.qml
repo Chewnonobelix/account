@@ -617,7 +617,7 @@ Current Version beta 0.9")
                             
                             MouseArea {
                                 anchors.fill: parent
-                                onClicked: listCommon.currentIndex = index
+                                onClicked: listCommon.currentIndex = listCommon.currentIndex === index ? -1 : index
                             }
                         }
                     }
