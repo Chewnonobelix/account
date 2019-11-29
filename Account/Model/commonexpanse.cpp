@@ -96,6 +96,9 @@ QVariantMap CommonExpanse::totalForMembers() const
 
 void CommonExpanse::equilibrate()
 {
+    if(members().size() < 2 )
+        return;
+    
     Total t;
     
     for(auto it: members())
@@ -104,4 +107,23 @@ void CommonExpanse::equilibrate()
     t.setValue(t.value() / members().size());
     
     qDebug()<<"Median"<<t.value();
+    QMap<QString, Total> plus, minus;
+    
+    for(auto it: members())
+    {
+        Total temp = totalForMember(it);
+        qDebug()<<it<<(temp - t).value();
+        if((temp - t).value() < 0)
+        {
+            minus[it] = temp - t;
+        }
+        else
+        {
+            plus[it] = temp - t;
+        }
+    }
+    
+    qDebug()<<"Plus"<<plus.size()<<plus.keys();
+    qDebug()<<"Minus"<<minus.size()<<minus.keys();
+    
 }
