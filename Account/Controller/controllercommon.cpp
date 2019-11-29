@@ -17,7 +17,6 @@ int ControllerCommon::exec()
         model<<QVariant::fromValue(it);
     }
     
-    qDebug()<<"Find index"<<index;
     QObject* list = m_view->findChild<QObject*>("listCommon");
     
     if(list)
@@ -51,9 +50,7 @@ void ControllerCommon::closeCommon(bool isClose)
 }
 
 void ControllerCommon::addCommon(QString name)
-{
-    qDebug()<<"Add common"<<name;
-    
+{    
     CommonExpanse ce;
     ce.setTitle(name);
     ce.setBegin(QDate::currentDate());

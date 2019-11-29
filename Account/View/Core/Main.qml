@@ -631,6 +631,13 @@ Current Version beta 0.9")
                             height: parent.height
                             text: qsTr("Add common expanse")
                             onClicked: popAddCommon.open()
+                            
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+
+                            background: Rectangle {
+                                gradient: pageStyle.goldButton
+                            }
                         }
                         Button {
                             objectName: "removeCommon"
@@ -638,8 +645,15 @@ Current Version beta 0.9")
                             height: parent.height
                             text: qsTr("Remove common expanse")
                             
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                            
                             signal s_remove(int id)
                             onClicked: s_remove(listCommon.currentModel.id)
+
+                            background: Rectangle {
+                                gradient: pageStyle.goldButton
+                            }
                         }         
                     }
                 }

@@ -138,6 +138,13 @@ Rectangle {
             text: qsTr("Add")
             
             onClicked: addingid.open()
+            
+            font.family: pageStyle.core.name
+            font.pixelSize: pageStyle.core.size      
+            
+            background: Rectangle {
+                gradient: pageStyle.goldButton
+            }            
         }
         
         Button{
@@ -150,6 +157,13 @@ Rectangle {
             Layout.rowSpan: 1
             Layout.columnSpan: 1 
             text: qsTr("Remove")
+            
+            font.family: pageStyle.core.name
+            font.pixelSize: pageStyle.core.size            
+            
+            background: Rectangle {
+                gradient: pageStyle.goldButton
+            }
         }
         
         ListView{

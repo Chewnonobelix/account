@@ -33,7 +33,7 @@ Popup {
     property bool newAccount: false
     property bool common: false
 
-    onClosed: {
+    onClosed: { 
         valueLabel.background.border.color = "#bdbdbd"
     }
 
@@ -49,11 +49,13 @@ Popup {
 
     ColumnLayout {
         RowLayout {
+            spacing: width * 0.02
             Label {
                 id: labelAdd
                 text: qsTr("Adding")
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
+                fontSizeMode: Text.Fit                
             }
 
             CalendarButton {
@@ -64,7 +66,7 @@ Popup {
                 visible: common
                 text: qsTr("Member")
                 font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size2
+                font.pixelSize: pageStyle.title.size
                 fontSizeMode: Text.Fit
             }
 
@@ -73,9 +75,14 @@ Popup {
                 objectName: "member"
                 visible: common
                 property bool isValid: (common && length > 0) || !common
+
+                Layout.fillWidth: true
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+                
                 background: Rectangle {
                     anchors.fill: parent
-                    color: "transparent"
+                    color: "white"
                     border.color: member.isValid ? "blue" : "red"
                 }
             }
