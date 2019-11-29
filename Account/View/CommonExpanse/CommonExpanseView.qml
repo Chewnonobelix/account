@@ -93,7 +93,7 @@ Rectangle {
                         }
                         
                         footer: Rectangle {
-                            height: listComponent.height * .05
+                            height: listComponent.height * .03
                             width: listComponent.width
                             gradient: pageStyle.goldHeader
                             Label {
@@ -108,7 +108,7 @@ Rectangle {
                         }
                         
                         delegate: Rectangle {
-                            height: listComponent.height * .10
+                            height: listComponent.height * .07
                             width: listComponent.width
                             gradient: pageStyle.unselectView
                             Label {
@@ -120,7 +120,6 @@ Rectangle {
                                 horizontalAlignment: Qt.AlignHCenter
                                 verticalAlignment: Qt.AlignVCenter
                             }                     
-                            
                         }
                     }
                 }
