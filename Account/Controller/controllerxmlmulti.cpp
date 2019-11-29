@@ -785,7 +785,7 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
         
         for(auto it: members)
         {
-            auto memberslist = el.elementsByTagName(it);
+            auto memberslist = el.elementsByTagName(it.replace(" ", "_"));
             
             while(!memberslist.isEmpty())
                 el.removeChild(memberslist.at(0));
