@@ -77,7 +77,7 @@ void ControllerCommon::addCommonEntry()
     Entry e; Information i;
     i.setTitle(pop->property("v_title").toString());
     e.setDate(pop->property("v_date").toDate());
-    e.setValue(pop->property("v_value").toDouble());
+    e.setValue(pop->property("v_val").toDouble());
     e.setType(pop->property("v_type").toString());
     e.setInfo(i);
     
