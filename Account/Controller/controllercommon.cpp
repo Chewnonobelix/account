@@ -2,14 +2,29 @@
 
 int ControllerCommon::exec()
 {
-    QVariantList model;
-    for(auto it: m_db->selectCommon())
-        model<<QVariant::fromValue(it);
+    CommonExpanse t; 
+    if(!m_view->findChild<QObject*>("common")->property("model").isNull())
+        t = m_view->findChild<QObject*>("common")->property("model").value<CommonExpanse>();
     
-    QObject* list = m_view->findChild<QObject*>("listCommon");
+    QVariantList model;
 
+    int index = -1;
+    for(auto it: m_db->selectCommon())
+    {
+        if(t.id() == it.id())
+            index = model.size();
+        
+        model<<QVariant::fromValue(it);
+    }
+    
+    qDebug()<<"Find index"<<index;
+    QObject* list = m_view->findChild<QObject*>("listCommon");
+    
     if(list)
+    {
         list->setProperty("model", model);
+        list->setProperty("currentIndex", index);
+    }
     
     return 0;
 }
