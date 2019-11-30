@@ -690,6 +690,7 @@ void ControllerXMLMulti::timerEvent(QTimerEvent *)
 
 QMap<int, CommonExpanse> ControllerXMLMulti::selectCommon()
 {
+    m_mutex.lock();
     QMap<int, CommonExpanse> ret;
     QList<QString> tag;
     tag<<"begin"<<"titleCommon"<<"close";
@@ -727,11 +728,13 @@ QMap<int, CommonExpanse> ControllerXMLMulti::selectCommon()
         ret[ce.id()] = ce;
     }
     
+    m_mutex.unlock();
     return ret;
 }
 
 bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
 {
+    m_mutex.lock();
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
     int id = maxId(m_ids["common"]) + 1;
     
@@ -752,7 +755,9 @@ bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
         }
     }
     
+    m_mutex.unlock();
     close();
+
     return true;
 }
 
@@ -772,6 +777,7 @@ bool ControllerXMLMulti::removeCommon(const CommonExpanse& ce)
 
 bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
 {
+    m_mutex.lock();
     auto root = m_currentAccount.elementsByTagName("database").at(0).toElement();
     auto common = root.elementsByTagName("common");
     bool ret = false;
@@ -805,6 +811,7 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
         
         ret = true;
     }
+    m_mutex.unlock();
     close();
     return ret;
 }
