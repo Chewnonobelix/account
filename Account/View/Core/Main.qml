@@ -587,7 +587,8 @@ Current Version beta 0.9")
                         
                         Component.onCompleted: {
                             currentModel = Qt.binding(function() {return currentIndex > -1 ? model[currentIndex] : null })
-                            commonExpanse.model = Qt.binding(function() {return currentModel})                        
+                            commonExpanse.model = Qt.binding(function() {return currentModel})
+                            commonExpanse.enabled = Qt.binding(function() {return currentIndex > -1})
                         }
 
                         property var currentModel
@@ -617,6 +618,7 @@ Current Version beta 0.9")
                             
                             MouseArea {
                                 anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
                                 onClicked: listCommon.currentIndex = listCommon.currentIndex === index ? -1 : index
                             }
                         }
@@ -636,6 +638,12 @@ Current Version beta 0.9")
                             font.pixelSize: pageStyle.core.size
 
                             background: Rectangle {
+                                MouseArea{
+                                    acceptedButtons: Qt.NoButton
+                                    cursorShape: Qt.PointingHandCursor
+                                    anchors.fill: parent
+                                }
+
                                 gradient: pageStyle.goldButton
                             }
                         }
@@ -652,6 +660,11 @@ Current Version beta 0.9")
                             onClicked: s_remove(listCommon.currentModel.id)
 
                             background: Rectangle {
+                                MouseArea{
+                                    acceptedButtons: Qt.NoButton
+                                    cursorShape: Qt.PointingHandCursor
+                                    anchors.fill: parent
+                                }
                                 gradient: pageStyle.goldButton
                             }
                         }         

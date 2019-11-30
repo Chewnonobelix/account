@@ -143,6 +143,11 @@ Rectangle {
             font.pixelSize: pageStyle.core.size      
             
             background: Rectangle {
+                MouseArea{
+                    acceptedButtons: Qt.NoButton
+                    cursorShape: Qt.PointingHandCursor
+                    anchors.fill: parent
+                }
                 gradient: pageStyle.goldButton
             }            
         }
@@ -162,6 +167,11 @@ Rectangle {
             font.pixelSize: pageStyle.core.size            
             
             background: Rectangle {
+                MouseArea{
+                    acceptedButtons: Qt.NoButton
+                    cursorShape: Qt.PointingHandCursor
+                    anchors.fill: parent
+                }
                 gradient: pageStyle.goldButton
             }
         }
@@ -212,6 +222,11 @@ Rectangle {
             
             signal s_checked(bool check)
             onCheckedChanged: s_checked(checked)
+
+            background: MouseArea {
+                acceptedButtons: Qt.NoButton
+                cursorShape: Qt.PointingHandCursor
+            }
         }
         
         Label {
