@@ -539,7 +539,11 @@ Current Version beta 0.9")
                     Label {
                         text: qsTr("Session name")
                         Layout.row: 0
-                        Layout.column: 0                            
+                        Layout.column: 0
+
+                        font.family: pageStyle.title.name
+                        font.pixelSize: pageStyle.title.size
+                        fontSizeMode: Text.Fit
                     }
                     
                     TextField{
@@ -548,6 +552,16 @@ Current Version beta 0.9")
                         Layout.columnSpan: 3
                         Layout.row: 0
                         Layout.column: 1
+                        Layout.fillWidth: true
+                        font.family: pageStyle.core.name
+                        font.pixelSize: pageStyle.core.size
+
+                        property bool valid: text.length > 0
+
+
+                        background: Rectangle {
+                            border.color: parent.valid ? "blue" : "red"
+                        }
                     }
                     
                     Button {
@@ -560,12 +574,32 @@ Current Version beta 0.9")
                             popAddCommon.close()
                             popAddCommon.s_accepted(commonTitle.text)
                         }
+
+                        background: Rectangle {
+                            MouseArea {
+                                anchors.fill: parent
+                                acceptedButtons: Qt.NoButton
+                                cursorShape: Qt.PointingHandCursor
+                            }
+
+                            gradient: pageStyle.goldButton
+                        }
                     }
                     Button {
                         text: qsTr("Cancel")
                         Layout.column: 3
                         Layout.row: 1
-                        
+
+                        background: Rectangle {
+                            MouseArea {
+                                anchors.fill: parent
+                                acceptedButtons: Qt.NoButton
+                                cursorShape: Qt.PointingHandCursor
+                            }
+
+                            gradient: pageStyle.goldButton
+                        }
+
                         onClicked: popAddCommon.close()
                     }
                 }
@@ -669,7 +703,7 @@ Current Version beta 0.9")
                                 }
                                 gradient: pageStyle.goldButton
                             }
-                        }         
+                        }
                     }
                 }
                 
