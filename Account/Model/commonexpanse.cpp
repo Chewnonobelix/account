@@ -84,14 +84,14 @@ Total CommonExpanse::totalForMember(QString member) const
 
 QVariantMap CommonExpanse::totalForMembers() const
 {
-    QVariantMap ret; 
+    QVariantMap ret;
     auto list = members();
     for(auto it: list)
     {
         ret[it] = QVariant::fromValue(totalForMember(it));
     }
     
-    return ret;    
+    return ret;
 }
 
 void CommonExpanse::equilibrate()
@@ -107,23 +107,65 @@ void CommonExpanse::equilibrate()
     t.setValue(t.value() / members().size());
     
     qDebug()<<"Median"<<t.value();
-    QMap<QString, Total> plus, minus;
-    
+    QList<QPair<QString, Total>> plus, minus;
+    QStringList balanced;
     for(auto it: members())
     {
         Total temp = totalForMember(it);
         qDebug()<<it<<(temp - t).value();
         if((temp - t).value() < 0)
         {
-            minus[it] = temp - t;
+            minus<<qMakePair(it, temp - t);
+        }
+        else if((temp - t).value() > 0)
+        {
+            plus<<qMakePair(it, temp - t);
         }
         else
         {
-            plus[it] = temp - t;
+            balanced<<it;
         }
     }
     
-    qDebug()<<"Plus"<<plus.size()<<plus.keys();
-    qDebug()<<"Minus"<<minus.size()<<minus.keys();
+    qDebug()<<"Plus"<<plus.size();
+    qDebug()<<"Minus"<<minus.size();
     
+    auto sorter = [](QList<QPair<QString, Total>>& list) {
+        for(int i = 0; i < list.size(); i++)
+            for(int j = i; j < list.size(); j++)
+                if(list[j].second.value() < list[i].second.value())
+                {
+                    auto t = list[j];
+                    list[j] = list[i];
+                    list[i] = t;
+                }
+    };
+
+
+    while(!plus.isEmpty() || !minus.isEmpty())
+    {
+        qDebug()<<plus.size()<<minus.size();
+        sorter(plus); sorter(minus);
+        auto p = plus.first(); auto m = minus.first();
+
+        double v = std::min(p.second.value(), m.second.value());
+        qDebug()<<p.second.value()<<m.second.value()<<v;
+
+        p.second.setValue(p.second.value() + v);
+        m.second.setValue(m.second.value() + v);
+
+        if(p.second.value() == 0)
+        {
+            balanced<<p.first;
+            plus.removeFirst();;
+        }
+
+        if(p.second.value() == 0)
+        {
+            balanced<<m.first;
+            minus.removeFirst();;
+        }
+    }
+
+    qDebug() <<"End equilibrate"<<balanced.size()<<m_entries.uniqueKeys().size();
 }
