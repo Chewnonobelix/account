@@ -106,13 +106,12 @@ void CommonExpanse::equilibrate()
     
     t.setValue(t.value() / members().size());
     
-    qDebug()<<"Median"<<t.value();
     QList<QPair<QString, Total>> plus, minus;
     QStringList balanced;
     for(auto it: members())
     {
         Total temp = totalForMember(it);
-        qDebug()<<it<<(temp - t).value();
+
         if((temp - t).value() < 0)
         {
             minus<<qMakePair(it, temp - t);
@@ -126,10 +125,7 @@ void CommonExpanse::equilibrate()
             balanced<<it;
         }
     }
-    
-    qDebug()<<"Plus"<<plus.size();
-    qDebug()<<"Minus"<<minus.size();
-    
+        
     auto sorter = [](QList<QPair<QString, Total>>& list) {
         for(int i = 0; i < list.size(); i++)
             for(int j = i; j < list.size(); j++)
@@ -142,16 +138,14 @@ void CommonExpanse::equilibrate()
     };
 
 
-    while(!plus.isEmpty() || !minus.isEmpty())
+    while(!plus.isEmpty() && !minus.isEmpty())
     {
-        qDebug()<<plus.size()<<minus.size();
         sorter(plus); sorter(minus);
-        auto p = plus.first(); auto m = minus.first();
+        QPair<QString, Total>& p = plus.first();  QPair<QString, Total>& m = minus.first();
 
-        double v = std::min(p.second.value(), m.second.value());
-        qDebug()<<p.second.value()<<m.second.value()<<v;
+        double v = std::min(p.second.value(), -m.second.value());
 
-        p.second.setValue(p.second.value() + v);
+        p.second.setValue(p.second.value() - v);
         m.second.setValue(m.second.value() + v);
 
         if(p.second.value() == 0)
@@ -160,12 +154,10 @@ void CommonExpanse::equilibrate()
             plus.removeFirst();;
         }
 
-        if(p.second.value() == 0)
+        if(m.second.value() == 0)
         {
             balanced<<m.first;
             minus.removeFirst();;
         }
     }
-
-    qDebug() <<"End equilibrate"<<balanced.size()<<m_entries.uniqueKeys().size();
 }
