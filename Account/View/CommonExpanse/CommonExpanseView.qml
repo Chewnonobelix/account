@@ -29,6 +29,9 @@ Rectangle {
             }
             return []})
         closing.model = Qt.binding(function() {return model ? model.closing() : []})
+        
+        remove.enabled = Qt.binding(function() {return model ? !model.isClose : false})
+        add.enabled = Qt.binding(function() {return model ? !model.isClose : false})
     }
     
     AccountStyle {
