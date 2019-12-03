@@ -58,10 +58,10 @@ QStringList CommonExpanse::members() const
 QVariantList CommonExpanse::entries(QString name) const
 {
     QVariantList list;
-
+    
     for(auto it: m_entries.values(name))
         list<<QVariant::fromValue(it);
-
+    
     return list;
 }
 
@@ -99,6 +99,8 @@ void CommonExpanse::equilibrate()
     if(members().size() < 2 )
         return;
     
+    m_closing.clear();
+    
     Total t;
     
     for(auto it: members())
@@ -111,7 +113,7 @@ void CommonExpanse::equilibrate()
     for(auto it: members())
     {
         Total temp = totalForMember(it);
-
+        
         if((temp - t).value() < 0)
         {
             minus<<qMakePair(it, temp - t);
@@ -125,7 +127,7 @@ void CommonExpanse::equilibrate()
             balanced<<it;
         }
     }
-        
+    
     auto sorter = [](QList<QPair<QString, Total>>& list) {
         for(int i = 0; i < list.size(); i++)
             for(int j = i; j < list.size(); j++)
@@ -136,28 +138,45 @@ void CommonExpanse::equilibrate()
                     list[i] = t;
                 }
     };
-
-
+    
+    
     while(!plus.isEmpty() && !minus.isEmpty())
     {
         sorter(plus); sorter(minus);
         QPair<QString, Total>& p = plus.first();  QPair<QString, Total>& m = minus.first();
-
+        
         double v = std::min(p.second.value(), -m.second.value());
-
+        
         p.second.setValue(p.second.value() - v);
         m.second.setValue(m.second.value() + v);
-
+        
+        Closing c;
+        c.from = m.first;
+        c.to = p.first;
+        c.value = v;
+        
+        m_closing<<c;
+        
         if(p.second.value() == 0)
         {
             balanced<<p.first;
             plus.removeFirst();;
         }
-
+        
         if(m.second.value() == 0)
         {
             balanced<<m.first;
             minus.removeFirst();;
         }
     }
+}
+
+QList<QVariant> CommonExpanse::closing() const
+{
+    QVariantList ret;
+
+    for(auto it: m_closing)
+        ret<<QVariant::fromValue(it);
+    
+    return ret;
 }

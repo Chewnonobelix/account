@@ -28,7 +28,7 @@ Rectangle {
                 return ret
             }
             return []})
-        
+        closing.model = Qt.binding(function() {return model ? model.closing() : []})
     }
     
     AccountStyle {
@@ -177,38 +177,74 @@ Rectangle {
             }
         }
         
-        ListView{
-            id: recap
+        Column {
             Layout.preferredHeight: root.height * 0.93
             Layout.preferredWidth: root.width * .20
             Layout.row: 0
             Layout.column: 3 
             Layout.rowSpan: 1
             Layout.columnSpan: 1 
-            Rectangle {
-                anchors.fill: parent
-                border.color: "gold"
-                color: "transparent"
-            }
+            spacing: height * .02
             
-            delegate: Rectangle {
-                gradient: pageStyle.unselectView
-                width: recap.width
-                height: recap.height * .07
-                
-                Label {
+            ListView{
+                id: recap
+                clip: true
+                Rectangle {
                     anchors.fill: parent
-                    text: modelData.id + ": " + modelData.total.value + "€"
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
-                    fontSizeMode: Text.Fit
-                    horizontalAlignment: Qt.AlignHCenter
-                    verticalAlignment: Qt.AlignVCenter
+                    border.color: "gold"
+                    color: "transparent"
+                }
+                
+                width: parent.width
+                height: parent.height * 0.49
+                
+                delegate: Rectangle {
+                    gradient: pageStyle.unselectView
+                    width: recap.width
+                    height: recap.height * .07
+                    
+                    Label {
+                        anchors.fill: parent
+                        text: modelData.id + ": " + modelData.total.value + "€"
+                        font.family: pageStyle.core.name
+                        font.pixelSize: pageStyle.core.size
+                        fontSizeMode: Text.Fit
+                        horizontalAlignment: Qt.AlignHCenter
+                        verticalAlignment: Qt.AlignVCenter
+                    }
+                    
+                }
+            }
+            ListView{
+                id: closing
+                Rectangle {
+                    anchors.fill: parent
+                    border.color: "gold"
+                    color: "transparent"
+                }
+                
+                width: parent.width
+                height: parent.height * 0.49
+                
+                delegate: Rectangle {
+                    gradient: pageStyle.unselectView
+                    width: recap.width
+                    height: recap.height * .07
+                    
+                    Label {
+                        anchors.fill: parent
+                        text: modelData.from + qsTr(" to ") + modelData.to + ": " + modelData.value + "€"
+                        font.family: pageStyle.core.name
+                        font.pixelSize: pageStyle.core.size
+                        fontSizeMode: Text.Fit
+                        horizontalAlignment: Qt.AlignHCenter
+                        verticalAlignment: Qt.AlignVCenter
+                    }
+                    
                 }
                 
             }
         }
-        
         CheckBox {
             id: close
             objectName: "close"
