@@ -695,7 +695,7 @@ QMap<int, CommonExpanse> ControllerXMLMulti::selectCommon()
     QList<QString> tag;
     tag<<"begin"<<"titleCommon"<<"close";
     auto list = m_currentAccount.elementsByTagName("common");
-    
+
     for(int i = 0; i < list.size(); i++)
     {
         QDomElement el = list.at(i).toElement();
@@ -712,9 +712,9 @@ QMap<int, CommonExpanse> ControllerXMLMulti::selectCommon()
         child = el.elementsByTagName("close").at(0).toElement();
         ce.setIsClose(child.text().toInt());
         
-        child = el.firstChild().toElement();
-        
-        for(;!child.isNull(); child = child.nextSibling().toElement())
+        child = el.firstChildElement();
+
+        for(;!child.isNull(); child = child.nextSiblingElement())
         {
             if(tag.contains(child.tagName()))
                 continue;
