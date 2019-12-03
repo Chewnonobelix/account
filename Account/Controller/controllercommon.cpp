@@ -12,7 +12,10 @@ int ControllerCommon::exec()
     for(auto it: m_db->selectCommon())
     {
         if(t.id() == it.id())
+        {
             index = model.size();
+            m_view->findChild<QObject*>("common")->setProperty("model", QVariant::fromValue(it));
+        }
         
         model<<QVariant::fromValue(it);
     }
@@ -43,10 +46,12 @@ void ControllerCommon::init()
 
 void ControllerCommon::closeCommon(bool isClose)
 {
-    CommonExpanse ce = m_db->selectCommon().first();
+    CommonExpanse ce = m_view->findChild<QObject*>("common")->property("model").value<CommonExpanse>();
     ce.setIsClose(isClose);
     m_db->updateCommon(ce);
     ce.equilibrate();
+    
+    m_view->findChild<QObject*>("common")->setProperty("model", QVariant::fromValue(ce));
 }
 
 void ControllerCommon::addCommon(QString name)
