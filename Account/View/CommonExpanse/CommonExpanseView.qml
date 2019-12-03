@@ -15,6 +15,8 @@ Rectangle {
     
     property var model
     
+    onModelChanged: close.checked = model ? model.isClose : false
+    
     Component.onCompleted: {
         title.text = Qt.binding(function() {return model ? Qt.formatDate(model.begin, "dd-MM-yyyy") + ": " + model.title : ""})
         table.membersList = Qt.binding(function() {return model ? model.members : []})
@@ -27,7 +29,6 @@ Rectangle {
             }
             return []})
         
-        close.checked = Qt.binding(function() { return model ? model.isClose : false})
     }
     
     AccountStyle {
@@ -220,9 +221,13 @@ Rectangle {
             Layout.alignment: Qt.AlignRight
             text: qsTr("Close")
             
+            checked: model ? model.isClose : false
+            
             signal s_checked(bool check)
-            onCheckedChanged: s_checked(checked)
-
+            onCheckedChanged: { 
+                s_checked(checked)
+            }
+            
             background: MouseArea {
                 acceptedButtons: Qt.NoButton
                 cursorShape: Qt.PointingHandCursor
