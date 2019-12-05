@@ -205,6 +205,22 @@ Rectangle {
                 width: parent.width
                 height: parent.height * 0.49
                 
+                header: Rectangle {
+                    gradient: pageStyle.goldHeader
+                    height: recap.height * 0.10
+                    width: recap.width
+                    
+                    Label {
+                        anchors.fill: parent
+                        text: qsTr("Global abstract")
+                        font.family: pageStyle.title.name
+                        font.pixelSize: pageStyle.title.size
+                        fontSizeMode: Text.Fit
+                        horizontalAlignment: Qt.AlignHCenter
+                        verticalAlignment: Qt.AlignVCenter
+                    }
+                }
+
                 delegate: Rectangle {
                     gradient: pageStyle.unselectView
                     width: recap.width
@@ -232,6 +248,22 @@ Rectangle {
                 
                 width: parent.width
                 height: parent.height * 0.49
+
+                header: Rectangle {
+                    gradient: pageStyle.goldHeader
+                    height: recap.height * 0.10
+                    width: recap.width
+                    
+                    Label {
+                        anchors.fill: parent
+                        text: qsTr("Transcation order")
+                        font.family: pageStyle.title.name
+                        font.pixelSize: pageStyle.title.size
+                        fontSizeMode: Text.Fit
+                        horizontalAlignment: Qt.AlignHCenter
+                        verticalAlignment: Qt.AlignVCenter                        
+                    }
+                }
                 
                 delegate: Rectangle {
                     gradient: pageStyle.unselectView
