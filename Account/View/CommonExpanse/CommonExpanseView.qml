@@ -30,7 +30,6 @@ Rectangle {
             return []})
         closing.model = Qt.binding(function() {return model ? model.closing() : []})
         
-        remove.enabled = Qt.binding(function() {return model ? !model.isClose : false})
         add.enabled = Qt.binding(function() {return model ? !model.isClose : false})
     }
     
@@ -71,14 +70,17 @@ Rectangle {
                 clip: true
                 
                 Repeater {
+                    id: rep
                     model: table.membersList
-                    ListView {
+                    property var currentModel: null
+                    
+                    delegate: ListView {
                         id: listComponent
                         height: table.height
                         width: table.width * .20
                         clip: true
                         model: root.model.entries(modelData)
-                        
+                        currentIndex: -1
                         Rectangle {
                             anchors.fill: parent
                             color: "transparent"
@@ -115,10 +117,31 @@ Rectangle {
                             }                     
                         }
                         
+                        highlight: Rectangle {
+                            gradient: pageStyle.calSelect
+                        }
+                        
+                        highlightMoveDuration: 0
+ 
                         delegate: Rectangle {
                             height: listComponent.height * .07
                             width: listComponent.width
                             gradient: pageStyle.unselectView
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    listComponent.currentIndex = listComponent.currentIndex !== index ? index : -1
+                                    
+                                    rep.currentModel = listComponent.currentIndex !== -1 ? modelData : null
+                                    
+                                    for(var it = 0; it < rep.count ; it++) {
+                                        if(rep.itemAt(it) !== listComponent) {
+                                            rep.itemAt(it).currentIndex = -1
+                                        }
+                                    }
+                                }
+                            }
+
                             Label {
                                 anchors.fill: parent
                                 text: modelData.value
@@ -174,6 +197,11 @@ Rectangle {
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size            
             
+            property var  currentModel: null
+            Component.onCompleted: {
+                currentModel = Qt.binding(function() {return rep.currentModel})
+                enabled = Qt.binding(function() {return currentModel !== null && !model.isClose})                
+            }
             background: Rectangle {
                 MouseArea{
                     acceptedButtons: Qt.NoButton
@@ -181,6 +209,10 @@ Rectangle {
                     anchors.fill: parent
                 }
                 gradient: pageStyle.goldButton
+            }
+            
+            onClicked: {
+                console.log(currentModel)
             }
         }
         
