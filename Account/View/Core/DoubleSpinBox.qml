@@ -52,8 +52,7 @@ SpinBox {
         up.indicator: Rectangle {
             x: spinbox.mirrored ? 0 : parent.width - width
             height: parent.height
-            implicitWidth: 40
-            implicitHeight: 40
+            width: parent.width * 0.25
             border.color: enabled ? "#21be2b" : "#bdbebf"
             gradient: enabled ? up.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton: pageStyle.unselectView
 
@@ -79,8 +78,7 @@ SpinBox {
         down.indicator: Rectangle {
             x: spinbox.mirrored ? parent.width - width : 0
             height: parent.height
-            implicitWidth: 40
-            implicitHeight: 40
+            width: parent.width * 0.25
             border.color: enabled ? "#21be2b" : "#bdbebf"
             gradient: enabled ? down.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton: pageStyle.unselectView
 

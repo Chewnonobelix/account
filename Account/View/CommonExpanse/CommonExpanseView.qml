@@ -45,6 +45,10 @@ Rectangle {
         id: addingid
         objectName: "commonAdding"
         anchors.centerIn: parent
+        
+        width: parent.width * .47
+        height: parent.height * .20
+        
     }
     
     GridLayout {
