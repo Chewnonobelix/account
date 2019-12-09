@@ -15,17 +15,20 @@ Button {
     font.pixelSize: pageStyle.core.size
 
     background: Rectangle {
+        anchors.fill: parent
         gradient: pressed ? pageStyle.goldButton : pageStyle.darkGoldButton
     }
 
-    property int cBottom: dateAdding.height + dateAdding.y
-    property int cRight: dateAdding.width + dateAdding.x
     property bool isOpen: pop.opened
     
     function extern(d) {
         dateAdding.selectedDate = d
     }
 
+    onClicked: {
+        pop.open()
+    }
+    
     Popup {
         id: pop
         background: Rectangle {
@@ -156,5 +159,4 @@ Button {
         }
     }
 
-    onClicked: pop.open()
 }
