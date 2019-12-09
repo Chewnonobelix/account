@@ -45,8 +45,8 @@ Rectangle {
         objectName: "commonAdding"
         anchors.centerIn: parent
         
-        width: parent.width * .47
-        height: parent.height * .20
+        implicitWidth: parent.width * .35
+        implicitHeight: parent.height * .12
         
     }
     

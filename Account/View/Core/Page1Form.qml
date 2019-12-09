@@ -548,8 +548,8 @@ Page {
         property double mX: ((mainWindow.width * pX) + width) - mainWindow.width
         property double mY: ((mainWindow.height * pY) + height) - (mainWindow.height)
         
-        width: parent.width * .35
-        height: parent.height * .12
+        implicitWidth: parent.width * .35
+        implicitHeight: parent.height * .12
         
         Component.onCompleted: {
             reset()
