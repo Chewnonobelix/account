@@ -67,7 +67,8 @@ QVariantList CommonExpanse::entries(QString name) const
 
 void CommonExpanse::addEntries(QString name, Entry ee)
 {
-    m_entries.insert(name, ee);
+    if(!m_entries.contains(name, ee))
+       m_entries.insert(name, ee);
 }
 
 Total CommonExpanse::totalForMember(QString member) const
@@ -179,4 +180,9 @@ QList<QVariant> CommonExpanse::closing() const
         ret<<QVariant::fromValue(it);
     
     return ret;
+}
+
+bool CommonExpanse::removeEntry(QString member, Entry e)
+{
+    return m_entries.remove(member, e) > 0;
 }

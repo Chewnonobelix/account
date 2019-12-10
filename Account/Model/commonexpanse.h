@@ -58,6 +58,8 @@ public:
     QMultiMap<QString, Entry> entries() const;
     void setEntries(QMultiMap<QString, Entry> entries);
     void addEntries(QString, Entry);
+    bool removeEntry(QString, Entry);
+    
     bool isClose() const;
     void setIsClose(bool isClose);
 

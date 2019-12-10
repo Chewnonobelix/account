@@ -28,6 +28,7 @@ int ControllerCommon::exec()
         list->setProperty("currentIndex", index);
     }
     
+    
     return 0;
 }
 
@@ -41,6 +42,12 @@ void ControllerCommon::init()
     
     if(popup)
         connect(popup, SIGNAL(accept()), this, SLOT(addCommonEntry()));
+    
+    QObject* remove = m_view->findChild<QObject*>("common")->findChild<QObject*>("remove");
+    
+    if(remove)
+        connect(remove, SIGNAL(s_remove()), this, SLOT(removeCommonEntry()));
+    
     
 }
 
@@ -85,5 +92,23 @@ void ControllerCommon::addCommonEntry()
 
     ce.addEntries(pop->property("v_member").toString(), e);
     m_db->updateCommon(ce);
+    exec();
+}
+
+void ControllerCommon::removeCommonEntry()
+{
+    CommonExpanse ce = m_view->findChild<QObject*>("common")->property("model").value<CommonExpanse>();
+    
+    Entry e;
+    QString member;
+    if(!m_view->findChild<QObject*>("common")->findChild<QObject*>("remove")->property("currentModel").isNull())
+    {
+        e = m_view->findChild<QObject*>("common")->findChild<QObject*>("remove")->property("currentModel").value<Entry>();
+        member = m_view->findChild<QObject*>("common")->findChild<QObject*>("remove")->property("currentMember").toString();
+        qDebug()<<"Remove"<<ce.removeEntry(member, e);
+        m_db->updateCommon(ce);
+    }
+    
+    qDebug()<<"Remove common entry"<<ce.id()<<e.id()<<member;
     exec();
 }

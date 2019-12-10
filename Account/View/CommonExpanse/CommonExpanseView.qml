@@ -73,6 +73,7 @@ Rectangle {
                     id: rep
                     model: table.membersList
                     property var currentModel: null
+                    property string currentMember: ""
                     
                     delegate: ListView {
                         id: listComponent
@@ -81,6 +82,7 @@ Rectangle {
                         clip: true
                         model: root.model.entries(modelData)
                         currentIndex: -1
+                        property string member: modelData
                         Rectangle {
                             anchors.fill: parent
                             color: "transparent"
@@ -122,13 +124,13 @@ Rectangle {
                         }
                         
                         highlightMoveDuration: 0
- 
+                        
                         delegate: Rectangle {
                             height: listComponent.height * .07
                             width: listComponent.width
                             gradient: pageStyle.unselectView
                             
-
+                            
                             MouseArea {
                                 anchors.fill: parent
                                 ToolTip.delay: 500
@@ -143,6 +145,7 @@ Rectangle {
                                     listComponent.currentIndex = listComponent.currentIndex !== index ? index : -1
                                     
                                     rep.currentModel = listComponent.currentIndex !== -1 ? modelData : null
+                                    rep.currentMember = listComponent.currentIndex !== -1 ? listComponent.member : ""
                                     
                                     for(var it = 0; it < rep.count ; it++) {
                                         if(rep.itemAt(it) !== listComponent) {
@@ -151,7 +154,7 @@ Rectangle {
                                     }
                                 }
                             }
-
+                            
                             Label {
                                 anchors.fill: parent
                                 text: modelData.value
@@ -207,11 +210,16 @@ Rectangle {
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size            
             
+            signal s_remove()
             property var  currentModel: null
+            property string currentMember: ""
+            
             Component.onCompleted: {
                 currentModel = Qt.binding(function() {return rep.currentModel})
-                enabled = Qt.binding(function() {return currentModel !== null && !model.isClose})                
+                enabled = Qt.binding(function() {return currentModel !== null && !model.isClose})    
+                currentMember = Qt.binding(function() {return rep.currentMember})
             }
+            
             background: Rectangle {
                 MouseArea{
                     acceptedButtons: Qt.NoButton
@@ -223,6 +231,7 @@ Rectangle {
             
             onClicked: {
                 console.log(currentModel)
+                s_remove()
             }
         }
         
@@ -262,7 +271,7 @@ Rectangle {
                         verticalAlignment: Qt.AlignVCenter
                     }
                 }
-
+                
                 delegate: Rectangle {
                     gradient: pageStyle.unselectView
                     width: recap.width
@@ -290,7 +299,7 @@ Rectangle {
                 
                 width: parent.width
                 height: parent.height * 0.49
-
+                
                 header: Rectangle {
                     gradient: pageStyle.goldHeader
                     height: recap.height * 0.10

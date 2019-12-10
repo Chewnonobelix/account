@@ -787,17 +787,27 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
         if(el.attribute("id").toInt() != ce.id())
             continue;
         
+        QList<QString> tag;
+        tag<<"begin"<<"titleCommon"<<"close";
+        
         QStringList members = ce.members();
         
-        for(auto it: members)
+        auto childs = el.childNodes();
+        
+        int j = 0;
+        while(childs.size() > 3)
         {
-            auto memberslist = el.elementsByTagName(it.replace(" ", "_"));
-            
-            while(!memberslist.isEmpty())
-                el.removeChild(memberslist.at(0));
+            if(tag.contains(childs.at(j).nodeName()))
+            {
+                j++;
+                continue;
+            }
+            el.removeChild(childs.at(j));
         }
         
+        
         auto map = ce.entries();
+                
         for(auto it = map.begin(); it != map.end(); it++)
         {
             Entry t = it.value();
