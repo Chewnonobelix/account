@@ -78,11 +78,11 @@ void ControllerCommon::addCommonEntry()
     
     Entry e; Information i;
     i.setTitle(pop->property("v_title").toString());
-    e.setDate(pop->property("v_date").toDate());
+    e.setDate(QDate::fromString(pop->property("v_date").toString(), "dd-MM-yyyy"));
     e.setValue(pop->property("v_val").toDouble());
     e.setType(pop->property("v_type").toString());
     e.setInfo(i);
-    
+
     ce.addEntries(pop->property("v_member").toString(), e);
     m_db->updateCommon(ce);
     exec();

@@ -800,9 +800,25 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
         auto map = ce.entries();
         for(auto it = map.begin(); it != map.end(); it++)
         {
+            Entry t = it.value();
+            if(t.id() == -1)
+            {
+                int ide = maxId(m_ids["entry"]) + 1;
+                int idi = maxId(m_ids["info"]) + 1;
+                
+                m_ids["entry"]<<ide;
+                m_ids["info"]<<idi;
+
+                Information in = t.info();
+                in.setId(idi);
+                in.setIdEntry(ide);
+                t.setInfo(in);
+                t.setId(ide);
+            }
+            
             QString tag = it.key();
             tag.replace(" ", "_");
-            addEntryNode(it.value(), el, tag);
+            addEntryNode(t, el, tag);
         }           
         
         setter(el, "close", QString::number(ce.isClose()));
