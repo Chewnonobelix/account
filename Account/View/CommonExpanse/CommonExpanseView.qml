@@ -127,8 +127,18 @@ Rectangle {
                             height: listComponent.height * .07
                             width: listComponent.width
                             gradient: pageStyle.unselectView
+                            
+
                             MouseArea {
                                 anchors.fill: parent
+                                ToolTip.delay: 500
+                                ToolTip.text: part1 + part2
+                                ToolTip.visible: containsMouse
+                                hoverEnabled: true
+                                
+                                property string part1: qsTr("Date") + ": " + Qt.formatDate(modelData.date, "dd-MM-yyyy") + "\n"
+                                property string part2: qsTr("Title") + ": " + modelData.label
+                                
                                 onClicked: {
                                     listComponent.currentIndex = listComponent.currentIndex !== index ? index : -1
                                     
