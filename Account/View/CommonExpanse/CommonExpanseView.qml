@@ -298,7 +298,7 @@ Rectangle {
                     
                     Label {
                         anchors.fill: parent
-                        text: qsTr("Transcation order")
+                        text: qsTr("Transaction order")
                         font.family: pageStyle.title.name
                         font.pixelSize: pageStyle.title.size
                         fontSizeMode: Text.Fit
