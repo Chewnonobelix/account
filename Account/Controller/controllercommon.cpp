@@ -90,7 +90,7 @@ void ControllerCommon::addCommonEntry()
     e.setType(pop->property("v_type").toString());
     e.setInfo(i);
 
-    ce.addEntries(pop->property("v_member").toString(), e);
+    ce.addEntries(pop->property("v_member").toString().toLower(), e);
     m_db->updateCommon(ce);
     exec();
 }
