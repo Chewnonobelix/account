@@ -45,19 +45,17 @@ Popup {
     
     leftPadding: width * 0.02
     rightPadding: width * 0.02
-    topPadding: height * 0.02
-    bottomPadding: height * 0.02
+    topPadding: height * 0.05
+    bottomPadding: height * 0.05
         
     background: Rectangle {
         gradient: pageStyle.backgroundGradient
         border.color: "darkgoldenrod"
-        anchors.fill: parent
         id: backRect
     }
     
     
     contentItem: Rectangle {
-        anchors.fill: parent
         color: "transparent"
 
         GridLayout {
@@ -68,9 +66,9 @@ Popup {
             
             anchors.fill: parent
             
-            property double firstRow: root.height * 0.25
-            property double secondRow: root.height * 0.42
-            property double thirdRow: root.height * 0.25
+            property double firstRow: root.height * 0.23
+            property double secondRow: root.height * 0.40
+            property double thirdRow: root.height * 0.23
             
             Label {
                 id: labelAdd
@@ -197,7 +195,7 @@ Popup {
             }
             
             ComboBox {
-                id: type
+                id: accountSelect
                 objectName: "type"
                 textRole: "name"
                 model: models.typeModel
@@ -218,7 +216,7 @@ Popup {
                 ToolTip.visible: hovered
                 ToolTip.delay: 500
                 
-                Rectangle {
+                background:  Rectangle {
                     gradient: pageStyle.goldButton
                     anchors.fill: parent
                 }
