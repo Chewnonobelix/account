@@ -47,7 +47,6 @@ Rectangle {
         
         implicitWidth: parent.width * .35
         implicitHeight: parent.height * .12
-        
     }
     
     GridLayout {
@@ -90,7 +89,7 @@ Rectangle {
                         }
                         
                         header: Rectangle {
-                            height: listComponent.height * .05
+                            height: listComponent.height * .07
                             width: listComponent.width
                             gradient: pageStyle.goldHeader
                             Label {
@@ -105,7 +104,7 @@ Rectangle {
                         }
                         
                         footer: Rectangle {
-                            height: listComponent.height * .03
+                            height: listComponent.height * .05
                             width: listComponent.width
                             gradient: pageStyle.goldHeader
                             Label {

@@ -66,8 +66,8 @@ Popup {
             
             anchors.fill: parent
             
-            property double firstRow: root.height * 0.23
-            property double secondRow: root.height * 0.40
+            property double firstRow: root.height * 0.25
+            property double secondRow: root.height * 0.38
             property double thirdRow: root.height * 0.23
             
             Label {
