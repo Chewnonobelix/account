@@ -34,6 +34,7 @@ Popup {
     property string v_member: member.text
     property bool newAccount: false
     property bool common: false
+    property var completionList: []
     
     onClosed: { 
         valueLabel.background.border.color = "#bdbdbd"
@@ -47,7 +48,7 @@ Popup {
     rightPadding: width * 0.02
     topPadding: height * 0.05
     bottomPadding: height * 0.05
-        
+    
     background: Rectangle {
         gradient: pageStyle.backgroundGradient
         border.color: "darkgoldenrod"
@@ -57,7 +58,7 @@ Popup {
     
     contentItem: Rectangle {
         color: "transparent"
-
+        
         GridLayout {
             id: grid
             
@@ -133,10 +134,30 @@ Popup {
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
                 
+                onTextEdited: {
+                    var s = -1
+                    for(var i in root.completionList) {
+                        if(root.completionList[i].indexOf(text) === 0)
+                            s = i
+                    }
+                    
+                    completionLabel.text = s !== -1 ? root.completionList[s] : ""
+                }
+                
                 background: Rectangle {
                     anchors.fill: parent
                     color: "white"
                     border.color: member.isValid ? "blue" : "red"
+                    Label {
+                        id: completionLabel
+                        anchors.fill: parent
+                        
+                        color: "grey"
+                        font.family: pageStyle.core.name
+                        font.pixelSize: pageStyle.core.size
+                        verticalAlignment: Qt.AlignVCenter
+                        leftPadding: member.leftPadding                        
+                    }
                 }
             }       
             

@@ -47,6 +47,8 @@ Rectangle {
         
         implicitWidth: parent.width * .35
         implicitHeight: parent.height * .12
+        
+        onOpened: completionList = model.members
     }
     
     GridLayout {
