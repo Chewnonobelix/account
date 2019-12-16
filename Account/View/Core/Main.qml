@@ -259,29 +259,7 @@ ApplicationWindow {
         background: Rectangle {
             gradient: pageStyle.goldHeader
         }
-        
-        Menu {
-            title: qsTr("Feature")
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
-            
-            height: budgetListItem.height * 2//TOREMOVE
-            
-            MenuItem {
-                id: frequencyList
-                text: qsTr("Frequency list")
-                onClicked: mainWindow.s_openFrequencyManager()
                 
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
-                
-                background: Rectangle {
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-                    
-                }
-            }
-        }
-        
         Menu {
             title: qsTr("?")
             font.family: pageStyle.core.name
@@ -513,7 +491,10 @@ Current Version beta 0.9")
             }
 //        }
         
-        Rectangle {}
+        FrequencyManager{
+            objectName: "frequencyManager"
+        }
+        
         Rectangle {
             color: "transparent"
             objectName: "commonRect"

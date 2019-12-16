@@ -19,13 +19,12 @@ Worker& Worker::operator =(const Worker&)
 
 ControllerFrequency::ControllerFrequency()
 {
-    m_eng.load(QUrl(QStringLiteral("qrc:/Frequency/FrequencyManager.qml")));
     
-    m_manager = m_eng.rootObjects().last();
+}
 
-    m_generate = m_manager->findChild<QObject*>("generate");
-        
-    connect(m_generate, SIGNAL(s_generate(QString, QString)), this, SLOT(generate(QString, QString)));
+void ControllerFrequency::setManager(QObject * manager)
+{
+    m_manager = manager;
     
     QObject* add, *remove, *ref, *type;
     
@@ -71,8 +70,12 @@ ControllerFrequency::ControllerFrequency()
     
     if(el)
         connect(el, SIGNAL(s_display(int)), this, SLOT(displayEntry(int)));
+    
+    m_generate = m_manager->findChild<QObject*>("generate");
+        
+    connect(m_generate, SIGNAL(s_generate(QString, QString)), this, SLOT(generate(QString, QString)));
+    
 }
-
 void ControllerFrequency::endThread(QString name)
 {
     if(m_workers[name])
@@ -185,12 +188,12 @@ void ControllerFrequency::openManager()
     exec();
     
     
-    QMetaObject::invokeMethod(m_manager, "show");    
+//    QMetaObject::invokeMethod(m_manager, "show");    
 }
 
 void ControllerFrequency::closeManager()
 {
-    QMetaObject::invokeMethod(m_manager, "close");
+//    QMetaObject::invokeMethod(m_manager, "close");
     QMetaObject::invokeMethod(m_generate, "close");
     
 }

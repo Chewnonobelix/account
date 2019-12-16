@@ -50,6 +50,8 @@ public:
     
     int exec();
     void closeManager();
+    
+    void setManager(QObject*);
 
 signals:
     void s_addEntry(Entry);

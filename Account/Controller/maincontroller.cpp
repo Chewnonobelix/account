@@ -139,6 +139,12 @@ int MainController::exec()
         }
     }
     
+    QObject* frequency = root->findChild<QObject*>("frequencyManager");
+    if(frequency)
+        m_freqs.setManager(frequency);
+    
+    m_freqs.exec();
+    
     QObject* budgetManager = root->findChild<QObject*>("budgetManager");
     if(budgetManager)
         m_budget.setManager(budgetManager); 

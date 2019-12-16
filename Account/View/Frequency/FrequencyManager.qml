@@ -9,7 +9,7 @@ import Account 1.0
 import "../Style"
 import "../Core"
 
-Window {
+Rectangle {
     AccountStyle {
         id: pageStyle
     }
@@ -22,15 +22,8 @@ Window {
         id: testModel
     }
     
-    title: qsTr("Frequency manager")
-    
-    maximumHeight: screen.height / 2
-    maximumWidth: screen.width * 0.4
-    visible: false
-    
-    width: maximumWidth
-    height: maximumHeight
-    
+    color: "transparent"
+        
     id: root
     
     Component.onCompleted: {
@@ -41,7 +34,7 @@ Window {
 
     Rectangle {
         anchors.fill: parent
-        gradient: pageStyle.backgroundGradient
+        gradient: pageStyle.unselectView
         
         Generate {
             objectName: "generate"
@@ -103,6 +96,7 @@ Window {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     height: frequencyList.height * .10
+                    width: frequencyList.width
                     background: Rectangle {
                         gradient: pageStyle.goldHeader
                     }
