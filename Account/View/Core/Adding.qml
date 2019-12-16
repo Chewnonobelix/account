@@ -29,13 +29,13 @@ Popup {
     
     property real v_val: spinbox.realValue
     property string v_title: valueLabel.text
-    property string v_type: type.model.get(type.currentIndex).type
+    property string v_type: accountSelect.model.get(accountSelect.currentIndex).type
     property string v_date: dateLabel.text
     property string v_member: member.text
     property bool newAccount: false
     property bool common: false
     property var completionList: []
-    
+        
     onClosed: { 
         valueLabel.background.border.color = "#bdbdbd"
     }

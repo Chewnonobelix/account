@@ -2,19 +2,9 @@
 
 ControllerBudget::ControllerBudget()
 {
-    m_eng.load(QUrl(QStringLiteral("qrc:/Budget/BudgetManager.qml")));
-    m_view = m_eng.rootObjects().first();
     m_referenceView = nullptr;
-    m_eng.load(QUrl(QStringLiteral("qrc:/Budget/BudgetView.qml")));
-    m_quickView = m_eng.rootObjects().last();
-    
-    connect(m_view, SIGNAL(s_loadTarget(QString)), this, SLOT(getTarget(QString)));
-    connect(m_view, SIGNAL(s_budgetChanged(QString)), this, SLOT(addBudget(QString)));
-    connect(m_view, SIGNAL(s_budgetReference(QString)), this, SLOT(editBudget(QString)));
-    connect(m_view, SIGNAL(s_budgetRoleChange(QString, int)), this, SLOT(changeFrequency(QString, int)));
-    connect(m_view, SIGNAL(s_addTarget(QString)), this, SLOT(addTarget(QString)));
-    connect(m_view, SIGNAL(s_showTarget(QString, QString, bool)), this, SLOT(showTarget(QString,QString,bool)));
-    connect(m_view, SIGNAL(s_removeTarget(QString, QString)), this, SLOT(removeTarget(QString,QString)));
+    m_quickView = nullptr;
+    m_view = nullptr;
 }
 
 ControllerBudget::~ControllerBudget()
@@ -25,9 +15,6 @@ void ControllerBudget::closeManager()
 {    
     if(m_referenceView)
         QMetaObject::invokeMethod(m_referenceView, "close");
-    
-    if(m_view)
-        QMetaObject::invokeMethod(m_view, "close");        
 }
 
 void ControllerBudget::update(int)
@@ -69,8 +56,6 @@ void ControllerBudget::openManager()
                 map.insert("type", type);
                 map.insert("catName", it);
                 map.insert("has", m_budgets.contains(it));
-//                map.insert("frequency", m_budgets.contains(it) ? (int)m_budgets[it].frequency() : 0);
-//                map.insert("has", true);
                 
                 QMetaObject::invokeMethod(m_view, "addCat", Q_ARG(QVariant, map));
             }
@@ -79,7 +64,6 @@ void ControllerBudget::openManager()
         func("income", incomes);
         func("outcome", outcomes);
         
-        QMetaObject::invokeMethod(m_view, "show");
         
         if(!m_selected.isEmpty())
             QMetaObject::invokeMethod(m_view, "selectCat", Q_ARG(QVariant, m_selected));
@@ -113,6 +97,9 @@ void ControllerBudget::open(QString)
 
 void ControllerBudget::show(QDate date)
 {
+    if(!m_quickView)
+        return;
+    
     QList<QPair<QString,SubBudget>> list;
     m_currentDate = date;
     for(auto it: m_budgets)
@@ -246,8 +233,6 @@ void ControllerBudget::getTarget(QString catName)
 
 void ControllerBudget::changeFrequency(QString, int)
 {
-//    m_budgets[cat].setFrequency((Account::FrequencyEnum)freq);
-//    m_db->updateBudget(m_budgets[cat]);
 }
 
 void ControllerBudget::updateEntry(int id)
@@ -304,6 +289,22 @@ void ControllerBudget::showTarget(QString catName, QString date, bool all)
         map["cat"] = catName;
         QMetaObject::invokeMethod(m_view, "addSub", Q_ARG(QVariant, map));
     }
+}
+
+void ControllerBudget::setManager(QObject * manager)
+{
+    m_view = manager;
+    
+    if(m_view)
+    {
+        connect(m_view, SIGNAL(s_loadTarget(QString)), this, SLOT(getTarget(QString)));
+        connect(m_view, SIGNAL(s_budgetChanged(QString)), this, SLOT(addBudget(QString)));
+        connect(m_view, SIGNAL(s_budgetReference(QString)), this, SLOT(editBudget(QString)));
+        connect(m_view, SIGNAL(s_budgetRoleChange(QString, int)), this, SLOT(changeFrequency(QString, int)));
+        connect(m_view, SIGNAL(s_addTarget(QString)), this, SLOT(addTarget(QString)));
+        connect(m_view, SIGNAL(s_showTarget(QString, QString, bool)), this, SLOT(showTarget(QString,QString,bool)));
+        connect(m_view, SIGNAL(s_removeTarget(QString, QString)), this, SLOT(removeTarget(QString,QString)));
+    }        
 }
 
 void ControllerBudget::setQuickView(QObject *qv)

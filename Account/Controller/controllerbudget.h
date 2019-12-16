@@ -32,6 +32,7 @@ public:
     void openManager();
     void reload();
     void setQuickView(QObject* );
+    void setManager(QObject*);
     
 public slots:
     void open(QString);

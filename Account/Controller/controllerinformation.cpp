@@ -122,6 +122,8 @@ void ControllerInformation::addNewCategory(QString cat)
     m_db->addCategory(cat, m_entry.type());
     categoryChange(cat);
     view(m_entry.id());
+    emit s_exec();
+    
 }
 
 void ControllerInformation::setControllerFrequency(ControllerFrequency * cf)

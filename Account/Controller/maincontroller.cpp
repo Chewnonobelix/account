@@ -50,6 +50,7 @@ int MainController::exec()
     connect(root, SIGNAL(removeAccount(QString)), this, SLOT(deleteAccount(QString)));
     connect(root, SIGNAL(s_closing()), this, SLOT(close()));
     
+    connect(&m_info, ControllerInformation::s_exec, this, MainController::openBudgetManager);
     connect(root, SIGNAL(s_openFrequencyManager()), &m_freqs, SLOT(openManager()));
     QObject* calendar = root->findChild<QObject*>("cal");
     
@@ -122,9 +123,7 @@ int MainController::exec()
         connect(root, SIGNAL(openTransfert()), this, SLOT(openTransfert()));
         connect(&m_transfert, ControllerTransfert::s_finish, this, MainController::selection);
     }
-    
-    connect(root, SIGNAL(openBudgetManager()), this, SLOT(openBudgetManager()));
-    
+        
     QObject* info = root->findChild<QObject*>("infoView");
     
     if(info)
@@ -140,7 +139,9 @@ int MainController::exec()
         }
     }
     
-    m_budget.reload();
+    QObject* budgetManager = root->findChild<QObject*>("budgetManager");
+    if(budgetManager)
+        m_budget.setManager(budgetManager); 
     
     QObject* rectQuickView = root->findChild<QObject*>("budgetQuick");
     
@@ -150,6 +151,7 @@ int MainController::exec()
         m_budget.show(QDate::currentDate());
     }
     
+    m_budget.exec();
     m_info.setControllerFrequency(&m_freqs);
     
     
@@ -176,7 +178,6 @@ void MainController::update(Entry e)
 
 void MainController::add(bool account)
 {
-    QObject* item = m_engine.rootObjects().first()->findChild<QObject*>("table");
     QObject* m = m_engine.rootObjects().first();
     QObject* h = m->findChild<QObject*>("head");
     QObject* mb = m->findChild<QObject*>("menuBar");

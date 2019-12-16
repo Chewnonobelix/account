@@ -6,13 +6,7 @@ import QtQuick.Controls 1.4
 import QtQuick.controls.Styles 1.4
 import "../Style"
 
-Window {
-    height: 640
-    width: 480
-    flags: Qt.Window
-    x: screen.width / 2 - width / 2
-    y: screen.height / 2 - height / 2
-    
+Rectangle {
     id: budgetManager
     
     signal s_budgetChanged(string name)
@@ -22,11 +16,10 @@ Window {
     signal s_addTarget(string cat)
     signal s_showTarget(string cat, string d, bool all)
     signal s_removeTarget(string cat, string d)
-
-    onWidthChanged: show()
-    onHeightChanged: show()
     
     property bool blocked: false
+    
+    color: "transparent"
     
     AccountStyle {
         id: pageStyle
@@ -88,7 +81,7 @@ Window {
     
     Rectangle {
         anchors.fill: parent
-        gradient: pageStyle.backgroundGradient
+        color: "transparent"
         
         ListView {
             id: catView
@@ -98,9 +91,7 @@ Window {
             
             height: parent.height * .85
             width: parent.width * .30
-            
-            //            backgroundVisible: false
-            
+                        
             
             section.property: "type"
             section.criteria: ViewSection.FullString
@@ -136,9 +127,9 @@ Window {
                     text: catName
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
-                    fontSizeMode: Text.Fit
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
+                    fontSizeMode: Text.Fit
                 }
                 MouseArea {
                     anchors.fill: parent
@@ -166,8 +157,6 @@ Window {
                         font.pixelSize: pageStyle.core.size
                         
                         background: Rectangle {
-                            
-                            //                            width: removeSubAction.width > freqMenu.width ? removeSubAction.width: freqMenu.width
                             gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
                         }
                     }

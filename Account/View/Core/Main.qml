@@ -9,6 +9,8 @@ import QtQuick.Layouts 1.13
 import "../Style" as S
 import "../Transfert" as T
 import "../CommonExpanse"
+import "../Budget"
+import "../Frequency"
 
 ApplicationWindow {
     visible: true
@@ -22,7 +24,6 @@ ApplicationWindow {
     signal accountChange(int index)
     signal removeAccount(string name)
     signal openTransfert
-    signal openBudgetManager()
     signal s_closing()
     signal s_openFrequencyManager()
     
@@ -265,19 +266,6 @@ ApplicationWindow {
             font.pixelSize: pageStyle.core.size
             
             height: budgetListItem.height * 2//TOREMOVE
-            MenuItem {
-                id: budgetListItem
-                text: qsTr("Budget list")
-                onClicked: mainWindow.openBudgetManager()
-                
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
-                
-                background: Rectangle {
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
-                }
-                
-            }
             
             MenuItem {
                 id: frequencyList
@@ -518,6 +506,14 @@ Current Version beta 0.9")
         //            year: table.v_dateYear
         //        }
         
+//        Rectangle {
+            BudgetManager {    
+//                anchors.fill: parent
+                objectName: "budgetManager"
+            }
+//        }
+        
+        Rectangle {}
         Rectangle {
             color: "transparent"
             objectName: "commonRect"
@@ -715,6 +711,7 @@ Current Version beta 0.9")
                 }
             }
         }
+        
         Popup {
             id: deleteAccount
             anchors.centerIn: swipeView
@@ -812,6 +809,50 @@ Current Version beta 0.9")
                 text: qsTr("Graph")
                 horizontalAlignment: Qt.AlignHCenter
                 color: tabBar.currentItem === graphTabButton ? "black" : "darkseagreen"
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
+            }
+            
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                acceptedButtons: Qt.NoButton
+            }
+            
+            background: Rectangle {
+                color: tabBar.currentItem === parent ? "darkseagreen" : "white"
+            }
+        }
+        
+        TabButton {
+            id: budgetTabButton
+            
+            contentItem: Label {
+                text: qsTr("Budget")
+                horizontalAlignment: Qt.AlignHCenter
+                color: tabBar.currentItem === budgetTabButton ? "black" : "darkseagreen"
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
+            }
+            
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                acceptedButtons: Qt.NoButton
+            }
+            
+            background: Rectangle {
+                color: tabBar.currentItem === parent ? "darkseagreen" : "white"
+            }
+        }
+
+        TabButton {
+            id: frequencyTabButton
+            
+            contentItem: Label {
+                text: qsTr("Frequency")
+                horizontalAlignment: Qt.AlignHCenter
+                color: tabBar.currentItem === frequencyTabButton ? "black" : "darkseagreen"
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
             }
