@@ -231,7 +231,6 @@ Rectangle {
             }
             
             onClicked: {
-                console.log(currentModel)
                 s_remove()
             }
         }
