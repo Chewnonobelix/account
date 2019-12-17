@@ -123,7 +123,7 @@ int MainController::exec()
         connect(root, SIGNAL(openTransfert()), this, SLOT(openTransfert()));
         connect(&m_transfert, ControllerTransfert::s_finish, this, MainController::selection);
     }
-        
+    
     QObject* info = root->findChild<QObject*>("infoView");
     
     if(info)
@@ -432,6 +432,12 @@ void MainController::selection(int id)
             tab->setProperty("model", modelList);
         }
         while(!found && skipper->property("pageIndex").toInt() <= maxPage);
+        
+        if(id == -1)
+        {
+            QMetaObject::invokeMethod(tab, "unselectAll");
+            QMetaObject::invokeMethod(tab, "reset");
+        }           
     }
     
     QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");

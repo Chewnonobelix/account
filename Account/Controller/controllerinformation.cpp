@@ -86,6 +86,7 @@ void ControllerInformation::view(int id)
 
     child->setProperty("entry", QVariant::fromValue(m_entry));
 
+    m_view->setProperty("visible", id != -1 && m_entry.label() != "Initial");
     exec();
 }
 

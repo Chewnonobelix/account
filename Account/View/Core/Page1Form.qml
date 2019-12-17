@@ -178,7 +178,13 @@ Page {
                 id: view
                 objectName: "entryView"
                 model: []
-                currentRow: -1
+                
+                Component.onCompleted: {
+                    selection.clear()
+                    currentEntry = Qt.binding( function(){ return selection.count !== 0 ? model[currentRow] : null } )
+                }
+                
+                onModelChanged: selection.clear()
                 
                 horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
                 
@@ -186,17 +192,15 @@ Page {
                 
                 function unselectAll() {
                     selection.clear()
-                    currentRow = -1
                 }
                 
                 function reset() {
-                    currentRow = -1
                     infoView.visible = false
                 }
                 
                 signal s_view(int index)
                 
-                property var currentEntry: currentRow !== -1 ? model[currentRow] : null
+                property var currentEntry
                 
                 backgroundVisible: false
                 Connections {
@@ -227,13 +231,14 @@ Page {
                 }
                 
                 function setNewIndex(index) {
-                    if (selection.contains(index)) {
+                    if (selection.contains(index) || index === -1) {
                         selection.clear()
-                        currentRow = -1
+                        s_view(-1)
                     } else {
                         selection.clear()
                         currentRow = index
                         selection.select(index)
+                        s_view(currentEntry.id)
                     }
                 }
                 
@@ -428,15 +433,16 @@ Page {
                 
                 onSortIndicatorColumnChanged: {
                     sort(getColumn(sortIndicatorColumn).role, sortIndicatorOrder)
-                    if (currentRow !== -1) {
+
+                    if (selection.count !== 0) {
                         s_view(model[currentRow].id)
                     }
                 }
                 
                 onSortIndicatorOrderChanged: {
                     sort(getColumn(sortIndicatorColumn).role, sortIndicatorOrder)
-                    
-                    if (currentRow !== -1) {
+
+                    if (selection.count !== 0) {
                         s_view(model[currentRow].id)
                     }
                 }
@@ -471,10 +477,7 @@ Page {
                 }
                 
                 onCurrentRowChanged: {
-                    currentEntry =  currentRow !== -1 ? model[currentRow] : null
-                    
-                    if (currentEntry)
-                        s_view(currentEntry.id)
+                    setNewIndex(currentRow)
                 }
                 
                 function swap(i,j) {               
@@ -516,7 +519,7 @@ Page {
             Layout.columnSpan: 1
             
             Layout.preferredWidth: pageTable.width * 0.52            
-            
+            Layout.preferredHeight: pageTable.height
             ScrollBar.horizontal.policy: ScrollBar.AsNeeded
             
             clip: true
@@ -524,13 +527,10 @@ Page {
                 id: infoView
                 objectName: "infoView"
                 clip: true
-                visible: false
                 enabled: true
                 
                 implicitWidth: Screen.width * 0.52
-                implicitHeight: grid.height
-                
-                onModelChanged: visible = view.currentRow >= 0 && model["label"] !== "Initial"
+                implicitHeight: grid.height                
             }
         }
         
@@ -557,5 +557,9 @@ Page {
     }
     
     
-    property int currentId: view.currentRow > -1 && model[view.currentRow].label !== "Initial" ? model[view.currentRow].id : -1       
+    Component.onCompleted: {
+        currentId = Qt.binding(function() {return view.currentEntry && view.currentEntry.label !== "Initial" ? view.currentEntry.id : -1})
+    }
+    
+    property int currentId: view.selection.count !== 0 && model[view.currentRow].label !== "Initial" ? model[view.currentRow].id : -1       
 }
