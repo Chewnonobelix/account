@@ -70,7 +70,7 @@ Rectangle {
                 Layout.column: 0
                 Layout.columnSpan: 2
                 Layout.rowSpan: 1
-                
+                Layout.alignment: Qt.AlignTop
                 background: Rectangle {
                     gradient: pageStyle.goldHeader
                 }
