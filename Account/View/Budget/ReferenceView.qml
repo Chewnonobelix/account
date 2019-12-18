@@ -6,15 +6,7 @@ import QtQuick.Layouts 1.12
 import "../Style"
 import "../Core"
 
-Window {
-    flags: Qt.Popup | Qt.NoDropShadowWindowHint
-    
-    x: screen.width / 2 - width / 2
-    y: screen.height / 2 - height / 2
-    
-    minimumHeight: 350
-    minimumWidth: 350
-    
+Popup {
     AccountStyle {
         id: pageStyle
     }
@@ -22,35 +14,30 @@ Window {
     CoreModel {
         id: models
     }
-
-    width: rectWindow.width * 2
-    //    height: (col2.height)* 1.10
-    id: main
-    color: "transparent"
-    Rectangle {
+    
+    id: root
+    
+    padding: 0
+    onOpened: console.log(gridId.width, width)
+    
+    contentItem: Rectangle {
         id: rectWindow
-        anchors.left: parent.left
-        anchors.top: parent.top
-
-        height:  (20*3 + calendarLabel.height * 5) * 1.15
-        width: (calendarLabel.width + targetValue.width)*1.3
+        anchors.fill: parent
         gradient: pageStyle.backgroundGradient
         
         property string budgetName
         border.color: "gold"
         
-        Grid {
+        GridLayout {
             id: gridId
-            columns: 2
-            columnSpacing: 10
-            rowSpacing: 20
-            
-            
             anchors.fill: parent
-            anchors.leftMargin: 10
-            anchors.topMargin: 10
-            horizontalItemAlignment: Qt.AlignHCenter
-            verticalItemAlignment: Qt.AlignVCenter
+            anchors.leftMargin: root.width * 0.02
+            anchors.rightMargin: root.width * 0.02
+            anchors.topMargin: root.height * 0.02
+            anchors.bottomMargin: root.height * 0.02
+            
+            columnSpacing: root.width * 0.02
+            rowSpacing: root.height * 0.02
             
             Label {
                 id: calendarLabel
@@ -60,11 +47,24 @@ Window {
                 fontSizeMode: Text.Fit
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
+                
+                Layout.preferredHeight: root.height * 0.25
+                Layout.preferredWidth:  root.width * 0.47
+                Layout.column: 0
+                Layout.row: 0
+                Layout.alignment: Qt.AlignLeft
             }
+            
             CalendarButton {
                 id: cButton
                 objectName: "cButton"
                 
+                Layout.preferredHeight: root.height * 0.25
+                Layout.preferredWidth:  root.width * 0.47
+                Layout.column: 1
+                Layout.row: 0
+                Layout.columnSpan: 2
+                Layout.alignment: Qt.AlignRight                
             }
             
             Label {
@@ -74,11 +74,25 @@ Window {
                 fontSizeMode: Text.Fit
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
+                
+                Layout.preferredHeight: root.height * 0.25
+                Layout.preferredWidth:  root.width * 0.47
+                Layout.column: 0
+                Layout.row: 1
+                Layout.columnSpan: 1
+                Layout.alignment: Qt.AlignLeft                
             }
             
             DoubleSpinBox {
                 id: targetValue
                 objectName: "targetValue"
+                
+                Layout.preferredHeight: root.height * 0.25
+                Layout.preferredWidth:  root.width * 0.47
+                Layout.column: 1
+                Layout.row: 1
+                Layout.columnSpan: 2
+                Layout.alignment: Qt.AlignRight                
             }
             
             Label {
@@ -88,21 +102,33 @@ Window {
                 fontSizeMode: Text.Fit
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
+                
+                Layout.preferredHeight: root.height * 0.25
+                Layout.preferredWidth:  root.width * 0.47
+                Layout.column: 0
+                Layout.row: 2
+                Layout.columnSpan: 1
+                Layout.alignment: Qt.AlignLeft                
             }
-            
-            
             
             ComboBox {
                 id: freqCombo
                 objectName: "freqCombo"
-
+                
+                Layout.preferredHeight: root.height * 0.25
+                Layout.preferredWidth:  root.width * 0.47
+                Layout.column: 1
+                Layout.row: 2
+                Layout.columnSpan: 2
+                Layout.alignment: Qt.AlignRight                
+                
                 model: models.freqModel
                 textRole: "name"
                 Rectangle {
                     gradient: pageStyle.goldButton
                     anchors.fill: parent
                 }
-
+                
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
                 
@@ -120,7 +146,7 @@ Window {
                             cursorShape: Qt.PointingHandCursor
                             acceptedButtons: Qt.NoButton
                         }
-
+                        
                         Label {
                             anchors.centerIn: parent
                             verticalAlignment: Qt.AlignVCenter
@@ -140,6 +166,13 @@ Window {
                 id: okButton
                 objectName: "okButton"
                 
+                Layout.preferredHeight: root.height * 0.15
+                Layout.preferredWidth:  root.width * 0.23
+                Layout.column: 1
+                Layout.row: 3
+                Layout.columnSpan: 1
+                Layout.alignment: Qt.AlignLeft                
+                
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
@@ -149,10 +182,16 @@ Window {
                 text: "Cancel"
                 onClicked: main.close()
                 
+                Layout.preferredHeight: root.height * 0.15
+                Layout.preferredWidth:  root.width * 0.22
+                Layout.column: 2
+                Layout.row: 3
+                Layout.columnSpan:  1
+                Layout.alignment: Qt.AlignRight                
+                
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
-                
             }
             
         }

@@ -181,15 +181,13 @@ void ControllerBudget::editBudget(QString cat)
 {
     if(!m_referenceView)
     {
-        QQmlComponent referenceComp(&m_eng, QUrl(QStringLiteral("qrc:/Budget/ReferenceView.qml")));
-
-        m_referenceView = referenceComp.create();
+        m_referenceView = m_view->findChild<QObject*>("reference");
         QObject* ok = m_referenceView->findChild<QObject*>("okButton");
         connect(ok, SIGNAL(clicked()), this , SLOT(editReference()));
     }
     m_referenceView->setProperty("budgetName", cat);
 
-    QMetaObject::invokeMethod(m_referenceView, "show");
+    QMetaObject::invokeMethod(m_referenceView, "open");
 }
 
 void ControllerBudget::editReference()

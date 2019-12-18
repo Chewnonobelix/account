@@ -25,6 +25,13 @@ Rectangle {
         id: pageStyle
     }
     
+    ReferenceView {
+        objectName: "reference"
+        anchors.centerIn: parent
+        height: 400
+        width: 500
+    }
+
     function addCat(cat) {
         categoryModel.append(cat)
     }
