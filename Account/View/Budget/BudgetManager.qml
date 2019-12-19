@@ -28,8 +28,8 @@ Rectangle {
     ReferenceView {
         objectName: "reference"
         anchors.centerIn: parent
-        height: 400
-        width: 500
+        height: width * 1.33
+        width: 150 * 1.5
     }
 
     function addCat(cat) {
