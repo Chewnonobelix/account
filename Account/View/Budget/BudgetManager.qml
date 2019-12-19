@@ -159,20 +159,21 @@ Rectangle {
                 Control2.Menu {
                     id: catMenu
                     
-                    delegate: Control2.MenuItem {
+                    contentItem: Control2.MenuItem {
                         font.family: pageStyle.core.name
                         font.pixelSize: pageStyle.core.size
+                        anchors.fill: catMenu
+                        text: has ? qsTr("Remove budget") : qsTr("Add budget")
+                        onTriggered: budgetManager.s_budgetChanged(catName)
+                        
                         
                         background: Rectangle {
-                            gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
+                            anchors.fill: parent
+                            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                         }
                     }
                     
-                    Control2.Action {
-                        text: has ? "Remove budget" : "Add budget"
-                        id: removeSubAction
-                        onTriggered: budgetManager.s_budgetChanged(catName)
-                    }
+                    
                     
                 }
             }
@@ -202,7 +203,6 @@ Rectangle {
             
             
             onCurrentIndexChanged: {
-                
                 var temp = currentIndex !== - 1 ? Qt.formatDate(targetModel.get(currentIndex).date, "dd-MM-yyyy") : ""
                 budgetManager.s_showTarget(categoryModel.get(catView.currentIndex).catName, temp, currentIndex === -1)
             }
@@ -211,7 +211,7 @@ Rectangle {
                 id: compRemoveAction
                 Control2.Action {
                     id: removeAction
-                    text:  "Remove target"
+                    text:  qsTr("Remove target")
                     
                     onTriggered: {
                         s_removeTarget(categoryModel.get(catView.currentIndex).catName, Qt.formatDate(targetModel.get(targetView.currentIndex).date, "dd-MM-yyyy"))
@@ -229,15 +229,13 @@ Rectangle {
                     font.pixelSize: pageStyle.core.size
                     height: 20
                     background: Rectangle {
-                        
-                        //                        width: removeSubAction.width > freqMenu.width ? removeSubAction.width: freqMenu.width
                         gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
                     }
                 }
                 
                 Control2.Action {
                     id: addSubTarget
-                    text: "Add target"
+                    text: qsTr("Add target")
                     onTriggered: budgetManager.s_addTarget(categoryModel.get(catView.currentIndex).catName)
                 }
             }
@@ -278,16 +276,14 @@ Rectangle {
                     acceptedButtons: Qt.RightButton
                     z: -1
                     onClicked: {
-                        if(mouse.button === Qt.RightButton) {
-                            targetView.currentIndex = targetView.indexAt(mouse.x, mouse.y)
-                            if(targetView.currentIndex !== -1 && targetItemMenu.count === 1) {
-                                targetItemMenu.addAction(compRemoveAction.createObject())
-                            } else if (targetView.currentIndex === -1 && targetItemMenu.count === 2){
-                                targetItemMenu.takeAction(1)
-                            }
-                            
-                            targetItemMenu.popup()
+                        targetView.currentIndex = targetView.indexAt(mouse.x, mouse.y)
+                        if(targetView.currentIndex !== -1 && targetItemMenu.count === 1) {
+                            targetItemMenu.addAction(compRemoveAction.createObject())
+                        } else if (targetView.currentIndex === -1 && targetItemMenu.count === 2){
+                            targetItemMenu.takeAction(1)
                         }
+                        
+                        targetItemMenu.popup()
                     }
                 }
             }

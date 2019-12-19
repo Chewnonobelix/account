@@ -18,7 +18,6 @@ Popup {
     id: root
     
     padding: 0
-    onOpened: console.log(gridId.width, width)
     
     contentItem: Rectangle {
         id: rectWindow
