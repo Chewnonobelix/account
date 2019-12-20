@@ -59,7 +59,16 @@ void ControllerInformation::configure(QObject * view)
         
         QObject* skip = m_view->findChild<QObject*>("pageSwipper");
         
-        connect(skip, SIGNAL(s_pageChange()), this , SLOT(pageChange()));        
+        connect(skip, SIGNAL(s_pageChange()), this , SLOT(pageChange()));    
+        
+        QObject  *catItem;
+    
+        catItem = child->findChild<QObject*>("category");
+        if(catItem)
+        {
+            connect(catItem, SIGNAL(s_currentTextChanged(QString)), this, SLOT(categoryChange(QString)));
+            connect(catItem, SIGNAL(s_addCategory(QString)), this, SLOT(addNewCategory(QString)));
+        }
     }
 }
 
@@ -68,19 +77,18 @@ void ControllerInformation::view(int id)
     m_entry = AbstractController::entry(id);
 
     auto child = m_view->findChild<QObject*>("entryEdit");
-    QObject  *catItem;
-
-    catItem = child->findChild<QObject*>("category");
 
     QStringList catList = m_db->selectCategory().values(m_entry.type());
     catList<<"";
 
+    QObject  *catItem;
+
+    catItem = child->findChild<QObject*>("category");
+    
     if(catItem)
     {
         catItem->setProperty("blocked", true);
         child->setProperty("catModel", catList);
-        connect(catItem, SIGNAL(s_currentTextChanged(QString)), this, SLOT(categoryChange(QString)));
-        connect(catItem, SIGNAL(s_addCategory(QString)), this, SLOT(addNewCategory(QString)));
         catItem->setProperty("blocked", false);
     }
 

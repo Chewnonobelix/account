@@ -18,8 +18,7 @@ ComboBox {
     signal s_currentTextChanged(string cat)
     property bool blocked: false
     
-    onCurrentTextChanged: {
-        if(down)
+    onActivated: {
             s_currentTextChanged(currentText)
     }
     
