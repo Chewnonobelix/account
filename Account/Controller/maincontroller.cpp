@@ -215,7 +215,7 @@ void MainController::adding()
         e.setAccount(account.toString());
         e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
         e.setValue(val.toDouble());
-        e.setType("Income");
+        e.setType("income");
         
         Information i;
         i.setTitle("Initial");
