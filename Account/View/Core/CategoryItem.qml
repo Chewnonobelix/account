@@ -18,8 +18,8 @@ ComboBox {
     signal s_currentTextChanged(string cat)
     property bool blocked: false
     
-    onActivated: {
-            s_currentTextChanged(currentText)
+    onDownChanged: {
+        s_currentTextChanged(currentText)
     }
     
     
@@ -47,7 +47,7 @@ ComboBox {
         verticalAlignment: Qt.AlignVCenter
         font.family: pageStyle.core.name
         font.pixelSize: pageStyle.core.size
-
+        
         text: currentText
         readOnly: !editable
         onAccepted: s_addCategory(text)
