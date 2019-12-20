@@ -7,7 +7,7 @@ import QtQuick.controls.Styles 1.4
 import "../Style"
 
 Rectangle {
-    id: budgetManager
+    id: root
     
     signal s_budgetChanged(string name)
     signal s_budgetReference(string name)
@@ -86,19 +86,18 @@ Rectangle {
         id: subModel
     }
     
-    Rectangle {
+    RowLayout {
         anchors.fill: parent
-        color: "transparent"
+        
+        spacing: width * 0.02
         
         ListView {
             id: catView
             model: categoryModel
-            anchors.left: parent.left
-            anchors.top: parent.top
             
-            height: parent.height * .85
-            width: parent.width * .30
-                        
+            Layout.preferredHeight:  root.height * .85
+            Layout.preferredWidth: root.width * .30
+            Layout.alignment: Qt.AlignTop
             
             section.property: "type"
             section.criteria: ViewSection.FullString
@@ -120,6 +119,7 @@ Rectangle {
             section.labelPositioning: ViewSection.InlineLabels
             
             currentIndex: -1
+            clip: true
             
             delegate: Rectangle {
                 width: parent.width
@@ -148,7 +148,7 @@ Rectangle {
                             catView.currentIndex = index
                             
                             if(categoryModel.get(catView.currentIndex).has)
-                                budgetManager.s_loadTarget(catName)
+                                root.s_loadTarget(catName)
                         }
                         else {
                             catMenu.popup()
@@ -164,7 +164,7 @@ Rectangle {
                         font.pixelSize: pageStyle.core.size
                         anchors.fill: catMenu
                         text: has ? qsTr("Remove budget") : qsTr("Add budget")
-                        onTriggered: budgetManager.s_budgetChanged(catName)
+                        onTriggered: root.s_budgetChanged(catName)
                         
                         
                         background: Rectangle {
@@ -172,9 +172,6 @@ Rectangle {
                             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                         }
                     }
-                    
-                    
-                    
                 }
             }
             
@@ -189,22 +186,20 @@ Rectangle {
         ListView {
             id: targetView
             objectName: "targetView"
-            anchors.left: catView.right
-            anchors.leftMargin: 10
-            anchors.top: parent.top
             
-            height: parent.height * .85
-            width: parent.width * .30
+            Layout.preferredHeight: root.height * .85
+            Layout.preferredWidth: root.width * .30
+            Layout.alignment: Qt.AlignTop
             visible: catView.currentIndex !== -1 && categoryModel.get(catView.currentIndex).has
             
             
             model: targetModel
             currentIndex: -1
-            
+            clip: true            
             
             onCurrentIndexChanged: {
                 var temp = currentIndex !== - 1 ? Qt.formatDate(targetModel.get(currentIndex).date, "dd-MM-yyyy") : ""
-                budgetManager.s_showTarget(categoryModel.get(catView.currentIndex).catName, temp, currentIndex === -1)
+                root.s_showTarget(categoryModel.get(catView.currentIndex).catName, temp, currentIndex === -1)
             }
             
             Component {
@@ -236,7 +231,7 @@ Rectangle {
                 Control2.Action {
                     id: addSubTarget
                     text: qsTr("Add target")
-                    onTriggered: budgetManager.s_addTarget(categoryModel.get(catView.currentIndex).catName)
+                    onTriggered: root.s_addTarget(categoryModel.get(catView.currentIndex).catName)
                 }
             }
             
@@ -288,17 +283,17 @@ Rectangle {
                 }
             }
         }
-        
-        
+         
         ListView {
             id: subView
-            anchors.left:  targetView.right
-            anchors.leftMargin: 10
-            height: parent.height * .85
-            width: parent.width * .30
+
+            Layout.preferredHeight: root.height * .85
+            Layout.preferredWidth: root.width * .30
+            Layout.alignment: Qt.AlignTop
             
             visible: targetView.visible
             model: subModel
+            clip: true
             
             Rectangle {
                 anchors.fill: parent
