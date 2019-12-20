@@ -110,7 +110,7 @@ bool Budget::createSub(QDate d)
     sub.setEnd(end);
 
     while(!sub.in(d))
-    {
+    {        
         if(d < start)
         {
             start = previous(start);
@@ -146,6 +146,7 @@ bool Budget::createSub(QDate d)
 
     sub.setTarget(tar);
     m_subs[sub.begin()] = sub;
+
     return ret;
 }
 
@@ -160,7 +161,7 @@ double Budget::current(QDate d)
 
 Account::FrequencyEnum Budget::frequency(QDate d) const
 {
-    return m_frequency.value(d, Account::FrequencyEnum::Unique);
+    return m_frequency.value(d, Account::FrequencyEnum::Day);
 }
 
 void Budget::setFrequency(QDate d, Account::FrequencyEnum f)
