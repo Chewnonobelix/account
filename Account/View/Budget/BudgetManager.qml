@@ -118,6 +118,7 @@ Rectangle {
             
             section.labelPositioning: ViewSection.InlineLabels
             
+            
             currentIndex: -1
             clip: true
             
@@ -196,6 +197,7 @@ Rectangle {
             model: targetModel
             currentIndex: -1
             clip: true            
+            spacing: height * 0.02
             
             header: Control2.Label {
                 text: qsTr("Target")
@@ -310,6 +312,7 @@ Rectangle {
             visible: targetView.visible
             model: subModel
             clip: true
+            spacing: height * 0.02
             
             Rectangle {
                 anchors.fill: parent
@@ -334,7 +337,6 @@ Rectangle {
             }
 
             
-            spacing: 10
             delegate: Rectangle {
                 height: 60
                 width: subView.width
