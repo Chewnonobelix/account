@@ -162,6 +162,9 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
     for(int j = 0; j < attr.count(); j++)
         e.setMetadata(attr.item(j).nodeName(), attr.item(j).nodeValue());
         
+    m_ids["entry"]<<e.id();
+    m_ids["info"]<<e.info().id();
+    
     return e;
 }
 
