@@ -197,6 +197,22 @@ Rectangle {
             currentIndex: -1
             clip: true            
             
+            header: Control2.Label {
+                text: qsTr("Target")
+                width: targetView.width
+                height: targetView.height * .07
+                fontSizeMode: Text.Fit
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
+                
+                verticalAlignment: Qt.AlignVCenter
+                horizontalAlignment: Qt.AlignHCenter
+                
+                background: Rectangle {
+                    gradient: pageStyle.goldHeader
+                }
+            }
+
             onCurrentIndexChanged: {
                 var temp = currentIndex !== - 1 ? Qt.formatDate(targetModel.get(currentIndex).date, "dd-MM-yyyy") : ""
                 root.s_showTarget(categoryModel.get(catView.currentIndex).catName, temp, currentIndex === -1)
@@ -300,6 +316,23 @@ Rectangle {
                 color: "transparent"
                 border.color: "darkseagreen"
             }
+            
+            header: Control2.Label {
+                text: qsTr("All sub budget")
+                width: subView.width
+                height: subView.height * .07
+                fontSizeMode: Text.Fit
+                font.family: pageStyle.title.name
+                font.pixelSize: pageStyle.title.size
+                
+                verticalAlignment: Qt.AlignVCenter
+                horizontalAlignment: Qt.AlignHCenter
+                
+                background: Rectangle {
+                    gradient: pageStyle.goldHeader
+                }
+            }
+
             
             spacing: 10
             delegate: Rectangle {
