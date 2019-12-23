@@ -79,3 +79,5 @@ HEADERS += \
     Controller/controllertransfert.h \
     Controller/languagecontroller.h
     Model/frequency.h
+
+RC_ICONS = $$PWD/View/Style/tray.ico
