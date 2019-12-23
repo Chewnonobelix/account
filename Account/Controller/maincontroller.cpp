@@ -246,7 +246,11 @@ void MainController::adding()
     if(adding->property("newAccount").toBool())
         loadAccount();
     
-    selection();
+    int id = 0;
+    for(auto it: m_db->selectEntry(currentAccount()))
+        id = std::max(id, it.id());
+
+    selection(id);
 }
 
 void MainController::addEntryMain(Entry  e)
