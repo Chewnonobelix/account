@@ -39,16 +39,21 @@ ApplicationWindow {
             hide()
     }
 
+    QuickAdding {
+        id: quick
+        x: Screen.width - width
+        y: Screen.height - height
+    }
+
     P.SystemTrayIcon {
         id: tray
         visible: true
         icon.source: "qrc:/Style/tray.png"
 
-
         function reopen() {
             if(mainWindow.visibility === Window.Hidden) {
-            mainWindow.requestActivate()
-            mainWindow.show()
+                mainWindow.requestActivate()
+                mainWindow.show()
             }
             else {
                 mainWindow.hide()
@@ -68,13 +73,13 @@ ApplicationWindow {
         menu: P.Menu {
             P.MenuItem {
                 text: qsTr("Quick add")
+                onTriggered: quick.show()
             }
 
             P.MenuItem {
                 property var t: mainWindow.visibility === Window.Hidden ? qsTr("Show normal") : qsTr("Hide")
                 text: t
                 onTriggered: tray.reopen()
-                onTChanged: console.log(t)
             }
 
             P.MenuItem {

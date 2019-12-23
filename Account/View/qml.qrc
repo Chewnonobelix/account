@@ -28,5 +28,6 @@
         <file>Core/PageChanger.qml</file>
         <file>CommonExpanse/CommonExpanseView.qml</file>
         <file>Style/tray.png</file>
+        <file>Core/QuickAdding.qml</file>
     </qresource>
 </RCC>
