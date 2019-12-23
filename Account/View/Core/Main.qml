@@ -1,4 +1,6 @@
 import QtQuick 2.11
+import Qt.labs.platform 1.1
+
 import QtQuick.Controls 1.4
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.4
@@ -30,7 +32,31 @@ ApplicationWindow {
     id: mainWindow
     
     onClosing: s_closing()
-    
+
+
+    onVisibilityChanged: {
+        if(visibility === Window.Minimized)
+            hide()
+    }
+
+    SystemTrayIcon {
+        id: tray
+        visible: true
+        icon.source: "qrc:/Style/tray.png"
+
+        onActivated: {
+            if(reason === SystemTrayIcon.DoubleClick)
+            {
+                mainWindow.requestActivate()
+                mainWindow.show()
+            }
+
+            if(reason === SystemTrayIcon.Context) {
+                console.log("right click")
+            }
+        }
+    }
+
     property int maximizedWidth: Screen.width
     Component.onCompleted: {
         showMaximized()
@@ -259,7 +285,7 @@ ApplicationWindow {
         background: Rectangle {
             gradient: pageStyle.goldHeader
         }
-                
+
         Menu {
             title: qsTr("?")
             font.family: pageStyle.core.name
@@ -484,12 +510,12 @@ Current Version beta 0.9")
         //            year: table.v_dateYear
         //        }
         
-//        Rectangle {
-            BudgetManager {    
-//                anchors.fill: parent
-                objectName: "budgetManager"
-            }
-//        }
+        //        Rectangle {
+        BudgetManager {
+            //                anchors.fill: parent
+            objectName: "budgetManager"
+        }
+        //        }
         
         FrequencyManager{
             objectName: "frequencyManager"
