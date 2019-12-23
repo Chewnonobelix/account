@@ -35,7 +35,8 @@ Popup {
     property bool newAccount: false
     property bool common: false
     property var completionList: []
-        
+    property var openDate
+
     onClosed: { 
         valueLabel.background.border.color = "#bdbdbd"
     }
@@ -44,6 +45,8 @@ Popup {
         l_new.text = newAccount ? qsTr("Add new account"): qsTr("Add new entry")
     }
     
+    onOpenDateChanged: dateLabel.extern(openDate)
+
     leftPadding: width * 0.02
     rightPadding: width * 0.02
     topPadding: height * 0.05

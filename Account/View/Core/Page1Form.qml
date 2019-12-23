@@ -480,8 +480,8 @@ Page {
                     setNewIndex(currentRow)
                 }
                 
-                function swap(i,j) {               
-                    var t = model[i]                  
+                function swap(i,j) {
+                    var t = model[i]
                     model[i] = model[j]
                     model[j] = t
                 }
@@ -501,7 +501,7 @@ Page {
                         }
                     }
                     model = model
-                }             
+                }
             }
             
             PageChanger {
@@ -509,7 +509,7 @@ Page {
                 objectName: "pageSkip"
                 height: parent.height * 0.05
                 width: parent.width
-            }        
+            }
         }
         
         ScrollView {
@@ -518,7 +518,7 @@ Page {
             Layout.rowSpan: 3
             Layout.columnSpan: 1
             
-            Layout.preferredWidth: pageTable.width * 0.52            
+            Layout.preferredWidth: pageTable.width * 0.52
             Layout.preferredHeight: pageTable.height
             ScrollBar.horizontal.policy: ScrollBar.AsNeeded
             
@@ -530,7 +530,7 @@ Page {
                 enabled: true
                 
                 implicitWidth: Screen.width * 0.52
-                implicitHeight: grid.height                
+                implicitHeight: grid.height
             }
         }
         
@@ -550,9 +550,13 @@ Page {
         
         implicitWidth: parent.width * .35
         implicitHeight: parent.height * .12
-        
+
         Component.onCompleted: {
             reset()
+        }
+
+        onOpened: {
+            openDate = cal.selectedDates.length === 0 ? Date() : Date.fromLocaleString(Qt.locale(), cal.selectedDates[0], "dd-MM-yyyy")
         }
     }
     
@@ -561,5 +565,5 @@ Page {
         currentId = Qt.binding(function() {return view.currentEntry && view.currentEntry.label !== "Initial" ? view.currentEntry.id : -1})
     }
     
-    property int currentId: view.selection.count !== 0 && model[view.currentRow].label !== "Initial" ? model[view.currentRow].id : -1       
+    property int currentId: view.selection.count !== 0 && model[view.currentRow].label !== "Initial" ? model[view.currentRow].id : -1
 }
