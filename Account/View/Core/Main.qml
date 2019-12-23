@@ -1,5 +1,5 @@
 import QtQuick 2.11
-import Qt.labs.platform 1.1
+import Qt.labs.platform 1.1 as P
 
 import QtQuick.Controls 1.4
 import QtQuick.Window 2.12
@@ -39,20 +39,35 @@ ApplicationWindow {
             hide()
     }
 
-    SystemTrayIcon {
+    P.SystemTrayIcon {
         id: tray
         visible: true
         icon.source: "qrc:/Style/tray.png"
 
         onActivated: {
-            if(reason === SystemTrayIcon.DoubleClick)
+            if(reason === P.SystemTrayIcon.DoubleClick)
             {
                 mainWindow.requestActivate()
                 mainWindow.show()
             }
 
-            if(reason === SystemTrayIcon.Context) {
-                console.log("right click")
+            if(reason === P.SystemTrayIcon.Context) {
+                show()
+            }
+        }
+
+        menu: P.Menu {
+            P.MenuItem {
+                text: qsTr("Quick add")
+            }
+
+            P.MenuItem {
+                text: qsTr("Show normal")
+            }
+
+            P.MenuItem {
+                text: qsTr("Quit")
+                onTriggered: mainWindow.close()
             }
         }
     }
