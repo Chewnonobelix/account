@@ -44,11 +44,20 @@ ApplicationWindow {
         visible: true
         icon.source: "qrc:/Style/tray.png"
 
+
+        function reopen() {
+            if(mainWindow.visibility === Window.Hidden) {
+            mainWindow.requestActivate()
+            mainWindow.show()
+            }
+            else {
+                mainWindow.hide()
+            }
+        }
+
         onActivated: {
-            if(reason === P.SystemTrayIcon.DoubleClick)
-            {
-                mainWindow.requestActivate()
-                mainWindow.show()
+            if(reason === P.SystemTrayIcon.DoubleClick) {
+                reopen()
             }
 
             if(reason === P.SystemTrayIcon.Context) {
@@ -62,7 +71,10 @@ ApplicationWindow {
             }
 
             P.MenuItem {
-                text: qsTr("Show normal")
+                property var t: mainWindow.visibility === Window.Hidden ? qsTr("Show normal") : qsTr("Hide")
+                text: t
+                onTriggered: tray.reopen()
+                onTChanged: console.log(t)
             }
 
             P.MenuItem {
