@@ -160,6 +160,12 @@ int MainController::exec()
     m_budget.exec();
     m_info.setControllerFrequency(&m_freqs);
     
+    QObject* quick = root->findChild<QObject*>("quick");
+    if(quick)
+    {
+        QObject* finish = quick->findChild<QObject*>("finish");
+        connect(finish, SIGNAL(s_clicked()), this, SLOT(quickAdding()));
+    }
     
     return 0;
 }
@@ -267,6 +273,25 @@ void MainController::addEntryMain(Entry  e)
     accountChange(currentAccount());
     
     selection();
+}
+
+void MainController::quickAdding()
+{
+    QObject* quick = m_engine.rootObjects().first()->findChild<QObject*>("quick");
+    if(quick)
+    {
+        auto et = quick->property("entry").value<QJSValue>();
+        Entry e;
+        Information i;
+        i.setCategory(et.property("category").toString());
+        e.setDate(QDate::fromString(et.property("date").toString(), "dd-MM-yyyy"));
+        e.setValue(et.property("value").toNumber());
+        e.setType(et.property("type").toString());
+        i.setEstimated(e.date() > QDate::currentDate());
+
+        e.setInfo(i);
+        m_db->addEntry(e);
+    }
 }
 
 void MainController::remove(int id)

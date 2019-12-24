@@ -70,6 +70,8 @@ public slots:
     void openBudgetManager();
     
     void close();
+
+    void quickAdding();
 };
 
 

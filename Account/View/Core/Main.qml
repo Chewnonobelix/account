@@ -41,6 +41,7 @@ ApplicationWindow {
 
     QuickAdding {
         id: quick
+        objectName: "quick"
         x: Screen.width - width
         y: Screen.desktopAvailableHeight - height
     }
