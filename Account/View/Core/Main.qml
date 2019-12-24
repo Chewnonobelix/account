@@ -77,8 +77,7 @@ ApplicationWindow {
             }
 
             P.MenuItem {
-                property var t: mainWindow.visibility === Window.Hidden ? qsTr("Show normal") : qsTr("Hide")
-                text: t
+                text: mainWindow.visibility === Window.Hidden ? qsTr("Show normal") : qsTr("Hide")
                 onTriggered: tray.reopen()
             }
 
