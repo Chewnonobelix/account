@@ -535,19 +535,15 @@ Current Version beta 0.9")
             objectName: "table"
         }
         
-        Rectangle {}
-        //        Page2Form {
-        //            id: graph
-        //            month: table.v_dateMonth
-        //            year: table.v_dateYear
-        //        }
+        Page2Form {
+            id: graph
+            month: table.v_dateMonth
+            year: table.v_dateYear
+        }
         
-        //        Rectangle {
         BudgetManager {
-            //                anchors.fill: parent
             objectName: "budgetManager"
         }
-        //        }
         
         FrequencyManager{
             objectName: "frequencyManager"
