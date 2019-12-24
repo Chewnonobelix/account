@@ -42,7 +42,7 @@ ApplicationWindow {
     QuickAdding {
         id: quick
         x: Screen.width - width
-        y: Screen.height - height
+        y: Screen.desktopAvailableHeight - height
     }
 
     P.SystemTrayIcon {
