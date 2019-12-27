@@ -9,11 +9,12 @@ ComboBox {
         id: pageStyle
     }
     
-    id: category
+    id: root
     
     onAccepted: {
         s_addCategory(editText)
     }
+
     signal s_addCategory(string cat)
     signal s_currentTextChanged(string cat)
     property bool blocked: false
@@ -22,14 +23,12 @@ ComboBox {
         s_currentTextChanged(currentText)
     }
     
-    
     MouseArea {
         anchors.fill: parent
         z: -1
         cursorShape: Qt.PointingHandCursor
         acceptedButtons: Qt.NoButton
     }
-    
     
     function setting(type) {
         var index = find(type)
@@ -50,7 +49,9 @@ ComboBox {
         
         text: currentText
         readOnly: !editable
-        onAccepted: s_addCategory(text)
+        onAccepted: {
+            s_addCategory(text)
+        }
         MouseArea {
             anchors.fill: parent
             propagateComposedEvents: true
@@ -63,7 +64,7 @@ ComboBox {
     
     editable: currentText === ""
     delegate: ItemDelegate {
-        width: category.width
+        width: root.width
         contentItem: Rectangle  {
             gradient: pageStyle.goldButton
             anchors.fill: parent
@@ -79,21 +80,20 @@ ComboBox {
             MouseArea {
                 property string cTxt: modelData
                 anchors.fill: parent
-                cursorShape: index === (category.count - 1)  ? Qt.WhatsThisCursor : Qt.PointingHandCursor
+                cursorShape: index === (root.count - 1)  ? Qt.WhatsThisCursor : Qt.PointingHandCursor
                 
-                ToolTip.visible: (index === (category.count - 1)) && hovered
+                ToolTip.visible: (index === (root.count - 1)) && hovered
                 ToolTip.text: qsTr("Add a new category")
                 ToolTip.delay: 500
                 
                 onClicked: {
                     if(mouse.button === Qt.LeftButton) {
-                        var index = category.find(cTxt)
-                        category.currentIndex = index
-                        category.popup.close()
+                        var index = root.find(cTxt)
+                        root.currentIndex = index
+                        root.popup.close()
                     }
                 }
             }
-            
         }
     }
 }
