@@ -540,7 +540,7 @@ bool ControllerXMLMulti::init()
 
 int ControllerXMLMulti::maxId(const QSet<int> & l) const
 {
-    auto list = l.toList();
+    auto list = l.values();
     std::sort(list.begin(), list.end());
     return list.isEmpty() ? -1 : list.last();
 }
@@ -845,3 +845,15 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
     return ret;
 }
 
+QStringList ControllerXMLMulti::selectProfile()
+{
+    QDir dir;
+    dir.cd("data");
+
+    auto profiles = dir.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot);
+    QStringList ret;
+    for(auto it: profiles)
+        ret<<it.baseName();
+
+    return ret;
+}

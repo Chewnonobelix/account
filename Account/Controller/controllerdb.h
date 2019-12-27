@@ -73,6 +73,7 @@ public slots:
     virtual bool removeCommon(const CommonExpanse&) {return false;}
     virtual bool updateCommon(const CommonExpanse&) {return false;}
     
+    virtual QStringList selectProfile() {return QStringList();}
     bool init();
 };
 
