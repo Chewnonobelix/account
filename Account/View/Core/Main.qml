@@ -133,16 +133,21 @@ ApplicationWindow {
         Menu {
             title: qsTr("&File")
 
+            width: 210
+            delegate: MenuItem {
+                background: Rectangle {
+                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                }
+            }
+
             Menu {
                 id: profileMenu
                 objectName: "profileMenu"
+                width: 210
                 title: qsTr("Profile")
                 signal s_profile(string name)
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
-//                background: Rectangle {
-//                    gradient: pageStyle.goldHeader
-//                }
 
                 Repeater {
                     objectName: "profileRepeater"
@@ -184,18 +189,18 @@ ApplicationWindow {
                 onClicked: {
                     s_xml()
                 }
-                
+
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
             }
-            
+
             MenuItem {
                 text: qsTr("&Quit")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
                 id: quitMenu
-                
+
                 indicator: Label {
                     text: quitShort.nativeText
                     anchors.rightMargin: 10
@@ -204,24 +209,24 @@ ApplicationWindow {
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
                 }
-                
+
                 Shortcut {
                     id: quitShort
                     sequence: "CTRL+Q"
                     context: Qt.ApplicationShortcut
                     onActivated: quitMenu.clicked()
                 }
-                
+
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
-                
+
                 onClicked: {
                     mainWindow.close()
                 }
             }
         }
-        
+
         Menu {
             title: qsTr("Account")
             font.family: pageStyle.core.name
@@ -232,11 +237,11 @@ ApplicationWindow {
                 text: qsTr("&New account")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
-                
+
                 onClicked: {
                     adding(true)
                 }
-                
+
                 indicator: Label {
                     text: accountAddShort.nativeText
                     anchors.rightMargin: 10
@@ -245,16 +250,16 @@ ApplicationWindow {
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
                 }
-                
+
                 Shortcut {
                     id: accountAddShort
                     sequence: "CTRL+N"
-                    
+
                     onActivated: {
                         nAccountMenu.clicked()
                     }
                 }
-                
+
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
@@ -268,7 +273,7 @@ ApplicationWindow {
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
-                
+
                 indicator: Label {
                     text: accountDelShort.nativeText
                     anchors.rightMargin: 10
@@ -277,27 +282,27 @@ ApplicationWindow {
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
                 }
-                
+
                 Shortcut {
                     id: accountDelShort
                     sequence: "CTRL+SHIFT+D"
-                    
+
                     onActivated: {
                         dAccountMenu.clicked()
                     }
                 }
-                
+
                 onClicked: {
                     deleteAccount.open()
                 }
             }
         }
-        
+
         Menu {
             title: qsTr("Current account")
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
-            
+
             MenuItem {
                 id: addEntryMenu
                 text: qsTr("&Add transaction")
@@ -309,7 +314,7 @@ ApplicationWindow {
                         adding(false)
                     }
                 }
-                
+
                 indicator: Label {
                     text: addShort.nativeText
                     anchors.rightMargin: 10
@@ -318,25 +323,25 @@ ApplicationWindow {
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
                 }
-                
+
                 Shortcut {
                     id: addShort
                     sequence: "CTRL+A"
                     context: Qt.ApplicationShortcut
                     onActivated: addEntryMenu.clicked()
                 }
-                
+
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
             }
-            
+
             MenuItem {
                 id: removeEntryMenu
                 text: qsTr("&Remove transaction")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
-                
+
                 enabled: table.currentId !== -1
                 indicator: Label {
                     text: delShort.nativeText
@@ -347,26 +352,26 @@ ApplicationWindow {
                     font.family: pageStyle.core.name
                     font.pixelSize: pageStyle.core.size
                 }
-                
+
                 Shortcut {
                     id: delShort
                     sequence: "CTRL+D"
                     context: Qt.ApplicationShortcut
                     onActivated: removeEntryMenu.clicked()
                 }
-                
+
                 onClicked: {
                     if (enabled) {
                         remove(table.currentId)
                     }
                 }
-                
+
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
             }
         }
-        
+
         background: Rectangle {
             gradient: pageStyle.goldHeader
         }
@@ -375,18 +380,18 @@ ApplicationWindow {
             title: qsTr("?")
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
-            
+
             MenuItem {
                 text: qsTr("About")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
-                
+
                 background: Rectangle {
                     gradient: pageStyle.goldButton
                 }
-                
+
                 onClicked: about.open()
-                
+
                 Popup {
                     id: about
                     height: 200
@@ -400,19 +405,19 @@ Current Version beta 0.9")
                         verticalAlignment: Text.AlignVCenter
                         fontSizeMode: Text.Fit0
                     }
-                    
+
                     background: Rectangle {
                         anchors.fill: parent
                         gradient: pageStyle.backgroundGradient
                         border.color: "gold"
                     }
-                    
+
                     Button {
                         text: qsTr("Ok")
                         onClicked: about.close()
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
-                        
+
                         background: Rectangle {
                             anchors.fill: parent
                             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
@@ -420,15 +425,15 @@ Current Version beta 0.9")
                     }
                 }
             }
-            
+
             MenuItem {
                 text: qsTr("Licence")
                 background: Rectangle {
                     gradient: pageStyle.goldButton
                 }
-                
+
                 onTriggered: aboutQt.open()
-                
+
                 Popup {
                     id: aboutQt
                     height: 200
@@ -441,19 +446,19 @@ Current Version beta 0.9")
                         verticalAlignment: Text.AlignVCenter
                         fontSizeMode: Text.Fit
                     }
-                    
+
                     background: Rectangle {
                         anchors.fill: parent
                         gradient: pageStyle.backgroundGradient
                         border.color: "gold"
                     }
-                    
+
                     Button {
                         text: qsTr("Ok")
                         onClicked: aboutQt.close()
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
-                        
+
                         background: Rectangle {
                             anchors.fill: parent
                             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
@@ -463,13 +468,13 @@ Current Version beta 0.9")
             }
         }
     }
-    
+
     background: Rectangle {
         id: backRect
         anchors.fill: parent
         gradient: pageStyle.backgroundGradient
     }
-    
+
     header: Rectangle {
         height: mainWindow.height * .05
         color: "transparent"
@@ -478,12 +483,12 @@ Current Version beta 0.9")
         property string accountName
         property var total
         property var selectionTotal
-        
+
         RowLayout {
             anchors.left: parent.left
             anchors.right: accountSelect.left
             Layout.preferredHeight: parent.height
-            
+
             Label {
                 id: accountTitle
                 objectName: "accountTitle"
@@ -496,7 +501,7 @@ Current Version beta 0.9")
                        > 0 ? head.total.value > 0 ? "green" : "red" : "transparent"
                 Layout.preferredWidth: parent.width * .5
             }
-            
+
             Label {
                 id: selectLabel
                 fontSizeMode: Text.Fit
@@ -510,7 +515,7 @@ Current Version beta 0.9")
                 Layout.preferredWidth: parent.width * .5
             }
         }
-        
+
         ComboBox {
             id: accountSelect
             objectName: "accountSelect"
@@ -520,12 +525,12 @@ Current Version beta 0.9")
             font.pixelSize: pageStyle.core.size
             enabled: accountSelect.model.length > 0
             signal s_currentTextChange(string text)
-            
-            
+
+
             ToolTip.text: qsTr("Select account")
             ToolTip.delay: 500
             ToolTip.visible: hovered
-            
+
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
@@ -535,10 +540,10 @@ Current Version beta 0.9")
                 gradient: pageStyle.goldButton
                 anchors.fill: parent
             }
-            
+
             delegate: ItemDelegate {
                 width: accountSelect.width
-                
+
                 contentItem: Rectangle {
                     gradient: pageStyle.goldButton
                     anchors.fill: parent
@@ -555,69 +560,69 @@ Current Version beta 0.9")
                         font.pixelSize: pageStyle.core.size
                     }
                 }
-                
+
                 highlighted: accountSelect.highlightedIndex === index
             }
-            
+
             onCurrentTextChanged: {
                 s_currentTextChange(currentText)
             }
         }
     }
-    
+
     CheckEstimated {
         objectName: "cEstimated"
     }
-    
+
     SwipeView {
         id: swipeView
         currentIndex: tabBar.currentIndex
-        
+
         anchors.fill: parent
         anchors.topMargin: mainWindow.height * 0.01
         anchors.bottomMargin: mainWindow.height * 0.01
-        
+
         enabled: accountSelect.model.length > 0
-        
+
         background: Rectangle {
             color: "transparent"
         }
-        
+
         Page1Form {
             id: table
             objectName: "table"
         }
-        
+
         Page2Form {
             id: graph
             month: table.v_dateMonth
             year: table.v_dateYear
         }
-        
+
         BudgetManager {
             objectName: "budgetManager"
         }
-        
+
         FrequencyManager{
             objectName: "frequencyManager"
         }
-        
+
         Rectangle {
             color: "transparent"
             objectName: "commonRect"
-            
+
             Popup {
                 id: popAddCommon
                 objectName: "popAddCommon"
                 onOpened: commonTitle.clear()
                 signal s_accepted(string name)
-                
+
                 anchors.centerIn: parent
                 background: Rectangle {
                     gradient: pageStyle.backgroundGradient
                     border.color: "gold"
                 }
-                
+
                 GridLayout {
                     anchors.fill: parent
                     Label {
@@ -629,7 +634,7 @@ Current Version beta 0.9")
                         font.pixelSize: pageStyle.title.size
                         fontSizeMode: Text.Fit
                     }
-                    
+
                     TextField{
                         id: commonTitle
                         objectName: "commonTitle"
@@ -647,13 +652,13 @@ Current Version beta 0.9")
                             border.color: parent.valid ? "blue" : "red"
                         }
                     }
-                    
+
                     Button {
                         objectName: "commonAddOk"
                         text: qsTr("Ok")
                         Layout.column: 2
                         Layout.row: 1
-                        
+
                         onClicked: {
                             popAddCommon.close()
                             popAddCommon.s_accepted(commonTitle.text)
@@ -688,7 +693,7 @@ Current Version beta 0.9")
                     }
                 }
             }
-            
+
             Row {
                 anchors.fill: parent
                 spacing: width * 0.02
@@ -702,7 +707,7 @@ Current Version beta 0.9")
                         width: parent.width
                         height: parent.height * 0.93
                         clip: true
-                        
+
                         Component.onCompleted: {
                             currentModel = Qt.binding(function() {return currentIndex > -1 ? model[currentIndex] : null })
                             commonExpanse.model = Qt.binding(function() {return currentModel})
@@ -716,25 +721,25 @@ Current Version beta 0.9")
                             color: "transparent"
                             border.color: "gold"
                         }
-                        
+
                         highlight: Rectangle {
                             gradient: pageStyle.calSelect
                         }
-                        
+
                         highlightMoveDuration: 0
-                        
+
                         delegate: Label {
                             text: modelData.title
                             height: listCommon.height * 0.07
                             width: listCommon.width
-                            
+
                             horizontalAlignment: Qt.AlignHCenter
                             verticalAlignment: Qt.AlignVCenter
-                            
+
                             fontSizeMode: Text.Fit
                             font.family: pageStyle.core.name
                             font.pixelSize: pageStyle.core.size
-                            
+
                             MouseArea {
                                 anchors.fill: parent
                                 cursorShape: Qt.PointingHandCursor
@@ -742,7 +747,7 @@ Current Version beta 0.9")
                             }
                         }
                     }
-                    
+
                     Row {
                         width: parent.width
                         height: parent.height * 0.05
@@ -752,7 +757,7 @@ Current Version beta 0.9")
                             height: parent.height
                             text: qsTr("Add common expanse")
                             onClicked: popAddCommon.open()
-                            
+
                             font.family: pageStyle.core.name
                             font.pixelSize: pageStyle.core.size
 
@@ -772,10 +777,10 @@ Current Version beta 0.9")
                             width: parent.width * .49
                             height: parent.height
                             text: qsTr("Remove common expanse")
-                            
+
                             font.family: pageStyle.core.name
                             font.pixelSize: pageStyle.core.size
-                            
+
                             signal s_remove(int id)
                             onClicked: s_remove(listCommon.currentModel.id)
 
@@ -790,7 +795,7 @@ Current Version beta 0.9")
                         }
                     }
                 }
-                
+
                 CommonExpanseView {
                     id: commonExpanse
                     objectName: "common"
@@ -799,20 +804,20 @@ Current Version beta 0.9")
                 }
             }
         }
-        
+
         Popup {
             id: deleteAccount
             anchors.centerIn: swipeView
-            
+
             width: labelDelete.width * 1.2
             height: (labelDelete.height + delOk.height + 3 * delOk.padding) * 1.1
-            
+
             background: Rectangle {
                 anchors.fill: parent
                 gradient: pageStyle.backgroundGradient
                 border.color: "gold"
             }
-            
+
             Label {
                 id: labelDelete
                 property string account: accountSelect.currentText
@@ -821,7 +826,7 @@ Current Version beta 0.9")
                 font.pixelSize: pageStyle.title.size
                 anchors.horizontalCenter: parent.width / 2
             }
-            
+
             Button {
                 id: delOk
                 text: qsTr("Ok")
@@ -829,18 +834,18 @@ Current Version beta 0.9")
                 anchors.topMargin: padding
                 font.pixelSize: pageStyle.core.size
                 font.family: pageStyle.core.name
-                
+
                 onClicked: {
                     mainWindow.removeAccount(labelDelete.account)
                     deleteAccount.close()
                 }
-                
+
                 background: Rectangle {
                     id: rectEdit
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
             }
-            
+
             Button {
                 id: delCancel
                 anchors.left: delOk.right
@@ -849,29 +854,29 @@ Current Version beta 0.9")
                 anchors.topMargin: padding
                 font.pixelSize: pageStyle.core.size
                 font.family: pageStyle.core.name
-                
+
                 text: qsTr("Cancel")
-                
+
                 onClicked: {
                     deleteAccount.close()
                 }
-                
+
                 background: Rectangle {
                     id: rectEdit2
-                    
+
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
             }
         }
     }
-    
+
     footer: TabBar {
         id: tabBar
         currentIndex: swipeView.currentIndex
-        
+
         TabButton {
             id: listTabButton
-            
+
             contentItem: Label {
                 text: qsTr("List")
                 horizontalAlignment: Qt.AlignHCenter
@@ -881,20 +886,20 @@ Current Version beta 0.9")
                 font.pixelSize: pageStyle.title.size
                 fontSizeMode: Text.Fit
             }
-            
+
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 acceptedButtons: Qt.NoButton
             }
-            
+
             background: Rectangle {
                 color: tabBar.currentItem === parent ? "darkseagreen" : "white"
             }
         }
         TabButton {
             id: graphTabButton
-            
+
             contentItem: Label {
                 text: qsTr("Graph")
                 horizontalAlignment: Qt.AlignHCenter
@@ -904,21 +909,21 @@ Current Version beta 0.9")
                 font.pixelSize: pageStyle.title.size
                 fontSizeMode: Text.Fit
             }
-            
+
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 acceptedButtons: Qt.NoButton
             }
-            
+
             background: Rectangle {
                 color: tabBar.currentItem === parent ? "darkseagreen" : "white"
             }
         }
-        
+
         TabButton {
             id: budgetTabButton
-            
+
             contentItem: Label {
                 text: qsTr("Budget")
                 horizontalAlignment: Qt.AlignHCenter
@@ -928,13 +933,13 @@ Current Version beta 0.9")
                 font.pixelSize: pageStyle.title.size
                 fontSizeMode: Text.Fit
             }
-            
+
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 acceptedButtons: Qt.NoButton
             }
-            
+
             background: Rectangle {
                 color: tabBar.currentItem === parent ? "darkseagreen" : "white"
             }
@@ -942,7 +947,7 @@ Current Version beta 0.9")
 
         TabButton {
             id: frequencyTabButton
-            
+
             contentItem: Label {
                 text: qsTr("Frequency")
                 horizontalAlignment: Qt.AlignHCenter
@@ -952,21 +957,21 @@ Current Version beta 0.9")
                 font.pixelSize: pageStyle.title.size
                 fontSizeMode: Text.Fit
             }
-            
+
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 acceptedButtons: Qt.NoButton
             }
-            
+
             background: Rectangle {
                 color: tabBar.currentItem === parent ? "darkseagreen" : "white"
             }
         }
-        
+
         TabButton {
             id: commonTabButton
-            
+
             contentItem: Label {
                 text: qsTr("Common expanse")
                 horizontalAlignment: Qt.AlignHCenter
@@ -977,17 +982,17 @@ Current Version beta 0.9")
                 font.pixelSize: pageStyle.title.size
                 fontSizeMode: Text.Fit
             }
-            
+
             MouseArea {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 acceptedButtons: Qt.NoButton
             }
-            
+
             background: Rectangle {
                 color: tabBar.currentItem === parent ? "darkseagreen" : "white"
             }
         }
-        
+
     }
 }
