@@ -44,6 +44,10 @@ ApplicationWindow {
         objectName: "quick"
         x: Screen.width - width
         y: Screen.desktopAvailableHeight - height
+
+        signal s_opening()
+
+        onVisibleChanged: if(visible) s_opening()
     }
 
     P.SystemTrayIcon {
