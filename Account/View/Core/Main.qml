@@ -138,16 +138,38 @@ ApplicationWindow {
                 objectName: "profileMenu"
                 title: qsTr("Profile")
                 signal s_profile(string name)
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+//                background: Rectangle {
+//                    gradient: pageStyle.goldHeader
+//                }
+
                 Repeater {
                     objectName: "profileRepeater"
                     MenuItem {
                         text: modelData
+                        autoExclusive: true
+                        checkable: true
                         onTriggered: profileMenu.s_profile(text)
+                        font.family: pageStyle.core.name
+                        font.pixelSize: pageStyle.core.size
+                        background: Rectangle {
+                            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                        }
                     }
                 }
 
                 MenuItem {
                     text: qsTr("New profile")
+                    objectName: "newProfile"
+
+                    onTriggered: popProfile.open()
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+
+                    background: Rectangle {
+                        gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    }
                 }
             }
 
