@@ -231,7 +231,7 @@ Popup {
                 Layout.rowSpan: 1 
                 Layout.columnSpan: 2 
                 
-                enabled: !addingid.newAccount
+                enabled: !root.newAccount
                 
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
@@ -263,7 +263,7 @@ Popup {
                         }
                         Label {
                             color: "black"
-                            text: model.name
+                            text: name
                             anchors.centerIn: parent
                             font.family: pageStyle.core.name
                             font.pixelSize: pageStyle.core.size
@@ -298,7 +298,7 @@ Popup {
                 onClicked: {
                     
                     if(valueLabel.valid && member.isValid) {
-                        addingid.accept()
+                        root.accept()
                         reset()
                         close()
                     }
