@@ -72,6 +72,8 @@ public slots:
     void close();
 
     void quickAdding();
+    void quickAddCategory(QString);
+    void quickOpen();
 };
 
 

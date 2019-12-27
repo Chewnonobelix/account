@@ -163,8 +163,13 @@ int MainController::exec()
     QObject* quick = root->findChild<QObject*>("quick");
     if(quick)
     {
+        connect(quick, SIGNAL(s_opening()), this, SLOT(quickOpen()));
+
         QObject* finish = quick->findChild<QObject*>("finish");
         connect(finish, SIGNAL(s_clicked()), this, SLOT(quickAdding()));
+
+        QObject* cat = quick->findChild<QObject*>("cat");
+        connect(cat, SIGNAL(s_addCategory(QString)), this, SLOT(quickAddCategory(QString)));
     }
     
     return 0;
@@ -275,6 +280,16 @@ void MainController::addEntryMain(Entry  e)
     selection();
 }
 
+void MainController::quickOpen()
+{
+    QObject* quick = m_engine.rootObjects().first()->findChild<QObject*>("quick");
+    auto cats = m_db->selectCategory();
+    QStringList modi = cats.values("income"), modo = cats.values("outcome");
+    modi<<""; modo<<"";
+    quick->setProperty("outcomeCats", modo);
+    quick->setProperty("incomeCats", modi);
+}
+
 void MainController::quickAdding()
 {
     QObject* quick = m_engine.rootObjects().first()->findChild<QObject*>("quick");
@@ -288,9 +303,28 @@ void MainController::quickAdding()
         e.setValue(et.property("value").toNumber());
         e.setType(et.property("type").toString());
         i.setEstimated(e.date() > QDate::currentDate());
-
+        i.setTitle(et.property("title").toString());
         e.setInfo(i);
+        e.setAccount(currentAccount());
+
         m_db->addEntry(e);
+        selection();
+    }
+}
+
+void MainController::quickAddCategory(QString cat)
+{
+    QObject* quick = m_engine.rootObjects().first()->findChild<QObject*>("quick");
+    QObject* typecombo = quick->findChild<QObject*>("type");
+    QObject* combo = quick->findChild<QObject*>("cat");
+    if(typecombo)
+    {
+        QString type = typecombo->property("currentValue").toString();
+        m_db->addCategory(cat, type);
+        QStringList list = m_db->selectCategory().values(type);
+        list<<"";
+        quick->setProperty(type == "income" ? "incomeCats" : "outcomeCats", list);
+        QMetaObject::invokeMethod(combo, "setting", Q_ARG(QVariant, cat));
     }
 }
 
@@ -478,7 +512,9 @@ void MainController::selection(int id)
     QObject* quickView = m_engine.rootObjects().first()->findChild<QObject*>("quickViewDate");
     
     if(quickView)
+    {
         quickView->setProperty("currentDate", ld.isEmpty() ? QDate::currentDate(): ld.first());
+    }
     
 }
 
