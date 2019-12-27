@@ -59,12 +59,53 @@ Window {
 
             ComboBox {
                 model: cModels.typeModel
-                id: typeCombo
+                id: typeComboQuick
+                objectName: "type"
                 valueRole: "type"
                 textRole: "name"
 
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
+
+                font.family: pageStyle.core.name
+                font.pixelSize: pageStyle.core.size
+
+                ToolTip.text: qsTr("Specify income or outcome")
+                ToolTip.visible: hovered
+                ToolTip.delay: 500
+
+                background:  Rectangle {
+                    gradient: pageStyle.goldButton
+                    anchors.fill: parent
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
+                }
+                delegate: ItemDelegate {
+                    width: typeComboQuick.width
+
+                    contentItem: Rectangle {
+                        gradient: pageStyle.goldButton
+                        anchors.fill: parent
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            acceptedButtons: Qt.NoButton
+                        }
+                        Label {
+                            color: "black"
+                            text: name
+                            anchors.centerIn: parent
+                            font.family: pageStyle.core.name
+                            font.pixelSize: pageStyle.core.size
+                        }
+                    }
+
+                    highlighted: typeComboQuick.highlightedIndex === index
+                }
             }
 
             Label {
@@ -144,10 +185,11 @@ Window {
             }
 
             CategoryItem{
-                id: catCombo
-                Component.onCompleted: model = Qt.binding(function() {return typeCombo.currentValue === "income" ? incomeCats : outcomeCats})
+                id: catComboQuick
+                objectName: "cat"
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
+                Component.onCompleted: model = Qt.binding(function() {return typeComboQuick.currentValue === "income" ? root.incomeCats : root.outcomeCats})
             }
 
             Label {
@@ -167,7 +209,7 @@ Window {
             Button {
                 text: qsTr("Cancel")
                 onClicked: root.close()
-                Layout.preferredHeight: root.height * .15
+                Layout.preferredHeight: root.height * .10
                 Layout.preferredWidth: root.width * .47
 
                 font.family: pageStyle.title.name
@@ -188,7 +230,7 @@ Window {
             Button {
                 text: qsTr("Add")
                 objectName: "finish"
-                Layout.preferredHeight: root.height * .15
+                Layout.preferredHeight: root.height * .10
                 Layout.preferredWidth: root.width * .47
 
                 font.family: pageStyle.title.name
@@ -197,10 +239,10 @@ Window {
                 signal s_clicked()
 
                 onClicked: {
-                    entry["type"] = typeCombo.currentValue
+                    entry["type"] = typeComboQuick.currentValue
                     entry["value"] = valueSpin.realValue
                     entry["date"] = dateButton.text
-                    entry["category"] = catCombo.currentText
+                    entry["category"] = catComboQuick.currentText
                     entry["title"] = title.text
 
                     s_clicked()
