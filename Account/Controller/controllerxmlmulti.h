@@ -17,6 +17,7 @@ private:
     QMap<QString, QSet<int>> m_ids;
 
     QDomDocument m_currentAccount;
+    QString m_currentProfile;
 
     int m_timer;
     QMutex m_mutex;
@@ -81,7 +82,8 @@ public slots:
     virtual bool updateCommon(const CommonExpanse&);
     
     virtual QStringList selectProfile();
-    
+    virtual void setProfile(QString);
+
     virtual bool init();
 };
 

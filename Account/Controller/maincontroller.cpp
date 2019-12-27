@@ -22,6 +22,8 @@ MainController::MainController(): AbstractController()
     connect(&m_freqs, ControllerFrequency::s_select, this, MainController::selection);
     
     m_dbThread.start();    
+
+    m_db->selectProfile();
 }
 
 MainController::~MainController()
@@ -168,6 +170,14 @@ int MainController::exec()
 
         QObject* cat = quick->findChild<QObject*>("cat");
         connect(cat, SIGNAL(s_addCategory(QString)), this, SLOT(quickAddCategory(QString)));
+    }
+
+    QObject* profile = root->findChild<QObject*>("profileRepeater");
+
+    if(profile)
+    {
+        QStringList profiles = m_db->selectProfile();
+        profile->setProperty("model", profiles);
     }
     
     return 0;

@@ -124,6 +124,25 @@ ApplicationWindow {
         objectName: "menuBar"
         Menu {
             title: qsTr("&File")
+
+            Menu {
+                id: profileMenu
+                objectName: "profileMenu"
+                title: qsTr("Profile")
+                signal s_profile(string name)
+                Repeater {
+                    objectName: "profileRepeater"
+                    MenuItem {
+                        text: modelData
+                        onTriggered: profileMenu.s_profile(text)
+                    }
+                }
+
+                MenuItem {
+                    text: qsTr("New profile")
+                }
+            }
+
             MenuItem {
                 text: qsTr("&Consolidate")
                 objectName: "xmlMenu"

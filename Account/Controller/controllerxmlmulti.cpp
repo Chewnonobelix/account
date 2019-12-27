@@ -32,12 +32,12 @@ void ControllerXMLMulti::close()
     {
         if(!it.key().isEmpty())
         {
-            QFile file("data\\" + it.key() + ".xml");
+            QFile file("data\\" + m_currentProfile + "\\" + it.key() + ".xml");
             file.open(QIODevice::WriteOnly);
             auto write64 = it.value().toByteArray().toBase64();
             file.write(write64);
             file.close();
-            QFile file2("data\\" + it.key() + "_clear.xml");
+            QFile file2("data\\" + m_currentProfile + "\\" + it.key() + "_clear.xml");
             file2.open(QIODevice::WriteOnly);
             auto write642 = it.value().toByteArray();
             file2.write(write642);
@@ -517,7 +517,7 @@ bool ControllerXMLMulti::init()
         
         QDomDocument doc;
         QFile file;
-        file.setFileName("data\\"+filename);
+        file.setFileName("data\\"+m_currentProfile+"\\"+filename);
         file.open(QIODevice::ReadWrite);
         auto read64 = file.readAll();
         auto read =  QByteArray::fromBase64(read64);
@@ -855,5 +855,16 @@ QStringList ControllerXMLMulti::selectProfile()
     for(auto it: profiles)
         ret<<it.baseName();
 
+    if(ret.isEmpty())
+    {
+       dir.mkdir("Default");
+       ret<<"Default";
+    }
+
     return ret;
+}
+
+void ControllerXMLMulti::setProfile(QString profile)
+{
+    m_currentProfile = profile;
 }

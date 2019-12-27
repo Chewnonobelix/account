@@ -50,6 +50,7 @@ public slots:
     virtual bool updateCommon(const CommonExpanse&) = 0;
     
     virtual QStringList selectProfile() = 0;
+    virtual void setProfile(QString) = 0;
     virtual bool init() = 0;
 };
 
