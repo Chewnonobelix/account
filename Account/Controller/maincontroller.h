@@ -74,6 +74,8 @@ public slots:
     void quickAdding();
     void quickAddCategory(QString);
     void quickOpen();
+
+    void changeProfile(QString);
 };
 
 

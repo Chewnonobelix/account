@@ -180,6 +180,11 @@ int MainController::exec()
         profile->setProperty("model", profiles);
     }
     
+    profile = root->findChild<QObject*>("profileMenu");
+
+    if(profile)
+        connect(profile, SIGNAL(s_profile(QString)), this, SLOT(changeProfile(QString)));
+
     return 0;
 }
 
@@ -187,6 +192,12 @@ void MainController::close()
 {
     m_budget.closeManager();
     m_freqs.closeManager();
+}
+
+void MainController::changeProfile(QString name)
+{
+    m_db->setProfile(name);
+    loadAccount();
 }
 
 void MainController::update(Entry e)

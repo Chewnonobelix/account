@@ -1,7 +1,7 @@
 #include "controllerxmlmulti.h"
 
 
-ControllerXMLMulti::ControllerXMLMulti(): InterfaceDataSave(), m_timer(-1)
+ControllerXMLMulti::ControllerXMLMulti(): InterfaceDataSave(), m_timer(-1), m_currentProfile("Default")
 {
     
 }
@@ -508,8 +508,10 @@ bool ControllerXMLMulti::init()
         dir.cd("data");
     }
     
+    dir.cd(m_currentProfile);
+
     auto infoList = dir.entryList(QStringList("*.xml"), QDir::Files);
-    
+    m_accounts.clear();
     for(auto filename: infoList)
     {
         if(filename.contains("_clear"))
@@ -867,4 +869,5 @@ QStringList ControllerXMLMulti::selectProfile()
 void ControllerXMLMulti::setProfile(QString profile)
 {
     m_currentProfile = profile;
+    init();
 }
