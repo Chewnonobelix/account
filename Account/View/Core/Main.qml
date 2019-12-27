@@ -13,6 +13,7 @@ import "../Transfert" as T
 import "../CommonExpanse"
 import "../Budget"
 import "../Frequency"
+import "../MultiProfile"
 
 ApplicationWindow {
     visible: true
@@ -115,6 +116,13 @@ ApplicationWindow {
     Shortcut {
         sequence: "F"
         onActivated: openTransfert()
+    }
+
+    NewProfile {
+        id: popProfile
+        width: 600
+        height: 400
+        anchors.centerIn: parent
     }
     
     menuBar: MenuBar {
