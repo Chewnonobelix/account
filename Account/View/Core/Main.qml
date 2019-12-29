@@ -120,8 +120,8 @@ ApplicationWindow {
 
     NewProfile {
         id: popProfile
-        width: 600
-        height: 400
+        width: 300
+        height: 150
         anchors.centerIn: parent
     }
     

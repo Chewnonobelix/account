@@ -12,7 +12,13 @@ Popup {
 
     background: Rectangle {
         gradient: style.backgroundGradient
+        border.color: "gold"
     }
+
+    topPadding: height * 0.02
+    bottomPadding: height * 0.02
+    leftPadding: width * 0.02
+    rightPadding: width * 0.02
 
     GridLayout {
         columnSpacing: root.width * .02
@@ -23,8 +29,12 @@ Popup {
             text: qsTr("Profile name")
             Layout.row: 0
             Layout.column: 0
-            Layout.preferredHeight: root.height * 0.40
+            Layout.preferredHeight: root.height * 0.34
             Layout.preferredWidth: root.width * 0.47
+
+            background: Rectangle {
+                gradient: style.goldHeader
+            }
 
             font.family: style.title.name
             font.pixelSize: style.title.size
@@ -38,20 +48,23 @@ Popup {
             Layout.columnSpan: 2
             Layout.row: 0
             Layout.column: 1
-            Layout.preferredHeight: root.height * 0.40
+            Layout.preferredHeight: root.height * 0.34
             Layout.preferredWidth: root.width * 0.47
             font.family: style.title.name
             font.pixelSize: style.title.size
             fontSizeMode: Text.Fit
             horizontalAlignment: Qt.AlignHCenter
             verticalAlignment: Qt.AlignVCenter
+            background: Rectangle {
+                gradient: style.goldHeader
+            }
         }
 
         TextField {
             objectName: "profileName"
             Layout.row: 1
             Layout.column: 0
-            Layout.preferredHeight: root.height * 0.40
+            Layout.preferredHeight: root.height * 0.34
             Layout.preferredWidth: root.width * 0.47
         }
 
@@ -60,27 +73,46 @@ Popup {
             Layout.row: 1
             Layout.column: 1
             Layout.columnSpan: 2
-            Layout.preferredHeight: root.height * 0.40
+            Layout.preferredHeight: root.height * 0.34
             Layout.preferredWidth: root.width * 0.47
 
-            echoMode: TextInput.PasswordEchoOnEdit
-            passwordMaskDelay: 2000
+            echoMode: TextInput.Password
+            passwordMaskDelay: 1000
         }
 
         Button {
             text: qsTr("Ok")
             Layout.row: 2
             Layout.column: 1
-            Layout.preferredHeight: root.height * 0.12
+            Layout.preferredHeight: root.height * 0.22
             Layout.preferredWidth: root.width * 0.23
+
+
+            background: Rectangle {
+                gradient: parent.pressed ? style.darkGoldButton : style.goldButton
+                MouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.NoButton
+                    cursorShape: Qt.PointingHandCursor
+                }
+            }
         }
 
         Button {
             text: qsTr("Cancel")
             Layout.row: 2
             Layout.column: 2
-            Layout.preferredHeight: root.height * 0.12
+            Layout.preferredHeight: root.height * 0.22
             Layout.preferredWidth: root.width * 0.22
+
+            background: Rectangle {
+                gradient: parent.pressed ? style.darkGoldButton : style.goldButton
+                MouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.NoButton
+                    cursorShape: Qt.PointingHandCursor
+                }
+            }
         }
     }
 }
