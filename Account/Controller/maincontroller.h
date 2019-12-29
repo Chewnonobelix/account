@@ -76,6 +76,7 @@ public slots:
     void quickOpen();
 
     void changeProfile(QString);
+    void addProfile();
 };
 
 

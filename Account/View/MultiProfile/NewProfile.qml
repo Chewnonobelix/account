@@ -20,6 +20,11 @@ Popup {
     leftPadding: width * 0.02
     rightPadding: width * 0.02
 
+    onClosed: {
+        password.clear()
+        profile.clear()
+    }
+
     GridLayout {
         columnSpacing: root.width * .02
         rowSpacing: root.height * .02
@@ -61,6 +66,7 @@ Popup {
         }
 
         TextField {
+            id: profile
             objectName: "profileName"
             Layout.row: 1
             Layout.column: 0
@@ -69,6 +75,7 @@ Popup {
         }
 
         TextField {
+            id: password
             objectName: "password"
             Layout.row: 1
             Layout.column: 1
@@ -81,6 +88,7 @@ Popup {
         }
 
         Button {
+            objectName: "okProfile"
             text: qsTr("Ok")
             Layout.row: 2
             Layout.column: 1
@@ -104,6 +112,10 @@ Popup {
             Layout.column: 2
             Layout.preferredHeight: root.height * 0.22
             Layout.preferredWidth: root.width * 0.22
+
+            onClicked: {
+                close()
+            }
 
             background: Rectangle {
                 gradient: parent.pressed ? style.darkGoldButton : style.goldButton

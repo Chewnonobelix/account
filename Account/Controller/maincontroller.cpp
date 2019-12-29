@@ -185,6 +185,13 @@ int MainController::exec()
     if(profile)
         connect(profile, SIGNAL(s_profile(QString)), this, SLOT(changeProfile(QString)));
 
+    QObject* profiles = m_engine.rootObjects().first()->findChild<QObject*>("popProfile");
+
+    if(profiles)
+    {
+        QObject* okProfile = profiles->findChild<QObject*>("okProfile");
+        connect(okProfile, SIGNAL(clicked()), this, SLOT(addProfile()));
+    }
     return 0;
 }
 
@@ -668,4 +675,15 @@ void MainController::openTransfert()
 void MainController::openBudgetManager()
 {
     m_budget.exec();
+}
+
+void MainController::addProfile()
+{
+    QObject* profiles = m_engine.rootObjects().first()->findChild<QObject*>("popProfile");
+
+    QString nProfile = profiles->findChild<QObject*>("profileName")->property("text").toString();
+    QString password = profiles->findChild<QObject*>("password")->property("text").toString();
+
+    qDebug()<<nProfile<<password;
+    QMetaObject::invokeMethod(profiles, "close");
 }
