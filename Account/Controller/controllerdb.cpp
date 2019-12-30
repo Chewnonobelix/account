@@ -106,13 +106,28 @@ void ControllerDB::prepareCategory()
 }
 
 void ControllerDB::prepareBudget()
-{}
+{
+    m_addBudget = SqlQuery::create(m_db);
+    m_removeBudget = SqlQuery::create(m_db);
+    m_selectBudget = SqlQuery::create(m_db);
+    m_updateBudget = SqlQuery::create(m_db);
+}
 
 void ControllerDB::prepareFrequency()
-{}
+{
+    m_addFrequency = SqlQuery::create(m_db);
+    m_removeFrequency = SqlQuery::create(m_db);
+    m_selectFrequency = SqlQuery::create(m_db);
+    m_updateFrequency = SqlQuery::create(m_db);
+}
 
 void ControllerDB::prepareCommon()
-{}
+{
+    m_addCommon = SqlQuery::create(m_db);
+    m_selectCommon = SqlQuery::create(m_db);
+    m_removeCommon = SqlQuery::create(m_db);
+    m_updateCommon = SqlQuery::create(m_db);
+}
 
 void ControllerDB::prepareProfile()
 {}

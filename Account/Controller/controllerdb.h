@@ -36,6 +36,22 @@ private:
     SqlQuery m_removeCategory;
     SqlQuery m_selectCategory;
 
+    SqlQuery m_addBudget; //TODO
+    SqlQuery m_removeBudget;//TODO
+    SqlQuery m_selectBudget;//TODO
+    SqlQuery m_updateBudget; //TODO
+
+    SqlQuery m_addFrequency;//TODO
+    SqlQuery m_removeFrequency;//TODO
+    SqlQuery m_selectFrequency;//TODO
+    SqlQuery m_updateFrequency; //TODO
+
+    SqlQuery m_addCommon;//TODO
+    SqlQuery m_removeCommon;//TODO
+    SqlQuery m_selectCommon;//TODO
+    SqlQuery m_updateCommon; //TODO
+
+
     void prepareEntry();
     void prepareInformation();
     void prepareAccount();
