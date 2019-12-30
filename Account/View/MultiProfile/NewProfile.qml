@@ -35,8 +35,8 @@ Popup {
             Layout.row: 0
             Layout.column: 0
             Layout.preferredHeight: root.height * 0.34
-            Layout.preferredWidth: root.width * 0.47
-
+            Layout.preferredWidth: root.width
+            Layout.columnSpan: 3
             background: Rectangle {
                 gradient: style.goldHeader
             }
@@ -48,22 +48,23 @@ Popup {
             verticalAlignment: Qt.AlignVCenter
         }
 
-        Label {
-            text: qsTr("Password")
-            Layout.columnSpan: 2
-            Layout.row: 0
-            Layout.column: 1
-            Layout.preferredHeight: root.height * 0.34
-            Layout.preferredWidth: root.width * 0.47
-            font.family: style.title.name
-            font.pixelSize: style.title.size
-            fontSizeMode: Text.Fit
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment: Qt.AlignVCenter
-            background: Rectangle {
-                gradient: style.goldHeader
-            }
-        }
+        //        Label {
+        //            text: qsTr("Password")
+        //            Layout.columnSpan: 2
+        //            Layout.row: 0
+        //            Layout.column: 1
+        //            Layout.preferredHeight: root.height * 0.34
+        //            Layout.preferredWidth: root.width * 0.47
+
+        //            font.family: style.title.name
+        //            font.pixelSize: style.title.size
+        //            fontSizeMode: Text.Fit
+        //            horizontalAlignment: Qt.AlignHCenter
+        //            verticalAlignment: Qt.AlignVCenter
+        //            background: Rectangle {
+        //                gradient: style.goldHeader
+        //            }
+        //        }
 
         TextField {
             id: profile
@@ -71,21 +72,21 @@ Popup {
             Layout.row: 1
             Layout.column: 0
             Layout.preferredHeight: root.height * 0.34
-            Layout.preferredWidth: root.width * 0.47
+            Layout.preferredWidth: root.width
+            Layout.columnSpan: 3
         }
+        //        TextField {
+        //            id: password
+        //            objectName: "password"
+        //            Layout.row: 1
+        //            Layout.column: 1
+        //            Layout.columnSpan: 2
+        //            Layout.preferredHeight: root.height * 0.34
+        //            Layout.preferredWidth: root.width * 0.47
 
-        TextField {
-            id: password
-            objectName: "password"
-            Layout.row: 1
-            Layout.column: 1
-            Layout.columnSpan: 2
-            Layout.preferredHeight: root.height * 0.34
-            Layout.preferredWidth: root.width * 0.47
-
-            echoMode: TextInput.Password
-            passwordMaskDelay: 1000
-        }
+        //            echoMode: TextInput.Password
+        //            passwordMaskDelay: 1000
+        //        }
 
         Button {
             objectName: "okProfile"

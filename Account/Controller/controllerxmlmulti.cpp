@@ -871,3 +871,12 @@ void ControllerXMLMulti::setProfile(QString profile)
     m_currentProfile = profile;
     init();
 }
+
+bool ControllerXMLMulti::addProfile(QString name, QString password)
+{
+    Q_UNUSED(password)
+
+    QDir dir;
+    dir.cd("data");
+    return dir.mkdir(name);
+}

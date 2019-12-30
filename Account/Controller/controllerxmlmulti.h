@@ -83,6 +83,7 @@ public slots:
     
     virtual QStringList selectProfile();
     virtual void setProfile(QString);
+    virtual bool addProfile(QString, QString);
 
     virtual bool init();
 };

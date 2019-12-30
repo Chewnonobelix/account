@@ -75,6 +75,7 @@ public slots:
     
     virtual QStringList selectProfile() {return QStringList();}
     virtual void setProfile(QString) {}
+    virtual bool addProfile(QString, QString) {return false;}
     bool init();
 };
 

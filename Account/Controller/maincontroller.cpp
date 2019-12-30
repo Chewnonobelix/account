@@ -172,15 +172,7 @@ int MainController::exec()
         connect(cat, SIGNAL(s_addCategory(QString)), this, SLOT(quickAddCategory(QString)));
     }
 
-    QObject* profile = root->findChild<QObject*>("profileRepeater");
-
-    if(profile)
-    {
-        QStringList profiles = m_db->selectProfile();
-        profile->setProperty("model", profiles);
-    }
-    
-    profile = root->findChild<QObject*>("profileMenu");
+    QObject* profile = root->findChild<QObject*>("profileMenu");
 
     if(profile)
         connect(profile, SIGNAL(s_profile(QString)), this, SLOT(changeProfile(QString)));
@@ -192,6 +184,9 @@ int MainController::exec()
         QObject* okProfile = profiles->findChild<QObject*>("okProfile");
         connect(okProfile, SIGNAL(clicked()), this, SLOT(addProfile()));
     }
+
+    loadProfiles();
+
     return 0;
 }
 
@@ -682,8 +677,27 @@ void MainController::addProfile()
     QObject* profiles = m_engine.rootObjects().first()->findChild<QObject*>("popProfile");
 
     QString nProfile = profiles->findChild<QObject*>("profileName")->property("text").toString();
-    QString password = profiles->findChild<QObject*>("password")->property("text").toString();
+//    QString password = profiles->findChild<QObject*>("password")->property("text").toString();
 
-    qDebug()<<nProfile<<password;
+    qDebug()<<nProfile;
     QMetaObject::invokeMethod(profiles, "close");
+    if(m_db->addProfile(nProfile, ""))
+        loadProfiles();
+}
+
+void MainController::loadProfiles()
+{
+    QObject* profile = m_engine.rootObjects().first()->findChild<QObject*>("profileRepeater");
+
+    if(profile)
+    {
+        QStringList profiles = m_db->selectProfile();
+        profile->setProperty("model", profiles);
+    }
+
+}
+
+void MainController::deleteProfile(QString)
+{
+
 }
