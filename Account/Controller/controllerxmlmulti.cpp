@@ -154,14 +154,7 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
     Information inf = selectInformation(child);
     inf.setIdEntry(e.id());
     e.setInfo(inf);
-    
-    auto freqs = el.elementsByTagName("frequency");
-    if(!freqs.isEmpty())
-    {
-        child = freqs.at(0).toElement();
-        e.setFrequency(child.text().toInt());
-    }
-    
+        
     auto attr = el.attributes();
     for(int j = 0; j < attr.count(); j++)
         e.setMetadata(attr.item(j).nodeName(), attr.item(j).nodeValue());
@@ -281,13 +274,7 @@ bool ControllerXMLMulti::updateEntryNode(const Entry & e, QDomElement & el)
     setter(el, "date", e.date().toString("dd-MM-yyyy"));
     setter(el, "value",QString::number(e.value()));
     setter(el, "type", e.type());
-    
-    if(e.frequency() == -1)
-        deleter(el, "frequency");
-    else
-        setter(el, "frequency", QString::number(e.frequency()));
-    
-    
+        
     for(auto it: e.metaDataList())
         el.setAttribute(it, e.metaData<QString>(it));
     

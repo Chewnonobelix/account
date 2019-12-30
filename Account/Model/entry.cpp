@@ -1,13 +1,13 @@
 #include "entry.h"
 
-Entry::Entry(): m_frequency(-1)
+Entry::Entry()
 {
     setMetadata("id", -1);
 }
 
 Entry::Entry(const Entry& e): MetaData(e),
     m_account(e.account()), m_value(e.value()), m_date(e.date()),
-    m_type(e.type()), m_info(e.info()), m_frequency(e.frequency())
+    m_type(e.type()), m_info(e.info())
 {
 
 }
@@ -27,7 +27,6 @@ Entry& Entry::operator = (const Entry& e)
     setDate(e.date());
     setType(e.type());
     setInfo(e.info());
-    setFrequency(e.frequency());
 
     return *this;
 }
@@ -107,16 +106,6 @@ bool operator < (const Entry& e1, const Entry& e2)
 QString Entry::label() const
 {
     return info().title();
-}
-
-void Entry::setFrequency(int f)
-{
-    m_frequency = f;
-}
-
-int Entry::frequency() const
-{
-    return m_frequency;
 }
 
 Entry::operator QVariantMap() const

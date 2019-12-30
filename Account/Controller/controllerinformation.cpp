@@ -140,18 +140,6 @@ void ControllerInformation::setControllerFrequency(ControllerFrequency * cf)
     m_controllerFrequency = cf;
 }
 
-void ControllerInformation::enableFreq(bool enable)
-{
-    qDebug()<<"Enable freq"<<enable;
-    if(enable)
-    {
-        Frequency f;
-        m_db->addFrequency(f);
-        m_entry.setFrequency(f.id());
-        m_controllerFrequency->exec();
-    }
-}
-
 void ControllerInformation::pageChange()
 {
     exec();

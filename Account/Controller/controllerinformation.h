@@ -32,7 +32,6 @@ public slots:
     void valueChange(double);
     void categoryChange(QString);
     void addNewCategory(QString);
-    void enableFreq(bool);
     void pageChange();
     
 signals:

@@ -29,9 +29,6 @@ private:
     QDate m_date;
     QString m_type;
     Information m_info;
-
-    //Frequency
-    int m_frequency;
     
 public:
     Entry();
@@ -55,8 +52,6 @@ public:
     Information info() const;
     void setInfo(Information info);
     QString label() const;
-    void setFrequency(int);
-    int frequency() const;
 
     operator QVariantMap() const;
 };

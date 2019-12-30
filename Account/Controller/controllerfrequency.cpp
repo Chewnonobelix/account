@@ -91,9 +91,10 @@ void ControllerFrequency::endThread(QString name)
 }
 
 void ControllerFrequency::addEntry(int e)
-{    
-    if(m_freqs.contains(entry(e).frequency()))
-        m_freqs[entry(e).frequency()]<<entry(e);
+{
+    Entry ent = entry(e);
+    if(ent.hasMetadata("freqency") && m_freqs.contains(ent.metaData<int>("frequency")))
+        m_freqs[ent.metaData<int>("frequency")]<<ent;
 }
 
 void ControllerFrequency::loadCat()
