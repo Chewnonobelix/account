@@ -692,6 +692,7 @@ void MainController::loadProfiles()
     if(profile)
     {
         QStringList profiles = m_db->selectProfile();
+        profile->setProperty("current", m_db->currentProfile());
         profile->setProperty("model", profiles);
     }
 

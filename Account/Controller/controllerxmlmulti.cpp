@@ -880,3 +880,8 @@ bool ControllerXMLMulti::addProfile(QString name, QString password)
     dir.cd("data");
     return dir.mkdir(name);
 }
+
+QString ControllerXMLMulti::currentProfile()
+{
+    return m_currentProfile;
+}

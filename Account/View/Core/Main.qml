@@ -151,9 +151,12 @@ ApplicationWindow {
                 font.pixelSize: pageStyle.core.size
 
                 Repeater {
+                    id: profileRepeater
                     objectName: "profileRepeater"
+                    property string current
                     MenuItem {
                         text: modelData
+                        checked: modelData === profileRepeater.current
                         autoExclusive: true
                         checkable: true
                         onTriggered: profileMenu.s_profile(text)
