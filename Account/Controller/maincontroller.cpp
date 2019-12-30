@@ -21,7 +21,7 @@ MainController::MainController(): AbstractController()
     connect(&m_dbThread, QThread::started, m_db, InterfaceDataSave::exec);
     connect(&m_freqs, ControllerFrequency::s_select, this, MainController::selection);
     
-    m_dbThread.start();    
+    m_dbThread.start();
 
     m_db->selectProfile();
 }
@@ -147,7 +147,7 @@ int MainController::exec()
     
     QObject* budgetManager = root->findChild<QObject*>("budgetManager");
     if(budgetManager)
-        m_budget.setManager(budgetManager); 
+        m_budget.setManager(budgetManager);
     
     QObject* rectQuickView = root->findChild<QObject*>("budgetQuick");
     
@@ -184,6 +184,10 @@ int MainController::exec()
         QObject* okProfile = profiles->findChild<QObject*>("okProfile");
         connect(okProfile, SIGNAL(clicked()), this, SLOT(addProfile()));
     }
+
+    QObject* deleteProfile = profile->findChild<QObject*>("deleteProfile");
+    if(deleteProfile)
+        connect(deleteProfile, SIGNAL(s_deleteProfile(QString)), this, SLOT(deleteProfile(QString)));
 
     loadProfiles();
 
@@ -457,7 +461,7 @@ void MainController::selection(int id)
             ret<<m_db->selectEntry(currentAccount()).values(it);
     
     int maxPage = ret.size() < 100 ? 1 : (ret.size() / 100 + 1);
-    QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");   
+    QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
     
     if(skipper)
     {
@@ -521,7 +525,7 @@ void MainController::selection(int id)
         {
             QMetaObject::invokeMethod(tab, "unselectAll");
             QMetaObject::invokeMethod(tab, "reset");
-        }           
+        }
     }
     
     QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
@@ -551,6 +555,11 @@ void MainController::accountChange(QString acc)
         head->setProperty("total", QVariant::fromValue(accountTotal()));
     }
     
+    QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
+    qDebug()<<tab;
+    if(tab)
+        tab->setProperty("model", QVariantList());
+
     int maxPage = m_db->selectEntry(currentAccount()).size() / 100;
     QObject* pageSkip = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
     
@@ -677,9 +686,8 @@ void MainController::addProfile()
     QObject* profiles = m_engine.rootObjects().first()->findChild<QObject*>("popProfile");
 
     QString nProfile = profiles->findChild<QObject*>("profileName")->property("text").toString();
-//    QString password = profiles->findChild<QObject*>("password")->property("text").toString();
+    //    QString password = profiles->findChild<QObject*>("password")->property("text").toString();
 
-    qDebug()<<nProfile;
     QMetaObject::invokeMethod(profiles, "close");
     if(m_db->addProfile(nProfile, ""))
         loadProfiles();
@@ -698,7 +706,9 @@ void MainController::loadProfiles()
 
 }
 
-void MainController::deleteProfile(QString)
+void MainController::deleteProfile(QString name)
 {
-
+    if(m_db->deleteProfile(name))
+        changeProfile("Default");
+    loadProfiles();
 }

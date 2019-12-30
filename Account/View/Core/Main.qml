@@ -159,7 +159,10 @@ ApplicationWindow {
                         checked: modelData === profileRepeater.current
                         autoExclusive: true
                         checkable: true
-                        onTriggered: profileMenu.s_profile(text)
+                        onTriggered: {
+                            profileRepeater.current = text
+                            profileMenu.s_profile(text)
+                        }
                         font.family: pageStyle.core.name
                         font.pixelSize: pageStyle.core.size
                         background: Rectangle {
@@ -180,6 +183,22 @@ ApplicationWindow {
                         gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                     }
                 }
+
+                MenuItem {
+                    text: qsTr("Delete profile") + ": " + profileRepeater.current
+                    objectName: "deleteProfile"
+                    enabled: profileRepeater.current !== "Default"
+
+                    signal s_deleteProfile(string name)
+                    onTriggered: s_deleteProfile(profileRepeater.current)
+                    font.family: pageStyle.core.name
+                    font.pixelSize: pageStyle.core.size
+
+                    background: Rectangle {
+                        gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    }
+                }
+
             }
 
             MenuItem {

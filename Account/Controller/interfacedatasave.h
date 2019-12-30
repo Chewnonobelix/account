@@ -53,6 +53,7 @@ public slots:
     virtual void setProfile(QString) = 0;
     virtual bool addProfile(QString, QString) = 0;
     virtual QString currentProfile() = 0;
+    virtual bool deleteProfile(QString) = 0;
 
     virtual bool init() = 0;
 };

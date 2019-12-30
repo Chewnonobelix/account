@@ -58,7 +58,11 @@ void ControllerXMLMulti::setCurrentAccount(QString a)
 {
     if(m_accounts.contains(a))
         m_currentAccount = m_accounts[a];
-    
+    else
+    {
+        m_currentAccount.clear();
+        return;
+    }
     auto root = m_currentAccount.elementsByTagName("database").at(0).toElement();
     for(auto it = root.firstChildElement(); !it.isNull(); it = it.nextSiblingElement())
         m_ids[it.tagName()]<<it.attribute("id").toInt();
@@ -884,4 +888,12 @@ bool ControllerXMLMulti::addProfile(QString name, QString password)
 QString ControllerXMLMulti::currentProfile()
 {
     return m_currentProfile;
+}
+
+bool ControllerXMLMulti::deleteProfile(QString name)
+{
+    QDir dir;
+    dir.cd("data");
+    dir.cd(name);
+    return dir.removeRecursively();
 }

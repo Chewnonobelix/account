@@ -15,11 +15,11 @@ private:
     QMap<QString, QDomDocument> m_accounts;
     
     QMap<QString, QSet<int>> m_ids;
+    int m_timer;
 
     QDomDocument m_currentAccount;
     QString m_currentProfile;
 
-    int m_timer;
     QMutex m_mutex;
     
     int maxId(const QSet<int> &) const;
@@ -85,6 +85,7 @@ public slots:
     virtual void setProfile(QString);
     virtual bool addProfile(QString, QString);
     virtual QString currentProfile();
+    virtual bool deleteProfile(QString);
 
     virtual bool init();
 };
