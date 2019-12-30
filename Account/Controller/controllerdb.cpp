@@ -30,6 +30,7 @@ bool ControllerDB::init()
         prepareInformation();
         prepareAccount();
         prepareCategory();
+        prepareBudget();
     }
 
     qDebug()<<"DB Connected"<<isConnected();
@@ -111,6 +112,19 @@ void ControllerDB::prepareBudget()
     m_removeBudget = SqlQuery::create(m_db);
     m_selectBudget = SqlQuery::create(m_db);
     m_updateBudget = SqlQuery::create(m_db);
+
+    m_addBudget->prepare("INSERT INTO budget (ID, account, category, reference)"
+                         "VALUES (:id, :account, :category, :reference)");
+
+    m_updateBudget->prepare("UPDATE budget"
+                            "SET (account=:a, category=:c, reference=:r"
+                            "WHERE (ID=:id)");
+
+    m_removeBudget->prepare("DELETE FROM budget"
+                            "WHERE ID=:id");
+
+    m_selectBudget->prepare("SELECT * FROM budget"
+                            "WHERE account=:a");
 }
 
 void ControllerDB::prepareFrequency()
@@ -119,6 +133,7 @@ void ControllerDB::prepareFrequency()
     m_removeFrequency = SqlQuery::create(m_db);
     m_selectFrequency = SqlQuery::create(m_db);
     m_updateFrequency = SqlQuery::create(m_db);
+    //TODO
 }
 
 void ControllerDB::prepareCommon()
@@ -127,6 +142,7 @@ void ControllerDB::prepareCommon()
     m_selectCommon = SqlQuery::create(m_db);
     m_removeCommon = SqlQuery::create(m_db);
     m_updateCommon = SqlQuery::create(m_db);
+    //TODO
 }
 
 void ControllerDB::prepareProfile()
