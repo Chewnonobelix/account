@@ -30,6 +30,5 @@
         <file>Style/tray.png</file>
         <file>Core/QuickAdding.qml</file>
         <file>MultiProfile/NewProfile.qml</file>
-        <file>MultiProfile/CheckProfile.qml</file>
     </qresource>
 </RCC>

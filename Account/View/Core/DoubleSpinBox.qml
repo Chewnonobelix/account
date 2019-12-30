@@ -4,8 +4,8 @@ import QtQuick.Controls 2.4
 SpinBox {
     id: spinbox
     from: 0
-    value: 110
-    to: 1000000000
+    value: 0
+    to: 100000000000
     stepSize: 10
     editable: true
 
