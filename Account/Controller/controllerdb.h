@@ -36,6 +36,15 @@ private:
     SqlQuery m_removeCategory;
     SqlQuery m_selectCategory;
 
+    void prepareEntry();
+    void prepareInformation();
+    void prepareAccount();
+    void prepareCategory();
+    void prepareBudget();
+    void prepareFrequency();
+    void prepareCommon();
+    void prepareProfile();
+
 public:
     ControllerDB();
     ControllerDB(const ControllerDB&d);

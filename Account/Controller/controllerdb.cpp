@@ -26,71 +26,98 @@ bool ControllerDB::init()
     m_db.setPort(3306);
     if(m_db.open())
     {
-        m_accounts = SqlQuery::create(m_db);
-        m_removeAccount = SqlQuery::create(m_db);
-
-        m_selectEntry = SqlQuery::create(m_db);
-        m_addEntry = SqlQuery::create(m_db);
-        m_removeEntry = SqlQuery::create(m_db);
-        m_updateEntry = SqlQuery::create(m_db);
-
-        m_updateInfo = SqlQuery::create(m_db);
-        m_addInformation = SqlQuery::create(m_db);
-        m_removeInformation = SqlQuery::create(m_db);
-        m_selectInformation = SqlQuery::create(m_db);
-
-        m_addCategory = SqlQuery::create(m_db);
-        m_removeCategory = SqlQuery::create(m_db);
-        m_selectCategory = SqlQuery::create(m_db);
-
-
-        m_selectEntry->prepare("SELECT * FROM account AS a"
-                               "WHERE a.account=:a");
-
-        m_addEntry->prepare("INSERT INTO account (ID, account, value, date_eff, type) "
-                            "VALUES (:id, :account,:value,:date,:type)");
-
-        m_removeEntry->prepare("DELETE FROM account"
-                               "WHERE ID=:id");
-
-        m_updateEntry->prepare("UPDATE account"
-                               "SET (account=:a, value=:v, date_eff=:d, type=:t)"
-                               "WHERE ID=:id");
-
-
-        m_addInformation->prepare("INSERT INTO information (id, id_entry, info, prev, category)"
-                                  "VALUES(:id, :ide, :title, :prev, :cat)");
-
-        m_updateInfo->prepare("UPDATE information "
-                               "SET (info=:title, prev=:estimated)"
-                               "WHERE id=:id AND id_entry=:ide");
-
-        m_removeInformation->prepare("DELETE FROM information"
-                                     "WHERE id_entry=:ide");
-
-        m_selectInformation->prepare("SELECT * FROM information"
-                                     "WHERE id_entry = :ide");
-
-        m_accounts->prepare("SELECT DISTINCT account FROM account");
-
-        m_removeAccount->prepare("DELETE FROM account "
-                                 "WHERE account=:a");
-
-        m_addCategory->prepare("INSERT INTO categories(name, type)"
-                               "VALUES(:name, :type)");
-
-        m_removeCategory->prepare("DELETE FROM categories"
-                                  "WHERE name = :name");
-
-        m_selectCategory->prepare("SELECT name, type FROM categories");
-
-
+        prepareEntry();
+        prepareInformation();
+        prepareAccount();
+        prepareCategory();
     }
 
     qDebug()<<"DB Connected"<<isConnected();
 
     return isConnected();
 }
+
+void ControllerDB::prepareEntry()
+{
+    m_selectEntry = SqlQuery::create(m_db);
+    m_addEntry = SqlQuery::create(m_db);
+    m_removeEntry = SqlQuery::create(m_db);
+    m_updateEntry = SqlQuery::create(m_db);
+
+    m_selectEntry->prepare("SELECT * FROM account AS a"
+                           "WHERE a.account=:a");
+
+    m_addEntry->prepare("INSERT INTO account (ID, account, value, date_eff, type) "
+                        "VALUES (:id, :account,:value,:date,:type)");
+
+    m_removeEntry->prepare("DELETE FROM account"
+                           "WHERE ID=:id");
+
+    m_updateEntry->prepare("UPDATE account"
+                           "SET (account=:a, value=:v, date_eff=:d, type=:t)"
+                           "WHERE ID=:id");
+}
+
+void ControllerDB::prepareInformation()
+{
+    m_updateInfo = SqlQuery::create(m_db);
+    m_addInformation = SqlQuery::create(m_db);
+    m_removeInformation = SqlQuery::create(m_db);
+    m_selectInformation = SqlQuery::create(m_db);
+
+    m_addInformation->prepare("INSERT INTO information (id, id_entry, info, prev, category)"
+                              "VALUES(:id, :ide, :title, :prev, :cat)");
+
+    m_updateInfo->prepare("UPDATE information "
+                           "SET (info=:title, prev=:estimated)"
+                           "WHERE id=:id AND id_entry=:ide");
+
+    m_removeInformation->prepare("DELETE FROM information"
+                                 "WHERE id_entry=:ide");
+
+    m_selectInformation->prepare("SELECT * FROM information"
+                                 "WHERE id_entry = :ide");
+}
+
+void ControllerDB::prepareAccount()
+{
+    m_accounts = SqlQuery::create(m_db);
+    m_removeAccount = SqlQuery::create(m_db);
+
+    m_accounts->prepare("SELECT DISTINCT account FROM account");
+
+    m_removeAccount->prepare("DELETE FROM account "
+                             "WHERE account=:a");
+}
+
+void ControllerDB::prepareCategory()
+{
+    m_addCategory = SqlQuery::create(m_db);
+    m_removeCategory = SqlQuery::create(m_db);
+    m_selectCategory = SqlQuery::create(m_db);
+
+    m_addCategory->prepare("INSERT INTO categories(name, type)"
+                           "VALUES(:name, :type)");
+
+    m_removeCategory->prepare("DELETE FROM categories"
+                              "WHERE name = :name");
+
+    m_selectCategory->prepare("SELECT name, type FROM categories");
+}
+
+void ControllerDB::prepareBudget()
+{}
+
+void ControllerDB::prepareFrequency()
+{}
+
+void ControllerDB::prepareCommon()
+{}
+
+void ControllerDB::prepareProfile()
+{}
+
+
 
 bool ControllerDB::isConnected() const
 {
