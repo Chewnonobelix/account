@@ -125,6 +125,9 @@ void ControllerDB::prepareBudget()
 
     m_selectBudget->prepare("SELECT * FROM budget"
                             "WHERE account=:a");
+    //TODO
+    //Targets requests
+    //SUB requests
 }
 
 void ControllerDB::prepareFrequency()
@@ -134,6 +137,20 @@ void ControllerDB::prepareFrequency()
     m_selectFrequency = SqlQuery::create(m_db);
     m_updateFrequency = SqlQuery::create(m_db);
     //TODO
+    //Reference entries
+    //Linkef entries
+    m_selectFrequency->prepare("SELECT * FROM frequency"
+                               "WHERE account=:a");
+
+    m_addFrequency->prepare("INSERT INTO frequency (ID, freq, nbGroup"
+                            "VALUES(:id, :freq, :nbGroup)");
+
+    m_removeFrequency->prepare("DELETE FROM frequency"
+                               "WHERE (ID=:id" );
+
+    m_updateBudget->prepare("UPDATE frequency"
+                            "SET (freq=:f, nbGroup=:ng)"
+                            "WHERE (ID=:id");
 }
 
 void ControllerDB::prepareCommon()
