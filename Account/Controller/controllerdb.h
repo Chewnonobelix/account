@@ -51,6 +51,7 @@ private:
     SqlQuery m_selectCommon;//TODO
     SqlQuery m_updateCommon; //TODO
 
+    QString m_currentProfile;
 
     void prepareEntry();
     void prepareInformation();
