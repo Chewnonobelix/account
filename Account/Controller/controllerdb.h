@@ -22,34 +22,41 @@ private:
     SqlQuery m_addEntry;
     SqlQuery m_removeEntry;
     SqlQuery m_selectEntry;
-    SqlQuery m_updateEntry; //TODO
+    SqlQuery m_updateEntry;
+    SqlQuery m_insertMetadata;
+    SqlQuery m_updateMetadata;
 
+    //TODO
     SqlQuery m_accounts;
     SqlQuery m_removeAccount; //TODO
-
+    //END
+    
     SqlQuery m_updateInfo;
     SqlQuery m_addInformation;
     SqlQuery m_removeInformation;
     SqlQuery m_selectInformation;
 
+    //TODO
     SqlQuery m_addCategory;
     SqlQuery m_removeCategory;
     SqlQuery m_selectCategory;
+    
+    SqlQuery m_addBudget;
+    SqlQuery m_removeBudget;
+    SqlQuery m_selectBudget;
+    SqlQuery m_updateBudget;
 
-    SqlQuery m_addBudget; //TODO
-    SqlQuery m_removeBudget;//TODO
-    SqlQuery m_selectBudget;//TODO
-    SqlQuery m_updateBudget; //TODO
+    SqlQuery m_addFrequency;
+    SqlQuery m_removeFrequency;
+    SqlQuery m_selectFrequency;
+    SqlQuery m_updateFrequency;
 
-    SqlQuery m_addFrequency;//TODO
-    SqlQuery m_removeFrequency;//TODO
-    SqlQuery m_selectFrequency;//TODO
-    SqlQuery m_updateFrequency; //TODO
-
-    SqlQuery m_addCommon;//TODO
-    SqlQuery m_removeCommon;//TODO
-    SqlQuery m_selectCommon;//TODO
-    SqlQuery m_updateCommon; //TODO
+    SqlQuery m_addCommon;
+    SqlQuery m_removeCommon;
+    SqlQuery m_selectCommon;
+    SqlQuery m_updateCommon;
+    //END
+    
 
     QString m_currentProfile;
 

@@ -46,10 +46,10 @@ void ControllerDB::prepareEntry()
     m_updateEntry = SqlQuery::create(m_db);
 
     m_selectEntry->prepare("SELECT * FROM account AS a"
-                           "WHERE a.account=:a");
+                           "WHERE a.account=:a AND a.profile=:p");
 
-    m_addEntry->prepare("INSERT INTO account (ID, account, value, date_eff, type) "
-                        "VALUES (:id, :account,:value,:date,:type)");
+    m_addEntry->prepare("INSERT INTO account (ID, account, value, date_eff, type, profile) "
+                        "VALUES (:id, :account,:value,:date,:type, :profile)");
 
     m_removeEntry->prepare("DELETE FROM account"
                            "WHERE ID=:id");
@@ -57,6 +57,13 @@ void ControllerDB::prepareEntry()
     m_updateEntry->prepare("UPDATE account"
                            "SET (account=:a, value=:v, date_eff=:d, type=:t)"
                            "WHERE ID=:id");
+    
+    m_insertMetadata->prepare("INSERT INTO entrymetadata (id, entry, name, value)"
+                              "VALUES (:id, :entry, :name, :value");
+    
+    m_updateMetadata->prepare("UPDATE entrymetada"
+                              "SET (value=:value)"
+                              "WHERE entry=:entry AND name=:name");
 }
 
 void ControllerDB::prepareInformation()
