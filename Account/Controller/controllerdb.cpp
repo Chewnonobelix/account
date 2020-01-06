@@ -104,13 +104,13 @@ void ControllerDB::prepareCategory()
     m_removeCategory = SqlQuery::create(m_db);
     m_selectCategory = SqlQuery::create(m_db);
 
-    m_addCategory->prepare("INSERT INTO categories(name, type)"
-                           "VALUES(:name, :type)");
+    m_addCategory->prepare("INSERT INTO categories(name, type, account, profile)"
+                           "VALUES(:name, :type, :account, :profile)");
 
     m_removeCategory->prepare("DELETE FROM categories"
-                              "WHERE name = :name");
+                              "WHERE name = :name AND account=:account AND profile=:profile");
 
-    m_selectCategory->prepare("SELECT name, type FROM categories");
+    m_selectCategory->prepare("SELECT * FROM categories WHERE account=:account AND profile=:profile");
 }
 
 void ControllerDB::prepareBudget()

@@ -37,11 +37,11 @@ private:
     SqlQuery m_removeInformation;
     SqlQuery m_selectInformation;
 
-    //TODO
     SqlQuery m_addCategory;
     SqlQuery m_removeCategory;
     SqlQuery m_selectCategory;
     
+    //TODO
     SqlQuery m_addBudget;
     SqlQuery m_removeBudget;
     SqlQuery m_selectBudget;
