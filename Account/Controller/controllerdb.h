@@ -19,6 +19,8 @@ class ControllerDB: public InterfaceDataSave
 private:
     QSqlDatabase m_db;
 
+    SqlQuery m_selectProfiles;
+    SqlQuery m_removeProfile;
     SqlQuery m_addEntry;
     SqlQuery m_removeEntry;
     SqlQuery m_selectEntry;

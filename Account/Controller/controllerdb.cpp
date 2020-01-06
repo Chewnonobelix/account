@@ -171,7 +171,13 @@ void ControllerDB::prepareCommon()
 
 void ControllerDB::prepareProfile()
 {
-    //TODO
+    m_selectProfiles = SqlQuery::create(m_db);
+    m_removeProfiles = SqlQuery::create(m_db);
+    
+    m_selectProfiles->prepare("SELECT DISTINCT profile FROM account");
+    
+    m_removeProfile->prepare("DELETE FROM account, categories, budget, frequency, commonExpanse"
+                             "WHERE profile=:profile");
 }
 
 
