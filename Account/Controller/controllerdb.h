@@ -41,12 +41,13 @@ private:
     SqlQuery m_removeCategory;
     SqlQuery m_selectCategory;
     
-    //TODO
     SqlQuery m_addBudget;
     SqlQuery m_removeBudget;
     SqlQuery m_selectBudget;
     SqlQuery m_updateBudget;
-
+    SqlQuery m_selectSubBudget;
+    
+    //TODO
     SqlQuery m_addFrequency;
     SqlQuery m_removeFrequency;
     SqlQuery m_selectFrequency;

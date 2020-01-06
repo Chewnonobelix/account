@@ -119,19 +119,23 @@ void ControllerDB::prepareBudget()
     m_removeBudget = SqlQuery::create(m_db);
     m_selectBudget = SqlQuery::create(m_db);
     m_updateBudget = SqlQuery::create(m_db);
+    m_selectSubBudget = SqlQuery::create(m_db);
 
-    m_addBudget->prepare("INSERT INTO budget (ID, account, category, reference)"
-                         "VALUES (:id, :account, :category, :reference)");
+    m_addBudget->prepare("INSERT INTO budget (id, account, category, reference, profile)"
+                         "VALUES (:id, :account, :category, :reference, :profile)");
 
     m_updateBudget->prepare("UPDATE budget"
                             "SET (account=:a, category=:c, reference=:r"
-                            "WHERE (ID=:id)");
+                            "WHERE (id=:id)");
 
     m_removeBudget->prepare("DELETE FROM budget"
-                            "WHERE ID=:id");
+                            "WHERE id=:id");
 
     m_selectBudget->prepare("SELECT * FROM budget"
-                            "WHERE account=:a");
+                            "WHERE account=:a AND profile=:profile");
+    
+    m_selectSubBudget->prepare("SELECT * FROM subbudget"
+                               "WHERE idBudget=:idb");
     //TODO
     //Targets requests
     //SUB requests
