@@ -21,17 +21,16 @@ private:
 
     SqlQuery m_selectProfiles;
     SqlQuery m_removeProfile;
+    
+    SqlQuery m_accounts;
+    SqlQuery m_removeAccount;
+    
     SqlQuery m_addEntry;
     SqlQuery m_removeEntry;
     SqlQuery m_selectEntry;
     SqlQuery m_updateEntry;
     SqlQuery m_insertMetadata;
     SqlQuery m_updateMetadata;
-
-    //TODO
-    SqlQuery m_accounts;
-    SqlQuery m_removeAccount; //TODO
-    //END
     
     SqlQuery m_updateInfo;
     SqlQuery m_addInformation;

@@ -91,11 +91,11 @@ void ControllerDB::prepareAccount()
 {
     m_accounts = SqlQuery::create(m_db);
     m_removeAccount = SqlQuery::create(m_db);
+ 
+    m_accounts->prepare("SELECT DISTINCT account FROM account WHERE profile=:profile");
 
-    m_accounts->prepare("SELECT DISTINCT account FROM account");
-
-    m_removeAccount->prepare("DELETE FROM account "
-                             "WHERE account=:a");
+    m_removeAccount->prepare("DELETE FROM account, categories, budget, frequency, commonExpanse"
+                             "WHERE account=:a AND profile=:profile");
 }
 
 void ControllerDB::prepareCategory()
@@ -172,7 +172,7 @@ void ControllerDB::prepareCommon()
 void ControllerDB::prepareProfile()
 {
     m_selectProfiles = SqlQuery::create(m_db);
-    m_removeProfiles = SqlQuery::create(m_db);
+    m_removeProfile = SqlQuery::create(m_db);
     
     m_selectProfiles->prepare("SELECT DISTINCT profile FROM account");
     
