@@ -64,6 +64,12 @@ void ControllerDB::prepareEntry()
     m_updateMetadata->prepare("UPDATE entrymetada"
                               "SET (value=:value)"
                               "WHERE entry=:entry AND name=:name");
+    
+    m_selectMetadata->prepare("SELECT * FROM entrymetadata"
+                              "WHERE entry=:ide");
+    
+    m_removeMetadata->prepare("DELETE FROM entrymetadata"
+                              "WHERE entry=:ide AND name=:name");
 }
 
 void ControllerDB::prepareInformation()

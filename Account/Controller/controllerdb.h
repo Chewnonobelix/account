@@ -31,6 +31,8 @@ private:
     SqlQuery m_updateEntry;
     SqlQuery m_insertMetadata;
     SqlQuery m_updateMetadata;
+    SqlQuery m_selectMetadata;
+    SqlQuery m_removeMetadata;
     
     SqlQuery m_updateInfo;
     SqlQuery m_addInformation;
