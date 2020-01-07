@@ -1,11 +1,11 @@
 #include "controllerdb.h"
 #include "dbrequestsinit.h"
 #include <QDebug>
-ControllerDB::ControllerDB()
+ControllerDB::ControllerDB(): m_currentProfile("Default")
 {
 }
 
-ControllerDB::ControllerDB(const ControllerDB& d): InterfaceDataSave(d)
+ControllerDB::ControllerDB(const ControllerDB& d): InterfaceDataSave(d), m_currentProfile(d.m_currentProfile)
 {}
 
 
@@ -293,6 +293,7 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
 QStringList ControllerDB::selectAccount()
 {
     QStringList res;
+    m_accounts->bindValue(":profile", m_currentProfile);
     if(isConnected() && m_accounts->exec())
     {
         qDebug()<<"Exec "<<m_accounts->lastQuery()<<m_accounts->executedQuery();
