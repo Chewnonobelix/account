@@ -59,6 +59,7 @@ HEADERS += \
     Controller/controllerbudget.h \
     Controller/controllercommon.h \
     Controller/controllerfrequency.h \
+    Controller/dbrequestsinit.h \
     Model/commonexpanse.h \
     Model/entry.h \
     Model/frequency.h \
