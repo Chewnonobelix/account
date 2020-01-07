@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le :  mar. 07 jan. 2020 à 19:14
+-- Généré le :  mar. 07 jan. 2020 à 22:38
 -- Version du serveur :  5.5.57-MariaDB
 -- Version de PHP :  7.3.7
 
@@ -39,6 +39,14 @@ CREATE TABLE `account` (
   `frequencyReference` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- RELATIONS POUR LA TABLE `account`:
+--   `commonExpanse`
+--       `commonExpanse` -> `id`
+--   `frequencyReference`
+--       `frequency` -> `id`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -52,6 +60,12 @@ CREATE TABLE `budget` (
   `profile` varchar(200) NOT NULL DEFAULT 'Default',
   `account` varchar(200) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- RELATIONS POUR LA TABLE `budget`:
+--   `category`
+--       `categories` -> `ID`
+--
 
 -- --------------------------------------------------------
 
@@ -67,6 +81,10 @@ CREATE TABLE `categories` (
   `profile` varchar(200) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- RELATIONS POUR LA TABLE `categories`:
+--
+
 -- --------------------------------------------------------
 
 --
@@ -78,6 +96,14 @@ CREATE TABLE `commonEntry` (
   `name` varchar(200) NOT NULL,
   `entry` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- RELATIONS POUR LA TABLE `commonEntry`:
+--   `entry`
+--       `account` -> `ID`
+--   `idCommon`
+--       `commonExpanse` -> `id`
+--
 
 -- --------------------------------------------------------
 
@@ -94,6 +120,10 @@ CREATE TABLE `commonExpanse` (
   `account` varchar(200) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- RELATIONS POUR LA TABLE `commonExpanse`:
+--
+
 -- --------------------------------------------------------
 
 --
@@ -106,6 +136,12 @@ CREATE TABLE `entrymetada` (
   `name` varchar(200) NOT NULL,
   `value` varchar(200) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- RELATIONS POUR LA TABLE `entrymetada`:
+--   `entry`
+--       `account` -> `ID`
+--
 
 -- --------------------------------------------------------
 
@@ -122,6 +158,10 @@ CREATE TABLE `frequency` (
   `account` varchar(200) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- RELATIONS POUR LA TABLE `frequency`:
+--
+
 -- --------------------------------------------------------
 
 --
@@ -136,6 +176,14 @@ CREATE TABLE `information` (
   `category` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- RELATIONS POUR LA TABLE `information`:
+--   `category`
+--       `categories` -> `ID`
+--   `id_entry`
+--       `account` -> `ID`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -149,6 +197,12 @@ CREATE TABLE `subbudget` (
   `target` double NOT NULL,
   `fromDate` date NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- RELATIONS POUR LA TABLE `subbudget`:
+--   `idBudget`
+--       `budget` -> `id`
+--
 
 --
 -- Index pour les tables déchargées
