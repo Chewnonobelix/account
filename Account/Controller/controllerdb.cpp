@@ -1,4 +1,5 @@
 #include "controllerdb.h"
+#include "dbrequestsinit.h"
 #include <QDebug>
 ControllerDB::ControllerDB()
 {
@@ -18,13 +19,17 @@ ControllerDB::~ControllerDB()
 
 bool ControllerDB::init()
 {
-    m_db = QSqlDatabase::addDatabase("QMYSQL");
-    m_db.setHostName("chewnonobelix.myqnapcloud.com");
-    m_db.setUserName("chewnonobelix");
-    m_db.setPassword("04091986a");
-    m_db.setDatabaseName("account_test");
-    m_db.setPort(3306);
-    if(m_db.open())
+    m_db = QSqlDatabase::addDatabase("QSQLITE");
+
+    m_db.setDatabaseName("account");
+    m_db.open();
+
+    if(m_db.tables().isEmpty())
+    {
+        auto req = m_db.exec(account_table);
+    }
+
+    if(isConnected())
     {
         prepareProfile();
         prepareEntry();
@@ -33,8 +38,8 @@ bool ControllerDB::init()
         prepareCategory();
         prepareBudget();
     }
-
-    qDebug()<<"DB Connected"<<isConnected();
+    
+    qDebug()<<"DB Connected"<<isConnected()<<m_db.tables();
 
     return isConnected();
 }
