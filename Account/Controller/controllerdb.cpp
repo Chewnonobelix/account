@@ -26,7 +26,10 @@ bool ControllerDB::init()
 
     if(m_db.tables().isEmpty())
     {
-        auto req = m_db.exec(account_table);
+        m_db.exec(account_table);
+        m_db.exec(account_key);
+        m_db.exec(information_table);
+        m_db.exec(information_key);
     }
 
     if(isConnected())
@@ -55,18 +58,18 @@ void ControllerDB::prepareEntry()
     m_removeMetadata = SqlQuery::create(m_db);
     m_updateMetadata = SqlQuery::create(m_db);
 
-    m_selectEntry->prepare("SELECT * FROM account AS a"
-                           "WHERE a.account=:a AND a.profile=:p");
+    m_selectEntry->prepare("SELECT * FROM account");
+//                           "WHERE account=:a AND profile=:p");
 
-    m_addEntry->prepare("INSERT INTO account (ID, account, value, date_eff, type, profile) "
+    m_addEntry->prepare("INSERT INTO account (id, account, value, date_eff, type, profile) "
                         "VALUES (:id, :account,:value,:date,:type, :profile)");
 
     m_removeEntry->prepare("DELETE FROM account"
-                           "WHERE ID=:id");
+                           "WHERE id=:id");
 
     m_updateEntry->prepare("UPDATE account"
                            "SET (account=:a, value=:v, date_eff=:d, type=:t)"
-                           "WHERE ID=:id");
+                           "WHERE id=:id");
     
     m_insertMetadata->prepare("INSERT INTO entrymetadata (id, entry, name, value)"
                               "VALUES (:id, :entry, :name, :value");
@@ -100,7 +103,7 @@ void ControllerDB::prepareInformation()
                                  "WHERE id_entry=:ide");
 
     m_selectInformation->prepare("SELECT * FROM information"
-                                 "WHERE id_entry = :ide");
+                                 "WHERE id_entry=:ide");
 }
 
 void ControllerDB::prepareAccount()
@@ -228,14 +231,16 @@ bool ControllerDB::addEntry(const Entry & e)
         m_addEntry->bindValue(":value", QVariant(e.value()));
         m_addEntry->bindValue(":date", QVariant(e.date()));
         m_addEntry->bindValue(":type", QVariant(e.type()));
-        m_addEntry->bindValue(":id", QVariant());
+        m_addEntry->bindValue(":id", QVariant(0));
         m_addEntry->bindValue(":profile",m_currentProfile);
 
         ret = m_addEntry->exec();
+        qDebug()<<"Add"<<ret<<m_addEntry->lastQuery()<<m_addEntry->lastInsertId()<<m_addEntry->lastError();
         int id = m_addEntry->lastInsertId().toInt();
 
         if(ret && id > 0)
         {
+            m_addInformation->bindValue(":id", QVariant(0));
             m_addInformation->bindValue(":ide", id);
             m_addInformation->bindValue(":title", e.info().title());
             m_addInformation->bindValue(":prev",e.info().estimated());
@@ -245,6 +250,7 @@ bool ControllerDB::addEntry(const Entry & e)
             ret &= m_addInformation->exec();
             qDebug()<<ret;
         }
+        m_db.commit();
     }
 
     return ret;
@@ -266,16 +272,16 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
         {
             Entry t;
             Information i;
-            t.setId(m_selectEntry->value("a.id").toInt());
-            t.setDate(m_selectEntry->value("a.date_eff").toDate());
-            t.setValue(m_selectEntry->value("a.value").toDouble());
-            t.setType(m_selectEntry->value("a.type").toString());
+            t.setId(m_selectEntry->value("id").toInt());
+            t.setDate(m_selectEntry->value("date_eff").toDate());
+            t.setValue(m_selectEntry->value("value").toDouble());
+            t.setType(m_selectEntry->value("type").toString());
 
             m_selectInformation->bindValue(":ide", t.id());
             bool inf = m_selectInformation->exec();
             if(!inf)
             {
-                qDebug()<<m_selectInformation->lastError().text();
+                qDebug()<<"INF"<<m_selectInformation->lastError().text();
                 break;
             }
 
@@ -298,8 +304,6 @@ QStringList ControllerDB::selectAccount()
     m_accounts->bindValue(":profile", m_currentProfile);
     if(isConnected() && m_accounts->exec())
     {
-        qDebug()<<"Exec "<<m_accounts->lastQuery()<<m_accounts->executedQuery();
-
         while(m_accounts->next())
             res<<m_accounts->value("account").toString();
     }

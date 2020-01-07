@@ -73,4 +73,14 @@ const auto subbudget_table = QString("CREATE TABLE `subbudget` ("
                                          "`target` double NOT NULL,"
                                          "`fromDate` date NOT NULL"
                                        ")");
+
+const auto account_key = QString("ALTER TABLE `account`"
+                                 "ADD PRIMARY KEY (`id`),"
+                                 "ADD KEY `type` (`type`)"
+                                 "MODIFY `id` int(11) NOT NULL AUTO_INCREMENT");
+
+const auto information_key = QString("ALTER TABLE `information`"
+                                     "ADD PRIMARY KEY (`id`)"
+                                     "MODIFY `id` int(11) NOT NULL AUTO_INCREMENT");
+
 #endif // DBREQUESTSINIT_H

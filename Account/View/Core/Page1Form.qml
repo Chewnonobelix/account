@@ -556,7 +556,7 @@ Page {
         }
 
         onOpened: {
-            openDate = cal.selectedDates.length === 0 ? Date() : Date.fromLocaleString(Qt.locale(), cal.selectedDates[0], "dd-MM-yyyy")
+            openDate = cal.selectedDates.length === 0 ? new Date() : Date.fromLocaleString(Qt.locale(), cal.selectedDates[0], "dd-MM-yyyy")
         }
     }
     
