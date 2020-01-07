@@ -183,7 +183,7 @@ GridLayout {
         CategoryItem {
             id: category
             objectName: "category"
-            enabled: !info.opening
+            enabled: !grid.opening
             
             height: parent.height * 0.59
             width: parent.width

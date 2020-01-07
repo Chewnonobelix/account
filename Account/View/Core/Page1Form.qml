@@ -31,7 +31,7 @@ Page {
     GridLayout {
         id: grid
         anchors.fill: parent
-        rowSpacing: ageTable.height * 0.02
+        rowSpacing: pageTable.height * 0.02
         columnSpacing: pageTable.width * 0.02
         anchors.topMargin: pageTable.height * 0.02
         anchors.bottomMargin: pageTable.height * 0.02

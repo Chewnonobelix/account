@@ -92,7 +92,7 @@ Rectangle {
         objectName: "chart"
         antialiasing: true
 
-        property int estimatedCount: estimatedChart.count
+        property int estimatedCount: series(qsTr("estimated")) ? series(qsTr("estimated")).count : 0
 
         backgroundColor: "transparent"
 

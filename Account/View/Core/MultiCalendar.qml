@@ -277,7 +277,7 @@ Calendar {
                 height: parent.height * .05
                 anchors.topMargin: 2
                 anchors.top: parent.top
-                property double total: calendarPreview.find(parent.day).value
+                property double total: isFind ? calendarPreview.find(parent.day).value : 0
                 property bool isFind: calendarPreview.find(parent.day) !== undefined
 
                 color: {
@@ -296,7 +296,7 @@ Calendar {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 2
                 id: totalRect
-                property double total: totalPreview.find(parent.day).value
+                property double total: isFind ? totalPreview.find(parent.day).value : 0
                 property bool isFind: totalPreview.find(parent.day) !== undefined
                 color: {
                         color:  parent.delCurrentMonth && isFind ? total > 0 ? "green" : "red" : "transparent"

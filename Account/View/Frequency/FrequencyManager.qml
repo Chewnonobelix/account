@@ -106,8 +106,8 @@ Rectangle {
 //                    currentIndex = Qt.binding(function(){ return count === 0 ? -1 : currentIndex })
                     ref.entry = Qt.binding(function() {return currentIndex !== -1 ? model[currentIndex].reference : null})
 
-                    groupText.nb = Qt.binding(function() {return model[currentIndex].nbGroup})
-                    countText.nb = Qt.binding(function() {return model[currentIndex].listEntries().length})
+                    groupText.nb = Qt.binding(function() {return model[currentIndex] ? model[currentIndex].nbGroup : 0})
+                    countText.nb = Qt.binding(function() {return model[currentIndex] ? model[currentIndex].listEntries().length : 0})
                     pageChanger.maxPage = Qt.binding(function() {return countText.nb / 100 + 1})
                     whenCombo.enabled = Qt.binding(function() {return count !== 0})
                 }

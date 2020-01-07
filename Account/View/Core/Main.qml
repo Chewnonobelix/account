@@ -292,7 +292,7 @@ ApplicationWindow {
                 text: qsTr("&Delete account")
                 font.family: pageStyle.core.name
                 font.pixelSize: pageStyle.core.size
-                enabled: accountSelect.model.length > 0
+                enabled: accountSelect.model && accountSelect.model.length > 0
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
@@ -426,7 +426,7 @@ Current Version beta 0.9")
                         font.family: pageStyle.title.name
                         font.pixelSize: pageStyle.title.size
                         verticalAlignment: Text.AlignVCenter
-                        fontSizeMode: Text.Fit0
+                        fontSizeMode: Text.Fit
                     }
 
                     background: Rectangle {
@@ -503,9 +503,9 @@ Current Version beta 0.9")
         color: "transparent"
         id: head
         objectName: "head"
-        property string accountName
-        property var total
-        property var selectionTotal
+        property string accountName: ""
+        property var total: 0
+        property var selectionTotal: 0
 
         RowLayout {
             anchors.left: parent.left
@@ -520,8 +520,7 @@ Current Version beta 0.9")
                 font.family: pageStyle.title.name
                 padding: 10
                 fontSizeMode: Text.Fit
-                color: accountSelect.model.length
-                       > 0 ? head.total.value > 0 ? "green" : "red" : "transparent"
+                color: accountSelect.model && accountSelect.model.length > 0 ? head.total.value > 0 ? "green" : "red" : "transparent"
                 Layout.preferredWidth: parent.width * .5
             }
 
@@ -533,7 +532,7 @@ Current Version beta 0.9")
                 font.pixelSize: pageStyle.title.size
                 font.family: pageStyle.title.name
                 padding: 10
-                color: accountSelect.model.length
+                color: accountSelect.model && accountSelect.model.length
                        > 0 ? head.selectionTotal.value > 0 ? "green" : "red" : "transparent"
                 Layout.preferredWidth: parent.width * .5
             }
@@ -546,9 +545,9 @@ Current Version beta 0.9")
             height: parent.height
             font.family: pageStyle.core.name
             font.pixelSize: pageStyle.core.size
-            enabled: accountSelect.model.length > 0
+            enabled: model.length > 0
             signal s_currentTextChange(string text)
-
+            model: []
 
             ToolTip.text: qsTr("Select account")
             ToolTip.delay: 500
@@ -847,7 +846,8 @@ Current Version beta 0.9")
                 text: qsTr("Delete") + " " + account + " ?"
                 font.family: pageStyle.title.name
                 font.pixelSize: pageStyle.title.size
-                anchors.horizontalCenter: parent.width / 2
+                anchors.horizontalCenter: parent.horizontalCenter
+                
             }
 
             Button {

@@ -5,7 +5,7 @@ SpinBox {
     id: spinbox
     from: 0
     value: 0
-    to: 100000000000
+    to: 100000000
     stepSize: 10
     editable: true
 

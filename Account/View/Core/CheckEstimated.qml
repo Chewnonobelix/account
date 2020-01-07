@@ -45,7 +45,7 @@ Popup {
             clip: true
             Repeater {
                 objectName: "repeater"
-                model: checkerModel
+                model: []
                 clip: true
                 delegate: Row {
                     id: row
