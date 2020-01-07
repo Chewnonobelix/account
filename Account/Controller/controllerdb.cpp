@@ -229,6 +229,7 @@ bool ControllerDB::addEntry(const Entry & e)
         m_addEntry->bindValue(":date", QVariant(e.date()));
         m_addEntry->bindValue(":type", QVariant(e.type()));
         m_addEntry->bindValue(":id", QVariant());
+        m_addEntry->bindValue(":profile",m_currentProfile);
 
         ret = m_addEntry->exec();
         int id = m_addEntry->lastInsertId().toInt();
@@ -257,6 +258,7 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
         return res;
 
     m_selectEntry->bindValue(":a", QVariant(account));
+    m_selectEntry->bindValue(":p", m_currentProfile);
     if(m_selectEntry->exec())
     {
         qDebug()<<"Find?";
