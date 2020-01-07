@@ -125,7 +125,7 @@ void ControllerDB::prepareBudget()
                          "VALUES (:id, :account, :category, :reference, :profile)");
 
     m_updateBudget->prepare("UPDATE budget"
-                            "SET (account=:a, category=:c, reference=:r"
+                            "SET (category=:c, reference=:r)"
                             "WHERE (id=:id)");
 
     m_removeBudget->prepare("DELETE FROM budget"
@@ -136,9 +136,16 @@ void ControllerDB::prepareBudget()
     
     m_selectSubBudget->prepare("SELECT * FROM subbudget"
                                "WHERE idBudget=:idb");
-    //TODO
-    //Targets requests
-    //SUB requests
+    
+    m_updateSubbudget->prepare("UPDATE subbudget"
+                               "SET (frequency=:freq, target=:target)"
+                               "WHERE idBudget=:idb AND fromDate=:date");
+    
+    m_removeSubbudget->prepare("DELETE FROM subbudget"
+                               "WHERE idBudget:idb AND fromDate=:date");
+    
+    m_addSubbudget->prepare("INSERT INTO subbudget (ID, idBudget, frequency, target, fromDate)"
+                            "VALUES (:id, :idb, :frequency, :target, :date");
 }
 
 void ControllerDB::prepareFrequency()

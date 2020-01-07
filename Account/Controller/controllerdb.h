@@ -46,6 +46,9 @@ private:
     SqlQuery m_selectBudget;
     SqlQuery m_updateBudget;
     SqlQuery m_selectSubBudget;
+    SqlQuery m_updateSubbudget;
+    SqlQuery m_removeSubbudget;
+    SqlQuery m_addSubbudget;
     
     //TODO
     SqlQuery m_addFrequency;
