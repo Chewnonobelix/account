@@ -17,7 +17,7 @@ const auto budget_table = QString("CREATE TABLE `budget` ("
                                       "`id` int(11) NOT NULL,"
                                       "`category` int(11) NOT NULL,"
                                       "`reference` date NOT NULL,"
-                                      "`profile` varchar(200) NOT NULL DEFAULT 'Default'",
+                                      "`profile` varchar(200) NOT NULL DEFAULT 'Default',"
                                       "`account` varchar(200) NOT NULL)");
 
 const auto categories_table = QString("CREATE TABLE `categories` ("
