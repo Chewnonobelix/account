@@ -26,6 +26,7 @@ bool ControllerDB::init()
     m_db.setPort(3306);
     if(m_db.open())
     {
+        prepareProfile();
         prepareEntry();
         prepareInformation();
         prepareAccount();
@@ -44,6 +45,10 @@ void ControllerDB::prepareEntry()
     m_addEntry = SqlQuery::create(m_db);
     m_removeEntry = SqlQuery::create(m_db);
     m_updateEntry = SqlQuery::create(m_db);
+    m_selectMetadata = SqlQuery::create(m_db);
+    m_insertMetadata = SqlQuery::create(m_db);
+    m_removeMetadata = SqlQuery::create(m_db);
+    m_updateMetadata = SqlQuery::create(m_db);
 
     m_selectEntry->prepare("SELECT * FROM account AS a"
                            "WHERE a.account=:a AND a.profile=:p");
@@ -126,6 +131,9 @@ void ControllerDB::prepareBudget()
     m_selectBudget = SqlQuery::create(m_db);
     m_updateBudget = SqlQuery::create(m_db);
     m_selectSubBudget = SqlQuery::create(m_db);
+    m_removeSubbudget = SqlQuery::create(m_db);
+    m_updateSubbudget = SqlQuery::create(m_db);
+    m_addSubbudget = SqlQuery::create(m_db);
 
     m_addBudget->prepare("INSERT INTO budget (id, account, category, reference, profile)"
                          "VALUES (:id, :account, :category, :reference, :profile)");
@@ -160,17 +168,19 @@ void ControllerDB::prepareFrequency()
     m_removeFrequency = SqlQuery::create(m_db);
     m_selectFrequency = SqlQuery::create(m_db);
     m_updateFrequency = SqlQuery::create(m_db);
-    //TODO
-    //Reference entries
-    //Linkef entries
+    m_addFrequencyReference = SqlQuery::create(m_db);
+    m_removeFrequencyReference = SqlQuery::create(m_db);
+    m_selectFrequencyReference = SqlQuery::create(m_db);
+    m_updateFrequencyReference = SqlQuery::create(m_db);
+    
     m_selectFrequency->prepare("SELECT * FROM frequency"
-                               "WHERE account=:a");
+                               "WHERE account=:a AND profile=:profile");
 
     m_addFrequency->prepare("INSERT INTO frequency (ID, freq, nbGroup"
                             "VALUES(:id, :freq, :nbGroup)");
 
     m_removeFrequency->prepare("DELETE FROM frequency"
-                               "WHERE (ID=:id" );
+                               "WHERE (ID=:id)" );
 
     m_updateBudget->prepare("UPDATE frequency"
                             "SET (freq=:f, nbGroup=:ng)"

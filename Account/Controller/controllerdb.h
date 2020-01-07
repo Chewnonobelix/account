@@ -52,12 +52,16 @@ private:
     SqlQuery m_removeSubbudget;
     SqlQuery m_addSubbudget;
     
-    //TODO
     SqlQuery m_addFrequency;
     SqlQuery m_removeFrequency;
     SqlQuery m_selectFrequency;
     SqlQuery m_updateFrequency;
+    SqlQuery m_addFrequencyReference;
+    SqlQuery m_removeFrequencyReference;
+    SqlQuery m_selectFrequencyReference;
+    SqlQuery m_updateFrequencyReference;
 
+    //TODO
     SqlQuery m_addCommon;
     SqlQuery m_removeCommon;
     SqlQuery m_selectCommon;
