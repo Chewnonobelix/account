@@ -22,7 +22,7 @@ Button {
     property bool isOpen: pop.opened
     
     function extern(d) {
-        dateAdding.selectedDate = Qt.formatDateTime(d, "dd-MM-yyyy")
+        dateAdding.selectedDate = Date.fromLocaleString(Qt.locale(), d, "dd-MM-yyyy")
     }
 
     onClicked: {
