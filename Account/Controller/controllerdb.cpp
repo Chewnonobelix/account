@@ -66,7 +66,7 @@ void ControllerDB::prepareEntry()
     m_updateMetadata = SqlQuery::create(m_db);
     
     qDebug()<<"SE"<<m_selectEntry->prepare("SELECT * FROM account "
-                                           "WHERE account=:a AND profile=:p")<<m_selectEntry->lastError();
+                                           "WHERE account=:a AND profile=:p AND commonExpanse IS NULL AND frequencyReference IS NULL")<<m_selectEntry->lastError();
     
     qDebug()<<"AE"<<m_addEntry->prepare("INSERT INTO account (account, value, date_eff, type, profile) "
                                         "VALUES (:account,:value,:date,:type, :profile)")<<m_addEntry->lastError();
@@ -120,8 +120,16 @@ void ControllerDB::prepareAccount()
     
     qDebug()<<"SA"<<m_accounts->prepare("SELECT DISTINCT account FROM account WHERE profile=:profile")<<m_accounts->lastError();
     
-    qDebug()<<"RA"<<m_removeAccount->prepare("DELETE FROM account, categories, budget, frequency, commonExpanse "
-                                             "WHERE account=:a AND profile=:profile")<<m_removeAccount->lastError();
+//    qDebug()<<"RA"<<m_removeAccount->prepare("DELETE FROM account "
+//                                             "WHERE account=:a AND profile=:profile "
+//                                             "DELETE FROM categories "
+//                                             "WHERE account=:a AND profile=:profile "
+//                                             "DELETE FROM budget "
+//                                             "WHERE account=:a AND profile=:profile "
+//                                             "DELETE FROM frequency "
+//                                             "WHERE account=:a AND profile=:profile "
+//                                             "DELETE FROM commonExpanse "
+//                                             "WHERE account=:a AND profile=:profile ")<<m_removeAccount->lastError();
     
 }
 
@@ -220,11 +228,9 @@ void ControllerDB::prepareProfile()
     
     qDebug()<<"SP"<< m_selectProfiles->prepare("SELECT DISTINCT profile FROM account")<<m_selectProfiles->lastError();
     
-    qDebug()<<"RP"<<m_removeProfile->prepare("DELETE FROM account, categories, budget, frequency, commonExpanse "
-                                             "WHERE profile=:profile")<<m_removeProfile->lastError();
+//    qDebug()<<"RP"<<m_removeProfile->prepare("DELETE FROM account, categories, budget, frequency, commonExpanse "
+//                                             "WHERE profile=:profile")<<m_removeProfile->lastError();
 }
-
-
 
 bool ControllerDB::isConnected() const
 {
