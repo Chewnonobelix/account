@@ -270,7 +270,7 @@ Page {
                             }
                         }
                         Label {
-                            property string est: view.model[styleData.row].info.estimated ? "*" : ""
+                            property string est: view.model[styleData.row] && view.model[styleData.row].info.estimated ? "*" : ""
                             
                             text: styleData.value === "income" ? "+" + est : "-" + est
                             font.family: pageStyle.core.name
