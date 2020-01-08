@@ -75,7 +75,7 @@ void ControllerDB::prepareEntry()
                                            "WHERE id=:id")<<m_removeEntry->lastError();
     
     qDebug()<<"UE"<<m_updateEntry->prepare("UPDATE account "
-                                           "SET account=:a, value=:v, date_eff=:d, type=:t "
+                                           "SET value=:v "
                                            "WHERE id=:id")<<m_updateEntry->lastError();
     
     qDebug()<<"AM"<<m_insertMetadata->prepare("INSERT INTO entrymetadata (entry, name, value) "
@@ -103,14 +103,14 @@ void ControllerDB::prepareInformation()
                                               "VALUES(:ide, :title, :prev, :cat)")<<m_addInformation->lastError();
     
     qDebug()<<"UI"<<m_updateInfo->prepare("UPDATE information "
-                                          "SET info=:title , prev=:estimated "
+                                          "SET info=:title , prev=:estimated , category=:cat "
                                           "WHERE id = :id")<<m_updateInfo->lastError();
     
     qDebug()<<"RI"<<m_removeInformation->prepare("DELETE FROM information "
                                                  "WHERE idEntry=:ide")<<m_removeInformation->lastError();
     
     qDebug()<<"SI"<<m_selectInformation->prepare("SELECT * FROM information "
-                                                 "WHERE id=:ide")<<m_selectInformation->lastError();
+                                                 "WHERE idEntry=:ide")<<m_selectInformation->lastError();
 }
 
 void ControllerDB::prepareAccount()
@@ -322,6 +322,24 @@ QStringList ControllerDB::selectAccount()
     return res;
 }
 
+bool ControllerDB::updateEntry(const Entry & e)
+{
+    bool ret = false;
+    
+    if(isConnected())
+    {
+        m_updateEntry->bindValue(":v", e.value());
+        m_updateEntry->bindValue(":id", e.id());
+        
+        ret = m_updateEntry->exec();
+        
+        ret &= updateInfo(e);
+    }
+    
+    
+    return ret;
+}
+
 bool ControllerDB::updateInfo(const Entry & e)
 {
     bool ret = false;
@@ -331,6 +349,13 @@ bool ControllerDB::updateInfo(const Entry & e)
         m_updateInfo->bindValue(":id", e.info().id());
         m_updateInfo->bindValue(":title", e.info().title());
         m_updateInfo->bindValue(":estimated", e.info().estimated());
+        
+        m_selectCategory->bindValue(":account", m_currentAccount);
+        m_selectCategory->bindValue(":profile", m_currentProfile);
+        if(m_selectCategory->exec())
+            while(m_selectCategory->next())
+                if(e.info().category() == m_selectCategory->value("name").toString())
+                    m_updateInfo->bindValue(":cat", m_selectCategory->value("id"));
         
         ret = m_updateInfo->exec();
     }
@@ -442,31 +467,6 @@ bool ControllerDB::updateBudget(const Budget &)
 {
     //TODO
     return false;
-}
-
-bool ControllerDB::updateEntry(const Entry & e)
-{
-    //    m_updateEntry->prepare("UPDATE account"
-    //                           "SET (account=:a, value=:v, date_eff=:d, type=:t)"
-    //                           "WHERE ID=:id");
-    
-    bool ret = false;
-    
-    if(isConnected())
-    {
-        m_updateEntry->bindValue(":a", e.account());
-        m_updateEntry->bindValue(":v", e.value());
-        m_updateEntry->bindValue(":d", e.date());
-        m_updateEntry->bindValue(":t", e.type());
-        m_updateEntry->bindValue(":id", e.id());
-        
-        ret = m_updateEntry->exec();
-        
-        ret &= updateInfo(e);
-    }
-    
-    
-    return ret;
 }
 
 bool ControllerDB::addFrequency(const Frequency &)
