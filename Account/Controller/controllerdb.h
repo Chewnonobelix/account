@@ -70,6 +70,7 @@ private:
     
 
     QString m_currentProfile;
+    QString m_currentAccount;
 
     void prepareEntry();
     void prepareInformation();

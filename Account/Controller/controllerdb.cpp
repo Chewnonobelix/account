@@ -273,7 +273,7 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
     
     if(!isConnected())
         return res;
-    
+    m_currentAccount = account;
     m_selectEntry->bindValue(":a", QVariant(account));
     m_selectEntry->bindValue(":p", m_currentProfile);
     if(m_selectEntry->exec())
@@ -371,10 +371,12 @@ bool ControllerDB::removeAccount(QString name)
 
 bool ControllerDB::addCategory(QString n, QString t)
 {
-    if(isConnected())
+    if(isConnected() && !n.isEmpty())
     {
         m_addCategory->bindValue(":name", n);
         m_addCategory->bindValue(":type", t);
+        m_addCategory->bindValue(":account", m_currentAccount);
+        m_addCategory->bindValue(":profile", m_currentProfile);
         
         return m_addCategory->exec();
     }
@@ -387,6 +389,8 @@ bool ControllerDB::removeCategory(QString name)
     if(isConnected())
     {
         m_removeCategory->bindValue(":name", name);
+        m_removeCategory->bindValue(":account", m_currentAccount);
+        m_removeCategory->bindValue(":profile", m_currentProfile);
         return m_removeCategory->exec();
     }
     
@@ -396,12 +400,19 @@ bool ControllerDB::removeCategory(QString name)
 QMultiMap<QString, QString> ControllerDB::selectCategory()
 {
     QMultiMap<QString, QString> ret;
+    m_selectCategory->bindValue(":account", m_currentAccount);
+    m_selectCategory->bindValue(":profile", m_currentProfile);
+    
     if(isConnected() && m_selectCategory->exec())
     {
         while(m_selectCategory->next())
         {
             QString name = m_selectCategory->value("name").toString();
             QString type = m_selectCategory->value("type").toString();
+            
+            if(name.isEmpty())
+                continue;
+            
             ret.insert(type, name);
         }
     }
