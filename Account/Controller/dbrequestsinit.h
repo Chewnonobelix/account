@@ -13,6 +13,14 @@ const auto account_table = QString("CREATE TABLE `account` ("
                                        "`commonExpanse` INTEGER DEFAULT NULL,"
                                        "`frequencyReference` INTEGER DEFAULT NULL)");
 
+const auto account_trigger_delete = QString("CREATE TRIGGER delete_entry BEFORE DELETE ON account "
+                                            "BEGIN "
+                                            "DELETE FROM information "
+                                            "WHERE idEntry=OLD.id; "
+                                            "DELETE FROM entrymetadata "
+                                            "WHERE entry=OLD.id; "
+                                            "END;");
+
 const auto entrymetadata_table = QString("CREATE TABLE `entrymetadata` ("
                                              "`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
                                              "`entry` INTEGER NOT NULL REFERENCES account(id), "
