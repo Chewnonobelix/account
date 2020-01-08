@@ -8,7 +8,6 @@ ControllerDB::ControllerDB(): m_currentProfile("Default")
 ControllerDB::ControllerDB(const ControllerDB& d): InterfaceDataSave(d), m_currentProfile(d.m_currentProfile)
 {}
 
-
 ControllerDB::~ControllerDB()
 {
     if(isConnected())
@@ -19,19 +18,25 @@ ControllerDB::~ControllerDB()
 
 bool ControllerDB::init()
 {
+    
     m_db = QSqlDatabase::addDatabase("QSQLITE");
-
+    
     m_db.setDatabaseName("account");
     m_db.open();
-
+    
     if(m_db.tables().isEmpty())
     {
-        m_db.exec(account_table);
-        m_db.exec(account_key);
-        m_db.exec(information_table);
-        m_db.exec(information_key);
+        qDebug()<<"CT"<<m_db.exec(categories_table).lastError();
+        qDebug()<<"FT"<<m_db.exec(frequency_table).lastError();
+        qDebug()<<"BT"<<m_db.exec(budget_table).lastError();
+        qDebug()<<"SBT"<<m_db.exec(subbudget_table).lastError();
+        qDebug()<<"CEXT"<<m_db.exec(commonExpanse_table).lastError();
+        qDebug()<<"AT"<<m_db.exec(account_table).lastError();
+        qDebug()<<"EMT"<<m_db.exec(entrymetadata_table).lastError();
+        qDebug()<<"CENT"<<m_db.exec(commonEntry_table).lastError();
+        qDebug()<<"IT"<<m_db.exec(information_table).lastError();
     }
-
+    
     if(isConnected())
     {
         prepareProfile();
@@ -40,10 +45,12 @@ bool ControllerDB::init()
         prepareAccount();
         prepareCategory();
         prepareBudget();
+        prepareFrequency();
+        prepareCommon();
     }
     
     qDebug()<<"DB Connected"<<isConnected()<<m_db.tables();
-
+    
     return isConnected();
 }
 
@@ -57,32 +64,32 @@ void ControllerDB::prepareEntry()
     m_insertMetadata = SqlQuery::create(m_db);
     m_removeMetadata = SqlQuery::create(m_db);
     m_updateMetadata = SqlQuery::create(m_db);
-
-    m_selectEntry->prepare("SELECT * FROM account");
-//                           "WHERE account=:a AND profile=:p");
-
-    m_addEntry->prepare("INSERT INTO account (id, account, value, date_eff, type, profile) "
-                        "VALUES (:id, :account,:value,:date,:type, :profile)");
-
-    m_removeEntry->prepare("DELETE FROM account"
-                           "WHERE id=:id");
-
-    m_updateEntry->prepare("UPDATE account"
-                           "SET (account=:a, value=:v, date_eff=:d, type=:t)"
-                           "WHERE id=:id");
     
-    m_insertMetadata->prepare("INSERT INTO entrymetadata (id, entry, name, value)"
-                              "VALUES (:id, :entry, :name, :value");
+    qDebug()<<"SE"<<m_selectEntry->prepare("SELECT * FROM account "
+                                           "WHERE account=:a AND profile=:p")<<m_selectEntry->lastError();
     
-    m_updateMetadata->prepare("UPDATE entrymetada"
-                              "SET (value=:value)"
-                              "WHERE entry=:entry AND name=:name");
+    qDebug()<<"AE"<<m_addEntry->prepare("INSERT INTO account (account, value, date_eff, type, profile) "
+                                        "VALUES (:account,:value,:date,:type, :profile)")<<m_addEntry->lastError();
     
-    m_selectMetadata->prepare("SELECT * FROM entrymetadata"
-                              "WHERE entry=:ide");
+    qDebug()<<"RE"<<m_removeEntry->prepare("DELETE FROM account "
+                                           "WHERE id=:id")<<m_removeEntry->lastError();
     
-    m_removeMetadata->prepare("DELETE FROM entrymetadata"
-                              "WHERE entry=:ide AND name=:name");
+    qDebug()<<"UE"<<m_updateEntry->prepare("UPDATE account "
+                                           "SET account=:a, value=:v, date_eff=:d, type=:t "
+                                           "WHERE id=:id")<<m_updateEntry->lastError();
+    
+    qDebug()<<"AM"<<m_insertMetadata->prepare("INSERT INTO entrymetadata (entry, name, value) "
+                                              "VALUES (:entry, :name, :value)")<<m_insertMetadata->lastError();
+    
+    qDebug()<<"UM"<<m_updateMetadata->prepare("UPDATE entrymetadata "
+                                              "SET value=:value "
+                                              "WHERE entry=:entry AND name=:name")<<m_updateMetadata->lastError();
+    
+    qDebug()<<"SM"<<m_selectMetadata->prepare("SELECT * FROM entrymetadata "
+                                              "WHERE entry=:ide")<<m_selectMetadata->lastError();
+    
+    qDebug()<<"RM"<<m_removeMetadata->prepare("DELETE FROM entrymetadata "
+                                              "WHERE entry=:ide AND name=:name")<<m_removeMetadata->lastError();
 }
 
 void ControllerDB::prepareInformation()
@@ -91,30 +98,31 @@ void ControllerDB::prepareInformation()
     m_addInformation = SqlQuery::create(m_db);
     m_removeInformation = SqlQuery::create(m_db);
     m_selectInformation = SqlQuery::create(m_db);
-
-    m_addInformation->prepare("INSERT INTO information (id, id_entry, info, prev, category)"
-                              "VALUES(:id, :ide, :title, :prev, :cat)");
-
-    m_updateInfo->prepare("UPDATE information "
-                           "SET (info=:title, prev=:estimated)"
-                           "WHERE id=:id AND id_entry=:ide");
-
-    m_removeInformation->prepare("DELETE FROM information"
-                                 "WHERE id_entry=:ide");
-
-    m_selectInformation->prepare("SELECT * FROM information"
-                                 "WHERE id_entry=:ide");
+    
+    qDebug()<<"AI"<<m_addInformation->prepare("INSERT INTO information (idEntry, info, prev, category) "
+                                              "VALUES(:ide, :title, :prev, :cat)")<<m_addInformation->lastError();
+    
+    qDebug()<<"UI"<<m_updateInfo->prepare("UPDATE information "
+                                          "SET info=:title , prev=:estimated "
+                                          "WHERE id = :id")<<m_updateInfo->lastError();
+    
+    qDebug()<<"RI"<<m_removeInformation->prepare("DELETE FROM information "
+                                                 "WHERE idEntry=:ide")<<m_removeInformation->lastError();
+    
+    qDebug()<<"SI"<<m_selectInformation->prepare("SELECT * FROM information "
+                                                 "WHERE id=:ide")<<m_selectInformation->lastError();
 }
 
 void ControllerDB::prepareAccount()
 {
     m_accounts = SqlQuery::create(m_db);
     m_removeAccount = SqlQuery::create(m_db);
- 
-    m_accounts->prepare("SELECT DISTINCT account FROM account WHERE profile=:profile");
-
-    m_removeAccount->prepare("DELETE FROM account, categories, budget, frequency, commonExpanse"
-                             "WHERE account=:a AND profile=:profile");
+    
+    qDebug()<<"SA"<<m_accounts->prepare("SELECT DISTINCT account FROM account WHERE profile=:profile")<<m_accounts->lastError();
+    
+    qDebug()<<"RA"<<m_removeAccount->prepare("DELETE FROM account, categories, budget, frequency, commonExpanse "
+                                             "WHERE account=:a AND profile=:profile")<<m_removeAccount->lastError();
+    
 }
 
 void ControllerDB::prepareCategory()
@@ -122,14 +130,15 @@ void ControllerDB::prepareCategory()
     m_addCategory = SqlQuery::create(m_db);
     m_removeCategory = SqlQuery::create(m_db);
     m_selectCategory = SqlQuery::create(m_db);
-
-    m_addCategory->prepare("INSERT INTO categories(name, type, account, profile)"
-                           "VALUES(:name, :type, :account, :profile)");
-
-    m_removeCategory->prepare("DELETE FROM categories"
-                              "WHERE name = :name AND account=:account AND profile=:profile");
-
-    m_selectCategory->prepare("SELECT * FROM categories WHERE account=:account AND profile=:profile");
+    
+    qDebug()<<"AC"<<m_addCategory->prepare("INSERT INTO categories(name, type, account, profile) "
+                                           "VALUES(:name, :type, :account, :profile)")<<m_addCategory->lastError();
+    
+    qDebug()<<"RC"<<m_removeCategory->prepare("DELETE FROM categories "
+                                              "WHERE name = :name AND account=:account AND profile=:profile")<<m_removeCategory->lastError();
+    
+    qDebug()<<"SC"<<m_selectCategory->prepare("SELECT * FROM categories "
+                                              "WHERE account=:account AND profile=:profile")<<m_selectCategory->lastError();
 }
 
 void ControllerDB::prepareBudget()
@@ -142,32 +151,32 @@ void ControllerDB::prepareBudget()
     m_removeSubbudget = SqlQuery::create(m_db);
     m_updateSubbudget = SqlQuery::create(m_db);
     m_addSubbudget = SqlQuery::create(m_db);
-
-    m_addBudget->prepare("INSERT INTO budget (id, account, category, reference, profile)"
-                         "VALUES (:id, :account, :category, :reference, :profile)");
-
-    m_updateBudget->prepare("UPDATE budget"
-                            "SET (category=:c, reference=:r)"
-                            "WHERE (id=:id)");
-
-    m_removeBudget->prepare("DELETE FROM budget"
-                            "WHERE id=:id");
-
-    m_selectBudget->prepare("SELECT * FROM budget"
-                            "WHERE account=:a AND profile=:profile");
     
-    m_selectSubBudget->prepare("SELECT * FROM subbudget"
-                               "WHERE idBudget=:idb");
+    qDebug()<<"AB"<<m_addBudget->prepare("INSERT INTO budget (account, category, reference, profile)"
+                                         "VALUES (:account, :category, :reference, :profile)")<<m_addBudget->lastError();
     
-    m_updateSubbudget->prepare("UPDATE subbudget"
-                               "SET (frequency=:freq, target=:target)"
-                               "WHERE idBudget=:idb AND fromDate=:date");
+    qDebug()<<"UB"<<m_updateBudget->prepare("UPDATE budget "
+                                            "SET category=:c, reference=:r "
+                                            "WHERE (id=:id)")<<m_updateBudget->lastError();
     
-    m_removeSubbudget->prepare("DELETE FROM subbudget"
-                               "WHERE idBudget:idb AND fromDate=:date");
+    qDebug()<<"RB"<<m_removeBudget->prepare("DELETE FROM budget "
+                                            "WHERE id=:id")<<m_removeBudget->lastError();
     
-    m_addSubbudget->prepare("INSERT INTO subbudget (ID, idBudget, frequency, target, fromDate)"
-                            "VALUES (:id, :idb, :frequency, :target, :date");
+    qDebug()<<"SB"<<m_selectBudget->prepare("SELECT * FROM budget "
+                                            "WHERE account=:a AND profile=:profile")<<m_selectBudget->lastError();
+    
+    qDebug()<<"SSB"<<m_selectSubBudget->prepare("SELECT * FROM subbudget "
+                                                "WHERE idBudget=:idb")<<m_selectSubBudget->lastError();
+    
+    qDebug()<<"USB"<<m_updateSubbudget->prepare("UPDATE subbudget "
+                                                "SET frequency=:freq, target=:target "
+                                                "WHERE idBudget=:idb AND fromDate=:date")<<m_updateSubbudget->lastError();
+    
+    qDebug()<<"RSB"<<m_removeSubbudget->prepare("DELETE FROM subbudget "
+                                                "WHERE idBudget=:idb AND fromDate=:date")<<m_removeSubbudget->lastError();
+    
+    qDebug()<<"ASB"<<m_addSubbudget->prepare("INSERT INTO subbudget (idBudget, frequency, target, fromDate) "
+                                             "VALUES (:idb, :frequency, :target, :date)")<<m_addSubbudget->lastError();
 }
 
 void ControllerDB::prepareFrequency()
@@ -181,18 +190,18 @@ void ControllerDB::prepareFrequency()
     m_selectFrequencyReference = SqlQuery::create(m_db);
     m_updateFrequencyReference = SqlQuery::create(m_db);
     
-    m_selectFrequency->prepare("SELECT * FROM frequency"
-                               "WHERE account=:a AND profile=:profile");
-
-    m_addFrequency->prepare("INSERT INTO frequency (ID, freq, nbGroup"
-                            "VALUES(:id, :freq, :nbGroup)");
-
-    m_removeFrequency->prepare("DELETE FROM frequency"
-                               "WHERE (ID=:id)" );
-
-    m_updateBudget->prepare("UPDATE frequency"
-                            "SET (freq=:f, nbGroup=:ng)"
-                            "WHERE (ID=:id");
+    qDebug()<<"SF"<<m_selectFrequency->prepare("SELECT * FROM frequency "
+                                               "WHERE account=:a AND profile=:profile")<<m_selectFrequency->lastError();
+    
+    qDebug()<<"AF"<<m_addFrequency->prepare("INSERT INTO frequency (ID, freq, nbGroup) "
+                                            "VALUES(:id, :freq, :nbGroup)")<<m_addFrequency->lastError();
+    
+    qDebug()<<"RF"<<m_removeFrequency->prepare("DELETE FROM frequency "
+                                               "WHERE (id=:id)" )<<m_removeFrequency->lastError();
+    
+    qDebug()<<"UF"<<m_updateFrequency->prepare("UPDATE frequency "
+                                               "SET freq=:f, nbGroup=:ng "
+                                               "WHERE id=:id")<<m_updateFrequency->lastError();
 }
 
 void ControllerDB::prepareCommon()
@@ -209,10 +218,10 @@ void ControllerDB::prepareProfile()
     m_selectProfiles = SqlQuery::create(m_db);
     m_removeProfile = SqlQuery::create(m_db);
     
-    m_selectProfiles->prepare("SELECT DISTINCT profile FROM account");
+    qDebug()<<"SP"<< m_selectProfiles->prepare("SELECT DISTINCT profile FROM account")<<m_selectProfiles->lastError();
     
-    m_removeProfile->prepare("DELETE FROM account, categories, budget, frequency, commonExpanse"
-                             "WHERE profile=:profile");
+    qDebug()<<"RP"<<m_removeProfile->prepare("DELETE FROM account, categories, budget, frequency, commonExpanse "
+                                             "WHERE profile=:profile")<<m_removeProfile->lastError();
 }
 
 
@@ -231,70 +240,66 @@ bool ControllerDB::addEntry(const Entry & e)
         m_addEntry->bindValue(":value", QVariant(e.value()));
         m_addEntry->bindValue(":date", QVariant(e.date()));
         m_addEntry->bindValue(":type", QVariant(e.type()));
-        m_addEntry->bindValue(":id", QVariant(0));
         m_addEntry->bindValue(":profile",m_currentProfile);
-
+        
         ret = m_addEntry->exec();
-        qDebug()<<"Add"<<ret<<m_addEntry->lastQuery()<<m_addEntry->lastInsertId()<<m_addEntry->lastError();
         int id = m_addEntry->lastInsertId().toInt();
-
-        if(ret && id > 0)
+        
+        if(ret && id >= 0)
         {
-            m_addInformation->bindValue(":id", QVariant(0));
+            
             m_addInformation->bindValue(":ide", id);
             m_addInformation->bindValue(":title", e.info().title());
             m_addInformation->bindValue(":prev",e.info().estimated());
             m_addInformation->bindValue(":cat",e.info().category());
-            qDebug()<<ret<<id;
-
+            
             ret &= m_addInformation->exec();
-            qDebug()<<ret;
         }
         m_db.commit();
     }
-
+    
     return ret;
 }
 
 QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
 {
     QMultiMap<QDate, Entry> res;
-
+    
     if(!isConnected())
         return res;
-
+    
     m_selectEntry->bindValue(":a", QVariant(account));
     m_selectEntry->bindValue(":p", m_currentProfile);
     if(m_selectEntry->exec())
     {
-        qDebug()<<"Find?";
         while(m_selectEntry->next())
         {
+            if(m_selectEntry->at() < 0)
+                continue;
             Entry t;
             Information i;
             t.setId(m_selectEntry->value("id").toInt());
             t.setDate(m_selectEntry->value("date_eff").toDate());
             t.setValue(m_selectEntry->value("value").toDouble());
             t.setType(m_selectEntry->value("type").toString());
-
+            
             m_selectInformation->bindValue(":ide", t.id());
             bool inf = m_selectInformation->exec();
             if(!inf)
-            {
-                qDebug()<<"INF"<<m_selectInformation->lastError().text();
-                break;
-            }
-
+                continue;
+            
+            m_selectInformation->seek(0);
+            
             i.setId(m_selectInformation->value("id").toInt());
-            i.setIdEntry(m_selectInformation->value("id_entry").toInt());
+            i.setIdEntry(m_selectInformation->value("idEntry").toInt());
             i.setEstimated(m_selectInformation->value("prev").toBool());
             i.setTitle(m_selectInformation->value("info").toString());
-
+            
             t.setInfo(i);
             res.insert(t.date(), t);
         }
     }
-
+    
     return res;
 }
 
@@ -307,7 +312,7 @@ QStringList ControllerDB::selectAccount()
         while(m_accounts->next())
             res<<m_accounts->value("account").toString();
     }
-
+    
     return res;
 }
 
@@ -320,42 +325,41 @@ bool ControllerDB::updateInfo(const Entry & e)
         m_updateInfo->bindValue(":id", e.info().id());
         m_updateInfo->bindValue(":title", e.info().title());
         m_updateInfo->bindValue(":estimated", e.info().estimated());
-
+        
         ret = m_updateInfo->exec();
     }
-
+    
     return ret;
 }
-
 
 bool ControllerDB::removeEntry(const Entry & e)
 {
     bool ret = false;
-
+    
     if(isConnected())
     {
         m_removeInformation->bindValue(":ide", e.id());
         m_removeEntry->bindValue(":id", e.id());
-
+        
         ret = m_removeInformation->exec();
-
+        
         if(ret)
             ret &= m_removeEntry->exec();
     }
-
+    
     return ret;
 }
 
 bool ControllerDB::removeAccount(QString name)
 {
     bool ret = false;
-
+    
     if(isConnected())
     {
         m_removeAccount->bindValue(":a", name);
         ret = m_removeAccount->exec();
     }
-
+    
     return ret;
 }
 
@@ -365,10 +369,10 @@ bool ControllerDB::addCategory(QString n, QString t)
     {
         m_addCategory->bindValue(":name", n);
         m_addCategory->bindValue(":type", t);
-
+        
         return m_addCategory->exec();
     }
-
+    
     return false;
 }
 
@@ -379,7 +383,7 @@ bool ControllerDB::removeCategory(QString name)
         m_removeCategory->bindValue(":name", name);
         return m_removeCategory->exec();
     }
-
+    
     return false;
 }
 
@@ -395,7 +399,7 @@ QMultiMap<QString, QString> ControllerDB::selectCategory()
             ret.insert(type, name);
         }
     }
-
+    
     return ret;
 }
 
@@ -425,12 +429,12 @@ bool ControllerDB::updateBudget(const Budget &)
 
 bool ControllerDB::updateEntry(const Entry & e)
 {
-//    m_updateEntry->prepare("UPDATE account"
-//                           "SET (account=:a, value=:v, date_eff=:d, type=:t)"
-//                           "WHERE ID=:id");
-
+    //    m_updateEntry->prepare("UPDATE account"
+    //                           "SET (account=:a, value=:v, date_eff=:d, type=:t)"
+    //                           "WHERE ID=:id");
+    
     bool ret = false;
-
+    
     if(isConnected())
     {
         m_updateEntry->bindValue(":a", e.account());
@@ -438,13 +442,13 @@ bool ControllerDB::updateEntry(const Entry & e)
         m_updateEntry->bindValue(":d", e.date());
         m_updateEntry->bindValue(":t", e.type());
         m_updateEntry->bindValue(":id", e.id());
-
+        
         ret = m_updateEntry->exec();
-
+        
         ret &= updateInfo(e);
     }
-
-
+    
+    
     return ret;
 }
 
