@@ -36,7 +36,11 @@ bool ControllerDB::init()
         qDebug()<<"CENT"<<m_db.exec(commonEntry_table).lastError();
         qDebug()<<"IT"<<m_db.exec(information_table).lastError();
 
-        qDebug()<<"Trigger delete"<<m_db.exec(account_trigger_delete).lastError();
+        qDebug()<<"Trigger delete entry"<<m_db.exec(account_trigger_delete).lastError();
+        qDebug()<<"Trigger delete frequency"<<m_db.exec(trigger_delete_frequency).lastError();
+        qDebug()<<"Trigger delete category"<<m_db.exec(trigger_delete_category).lastError();
+        qDebug()<<"Trigger delete common expanse"<<m_db.exec(trigger_delete_commonExpanse).lastError();
+        qDebug()<<"Trigger delete common entry"<<m_db.exec(trigger_delete_commonEntry).lastError();
     }
     
     if(isConnected())
