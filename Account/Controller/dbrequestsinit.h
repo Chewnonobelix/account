@@ -37,6 +37,15 @@ const auto categories_table = QString("CREATE TABLE `categories` ("
                                           "`profile` TEXT NOT NULL,"
                                       "CONSTRAINT category_unique UNIQUE(name, account, profile))");
 
+const auto trigger_delete_category = QString("CREATE TRIGGER delete_category BEFORE DELETE ON categories "
+                                             "BEGIN "
+                                             "DELETE FROM budget "
+                                             "WHERE category=OLD.id; "
+                                             "UPDATE information "
+                                             "SET category=NULL "
+                                             "WHERE category=OLD.id;"
+                                             "END;");
+
 const auto information_table = QString("CREATE TABLE `information` ("
                                            "`id` INTEGER NOT NULL  PRIMARY KEY AUTOINCREMENT,"
                                            "`idEntry` INTEGER NOT NULL REFERENCES account(id),"
@@ -69,6 +78,11 @@ const auto frequency_table = QString("CREATE TABLE `frequency` ("
                                          "`account` TEXT NOT NULL"
                                        ")");
 
+const auto trigger_delete_frequency = QString("CREATE TRIGGER delete_frequency BEFORE DELETE ON frequency "
+                                              "BEGIN "
+                                              "DELETE FROM account WHERE frequencyReference=OLD.id; "
+                                              "END;");
+
 const auto commonExpanse_table = QString("CREATE TABLE `commonExpanse` ("
                                              "`id` INTEGER NOT NULL  PRIMARY KEY AUTOINCREMENT,"
                                              "`begin` date NOT NULL,"
@@ -78,12 +92,21 @@ const auto commonExpanse_table = QString("CREATE TABLE `commonExpanse` ("
                                              "`account` TEXT NOT NULL"
                                            ")");
 
+const auto trigger_delete_commonExpanse = QString("CREATE TRIGGER delete_expanse BEFORE DELETE ON commonExpanse "
+                                                  "BEGIN "
+                                                  "DELETE FROM commonEntry WHERE idCommon=OLD.id;"
+                                                  "END;");
+
 const auto commonEntry_table = QString("CREATE TABLE `commonEntry` ("
                                            "`idCommon` INTEGER NOT NULL REFERENCES commonExpanse (id),"
                                            "`name` TEXT NOT NULL,"
                                            "`entry` INTEGER NOT NULL REFERENCES account(id)"
                                          ")");
 
+const auto trigger_delete_commonEntry = QString("CREATE TRIGGER delete_commonEntry BEFORE DELETE ON commonEntry "
+                                                "BEGIN "
+                                                "DELETE FROM account WHERE id=OLD.id; "
+                                                "END;");
 
 
 
