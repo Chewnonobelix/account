@@ -35,12 +35,16 @@ bool ControllerDB::init()
         qDebug()<<"EMT"<<m_db.exec(entrymetadata_table).lastError();
         qDebug()<<"CENT"<<m_db.exec(commonEntry_table).lastError();
         qDebug()<<"IT"<<m_db.exec(information_table).lastError();
-
+        qDebug()<<"PRT"<<m_db.exec(profile_remove_table).lastError();
+        qDebug()<<"ART"<<m_db.exec(account_remove_table).lastError();
+        
         qDebug()<<"Trigger delete entry"<<m_db.exec(account_trigger_delete).lastError();
         qDebug()<<"Trigger delete frequency"<<m_db.exec(trigger_delete_frequency).lastError();
         qDebug()<<"Trigger delete category"<<m_db.exec(trigger_delete_category).lastError();
         qDebug()<<"Trigger delete common expanse"<<m_db.exec(trigger_delete_commonExpanse).lastError();
         qDebug()<<"Trigger delete common entry"<<m_db.exec(trigger_delete_commonEntry).lastError();
+        qDebug()<<"Trigger delete account"<<m_db.exec(remove_account_trigger).lastError();
+        qDebug()<<"Trigger delete profile"<<m_db.exec(remove_profile_trigger).lastError();
     }
     
     if(isConnected())
@@ -126,17 +130,7 @@ void ControllerDB::prepareAccount()
     
     qDebug()<<"SA"<<m_accounts->prepare("SELECT DISTINCT account FROM account WHERE profile=:profile")<<m_accounts->lastError();
     
-    //    qDebug()<<"RA"<<m_removeAccount->prepare("DELETE FROM account "
-    //                                             "WHERE account=:a AND profile=:profile "
-    //                                             "DELETE FROM categories "
-    //                                             "WHERE account=:a AND profile=:profile "
-    //                                             "DELETE FROM budget "
-    //                                             "WHERE account=:a AND profile=:profile "
-    //                                             "DELETE FROM frequency "
-    //                                             "WHERE account=:a AND profile=:profile "
-    //                                             "DELETE FROM commonExpanse "
-    //                                             "WHERE account=:a AND profile=:profile ")<<m_removeAccount->lastError();
-    
+    qDebug()<<"RA"<<m_removeAccount->prepare("INSERT INTO temp_account VALUES (:n)")<<m_removeAccount->lastError();    
 }
 
 void ControllerDB::prepareCategory()
@@ -234,13 +228,38 @@ void ControllerDB::prepareProfile()
     
     qDebug()<<"SP"<< m_selectProfiles->prepare("SELECT DISTINCT profile FROM account")<<m_selectProfiles->lastError();
     
-    //    qDebug()<<"RP"<<m_removeProfile->prepare("DELETE FROM account, categories, budget, frequency, commonExpanse "
-    //                                             "WHERE profile=:profile")<<m_removeProfile->lastError();
+    qDebug()<<"RP"<<m_removeProfile->prepare("INSERT INTO temp_profile VALUES (:n)")<<m_removeProfile->lastError();
 }
 
 bool ControllerDB::isConnected() const
 {
     return m_db.isOpen();
+}
+
+QStringList ControllerDB::selectAccount()
+{
+    QStringList res;
+    m_accounts->bindValue(":profile", m_currentProfile);
+    if(isConnected() && m_accounts->exec())
+    {
+        while(m_accounts->next())
+            res<<m_accounts->value("account").toString();
+    }
+    
+    return res;
+}
+
+bool ControllerDB::removeAccount(QString name)
+{
+    bool ret = false;
+    
+    if(isConnected())
+    {
+        m_removeAccount->bindValue(":n", name);
+        ret = m_removeAccount->exec();
+    }
+    
+    return ret;
 }
 
 bool ControllerDB::addEntry(const Entry & e)
@@ -256,7 +275,7 @@ bool ControllerDB::addEntry(const Entry & e)
         
         ret = m_addEntry->exec();
         int id = m_addEntry->lastInsertId().toInt();
-
+        
         if(ret && id >= 0)
         {
             
@@ -314,19 +333,6 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
     return res;
 }
 
-QStringList ControllerDB::selectAccount()
-{
-    QStringList res;
-    m_accounts->bindValue(":profile", m_currentProfile);
-    if(isConnected() && m_accounts->exec())
-    {
-        while(m_accounts->next())
-            res<<m_accounts->value("account").toString();
-    }
-    
-    return res;
-}
-
 bool ControllerDB::updateEntry(const Entry & e)
 {
     bool ret = false;
@@ -374,31 +380,9 @@ bool ControllerDB::removeEntry(const Entry & e)
     
     if(isConnected())
     {
-        //        m_removeInformation->bindValue(":ide", e.id());
         m_removeEntry->bindValue(":id", e.id());
         
-        
         ret = m_removeEntry->exec();
-        if(ret)
-        {
-            auto req = m_db.exec("SELECT id FROM information");
-
-            while(req.next())
-                qDebug()<<req.value("id");
-        }
-    }
-    
-    return ret;
-}
-
-bool ControllerDB::removeAccount(QString name)
-{
-    bool ret = false;
-    
-    if(isConnected())
-    {
-        m_removeAccount->bindValue(":a", name);
-        ret = m_removeAccount->exec();
     }
     
     return ret;
