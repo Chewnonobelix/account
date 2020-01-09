@@ -21,7 +21,7 @@ Popup {
     rightPadding: width * 0.02
 
     onClosed: {
-        password.clear()
+//        password.clear()
         profile.clear()
     }
 

@@ -556,7 +556,7 @@ void MainController::accountChange(QString acc)
     }
     
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
-    qDebug()<<tab;
+
     if(tab)
         tab->setProperty("model", QVariantList());
 
