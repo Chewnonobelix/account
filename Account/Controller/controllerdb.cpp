@@ -333,6 +333,20 @@ bool ControllerDB::addEntry(const Entry & e)
             
             ret &= m_addInformation->exec();
         }
+        
+        auto meta = e.metaDataList();
+        for(auto it: meta)
+        {
+            if(it == "id")
+                continue;
+            
+            m_insertMetadata->bindValue(":entry", id);
+            m_insertMetadata->bindValue(":name", it);
+            m_insertMetadata->bindValue(":value", e.metaData<QString>(it));
+            
+            ret &= m_insertMetadata->exec();
+            qDebug()<<m_insertMetadata->boundValues()<<m_insertMetadata->lastError();
+        }
     }
     
     return ret;
@@ -344,6 +358,7 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
     
     if(!isConnected())
         return res;
+    
     m_currentAccount = account;
     m_selectEntry->bindValue(":a", QVariant(account));
     m_selectEntry->bindValue(":p", m_currentProfile);
@@ -373,6 +388,13 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
             i.setTitle(m_selectInformation->value("info").toString());
             
             t.setInfo(i);
+            
+            m_selectMetadata->bindValue(":ide", t.id());
+            
+            if(m_selectMetadata->exec())
+                while(m_selectMetadata->next())
+                    t.setMetadata(m_selectMetadata->value("name").toString(), m_selectMetadata->value("value").toString());
+            
             res.insert(t.date(), t);
         }
     }
@@ -392,6 +414,8 @@ bool ControllerDB::updateEntry(const Entry & e)
         ret = m_updateEntry->exec();
         
         ret &= updateInfo(e);
+        
+        //TODO update metadata        
     }
     
     
