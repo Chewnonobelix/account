@@ -68,7 +68,7 @@ void ControllerDB::prepareEntry()
     m_updateMetadata = SqlQuery::create(m_db);
     
     qDebug()<<"SE"<<m_selectEntry->prepare("SELECT * FROM account "
-                                           "WHERE account=:a AND profile=:p AND commonExpanse IS NULL AND frequencyReference IS NULL")<<m_selectEntry->lastError();
+                                           "WHERE account=:a AND profile=:p AND commonExpanse=0 AND frequencyReference IS NULL")<<m_selectEntry->lastError();
     
     qDebug()<<"AE"<<m_addEntry->prepare("INSERT INTO account (account, value, date_eff, type, profile) "
                                         "VALUES (:account,:value,:date,:type, :profile)")<<m_addEntry->lastError();
@@ -207,7 +207,7 @@ void ControllerDB::prepareFrequency()
                                             "VALUES(:id, :freq, :nbGroup)")<<m_addFrequency->lastError();
     
     qDebug()<<"RF"<<m_removeFrequency->prepare("DELETE FROM frequency "
-                                               "WHERE (id=:id)" )<<m_removeFrequency->lastError();
+                                               "WHERE id=:id" )<<m_removeFrequency->lastError();
     
     qDebug()<<"UF"<<m_updateFrequency->prepare("UPDATE frequency "
                                                "SET freq=:f, nbGroup=:ng "
@@ -248,11 +248,11 @@ bool ControllerDB::addEntry(const Entry & e)
         m_addEntry->bindValue(":value", QVariant(e.value()));
         m_addEntry->bindValue(":date", QVariant(e.date()));
         m_addEntry->bindValue(":type", QVariant(e.type()));
-        m_addEntry->bindValue(":profile",m_currentProfile);
+        m_addEntry->bindValue(":profile", m_currentProfile);
         
         ret = m_addEntry->exec();
         int id = m_addEntry->lastInsertId().toInt();
-        
+
         if(ret && id >= 0)
         {
             
@@ -263,7 +263,6 @@ bool ControllerDB::addEntry(const Entry & e)
             
             ret &= m_addInformation->exec();
         }
-        m_db.commit();
     }
     
     return ret;
