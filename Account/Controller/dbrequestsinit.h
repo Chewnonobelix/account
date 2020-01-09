@@ -108,6 +108,27 @@ const auto trigger_delete_commonEntry = QString("CREATE TRIGGER delete_commonEnt
                                                 "DELETE FROM account WHERE id=OLD.entry; "
                                                 "END;");
 
+const auto account_remove_table = QString("CREATE TABLE temp_account ("
+                                          "name TEXT NOT NULL)");
 
+const auto remove_account_trigger = QString("CREATE TRIGGER delete_account AFTER INSERT ON temp_account "
+                                            "BEGIN "
+                                            "DELETE FROM commonExpanse WHERE account=NEW.name; "
+                                            "DELETE FROM account WHERE account=NEW.name; "
+                                            "DELETE FROM categories WHERE account=NEW.name; "
+                                            "DELETE FROM frequency WHERE account=NEW.name; "
+                                            "DELETE FROM temp_account WHERE name=NEW.name; "
+                                            "END;");
 
+const auto profile_remove_table = QString("CREATE TABLE temp_profile ("
+                                          "name TEXT NOT NULL)");
+
+const auto remove_profile_trigger = QString("CREATE TRIGGER delete_profile AFTER INSERT ON temp_profile "
+                                            "BEGIN "
+                                            "DELETE FROM commonExpanse WHERE profile=NEW.name; "
+                                            "DELETE FROM account WHERE profile=NEW.name; "
+                                            "DELETE FROM categories WHERE profile=NEW.name; "
+                                            "DELETE FROM frequency WHERE profile=NEW.name; "
+                                            "DELETE FROM temp_profile WHERE name=NEW.name; "
+                                            "END;");
 #endif // DBREQUESTSINIT_H
