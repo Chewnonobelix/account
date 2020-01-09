@@ -262,6 +262,53 @@ bool ControllerDB::removeAccount(QString name)
     return ret;
 }
 
+QStringList ControllerDB::selectProfile() 
+{
+    QStringList ret;
+    if(isConnected())
+    {
+        m_selectProfiles->exec();
+        while(m_selectProfiles->next())
+            ret<<m_selectProfiles->value("profile").toString();
+    }
+    
+    return ret;
+}
+
+void ControllerDB::setProfile(QString p)
+{
+    m_currentProfile = p;
+}
+
+bool ControllerDB::addProfile(QString name, QString) 
+{
+    bool ret = !selectProfile().contains(name);
+    
+    if(ret)
+        m_currentProfile = name;
+    
+    return ret;
+}
+
+QString ControllerDB::currentProfile()
+{
+    return m_currentProfile;
+}
+
+bool ControllerDB::deleteProfile(QString name) 
+{
+    if(isConnected())
+    {
+        m_removeProfile->addBindValue(name);
+        bool ret = m_removeProfile->exec();
+        
+        qDebug()<<selectProfile();
+        return ret;
+    }
+    
+    return false;
+}
+
 bool ControllerDB::addEntry(const Entry & e)
 {
     bool ret = false;

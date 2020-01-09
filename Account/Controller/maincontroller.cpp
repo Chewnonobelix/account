@@ -690,7 +690,10 @@ void MainController::addProfile()
 
     QMetaObject::invokeMethod(profiles, "close");
     if(m_db->addProfile(nProfile, ""))
+    {
+        changeProfile(nProfile);
         loadProfiles();
+    }
 }
 
 void MainController::loadProfiles()
@@ -700,6 +703,9 @@ void MainController::loadProfiles()
     if(profile)
     {
         QStringList profiles = m_db->selectProfile();
+        if(!profiles.contains(m_db->currentProfile()))
+            profiles<<m_db->currentProfile();
+        
         profile->setProperty("current", m_db->currentProfile());
         profile->setProperty("model", profiles);
     }

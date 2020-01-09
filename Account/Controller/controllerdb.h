@@ -118,11 +118,11 @@ public slots:
     virtual bool removeCommon(const CommonExpanse&) {return false;}
     virtual bool updateCommon(const CommonExpanse&) {return false;}
     
-    virtual QStringList selectProfile() {return QStringList();}
-    virtual void setProfile(QString) {}
-    virtual bool addProfile(QString, QString) {return false;}
-    virtual QString currentProfile() {return "";}
-    virtual bool deleteProfile(QString) {return false;}
+    virtual QStringList selectProfile();
+    virtual void setProfile(QString);
+    virtual bool addProfile(QString, QString);
+    virtual QString currentProfile();
+    virtual bool deleteProfile(QString);
 
     bool init();
 };
