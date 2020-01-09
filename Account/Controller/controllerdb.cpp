@@ -200,6 +200,9 @@ void ControllerDB::prepareFrequency()
     
     qDebug()<<"SF"<<m_selectFrequency->prepare("SELECT * FROM frequency "
                                                "WHERE account=:a AND profile=:profile")<<m_selectFrequency->lastError();
+
+    qDebug()<<"SFR"<<m_selectFrequencyReference->prepare("SELECT * FROM account "
+                                               "WHERE frequencyReference=:f")<<m_selectFrequency->lastError();
     
     qDebug()<<"AF"<<m_addFrequency->prepare("INSERT INTO frequency (ID, freq, nbGroup) "
                                             "VALUES(:id, :freq, :nbGroup)")<<m_addFrequency->lastError();
@@ -571,7 +574,61 @@ bool ControllerDB::updateFrequency(const Frequency&)
 
 QList<Frequency> ControllerDB::selectFrequency()
 {
-    return QList<Frequency>(); //TODO
+    QList<Frequency> ret;
+
+    if(isConnected())
+    {
+        m_selectFrequency->bindValue(":a", m_currentAccount);
+        m_selectFrequency->bindValue(":profile", m_currentProfile);
+
+        m_selectFrequency->exec();
+
+        while(m_selectFrequency->next())
+        {
+            Frequency f;
+            f.setId(m_selectFrequency->value("id").toInt());
+            f.setFreq((Account::FrequencyEnum)m_selectFrequency->value("freq").toInt());
+            f.setNbGroup(m_selectFrequency->value("nbGroup").toInt());
+            f.setEnd(m_selectFrequency->value("end").toDate());
+
+            m_selectFrequencyReference->bindValue(":f", f.id());
+            if(!m_selectFrequencyReference->exec())
+                continue;
+
+            m_selectFrequencyReference->seek(0);
+            Entry ref;
+            Information i;
+            ref.setId(m_selectEntry->value("id").toInt());
+            ref.setDate(m_selectEntry->value("date_eff").toDate());
+            ref.setValue(m_selectEntry->value("value").toDouble());
+            ref.setType(m_selectEntry->value("type").toString());
+
+            m_selectInformation->bindValue(":ide", ref.id());
+            bool inf = m_selectInformation->exec();
+            if(!inf)
+                continue;
+
+            m_selectInformation->seek(0);
+
+            i.setId(m_selectInformation->value("id").toInt());
+            i.setIdEntry(m_selectInformation->value("idEntry").toInt());
+            i.setEstimated(m_selectInformation->value("prev").toBool());
+            i.setTitle(m_selectInformation->value("info").toString());
+
+            ref.setInfo(i);
+
+            m_selectMetadata->bindValue(":ide", ref.id());
+
+            if(m_selectMetadata->exec())
+                while(m_selectMetadata->next())
+                    ref.setMetadata(m_selectMetadata->value("name").toString(), m_selectMetadata->value("value").toString());
+
+            f.setReferenceEntry(ref);
+            ret<<f;
+        }
+
+    }
+    return ret;
 }
 
 QMap<int, CommonExpanse> ControllerDB::selectCommon() {return  QMap<int, CommonExpanse>(); }
