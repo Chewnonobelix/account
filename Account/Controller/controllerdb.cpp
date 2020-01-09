@@ -415,7 +415,28 @@ bool ControllerDB::updateEntry(const Entry & e)
         
         ret &= updateInfo(e);
         
-        //TODO update metadata        
+        
+        auto meta = e.metaDataList();
+        for(auto it: meta)
+        {
+            if(it == "id")
+                continue;
+            
+            m_updateMetadata->bindValue(":entry", e.id());
+            m_updateMetadata->bindValue(":name", it);
+            m_updateMetadata->bindValue(":value", e.metaData<QString>(it));
+            
+            bool t = m_updateMetadata->exec();
+            t = m_updateMetadata->numRowsAffected() > 0;
+            if(!t)
+            {
+                m_insertMetadata->bindValue(":entry", e.id());
+                m_insertMetadata->bindValue(":name", it);
+                m_insertMetadata->bindValue(":value", e.metaData<QString>(it));
+                
+                m_insertMetadata->exec();                
+            }
+        }
     }
     
     
