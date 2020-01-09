@@ -113,10 +113,10 @@ public slots:
     virtual bool updateFrequency(const Frequency&);
     virtual QList<Frequency> selectFrequency();
     
-    virtual QMap<int, CommonExpanse> selectCommon() {return  QMap<int, CommonExpanse>(); }
-    virtual bool addCommon(const CommonExpanse&) {return false;}
-    virtual bool removeCommon(const CommonExpanse&) {return false;}
-    virtual bool updateCommon(const CommonExpanse&) {return false;}
+    virtual QMap<int, CommonExpanse> selectCommon();
+    virtual bool addCommon(const CommonExpanse&);
+    virtual bool removeCommon(const CommonExpanse&);
+    virtual bool updateCommon(const CommonExpanse&);
     
     virtual QStringList selectProfile();
     virtual void setProfile(QString);

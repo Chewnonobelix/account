@@ -345,7 +345,6 @@ bool ControllerDB::addEntry(const Entry & e)
             m_insertMetadata->bindValue(":value", e.metaData<QString>(it));
             
             ret &= m_insertMetadata->exec();
-            qDebug()<<m_insertMetadata->boundValues()<<m_insertMetadata->lastError();
         }
     }
     
@@ -574,3 +573,11 @@ QList<Frequency> ControllerDB::selectFrequency()
 {
     return QList<Frequency>(); //TODO
 }
+
+QMap<int, CommonExpanse> ControllerDB::selectCommon() {return  QMap<int, CommonExpanse>(); }
+
+bool ControllerDB::addCommon(const CommonExpanse&) {return false;}
+
+bool ControllerDB::removeCommon(const CommonExpanse&) {return false;}
+
+bool ControllerDB::updateCommon(const CommonExpanse&) {return false;}
