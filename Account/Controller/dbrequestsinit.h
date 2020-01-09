@@ -105,7 +105,7 @@ const auto commonEntry_table = QString("CREATE TABLE `commonEntry` ("
 
 const auto trigger_delete_commonEntry = QString("CREATE TRIGGER delete_commonEntry BEFORE DELETE ON commonEntry "
                                                 "BEGIN "
-                                                "DELETE FROM account WHERE id=OLD.id; "
+                                                "DELETE FROM account WHERE id=OLD.entry; "
                                                 "END;");
 
 
