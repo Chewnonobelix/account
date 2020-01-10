@@ -1,11 +1,12 @@
 #include "maincontroller.h"
 
 
-MainController::MainController(): AbstractController()
+MainController::MainController(int storage): AbstractController()
 {
     try
     {
-        setDb("ControllerDB");
+        
+        setDb(storage == 0 ? "ControllerDB" : "ControllerXMLMulti");
         m_db->init();
     }
     catch(QString except)

@@ -66,13 +66,15 @@ int main(int argc, char *argv[])
 
 //    XmlTest test1;
 
-    if(argc > 1 && QString(argv[1]) == "--test")
+    if(argc > 1 && app.arguments().contains("--test"))
     {
 //        testCharge();
         testBudget();
     }
 
-    MainController mc;
+    int index = app.arguments().indexOf("--s");
+    int type = index > -1 ? app.arguments()[index + 1].toInt() : 0;
+    MainController mc(type);
 
     mc.exec();
 

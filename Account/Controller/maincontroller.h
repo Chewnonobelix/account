@@ -37,7 +37,7 @@ private:
     void checkEstimated();
 
 public:
-    MainController();
+    MainController(int = 0);
     ~MainController();
 
     int exec();
