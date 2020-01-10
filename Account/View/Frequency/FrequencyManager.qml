@@ -127,7 +127,7 @@ Rectangle {
                         pageChanger.pageIndex = 1
                         
                         whenCombo.currentIndex = whenCombo.model.findIndex(model[currentIndex].freq + 0)
-                        console.log("when", whenCombo.currentIndex, model[currentIndex].freq)
+
                         dateText.from = model[currentIndex].listEntries()[0] ? model[currentIndex].listEntries()[0].date : new Date()
                         dateText.to = dateText.from
                         

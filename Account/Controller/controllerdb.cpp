@@ -316,15 +316,17 @@ bool ControllerDB::deleteProfile(QString name)
 }
 
 bool ControllerDB::addEntry(const Entry & e)
-{
+{    
+
     bool ret = false;
     if(isConnected() && e.id() < 0)
     {
-        m_addEntry->bindValue(":account", QVariant(e.account()));
+        m_addEntry->bindValue(":account", e.account().isEmpty() ? m_currentAccount : e.account());
         m_addEntry->bindValue(":value", QVariant(e.value()));
         m_addEntry->bindValue(":date", QVariant(e.date()));
         m_addEntry->bindValue(":type", QVariant(e.type()));
         m_addEntry->bindValue(":profile", m_currentProfile);
+        
         
         ret = m_addEntry->exec();
         int id = m_addEntry->lastInsertId().toInt();
@@ -409,7 +411,6 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
 bool ControllerDB::updateEntry(const Entry & e)
 {
     bool ret = false;
-    
     if(isConnected())
     {
         m_updateEntry->bindValue(":v", e.value());
@@ -620,7 +621,7 @@ bool ControllerDB::updateFrequency(const Frequency& f)
 
         return ret && m_updateFrequency->exec();
     }
-    return false; //TODO
+    return false;
 }
 
 QList<Frequency> ControllerDB::selectFrequency()
