@@ -49,7 +49,7 @@ const auto trigger_delete_category = QString("CREATE TRIGGER delete_category BEF
 const auto information_table = QString("CREATE TABLE `information` ("
                                            "`id` INTEGER NOT NULL  PRIMARY KEY AUTOINCREMENT,"
                                            "`idEntry` INTEGER NOT NULL REFERENCES account(id),"
-                                           "`info` TEXT NOT NULL,"
+                                           "`info` TEXT,"
                                            "`prev` INTEGER NOT NULL DEFAULT '0',"
                                            "`category` INTEGER DEFAULT NULL REFERENCES categories(id)"
                                          ")");

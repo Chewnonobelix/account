@@ -85,7 +85,7 @@ void ControllerDB::prepareEntry()
                                            "WHERE id=:id")<<m_removeEntry->lastError();
     
     qDebug()<<"UE"<<m_updateEntry->prepare("UPDATE account "
-                                           "SET value=:v "
+                                           "SET value=:v, type=:t "
                                            "WHERE id=:id")<<m_updateEntry->lastError();
     
     qDebug()<<"AM"<<m_insertMetadata->prepare("INSERT INTO entrymetadata (entry, name, value) "
@@ -204,8 +204,11 @@ void ControllerDB::prepareFrequency()
     qDebug()<<"SFR"<<m_selectFrequencyReference->prepare("SELECT * FROM account "
                                                "WHERE frequencyReference=:f")<<m_selectFrequency->lastError();
     
-    qDebug()<<"AF"<<m_addFrequency->prepare("INSERT INTO frequency (ID, freq, nbGroup) "
-                                            "VALUES(:id, :freq, :nbGroup)")<<m_addFrequency->lastError();
+    qDebug()<<"AF"<<m_addFrequency->prepare("INSERT INTO frequency (freq, nbGroup, account, profile) "
+                                            "VALUES (:freq, :nbGroup, :account, :profile)")<<m_addFrequency->lastError();
+    
+    qDebug()<<"AFR"<<m_addFrequencyReference->prepare("INSERT INTO account (account, value, type, date_eff, profile, frequencyReference) "
+                                            "VALUES(:a, :v, :t, :d, :p, :f)")<<m_addFrequencyReference->lastError();
     
     qDebug()<<"RF"<<m_removeFrequency->prepare("DELETE FROM frequency "
                                                "WHERE id=:id" )<<m_removeFrequency->lastError();
@@ -332,7 +335,6 @@ bool ControllerDB::addEntry(const Entry & e)
             m_addInformation->bindValue(":ide", id);
             m_addInformation->bindValue(":title", e.info().title());
             m_addInformation->bindValue(":prev",e.info().estimated());
-            m_addInformation->bindValue(":cat",e.info().category());
             
             ret &= m_addInformation->exec();
         }
@@ -412,6 +414,7 @@ bool ControllerDB::updateEntry(const Entry & e)
     {
         m_updateEntry->bindValue(":v", e.value());
         m_updateEntry->bindValue(":id", e.id());
+        m_updateEntry->bindValue(":t", e.type());
         
         ret = m_updateEntry->exec();
         
@@ -557,18 +560,66 @@ bool ControllerDB::updateBudget(const Budget &)
     return false;
 }
 
-bool ControllerDB::addFrequency(const Frequency &)
+bool ControllerDB::addFrequency(const Frequency & f)
 {
-    return false; //TODO
+    if(isConnected())
+    {
+        m_addFrequency->bindValue(":freq", QVariant::fromValue((int)f.freq()));
+        m_addFrequency->bindValue(":nbGroup", QVariant::fromValue(f.nbGroup()));
+        m_addFrequency->bindValue(":account", QVariant::fromValue(m_currentAccount));
+        m_addFrequency->bindValue(":profile", QVariant::fromValue(m_currentProfile));
+
+        if(m_addFrequency->exec())
+        {
+            int id = m_addFrequency->lastInsertId().toInt();
+            m_addFrequencyReference->bindValue(":a", m_currentAccount);
+            m_addFrequencyReference->bindValue(":v", f.referenceEntry().value());
+            m_addFrequencyReference->bindValue(":t", f.referenceEntry().type());
+            m_addFrequencyReference->bindValue(":d", f.referenceEntry().date());
+            m_addFrequencyReference->bindValue(":p", m_currentProfile);
+            m_addFrequencyReference->bindValue(":f", id);
+
+            if(m_addFrequencyReference->exec())
+            {
+                id = m_addFrequencyReference->lastInsertId().toInt();
+                Information i = f.referenceEntry().info();
+                m_addInformation->bindValue(":ide", id);
+                m_addInformation->bindValue(":title", i.title());
+                m_addInformation->bindValue(":prev",i.estimated());
+                
+                bool ret = m_addInformation->exec();
+
+                return ret;
+            }
+            
+        }
+        qDebug()<<"add frequency"<<m_addFrequency->lastError()<<m_addFrequencyReference->lastError()<<m_addInformation->lastError();
+    }
+    return false;
 }
 
-bool ControllerDB::removeFrequency(const Frequency&)
+bool ControllerDB::removeFrequency(const Frequency& f)
 {
-    return false; //TODO
+    if(isConnected())
+    {
+        m_removeFrequency->bindValue(":id", f.id());
+        return m_removeFrequency->exec();
+    }
+    
+    return false;
 }
 
-bool ControllerDB::updateFrequency(const Frequency&)
+bool ControllerDB::updateFrequency(const Frequency& f)
 {
+    if(isConnected())
+    {
+        bool ret = updateEntry(f.referenceEntry());
+        m_updateFrequency->bindValue(":f", (int)f.freq());
+        m_updateFrequency->bindValue(":nbGroup", f.nbGroup());
+        m_updateFrequency->bindValue(":id", f.id());
+        
+        return m_updateFrequency->exec();
+    }
     return false; //TODO
 }
 
@@ -592,29 +643,32 @@ QList<Frequency> ControllerDB::selectFrequency()
             f.setEnd(m_selectFrequency->value("end").toDate());
 
             m_selectFrequencyReference->bindValue(":f", f.id());
+
             if(!m_selectFrequencyReference->exec())
                 continue;
 
             m_selectFrequencyReference->seek(0);
             Entry ref;
             Information i;
-            ref.setId(m_selectEntry->value("id").toInt());
-            ref.setDate(m_selectEntry->value("date_eff").toDate());
-            ref.setValue(m_selectEntry->value("value").toDouble());
-            ref.setType(m_selectEntry->value("type").toString());
-
+            ref.setId(m_selectFrequencyReference->value("id").toInt());
+            ref.setDate(m_selectFrequencyReference->value("date_eff").toDate());
+            ref.setValue(m_selectFrequencyReference->value("value").toDouble());
+            ref.setType(m_selectFrequencyReference->value("type").toString());
+            qDebug()<<f.id()<<ref.type();
             m_selectInformation->bindValue(":ide", ref.id());
+
             bool inf = m_selectInformation->exec();
             if(!inf)
                 continue;
 
+            
             m_selectInformation->seek(0);
 
             i.setId(m_selectInformation->value("id").toInt());
             i.setIdEntry(m_selectInformation->value("idEntry").toInt());
             i.setEstimated(m_selectInformation->value("prev").toBool());
             i.setTitle(m_selectInformation->value("info").toString());
-
+            
             ref.setInfo(i);
 
             m_selectMetadata->bindValue(":ide", ref.id());
