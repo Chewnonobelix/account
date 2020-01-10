@@ -23,7 +23,7 @@ Rectangle {
     }
     
     color: "transparent"
-        
+    
     id: root
     
     Component.onCompleted: {
@@ -31,7 +31,7 @@ Rectangle {
         layout.usableWidth = Qt.binding(function() {return width})      
     }
     
-
+    
     Rectangle {
         anchors.fill: parent
         gradient: pageStyle.unselectView
@@ -102,13 +102,12 @@ Rectangle {
                     }
                 }
                 
-                property var currentModel: enabled && currentIndex > -1 ? model[currentIndex] : null
+                property var currentModel: null
                 
                 Component.onCompleted: {
-//                    currentIndex = Qt.binding(function(){ return count === 0 ? -1 : currentIndex })
-//                    currentModel = Qt.binding(function() {return ;})
+                    currentModel = Qt.binding(function() {return enabled && currentIndex > -1 ? model[currentIndex] : null})
                     ref.entry = Qt.binding(function() {return currentModel ? currentModel.reference : null})
-
+                    
                     groupText.nb = Qt.binding(function() {return currentModel ? currentModel.nbGroup : 0})
                     countText.nb = Qt.binding(function() {return currentModel ? currentModel.listEntries().length : 0})
                     pageChanger.maxPage = Qt.binding(function() {return countText.nb / 100 + 1})
@@ -128,6 +127,7 @@ Rectangle {
                         pageChanger.pageIndex = 1
                         
                         whenCombo.currentIndex = whenCombo.model.findIndex(model[currentIndex].freq + 0)
+                        console.log("when", whenCombo.currentIndex, model[currentIndex].freq)
                         dateText.from = model[currentIndex].listEntries()[0] ? model[currentIndex].listEntries()[0].date : new Date()
                         dateText.to = dateText.from
                         
@@ -217,7 +217,7 @@ Rectangle {
                 
                 signal s_removeFrequency(int freq)
                 
-                onClicked: s_removeFrequency(frequencyList.model[frequencyList.currentIndex].id)
+                onClicked: s_removeFrequency(frequencyList.currentModel.id)
                 
                 MouseArea {
                     z: -1
@@ -230,7 +230,6 @@ Rectangle {
                     anchors.fill: parent
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
-                
             }
             
             EntryEdit {
@@ -253,9 +252,9 @@ Rectangle {
                 signal valueChanged(int id, real value)
                 signal catChanged(int id, string cat)
                 
-                onS_valueChanged: if(entry && enabled) valueChanged(entry.id, value)
-                onS_titleChanged: if(entry && enabled) titleChanged(entry.id, title)
-                onS_catChanged: if(entry && enabled) catChanged(entry.id, cat, "manager")
+                onS_valueChanged: if(entry && enabled) valueChanged(frequencyList.currentModel.id, value)
+                onS_titleChanged: if(entry && enabled) titleChanged(frequencyList.currentModel.id, title)
+                onS_catChanged: if(entry && enabled) catChanged(frequencyList.currentModel.id, cat, "manager")
                 
                 onEntryChanged: {
                     typeCombo.currentIndex = models.typeModel.find(entry ? entry.type: "outcome")
@@ -263,12 +262,12 @@ Rectangle {
                 
                 Component.onCompleted: {
                     enabled = Qt.binding(function() {return frequencyList.count !== 0})
-
+                    
                     catModel = Qt.binding(function(){return (entry && entry.type === "income") ? incomeList : outcomeList})
-                                    linked.catModel = Qt.binding(function() { return catModel})
+                    linked.catModel = Qt.binding(function() { return catModel})
                 }
             }
-
+            
             Control2.ComboBox {
                 id: whenCombo
                 objectName: "whenCombo"
@@ -288,7 +287,7 @@ Rectangle {
                 signal s_freq(int i, int f)
                 
                 onCurrentIndexChanged: {
-                    if(down && ref.entry) s_freq(ref.entry.id, model.get(currentIndex).role)
+                    if(down && ref.entry) s_freq(frequencyList.currentModel.id, model.get(currentIndex).role)
                 }
                 
                 background: Rectangle {
@@ -345,11 +344,9 @@ Rectangle {
                 
                 signal s_updateType(int id, string nType)
                 
-                onCurrentValueChanged: console.log("bite", currentValue)
                 onCurrentIndexChanged: {
                     if(ref.entry && down){ 
-                    console.log("sent", frequencyList.currentModel.id, model.get(currentIndex).type, currentIndex)
-                    s_updateType(frequencyList.currentModel.id, model.get(currentIndex).type)
+                        s_updateType(frequencyList.currentModel.id, model.get(currentIndex).type)
                     }
                 }
                 
@@ -391,7 +388,7 @@ Rectangle {
                 
                 signal s_open(int fId)
                 
-                onReleased: s_open(ref.entry.id)
+                onReleased: s_open(frequencyList.currentModel.id)
                 
                 MouseArea {
                     z: -1
@@ -434,6 +431,7 @@ Rectangle {
                     horizontalAlignment: Qt.AlignHCenter
                     verticalAlignment: Qt.AlignVCenter
                 }
+                
                 Text {
                     id: countText
                     anchors.top: groupText.bottom
@@ -448,8 +446,8 @@ Rectangle {
                     verticalAlignment: Qt.AlignVCenter
                     height: parent.height / parent.children.length
                 }
+                
                 Text {
-                    
                     id: dateText
                     property var from
                     property var to
@@ -464,7 +462,7 @@ Rectangle {
                     verticalAlignment: Qt.AlignVCenter
                 }
             }
-                        
+            
             EntryEdit {
                 id: linked
                 objectName: "linkedDisplayer"
