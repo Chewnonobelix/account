@@ -101,13 +101,16 @@ Rectangle {
                         gradient: pageStyle.goldHeader
                     }
                 }
-                                
+                
+                property var currentModel: enabled && currentIndex > -1 ? model[currentIndex] : null
+                
                 Component.onCompleted: {
 //                    currentIndex = Qt.binding(function(){ return count === 0 ? -1 : currentIndex })
-                    ref.entry = Qt.binding(function() {return currentIndex !== -1 ? model[currentIndex].reference : null})
+//                    currentModel = Qt.binding(function() {return ;})
+                    ref.entry = Qt.binding(function() {return currentModel ? currentModel.reference : null})
 
-                    groupText.nb = Qt.binding(function() {return model[currentIndex] ? model[currentIndex].nbGroup : 0})
-                    countText.nb = Qt.binding(function() {return model[currentIndex] ? model[currentIndex].listEntries().length : 0})
+                    groupText.nb = Qt.binding(function() {return currentModel ? currentModel.nbGroup : 0})
+                    countText.nb = Qt.binding(function() {return currentModel ? currentModel.listEntries().length : 0})
                     pageChanger.maxPage = Qt.binding(function() {return countText.nb / 100 + 1})
                     whenCombo.enabled = Qt.binding(function() {return count !== 0})
                 }
@@ -144,7 +147,7 @@ Rectangle {
                     height: 40
                     width: frequencyList.width
                     
-                    gradient: ListView.isCurrentItem ? ref.entry.type === "income" ? pageStyle.selectViewIn : pageStyle.selectViewOut : pageStyle.unselectView
+                    gradient: ref.entry && ListView.isCurrentItem ? ref.entry.type === "income" ? pageStyle.selectViewIn : pageStyle.selectViewOut : pageStyle.unselectView
                     
                     MouseArea {
                         anchors.fill: parent
@@ -255,13 +258,11 @@ Rectangle {
                 onS_catChanged: if(entry && enabled) catChanged(entry.id, cat, "manager")
                 
                 onEntryChanged: {
-                    typeCombo.currentIndex = Qt.binding(function(){return (entry && entry.type === "income") ? 0 : 1})
-
+                    typeCombo.currentIndex = models.typeModel.find(entry ? entry.type: "outcome")
                 }
                 
                 Component.onCompleted: {
                     enabled = Qt.binding(function() {return frequencyList.count !== 0})
-                    typeCombo.currentIndex = entry && entry.type === "income" ? 0 : 1
 
                     catModel = Qt.binding(function(){return (entry && entry.type === "income") ? incomeList : outcomeList})
                                     linked.catModel = Qt.binding(function() { return catModel})
@@ -336,7 +337,7 @@ Rectangle {
                 
                 
                 textRole: "name"
-                
+                valueRole: "type"
                 background: Rectangle {
                     anchors.fill: parent
                     gradient: pageStyle.goldButton
@@ -344,8 +345,12 @@ Rectangle {
                 
                 signal s_updateType(int id, string nType)
                 
+                onCurrentValueChanged: console.log("bite", currentValue)
                 onCurrentIndexChanged: {
-                    if(ref.enabled && down) s_updateType(ref.entry.id, model.get(currentIndex).type)
+                    if(ref.entry && down){ 
+                    console.log("sent", frequencyList.currentModel.id, model.get(currentIndex).type, currentIndex)
+                    s_updateType(frequencyList.currentModel.id, model.get(currentIndex).type)
+                    }
                 }
                 
                 delegate: Control2.ItemDelegate {
