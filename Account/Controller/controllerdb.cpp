@@ -615,10 +615,10 @@ bool ControllerDB::updateFrequency(const Frequency& f)
     {
         bool ret = updateEntry(f.referenceEntry());
         m_updateFrequency->bindValue(":f", (int)f.freq());
-        m_updateFrequency->bindValue(":nbGroup", f.nbGroup());
+        m_updateFrequency->bindValue(":ng", f.nbGroup());
         m_updateFrequency->bindValue(":id", f.id());
-        
-        return m_updateFrequency->exec();
+
+        return ret && m_updateFrequency->exec();
     }
     return false; //TODO
 }
@@ -654,7 +654,7 @@ QList<Frequency> ControllerDB::selectFrequency()
             ref.setDate(m_selectFrequencyReference->value("date_eff").toDate());
             ref.setValue(m_selectFrequencyReference->value("value").toDouble());
             ref.setType(m_selectFrequencyReference->value("type").toString());
-            qDebug()<<f.id()<<ref.type();
+
             m_selectInformation->bindValue(":ide", ref.id());
 
             bool inf = m_selectInformation->exec();
