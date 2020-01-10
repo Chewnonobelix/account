@@ -53,7 +53,7 @@ void Frequency::setNbGroup(int nbGroup)
 
 Frequency::Frequency(): m_nbGroup(0)
 {
-    
+    m_referenceEntry.setType("outcome");
 }
 
 Frequency::Frequency(const Frequency& f): m_id(f.id()), m_freq(f.freq()),
