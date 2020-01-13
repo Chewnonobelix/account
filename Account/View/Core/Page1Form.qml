@@ -472,7 +472,7 @@ Page {
                     width: view.width
                     height: view.height * .03
                     
-                    gradient: styleData.selected ? view.model[styleData.row].type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
+                    gradient: view.model[styleData.row] && styleData.selected ? view.model[styleData.row].type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
                     
                 }
                 
