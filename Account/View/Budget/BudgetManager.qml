@@ -160,19 +160,25 @@ Rectangle {
                 Control2.Menu {
                     id: catMenu
                     
-                    contentItem: Control2.MenuItem {
+                    height: delItem.height
+                    
+                    delegate: Control2.MenuItem {
                         font.family: pageStyle.core.name
                         font.pixelSize: pageStyle.core.size
-                        anchors.fill: catMenu
-                        text: has ? qsTr("Remove budget") : qsTr("Add budget")
-                        onTriggered: root.s_budgetChanged(catName)
-                        
-                        
+                                  
+                        height: catMenu.height
                         background: Rectangle {
                             anchors.fill: parent
                             gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                         }
                     }
+                    
+                    Control2.Action {
+                        id: addBudget
+                        text:  has ? qsTr("Remove budget") : qsTr("Add budget")
+                        onTriggered: root.s_budgetChanged(catName)
+                    }
+                    
                 }
             }
             
