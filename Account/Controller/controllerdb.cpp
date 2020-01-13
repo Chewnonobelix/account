@@ -309,7 +309,6 @@ bool ControllerDB::deleteProfile(QString name)
         m_removeProfile->addBindValue(name);
         bool ret = m_removeProfile->exec();
         
-        qDebug()<<selectProfile();
         return ret;
     }
     
@@ -397,9 +396,8 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
             auto reqc = m_db.exec("SELECT name FROM categories WHERE id='"+QString::number(m_selectInformation->value("category").toInt())+"'");
 
             if(reqc.seek(0))
-            {
                 i.setCategory(reqc.value("name").toString());
-            }
+
             t.setInfo(i);
             
             m_selectMetadata->bindValue(":ide", t.id());
@@ -469,9 +467,8 @@ bool ControllerDB::updateInfo(const Entry & e)
         auto reqc = m_db.exec("SELECT id FROM categories WHERE account='"+m_currentAccount+"' AND profile='"+m_currentProfile+"' AND name='"+e.info().category()+"'");
              
         if(reqc.seek(0))
-        {
             m_updateInfo->bindValue(":cat", reqc.value("id").toInt());
-        }
+        
         ret = m_updateInfo->exec();
     }
     
