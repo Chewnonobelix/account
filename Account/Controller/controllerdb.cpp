@@ -575,9 +575,13 @@ bool ControllerDB::addBudget(const Budget& b)
     return false;
 }
 
-bool ControllerDB::removeBudget(const Budget &)
+bool ControllerDB::removeBudget(const Budget & b)
 {
-    //TODO
+    if(isConnected())
+    {
+        m_removeBudget->bindValue(":id", b.id());
+        return m_removeBudget->exec();
+    }
     return false;
 }
 
