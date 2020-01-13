@@ -231,6 +231,9 @@ void ControllerDB::prepareCommon()
     
     m_selectCommon->prepare("SELECT * FROM commonExpanse "
                             "WHERE account=:a AND profile=:p");
+    
+    m_removeCommon->prepare("DELETE FROM commonExpanse "
+                            "WHERE id=:id");
     //TODO
 }
 
@@ -800,6 +803,15 @@ bool ControllerDB::addCommon(const CommonExpanse& c)
     return false;
 }
 
-bool ControllerDB::removeCommon(const CommonExpanse&) {return false;}
+bool ControllerDB::removeCommon(const CommonExpanse& c) 
+{
+    if(isConnected())
+    {
+        m_removeCommon->bindValue(":id", c.id());
+        return m_removeCommon->exec();
+    }
+    
+    return false;
+}
 
 bool ControllerDB::updateCommon(const CommonExpanse&) {return false;}
