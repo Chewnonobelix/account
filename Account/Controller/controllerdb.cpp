@@ -182,7 +182,7 @@ void ControllerDB::prepareBudget()
                                                 "WHERE idBudget=:idb AND fromDate=:date")<<m_updateSubbudget->lastError();
     
     qDebug()<<"RSB"<<m_removeSubbudget->prepare("DELETE FROM subbudget "
-                                                "WHERE idBudget=:idb AND fromDate=:date")<<m_removeSubbudget->lastError();
+                                                "WHERE idBudget=:idb")<<m_removeSubbudget->lastError();
     
     qDebug()<<"ASB"<<m_addSubbudget->prepare("INSERT INTO subbudget (idBudget, frequency, target, fromDate) "
                                              "VALUES (:idb, :frequency, :target, :date)")<<m_addSubbudget->lastError();
@@ -552,24 +552,7 @@ bool ControllerDB::addBudget(const Budget& b)
         int idc = reqc.value("id").toInt();
         m_addBudget->bindValue(":category", idc);
         
-        bool ret = m_addBudget->exec();
-
-        if(!ret)
-            return false;
-        
-        int idb = m_addBudget->lastInsertId().toInt();
-        
-        for(auto it: b.targets().keys())
-        {
-            m_addSubbudget->bindValue(":idb", idb);
-            m_addSubbudget->bindValue(":date", it);
-            m_addSubbudget->bindValue(":frequency", (int)b.frequency(it));
-            m_addSubbudget->bindValue(":target", b.targets()[it]);
-            
-            m_addSubbudget->exec();
-        }
-        
-        return true;
+        return m_addBudget->exec();
     }
     
     return false;
@@ -582,6 +565,7 @@ bool ControllerDB::removeBudget(const Budget & b)
         m_removeBudget->bindValue(":id", b.id());
         return m_removeBudget->exec();
     }
+    
     return false;
 }
 
@@ -605,15 +589,39 @@ QList<Budget> ControllerDB::selectBudgets()
             req.seek(0);
             b.setCategory(req.value("name").toString());
             
+            m_selectSubBudget->bindValue(":idb", b.id());
+            m_selectSubBudget->exec();
+            
+            while(m_selectSubBudget->next())
+            {
+                b.addTarget(m_selectSubBudget->value("fromDate").toDate(), m_selectSubBudget->value("target").toDouble());    
+                b.setFrequency(m_selectSubBudget->value("fromDate").toDate(), (Account::FrequencyEnum)m_selectSubBudget->value("frequency").toInt());    
+            }
+            
             ret<<b;
         }
     }
     return ret;
 }
 
-bool ControllerDB::updateBudget(const Budget &)
+bool ControllerDB::updateBudget(const Budget & b)
 {
-    //TODO
+    if(isConnected())
+    {
+        m_removeSubbudget->bindValue(":idb", b.id());
+        m_removeSubbudget->exec();
+        
+        for(auto it: b.targets().keys())
+        {
+            m_addSubbudget->bindValue(":idb", b.id());
+            m_addSubbudget->bindValue(":date", it);
+            m_addSubbudget->bindValue(":frequency", (int)b.frequency(it));
+            m_addSubbudget->bindValue(":target", b.targets()[it]);
+            
+            m_addSubbudget->exec();
+        }
+    }
+    
     return false;
 }
 
