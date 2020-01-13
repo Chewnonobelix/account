@@ -1,6 +1,7 @@
 #include "controllerdb.h"
 #include "dbrequestsinit.h"
 #include <QDebug>
+
 ControllerDB::ControllerDB(): m_currentProfile("Default")
 {
 }
@@ -200,15 +201,15 @@ void ControllerDB::prepareFrequency()
     
     qDebug()<<"SF"<<m_selectFrequency->prepare("SELECT * FROM frequency "
                                                "WHERE account=:a AND profile=:profile")<<m_selectFrequency->lastError();
-
+    
     qDebug()<<"SFR"<<m_selectFrequencyReference->prepare("SELECT * FROM account "
-                                               "WHERE frequencyReference=:f")<<m_selectFrequency->lastError();
+                                                         "WHERE frequencyReference=:f")<<m_selectFrequency->lastError();
     
     qDebug()<<"AF"<<m_addFrequency->prepare("INSERT INTO frequency (freq, nbGroup, account, profile) "
                                             "VALUES (:freq, :nbGroup, :account, :profile)")<<m_addFrequency->lastError();
     
     qDebug()<<"AFR"<<m_addFrequencyReference->prepare("INSERT INTO account (account, value, type, date_eff, profile, frequencyReference) "
-                                            "VALUES(:a, :v, :t, :d, :p, :f)")<<m_addFrequencyReference->lastError();
+                                                      "VALUES(:a, :v, :t, :d, :p, :f)")<<m_addFrequencyReference->lastError();
     
     qDebug()<<"RF"<<m_removeFrequency->prepare("DELETE FROM frequency "
                                                "WHERE id=:id" )<<m_removeFrequency->lastError();
@@ -317,7 +318,7 @@ bool ControllerDB::deleteProfile(QString name)
 
 bool ControllerDB::addEntry(const Entry & e)
 {    
-
+    
     bool ret = false;
     if(isConnected() && e.id() < 0)
     {
@@ -537,9 +538,40 @@ QMultiMap<QString, QString> ControllerDB::selectCategory()
     return ret;
 }
 
-bool ControllerDB::addBudget(const Budget&)
+bool ControllerDB::addBudget(const Budget& b)
 {
-    //TODO
+    if(isConnected())
+    {
+        m_addBudget->bindValue(":account", m_currentAccount);
+        m_addBudget->bindValue(":profile", m_currentProfile);
+        m_addBudget->bindValue(":reference", b.reference());
+        auto reqc = m_db.exec("SELECT * FROM categories WHERE profile='"+m_currentProfile+"' AND account='"+m_currentAccount+"' AND name='"+b.category()+"' ");
+        
+        reqc.seek(0);
+        
+        int idc = reqc.value("id").toInt();
+        m_addBudget->bindValue(":category", idc);
+        
+        bool ret = m_addBudget->exec();
+
+        if(!ret)
+            return false;
+        
+        int idb = m_addBudget->lastInsertId().toInt();
+        
+        for(auto it: b.targets().keys())
+        {
+            m_addSubbudget->bindValue(":idb", idb);
+            m_addSubbudget->bindValue(":date", it);
+            m_addSubbudget->bindValue(":frequency", (int)b.frequency(it));
+            m_addSubbudget->bindValue(":target", b.targets()[it]);
+            
+            m_addSubbudget->exec();
+        }
+        
+        return true;
+    }
+    
     return false;
 }
 
@@ -551,8 +583,28 @@ bool ControllerDB::removeBudget(const Budget &)
 
 QList<Budget> ControllerDB::selectBudgets()
 {
-    //TODO
-    return QList<Budget>();
+    QList<Budget> ret;
+    
+    if(isConnected())
+    {
+        m_selectBudget->bindValue(":a", m_currentAccount);
+        m_selectBudget->bindValue(":profile", m_currentProfile);
+        
+        m_selectBudget->exec();
+        
+        while(m_selectBudget->next())
+        {
+            Budget b;
+            b.setId(m_selectBudget->value("id").toInt());
+            b.setReference(m_selectBudget->value("reference").toDate());
+            auto req = m_db.exec("SELECT name FROM categories WHERE id='"+m_selectBudget->value("category").toString()+"'");
+            req.seek(0);
+            b.setCategory(req.value("name").toString());
+            
+            ret<<b;
+        }
+    }
+    return ret;
 }
 
 bool ControllerDB::updateBudget(const Budget &)
@@ -569,7 +621,7 @@ bool ControllerDB::addFrequency(const Frequency & f)
         m_addFrequency->bindValue(":nbGroup", QVariant::fromValue(f.nbGroup()));
         m_addFrequency->bindValue(":account", QVariant::fromValue(m_currentAccount));
         m_addFrequency->bindValue(":profile", QVariant::fromValue(m_currentProfile));
-
+        
         if(m_addFrequency->exec())
         {
             int id = m_addFrequency->lastInsertId().toInt();
@@ -579,7 +631,7 @@ bool ControllerDB::addFrequency(const Frequency & f)
             m_addFrequencyReference->bindValue(":d", f.referenceEntry().date());
             m_addFrequencyReference->bindValue(":p", m_currentProfile);
             m_addFrequencyReference->bindValue(":f", id);
-
+            
             if(m_addFrequencyReference->exec())
             {
                 id = m_addFrequencyReference->lastInsertId().toInt();
@@ -589,7 +641,7 @@ bool ControllerDB::addFrequency(const Frequency & f)
                 m_addInformation->bindValue(":prev",i.estimated());
                 
                 bool ret = m_addInformation->exec();
-
+                
                 return ret;
             }
             
@@ -618,7 +670,7 @@ bool ControllerDB::updateFrequency(const Frequency& f)
         m_updateFrequency->bindValue(":f", (int)f.freq());
         m_updateFrequency->bindValue(":ng", f.nbGroup());
         m_updateFrequency->bindValue(":id", f.id());
-
+        
         return ret && m_updateFrequency->exec();
     }
     return false;
@@ -627,14 +679,14 @@ bool ControllerDB::updateFrequency(const Frequency& f)
 QList<Frequency> ControllerDB::selectFrequency()
 {
     QList<Frequency> ret;
-
+    
     if(isConnected())
     {
         m_selectFrequency->bindValue(":a", m_currentAccount);
         m_selectFrequency->bindValue(":profile", m_currentProfile);
-
+        
         m_selectFrequency->exec();
-
+        
         while(m_selectFrequency->next())
         {
             Frequency f;
@@ -642,12 +694,12 @@ QList<Frequency> ControllerDB::selectFrequency()
             f.setFreq((Account::FrequencyEnum)m_selectFrequency->value("freq").toInt());
             f.setNbGroup(m_selectFrequency->value("nbGroup").toInt());
             f.setEnd(m_selectFrequency->value("end").toDate());
-
+            
             m_selectFrequencyReference->bindValue(":f", f.id());
-
+            
             if(!m_selectFrequencyReference->exec())
                 continue;
-
+            
             m_selectFrequencyReference->seek(0);
             Entry ref;
             Information i;
@@ -655,33 +707,33 @@ QList<Frequency> ControllerDB::selectFrequency()
             ref.setDate(m_selectFrequencyReference->value("date_eff").toDate());
             ref.setValue(m_selectFrequencyReference->value("value").toDouble());
             ref.setType(m_selectFrequencyReference->value("type").toString());
-
+            
             m_selectInformation->bindValue(":ide", ref.id());
-
+            
             bool inf = m_selectInformation->exec();
             if(!inf)
                 continue;
-
+            
             
             m_selectInformation->seek(0);
-
+            
             i.setId(m_selectInformation->value("id").toInt());
             i.setIdEntry(m_selectInformation->value("idEntry").toInt());
             i.setEstimated(m_selectInformation->value("prev").toBool());
             i.setTitle(m_selectInformation->value("info").toString());
             
             ref.setInfo(i);
-
+            
             m_selectMetadata->bindValue(":ide", ref.id());
-
+            
             if(m_selectMetadata->exec())
                 while(m_selectMetadata->next())
                     ref.setMetadata(m_selectMetadata->value("name").toString(), m_selectMetadata->value("value").toString());
-
+            
             f.setReferenceEntry(ref);
             ret<<f;
         }
-
+        
     }
     return ret;
 }

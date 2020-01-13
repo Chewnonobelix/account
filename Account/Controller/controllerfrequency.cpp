@@ -187,14 +187,10 @@ void ControllerFrequency::openGenerate(int id)
 void ControllerFrequency::openManager()
 {
     exec();
-    
-    
-//    QMetaObject::invokeMethod(m_manager, "show");    
 }
 
 void ControllerFrequency::closeManager()
 {
-//    QMetaObject::invokeMethod(m_manager, "close");
     QMetaObject::invokeMethod(m_generate, "close");
     
 }
