@@ -234,6 +234,10 @@ void ControllerDB::prepareCommon()
     
     m_removeCommon->prepare("DELETE FROM commonExpanse "
                             "WHERE id=:id");
+    
+    m_updateCommon->prepare("UPDATE commonExpanse "
+                            "SET isClose=:c "
+                            "WHERE id=:id");
     //TODO
 }
 
@@ -814,4 +818,15 @@ bool ControllerDB::removeCommon(const CommonExpanse& c)
     return false;
 }
 
-bool ControllerDB::updateCommon(const CommonExpanse&) {return false;}
+bool ControllerDB::updateCommon(const CommonExpanse& c) 
+{
+    if(isConnected())
+    {
+        m_updateCommon->bindValue(":id", c.id());
+        m_updateCommon->bindValue(":c", c.isClose());
+        
+        return m_updateCommon->exec();
+    }
+    
+    return false;
+}

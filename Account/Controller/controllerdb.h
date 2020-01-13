@@ -61,12 +61,10 @@ private:
     SqlQuery m_selectFrequencyReference;
     SqlQuery m_updateFrequencyReference;
 
-    //TODO
     SqlQuery m_addCommon;
     SqlQuery m_removeCommon;
     SqlQuery m_selectCommon;
     SqlQuery m_updateCommon;
-    //END
     
 
     QString m_currentProfile;
