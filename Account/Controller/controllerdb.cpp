@@ -225,6 +225,12 @@ void ControllerDB::prepareCommon()
     m_selectCommon = SqlQuery::create(m_db);
     m_removeCommon = SqlQuery::create(m_db);
     m_updateCommon = SqlQuery::create(m_db);
+    
+    m_addCommon->prepare("INSERT INTO commonExpanse (begin, isClose, title, profile, account) "
+                         "VALUES (:b, :c, :t, :p, :a)");
+    
+    m_selectCommon->prepare("SELECT * FROM commonExpanse "
+                            "WHERE account=:a AND profile=:p");
     //TODO
 }
 
@@ -752,9 +758,47 @@ QList<Frequency> ControllerDB::selectFrequency()
     return ret;
 }
 
-QMap<int, CommonExpanse> ControllerDB::selectCommon() {return  QMap<int, CommonExpanse>(); }
+QMap<int, CommonExpanse> ControllerDB::selectCommon() 
+{
+    QMap<int, CommonExpanse> ret;
+    
+    if(isConnected())
+    {
+        m_selectCommon->bindValue(":a", m_currentAccount);    
+        m_selectCommon->bindValue(":p", m_currentProfile);
+        
+        m_selectCommon->exec();
+        
+        while(m_selectCommon->next())
+        {
+            CommonExpanse c;
+            c.setId(m_selectCommon->value("id").toInt());
+            c.setBegin(m_selectCommon->value("begin").toDate());
+            c.setIsClose(m_selectCommon->value("isClose").toBool());
+            c.setTitle(m_selectCommon->value("title").toString());
+            
+            ret[c.id()] = c;
+        }
+    }
+    
+    return  ret; 
+}
 
-bool ControllerDB::addCommon(const CommonExpanse&) {return false;}
+bool ControllerDB::addCommon(const CommonExpanse& c)
+{
+    if(isConnected())
+    {
+        m_addCommon->bindValue(":b", c.begin());
+        m_addCommon->bindValue(":c", c.isClose());
+        m_addCommon->bindValue(":t", c.title());
+        m_addCommon->bindValue(":p", m_currentProfile);
+        m_addCommon->bindValue(":a", m_currentAccount);
+        
+        return m_addCommon->exec();
+    }
+    
+    return false;
+}
 
 bool ControllerDB::removeCommon(const CommonExpanse&) {return false;}
 
