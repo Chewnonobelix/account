@@ -66,7 +66,8 @@ const auto subbudget_table = QString("CREATE TABLE `subbudget` ("
                                          "`idBudget` INTEGER NOT NULL REFERENCES budget(id),"
                                          "`frequency` INTEGER NOT NULL,"
                                          "`target` REAL NOT NULL,"
-                                         "`fromDate` date NOT NULL"
+                                         "`fromDate` date NOT NULL, "
+                                     "CONSTRAINT subbudget_unique UNIQUE (idBudget, fromDate) "
                                        ")");
 
 const auto frequency_table = QString("CREATE TABLE `frequency` ("
