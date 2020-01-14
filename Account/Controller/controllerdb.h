@@ -15,10 +15,10 @@ class ControllerDB: public InterfaceDataSave
 {
     typedef QSharedPointer<QSqlQuery> SqlQuery;
     Q_OBJECT
-
+    
 private:
     QSqlDatabase m_db;
-
+    
     SqlQuery m_selectProfiles;
     SqlQuery m_removeProfile;
     
@@ -38,7 +38,7 @@ private:
     SqlQuery m_addInformation;
     SqlQuery m_removeInformation;
     SqlQuery m_selectInformation;
-
+    
     SqlQuery m_addCategory;
     SqlQuery m_removeCategory;
     SqlQuery m_selectCategory;
@@ -60,7 +60,7 @@ private:
     SqlQuery m_removeFrequencyReference;
     SqlQuery m_selectFrequencyReference;
     SqlQuery m_updateFrequencyReference;
-
+    
     SqlQuery m_addCommon;
     SqlQuery m_removeCommon;
     SqlQuery m_selectCommon;
@@ -69,10 +69,11 @@ private:
     SqlQuery m_addCommonTable;
     SqlQuery m_selectCommonEntry;
     SqlQuery m_selectCommonTable;
+    SqlQuery m_addCommonEntryInformation;
     
     QString m_currentProfile;
     QString m_currentAccount;
-
+    
     void prepareEntry();
     void prepareInformation();
     void prepareAccount();
@@ -81,34 +82,34 @@ private:
     void prepareFrequency();
     void prepareCommon();
     void prepareProfile();
-
+    
 public:
     ControllerDB();
     ControllerDB(const ControllerDB&d);
     ~ControllerDB();
-
+    
     bool isConnected() const;
 public slots:
     bool addEntry(QSharedPointer<Entry>) {return false;}
     bool addEntry(const Entry&);
     QMultiMap<QDate, Entry> selectEntry(QString);
     bool removeEntry(const Entry&);
-
+    
     QStringList selectAccount();
     bool removeAccount(QString);
-
+    
     bool updateInfo(const Entry&);
     bool updateEntry(const Entry &);
-
+    
     bool addCategory(QString, QString);
     bool removeCategory(QString);
     QMultiMap<QString, QString> selectCategory();
-
+    
     virtual bool addBudget(const Budget&);
     virtual bool removeBudget(const Budget&);
     virtual QList<Budget> selectBudgets();
     virtual bool updateBudget(const Budget &);
-
+    
     virtual bool addFrequency(const Frequency&);
     virtual bool removeFrequency(const Frequency&);
     virtual bool updateFrequency(const Frequency&);
@@ -124,7 +125,7 @@ public slots:
     virtual bool addProfile(QString, QString);
     virtual QString currentProfile();
     virtual bool deleteProfile(QString);
-
+    
     bool init();
 };
 

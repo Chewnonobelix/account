@@ -233,6 +233,7 @@ void ControllerDB::prepareCommon()
     m_addCommonTable = SqlQuery::create(m_db);
     m_selectCommonTable = SqlQuery::create(m_db);
     m_selectCommonEntry = SqlQuery::create(m_db);
+    m_addCommonEntryInformation = SqlQuery::create(m_db);
     
     qDebug()<<"ACEX"<<m_addCommon->prepare("INSERT INTO commonExpanse (begin, isClose, title, profile, account) "
                                            "VALUES (:b, :c, :t, :p, :a)")<<m_addCommon->lastError();
@@ -249,9 +250,9 @@ void ControllerDB::prepareCommon()
     
     qDebug()<<"ACEN"<<m_addCommonEntry->prepare("INSERT INTO account (account, profile, value, date_eff, type) "
                                                 "VALUES (:a, :p, :v, :d, :t)")<<m_addCommonEntry->lastError();
-    
-    qDebug()<<"ACEN"<<m_addCommonEntry->prepare("INSERT INTO account (account, profile, value, date_eff, type) "
-                                                "VALUES (:a, :p, :v, :d, :t)")<<m_addCommonEntry->lastError();
+        
+    qDebug()<<"ACENI"<<m_addCommonEntryInformation->prepare("INSERT INTO information (idEntry, info) "
+                                                "VALUES (:ide, :title)")<<m_addCommonEntry->lastError();
     
     qDebug()<<"SCEN"<<m_selectCommonEntry->prepare("SELECT * FROM account "
                                                    "WHERE id=:id")<<m_selectCommonEntry->lastError();
@@ -824,12 +825,13 @@ QMap<int, CommonExpanse> ControllerDB::selectCommon()
                 m_selectInformation->bindValue(":ide", e.id());
                 m_selectInformation->exec();
                 
-//                if(!m_selectInformation->seek(0))
-//                    continue;
+                if(!m_selectInformation->seek(0))
+                    continue;
                 
-//                Information i;
-//                i.setIdEntry(e.id());
-//                i.setTitle(m_selectInformation->value("info").toString());
+                Information i;
+                i.setIdEntry(e.id());
+                i.setTitle(m_selectInformation->value("info").toString());
+                e.setInfo(i);
                 
                 c.addEntries(m_selectCommonTable->value("name").toString(), e);
             }
@@ -888,7 +890,11 @@ bool ControllerDB::updateCommon(const CommonExpanse& c)
             m_addCommonEntry->exec();
             
             int id = m_addCommonEntry->lastInsertId().toInt();
+            m_addCommonEntryInformation->bindValue(":ide", id);
+            m_addCommonEntryInformation->bindValue(":title", e.info().title());
             
+            m_addCommonEntryInformation->exec();
+                        
             m_addCommonTable->bindValue(":i", c.id());
             m_addCommonTable->bindValue(":e", id);
             m_addCommonTable->bindValue(":n", it.key());
