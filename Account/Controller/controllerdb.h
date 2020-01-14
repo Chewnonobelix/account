@@ -65,8 +65,11 @@ private:
     SqlQuery m_removeCommon;
     SqlQuery m_selectCommon;
     SqlQuery m_updateCommon;
+    SqlQuery m_addCommonEntry;
+    SqlQuery m_addCommonTable;
+    SqlQuery m_selectCommonEntry;
+    SqlQuery m_selectCommonTable;
     
-
     QString m_currentProfile;
     QString m_currentAccount;
 

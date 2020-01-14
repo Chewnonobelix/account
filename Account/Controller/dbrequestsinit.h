@@ -60,6 +60,18 @@ const auto budget_table = QString("CREATE TABLE `budget` ("
                                       "`profile` TEXT NOT NULL DEFAULT 'Default',"
                                       "`account` TEXT NOT NULL)");
 
+const auto budget_trigger = QString("CREATE TRIGGER update_budget AFTER UPDATE ON budget "
+                                    "BEGIN "
+                                    "DELETE FROM subbudget "
+                                    "WHERE idBudget=OLD.id;"
+                                    "END;");
+
+const auto budget_delete_trigger = QString("CREATE TRIGGER delete_budget BEFORE DELETE ON budget "
+                                    "BEGIN "
+                                    "DELETE FROM subbudget "
+                                    "WHERE idBudget=OLD.id;"
+                                    "END;");
+
 const auto subbudget_table = QString("CREATE TABLE `subbudget` ("
                                          "`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
                                          "`idBudget` INTEGER NOT NULL REFERENCES budget(id),"
@@ -92,12 +104,20 @@ const auto commonExpanse_table = QString("CREATE TABLE `commonExpanse` ("
                                              "`account` TEXT NOT NULL"
                                            ")");
 
+
+const auto expanse_trigger = QString("CREATE TRIGGER update_expanse AFTER UPDATE ON commonExpanse "
+                                    "BEGIN "
+                                    "DELETE FROM commonEntry "
+                                    "WHERE idCommon=OLD.id;"
+                                    "END;");
+
 const auto trigger_delete_commonExpanse = QString("CREATE TRIGGER delete_expanse BEFORE DELETE ON commonExpanse "
                                                   "BEGIN "
                                                   "DELETE FROM commonEntry WHERE idCommon=OLD.id;"
                                                   "END;");
 
 const auto commonEntry_table = QString("CREATE TABLE `commonEntry` ("
+                                       "`id` INTEGER PRIMARY KEY AUTOINCREMENT, "
                                            "`idCommon` INTEGER NOT NULL REFERENCES commonExpanse (id),"
                                            "`name` TEXT NOT NULL,"
                                            "`entry` INTEGER NOT NULL REFERENCES account(id)"

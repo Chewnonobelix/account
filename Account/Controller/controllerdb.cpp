@@ -41,8 +41,11 @@ bool ControllerDB::init()
         
         qDebug()<<"Trigger delete entry"<<m_db.exec(account_trigger_delete).lastError();
         qDebug()<<"Trigger delete frequency"<<m_db.exec(trigger_delete_frequency).lastError();
+        qDebug()<<"Trigger update budget"<<m_db.exec(budget_trigger).lastError();
+        qDebug()<<"Trigger delete budget"<<m_db.exec(budget_delete_trigger).lastError();
         qDebug()<<"Trigger delete category"<<m_db.exec(trigger_delete_category).lastError();
         qDebug()<<"Trigger delete common expanse"<<m_db.exec(trigger_delete_commonExpanse).lastError();
+        qDebug()<<"Trigger update common expanse"<<m_db.exec(expanse_trigger).lastError();
         qDebug()<<"Trigger delete common entry"<<m_db.exec(trigger_delete_commonEntry).lastError();
         qDebug()<<"Trigger delete account"<<m_db.exec(remove_account_trigger).lastError();
         qDebug()<<"Trigger delete profile"<<m_db.exec(remove_profile_trigger).lastError();
@@ -223,23 +226,41 @@ void ControllerDB::prepareFrequency()
 void ControllerDB::prepareCommon()
 {
     m_addCommon = SqlQuery::create(m_db);
+    m_addCommonEntry = SqlQuery::create(m_db);
     m_selectCommon = SqlQuery::create(m_db);
     m_removeCommon = SqlQuery::create(m_db);
     m_updateCommon = SqlQuery::create(m_db);
+    m_addCommonTable = SqlQuery::create(m_db);
+    m_selectCommonTable = SqlQuery::create(m_db);
+    m_selectCommonEntry = SqlQuery::create(m_db);
     
-    m_addCommon->prepare("INSERT INTO commonExpanse (begin, isClose, title, profile, account) "
-                         "VALUES (:b, :c, :t, :p, :a)");
+    qDebug()<<"ACEX"<<m_addCommon->prepare("INSERT INTO commonExpanse (begin, isClose, title, profile, account) "
+                                           "VALUES (:b, :c, :t, :p, :a)")<<m_addCommon->lastError();
     
-    m_selectCommon->prepare("SELECT * FROM commonExpanse "
-                            "WHERE account=:a AND profile=:p");
+    qDebug()<<"SCEX"<<m_selectCommon->prepare("SELECT * FROM commonExpanse "
+                                              "WHERE account=:a AND profile=:p")<<m_selectCommon->lastError();
     
-    m_removeCommon->prepare("DELETE FROM commonExpanse "
-                            "WHERE id=:id");
+    qDebug()<<"DCEX"<<m_removeCommon->prepare("DELETE FROM commonExpanse "
+                                              "WHERE id=:id")<<m_removeCommon->lastError();
     
-    m_updateCommon->prepare("UPDATE commonExpanse "
-                            "SET isClose=:c "
-                            "WHERE id=:id");
-    //TODO
+    qDebug()<<"UCEX"<<m_updateCommon->prepare("UPDATE commonExpanse "
+                                              "SET isClose=:c "
+                                              "WHERE id=:id")<<m_updateCommon->lastError();
+    
+    qDebug()<<"ACEN"<<m_addCommonEntry->prepare("INSERT INTO account (account, profile, value, date_eff, type) "
+                                                "VALUES (:a, :p, :v, :d, :t)")<<m_addCommonEntry->lastError();
+    
+    qDebug()<<"ACEN"<<m_addCommonEntry->prepare("INSERT INTO account (account, profile, value, date_eff, type) "
+                                                "VALUES (:a, :p, :v, :d, :t)")<<m_addCommonEntry->lastError();
+    
+    qDebug()<<"SCEN"<<m_selectCommonEntry->prepare("SELECT * FROM account "
+                                                   "WHERE id=:id")<<m_selectCommonEntry->lastError();
+    
+    qDebug()<<"ACET"<<m_addCommonTable->prepare("INSERT INTO commonEntry (idCommon, entry, name) "
+                                                "VALUES (:i, :e, :n)")<<m_addCommonTable->lastError();
+    
+    qDebug()<<"SCET"<<m_selectCommonTable->prepare("SELECT * FROM commonEntry "
+                                                   "")<<m_selectCommonTable->lastError();
 }
 
 void ControllerDB::prepareProfile()
@@ -408,10 +429,10 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
             i.setTitle(m_selectInformation->value("info").toString());
             
             auto reqc = m_db.exec("SELECT name FROM categories WHERE id='"+QString::number(m_selectInformation->value("category").toInt())+"'");
-
+            
             if(reqc.seek(0))
                 i.setCategory(reqc.value("name").toString());
-
+            
             t.setInfo(i);
             
             m_selectMetadata->bindValue(":ide", t.id());
@@ -479,7 +500,7 @@ bool ControllerDB::updateInfo(const Entry & e)
         m_updateInfo->bindValue(":estimated", e.info().estimated());
         
         auto reqc = m_db.exec("SELECT id FROM categories WHERE account='"+m_currentAccount+"' AND profile='"+m_currentProfile+"' AND name='"+e.info().category()+"'");
-             
+        
         if(reqc.seek(0))
             m_updateInfo->bindValue(":cat", reqc.value("id").toInt());
         
@@ -624,9 +645,6 @@ bool ControllerDB::updateBudget(const Budget & b)
 {
     if(isConnected())
     {
-        m_removeSubbudget->bindValue(":idb", b.id());
-        m_removeSubbudget->exec();
-        
         for(auto it: b.targets().keys())
         {
             m_addSubbudget->bindValue(":idb", b.id());
@@ -785,6 +803,37 @@ QMap<int, CommonExpanse> ControllerDB::selectCommon()
             c.setIsClose(m_selectCommon->value("isClose").toBool());
             c.setTitle(m_selectCommon->value("title").toString());
             
+            m_selectCommonTable->bindValue(":idc", c.id());
+            m_selectCommonTable->exec();
+            
+            while(m_selectCommonTable->next())
+            {
+                m_selectCommonEntry->bindValue(":id", m_selectCommonTable->value("entry").toInt());
+                m_selectCommonEntry->exec();
+                
+                if(!m_selectCommonEntry->seek(0))
+                    continue;
+                
+                
+                Entry e;
+                e.setId(m_selectCommonEntry->value("id").toInt());
+                e.setValue(m_selectCommonEntry->value("value").toDouble());
+                e.setDate(m_selectCommonEntry->value("date_eff").toDate());
+                e.setType(m_selectCommonEntry->value("type").toString());
+
+                m_selectInformation->bindValue(":ide", e.id());
+                m_selectInformation->exec();
+                
+//                if(!m_selectInformation->seek(0))
+//                    continue;
+                
+//                Information i;
+//                i.setIdEntry(e.id());
+//                i.setTitle(m_selectInformation->value("info").toString());
+                
+                c.addEntries(m_selectCommonTable->value("name").toString(), e);
+            }
+            
             ret[c.id()] = c;
         }
     }
@@ -825,8 +874,29 @@ bool ControllerDB::updateCommon(const CommonExpanse& c)
     {
         m_updateCommon->bindValue(":id", c.id());
         m_updateCommon->bindValue(":c", c.isClose());
+        m_updateCommon->exec();
         
-        return m_updateCommon->exec();
+        auto map = c.entries();
+        for(auto it = map.begin(); it != map.end(); it++)
+        {
+            Entry e = *it;
+            m_addCommonEntry->bindValue(":a", m_currentAccount);
+            m_addCommonEntry->bindValue(":p", m_currentProfile);
+            m_addCommonEntry->bindValue(":v", e.value());
+            m_addCommonEntry->bindValue(":d",e.date());
+            m_addCommonEntry->bindValue(":t", e.type());
+            m_addCommonEntry->exec();
+            
+            int id = m_addCommonEntry->lastInsertId().toInt();
+            
+            m_addCommonTable->bindValue(":i", c.id());
+            m_addCommonTable->bindValue(":e", id);
+            m_addCommonTable->bindValue(":n", it.key());
+            
+            m_addCommonTable->exec();
+        }
+        
+        return true;
     }
     
     return false;
