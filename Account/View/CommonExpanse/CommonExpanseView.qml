@@ -99,7 +99,7 @@ Rectangle {
                                 text: modelData
                                 font.pixelSize: pageStyle.title.size
                                 font.family: pageStyle.title.name
-                                fontSizeMode: Text.fit
+                                fontSizeMode: Text.Fit
                                 horizontalAlignment: Qt.AlignHCenter
                                 verticalAlignment: Qt.AlignVCenter
                             }
@@ -114,7 +114,7 @@ Rectangle {
                                 text: root.model.totalForMember(modelData).value
                                 font.pixelSize: pageStyle.title.size
                                 font.family: pageStyle.title.name
-                                fontSizeMode: Text.fit
+                                fontSizeMode: Text.Fit
                                 horizontalAlignment: Qt.AlignHCenter
                                 verticalAlignment: Qt.AlignVCenter
                             }                     
@@ -158,10 +158,10 @@ Rectangle {
                             
                             Label {
                                 anchors.fill: parent
-                                text: modelData.value
+                                text: modelData ? modelData.value : 0
                                 font.pixelSize: pageStyle.title.size
                                 font.family: pageStyle.title.name
-                                fontSizeMode: Text.fit
+                                fontSizeMode: Text.Fit
                                 horizontalAlignment: Qt.AlignHCenter
                                 verticalAlignment: Qt.AlignVCenter
                             }                     
