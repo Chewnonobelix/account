@@ -77,7 +77,8 @@ void ControllerDB::prepareEntry()
     m_updateMetadata = SqlQuery::create(m_db);
     
     qDebug()<<"SE"<<m_selectEntry->prepare("SELECT * FROM account "
-                                           "WHERE account=:a AND profile=:p AND commonExpanse=0 AND frequencyReference IS NULL")<<m_selectEntry->lastError();
+                                           "WHERE account=:a AND profile=:p AND frequencyReference IS NULL AND "
+                                           "id NOT IN (SELECT entry FROM commonEntry) ")<<m_selectEntry->lastError();
     
     qDebug()<<"AE"<<m_addEntry->prepare("INSERT INTO account (account, value, date_eff, type, profile) "
                                         "VALUES (:account,:value,:date,:type, :profile)")<<m_addEntry->lastError();

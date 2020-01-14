@@ -10,7 +10,6 @@ const auto account_table = QString("CREATE TABLE `account` ("
                                        "`date_eff` date DEFAULT NULL,"
                                        "`type` TEXT NOT NULL  DEFAULT `outcome` ,"
                                        "`profile` TEXT NOT NULL DEFAULT `Default`,"
-                                       "`commonExpanse` INTEGER DEFAULT 0,"
                                        "`frequencyReference` INTEGER DEFAULT NULL REFERENCES frequency(id))");
 
 const auto account_trigger_delete = QString("CREATE TRIGGER delete_entry BEFORE DELETE ON account "
