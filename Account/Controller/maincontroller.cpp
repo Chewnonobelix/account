@@ -6,7 +6,7 @@ MainController::MainController(int storage): AbstractController()
     try
     {
         
-        setDb(storage == 0 ? "ControllerDB" : "ControllerXMLMulti");
+        setDb(m_settings.database());
         m_db->init();
     }
     catch(QString except)

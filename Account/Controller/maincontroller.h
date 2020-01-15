@@ -17,6 +17,7 @@
 #include "controllerbudget.h"
 #include "controllerfrequency.h"
 #include "controllercommon.h"
+#include "controllersettings.h"
 
 class MainController: public AbstractController
 {
@@ -31,6 +32,7 @@ private:
     ControllerBudget m_budget;
     ControllerFrequency m_freqs;
     ControllerCommon m_common;
+    ControllerSettings m_settings;
     
     QThread m_dbThread;
     

@@ -17,6 +17,7 @@ SOURCES += \
     Controller/controllerbudget.cpp \
     Controller/controllercommon.cpp \
     Controller/controllerfrequency.cpp \
+    Controller/controllersettings.cpp \
     Controller/interfacedatasave.cpp \
     Model/accountglobal.cpp \
     Model/commonexpanse.cpp \
@@ -59,6 +60,7 @@ HEADERS += \
     Controller/controllerbudget.h \
     Controller/controllercommon.h \
     Controller/controllerfrequency.h \
+    Controller/controllersettings.h \
     Controller/dbrequestsinit.h \
     Model/commonexpanse.h \
     Model/entry.h \
