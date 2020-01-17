@@ -622,14 +622,19 @@ Current Version beta 0.9")
         }
 
         BudgetManager {
+            id: bm
+            visible: true
             objectName: "budgetManager"
         }
 
         FrequencyManager{
+            id: fm
+            visible: true
             objectName: "frequencyManager"
         }
 
         Rectangle {
+            id: cm
             color: "transparent"
             objectName: "commonRect"
 
@@ -897,125 +902,31 @@ Current Version beta 0.9")
         id: tabBar
         currentIndex: swipeView.currentIndex
 
-        TabButton {
-            id: listTabButton
-
-            contentItem: Label {
-                text: qsTr("List")
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                color: tabBar.currentItem === listTabButton ? "black" : "darkseagreen"
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
-                fontSizeMode: Text.Fit
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                acceptedButtons: Qt.NoButton
-            }
-
-            background: Rectangle {
-                color: tabBar.currentItem === parent ? "darkseagreen" : "white"
-            }
-        }
-        TabButton {
-            id: graphTabButton
-
-            contentItem: Label {
-                text: qsTr("Graph")
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                color: tabBar.currentItem === graphTabButton ? "black" : "darkseagreen"
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
-                fontSizeMode: Text.Fit
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                acceptedButtons: Qt.NoButton
-            }
-
-            background: Rectangle {
-                color: tabBar.currentItem === parent ? "darkseagreen" : "white"
+        Repeater {
+            model: [qsTr("List"), qsTr("Graph"), qsTr("Budget"), qsTr("Frequency"), qsTr("Common expanse")]
+            TabButton {
+                id: listTabButton
+    
+                contentItem: Label {
+                    text: modelData
+                    horizontalAlignment: Qt.AlignHCenter
+                    verticalAlignment: Qt.AlignVCenter
+                    color: tabBar.currentItem === listTabButton ? "black" : "darkseagreen"
+                    font.family: pageStyle.title.name
+                    font.pixelSize: pageStyle.title.size
+                    fontSizeMode: Text.Fit
+                }
+    
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    acceptedButtons: Qt.NoButton
+                }
+    
+                background: Rectangle {
+                    color: tabBar.currentItem === parent ? "darkseagreen" : "white"
+                }
             }
         }
-
-        TabButton {
-            id: budgetTabButton
-
-            contentItem: Label {
-                text: qsTr("Budget")
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                color: tabBar.currentItem === budgetTabButton ? "black" : "darkseagreen"
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
-                fontSizeMode: Text.Fit
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                acceptedButtons: Qt.NoButton
-            }
-
-            background: Rectangle {
-                color: tabBar.currentItem === parent ? "darkseagreen" : "white"
-            }
-        }
-
-        TabButton {
-            id: frequencyTabButton
-
-            contentItem: Label {
-                text: qsTr("Frequency")
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                color: tabBar.currentItem === frequencyTabButton ? "black" : "darkseagreen"
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
-                fontSizeMode: Text.Fit
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                acceptedButtons: Qt.NoButton
-            }
-
-            background: Rectangle {
-                color: tabBar.currentItem === parent ? "darkseagreen" : "white"
-            }
-        }
-
-        TabButton {
-            id: commonTabButton
-
-            contentItem: Label {
-                text: qsTr("Common expanse")
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                wrapMode: Text.WordWrap
-                color: tabBar.currentItem === commonTabButton ? "black" : "darkseagreen"
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
-                fontSizeMode: Text.Fit
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                acceptedButtons: Qt.NoButton
-            }
-
-            background: Rectangle {
-                color: tabBar.currentItem === parent ? "darkseagreen" : "white"
-            }
-        }
-
     }
 }
