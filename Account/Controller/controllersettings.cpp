@@ -16,14 +16,14 @@ ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSett
     if(!m_settings.allKeys().contains("Database/Backup"))
         m_settings.setValue("Database/Backup", "ControllerXMLMulti");
     
-    if(!m_settings.allKeys().contains("Feature/Frequency"))
-        m_settings.setValue("Feature/Frequency", true);
+    if(!m_settings.allKeys().contains("Feature/"+QObject::tr("Frequency")))
+        m_settings.setValue("Feature/"+QObject::tr("Frequency"), true);
     
-    if(!m_settings.allKeys().contains("Feature/Budget"))
-        m_settings.setValue("Feature/Budget", true);
+    if(!m_settings.allKeys().contains("Feature/"+QObject::tr("Budget")))
+        m_settings.setValue("Feature/"+QObject::tr("Budget"), true);
     
-    if(!m_settings.allKeys().contains("Feature/CommonExpanse"))
-        m_settings.setValue("Feature/CommonExpanse", true);
+    if(!m_settings.allKeys().contains("Feature/"+QObject::tr("CommonExpanse")))
+        m_settings.setValue("Feature/"+QObject::tr("CommonExpanse"), true);
     
     if(!m_settings.allKeys().contains("Language"))
         m_settings.setValue("Language",  "English");
