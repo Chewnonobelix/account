@@ -598,6 +598,7 @@ Current Version beta 0.9")
 
     SwipeView {
         id: swipeView
+        objectName: "swipe"
         currentIndex: tabBar.currentIndex
 
         anchors.fill: parent
@@ -621,21 +622,21 @@ Current Version beta 0.9")
             year: table.v_dateYear
         }
 
-        BudgetManager {
-            id: bm
-            visible: true
-            objectName: "budgetManager"
-        }
+//        BudgetManager {
+//            id: bm
+//            visible: true
+//            objectName: "budgetManager"
+//        }
 
-        FrequencyManager{
-            id: fm
-            visible: true
-            objectName: "frequencyManager"
-        }
+//        FrequencyManager{
+//            id: fm
+//            visible: true
+//            objectName: "frequencyManager"
+//        }
 
-        CommonExpanseManager {
-            id: cm
-        }
+//        CommonExpanseManager {
+//            id: cm
+//        }
 
         Popup {
             id: deleteAccount
@@ -708,6 +709,7 @@ Current Version beta 0.9")
         currentIndex: swipeView.currentIndex
 
         Repeater {
+            objectName: "features"
             model: [qsTr("List"), qsTr("Graph"), qsTr("Budget"), qsTr("Frequency"), qsTr("Common expanse")]
             TabButton {
                 id: listTabButton

@@ -7,6 +7,8 @@
 #include <QVariant>
 #include <QJSValue>
 #include <QThread>
+#include <QQmlComponent>
+
 #include "abstractcontroller.h"
 #include "controllerinformation.h"
 #include "graphcontroller.h"
@@ -29,10 +31,11 @@ private:
     GraphController m_graph;
     LanguageController m_lang;
     ControllerTransfert m_transfert;
-    ControllerBudget m_budget;
-    ControllerFrequency m_freqs;
-    ControllerCommon m_common;
     ControllerSettings m_settings;
+
+    QSharedPointer<ControllerBudget> m_budget;
+    QSharedPointer<ControllerFrequency> m_freqs;
+    QSharedPointer<ControllerCommon> m_common;
     
     QThread m_dbThread;
     
