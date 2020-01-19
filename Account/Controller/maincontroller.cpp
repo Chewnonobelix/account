@@ -47,8 +47,7 @@ int MainController::exec()
     connect(root, SIGNAL(removeAccount(QString)), this, SLOT(deleteAccount(QString)));
     connect(root, SIGNAL(s_closing()), this, SLOT(close()));
     
-    connect(&m_info, ControllerInformation::s_exec, this, MainController::openBudgetManager);
-//    connect(root, SIGNAL(s_openFrequencyManager()), &m_freqs, SLOT(openManager()));
+
     QObject* calendar = root->findChild<QObject*>("cal");
     
     if(calendar)
@@ -120,48 +119,26 @@ int MainController::exec()
         }
     }
     
-    QObject* swipe = root->findChild<QObject*>("swipe");
     
     QStringList features;
     features<<QObject::tr("List")<<QObject::tr("Graph");
     for(auto it: m_settings.featuresList())
     {
-        if(m_settings.featureEnable(it))
-           features<<it;             
-    }
-    
-    if(m_settings.featureEnable("Frequency"))
-    {
-        QQmlComponent frequencyComp(&m_engine, QUrl("qrc:/Frequency/FrequencyManager.qml")); /*= root->findChild<QObject*>("frequencyManager");   */     
-        QObject* frequency = frequencyComp.create();
-        QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(frequency)));
+        if(m_settings.featureEnable("Frequency") && it == "Frequency")
+        {
+            features<<it;
+            buildFrequency();
+        }
 
-        m_freqs = QSharedPointer<ControllerFrequency>::create();
-        connect(m_freqs.data(), ControllerFrequency::s_addEntry, this, MainController::addEntryMain, Qt::QueuedConnection);
-        connect(m_freqs.data(), ControllerFrequency::s_select, this, MainController::selection);
-        m_info.setControllerFrequency(m_freqs.data());
-        
-        m_freqs->setManager(frequency);
-        m_freqs->exec();        
+        if(m_settings.featureEnable("Budget") && it == "Budget")
+        {
+            features<<it;
+            buildBudget();
+        }
     }
     
-    if(m_settings.featureEnable("Budget"))
-    {
-        
-        QObject* budgetManager = root->findChild<QObject*>("budgetManager");        
-        m_budget->setManager(budgetManager);
-        
-        QObject* rectQuickView = root->findChild<QObject*>("budgetQuick");
-        m_budget->setQuickView(rectQuickView);
-        m_budget->show(QDate::currentDate());
-        m_budget->exec();  
-        
-//        connect(&m_info, ControllerInformation::s_update, &m_budget, ControllerBudget::updateEntry);
-//        connect(&m_info, ControllerInformation::s_changeCat, &m_budget, ControllerBudget::changeEntry);
-        
-    }
     
-    if(m_settings.featureEnable("CommonExpanse"))
+    if(!m_settings.featureEnable("CommonExpanse"))
     {
         QObject* common = root->findChild<QObject*>("commonRect");
         if(common)
@@ -218,6 +195,51 @@ int MainController::exec()
         featuresRepetear->setProperty("model", features);
     }
     return 0;
+}
+
+void MainController::buildBudget()
+{
+    QObject* root = m_engine.rootObjects().first();
+    QObject* swipe = root->findChild<QObject*>("swipe");
+
+    m_budget = QSharedPointer<ControllerBudget>::create();
+    QQmlComponent budgetComp(&m_engine, QUrl("qrc:/Budget/BudgetManager.qml"));
+    QObject* budgetManager = budgetComp.create();
+    QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(budgetManager)));
+    connect(&m_info, ControllerInformation::s_exec, this, MainController::openBudgetManager);
+    m_budget->setManager(budgetManager);
+
+    QObject* rectQuickView = root->findChild<QObject*>("budgetQuick");
+    m_budget->setQuickView(rectQuickView);
+    m_budget->show(QDate::currentDate());
+    m_budget->exec();
+
+    connect(&m_info, ControllerInformation::s_update, m_budget.data(), ControllerBudget::updateEntry);
+    connect(&m_info, ControllerInformation::s_changeCat, m_budget.data(), ControllerBudget::changeEntry);
+}
+
+void MainController::buildCommonExpanse()
+{
+
+}
+
+void MainController::buildFrequency()
+{
+    QObject* root = m_engine.rootObjects().first();
+    QObject* swipe = root->findChild<QObject*>("swipe");
+
+    QQmlComponent frequencyComp(&m_engine, QUrl("qrc:/Frequency/FrequencyManager.qml"));
+    QObject* frequency = frequencyComp.create();
+    QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(frequency)));
+
+    m_freqs = QSharedPointer<ControllerFrequency>::create();
+    connect(m_freqs.data(), ControllerFrequency::s_addEntry, this, MainController::addEntryMain, Qt::QueuedConnection);
+    connect(m_freqs.data(), ControllerFrequency::s_select, this, MainController::selection);
+    m_info.setControllerFrequency(m_freqs.data());
+        connect(root, SIGNAL(s_openFrequencyManager()), m_freqs.data(), SLOT(openManager()));
+
+    m_freqs->setManager(frequency);
+    m_freqs->exec();
 }
 
 void MainController::close()
@@ -704,7 +726,7 @@ void MainController::openTransfert()
 
 void MainController::openBudgetManager()
 {
-//    m_budget.exec();
+    m_budget->exec();
 }
 
 void MainController::addProfile()

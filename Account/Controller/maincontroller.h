@@ -41,6 +41,10 @@ private:
     
     void checkEstimated();
 
+    void buildCommonExpanse();
+    void buildFrequency();
+    void buildBudget();
+
 public:
     MainController(int = 0);
     ~MainController();
