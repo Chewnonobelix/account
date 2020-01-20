@@ -7,10 +7,17 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Dialogs 1.3
 import QtQuick.Layouts 1.13
 
+import "../Style"
+
+
 Rectangle {
     id: root
     color: "transparent"
     objectName: "commonRect"
+
+    AccountStyle {
+        id: pageStyle
+    }
 
     Popup {
         id: popAddCommon
