@@ -7,6 +7,9 @@ ControllerBudget::ControllerBudget()
     m_view = nullptr;
 }
 
+ControllerBudget::ControllerBudget(const ControllerBudget & b): AbstractController(b)
+{}
+
 ControllerBudget::~ControllerBudget()
 {
 }

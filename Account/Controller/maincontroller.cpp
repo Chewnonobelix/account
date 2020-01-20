@@ -19,7 +19,7 @@ MainController::MainController(int storage): AbstractController()
     connect(&m_dbThread, QThread::started, m_db, InterfaceDataSave::exec);
     
     m_dbThread.start();
-
+    
     m_db->selectProfile();
 }
 
@@ -47,7 +47,7 @@ int MainController::exec()
     connect(root, SIGNAL(removeAccount(QString)), this, SLOT(deleteAccount(QString)));
     connect(root, SIGNAL(s_closing()), this, SLOT(close()));
     
-
+    
     QObject* calendar = root->findChild<QObject*>("cal");
     
     if(calendar)
@@ -124,60 +124,59 @@ int MainController::exec()
     features<<QObject::tr("List")<<QObject::tr("Graph");
     for(auto it: m_settings.featuresList())
     {
-        if(m_settings.featureEnable("Frequency") && it == "Frequency")
+        qDebug()<<QMetaType::type(it.toLatin1())<<it;
+        
+        if(m_settings.featureEnable(it))
         {
+            
+            if(QMetaType::type(it.toLatin1()) == 0)
+            {
+                qDebug()<<"Unknow Feature"<<it;
+                continue;
+            }
+            
             features<<it;
-            buildFrequency();
-        }
+            
+            if(QMetaType::type(it.toLatin1()) == qMetaTypeId<ControllerBudget>())
+                buildBudget();
+            
+            if(QMetaType::type(it.toLatin1()) == qMetaTypeId<ControllerFrequency>())
+                buildFrequency();
 
-        if(m_settings.featureEnable("Budget") && it == "Budget")
-        {
-            features<<it;
-            buildBudget();
+            if(QMetaType::type(it.toLatin1()) == qMetaTypeId<ControllerCommon>())
+                buildCommonExpanse();
         }
-        if(m_settings.featureEnable("CommonExpanse") && it == "CommonExpanse")
-        {
-            features<<it;
-            buildCommonExpanse();
-        }
-    }
-    
-    
-    if(!m_settings.featureEnable("CommonExpanse"))
-    {
-        QObject* common = root->findChild<QObject*>("commonRect");
     }
         
-    
     QObject* quick = root->findChild<QObject*>("quick");
     if(quick)
     {
         connect(quick, SIGNAL(s_opening()), this, SLOT(quickOpen()));
-
+        
         QObject* finish = quick->findChild<QObject*>("finish");
         connect(finish, SIGNAL(s_clicked()), this, SLOT(quickAdding()));
-
+        
         QObject* cat = quick->findChild<QObject*>("cat");
         connect(cat, SIGNAL(s_addCategory(QString)), this, SLOT(quickAddCategory(QString)));
     }
-
+    
     QObject* profile = root->findChild<QObject*>("profileMenu");
-
+    
     if(profile)
         connect(profile, SIGNAL(s_profile(QString)), this, SLOT(changeProfile(QString)));
-
+    
     QObject* profiles = m_engine.rootObjects().first()->findChild<QObject*>("popProfile");
-
+    
     if(profiles)
     {
         QObject* okProfile = profiles->findChild<QObject*>("okProfile");
         connect(okProfile, SIGNAL(clicked()), this, SLOT(addProfile()));
     }
-
+    
     QObject* deleteProfile = profile->findChild<QObject*>("deleteProfile");
     if(deleteProfile)
         connect(deleteProfile, SIGNAL(s_deleteProfile(QString)), this, SLOT(deleteProfile(QString)));
-
+    
     loadProfiles();
     QObject* featuresRepetear = root->findChild<QObject*>("features");
     if(featuresRepetear)
@@ -192,19 +191,19 @@ void MainController::buildBudget()
 {
     QObject* root = m_engine.rootObjects().first();
     QObject* swipe = root->findChild<QObject*>("swipe");
-
+    
     m_budget = QSharedPointer<ControllerBudget>::create();
     QQmlComponent budgetComp(&m_engine, QUrl("qrc:/Budget/BudgetManager.qml"));
     QObject* budgetManager = budgetComp.create();
     QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(budgetManager)));
     connect(&m_info, ControllerInformation::s_exec, this, MainController::openBudgetManager);
     m_budget->setManager(budgetManager);
-
+    
     QObject* rectQuickView = root->findChild<QObject*>("budgetQuick");
     m_budget->setQuickView(rectQuickView);
     m_budget->show(QDate::currentDate());
     m_budget->exec();
-
+    
     connect(&m_info, ControllerInformation::s_update, m_budget.data(), ControllerBudget::updateEntry);
     connect(&m_info, ControllerInformation::s_changeCat, m_budget.data(), ControllerBudget::changeEntry);
 }
@@ -213,9 +212,9 @@ void MainController::buildCommonExpanse()
 {
     QObject* root = m_engine.rootObjects().first();
     QObject* swipe = root->findChild<QObject*>("swipe");
-
+    
     m_common = QSharedPointer<ControllerCommon>::create();
-
+    
     QQmlComponent commonComp(&m_engine, QUrl("qrc:/CommonExpanse/CommonExpanseManager.qml"));
     QObject* commonManager = commonComp.create();
     QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(commonManager)));
@@ -240,17 +239,17 @@ void MainController::buildFrequency()
 {
     QObject* root = m_engine.rootObjects().first();
     QObject* swipe = root->findChild<QObject*>("swipe");
-
+    
     QQmlComponent frequencyComp(&m_engine, QUrl("qrc:/Frequency/FrequencyManager.qml"));
     QObject* frequency = frequencyComp.create();
     QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(frequency)));
-
+    
     m_freqs = QSharedPointer<ControllerFrequency>::create();
     connect(m_freqs.data(), ControllerFrequency::s_addEntry, this, MainController::addEntryMain, Qt::QueuedConnection);
     connect(m_freqs.data(), ControllerFrequency::s_select, this, MainController::selection);
     m_info.setControllerFrequency(m_freqs.data());
-        connect(root, SIGNAL(s_openFrequencyManager()), m_freqs.data(), SLOT(openManager()));
-
+    connect(root, SIGNAL(s_openFrequencyManager()), m_freqs.data(), SLOT(openManager()));
+    
     m_freqs->setManager(frequency);
     m_freqs->exec();
 }
@@ -349,7 +348,7 @@ void MainController::adding()
     int id = 0;
     for(auto it: m_db->selectEntry(currentAccount()))
         id = std::max(id, it.id());
-
+    
     selection(id);
 }
 
@@ -395,7 +394,7 @@ void MainController::quickAdding()
         i.setTitle(et.property("title").toString());
         e.setInfo(i);
         e.setAccount(currentAccount());
-
+        
         m_db->addEntry(e);
         selection();
     }
@@ -620,10 +619,10 @@ void MainController::accountChange(QString acc)
     }
     
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
-
+    
     if(tab)
         tab->setProperty("model", QVariantList());
-
+    
     int maxPage = m_db->selectEntry(currentAccount()).size() / 100;
     QObject* pageSkip = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
     
@@ -748,10 +747,10 @@ void MainController::openBudgetManager()
 void MainController::addProfile()
 {
     QObject* profiles = m_engine.rootObjects().first()->findChild<QObject*>("popProfile");
-
+    
     QString nProfile = profiles->findChild<QObject*>("profileName")->property("text").toString();
     //    QString password = profiles->findChild<QObject*>("password")->property("text").toString();
-
+    
     QMetaObject::invokeMethod(profiles, "close");
     if(m_db->addProfile(nProfile, ""))
     {
@@ -763,7 +762,7 @@ void MainController::addProfile()
 void MainController::loadProfiles()
 {
     QObject* profile = m_engine.rootObjects().first()->findChild<QObject*>("profileRepeater");
-
+    
     if(profile)
     {
         QStringList profiles = m_db->selectProfile();
@@ -773,7 +772,7 @@ void MainController::loadProfiles()
         profile->setProperty("current", m_db->currentProfile());
         profile->setProperty("model", profiles);
     }
-
+    
 }
 
 void MainController::deleteProfile(QString name)

@@ -32,6 +32,7 @@ signals:
 class ControllerFrequency: public AbstractController
 {
     Q_OBJECT 
+    
 private:
     QMap<int, Frequency> m_freqs;
     QMap<QString, Worker*> m_workers;
@@ -44,6 +45,7 @@ private:
     void loadCat();
 public:
     ControllerFrequency();
+    inline ControllerFrequency(const ControllerFrequency& f): AbstractController(f) {}
     ~ControllerFrequency() = default;
     
     void addEntry(int);
@@ -78,5 +80,7 @@ public slots:
     
     void displayEntry(int);
 };
+
+Q_DECLARE_METATYPE(ControllerFrequency)
 
 #endif // CONTROLLERFREQUENCY_H

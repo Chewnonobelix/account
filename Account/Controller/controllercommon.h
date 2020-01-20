@@ -8,6 +8,7 @@
 class ControllerCommon: public AbstractController
 {
     Q_OBJECT
+    
 private:
     QQmlApplicationEngine m_engine;
     
@@ -15,6 +16,7 @@ public:
     QObject* m_view;
     
     ControllerCommon() = default;
+    inline ControllerCommon(const ControllerCommon & c): AbstractController(c) {}
     ~ControllerCommon() = default;
     
     int exec();
@@ -28,5 +30,8 @@ public slots:
     void removeCommonEntry();
     
 };
+
+Q_DECLARE_METATYPE(ControllerCommon)
+
 
 #endif // CONTROLLERCOMMON_H

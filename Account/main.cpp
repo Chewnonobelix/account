@@ -4,6 +4,9 @@
 #include <QDebug>
 #include <QRandomGenerator>
 #include "Controller/maincontroller.h"
+#include "Controller/controllerbudget.h"
+#include "Controller/controllerfrequency.h"
+#include "Controller/controllercommon.h"
 #include "Model/budget.h"
 
 //#include "Test/xmltest.h"
@@ -63,7 +66,12 @@ int main(int argc, char *argv[])
     qDebug()<<"ControllerXMLMulti"<<qRegisterMetaType<ControllerXMLMulti>();
     qDebug()<<"Account::FrequencyEnum QML"<<qmlRegisterUncreatableMetaObject(Account::staticMetaObject, "Account", 1,0, "Account", "This is Account's flags");
     qDebug()<<"Account::FrequencyEnum"<<qRegisterMetaType<Account::FrequencyEnum>();
+    qDebug()<<"ControllerBudget"<<qRegisterMetaType<ControllerBudget>("Budget");
+    qDebug()<<"ControllerFrequency"<<qRegisterMetaType<ControllerFrequency>("Frequency");
+    qDebug()<<"ControllerCommon"<<qRegisterMetaType<ControllerCommon>("CommonExpanse");
 
+    qDebug()<<QMetaType::type("Budget");
+    
 //    XmlTest test1;
 
     if(argc > 1 && app.arguments().contains("--test"))

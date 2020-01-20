@@ -16,31 +16,33 @@
 class AbstractController: public QObject
 {
     Q_OBJECT
-
+    
 private:
     static QString m_account;
     static Total m_accountTotal;
-
+    
 protected:
     static InterfaceDataSave* m_db;
-
+    
 public:
     AbstractController();
+    inline AbstractController(const AbstractController&): QObject(nullptr) {}
+    
     ~AbstractController();
-
+    
     virtual int exec() = 0;
-
+    
     static void setCurrentAccount(QString);
     static QString currentAccount();
-
+    
     static void addEntry(const Entry&);
     static void updateEntry(const Entry&);
-
+    
     static Entry entry(int);
-
+    
     static void setDb(QString);
     static void deleteDb();
-
+    
     static Total accountTotal();
     static void calculTotal();
 };

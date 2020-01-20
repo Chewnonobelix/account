@@ -11,7 +11,7 @@
 class ControllerBudget: public AbstractController
 {
     Q_OBJECT
-
+    
 private:
     QQmlApplicationEngine m_eng;
     QObject* m_view, *m_referenceView, *m_quickView;
@@ -24,6 +24,8 @@ private:
     
 public:
     ControllerBudget();
+    ControllerBudget(const ControllerBudget &);
+    
     ~ControllerBudget();
     bool addTo(int);
     bool removeFrom(int);
@@ -54,4 +56,5 @@ public slots:
     void changeEntry(QString, int);
 };
 
+Q_DECLARE_METATYPE(ControllerBudget)
 #endif // CONTROLLERBUDGET_H
