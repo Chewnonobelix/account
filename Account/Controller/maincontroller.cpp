@@ -135,26 +135,17 @@ int MainController::exec()
             features<<it;
             buildBudget();
         }
+        if(m_settings.featureEnable("CommonExpanse") && it == "CommonExpanse")
+        {
+            features<<it;
+            buildCommonExpanse();
+        }
     }
     
     
     if(!m_settings.featureEnable("CommonExpanse"))
     {
         QObject* common = root->findChild<QObject*>("commonRect");
-        if(common)
-        {
-            m_common->m_view = common;
-            m_common->init();
-        }
-        
-        QObject* commonpop = root->findChild<QObject*>("popAddCommon");
-        if(commonpop)
-            connect(commonpop, SIGNAL(s_accepted(QString)), m_common.data(), SLOT(addCommon(QString)));
-        
-        QObject* removeCommon = root->findChild<QObject*>("removeCommon");
-        
-        if(removeCommon)
-            connect(removeCommon, SIGNAL(s_remove(int)), m_common.data(), SLOT(removeCommon(int)));        
     }
         
     
@@ -220,7 +211,29 @@ void MainController::buildBudget()
 
 void MainController::buildCommonExpanse()
 {
+    QObject* root = m_engine.rootObjects().first();
+    QObject* swipe = root->findChild<QObject*>("swipe");
 
+    m_common = QSharedPointer<ControllerCommon>::create();
+
+    QQmlComponent commonComp(&m_engine, QUrl("qrc:/CommonExpanse/CommonExpanseManager.qml"));
+    QObject* commonManager = commonComp.create();
+    QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(commonManager)));
+    
+    {
+        m_common->m_view = commonManager;
+        m_common->init();
+    }
+    
+    QObject* commonpop = commonManager->findChild<QObject*>("popAddCommon");
+    if(commonpop)
+        connect(commonpop, SIGNAL(s_accepted(QString)), m_common.data(), SLOT(addCommon(QString)));
+    
+    QObject* removeCommon = commonManager->findChild<QObject*>("removeCommon");
+    
+    if(removeCommon)
+        connect(removeCommon, SIGNAL(s_remove(int)), m_common.data(), SLOT(removeCommon(int)));        
+    
 }
 
 void MainController::buildFrequency()
@@ -244,8 +257,11 @@ void MainController::buildFrequency()
 
 void MainController::close()
 {
-    m_budget->closeManager();
-    m_freqs->closeManager();
+    if(m_budget)
+        m_budget->closeManager();
+    
+    if(m_freqs)
+        m_freqs->closeManager();
 }
 
 void MainController::changeProfile(QString name)
