@@ -22,6 +22,26 @@ ControllerFrequency::ControllerFrequency()
     
 }
 
+QSharedPointer<FeatureBuilder> ControllerFrequency::build(QQmlApplicationEngine * engine, QObject * root, QList<AbstractController *> contollers)
+{    
+    QObject* swipe = root->findChild<QObject*>("swipe");
+
+    QQmlComponent frequencyComp(engine, QUrl("qrc:/Frequency/FrequencyManager.qml"));
+    QObject* frequency = frequencyComp.create();
+    QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(frequency)));
+    
+    auto freqs = QSharedPointer<ControllerFrequency>::create();
+    
+    connect(root, SIGNAL(s_openFrequencyManager()), freqs.data(), SLOT(openManager()));
+    
+
+    freqs->setManager(frequency);
+
+    freqs->exec();
+    
+    return freqs;
+}
+
 void ControllerFrequency::setManager(QObject * manager)
 {
     m_manager = manager;

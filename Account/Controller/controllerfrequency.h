@@ -7,6 +7,7 @@
 #include <QQmlPropertyMap>
 #include <QThread>
 #include "abstractcontroller.h"
+#include "featurebuilder.h"
 #include "Model/frequency.h"
 #include "Model/entry.h"
 
@@ -29,7 +30,7 @@ signals:
     void s_add(const Entry&);
 };
 
-class ControllerFrequency: public AbstractController
+class ControllerFrequency: public AbstractController, public FeatureBuilder
 {
     Q_OBJECT 
     
@@ -54,6 +55,8 @@ public:
     void closeManager();
     
     void setManager(QObject*);
+
+    QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *, QList<AbstractController *>);
 
 signals:
     void s_addEntry(Entry);
