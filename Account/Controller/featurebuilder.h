@@ -1,0 +1,4 @@
+#ifndef FEATUREBUILDER_H
+#define FEATUREBUILDER_H
+
+#endif // FEATUREBUILDER_H

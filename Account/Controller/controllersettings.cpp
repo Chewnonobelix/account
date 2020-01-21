@@ -16,8 +16,8 @@ ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSett
     if(!m_settings.allKeys().contains("Database/Backup"))
         m_settings.setValue("Database/Backup", "ControllerXMLMulti");
     
-    if(!m_settings.allKeys().contains("Feature/"+QObject::tr("Frequency")))
-        m_settings.setValue("Feature/"+QObject::tr("Frequency"), true);
+    if(!m_settings.allKeys().contains("Feature/"+QObject::tr("FFrequency")))
+        m_settings.setValue("Feature/"+QObject::tr("FFrequency"), true);
     
     if(!m_settings.allKeys().contains("Feature/"+QObject::tr("Budget")))
         m_settings.setValue("Feature/"+QObject::tr("Budget"), true);

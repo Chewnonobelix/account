@@ -118,6 +118,8 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     
     close();
     m_mutex.unlock();
+    
+    emit s_updateEntry();
     return true;
 }
 
@@ -210,6 +212,9 @@ bool ControllerXMLMulti::removeEntry(const Entry& e)
             ret = !rm.isNull();
         }
     }
+
+    emit s_updateEntry();
+    
     return ret;
 }
 
@@ -297,8 +302,9 @@ bool ControllerXMLMulti::updateEntry(const Entry & e)
             updateEntryNode(e, el);
         }
     }
+    emit s_updateEntry();
     
-    return false;
+    return true;
 }
 
 bool ControllerXMLMulti::addCategory(QString name, QString type)
@@ -593,6 +599,7 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
     
     
     close();
+    emit s_updateFrequency();
     return true;
 }
 
@@ -616,6 +623,8 @@ bool ControllerXMLMulti::removeFrequency(const Frequency& f)
                     entries.at(i).toElement().removeAttribute("freq");
                 }
             }
+            emit s_updateFrequency();
+            
             return true;
         }
     
@@ -636,6 +645,8 @@ bool ControllerXMLMulti::updateFrequency(const Frequency& f)
             child.setAttribute("freq", (int)f.freq());
             
             setter(child, "nbGroup", QString::number(f.nbGroup()));
+            
+            emit s_updateFrequency();
             
             return true;
         }
