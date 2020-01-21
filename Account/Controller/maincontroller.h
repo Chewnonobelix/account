@@ -33,6 +33,7 @@ private:
     ControllerTransfert m_transfert;
     ControllerSettings m_settings;
 
+    QList<QSharedPointer<FeatureBuilder>> m_features;
     QSharedPointer<ControllerBudget> m_budget;
     QSharedPointer<ControllerFrequency> m_freqs;
     QSharedPointer<ControllerCommon> m_common;

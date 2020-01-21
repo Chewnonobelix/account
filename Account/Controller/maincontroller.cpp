@@ -122,6 +122,10 @@ int MainController::exec()
     
     QStringList features;
     features<<QObject::tr("List")<<QObject::tr("Graph");
+    QList<AbstractController*> baseAbstract;
+    
+    baseAbstract<<&m_info;
+    
     for(auto it: m_settings.featuresList())
     {
         qDebug()<<QMetaType::type(it.toLatin1())<<it;
@@ -136,15 +140,22 @@ int MainController::exec()
             }
             
             features<<it;
-            
-            if(QMetaType::type(it.toLatin1()) == qMetaTypeId<ControllerBudget>())
-                buildBudget();
-            
-            if(QMetaType::type(it.toLatin1()) == qMetaTypeId<ControllerFrequency>())
-                buildFrequency();
+            QMetaType mt(QMetaType::type(it.toLatin1()));
+            AbstractController* p = (AbstractController*)mt.create();
 
-            if(QMetaType::type(it.toLatin1()) == qMetaTypeId<ControllerCommon>())
-                buildCommonExpanse();
+            m_features<<dynamic_cast<FeatureBuilder*>(p)->build(&m_engine, root, baseAbstract);
+
+            mt.destroy(p);
+            
+            qDebug()<<m_features.size()<<m_features.first();
+//            if(QMetaType::type(it.toLatin1()) == qMetaTypeId<ControllerBudget>())
+//                buildBudget();
+            
+//            if(QMetaType::type(it.toLatin1()) == qMetaTypeId<ControllerFrequency>())
+//                buildFrequency();
+
+//            if(QMetaType::type(it.toLatin1()) == qMetaTypeId<ControllerCommon>())
+//                buildCommonExpanse();
         }
     }
         
@@ -184,6 +195,8 @@ int MainController::exec()
         qDebug()<<"Features load"<<features;
         featuresRepetear->setProperty("model", features);
     }
+    
+    connect(m_db, InterfaceDataSave::s_updateEntry, this, MainController::selection);
     return 0;
 }
 
@@ -237,21 +250,6 @@ void MainController::buildCommonExpanse()
 
 void MainController::buildFrequency()
 {
-    QObject* root = m_engine.rootObjects().first();
-    QObject* swipe = root->findChild<QObject*>("swipe");
-    
-    QQmlComponent frequencyComp(&m_engine, QUrl("qrc:/Frequency/FrequencyManager.qml"));
-    QObject* frequency = frequencyComp.create();
-    QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(frequency)));
-    
-    m_freqs = QSharedPointer<ControllerFrequency>::create();
-    connect(m_freqs.data(), ControllerFrequency::s_addEntry, this, MainController::addEntryMain, Qt::QueuedConnection);
-    connect(m_freqs.data(), ControllerFrequency::s_select, this, MainController::selection);
-    m_info.setControllerFrequency(m_freqs.data());
-    connect(root, SIGNAL(s_openFrequencyManager()), m_freqs.data(), SLOT(openManager()));
-    
-    m_freqs->setManager(frequency);
-    m_freqs->exec();
 }
 
 void MainController::close()
