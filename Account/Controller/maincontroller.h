@@ -42,8 +42,6 @@ private:
     
     void checkEstimated();
 
-    void buildCommonExpanse();
-
 public:
     MainController(int = 0);
     ~MainController();

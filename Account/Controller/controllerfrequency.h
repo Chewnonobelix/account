@@ -57,6 +57,7 @@ public:
     void setManager(QObject*);
 
     QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *, QList<AbstractController *>);
+    QString displayText() const;
 
 signals:
     void s_addEntry(Entry);

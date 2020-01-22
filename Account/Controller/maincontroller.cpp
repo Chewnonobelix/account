@@ -127,9 +127,7 @@ int MainController::exec()
     baseAbstract<<&m_info;
     
     for(auto it: m_settings.featuresList())
-    {
-        qDebug()<<QMetaType::type(it.toLatin1())<<it;
-        
+    {        
         if(m_settings.featureEnable(it))
         {
             
@@ -139,26 +137,16 @@ int MainController::exec()
                 continue;
             }
             
-            features<<it;
             QMetaType mt(QMetaType::type(it.toLatin1()));
             AbstractController* p = (AbstractController*)mt.create();
-
+            features<<dynamic_cast<FeatureBuilder*>(p)->displayText();
+            
             m_features<<dynamic_cast<FeatureBuilder*>(p)->build(&m_engine, root, baseAbstract);
-
+            
             mt.destroy(p);
-            
-            qDebug()<<m_features.size()<<m_features.first();
-//            if(QMetaType::type(it.toLatin1()) == qMetaTypeId<ControllerBudget>())
-//                buildBudget();
-            
-//            if(QMetaType::type(it.toLatin1()) == qMetaTypeId<ControllerFrequency>())
-//                buildFrequency();
-
-//            if(QMetaType::type(it.toLatin1()) == qMetaTypeId<ControllerCommon>())
-//                buildCommonExpanse();
         }
     }
-        
+    
     QObject* quick = root->findChild<QObject*>("quick");
     if(quick)
     {
@@ -192,39 +180,11 @@ int MainController::exec()
     QObject* featuresRepetear = root->findChild<QObject*>("features");
     if(featuresRepetear)
     {
-        qDebug()<<"Features load"<<features;
         featuresRepetear->setProperty("model", features);
     }
     
     connect(m_db, InterfaceDataSave::s_updateEntry, this, MainController::selection);
     return 0;
-}
-
-void MainController::buildCommonExpanse()
-{
-    QObject* root = m_engine.rootObjects().first();
-    QObject* swipe = root->findChild<QObject*>("swipe");
-    
-    m_common = QSharedPointer<ControllerCommon>::create();
-    
-    QQmlComponent commonComp(&m_engine, QUrl("qrc:/CommonExpanse/CommonExpanseManager.qml"));
-    QObject* commonManager = commonComp.create();
-    QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(commonManager)));
-    
-    {
-        m_common->m_view = commonManager;
-        m_common->init();
-    }
-    
-    QObject* commonpop = commonManager->findChild<QObject*>("popAddCommon");
-    if(commonpop)
-        connect(commonpop, SIGNAL(s_accepted(QString)), m_common.data(), SLOT(addCommon(QString)));
-    
-    QObject* removeCommon = commonManager->findChild<QObject*>("removeCommon");
-    
-    if(removeCommon)
-        connect(removeCommon, SIGNAL(s_remove(int)), m_common.data(), SLOT(removeCommon(int)));        
-    
 }
 
 void MainController::close()

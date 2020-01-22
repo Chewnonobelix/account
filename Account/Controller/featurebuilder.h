@@ -9,6 +9,7 @@ class FeatureBuilder
 {
 public:
     virtual QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine*, QObject*, QList<AbstractController*>) = 0;    
+    virtual QString displayText() const = 0;
 };
 
 #endif // FEATUREBUILDER_H

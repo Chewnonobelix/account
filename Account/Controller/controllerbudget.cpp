@@ -340,3 +340,8 @@ QSharedPointer<FeatureBuilder> ControllerBudget::build(QQmlApplicationEngine * e
 
     return budget;
 }
+
+QString ControllerBudget::displayText() const
+{
+    return tr("Budget");
+}

@@ -2,11 +2,6 @@
 
 ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSettings::UserScope, "Chewnonobelix Inc", "Account")
 {
-    qDebug()<<m_settings.allKeys();
-    qDebug()<<m_language.load(QLocale(QLocale::system().uiLanguages().last()), "account_en.qm");
-    
-    qDebug()<<QCoreApplication::installTranslator(&m_language)<<m_language.isEmpty();
-    
     if(!m_settings.allKeys().contains("Database/Main"))
         m_settings.setValue("Database/Main", "ControllerDB");
     
@@ -30,19 +25,6 @@ ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSett
     
     //    m_language.load("account_en.qm");
     //    m_language.load("account_fr.qm");
-    
-    qDebug()<<QLocale::system();
-    QLocale::setDefault(QLocale(QLocale::system().uiLanguages().last()));
-    qDebug()<<QLocale(QLocale::system().uiLanguages().first())<<QLocale(QLocale::system().uiLanguages().last());
-    qDebug()<<QLocale();
-    //    qDebug()<<QLocale::system();
-    
-    qDebug()<<featuresList();
-    
-    for(auto it: featuresList())
-    {
-        qDebug()<<it<<featureEnable(it);
-    }
 }
 
 QString ControllerSettings::database() const

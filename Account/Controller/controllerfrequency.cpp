@@ -338,3 +338,8 @@ void ControllerFrequency::displayEntry(int id)
     QObject* view = m_manager->findChild<QObject*>("linkedDisplayer");
     view->setProperty("entry", QVariant::fromValue(e));
 }
+
+QString ControllerFrequency::displayText() const
+{
+    return tr("Frequency");
+}

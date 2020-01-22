@@ -38,6 +38,8 @@ public:
     void setManager(QObject*);
     
     QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *, QList<AbstractController *>);
+    QString displayText() const;
+
 public slots:
     void open(QString);
     void show(QDate);

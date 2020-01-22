@@ -2,10 +2,11 @@
 #define CONTROLLERCOMMON_H
 
 #include <QQmlApplicationEngine>
-
+#include <QQuickItem>
 #include "abstractcontroller.h"
+#include "featurebuilder.h"
 
-class ControllerCommon: public AbstractController
+class ControllerCommon: public AbstractController, public FeatureBuilder
 {
     Q_OBJECT
     
@@ -21,6 +22,9 @@ public:
     
     int exec();
     void init();
+    
+    QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *, QList<AbstractController *>);
+    QString displayText() const;
     
 public slots:
     void closeCommon(bool);

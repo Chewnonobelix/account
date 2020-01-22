@@ -111,3 +111,37 @@ void ControllerCommon::removeCommonEntry()
     
     exec();
 }
+
+QSharedPointer<FeatureBuilder> ControllerCommon::build(QQmlApplicationEngine * engine, QObject * root, QList<AbstractController *> controllers)
+{
+    Q_UNUSED(controllers)
+    
+    QObject* swipe = root->findChild<QObject*>("swipe");
+    
+    auto common = QSharedPointer<ControllerCommon>::create();
+    
+    QQmlComponent commonComp(engine, QUrl("qrc:/CommonExpanse/CommonExpanseManager.qml"));
+    QObject* commonManager = commonComp.create();
+    QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(commonManager)));
+    
+    {
+        common->m_view = commonManager;
+        common->init();
+    }
+    
+    QObject* commonpop = commonManager->findChild<QObject*>("popAddCommon");
+    if(commonpop)
+        connect(commonpop, SIGNAL(s_accepted(QString)), common.data(), SLOT(addCommon(QString)));
+    
+    QObject* removeCommon = commonManager->findChild<QObject*>("removeCommon");
+    
+    if(removeCommon)
+        connect(removeCommon, SIGNAL(s_remove(int)), common.data(), SLOT(removeCommon(int)));        
+    
+    return common;
+}
+
+QString ControllerCommon::displayText() const
+{
+    return tr("Common Expanse");
+}
