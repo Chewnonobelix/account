@@ -200,27 +200,6 @@ int MainController::exec()
     return 0;
 }
 
-void MainController::buildBudget()
-{
-    QObject* root = m_engine.rootObjects().first();
-    QObject* swipe = root->findChild<QObject*>("swipe");
-    
-    m_budget = QSharedPointer<ControllerBudget>::create();
-    QQmlComponent budgetComp(&m_engine, QUrl("qrc:/Budget/BudgetManager.qml"));
-    QObject* budgetManager = budgetComp.create();
-    QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(budgetManager)));
-    connect(&m_info, ControllerInformation::s_exec, this, MainController::openBudgetManager);
-    m_budget->setManager(budgetManager);
-    
-    QObject* rectQuickView = root->findChild<QObject*>("budgetQuick");
-    m_budget->setQuickView(rectQuickView);
-    m_budget->show(QDate::currentDate());
-    m_budget->exec();
-    
-    connect(&m_info, ControllerInformation::s_update, m_budget.data(), ControllerBudget::updateEntry);
-    connect(&m_info, ControllerInformation::s_changeCat, m_budget.data(), ControllerBudget::changeEntry);
-}
-
 void MainController::buildCommonExpanse()
 {
     QObject* root = m_engine.rootObjects().first();
@@ -246,10 +225,6 @@ void MainController::buildCommonExpanse()
     if(removeCommon)
         connect(removeCommon, SIGNAL(s_remove(int)), m_common.data(), SLOT(removeCommon(int)));        
     
-}
-
-void MainController::buildFrequency()
-{
 }
 
 void MainController::close()

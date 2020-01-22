@@ -302,7 +302,8 @@ bool ControllerXMLMulti::updateEntry(const Entry & e)
             updateEntryNode(e, el);
         }
     }
-    emit s_updateEntry();
+    
+    emit s_updateEntry(e.id());
     
     return true;
 }

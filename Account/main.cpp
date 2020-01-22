@@ -66,9 +66,9 @@ int main(int argc, char *argv[])
     qDebug()<<"ControllerXMLMulti"<<qRegisterMetaType<ControllerXMLMulti>();
     qDebug()<<"Account::FrequencyEnum QML"<<qmlRegisterUncreatableMetaObject(Account::staticMetaObject, "Account", 1,0, "Account", "This is Account's flags");
     qDebug()<<"Account::FrequencyEnum"<<qRegisterMetaType<Account::FrequencyEnum>();
-    qDebug()<<"ControllerBudget"<<qRegisterMetaType<ControllerBudget>("Budget");
+    qDebug()<<"ControllerBudget"<<qRegisterMetaType<ControllerBudget>("FBudget");
     qDebug()<<"ControllerFrequency"<<qRegisterMetaType<ControllerFrequency>("FFrequency");
-    qDebug()<<"ControllerCommon"<<qRegisterMetaType<ControllerCommon>("CommonExpanse");
+    qDebug()<<"ControllerCommon"<<qRegisterMetaType<ControllerCommon>("FCommonExpanse");
 
     qDebug()<<QMetaType::type("Budget");
     

@@ -240,6 +240,9 @@ void ControllerBudget::updateEntry(int id)
 {
     Entry e = entry(id);
     
+    for(auto it: m_budgets)
+        it>>e;
+    
     if(m_budgets.contains(e.info().category()))
         m_budgets[e.info().category()]<<e;
     
@@ -311,4 +314,29 @@ void ControllerBudget::setManager(QObject * manager)
 void ControllerBudget::setQuickView(QObject *qv)
 {
     m_quickView = qv;
+}
+
+QSharedPointer<FeatureBuilder> ControllerBudget::build(QQmlApplicationEngine * engine, QObject * root, QList<AbstractController *> controllers)
+{
+    Q_UNUSED(controllers)
+    
+    QObject* swipe = root->findChild<QObject*>("swipe");
+    
+    auto budget = QSharedPointer<ControllerBudget>::create();
+    QQmlComponent budgetComp(engine, QUrl("qrc:/Budget/BudgetManager.qml"));
+    QObject* budgetManager = budgetComp.create();
+    QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(budgetManager)));
+    //connect(&m_info, ControllerInformation::s_exec, this, MainController::openBudgetManager);
+    budget->setManager(budgetManager);
+    
+    QObject* rectQuickView = root->findChild<QObject*>("budgetQuick");
+    budget->setQuickView(rectQuickView);
+    budget->show(QDate::currentDate());
+    budget->exec();
+    
+    connect(m_db, InterfaceDataSave::s_updateEntry, budget.data(), ControllerBudget::updateEntry);
+//    connect(&m_info, ControllerInformation::s_changeCat, m_budget.data(), ControllerBudget::changeEntry);
+
+
+    return budget;
 }

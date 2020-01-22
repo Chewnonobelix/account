@@ -7,8 +7,9 @@
 
 #include "Model/budget.h"
 #include "abstractcontroller.h"
+#include "featurebuilder.h"
 
-class ControllerBudget: public AbstractController
+class ControllerBudget: public AbstractController, public FeatureBuilder
 {
     Q_OBJECT
     
@@ -36,6 +37,7 @@ public:
     void setQuickView(QObject* );
     void setManager(QObject*);
     
+    QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *, QList<AbstractController *>);
 public slots:
     void open(QString);
     void show(QDate);

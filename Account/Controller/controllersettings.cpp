@@ -19,11 +19,11 @@ ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSett
     if(!m_settings.allKeys().contains("Feature/"+QObject::tr("FFrequency")))
         m_settings.setValue("Feature/"+QObject::tr("FFrequency"), true);
     
-    if(!m_settings.allKeys().contains("Feature/"+QObject::tr("Budget")))
-        m_settings.setValue("Feature/"+QObject::tr("Budget"), true);
+    if(!m_settings.allKeys().contains("Feature/"+QObject::tr("FBudget")))
+        m_settings.setValue("Feature/"+QObject::tr("FBudget"), true);
     
-    if(!m_settings.allKeys().contains("Feature/"+QObject::tr("CommonExpanse")))
-        m_settings.setValue("Feature/"+QObject::tr("CommonExpanse"), true);
+    if(!m_settings.allKeys().contains("Feature/"+QObject::tr("FCommonExpanse")))
+        m_settings.setValue("Feature/"+QObject::tr("FCommonExpanse"), true);
     
     if(!m_settings.allKeys().contains("Language"))
         m_settings.setValue("Language",  "English");
