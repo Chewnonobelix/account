@@ -25,7 +25,7 @@ bool ControllerDB::init()
     m_db.setDatabaseName("account");
     m_db.open();
     
-    //    if(m_db.tables().isEmpty())
+    if(m_db.tables().isEmpty())
     {
         qDebug()<<"CT"<<m_db.exec(categories_table).lastError();
         qDebug()<<"FT"<<m_db.exec(frequency_table).lastError();
@@ -62,9 +62,7 @@ bool ControllerDB::init()
         prepareFrequency();
         prepareCommon();
     }
-    
-    qDebug()<<"DB Connected"<<isConnected()<<m_db.tables();
-    
+        
     return isConnected();
 }
 
@@ -391,6 +389,7 @@ bool ControllerDB::addEntry(const Entry & e)
         }
     }
     
+    emit s_updateEntry();
     return ret;
 }
 
@@ -486,7 +485,7 @@ bool ControllerDB::updateEntry(const Entry & e)
         }
     }
     
-    
+    emit s_updateEntry();    
     return ret;
 }
 
@@ -522,6 +521,7 @@ bool ControllerDB::removeEntry(const Entry & e)
         ret = m_removeEntry->exec();
     }
     
+    emit s_updateEntry();
     return ret;
 }
 
@@ -534,6 +534,7 @@ bool ControllerDB::addCategory(QString n, QString t)
         m_addCategory->bindValue(":account", m_currentAccount);
         m_addCategory->bindValue(":profile", m_currentProfile);
         
+        emit s_updateCategory();
         return m_addCategory->exec();
     }
     
@@ -547,6 +548,7 @@ bool ControllerDB::removeCategory(QString name)
         m_removeCategory->bindValue(":name", name);
         m_removeCategory->bindValue(":account", m_currentAccount);
         m_removeCategory->bindValue(":profile", m_currentProfile);
+        emit s_updateCategory();
         return m_removeCategory->exec();
     }
     
@@ -590,6 +592,7 @@ bool ControllerDB::addBudget(const Budget& b)
         int idc = reqc.value("id").toInt();
         m_addBudget->bindValue(":category", idc);
         
+        emit s_updateBudget();
         return m_addBudget->exec();
     }
     
@@ -601,6 +604,7 @@ bool ControllerDB::removeBudget(const Budget & b)
     if(isConnected())
     {
         m_removeBudget->bindValue(":id", b.id());
+        emit s_updateBudget();
         return m_removeBudget->exec();
     }
     
@@ -655,6 +659,7 @@ bool ControllerDB::updateBudget(const Budget & b)
             
             m_addSubbudget->exec();
         }
+        emit s_updateBudget();        
     }
     
     return false;
@@ -689,6 +694,7 @@ bool ControllerDB::addFrequency(const Frequency & f)
                 
                 bool ret = m_addInformation->exec();
                 
+                emit s_updateFrequency();
                 return ret;
             }
             
@@ -703,6 +709,7 @@ bool ControllerDB::removeFrequency(const Frequency& f)
     if(isConnected())
     {
         m_removeFrequency->bindValue(":id", f.id());
+        emit s_updateFrequency();
         return m_removeFrequency->exec();
     }
     
@@ -718,6 +725,7 @@ bool ControllerDB::updateFrequency(const Frequency& f)
         m_updateFrequency->bindValue(":ng", f.nbGroup());
         m_updateFrequency->bindValue(":id", f.id());
         
+        emit s_updateFrequency();
         return ret && m_updateFrequency->exec();
     }
     return false;
@@ -853,6 +861,7 @@ bool ControllerDB::addCommon(const CommonExpanse& c)
         m_addCommon->bindValue(":p", m_currentProfile);
         m_addCommon->bindValue(":a", m_currentAccount);
         
+        emit s_updateCommon();
         return m_addCommon->exec();
     }
     
@@ -864,6 +873,7 @@ bool ControllerDB::removeCommon(const CommonExpanse& c)
     if(isConnected())
     {
         m_removeCommon->bindValue(":id", c.id());
+        emit s_updateCommon();
         return m_removeCommon->exec();
     }
     
@@ -902,6 +912,7 @@ bool ControllerDB::updateCommon(const CommonExpanse& c)
             m_addCommonTable->exec();
         }
         
+        emit s_updateCommon();
         return true;
     }
     
