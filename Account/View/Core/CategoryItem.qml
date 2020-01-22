@@ -18,11 +18,19 @@ ComboBox {
     signal s_addCategory(string cat)
     signal s_currentTextChanged(string cat)
     property bool blocked: false
-    
-    onDownChanged: {
+        
+    function close() {
         s_currentTextChanged(currentText)
     }
-    
+
+    Connections {
+        target: popup
+        
+        function onClosed() {
+            s_currentTextChanged(currentText)
+        }
+    }
+
     MouseArea {
         anchors.fill: parent
         z: -1

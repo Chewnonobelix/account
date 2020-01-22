@@ -46,8 +46,6 @@ GridLayout {
         
     }
     
-    
-    
     property var tWidth: flow === GridLayout.LeftToRight ? 0.33 : 1
     property var tWidth2: flow === GridLayout.LeftToRight ? 0.33 : 1
     property var tHeight: flow === GridLayout.LeftToRight ? 1 : 0.32
