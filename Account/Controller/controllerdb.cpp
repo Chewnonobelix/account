@@ -485,7 +485,7 @@ bool ControllerDB::updateEntry(const Entry & e)
         }
     }
     
-    emit s_updateEntry();    
+    emit s_updateEntry(e.id());    
     return ret;
 }
 

@@ -138,20 +138,8 @@ GridLayout {
             
             property date s_date
             
-            Timer {
-                id: timer
-                repeat: false
-                
-                onTriggered: {
-                    if(!opening && !spinbox.isEditing)
-                        s_valueChanged(spinbox.realValue)
-                    
-                }
-            }
+            onS_realVCalueChange: s_valueChanged(realValue)
             
-            onRealValueChanged: {
-                timer.restart()
-            }
         }
         
     }

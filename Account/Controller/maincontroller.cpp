@@ -508,12 +508,12 @@ void MainController::selection(int id)
                 }
                 
             }
+            tab->setProperty("model", modelList);
             if(!found)
                 skipper->setProperty("pageIndex", skipper->property("pageIndex").toInt() + 1);
             else
                 QMetaObject::invokeMethod(tab, "setNewIndex", Q_ARG(QVariant, fIndex));
             
-            tab->setProperty("model", modelList);
         }
         while(!found && skipper->property("pageIndex").toInt() <= maxPage);
         

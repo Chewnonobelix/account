@@ -13,6 +13,8 @@ SpinBox {
     property real realValue: value / 100
     property bool isEditing: input.cursorVisible
     
+    signal s_realVCalueChange(real value)
+    
     validator: DoubleValidator {
         bottom: Math.min(spinbox.from, spinbox.to)
         top:  Math.max(spinbox.from, spinbox.to)
@@ -25,7 +27,17 @@ SpinBox {
     valueFromText: function(text, locale) {
         return Number.fromLocaleString(locale, text) * 100
     }
+    
+    function increase() {
+        value = value+stepSize
+        s_realVCalueChange(realValue)
+    }
 
+    function decrease() {
+        value = value-stepSize
+        s_realVCalueChange(realValue)
+    }
+    
     contentItem: TextInput {
             id: input
             z: 2
@@ -44,10 +56,9 @@ SpinBox {
             onEditingFinished: {
                 spinbox.value = spinbox.valueFromText(text, spinbox.locale)
                 cursorVisible = false
+                s_realVCalueChange(realValue)
             }
         }
-
-
 
         up.indicator: Rectangle {
             x: spinbox.mirrored ? 0 : parent.width - width
@@ -59,8 +70,11 @@ SpinBox {
 
             MouseArea {
                 anchors.fill: parent
-                acceptedButtons: Qt.NoButton
+                acceptedButtons: Qt.LeftButton
                 cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                
+                onPressed: increase()
+                
             }
 
             Text {
@@ -84,8 +98,10 @@ SpinBox {
 
             MouseArea {
                 anchors.fill: parent
-                acceptedButtons: Qt.NoButton
+                acceptedButtons: Qt.LeftButton
                 cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+                
+                onPressed: decrease()
             }
 
             Text {
