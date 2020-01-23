@@ -5,6 +5,7 @@
 #include <QTranslator>
 #include <QCoreApplication>
 #include "abstractcontroller.h"
+#include "featurebuilder.h"
 
 class ControllerSettings: public AbstractController
 {
@@ -13,6 +14,8 @@ class ControllerSettings: public AbstractController
 private:
     QSettings m_settings;
     QTranslator m_language;
+    
+    static QMap<QString, QSharedPointer<FeatureBuilder>> registredFeatures;
     
 public:
     ControllerSettings();
@@ -31,6 +34,8 @@ public:
     void setFeatureEnable(QString, bool);
     QStringList featuresList() const;
     
+    static void registerFeature(QSharedPointer<FeatureBuilder>);
+    static inline QStringList registredFeature() {return registredFeatures.keys();}
     int exec();
 };
 

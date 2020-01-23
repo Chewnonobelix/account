@@ -345,3 +345,8 @@ QString ControllerBudget::displayText() const
 {
     return tr("Budget");
 }
+
+QString ControllerBudget::baseText() const
+{
+    return "BudgetFeature";
+}

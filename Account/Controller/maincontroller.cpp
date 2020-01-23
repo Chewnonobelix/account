@@ -128,24 +128,30 @@ int MainController::exec()
     
     for(auto it: m_settings.featuresList())
     {        
+        
+        
+        if(QMetaType::type(it.toLatin1()) == 0)
+        {
+            qDebug()<<"Unknow Feature"<<it;
+            continue;
+        }
+        
+        QMetaType mt(QMetaType::type(it.toLatin1()));
+        AbstractController* p = (AbstractController*)mt.create();
+        auto sp = dynamic_cast<FeatureBuilder*>(p)->build(&m_engine, root, baseAbstract);
+        ControllerSettings::registerFeature(sp);
         if(m_settings.featureEnable(it))
         {
+            features<<sp->displayText();
             
-            if(QMetaType::type(it.toLatin1()) == 0)
-            {
-                qDebug()<<"Unknow Feature"<<it;
-                continue;
-            }
+            m_features<<sp;
             
-            QMetaType mt(QMetaType::type(it.toLatin1()));
-            AbstractController* p = (AbstractController*)mt.create();
-            features<<dynamic_cast<FeatureBuilder*>(p)->displayText();
-            
-            m_features<<dynamic_cast<FeatureBuilder*>(p)->build(&m_engine, root, baseAbstract);
-            
-            mt.destroy(p);
         }
+        mt.destroy(p);
+        
     }
+    
+    qDebug()<<features<<ControllerSettings::registredFeature();
     
     QObject* quick = root->findChild<QObject*>("quick");
     if(quick)

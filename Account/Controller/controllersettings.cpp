@@ -1,5 +1,7 @@
 #include "controllersettings.h"
 
+QMap<QString, QSharedPointer<FeatureBuilder>> ControllerSettings::registredFeatures = QMap<QString, QSharedPointer<FeatureBuilder>>();
+
 ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSettings::UserScope, "Chewnonobelix Inc", "Account")
 {
     if(!m_settings.allKeys().contains("Database/Main"))
@@ -25,6 +27,11 @@ ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSett
     
     //    m_language.load("account_en.qm");
     //    m_language.load("account_fr.qm");
+}
+
+void ControllerSettings::registerFeature(QSharedPointer<FeatureBuilder> f)
+{
+    registredFeatures[f->baseText()] = f;
 }
 
 QString ControllerSettings::database() const

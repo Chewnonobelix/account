@@ -343,3 +343,8 @@ QString ControllerFrequency::displayText() const
 {
     return tr("Frequency");
 }
+
+QString ControllerFrequency::baseText() const
+{
+    return "FrequencyFeature";
+}

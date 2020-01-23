@@ -145,3 +145,8 @@ QString ControllerCommon::displayText() const
 {
     return tr("Common Expanse");
 }
+
+QString ControllerCommon::baseText() const
+{
+    return "CommonExpanseFeature";
+}

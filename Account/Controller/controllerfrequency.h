@@ -58,6 +58,7 @@ public:
 
     QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *, QList<AbstractController *>);
     QString displayText() const;
+    QString baseText() const;
 
 signals:
     void s_addEntry(Entry);
