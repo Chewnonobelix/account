@@ -15,7 +15,8 @@ class ControllerBudget: public AbstractController, public FeatureBuilder
     
 private:
     QQmlApplicationEngine m_eng;
-    QObject* m_view, *m_referenceView, *m_quickView;
+    
+    QObject* m_view, *m_referenceView, *m_quickView, *m_cal;
     QMap<QString, QObject*> m_views;
     QMap<QString, Budget> m_budgets;
     QDate m_currentDate;
@@ -36,12 +37,14 @@ public:
     void reload();
     void setQuickView(QObject* );
     void setManager(QObject*);
+    void setCalendar(QObject*);
     
     QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *, QList<AbstractController *>);
     QString displayText() const;
     QString baseText() const;
     
 public slots:
+    void calDateChange();
     void open(QString);
     void show(QDate);
     void closeManager();

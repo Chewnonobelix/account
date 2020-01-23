@@ -316,6 +316,21 @@ void ControllerBudget::setQuickView(QObject *qv)
     m_quickView = qv;
 }
 
+void ControllerBudget::calDateChange()
+{
+    auto list = m_cal->property("selectedDates").toList();
+    
+    if(list.isEmpty())
+        show(QDate::currentDate());
+    else
+        show(QDate::fromString(list.first().toString(), "dd-MM-yyyy"));
+}
+
+void ControllerBudget::setCalendar(QObject * cal)
+{
+    m_cal = cal;
+}
+
 QSharedPointer<FeatureBuilder> ControllerBudget::build(QQmlApplicationEngine * engine, QObject * root, QList<AbstractController *> controllers)
 {
     Q_UNUSED(controllers)
@@ -326,7 +341,7 @@ QSharedPointer<FeatureBuilder> ControllerBudget::build(QQmlApplicationEngine * e
     QQmlComponent budgetComp(engine, QUrl("qrc:/Budget/BudgetManager.qml"));
     QObject* budgetManager = budgetComp.create();
     QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(budgetManager)));
-    //connect(&m_info, ControllerInformation::s_exec, this, MainController::openBudgetManager);
+
     budget->setManager(budgetManager);
     
     QObject* rectQuickView = root->findChild<QObject*>("budgetQuick");
@@ -334,9 +349,12 @@ QSharedPointer<FeatureBuilder> ControllerBudget::build(QQmlApplicationEngine * e
     budget->show(QDate::currentDate());
     budget->exec();
     
+    QObject* cal = root->findChild<QObject*>("cal");
+    connect(cal, SIGNAL(s_datesChanged()), budget.data(), SLOT(calDateChange()));
+    budget->setCalendar(cal);
     connect(m_db, InterfaceDataSave::s_updateEntry, budget.data(), ControllerBudget::updateEntry);
-//    connect(&m_info, ControllerInformation::s_changeCat, m_budget.data(), ControllerBudget::changeEntry);
 
+    
 
     return budget;
 }
