@@ -4,5 +4,5 @@ SUBDIRS = \
 Account \
 #Test
 
-TRANSLATIONS += Account\account_fr.ts \
-                Account\account_en.ts
+TRANSLATIONS += Account\Francais.ts \
+                Account\English.ts
