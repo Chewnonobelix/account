@@ -66,12 +66,13 @@ int main(int argc, char *argv[])
     qDebug()<<"ControllerXMLMulti"<<qRegisterMetaType<ControllerXMLMulti>();
     qDebug()<<"Account::FrequencyEnum QML"<<qmlRegisterUncreatableMetaObject(Account::staticMetaObject, "Account", 1,0, "Account", "This is Account's flags");
     qDebug()<<"Account::FrequencyEnum"<<qRegisterMetaType<Account::FrequencyEnum>();
-    qDebug()<<"ControllerBudget"<<qRegisterMetaType<ControllerBudget>("FBudget");
-    qDebug()<<"ControllerFrequency"<<qRegisterMetaType<ControllerFrequency>("FFrequency");
-    qDebug()<<"ControllerCommon"<<qRegisterMetaType<ControllerCommon>("FCommonExpanse");
+    qDebug()<<"ControllerBudget"<<qRegisterMetaType<ControllerBudget>("BudgetFeature");
+    qDebug()<<"ControllerFrequency"<<qRegisterMetaType<ControllerFrequency>("FrequencyFeature");
+    qDebug()<<"ControllerCommon"<<qRegisterMetaType<ControllerCommon>("CommonExpanseFeature");
 
     qDebug()<<QMetaType::type("Budget");
-    
+
+
 //    XmlTest test1;
 
     if(argc > 1 && app.arguments().contains("--test"))

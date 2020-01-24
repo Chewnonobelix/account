@@ -4,29 +4,14 @@ QMap<QString, QSharedPointer<FeatureBuilder>> ControllerSettings::registredFeatu
 
 ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSettings::UserScope, "Chewnonobelix Inc", "Account")
 {
-    if(!m_settings.allKeys().contains("Database/Main"))
-        m_settings.setValue("Database/Main", "ControllerDB");
     
-    if(!m_settings.allKeys().contains("Database/UseBackup"))
-        m_settings.setValue("Database/UseBackup", false);
+    qDebug()<<m_language.load("Francais.qm");
+    QCoreApplication::installTranslator(&m_language);
     
-    if(!m_settings.allKeys().contains("Database/Backup"))
-        m_settings.setValue("Database/Backup", "ControllerXMLMulti");
+    qDebug()<<QLocale::system().uiLanguages();
     
-    if(!m_settings.allKeys().contains("Feature/"+QObject::tr("FFrequency")))
-        m_settings.setValue("Feature/"+QObject::tr("FFrequency"), true);
-    
-    if(!m_settings.allKeys().contains("Feature/"+QObject::tr("FBudget")))
-        m_settings.setValue("Feature/"+QObject::tr("FBudget"), true);
-    
-    if(!m_settings.allKeys().contains("Feature/"+QObject::tr("FCommonExpanse")))
-        m_settings.setValue("Feature/"+QObject::tr("FCommonExpanse"), true);
-    
-    if(!m_settings.allKeys().contains("Language"))
-        m_settings.setValue("Language",  "English");
-    
-    //    m_language.load("account_en.qm");
-    //    m_language.load("account_fr.qm");
+    for(auto it: m_settings.allKeys())
+        qDebug()<<it<<m_settings.value(it).type()<<m_settings.value(it).typeName();
 }
 
 void ControllerSettings::registerFeature(QSharedPointer<FeatureBuilder> f)
