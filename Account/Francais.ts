@@ -326,47 +326,47 @@
     <message>
         <location filename="View/Frequency/FrequencyManager.qml" line="60"/>
         <source>Reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Référence</translation>
     </message>
     <message>
         <location filename="View/Frequency/FrequencyManager.qml" line="92"/>
         <source>Frequency list</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste des récurences</translation>
     </message>
     <message>
         <location filename="View/Frequency/FrequencyManager.qml" line="175"/>
         <source>+</source>
-        <translation type="unfinished"></translation>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="View/Frequency/FrequencyManager.qml" line="206"/>
         <source>-</source>
-        <translation type="unfinished"></translation>
+        <translation>-</translation>
     </message>
     <message>
         <location filename="View/Frequency/FrequencyManager.qml" line="378"/>
         <source>Generate</source>
-        <translation type="unfinished"></translation>
+        <translation>Générer</translation>
     </message>
     <message>
         <location filename="View/Frequency/FrequencyManager.qml" line="425"/>
         <source> Number of generation</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de génération</translation>
     </message>
     <message>
         <location filename="View/Frequency/FrequencyManager.qml" line="440"/>
         <source> Number of entries</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre de transactions</translation>
     </message>
     <message>
         <location filename="View/Frequency/FrequencyManager.qml" line="455"/>
         <source>From</source>
-        <translation type="unfinished"></translation>
+        <translation>Depuis</translation>
     </message>
     <message>
         <location filename="View/Frequency/FrequencyManager.qml" line="455"/>
         <source>to</source>
-        <translation type="unfinished"></translation>
+        <translation>A</translation>
     </message>
 </context>
 <context>
@@ -374,22 +374,22 @@
     <message>
         <location filename="View/Frequency/Generate.qml" line="58"/>
         <source>From</source>
-        <translation type="unfinished"></translation>
+        <translation>Depuis</translation>
     </message>
     <message>
         <location filename="View/Frequency/Generate.qml" line="75"/>
         <source>To</source>
-        <translation type="unfinished"></translation>
+        <translation>A</translation>
     </message>
     <message>
         <location filename="View/Frequency/Generate.qml" line="107"/>
         <source>Generate</source>
-        <translation type="unfinished"></translation>
+        <translation>Générer</translation>
     </message>
     <message>
         <location filename="View/Frequency/Generate.qml" line="123"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -397,17 +397,17 @@
     <message>
         <location filename="Controller/graphcontroller.cpp" line="151"/>
         <source>one month</source>
-        <translation type="unfinished"></translation>
+        <translation>Un mois</translation>
     </message>
     <message>
         <location filename="Controller/graphcontroller.cpp" line="170"/>
         <source>one year</source>
-        <translation type="unfinished"></translation>
+        <translation>Une année</translation>
     </message>
     <message>
         <location filename="Controller/graphcontroller.cpp" line="199"/>
         <source>all years</source>
-        <translation type="unfinished"></translation>
+        <translation>Tout</translation>
     </message>
 </context>
 <context>
@@ -415,93 +415,93 @@
     <message>
         <location filename="View/Core/Main.qml" line="81"/>
         <source>Quick add</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajout rapide</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="86"/>
         <source>Show normal</source>
-        <translation type="unfinished"></translation>
+        <translation>Restaurer</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="86"/>
         <source>Hide</source>
-        <translation type="unfinished"></translation>
+        <translation>Cacher</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="91"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitter</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="135"/>
         <source>&amp;File</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Fichier</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="148"/>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Profile</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="175"/>
         <source>New profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau profile</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="188"/>
         <source>Delete profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer le profile</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="205"/>
         <source>&amp;Consolidate</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Consolider</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="222"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Quitter</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="254"/>
         <location filename="View/Core/Main.qml" line="518"/>
         <source>Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Compte</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="260"/>
         <source>&amp;New account</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nouveau compte</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="292"/>
         <source>&amp;Delete account</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Supprimer le compte</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="325"/>
         <source>Current account</source>
-        <translation type="unfinished"></translation>
+        <translation>Compte courant</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="331"/>
         <source>&amp;Add transaction</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ajouter une transaction</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="364"/>
         <source>&amp;Remove transaction</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Supprimer une transaction</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="403"/>
         <source>?</source>
-        <translation type="unfinished"></translation>
+        <translation>?</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="408"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>A propos</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="424"/>
@@ -514,12 +514,12 @@ Current Version beta 0.9</source>
         <location filename="View/Core/Main.qml" line="480"/>
         <location filename="View/Core/Main.qml" line="666"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="453"/>
         <source>Licence</source>
-        <translation type="unfinished"></translation>
+        <translation>License</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="466"/>
@@ -529,47 +529,47 @@ Current Version beta 0.9</source>
     <message>
         <location filename="View/Core/Main.qml" line="530"/>
         <source>Selection total</source>
-        <translation type="unfinished"></translation>
+        <translation>Total de la sélection</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="552"/>
         <source>Select account</source>
-        <translation type="unfinished"></translation>
+        <translation>Compte courant</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="657"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="692"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="713"/>
         <source>List</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="713"/>
         <source>Graph</source>
-        <translation type="unfinished"></translation>
+        <translation>Graphique</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="713"/>
         <source>Budget</source>
-        <translation type="unfinished"></translation>
+        <translation>Budget</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="713"/>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Récurence</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="713"/>
         <source>Common expanse</source>
-        <translation type="unfinished"></translation>
+        <translation>Dépense commune</translation>
     </message>
 </context>
 <context>
@@ -577,12 +577,12 @@ Current Version beta 0.9</source>
     <message>
         <location filename="View/Core/MultiCalendar.qml" line="270"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation>Total</translation>
     </message>
     <message>
         <location filename="View/Core/MultiCalendar.qml" line="270"/>
         <source>Day transaction</source>
-        <translation type="unfinished"></translation>
+        <translation>Transaction journalière</translation>
     </message>
 </context>
 <context>
@@ -590,17 +590,17 @@ Current Version beta 0.9</source>
     <message>
         <location filename="View/MultiProfile/NewProfile.qml" line="34"/>
         <source>Profile name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom du profil</translation>
     </message>
     <message>
         <location filename="View/MultiProfile/NewProfile.qml" line="93"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="View/MultiProfile/NewProfile.qml" line="111"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -608,57 +608,57 @@ Current Version beta 0.9</source>
     <message>
         <location filename="View/Core/Page1Form.qml" line="57"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="68"/>
         <source>Add new transaction</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter une nouvelle transaction</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="92"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="104"/>
         <source>Remove select transaction</source>
-        <translation type="unfinished"></translation>
+        <translation>Supprimer la transaction sélectionner</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="145"/>
         <source>Budget quick view</source>
-        <translation type="unfinished"></translation>
+        <translation>Prévisualisation budget</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="255"/>
         <source>[+/-]</source>
-        <translation type="unfinished"></translation>
+        <translation>[+/-]</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="260"/>
         <source>estimated entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Transaction prévisionnelle</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="287"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Date</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="318"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="349"/>
         <source>Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Intituler</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="381"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation>Total</translation>
     </message>
 </context>
 <context>
@@ -666,22 +666,22 @@ Current Version beta 0.9</source>
     <message>
         <location filename="View/Core/Page2Form.qml" line="28"/>
         <source>&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&gt;</translation>
     </message>
     <message>
         <location filename="View/Core/Page2Form.qml" line="46"/>
         <source>&lt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;</translation>
     </message>
     <message>
         <location filename="View/Core/Page2Form.qml" line="87"/>
         <source>month</source>
-        <translation type="unfinished"></translation>
+        <translation>Mois</translation>
     </message>
     <message>
         <location filename="View/Core/Page2Form.qml" line="89"/>
         <source>Account evolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Evolution du compte</translation>
     </message>
     <message>
         <location filename="View/Core/Page2Form.qml" line="95"/>
@@ -691,7 +691,7 @@ Current Version beta 0.9</source>
         <location filename="View/Core/Page2Form.qml" line="132"/>
         <location filename="View/Core/Page2Form.qml" line="133"/>
         <source>estimated</source>
-        <translation type="unfinished"></translation>
+        <translation>Prévisionnel</translation>
     </message>
     <message>
         <location filename="View/Core/Page2Form.qml" line="100"/>
@@ -700,7 +700,7 @@ Current Version beta 0.9</source>
         <location filename="View/Core/Page2Form.qml" line="129"/>
         <location filename="View/Core/Page2Form.qml" line="130"/>
         <source>past</source>
-        <translation type="unfinished"></translation>
+        <translation>Passé</translation>
     </message>
 </context>
 <context>
@@ -708,27 +708,27 @@ Current Version beta 0.9</source>
     <message>
         <location filename="View/Core/PageChanger.qml" line="34"/>
         <source>Previous 10 pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Reculer de 10 pages</translation>
     </message>
     <message>
         <location filename="View/Core/PageChanger.qml" line="64"/>
         <source>Previous page</source>
-        <translation type="unfinished"></translation>
+        <translation>Reculer d&apos;une page</translation>
     </message>
     <message>
         <location filename="View/Core/PageChanger.qml" line="96"/>
         <source>Current page</source>
-        <translation type="unfinished"></translation>
+        <translation>Page courante</translation>
     </message>
     <message>
         <location filename="View/Core/PageChanger.qml" line="111"/>
         <source>Next page</source>
-        <translation type="unfinished"></translation>
+        <translation>Avancer d&apos;une page</translation>
     </message>
     <message>
         <location filename="View/Core/PageChanger.qml" line="144"/>
         <source>Next 10 pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Avancer de 10 pages</translation>
     </message>
 </context>
 <context>
@@ -754,12 +754,12 @@ Current Version beta 0.9</source>
     <message>
         <location filename="Controller/maincontroller.cpp" line="124"/>
         <source>List</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste</translation>
     </message>
     <message>
         <location filename="Controller/maincontroller.cpp" line="124"/>
         <source>Graph</source>
-        <translation type="unfinished"></translation>
+        <translation>Graphique</translation>
     </message>
 </context>
 <context>
@@ -767,47 +767,47 @@ Current Version beta 0.9</source>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="48"/>
         <source>Quick adding</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajout rapide</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="73"/>
         <source>Specify income or outcome</source>
-        <translation type="unfinished"></translation>
+        <translation>Spécifier revenu ou dépense</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="112"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Type</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="134"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Date</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="154"/>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titre</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="174"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="196"/>
         <source>Category</source>
-        <translation type="unfinished"></translation>
+        <translation>Catégorie</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="210"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="231"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter</translation>
     </message>
 </context>
 <context>
@@ -815,17 +815,17 @@ Current Version beta 0.9</source>
     <message>
         <location filename="View/Budget/ReferenceView.qml" line="43"/>
         <source>From</source>
-        <translation type="unfinished"></translation>
+        <translation>Depuis</translation>
     </message>
     <message>
         <location filename="View/Budget/ReferenceView.qml" line="70"/>
         <source>Target</source>
-        <translation type="unfinished"></translation>
+        <translation>Cible</translation>
     </message>
     <message>
         <location filename="View/Budget/ReferenceView.qml" line="98"/>
         <source>Every</source>
-        <translation type="unfinished"></translation>
+        <translation>Tout les</translation>
     </message>
 </context>
 <context>
@@ -833,37 +833,37 @@ Current Version beta 0.9</source>
     <message>
         <location filename="View/Transfert/Transfert.qml" line="56"/>
         <source>From</source>
-        <translation type="unfinished"></translation>
+        <translation>Depuis</translation>
     </message>
     <message>
         <location filename="View/Transfert/Transfert.qml" line="64"/>
         <source>to</source>
-        <translation type="unfinished"></translation>
+        <translation>A</translation>
     </message>
     <message>
         <location filename="View/Transfert/Transfert.qml" line="71"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur</translation>
     </message>
     <message>
         <location filename="View/Transfert/Transfert.qml" line="78"/>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Information</translation>
     </message>
     <message>
         <location filename="View/Transfert/Transfert.qml" line="180"/>
         <source>Please complete the entry&apos;s title</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajoutez un titre à la transaction</translation>
     </message>
     <message>
         <location filename="View/Transfert/Transfert.qml" line="198"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="View/Transfert/Transfert.qml" line="216"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 </TS>
