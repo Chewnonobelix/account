@@ -31,5 +31,6 @@
         <file>Core/QuickAdding.qml</file>
         <file>MultiProfile/NewProfile.qml</file>
         <file>CommonExpanse/CommonExpanseManager.qml</file>
+        <file>Core/Settings.qml</file>
     </qresource>
 </RCC>
