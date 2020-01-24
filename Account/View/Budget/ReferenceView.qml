@@ -179,7 +179,7 @@ Popup {
             
             Button {
                 text: "Cancel"
-                onClicked: main.close()
+                onClicked: root.close()
                 
                 Layout.preferredHeight: root.height * 0.15
                 Layout.preferredWidth:  root.width * 0.22
