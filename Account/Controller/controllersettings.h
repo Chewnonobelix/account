@@ -46,6 +46,7 @@ public:
 
 public slots:
     void open();
+    void save();
 };
 
 #endif // CONTROLLERSETTINGS_H

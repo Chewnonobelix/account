@@ -6,7 +6,7 @@ MainController::MainController(int storage): AbstractController()
     try
     {
         
-        setDb(m_settings.database());
+        setDb(m_settings.database().isEmpty() ? "ControllerDB" : m_settings.database());
         m_db->init();
     }
     catch(QString except)

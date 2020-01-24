@@ -19,6 +19,8 @@ void ControllerSettings::init(QQmlEngine & engine)
     QObject* root = ((QQmlApplicationEngine&)engine).rootObjects().first();
 
     m_view = root->findChild<QObject*>("settings");
+
+    connect(m_view, SIGNAL(accepted()), this, SLOT(save()));
 }
 
 void ControllerSettings::registerFeature(QSharedPointer<FeatureBuilder> f)
@@ -93,4 +95,32 @@ void ControllerSettings::open()
 int ControllerSettings::exec()
 {
     return 0;
+}
+
+void ControllerSettings::save()
+{
+    QObject* obj = m_view->findChild<QObject*>("language");
+
+    m_settings.setValue("Language", obj->property("currentText"));
+
+    obj = m_view->findChild<QObject*>("budget");
+    setFeatureEnable("BudgetFeature", obj->property("checked").toBool());
+
+    obj = m_view->findChild<QObject*>("frequency");
+    setFeatureEnable("FrequencyFeature", obj->property("checked").toBool());
+
+    obj = m_view->findChild<QObject*>("common");
+    setFeatureEnable("CommonExpanseFeature", obj->property("checked").toBool());
+
+    obj = m_view->findChild<QObject*>("primary")->property("item").value<QObject*>();
+    setDatabase(obj->property("currentValue").toString());
+
+    obj = m_view->findChild<QObject*>("useBackup");
+    setBackupEnable(obj->property("checked").toBool());
+
+    if(backupEnable())
+    {
+        obj = m_view->findChild<QObject*>("backup")->property("item").value<QObject*>();
+        setBackup(obj->property("currentValue").toString());
+    }
 }

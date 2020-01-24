@@ -5,111 +5,132 @@ import QtQuick.Layouts 1.14
 import "../Style"
 
 Dialog {
-   id: root
-   title: qsTr("Settings")
-   standardButtons: Dialog.Save | Dialog.Cancel
-   
-   width: 600
-   height: 800
+    id: root
+    title: qsTr("Settings")
+    standardButtons: Dialog.Save | Dialog.Cancel
 
-   anchors.centerIn: parent
+    width: 600
+    height: 400
 
-   ColumnLayout {
-       anchors.fill: parent
-       
-       GroupBox {
-           title: qsTr("General")
-           
-           GridLayout {
-               columns: 2
-               
-               Label {
-                   text: qsTr("Language")
-               }
-               
-               ComboBox {
-                   model: ["English", "Francais"]
-               }
-           }
-       }
-       
-      
-       GroupBox {
-           title: qsTr("Features")
+    anchors.centerIn: parent
+    clip: true
+    ScrollView {
+        anchors.fill: parent
+        clip: true
+        ColumnLayout {
+            clip: true
+            anchors.fill: parent
 
-           GridLayout {
-               columns: 2
-               Label {
-                  text: qsTr("Budget")
-               }
+            GroupBox {
+                title: qsTr("General")
 
-               CheckBox {
-                   objectName: "budget"
-               }
+                GridLayout {
+                    columns: 2
 
-               Label {
-                  text: qsTr("Frequency")
-               }
+                    Label {
+                        text: qsTr("Language")
+                    }
 
-               CheckBox {
-                   objectName: "frequency"
-               }
+                    ComboBox {
+                        objectName: "language"
+                        model: ["English", "Francais"]
+                    }
+                }
+            }
 
-               Label {
-                  text: qsTr("Common Expanse")
-               }
 
-               CheckBox {
-                   objectName: "common"
-               }
+            GroupBox {
+                title: qsTr("Features")
 
-           }
-       }
+                GridLayout {
+                    columns: 2
+                    Label {
+                        text: qsTr("Budget")
+                    }
 
-       Component {
-           id: db
-           ComboBox {
-               model: ["Sql", "Xml"]
-           }
-       }
+                    CheckBox {
+                        objectName: "budget"
+                    }
 
-       GroupBox {
-           title: qsTr("Database")
-           
-           GridLayout {
-               columns: 3
-               
-               Label {
-                   text: qsTr("Main database")
-               }
-               
-               Loader {
-                   active: true
-                   sourceComponent: db
-               }
-               
-               Frame {
-                   visible: false
-               }
-               
-               CheckBox {
-                   id: secondadyEnable
-                   text: qsTr("Enable")
-                   checked: true
-               }
+                    Label {
+                        text: qsTr("Frequency")
+                    }
 
-               Label {
-                   text: qsTr("Secondary database")
-               }
-               
-               Loader {
-                   sourceComponent: db
-                   active: secondadyEnable.checked
-               }
-               
-           }
-       }
-       
-      
-   }
+                    CheckBox {
+                        objectName: "frequency"
+                    }
+
+                    Label {
+                        text: qsTr("Common Expanse")
+                    }
+
+                    CheckBox {
+                        objectName: "common"
+                    }
+
+                }
+            }
+
+            Component {
+                id: db
+                ComboBox {
+                    textRole: "text"
+                    valueRole: "value"
+
+                    onCurrentValueChanged: console.log(currentValue)
+                    model: ListModel {
+                        ListElement {
+                            text: qsTr("Xml")
+                            value: "ControllerXMLMulti"
+                        }
+
+                        ListElement {
+                            text: qsTr("Sql")
+                            value: "ControllerDB"
+                        }
+                    }
+                }
+            }
+
+            GroupBox {
+                title: qsTr("Database")
+
+                GridLayout {
+                    columns: 3
+
+                    Label {
+                        text: qsTr("Main database")
+                    }
+
+                    Loader {
+                        objectName: "primary"
+                        active: true
+                        sourceComponent: db
+                    }
+
+                    Frame {
+                        visible: false
+                    }
+
+                    CheckBox {
+                        id: secondadyEnable
+                        objectName: "useBackup"
+                        text: qsTr("Enable")
+                        checked: true
+                    }
+
+                    Label {
+                        text: qsTr("Backup database")
+                    }
+
+                    Loader {
+                        objectName: "backup"
+                        sourceComponent: db
+                        active: secondadyEnable.checked
+                    }
+
+                }
+            }
+        }
+    }
 }
