@@ -29,11 +29,15 @@ ApplicationWindow {
     signal openTransfert
     signal s_closing()
     signal s_openFrequencyManager()
-    
+    signal s_openSetting()
+
     id: mainWindow
     
     onClosing: s_closing()
 
+    Settings {
+        objectName: "settings"
+    }
 
     onVisibilityChanged: {
         if(visibility === Window.Minimized)
@@ -139,6 +143,11 @@ ApplicationWindow {
                 background: Rectangle {
                     gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
                 }
+            }
+
+            MenuItem {
+                text: qsTr("Settings")
+                onTriggered: s_openSetting()
             }
 
             Menu {

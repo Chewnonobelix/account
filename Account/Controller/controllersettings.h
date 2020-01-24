@@ -4,6 +4,9 @@
 #include <QSettings>
 #include <QTranslator>
 #include <QCoreApplication>
+#include <QQmlComponent>
+#include <QQuickItem>
+#include <QQmlContext>
 #include "abstractcontroller.h"
 #include "featurebuilder.h"
 
@@ -17,9 +20,12 @@ private:
     
     static QMap<QString, QSharedPointer<FeatureBuilder>> registredFeatures;
     
+    QObject* m_view;
+
 public:
     ControllerSettings();
-    
+
+    void init(QQmlEngine&);
     QString database() const;
     void setDatabase(QString);
     QString backup() const;
@@ -37,6 +43,9 @@ public:
     static void registerFeature(QSharedPointer<FeatureBuilder>);
     static inline QStringList registredFeature() {return registredFeatures.keys();}
     int exec();
+
+public slots:
+    void open();
 };
 
 #endif // CONTROLLERSETTINGS_H

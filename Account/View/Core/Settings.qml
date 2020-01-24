@@ -9,6 +9,11 @@ Dialog {
    title: qsTr("Settings")
    standardButtons: Dialog.Save | Dialog.Cancel
    
+   width: 600
+   height: 800
+
+   anchors.centerIn: parent
+
    ColumnLayout {
        anchors.fill: parent
        
@@ -31,6 +36,34 @@ Dialog {
       
        GroupBox {
            title: qsTr("Features")
+
+           GridLayout {
+               columns: 2
+               Label {
+                  text: qsTr("Budget")
+               }
+
+               CheckBox {
+                   objectName: "budget"
+               }
+
+               Label {
+                  text: qsTr("Frequency")
+               }
+
+               CheckBox {
+                   objectName: "frequency"
+               }
+
+               Label {
+                  text: qsTr("Common Expanse")
+               }
+
+               CheckBox {
+                   objectName: "common"
+               }
+
+           }
        }
 
        Component {
@@ -55,17 +88,8 @@ Dialog {
                    sourceComponent: db
                }
                
-               Rectangle {
-                   
-               }
-               
-               Label {
-                   text: qsTr("Secondary database")
-               }
-               
-               Loader {
-                   source: db
-                   active: secondadyEnable.checked
+               Frame {
+                   visible: false
                }
                
                CheckBox {
@@ -73,6 +97,16 @@ Dialog {
                    text: qsTr("Enable")
                    checked: true
                }
+
+               Label {
+                   text: qsTr("Secondary database")
+               }
+               
+               Loader {
+                   sourceComponent: db
+                   active: secondadyEnable.checked
+               }
+               
            }
        }
        

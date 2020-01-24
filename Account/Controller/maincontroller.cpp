@@ -190,16 +190,14 @@ int MainController::exec()
     }
     
     connect(m_db, InterfaceDataSave::s_updateEntry, this, MainController::selection);
+
+    m_settings.init(m_engine);
+    connect(root, SIGNAL(s_openSetting()), &m_settings, SLOT(open()));
     return 0;
 }
 
 void MainController::close()
 {
-    if(m_budget)
-        m_budget->closeManager();
-    
-    if(m_freqs)
-        m_freqs->closeManager();
 }
 
 void MainController::changeProfile(QString name)
@@ -568,8 +566,8 @@ void MainController::accountChange(QString acc)
     if(pageSkip)
         pageSkip->setProperty("maxPage", maxPage);
     
-    for(auto it: m_db->selectEntry(currentAccount()))
-        m_freqs->addEntry(it.id());
+//    for(auto it: m_db->selectEntry(currentAccount()))
+//        m_freqs->addEntry(it.id());
     
     //m_common.exec();
     
@@ -680,7 +678,7 @@ void MainController::openTransfert()
 
 void MainController::openBudgetManager()
 {
-    m_budget->exec();
+//    m_budget->exec();
 }
 
 void MainController::addProfile()

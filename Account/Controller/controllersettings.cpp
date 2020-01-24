@@ -14,6 +14,13 @@ ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSett
         qDebug()<<it<<m_settings.value(it).type()<<m_settings.value(it).typeName();
 }
 
+void ControllerSettings::init(QQmlEngine & engine)
+{
+    QObject* root = ((QQmlApplicationEngine&)engine).rootObjects().first();
+
+    m_view = root->findChild<QObject*>("settings");
+}
+
 void ControllerSettings::registerFeature(QSharedPointer<FeatureBuilder> f)
 {
     registredFeatures[f->baseText()] = f;
@@ -76,6 +83,11 @@ QStringList ControllerSettings::featuresList() const
     ret.replaceInStrings("Feature/", "");
     
     return ret;
+}
+
+void ControllerSettings::open()
+{
+    QMetaObject::invokeMethod(m_view, "open");
 }
 
 int ControllerSettings::exec()
