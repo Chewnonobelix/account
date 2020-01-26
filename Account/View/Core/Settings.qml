@@ -33,7 +33,6 @@ Dialog {
 
                     ComboBox {
                         objectName: "language"
-                        model: ["English", "Francais"]
                     }
                 }
             }
@@ -109,7 +108,7 @@ Dialog {
                     }
 
                     Frame {
-                        visible: false
+                        enabled: false
                     }
 
                     CheckBox {

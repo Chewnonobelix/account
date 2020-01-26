@@ -5,13 +5,21 @@ QMap<QString, QSharedPointer<FeatureBuilder>> ControllerSettings::registredFeatu
 ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSettings::UserScope, "Chewnonobelix Inc", "Account")
 {
     
-    qDebug()<<m_language.load("Francais.qm");
-    QCoreApplication::installTranslator(&m_language);
-    
-    qDebug()<<QLocale::system().uiLanguages();
+//    qDebug()<<m_language.load(language()+".qm");
+//    QCoreApplication::installTranslator(&m_language);
+
+//    qDebug()<<QLocale::system().uiLanguages();
     
     for(auto it: m_settings.allKeys())
         qDebug()<<it<<m_settings.value(it).type()<<m_settings.value(it).typeName();
+
+//    setLanguage();
+}
+
+ControllerSettings::~ControllerSettings()
+{
+    for(auto it: m_language)
+        delete it;
 }
 
 void ControllerSettings::init(QQmlEngine & engine)
@@ -21,6 +29,25 @@ void ControllerSettings::init(QQmlEngine & engine)
     m_view = root->findChild<QObject*>("settings");
 
     connect(m_view, SIGNAL(accepted()), this, SLOT(save()));
+
+    QDir dir;
+    auto list = dir.entryInfoList(QStringList("*.qm"));
+    QStringList availableLanguage;
+    for(auto it: list)
+    {
+        m_language[it.baseName()] = new QTranslator();
+        qDebug()<<it.baseName()<<m_language[it.baseName()]->load(it.fileName())<<(it.baseName() == language());
+        availableLanguage<<it.baseName();
+
+        if(it.baseName() == language())
+            QCoreApplication::installTranslator(m_language[it.baseName()]);
+    }
+
+//    setLanguage(language());
+
+    qDebug()<<m_language;
+    QObject* obj = m_view->findChild<QObject*>("language");
+    obj->setProperty("model", QVariant::fromValue(availableLanguage));
 }
 
 void ControllerSettings::registerFeature(QSharedPointer<FeatureBuilder> f)
@@ -65,7 +92,11 @@ QString ControllerSettings::language() const
 
 void ControllerSettings::setLanguage(QString language)
 {
-    m_settings.setValue("Language", language);    
+    qDebug()<<language<<this->language();
+//    QCoreApplication::removeTranslator(m_language[this->language()]);
+    m_settings.setValue("Language", language);
+//    qDebug()<<"Load"<< m_language.load(language+".qm");
+    QCoreApplication::installTranslator(m_language[language]);
 }
 
 bool ControllerSettings::featureEnable(QString feature) const
@@ -89,6 +120,35 @@ QStringList ControllerSettings::featuresList() const
 
 void ControllerSettings::open()
 {
+    QObject* obj = m_view->findChild<QObject*>("language");
+    int index;
+    QMetaObject::invokeMethod(obj, "indexOfValue", Q_RETURN_ARG(int, index), Q_ARG(QVariant, language()));
+    obj->setProperty("currentIndex", index);
+
+
+    obj = m_view->findChild<QObject*>("budget");
+    obj->setProperty("checked", featureEnable("BudgetFeature"));
+
+    obj = m_view->findChild<QObject*>("frequency");
+    obj->setProperty("checked", featureEnable("FrequencyFeature"));
+
+    obj = m_view->findChild<QObject*>("common");
+    obj->setProperty("checked", featureEnable("CommonExpanseFeature"));
+
+    obj = m_view->findChild<QObject*>("primary")->property("item").value<QObject*>();
+    QMetaObject::invokeMethod(obj, "indexOfValue", Q_RETURN_ARG(int, index), Q_ARG(QVariant, database()));
+    obj->setProperty("currentIndex", index);
+
+    obj = m_view->findChild<QObject*>("useBackup");
+    obj->setProperty("checked", backupEnable());
+
+    if(backupEnable())
+    {
+        obj = m_view->findChild<QObject*>("backup")->property("item").value<QObject*>();
+        QMetaObject::invokeMethod(obj, "indexOfValue", Q_RETURN_ARG(int, index), Q_ARG(QVariant, backup()));
+        obj->setProperty("currentIndex", index);
+    }
+
     QMetaObject::invokeMethod(m_view, "open");
 }
 
@@ -101,7 +161,7 @@ void ControllerSettings::save()
 {
     QObject* obj = m_view->findChild<QObject*>("language");
 
-    m_settings.setValue("Language", obj->property("currentText"));
+    setLanguage(obj->property("currentText").toString());
 
     obj = m_view->findChild<QObject*>("budget");
     setFeatureEnable("BudgetFeature", obj->property("checked").toBool());
@@ -123,4 +183,6 @@ void ControllerSettings::save()
         obj = m_view->findChild<QObject*>("backup")->property("item").value<QObject*>();
         setBackup(obj->property("currentValue").toString());
     }
+
+    emit s_finish();
 }

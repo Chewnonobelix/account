@@ -7,6 +7,8 @@
 #include <QQmlComponent>
 #include <QQuickItem>
 #include <QQmlContext>
+#include <QDir>
+#include <QFileInfo>
 #include "abstractcontroller.h"
 #include "featurebuilder.h"
 
@@ -16,7 +18,7 @@ class ControllerSettings: public AbstractController
     
 private:
     QSettings m_settings;
-    QTranslator m_language;
+    QMap<QString, QTranslator*> m_language;
     
     static QMap<QString, QSharedPointer<FeatureBuilder>> registredFeatures;
     
@@ -24,6 +26,7 @@ private:
 
 public:
     ControllerSettings();
+    virtual ~ControllerSettings();
 
     void init(QQmlEngine&);
     QString database() const;
@@ -43,6 +46,9 @@ public:
     static void registerFeature(QSharedPointer<FeatureBuilder>);
     static inline QStringList registredFeature() {return registredFeatures.keys();}
     int exec();
+
+signals:
+    void s_finish();
 
 public slots:
     void open();

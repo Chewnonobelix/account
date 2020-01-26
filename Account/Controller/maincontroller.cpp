@@ -21,6 +21,8 @@ MainController::MainController(int storage): AbstractController()
     m_dbThread.start();
     
     m_db->selectProfile();
+
+    connect(&m_settings, ControllerSettings::s_finish, this, MainController::exec);
 }
 
 MainController::~MainController()
@@ -717,4 +719,10 @@ void MainController::deleteProfile(QString name)
     if(m_db->deleteProfile(name))
         changeProfile("Default");
     loadProfiles();
+}
+
+bool MainController::event(QEvent * event)
+{
+    qDebug()<<event->type()<<"Event";
+    return false;
 }

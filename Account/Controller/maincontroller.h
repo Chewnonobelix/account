@@ -39,13 +39,17 @@ private:
     
     void checkEstimated();
 
+protected:
+    bool event(QEvent*);
+
 public:
     MainController(int = 0);
     ~MainController();
 
-    int exec();
 
 public slots:
+    int exec();
+
     void add(bool = false);
     void remove(int);
     void edit(int);
