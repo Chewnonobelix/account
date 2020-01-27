@@ -195,6 +195,9 @@ int MainController::exec()
 
     m_settings.init(m_engine);
     connect(root, SIGNAL(s_openSetting()), &m_settings, SLOT(open()));
+    
+    connect(&m_settings, ControllerSettings::s_language, this, MainController::languageChange);
+    languageChange();
     return 0;
 }
 
@@ -725,4 +728,9 @@ bool MainController::event(QEvent * event)
 {
     qDebug()<<event->type()<<"Event";
     return false;
+}
+
+void MainController::languageChange()
+{
+    m_engine.retranslate();
 }

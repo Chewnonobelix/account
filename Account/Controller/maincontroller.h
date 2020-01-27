@@ -86,6 +86,8 @@ public slots:
     void addProfile();
     void loadProfiles();
     void deleteProfile(QString);
+    
+    void languageChange();
 };
 
 

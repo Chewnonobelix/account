@@ -49,7 +49,8 @@ public:
 
 signals:
     void s_finish();
-
+    void s_language();
+    
 public slots:
     void open();
     void save();

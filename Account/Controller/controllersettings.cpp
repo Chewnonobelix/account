@@ -4,16 +4,8 @@ QMap<QString, QSharedPointer<FeatureBuilder>> ControllerSettings::registredFeatu
 
 ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSettings::UserScope, "Chewnonobelix Inc", "Account")
 {
-    
-//    qDebug()<<m_language.load(language()+".qm");
-//    QCoreApplication::installTranslator(&m_language);
-
-//    qDebug()<<QLocale::system().uiLanguages();
-    
-    for(auto it: m_settings.allKeys())
+        for(auto it: m_settings.allKeys())
         qDebug()<<it<<m_settings.value(it).type()<<m_settings.value(it).typeName();
-
-//    setLanguage();
 }
 
 ControllerSettings::~ControllerSettings()
@@ -36,16 +28,12 @@ void ControllerSettings::init(QQmlEngine & engine)
     for(auto it: list)
     {
         m_language[it.baseName()] = new QTranslator();
-        qDebug()<<it.baseName()<<m_language[it.baseName()]->load(it.fileName())<<(it.baseName() == language());
+        m_language[it.baseName()]->load(it.fileName());
         availableLanguage<<it.baseName();
-
-        if(it.baseName() == language())
-            QCoreApplication::installTranslator(m_language[it.baseName()]);
     }
 
-//    setLanguage(language());
+    setLanguage(language());
 
-    qDebug()<<m_language;
     QObject* obj = m_view->findChild<QObject*>("language");
     obj->setProperty("model", QVariant::fromValue(availableLanguage));
 }
@@ -92,11 +80,11 @@ QString ControllerSettings::language() const
 
 void ControllerSettings::setLanguage(QString language)
 {
-    qDebug()<<language<<this->language();
-//    QCoreApplication::removeTranslator(m_language[this->language()]);
+    QCoreApplication::removeTranslator(m_language[this->language()]);
     m_settings.setValue("Language", language);
-//    qDebug()<<"Load"<< m_language.load(language+".qm");
     QCoreApplication::installTranslator(m_language[language]);
+    
+    emit s_language();
 }
 
 bool ControllerSettings::featureEnable(QString feature) const
