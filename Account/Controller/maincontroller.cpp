@@ -21,8 +21,6 @@ MainController::MainController(int storage): AbstractController()
     m_dbThread.start();
     
     m_db->selectProfile();
-
-    connect(&m_settings, ControllerSettings::s_finish, this, MainController::exec);
 }
 
 MainController::~MainController()
@@ -122,8 +120,6 @@ int MainController::exec()
     }
     
     
-    QStringList features;
-    features<<QObject::tr("List")<<QObject::tr("Graph");
     QList<AbstractController*> baseAbstract;
     
     baseAbstract<<&m_info;
@@ -142,18 +138,11 @@ int MainController::exec()
         AbstractController* p = (AbstractController*)mt.create();
         auto sp = dynamic_cast<FeatureBuilder*>(p)->build(&m_engine, root, baseAbstract);
         ControllerSettings::registerFeature(sp);
-        if(m_settings.featureEnable(it))
-        {
-            features<<sp->displayText();
-            
-            m_features<<sp;
-            
-        }
         mt.destroy(p);
-        
     }
     
-    qDebug()<<features<<ControllerSettings::registredFeature();
+    loadFeatures();
+    qDebug()<<ControllerSettings::registredFeature();
     
     QObject* quick = root->findChild<QObject*>("quick");
     if(quick)
@@ -185,24 +174,48 @@ int MainController::exec()
         connect(deleteProfile, SIGNAL(s_deleteProfile(QString)), this, SLOT(deleteProfile(QString)));
     
     loadProfiles();
-    QObject* featuresRepetear = root->findChild<QObject*>("features");
-    if(featuresRepetear)
-    {
-        featuresRepetear->setProperty("model", features);
-    }
     
     connect(m_db, InterfaceDataSave::s_updateEntry, this, MainController::selection);
-
+    
     m_settings.init(m_engine);
     connect(root, SIGNAL(s_openSetting()), &m_settings, SLOT(open()));
     
     connect(&m_settings, ControllerSettings::s_language, this, MainController::languageChange);
+    connect(&m_settings, ControllerSettings::s_finish, this, MainController::loadFeatures);
+    
     languageChange();
     return 0;
 }
 
 void MainController::close()
 {
+    QApplication::closeAllWindows();
+}
+
+void MainController::loadFeatures()
+{
+    QStringList features;
+    features<<QObject::tr("List")<<QObject::tr("Graph");
+    for(auto it: m_settings.featuresList())
+    {        
+        qDebug()<<"X"<<it<<m_settings.featureEnable(it);
+        if(m_settings.featureEnable(it))
+        {
+            m_features<<ControllerSettings::features(it);
+            features<<ControllerSettings::features(it)->displayText();        
+        }
+    }
+    QObject* swipe = m_engine.rootObjects().first()->findChild<QObject*>("swipe");
+    
+    QObject* featuresRepetear = m_engine.rootObjects().first()->findChild<QObject*>("features");
+    if(featuresRepetear)
+    {
+        qDebug()<<featuresRepetear<<features;
+        
+        featuresRepetear->setProperty("model", features);
+    }
+    
+    qDebug()<<features;
 }
 
 void MainController::changeProfile(QString name)
@@ -571,8 +584,8 @@ void MainController::accountChange(QString acc)
     if(pageSkip)
         pageSkip->setProperty("maxPage", maxPage);
     
-//    for(auto it: m_db->selectEntry(currentAccount()))
-//        m_freqs->addEntry(it.id());
+    //    for(auto it: m_db->selectEntry(currentAccount()))
+    //        m_freqs->addEntry(it.id());
     
     //m_common.exec();
     
@@ -683,7 +696,7 @@ void MainController::openTransfert()
 
 void MainController::openBudgetManager()
 {
-//    m_budget->exec();
+    //    m_budget->exec();
 }
 
 void MainController::addProfile()

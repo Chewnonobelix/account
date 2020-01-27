@@ -95,6 +95,7 @@ bool ControllerSettings::featureEnable(QString feature) const
 void ControllerSettings::setFeatureEnable(QString feature, bool enable)
 {
     m_settings.setValue("Feature/"+feature, enable);
+    emit s_finish();
 }
 
 QStringList ControllerSettings::featuresList() const
@@ -171,6 +172,4 @@ void ControllerSettings::save()
         obj = m_view->findChild<QObject*>("backup")->property("item").value<QObject*>();
         setBackup(obj->property("currentValue").toString());
     }
-
-    emit s_finish();
 }

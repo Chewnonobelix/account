@@ -719,7 +719,7 @@ Current Version beta 0.9")
 
         Repeater {
             objectName: "features"
-            model: [qsTr("List"), qsTr("Graph"), qsTr("Budget"), qsTr("Frequency"), qsTr("Common expanse")]
+
             TabButton {
                 id: listTabButton
     

@@ -45,6 +45,7 @@ public:
     
     static void registerFeature(QSharedPointer<FeatureBuilder>);
     static inline QStringList registredFeature() {return registredFeatures.keys();}
+    static inline QSharedPointer<FeatureBuilder> features(QString name) {return registredFeatures[name];}
     int exec();
 
 signals:
