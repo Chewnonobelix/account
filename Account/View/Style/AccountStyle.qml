@@ -1,23 +1,24 @@
-import QtQuick 2.0
+import QtQuick 2.14
+import QtQuick.Controls 2.14
 
 QtObject {
     property FontLoader title: FontLoader{
         source: "CASTELAR.TTF"
-//        name: "Segoe Script"
+        //        name: "Segoe Script"
         id: titleFont
         property int size: 20
         property int size2: 16
-
+        
     }
-
+    
     property FontLoader core: FontLoader{
-//        name: "Castellar"
+        //        name: "Castellar"
         source: "BASKVILL.TTF"
         id: coreFont
         property int size: 15
-
+        
     }
-
+    
     property Gradient darkGoldButton: Gradient {
         id: darkGoldButton
         GradientStop {
@@ -32,9 +33,9 @@ QtObject {
             color: "gold"
             position: 1.0
         }
-
+        
     }
-
+    
     property Gradient goldButton: Gradient {
         id: goldButton
         GradientStop {
@@ -49,9 +50,9 @@ QtObject {
             color: "goldenrod"
             position: 1.0
         }
-
+        
     }
-
+    
     property Gradient goldHeader: Gradient {
         id: goldHeader
         GradientStop {
@@ -75,7 +76,7 @@ QtObject {
             position: 1.0
         }
     }
-
+    
     property Gradient selectViewOut: Gradient {
         id:selectViewOut
         GradientStop {
@@ -90,7 +91,7 @@ QtObject {
             color: "gold"
             position: 1.0        }
     }
-
+    
     property Gradient selectViewIn: Gradient {
         id:selectViewIn
         GradientStop {
@@ -105,14 +106,14 @@ QtObject {
             color: "gold"
             position: 1.0        }
     }
-
+    
     property Gradient unselectView: Gradient {
         id: unselectView
         GradientStop {
             color: "transparent"
         }
     }
-
+    
     property Gradient backgroundGradient:     Gradient {
         id: backgroundGradient
         GradientStop {
@@ -124,24 +125,24 @@ QtObject {
             position: 1
         }
     }
-
+    
     property Gradient calSelect: Gradient {
         id: gradientSelect
-
-//        GradientStop {
-//            color: "darkseagreen"
-//            position: 0.0
-//        }
-
-//        GradientStop {
-//            color: "seagreen"
-//            position: 0.5
-//        }
-
-//        GradientStop {
-//            color: "darkseagreen"
-//            position: 1.0
-//        }
+        
+        //        GradientStop {
+        //            color: "darkseagreen"
+        //            position: 0.0
+        //        }
+        
+        //        GradientStop {
+        //            color: "seagreen"
+        //            position: 0.5
+        //        }
+        
+        //        GradientStop {
+        //            color: "darkseagreen"
+        //            position: 1.0
+        //        }
         GradientStop {
             color: "lightsteelblue"
             position: 0.0
@@ -157,5 +158,19 @@ QtObject {
             position: 1.0
         }
     }
-
+    
+    property Component compLabel: Component {
+        Label{
+//            anchors.fill: parent
+            font.family: title.name
+            font.pixelSize: title.size2
+            fontSizeMode: Text.Fit
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+            background: Rectangle {
+                gradient: goldHeader
+            }
+        }
+    }
 }
+
