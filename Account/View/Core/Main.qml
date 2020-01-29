@@ -8,7 +8,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Dialogs 1.3
 import QtQuick.Layouts 1.13
 
-import "../Style" as S
+import "../Style"
 import "../Transfert" as T
 import "../CommonExpanse"
 import "../Budget"
@@ -103,7 +103,7 @@ ApplicationWindow {
         showMaximized()
     }
     
-    S.AccountStyle {
+    AccountStyle {
         id: pageStyle
     }
     

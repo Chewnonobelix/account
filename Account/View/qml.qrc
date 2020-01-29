@@ -33,5 +33,12 @@
         <file>CommonExpanse/CommonExpanseManager.qml</file>
         <file>Core/Settings.qml</file>
         <file>Style/AccountLabel.qml</file>
+        <file>Style/AccountButton.qml</file>
+        <file>Style/AccountCheckBox.qml</file>
+        <file>Style/AccountComboBox.qml</file>
+        <file>Style/AccountHeader.qml</file>
+        <file>Style/AccountTextInput.qml</file>
+        <file>Style/AccountSpinbox.qml</file>
+        <file>Style/AccountCalendar.qml</file>
     </qresource>
 </RCC>
