@@ -158,19 +158,5 @@ QtObject {
             position: 1.0
         }
     }
-    
-    property Component compLabel: Component {
-        Label{
-//            anchors.fill: parent
-            font.family: title.name
-            font.pixelSize: title.size2
-            fontSizeMode: Text.Fit
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment: Qt.AlignVCenter
-            background: Rectangle {
-                gradient: goldHeader
-            }
-        }
-    }
 }
 

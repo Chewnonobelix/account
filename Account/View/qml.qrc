@@ -32,5 +32,6 @@
         <file>MultiProfile/NewProfile.qml</file>
         <file>CommonExpanse/CommonExpanseManager.qml</file>
         <file>Core/Settings.qml</file>
+        <file>Style/AccountLabel.qml</file>
     </qresource>
 </RCC>

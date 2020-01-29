@@ -42,29 +42,24 @@ Dialog {
             
             GroupBox {
                 width: parent.width
-               
+                
                 id: general
-                label: Loader {
-                    sourceComponent: pageStyle.compLabel
-                    
-                    onLoaded: {
-                        item.text = qsTr("General")
-                        item.width = Qt.binding(function() {return general.width})
-                        item.height = Qt.binding(function() {return root.height * 0.10})
-                    }
+                label: AccountLabel {
+                    text: qsTr("General")
+                    width: general.width
+                    height: root.height * 0.10
                 }
                 
                 background: Rectangle {
                     color: "transparent"
                     border.color: "gold"
                 }
-
+                
                 GridLayout {
                     columns: 2
                     
-                    Loader {
-                        sourceComponent: pageStyle.compLabel
-                        onLoaded: item.text = qsTr("Language")
+                    AccountLabel {
+                        text: qsTr("Language")
                     }
                     
                     ComboBox {
@@ -73,48 +68,40 @@ Dialog {
                 }
             }
             
-            
             GroupBox {
                 id: features
                 width: parent.width
-                label: Loader {
-                    sourceComponent: pageStyle.compLabel
-                    
-                    onLoaded: {
-                        item.text = qsTr("Features")
-                        item.width = Qt.binding(function() {return features.width})
-                        item.height = Qt.binding(function() {return root.height * 0.10})
-                    }
+                label: AccountLabel {                    
+                    text: qsTr("Features")
+                    width: features.width
+                    height: root.height * 0.10
                 }
                 
                 background: Rectangle {
                     color: "transparent"
                     border.color: "gold"
                 }
-
+                
                 GridLayout {
                     columns: 2
-                    Loader {
-                        sourceComponent: pageStyle.compLabel
-                        onLoaded: item.text = qsTr("Budget")
+                    AccountLabel {
+                        text: qsTr("Budget")
                     }
                     
                     CheckBox {
                         objectName: "budget"
                     }
                     
-                    Loader {
-                        sourceComponent: pageStyle.compLabel
-                        onLoaded: item.text = qsTr("Frequency")
+                    AccountLabel {
+                        text: qsTr("Frequency")
                     }
                     
                     CheckBox {
                         objectName: "frequency"
                     }
                     
-                    Loader {
-                        sourceComponent: pageStyle.compLabel
-                        onLoaded: item.text = qsTr("CommonExpanse")
+                    AccountLabel {
+                        text: qsTr("CommonExpanse")
                     }
                     
                     CheckBox {
@@ -148,16 +135,13 @@ Dialog {
             GroupBox {
                 id: database
                 width: parent.width
-                label: Loader {
-                    onLoaded: {
-                        item.text = qsTr("Database")
-                        item.width = Qt.binding(function() {return database.width})
-                        item.height = Qt.binding(function() {return root.height * 0.10})
-                    }
+                label: AccountLabel {
+                    text: qsTr("Database")
+                    width:database.width
                     
-                    sourceComponent: pageStyle.compLabel
+                    height: root.height * 0.10
                 }
-                 
+                
                 background: Rectangle {
                     color: "transparent"
                     border.color: "gold"
@@ -166,11 +150,10 @@ Dialog {
                 GridLayout {
                     columns: 3
                     
-                    Loader {
+                    AccountLabel {
                         Layout.column: 1
                         Layout.row: 0
-                        sourceComponent: pageStyle.compLabel
-                        onLoaded: item.text = qsTr("Main database")
+                        text: qsTr("Main database")
                     }
                     
                     Loader {
@@ -181,7 +164,7 @@ Dialog {
                         sourceComponent: db
                     }
                     
-                   
+                    
                     
                     CheckBox {
                         Layout.column: 0
@@ -193,12 +176,10 @@ Dialog {
                         checked: true
                     }
                     
-                    Loader {
+                    AccountLabel {
                         Layout.column: 1
                         Layout.row: 1
-                        
-                        sourceComponent: pageStyle.compLabel
-                        onLoaded: item.text = qsTr("Backup database")
+                        text: qsTr("Backup database")
                     }
                     
                     Loader {
@@ -213,4 +194,3 @@ Dialog {
         }
     }
 }
-
