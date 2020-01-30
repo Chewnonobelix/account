@@ -15,9 +15,7 @@ Dialog {
     anchors.centerIn: parent
     clip: true
     
-    background: Rectangle {
-        gradient: pageStyle.backgroundGradient
-    }
+    background: AccountBackground{}
     
     footer: DialogButtonBox {
         alignment: Qt.AlignRight
@@ -46,10 +44,7 @@ Dialog {
                     height: root.height * 0.10
                 }
                 
-                background: Rectangle {
-                    color: "transparent"
-                    border.color: "gold"
-                }
+                background: AccountBackground{invisible: true}
                 
                 GridLayout {
                     columns: 2
@@ -73,10 +68,7 @@ Dialog {
                     height: root.height * 0.10
                 }
                 
-                background: Rectangle {
-                    color: "transparent"
-                    border.color: "gold"
-                }
+                background: AccountBackground{invisible: true}
                 
                 GridLayout {
                     columns: 2
@@ -138,10 +130,7 @@ Dialog {
                     height: root.height * 0.10
                 }
                 
-                background: Rectangle {
-                    color: "transparent"
-                    border.color: "gold"
-                }
+                background: AccountBackground{invisible: true}
                 
                 GridLayout {
                     columns: 3
