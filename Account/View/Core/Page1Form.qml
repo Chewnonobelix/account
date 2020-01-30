@@ -48,11 +48,10 @@ Page {
             Layout.preferredWidth: pageTable.width * 0.20
         }
         
-        Button {
+        AccountButton {
             id: add
             text: qsTr("Add")
-            font.family: AccountStyle.core.name
-            font.pixelSize: AccountStyle.core.size
+
             enabled: accountSelect.model.length > 0
             Layout.column: 0
             Layout.row: 1
@@ -64,30 +63,16 @@ Page {
             ToolTip.text: qsTr("Add new transaction")
             ToolTip.visible: hovered
             ToolTip.delay: 500
-            
-            Rectangle {
-                id: rectAdd
-                anchors.fill: parent
-                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-            }
-            
-            MouseArea {
-                z: -1
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                acceptedButtons: Qt.NoButton
-            }
-            
+                        
             onClicked: {
                 mainWindow.adding(false)
             }
         }
         
-        Button {
+        AccountButton {
             id: remove
             text: qsTr("Remove")
-            font.family: AccountStyle.core.name
-            font.pixelSize: AccountStyle.core.size
+
             property int index: view.currentRow
             enabled: infoView.visible
             Layout.column: 1
@@ -101,19 +86,6 @@ Page {
             ToolTip.visible: hovered
             ToolTip.delay: 500
             
-            MouseArea {
-                z: -1
-                anchors.fill: parent
-                cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
-                acceptedButtons: Qt.NoButton
-            }
-            
-            Rectangle {
-                id: rectRemove
-                
-                anchors.fill: parent
-                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-            }
             onClicked: {
                 if (enabled) {
                     mainWindow.remove(pageTable.currentId)

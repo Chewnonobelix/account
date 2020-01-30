@@ -440,16 +440,11 @@ Current Version beta 0.9")
                         border.color: "gold"
                     }
 
-                    Button {
+                    AccountButton {
                         text: qsTr("Ok")
                         onClicked: about.close()
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
-
-                        background: Rectangle {
-                            anchors.fill: parent
-                            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                        }
                     }
                 }
             }
@@ -481,16 +476,11 @@ Current Version beta 0.9")
                         border.color: "gold"
                     }
 
-                    Button {
+                    AccountButton {
                         text: qsTr("Ok")
                         onClicked: aboutQt.close()
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
-
-                        background: Rectangle {
-                            anchors.fill: parent
-                            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                        }
                     }
                 }
             }
@@ -666,44 +656,29 @@ Current Version beta 0.9")
                 
             }
 
-            Button {
+            AccountButton {
                 id: delOk
                 text: qsTr("Ok")
                 anchors.top: labelDelete.bottom
                 anchors.topMargin: padding
-                font.pixelSize: AccountStyle.core.size
-                font.family: AccountStyle.core.name
 
                 onClicked: {
                     mainWindow.removeAccount(labelDelete.account)
                     deleteAccount.close()
                 }
-
-                background: Rectangle {
-                    id: rectEdit
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                }
             }
 
-            Button {
+            AccountButton {
                 id: delCancel
                 anchors.left: delOk.right
                 anchors.leftMargin: padding
                 anchors.top: labelDelete.bottom
                 anchors.topMargin: padding
-                font.pixelSize: AccountStyle.core.size
-                font.family: AccountStyle.core.name
 
                 text: qsTr("Cancel")
 
                 onClicked: {
                     deleteAccount.close()
-                }
-
-                background: Rectangle {
-                    id: rectEdit2
-
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
             }
         }

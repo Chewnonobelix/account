@@ -203,35 +203,18 @@ Window {
                 }
             }
 
-            Button {
+            AccountButton {
                 text: qsTr("Cancel")
                 onClicked: root.close()
                 Layout.preferredHeight: root.height * .10
                 Layout.preferredWidth: root.width * .47
-
-                font.family: AccountStyle.title.name
-                font.pixelSize: AccountStyle.title.size
-
-                background: Rectangle {
-                    anchors.fill: parent
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                    MouseArea {
-                        anchors.fill: parent
-                        acceptedButtons: Qt.NoButton
-                        cursorShape: Qt.PointingHandCursor
-                    }
-                }
-
             }
 
-            Button {
+            AccountButton {
                 text: qsTr("Add")
                 objectName: "finish"
                 Layout.preferredHeight: root.height * .10
                 Layout.preferredWidth: root.width * .47
-
-                font.family: AccountStyle.title.name
-                font.pixelSize: AccountStyle.title.size
 
                 signal s_clicked()
 
@@ -244,15 +227,6 @@ Window {
 
                     s_clicked()
                     root.close()
-                }
-                background: Rectangle {
-                    anchors.fill: parent
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                    MouseArea {
-                        anchors.fill: parent
-                        acceptedButtons: Qt.NoButton
-                        cursorShape: Qt.PointingHandCursor
-                    }
                 }
             }
         }

@@ -57,7 +57,7 @@ Rectangle {
                 }
             }
 
-            Button {
+            AccountButton {
                 objectName: "commonAddOk"
                 text: qsTr("Ok")
                 Layout.column: 2
@@ -67,31 +67,12 @@ Rectangle {
                     popAddCommon.close()
                     popAddCommon.s_accepted(commonTitle.text)
                 }
-
-                background: Rectangle {
-                    MouseArea {
-                        anchors.fill: parent
-                        acceptedButtons: Qt.NoButton
-                        cursorShape: Qt.PointingHandCursor
-                    }
-
-                    gradient: AccountStyle.goldButton
-                }
             }
-            Button {
+            
+            AccountButton {
                 text: qsTr("Cancel")
                 Layout.column: 3
                 Layout.row: 1
-
-                background: Rectangle {
-                    MouseArea {
-                        anchors.fill: parent
-                        acceptedButtons: Qt.NoButton
-                        cursorShape: Qt.PointingHandCursor
-                    }
-
-                    gradient: AccountStyle.goldButton
-                }
 
                 onClicked: popAddCommon.close()
             }
@@ -175,27 +156,15 @@ Rectangle {
                         gradient: AccountStyle.goldButton
                     }
                 }
-                Button {
+                AccountButton {
                     id: removeCommon
                     objectName: "removeCommon"
                     width: parent.width * .49
                     height: parent.height
                     text: qsTr("Remove common expanse")
 
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
-
                     signal s_remove(int id)
                     onClicked: s_remove(listCommon.currentModel.id)
-
-                    background: Rectangle {
-                        MouseArea{
-                            acceptedButtons: Qt.NoButton
-                            cursorShape: Qt.PointingHandCursor
-                            anchors.fill: parent
-                        }
-                        gradient: AccountStyle.goldButton
-                    }
                 }
             }
         }

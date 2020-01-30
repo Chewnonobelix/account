@@ -156,7 +156,7 @@ Popup {
                 }
             }
             
-            Button {
+            AccountButton {
                 text: "ok"
                 id: okButton
                 objectName: "okButton"
@@ -167,13 +167,9 @@ Popup {
                 Layout.row: 3
                 Layout.columnSpan: 1
                 Layout.alignment: Qt.AlignLeft                
-                
-                background: Rectangle {
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                }
             }
             
-            Button {
+            AccountButton {
                 text: "Cancel"
                 onClicked: root.close()
                 
@@ -183,10 +179,6 @@ Popup {
                 Layout.row: 3
                 Layout.columnSpan:  1
                 Layout.alignment: Qt.AlignRight                
-                
-                background: Rectangle {
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                }
             }
             
         }

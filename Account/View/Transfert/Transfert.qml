@@ -177,24 +177,14 @@ Popup {
             ToolTip.visible: background.border.color === "#ff0000"
         }
 
-        Button {
-            enabled: false
-            background: Rectangle {
-                color: "transparent"
-            }
-        }
-
     }
 
     RowLayout {
         id: layoutButton
         anchors.top: coreLayout.bottom
         anchors.right: coreLayout.right
-        Button {
+        AccountButton {
             text: qsTr("Ok")
-            background: Rectangle {
-                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-            }
 
             onClicked: {
                 if(fieldInfo.text.length !== 0) {
@@ -208,11 +198,8 @@ Popup {
             }
         }
 
-        Button {
+        AccountButton {
             text: qsTr("Cancel")
-            background: Rectangle {
-                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-            }
 
             onClicked: transfertView.close()
         }

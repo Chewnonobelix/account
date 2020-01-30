@@ -123,7 +123,7 @@ Rectangle {
                         pageChanger.pageIndex = 1
                         
                         whenCombo.currentIndex = whenCombo.model.findIndex(model[currentIndex].freq + 0)
-
+                        
                         dateText.from = model[currentIndex].listEntries()[0] ? model[currentIndex].listEntries()[0].date : new Date()
                         dateText.to = dateText.from
                         
@@ -166,12 +166,9 @@ Rectangle {
                 }
             }
             
-            Control2.Button {
+            AccountButton {
                 objectName: "addFreq"
                 text: qsTr("+")
-                
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
                 
                 Layout.preferredHeight: parent.usableHeight * 0.05
                 Layout.preferredWidth: parent.usableWidth * 0.09
@@ -183,26 +180,11 @@ Rectangle {
                 signal s_addFrequency()
                 
                 onClicked: s_addFrequency()
-                
-                MouseArea {
-                    z: -1
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    acceptedButtons: Qt.NoButton
-                }
-                
-                Rectangle {
-                    anchors.fill: parent
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                }
             }
             
-            Control2.Button {
+            AccountButton {
                 objectName: "removeFreq"
                 text: qsTr("-")
-                
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
                 
                 Layout.preferredHeight: parent.usableHeight * 0.05
                 Layout.preferredWidth: parent.usableWidth * 0.09
@@ -214,18 +196,6 @@ Rectangle {
                 signal s_removeFrequency(int freq)
                 
                 onClicked: s_removeFrequency(frequencyList.currentModel.id)
-                
-                MouseArea {
-                    z: -1
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    acceptedButtons: Qt.NoButton
-                }
-                
-                Rectangle {
-                    anchors.fill: parent
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                }
             }
             
             EntryEdit {
@@ -369,7 +339,7 @@ Rectangle {
                 }
             }
             
-            Control2.Button {
+            AccountButton {
                 objectName: "generateOpen"
                 text: qsTr("Generate")
                 
@@ -385,22 +355,6 @@ Rectangle {
                 signal s_open(int fId)
                 
                 onReleased: s_open(frequencyList.currentModel.id)
-                
-                MouseArea {
-                    z: -1
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    acceptedButtons: Qt.NoButton
-                }
-                
-                Rectangle {
-                    anchors.fill: parent
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                    
-                }
-                
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
             }
             
             Rectangle {

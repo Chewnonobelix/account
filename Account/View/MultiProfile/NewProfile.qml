@@ -85,26 +85,16 @@ Popup {
         //            passwordMaskDelay: 1000
         //        }
 
-        Button {
+        AccountButton {
             objectName: "okProfile"
             text: qsTr("Ok")
             Layout.row: 2
             Layout.column: 1
             Layout.preferredHeight: root.height * 0.22
             Layout.preferredWidth: root.width * 0.23
-
-
-            background: Rectangle {
-                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                MouseArea {
-                    anchors.fill: parent
-                    acceptedButtons: Qt.NoButton
-                    cursorShape: Qt.PointingHandCursor
-                }
-            }
         }
 
-        Button {
+        AccountButton {
             text: qsTr("Cancel")
             Layout.row: 2
             Layout.column: 2
@@ -113,15 +103,6 @@ Popup {
 
             onClicked: {
                 close()
-            }
-
-            background: Rectangle {
-                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                MouseArea {
-                    anchors.fill: parent
-                    acceptedButtons: Qt.NoButton
-                    cursorShape: Qt.PointingHandCursor
-                }
             }
         }
     }

@@ -4,16 +4,9 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 2.5
 import "../Style"
 
-Button {
+AccountButton {
     id: button
     text: ""
-    font.family: AccountStyle.core.name
-    font.pixelSize: AccountStyle.core.size
-
-    background: Rectangle {
-        anchors.fill: parent
-        gradient: pressed ? AccountStyle.goldButton : AccountStyle.darkGoldButton
-    }
 
     property bool isOpen: pop.opened
     

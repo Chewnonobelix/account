@@ -20,9 +20,7 @@ Dialog {
     footer: DialogButtonBox {
         alignment: Qt.AlignRight
         
-        delegate: Button {
-            background: Rectangle {gradient: AccountStyle.goldButton}
-        }
+        delegate: AccountButton {}
     }
 
 

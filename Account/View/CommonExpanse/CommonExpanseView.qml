@@ -167,7 +167,7 @@ Rectangle {
             }
         }
         
-        Button {
+        AccountButton {
             id: add
             objectName: "add"
             Layout.preferredHeight: root.height * 0.05
@@ -179,21 +179,9 @@ Rectangle {
             text: qsTr("Add")
             
             onClicked: addingid.open()
-            
-            font.family: AccountStyle.core.name
-            font.pixelSize: AccountStyle.core.size      
-            
-            background: Rectangle {
-                MouseArea{
-                    acceptedButtons: Qt.NoButton
-                    cursorShape: Qt.PointingHandCursor
-                    anchors.fill: parent
-                }
-                gradient: AccountStyle.goldButton
-            }            
         }
         
-        Button{
+        AccountButton{
             id: remove
             objectName: "remove"
             Layout.preferredHeight: root.height * 0.05
@@ -203,10 +191,7 @@ Rectangle {
             Layout.rowSpan: 1
             Layout.columnSpan: 1 
             text: qsTr("Remove")
-            
-            font.family: AccountStyle.core.name
-            font.pixelSize: AccountStyle.core.size            
-            
+                        
             signal s_remove()
             property var  currentModel: null
             property string currentMember: ""
@@ -216,16 +201,7 @@ Rectangle {
                 enabled = Qt.binding(function() {return currentModel !== null && !model.isClose})    
                 currentMember = Qt.binding(function() {return rep.currentMember})
             }
-            
-            background: Rectangle {
-                MouseArea{
-                    acceptedButtons: Qt.NoButton
-                    cursorShape: Qt.PointingHandCursor
-                    anchors.fill: parent
-                }
-                gradient: AccountStyle.goldButton
-            }
-            
+                        
             onClicked: {
                 s_remove()
             }

@@ -16,7 +16,7 @@ Rectangle {
     property int month
     property int year
     
-    Button {
+    AccountButton {
         id: next
         enabled: chart.okNext
         
@@ -25,18 +25,13 @@ Rectangle {
         text: qsTr(">")
         height: chart.height
         width: parent.width * 0.025
-        
-        background: Rectangle {
-            anchors.fill: parent
-            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-        }
-        
+                
         onClicked: {
             chart.s_increment(1)
         }
     }
     
-    Button {
+    AccountButton {
         id: prev
         anchors.right: chart.left
         anchors.verticalCenter: chart.verticalCenter
@@ -45,12 +40,7 @@ Rectangle {
         width: parent.width * 0.025
         
         enabled: chart.okPrev
-        
-        background: Rectangle {
-            anchors.fill: parent
-            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-        }
-        
+                
         onClicked: {
             chart.s_increment(-1)
         }

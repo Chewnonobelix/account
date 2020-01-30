@@ -94,7 +94,7 @@ Popup {
                 } 
             }
             
-            Button {
+            AccountButton {
                 objectName: "generateButton"
                 Layout.row: 2
                 Layout.column: 0
@@ -105,24 +105,15 @@ Popup {
                     s_generate(from.text, to.text)
                     close();
                 }
-                
-                background: Rectangle {
-                    gradient: AccountStyle.goldButton
-                }
             }
             
-            Button {
+            AccountButton {
                 Layout.row: 2
                 Layout.column: 1
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 
                 text: qsTr("Cancel")
                 onClicked: close()
-                
-                
-                background: Rectangle {
-                    gradient: AccountStyle.goldButton
-                }
             }
         }
     }

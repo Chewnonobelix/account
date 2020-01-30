@@ -270,26 +270,13 @@ Popup {
                 }
             }
             
-            Button {
+            AccountButton {
                 id: b_save
                 text: qsTr("Save")
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
                 
                 ToolTip.text:  root.newAccount ? qsTr("Please enter an account name") : qsTr("Please complete the entry's title")
                 ToolTip.visible: ttVisible
-                
-                background: Rectangle {
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                    id: saveRect
-                    
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        acceptedButtons: Qt.NoButton
-                    }
-                }
-                
+                                
                 property bool ttVisible: false
                 onClicked: {
                     
@@ -312,22 +299,10 @@ Popup {
                 Layout.columnSpan: 1 
             }
             
-            Button {
+            AccountButton {
                 id:b_cancel
                 text: qsTr("Cancel")
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
-                background: Rectangle {
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                    id: cancelRect
-                }
-                
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    acceptedButtons: Qt.NoButton
-                }
-                
+                                
                 onClicked: {
                     reset()
                     close()

@@ -138,55 +138,25 @@ Calendar {
                 font.pixelSize: height * 0.8
             }
 
-            Button {
+            AccountButton {
                 id: nextMonth
                 anchors.right: parent.right
                 width: multiCal.width/14
                 height: parent.height
                 text: ">"
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
-
-                background: Rectangle {
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                    border.color: "darkgoldenrod"
-                    anchors.fill: parent
-                }
-
-                MouseArea {
-                    z: -1
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    acceptedButtons: Qt.NoButton
-                }
 
                 onClicked: {
                     multiCal.showNextMonth()
                 }
             }
 
-            Button {
+            AccountButton {
                 id: prevMonth
                 anchors.left: parent.left
                 width: multiCal.width/14
                 height: parent.height
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
 
                 text: "<"
-
-                background: Rectangle {
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                    border.color: "darkgoldenrod"
-                }
-
-                MouseArea {
-                    z: -1
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    acceptedButtons: Qt.NoButton
-                }
-
 
                 onClicked: {
                     multiCal.showPreviousMonth()

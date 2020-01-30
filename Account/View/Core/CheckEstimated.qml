@@ -92,52 +92,23 @@ Popup {
         }
     }
 
-    Button {
+    AccountButton {
         id: save
         text: qsTr("Save")
         anchors.bottom: parent.bottom
         height: parent.height * .05
-        font.family: AccountStyle.core.name
-        font.pointSize: AccountStyle.core.size
-
-        MouseArea {
-            anchors.fill: parent
-            cursorShape: Qt.PointingHandCursor
-            acceptedButtons: Qt.NoButton
-        }
-
-        Rectangle {
-            id: saveRect
-            anchors.fill: parent
-            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-        }
-
 
         onClicked:  {
             checker.validate()
         }
     }
 
-    Button {
+    AccountButton {
         text: qsTr("Later")
         anchors.left: save.right
         anchors.leftMargin: 10
         anchors.bottom: parent.bottom
         height: parent.height * .05
-        font.family: AccountStyle.core.name
-        font.pointSize: AccountStyle.core.size
-
-        MouseArea {
-            anchors.fill: parent
-            cursorShape: Qt.PointingHandCursor
-            acceptedButtons: Qt.NoButton
-        }
-
-        Rectangle {
-            id: laterRect
-            anchors.fill: parent
-            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-        }
 
         ToolTip.text: qsTr("Keep validation for later")
         ToolTip.visible: hovered

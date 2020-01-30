@@ -23,7 +23,7 @@ Item {
     {
         anchors.fill: parent
         spacing: 0
-        Button {
+        AccountButton {
             id: previousPages
             
             text: "<<"
@@ -36,24 +36,9 @@ Item {
             ToolTip.text: qsTr("Previous 10 pages")
             ToolTip.delay: 500
             ToolTip.visible: hovered
-            
-            font.family: AccountStyle.core.name
-            font.pixelSize: AccountStyle.core.size
-            MouseArea {
-                z: -1
-                anchors.fill: parent
-                cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
-                acceptedButtons: Qt.NoButton
-            }
-            
-            Rectangle {
-                anchors.fill: parent
-                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                border.color: "darkgoldenrod"
-            }
         }
         
-        Button {
+        AccountButton {
             id: previousPage
             text: "<"
             Layout.fillHeight: true
@@ -66,21 +51,6 @@ Item {
             ToolTip.text: qsTr("Previous page")
             ToolTip.delay: 500
             ToolTip.visible: hovered
-            
-            font.family: AccountStyle.core.name
-            font.pixelSize: AccountStyle.core.size
-            MouseArea {
-                z: -1
-                anchors.fill: parent
-                cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
-                acceptedButtons: Qt.NoButton
-            }
-            
-            Rectangle {
-                anchors.fill: parent
-                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                border.color: "darkgoldenrod"
-            }
         }
         
         TextField {
@@ -89,7 +59,7 @@ Item {
             text: pagesIndex
             horizontalAlignment: Qt.AlignHCenter
             property int pagesIndex: root.pageIndex
-
+            
             Layout.fillHeight: true
             Layout.fillWidth: true 
             
@@ -100,7 +70,7 @@ Item {
             ToolTip.visible: hovered
         }
         
-        Button {
+        AccountButton {
             id: nextPage
             text: ">"
             Layout.fillHeight: true
@@ -113,52 +83,21 @@ Item {
             ToolTip.text: qsTr("Next page")
             ToolTip.delay: 500
             ToolTip.visible: hovered
-            
-            font.family: AccountStyle.core.name
-            font.pixelSize: AccountStyle.core.size
-            MouseArea {
-                z: -1
-                anchors.fill: parent
-                cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
-                acceptedButtons: Qt.NoButton
-            }
-            
-            Rectangle {
-                anchors.fill: parent
-                border.color: "darkgoldenrod"
-                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-            }
         }
         
-        Button {
+        AccountButton {
             id: nextPages
             text: ">>"
             Layout.fillHeight: true
             Layout.preferredWidth: root.width * 0.2           
             
             onClicked: root.pageIndex += 10
-            
-            font.family: AccountStyle.core.name
-            font.pixelSize: AccountStyle.core.size
-            
+                        
             enabled: root.maxPage > 1 || (root.pageIndex < root.maxPage)
             
             ToolTip.text: qsTr("Next 10 pages")
             ToolTip.delay: 500
             ToolTip.visible: hovered
-            
-            MouseArea {
-                z: -1
-                anchors.fill: parent
-                cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
-                acceptedButtons: Qt.NoButton
-            }
-            
-            Rectangle {
-                anchors.fill: parent
-                border.color: "darkgoldenrod"
-                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-            }
         }
     }
 }
