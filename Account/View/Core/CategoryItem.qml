@@ -74,11 +74,9 @@ ComboBox {
             gradient: AccountStyle.goldButton
             anchors.fill: parent
             
-            Label {
+            AccountLabel {
                 color: "black"
                 text: modelData
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
                 anchors.centerIn: parent
             }
             

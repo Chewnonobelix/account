@@ -34,16 +34,13 @@ MenuItem {
                 color: budget.value < budget.to ? "green" : "red"
             }
 
-            Label {
-                fontSizeMode: Text.Fit
+            AccountLabel {
                 property int val: budgetItem.realValue / budget.to * 10000
                 text: budgetItem.title + ": " + (val / 100.0) + "%"
                 color: "black"
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 id: titleLab
-                font.family: AccountStyle.title.name
-                font.pixelSize: 14
                 anchors.verticalCenter: parent.verticalCenter
             }
         }

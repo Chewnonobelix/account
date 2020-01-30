@@ -3,6 +3,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.12
 import "../Style"
+import "../Functionnal"
 
 GridLayout {
     id: grid
@@ -52,18 +53,9 @@ GridLayout {
         Layout.preferredHeight: parent.height *parent.tHeight
         spacing: parent.height * 0.02
         
-        Label {
+        AccountHeader {
             id: titleLabel
             text: qsTr("Title")
-            font.pixelSize: AccountStyle.title.size
-            font.family: AccountStyle.title.name
-            fontSizeMode: Text.Fit
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment: Qt.AlignVCenter
-            background: Rectangle {
-                gradient: AccountStyle.goldHeader
-                border.color: "darkgoldenrod"
-            }
             
             width: parent.width
             height: parent.height * 0.39
@@ -101,18 +93,9 @@ GridLayout {
         Layout.preferredWidth: parent.width * parent.tWidth
         Layout.preferredHeight: parent.height *parent.tHeight
         
-        Label {
+        AccountHeader {
             id: valueLabel
             text: qsTr("Value")
-            font.pixelSize: AccountStyle.title.size
-            font.family: AccountStyle.title.name
-            fontSizeMode: Text.Fit
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment: Qt.AlignVCenter
-            background: Rectangle {
-                gradient: AccountStyle.goldHeader
-                border.color: "darkgoldenrod"
-            }
             
             height: parent.height * .39
             width: parent.width
@@ -146,18 +129,9 @@ GridLayout {
         Layout.preferredWidth: parent.width * parent.tWidth2
         Layout.preferredHeight: parent.height *parent.tHeight
         
-        Label {
+        AccountHeader {
             id: categoryLabel
             text: qsTr("Category")
-            font.pixelSize: AccountStyle.title.size
-            font.family: AccountStyle.title.name
-            fontSizeMode: Text.Fit
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment: Qt.AlignVCenter
-            background: Rectangle {
-                gradient: AccountStyle.goldHeader
-                border.color: "darkgoldenrod"
-            }
             
             height: parent.height * 0.39
             width: parent.width

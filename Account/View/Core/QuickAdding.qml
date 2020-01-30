@@ -4,6 +4,7 @@ import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 
 import "../Style"
+import "../Functionnal"
 
 Window {
     height: 500
@@ -37,20 +38,11 @@ Window {
             columns: 2
             anchors.fill: parent
 
-            Label {
+            AccountHeader {
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .96
                 Layout.columnSpan: 2
                 text: qsTr("Quick adding")
-                font.family: AccountStyle.title.name
-                font.pixelSize: AccountStyle.title.size
-                fontSizeMode: Text.Fit
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                background: Rectangle {
-                    gradient: AccountStyle.goldHeader
-                }
-
             }
 
             ComboBox {
@@ -91,12 +83,10 @@ Window {
                             cursorShape: Qt.PointingHandCursor
                             acceptedButtons: Qt.NoButton
                         }
-                        Label {
+                        AccountLabel {
                             color: "black"
                             text: name
                             anchors.centerIn: parent
-                            font.family: AccountStyle.core.name
-                            font.pixelSize: AccountStyle.core.size
                         }
                     }
 
@@ -104,20 +94,10 @@ Window {
                 }
             }
 
-            Label {
+            AccountHeader {
                 text: qsTr("Type")
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
-
-                font.family: AccountStyle.title.name
-                font.pixelSize: AccountStyle.title.size
-                fontSizeMode: Text.Fit
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-
-                background: Rectangle {
-                    gradient: AccountStyle.goldHeader
-                }
             }
 
             CalendarButton {
@@ -126,18 +106,10 @@ Window {
                 Layout.preferredWidth: root.width * .47
             }
 
-            Label {
+            AccountHeader {
                 text: qsTr("Date")
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
-                font.family: AccountStyle.title.name
-                font.pixelSize: AccountStyle.title.size
-                fontSizeMode: Text.Fit
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                background: Rectangle {
-                    gradient: AccountStyle.goldHeader
-                }
             }
 
             TextField {
@@ -146,18 +118,10 @@ Window {
                 Layout.preferredWidth: root.width * .47
             }
 
-            Label {
+            AccountHeader {
                 text: qsTr("Title")
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
-                font.family: AccountStyle.title.name
-                font.pixelSize: AccountStyle.title.size
-                fontSizeMode: Text.Fit
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                background: Rectangle {
-                    gradient: AccountStyle.goldHeader
-                }
             }
 
             DoubleSpinBox {
@@ -166,18 +130,10 @@ Window {
                 Layout.preferredWidth: root.width * .47
             }
 
-            Label {
+            AccountHeader {
                 text: qsTr("Value")
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
-                font.family: AccountStyle.title.name
-                font.pixelSize: AccountStyle.title.size
-                fontSizeMode: Text.Fit
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                background: Rectangle {
-                    gradient: AccountStyle.goldHeader
-                }
             }
 
             CategoryItem{
@@ -188,18 +144,10 @@ Window {
                 Component.onCompleted: model = Qt.binding(function() {return typeComboQuick.currentValue === "income" ? root.incomeCats : root.outcomeCats})
             }
 
-            Label {
+            AccountHeader {
                 text: qsTr("Category")
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
-                font.family: AccountStyle.title.name
-                font.pixelSize: AccountStyle.title.size
-                fontSizeMode: Text.Fit
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                background: Rectangle {
-                    gradient: AccountStyle.goldHeader
-                }
             }
 
             AccountButton {

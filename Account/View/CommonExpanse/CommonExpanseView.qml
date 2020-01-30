@@ -90,14 +90,11 @@ Rectangle {
                             height: listComponent.height * .07
                             width: listComponent.width
                             gradient: AccountStyle.goldHeader
-                            Label {
+                            AccountLabel {
                                 anchors.fill: parent
                                 text: modelData
                                 font.pixelSize: AccountStyle.title.size
                                 font.family: AccountStyle.title.name
-                                fontSizeMode: Text.Fit
-                                horizontalAlignment: Qt.AlignHCenter
-                                verticalAlignment: Qt.AlignVCenter
                             }
                         }
                         
@@ -105,14 +102,11 @@ Rectangle {
                             height: listComponent.height * .05
                             width: listComponent.width
                             gradient: AccountStyle.goldHeader
-                            Label {
+                            AccountLabel {
                                 anchors.fill: parent
                                 text: root.model.totalForMember(modelData).value
                                 font.pixelSize: AccountStyle.title.size
                                 font.family: AccountStyle.title.name
-                                fontSizeMode: Text.Fit
-                                horizontalAlignment: Qt.AlignHCenter
-                                verticalAlignment: Qt.AlignVCenter
                             }                     
                         }
                         
@@ -152,14 +146,11 @@ Rectangle {
                                 }
                             }
                             
-                            Label {
+                            AccountLabel {
                                 anchors.fill: parent
                                 text: modelData ? modelData.value : 0
                                 font.pixelSize: AccountStyle.title.size
                                 font.family: AccountStyle.title.name
-                                fontSizeMode: Text.Fit
-                                horizontalAlignment: Qt.AlignHCenter
-                                verticalAlignment: Qt.AlignVCenter
                             }                     
                         }
                     }
@@ -233,14 +224,11 @@ Rectangle {
                     height: recap.height * 0.10
                     width: recap.width
                     
-                    Label {
+                    AccountLabel {
                         anchors.fill: parent
                         text: qsTr("Global abstract")
                         font.family: AccountStyle.title.name
                         font.pixelSize: AccountStyle.title.size
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Qt.AlignHCenter
-                        verticalAlignment: Qt.AlignVCenter
                     }
                 }
                 
@@ -249,18 +237,13 @@ Rectangle {
                     width: recap.width
                     height: recap.height * .07
                     
-                    Label {
+                    AccountLabel {
                         anchors.fill: parent
                         text: modelData.id + ": " + modelData.total.value + "€"
-                        font.family: AccountStyle.core.name
-                        font.pixelSize: AccountStyle.core.size
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Qt.AlignHCenter
-                        verticalAlignment: Qt.AlignVCenter
                     }
-                    
                 }
             }
+            
             ListView{
                 id: closing
                 Rectangle {
@@ -277,14 +260,11 @@ Rectangle {
                     height: recap.height * 0.10
                     width: recap.width
                     
-                    Label {
+                    AccountLabel {
                         anchors.fill: parent
                         text: qsTr("Transaction order")
                         font.family: AccountStyle.title.name
                         font.pixelSize: AccountStyle.title.size
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Qt.AlignHCenter
-                        verticalAlignment: Qt.AlignVCenter                        
                     }
                 }
                 
@@ -293,16 +273,10 @@ Rectangle {
                     width: recap.width
                     height: recap.height * .07
                     
-                    Label {
+                    AccountLabel {
                         anchors.fill: parent
                         text: modelData.from + qsTr(" to ") + modelData.to + ": " + modelData.value + "€"
-                        font.family: AccountStyle.core.name
-                        font.pixelSize: AccountStyle.core.size
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Qt.AlignHCenter
-                        verticalAlignment: Qt.AlignVCenter
                     }
-                    
                 }
                 
             }
@@ -332,7 +306,7 @@ Rectangle {
             }
         }
         
-        Label {
+        AccountLabel {
             id: title
             Layout.preferredHeight: root.height * 0.05
             Layout.preferredWidth: root.width * .56
@@ -343,14 +317,6 @@ Rectangle {
             
             font.family: AccountStyle.title.name
             font.pixelSize: AccountStyle.title.size
-            fontSizeMode: Text.Fit
-            
-            verticalAlignment: Qt.AlignVCenter
-            horizontalAlignment: Qt.AlignHCenter
-            
-            background: Rectangle{
-                color: "transparent"
-            }
         }
     }
 }

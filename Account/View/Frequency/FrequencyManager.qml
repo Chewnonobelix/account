@@ -52,13 +52,8 @@ Rectangle {
             rowSpacing: usableHeight * 0.02
             columnSpacing: usableWidth * 0.02
             
-            Control2.Label {
+            AccountHeader {
                 text: qsTr("Reference") + " ->"
-                font.family: AccountStyle.title.name
-                font.pixelSize: AccountStyle.title.size
-                fontSizeMode: Text.Fit
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
                 
                 Layout.preferredHeight: parent.usableHeight * 0.05
                 Layout.preferredWidth: parent.usableWidth * 0.20
@@ -67,9 +62,6 @@ Rectangle {
                 Layout.columnSpan: 2
                 Layout.rowSpan: 1
                 Layout.alignment: Qt.AlignTop
-                background: Rectangle {
-                    gradient: AccountStyle.goldHeader
-                }
             }
             
             ListView {
@@ -84,18 +76,10 @@ Rectangle {
                 Layout.columnSpan: 2
                 Layout.rowSpan: 3
                 
-                header:  Control2.Label {
+                header:  AccountHeader {
                     text: qsTr("Frequency list")
-                    font.family: AccountStyle.title.name
-                    font.pixelSize: AccountStyle.title.size2
-                    fontSizeMode: Text.Fit
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
                     height: frequencyList.height * .10
                     width: frequencyList.width
-                    background: Rectangle {
-                        gradient: AccountStyle.goldHeader
-                    }
                 }
                 
                 property var currentModel: null
@@ -154,13 +138,8 @@ Rectangle {
                         cursorShape: Qt.PointingHandCursor
                     }
                     
-                    Label {
+                    AccountLabel {
                         anchors.fill: parent
-                        font.family: AccountStyle.core.name
-                        font.pixelSize: AccountStyle.core.size
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
                         text: modelData.name === "" ? modelData.id : modelData.name
                     }
                 }
@@ -266,14 +245,9 @@ Rectangle {
                     contentItem: Rectangle {
                         anchors.fill: parent
                         gradient: AccountStyle.goldButton
-                        Label {
+                        AccountLabel {
                             text: name
-                            font.family: AccountStyle.core.name
-                            font.pixelSize: AccountStyle.core.size
-                            fontSizeMode: Text.Fit
                             anchors.fill: parent
-                            horizontalAlignment: Qt.AlignHCenter
-                            verticalAlignment: Qt.AlignVCenter
                         }
                         MouseArea {
                             anchors.fill: parent
@@ -321,14 +295,9 @@ Rectangle {
                     contentItem: Rectangle {
                         anchors.fill: parent
                         gradient: AccountStyle.goldButton
-                        Label {
+                        AccountLabel {
                             text: name
-                            font.family: AccountStyle.core.name
-                            font.pixelSize: AccountStyle.core.size
-                            fontSizeMode: Text.Fit
                             anchors.fill: parent
-                            horizontalAlignment: Qt.AlignHCenter
-                            verticalAlignment: Qt.AlignVCenter
                         }
                         MouseArea {
                             anchors.fill: parent
@@ -528,14 +497,9 @@ Rectangle {
                         }
                     }
                     
-                    Label {
+                    AccountLabel {
                         anchors.fill: parent
                         text: Qt.formatDate(date, "dd-MM-yyyy")
-                        horizontalAlignment: Qt.AlignHCenter
-                        verticalAlignment: Qt.AlignVCenter
-                        fontSizeMode: Text.Fit
-                        font.family: AccountStyle.core.name
-                        font.pixelSize: AccountStyle.core.size
                     }
                 }
             }

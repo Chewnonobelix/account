@@ -9,6 +9,7 @@ import QtQuick.Window 2.13
 import "../Budget" as B
 import "../Style"
 import "../Frequency" as F
+import "../Functionnal"
 
 Page {
     
@@ -102,22 +103,14 @@ Page {
             Layout.preferredWidth: pageTable.width * 0.20
             spacing: pageTable.height * .02
             
-            Label {
+            AccountHeader {
                 id: quickViewDate
                 objectName: "quickViewDate"
                 property date currentDate
-                background: Rectangle {
-                    gradient: AccountStyle.goldHeader
-                }
                 
                 text: qsTr("Budget quick view") + ": " + Qt.formatDate(currentDate, "dd-MM-yyyy")
                 height: parent.height * .10
                 width: parent.width
-                fontSizeMode: Text.Fit
-                font.family: AccountStyle.title.name
-                font.pixelSize: AccountStyle.title.size
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
                 clip: true
             }
             
@@ -237,14 +230,10 @@ Page {
                                 view.setNewIndex(styleData.row)
                             }
                         }
-                        Label {
+                        AccountLabel {
                             property string est: view.model[styleData.row] && view.model[styleData.row].info.estimated ? "*" : ""
                             
                             text: styleData.value === "income" ? "+" + est : "-" + est
-                            font.family: AccountStyle.core.name
-                            font.pixelSize: AccountStyle.core.size
-                            fontSizeMode: Text.Fit
-                            horizontalAlignment: Text.AlignHCenter
                             anchors.fill: parent
                         }
                     }
@@ -270,12 +259,8 @@ Page {
                             }
                         }
                         
-                        Label {
+                        AccountLabel {
                             text: Qt.formatDate(styleData.value, "dd-MM-yyyy")
-                            font.family: AccountStyle.core.name
-                            font.pixelSize: AccountStyle.core.size
-                            fontSizeMode: Text.Fit
-                            horizontalAlignment: Text.AlignHCenter
                             anchors.fill: parent
                         }
                     }
@@ -300,13 +285,9 @@ Page {
                             }
                         }
                         
-                        Label {
+                        AccountLabel {
                             text: styleData.value
                             clip: true
-                            font.family: AccountStyle.core.name
-                            font.pixelSize: AccountStyle.core.size
-                            fontSizeMode: Text.Fit
-                            horizontalAlignment: Text.AlignHCenter
                             anchors.fill: parent
                         }
                     }
@@ -332,13 +313,9 @@ Page {
                             }
                         }
                         
-                        Label {
+                        AccountLabel {
                             text: styleData.value
                             clip: true
-                            font.family: AccountStyle.core.name
-                            font.pixelSize: AccountStyle.core.size
-                            fontSizeMode: Text.Fit
-                            verticalAlignment: Text.AlignVCenter
                             anchors.fill: parent
                         }
                     }
@@ -364,13 +341,9 @@ Page {
                             hoverEnabled: true
                         }
                         
-                        Label {
+                        AccountLabel {
                             text: styleData.value
                             clip: true
-                            font.family: AccountStyle.core.name
-                            font.pixelSize: AccountStyle.core.size
-                            fontSizeMode: Text.Fit
-                            horizontalAlignment: Text.AlignHCenter
                             anchors.fill: parent
                         }
                     }
@@ -384,14 +357,13 @@ Page {
                     anchors.leftMargin: 10
                     
                     border.color: "darkgoldenrod"
-                    Label {
+                    AccountLabel {
                         id: headerText
                         height: parent.height * .8
                         anchors.centerIn: parent
                         text: styleData.value
                         font.family: AccountStyle.title.name
                         font.pixelSize: height * 0.85
-                        fontSizeMode: Text.Fit
                         
                         ToolTip.visible: styleData.containsMouse && (styleData.column === 2)
                         ToolTip.text: view.getToolTip(styleData.column)

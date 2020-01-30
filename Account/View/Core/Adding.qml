@@ -8,6 +8,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Window 2.13
 
 import "../Style"
+import "../Functionnal"
 
 Popup {
     id: root
@@ -66,15 +67,11 @@ Popup {
             property double secondRow: root.height * 0.38
             property double thirdRow: root.height * 0.23
             
-            Label {
+            AccountLabel {
                 id: labelAdd
                 text: qsTr("Adding")
                 font.family: AccountStyle.title.name
                 font.pixelSize: AccountStyle.title.size
-                fontSizeMode: Text.Fit
-                
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
                 
                 Layout.preferredHeight: parent.firstRow
                 Layout.preferredWidth: root.width * 0.15
@@ -95,15 +92,11 @@ Popup {
                 Layout.columnSpan: 1 
             }
             
-            Label{
+            AccountLabel{
                 visible: common
                 text: qsTr("Member")
                 font.family: AccountStyle.title.name
                 font.pixelSize: AccountStyle.title.size
-                fontSizeMode: Text.Fit
-                
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
                 
                 Layout.preferredHeight: parent.firstRow
                 Layout.preferredWidth: root.width * 0.09
@@ -143,28 +136,22 @@ Popup {
                     anchors.fill: parent
                     color: "white"
                     border.color: member.isValid ? "blue" : "red"
-                    Label {
+                    AccountLabel {
                         id: completionLabel
                         anchors.fill: parent
                         
                         color: "grey"
-                        font.family: AccountStyle.core.name
-                        font.pixelSize: AccountStyle.core.size
-                        verticalAlignment: Qt.AlignVCenter
                         leftPadding: member.leftPadding                        
                     }
                 }
             }       
             
-            Label {
+            AccountLabel {
                 id: l_new
                 text: qsTr("Add new \n entry")
                 wrapMode: Text.WordWrap
                 font.family: AccountStyle.title.name
                 font.pixelSize: AccountStyle.title.size2
-                fontSizeMode: Text.Fit
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
                 
                 Layout.preferredHeight: parent.secondRow
                 Layout.preferredWidth: root.width * 0.15
@@ -253,12 +240,10 @@ Popup {
                             cursorShape: Qt.PointingHandCursor
                             acceptedButtons: Qt.NoButton
                         }
-                        Label {
+                        AccountLabel {
                             color: "black"
                             text: name
                             anchors.centerIn: parent
-                            font.family: AccountStyle.core.name
-                            font.pixelSize: AccountStyle.core.size
                         }
                     }
                     

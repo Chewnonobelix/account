@@ -12,16 +12,8 @@ Rectangle {
     ColumnLayout {
         anchors.fill: parent
         spacing: height * 0.02
-        Label {
+        AccountHeader {
             text: qsTr("Frequency")
-            font.family: AccountStyle.title.name
-            font.pixelSize: AccountStyle.title.size
-            fontSizeMode: Text.Fit
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment: Qt.AlignVCenter
-            background: Rectangle {
-                gradient: AccountStyle.goldHeader
-            }
             
             Layout.preferredHeight: parent.height * 0.05
             Layout.fillWidth: true
@@ -54,15 +46,8 @@ Rectangle {
                         pastView.s_showFromFrequency(modelData.id)
                     }
                 }
-                contentItem: Label {
-                    text: Qt.formatDate(modelData.date, "dd-MM-yyyy")
-                    fontSizeMode: Text.Fit
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
-                    horizontalAlignment: Qt.AlignHCenter
-                    verticalAlignment: Qt.AlignVCenter
-                    
-                   
+                contentItem: AccountLabel {
+                    text: Qt.formatDate(modelData.date, "dd-MM-yyyy")                   
                 }
             }
             

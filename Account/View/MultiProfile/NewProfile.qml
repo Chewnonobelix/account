@@ -25,22 +25,13 @@ Popup {
         rowSpacing: root.height * .02
         anchors.fill: parent
         columns: 3
-        Label {
+        AccountHeader {
             text: qsTr("Profile name")
             Layout.row: 0
             Layout.column: 0
             Layout.preferredHeight: root.height * 0.34
             Layout.preferredWidth: root.width
             Layout.columnSpan: 3
-            background: Rectangle {
-                gradient: AccountStyle.goldHeader
-            }
-
-            font.family: AccountStyle.title.name
-            font.pixelSize: AccountStyle.title.size
-            fontSizeMode: Text.Fit
-            horizontalAlignment: Qt.AlignHCenter
-            verticalAlignment: Qt.AlignVCenter
         }
 
         //        Label {

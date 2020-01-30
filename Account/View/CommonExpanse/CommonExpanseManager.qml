@@ -26,14 +26,13 @@ Rectangle {
 
         GridLayout {
             anchors.fill: parent
-            Label {
+            AccountLabel {
                 text: qsTr("Session name")
                 Layout.row: 0
                 Layout.column: 0
 
                 font.family: AccountStyle.title.name
                 font.pixelSize: AccountStyle.title.size
-                fontSizeMode: Text.Fit
             }
 
             TextField{
@@ -110,17 +109,10 @@ Rectangle {
 
                 highlightMoveDuration: 0
 
-                delegate: Label {
+                delegate: AccountLabel {
                     text: modelData.title
                     height: listCommon.height * 0.07
                     width: listCommon.width
-
-                    horizontalAlignment: Qt.AlignHCenter
-                    verticalAlignment: Qt.AlignVCenter
-
-                    fontSizeMode: Text.Fit
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
 
                     MouseArea {
                         anchors.fill: parent

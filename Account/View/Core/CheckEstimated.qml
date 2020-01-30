@@ -10,11 +10,11 @@ Popup {
 
     signal validate()
     
-    Label {
+    AccountLabel {
         text: qsTr("Entry to check")
         font.pixelSize: AccountStyle.title.size
         font.family: AccountStyle.title.name
-        fontSizeMode: Text.Fit
+
         id: header
         anchors.left: parent.left
         anchors.right: parent.right
@@ -65,9 +65,7 @@ Popup {
                     }
 
 
-                    Label {
-                        font.family: AccountStyle.core.name
-                        font.pointSize: AccountStyle.core.size
+                    AccountLabel {
                         anchors.verticalCenter: rowChecked.verticalCenter
                         text: modelData.label + " " + Qt.formatDate(modelData.date, "dd-MM-yyyy") + " " + modelData.value + "€"
 

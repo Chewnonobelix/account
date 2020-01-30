@@ -124,17 +124,13 @@ Rectangle {
                 id: delItem
                 
                 gradient: categoryModel.getIndex(catName) === catView.currentIndex ? AccountStyle.calSelect : AccountStyle.unselectView
-                Label {
+                AccountLabel {
                     id: catDisplay
                     color: has ? "black" : "red"
                     anchors.centerIn: parent
                     text: catName
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
-                    fontSizeMode: Text.Fit
                 }
+                
                 MouseArea {
                     anchors.fill: parent
                     hoverEnabled: true
@@ -201,20 +197,10 @@ Rectangle {
             clip: true            
             spacing: height * 0.02
             
-            header: Control2.Label {
+            header: AccountHeader {
                 text: qsTr("Target")
                 width: targetView.width
                 height: targetView.height * .07
-                fontSizeMode: Text.Fit
-                font.family: AccountStyle.title.name
-                font.pixelSize: AccountStyle.title.size
-                
-                verticalAlignment: Qt.AlignVCenter
-                horizontalAlignment: Qt.AlignHCenter
-                
-                background: Rectangle {
-                    gradient: AccountStyle.goldHeader
-                }
             }
 
             onCurrentIndexChanged: {
@@ -261,16 +247,12 @@ Rectangle {
                 
                 border.color: "gray"
                 gradient: targetView.currentIndex === index ? AccountStyle.calSelect : AccountStyle.backgroundGradient
-                Label {
+                AccountLabel {
                     id: targetText
                     anchors.fill: parent
                     text: qsTr("Date") + ": " + Qt.formatDate(date, "dd-MM-yyyy") + "\n" + qsTr("Target") + ": " + target + qsTr("€")
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    fontSizeMode: Text.Fit
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
                 }
+                
                 MouseArea {
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton
@@ -322,20 +304,10 @@ Rectangle {
                 border.color: "darkseagreen"
             }
             
-            header: Control2.Label {
+            header: AccountHeader {
                 text: qsTr("All sub budget")
                 width: subView.width
                 height: subView.height * .07
-                fontSizeMode: Text.Fit
-                font.family: AccountStyle.title.name
-                font.pixelSize: AccountStyle.title.size
-                
-                verticalAlignment: Qt.AlignVCenter
-                horizontalAlignment: Qt.AlignHCenter
-                
-                background: Rectangle {
-                    gradient: AccountStyle.goldHeader
-                }
             }
 
             
@@ -347,15 +319,10 @@ Rectangle {
                 
                 Column {
                     anchors.fill: parent
-                    Label {
+                    AccountLabel {
                         width: parent.width
                         height: 25
                         text: Qt.formatDate(begin, "dd-MM-yyyy") + " -> " + Qt.formatDate(end, "dd-MM-yyyy")
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        fontSizeMode: Text.Fit
-                        font.family: AccountStyle.core.name
-                        font.pixelSize: AccountStyle.title.size
                     }
                     
                     BudgetViewItem {

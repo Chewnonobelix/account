@@ -5,6 +5,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
 import "../Style"
 import "../Core"
+import "../Functionnal"
 
 Popup {    
     CoreModel {
@@ -34,12 +35,10 @@ Popup {
             columnSpacing: root.width * 0.02
             rowSpacing: root.height * 0.02
             
-            Label {
+            AccountLabel {
                 id: calendarLabel
                 text: qsTr("From")
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                fontSizeMode: Text.Fit
+
                 font.family: AccountStyle.title.name
                 font.pixelSize: AccountStyle.title.size
                 
@@ -62,11 +61,9 @@ Popup {
                 Layout.alignment: Qt.AlignRight                
             }
             
-            Label {
+            AccountLabel {
                 text: qsTr("Target")
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                fontSizeMode: Text.Fit
+
                 font.family: AccountStyle.title.name
                 font.pixelSize: AccountStyle.title.size
                 
@@ -90,11 +87,8 @@ Popup {
                 Layout.alignment: Qt.AlignRight                
             }
             
-            Label {
+            AccountLabel {
                 text: qsTr("Every")
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                fontSizeMode: Text.Fit
                 font.family: AccountStyle.title.name
                 font.pixelSize: AccountStyle.title.size
                 
@@ -142,15 +136,9 @@ Popup {
                             acceptedButtons: Qt.NoButton
                         }
                         
-                        Label {
+                        AccountLabel {
                             anchors.centerIn: parent
-                            verticalAlignment: Qt.AlignVCenter
-                            horizontalAlignment: Qt.AlignHCenter
-                            text: name
-                            fontSizeMode: Text.Fit
-                            font.family: AccountStyle.core.name
-                            font.pixelSize: AccountStyle.core.size
-                            
+                            text: name                            
                         }
                     }
                 }

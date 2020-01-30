@@ -4,6 +4,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
 import "../Style"
 import "../Core" as C
+import "../Functionnal"
 //import Account 1.0
 
 Popup {
@@ -45,29 +46,28 @@ Popup {
         anchors.top: dateField.bottom
         columns: 4
         columnSpacing: 5
-        Label {
+        AccountLabel {
             id:fromLabel
             text: qsTr("From")
             font.family: AccountStyle.title.name
             font.pixelSize: AccountStyle.title.size
-            horizontalAlignment: Text.AlignHCenter
         }
 
-        Label {
+        AccountLabel {
             id:toLabel
             text: qsTr("to")
             font.family: AccountStyle.title.name
             font.pixelSize: AccountStyle.title.size
         }
 
-        Label {
+        AccountLabel {
             id:valueLabel
             text: qsTr("Value")
             font.family: AccountStyle.title.name
             font.pixelSize: AccountStyle.title.size
         }
 
-        Label {
+        AccountLabel {
             id:infoLabel
             text: qsTr("Info")
             font.family: AccountStyle.title.name
@@ -161,7 +161,7 @@ Popup {
             }
         }
 
-        C.DoubleSpinBox {
+        DoubleSpinBox {
             id: spinVal
             objectName: "spinVal"
         }

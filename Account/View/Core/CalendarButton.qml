@@ -43,11 +43,9 @@ AccountButton {
 
                 dayDelegate: Rectangle {
                     color: "transparent"
-                    Label {
+                    AccountLabel {
                         id: dLabel
                         text: styleData.date.getDate()
-                        font.family: AccountStyle.core.name
-                        font.pixelSize: AccountStyle.core.size
                         anchors.centerIn: parent
                         color: styleData.date.getMonth() === dateAdding.visibleMonth ? "black" : "grey"
                     }
@@ -64,7 +62,7 @@ AccountButton {
 
                     gradient: AccountStyle.goldHeader
 
-                    Label {
+                    AccountLabel {
                         id:monthLabel
                         height: parent.height
                         color:"black"
@@ -103,7 +101,7 @@ AccountButton {
                 dayOfWeekDelegate: Rectangle {
                     height: dateAdding.height/16
                     gradient: AccountStyle.goldHeader
-                    Label {
+                    AccountLabel {
                         anchors.centerIn: parent
                         text: Qt.locale().dayName(styleData.dayOfWeek, Locale.ShortFormat)
                         font.family: AccountStyle.title.name

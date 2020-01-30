@@ -229,13 +229,11 @@ ApplicationWindow {
                 font.pixelSize: AccountStyle.core.size
                 id: quitMenu
 
-                indicator: Label {
+                indicator: AccountLabel {
                     text: quitShort.nativeText
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
                 }
 
                 Shortcut {
@@ -270,13 +268,11 @@ ApplicationWindow {
                     adding(true)
                 }
 
-                indicator: Label {
+                indicator: AccountLabel {
                     text: accountAddShort.nativeText
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
                 }
 
                 Shortcut {
@@ -302,13 +298,11 @@ ApplicationWindow {
                     gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
 
-                indicator: Label {
+                indicator: AccountLabel {
                     text: accountDelShort.nativeText
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
                 }
 
                 Shortcut {
@@ -343,13 +337,11 @@ ApplicationWindow {
                     }
                 }
 
-                indicator: Label {
+                indicator: AccountLabel {
                     text: addShort.nativeText
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
                 }
 
                 Shortcut {
@@ -371,14 +363,12 @@ ApplicationWindow {
                 font.pixelSize: AccountStyle.core.size
 
                 enabled: table.currentId !== -1
-                indicator: Label {
+                indicator: AccountLabel {
                     text: delShort.nativeText
                     anchors.leftMargin: 10
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
                 }
 
                 Shortcut {
@@ -424,14 +414,12 @@ ApplicationWindow {
                     id: about
                     height: 200
                     width: 600
-                    Label {
+                    AccountLabel {
                         anchors.fill: parent
                         text: qsTr("This application is made by Arnaud DUHAMEL
 Current Version beta 0.9")
                         font.family: AccountStyle.title.name
                         font.pixelSize: AccountStyle.title.size
-                        verticalAlignment: Text.AlignVCenter
-                        fontSizeMode: Text.Fit
                     }
 
                     background: AccountBackground {}
@@ -457,13 +445,11 @@ Current Version beta 0.9")
                     id: aboutQt
                     height: 200
                     width: 600
-                    Label {
+                    AccountLabel {
                         anchors.fill: parent
                         text: qsTr("This application is made with Qt 5.12 and QML")
                         font.family: AccountStyle.title.name
                         font.pixelSize: AccountStyle.title.size
-                        verticalAlignment: Text.AlignVCenter
-                        fontSizeMode: Text.Fit
                     }
 
                     background: AccountBackground {}
@@ -495,23 +481,22 @@ Current Version beta 0.9")
             anchors.right: accountSelect.left
             Layout.preferredHeight: parent.height
 
-            Label {
+            AccountLabel {
                 id: accountTitle
                 objectName: "accountTitle"
                 text: qsTr("Account") + ": " + head.accountName + " = " + head.total.value + "€"
                 font.pixelSize: AccountStyle.title.size
                 font.family: AccountStyle.title.name
                 padding: 10
-                fontSizeMode: Text.Fit
+
                 color: accountSelect.model && accountSelect.model.length > 0 ? head.total.value > 0 ? "green" : "red" : "transparent"
                 Layout.preferredWidth: parent.width * .5
             }
 
-            Label {
+            AccountLabel {
                 id: selectLabel
-                fontSizeMode: Text.Fit
-                text: qsTr(
-                          "Selection total") + ": " + head.selectionTotal.value + " €"
+
+                text: qsTr("Selection total") + ": " + head.selectionTotal.value + " €"
                 font.pixelSize: AccountStyle.title.size
                 font.family: AccountStyle.title.name
                 padding: 10
@@ -557,12 +542,10 @@ Current Version beta 0.9")
                         cursorShape: Qt.PointingHandCursor
                         acceptedButtons: Qt.NoButton
                     }
-                    Label {
+                    AccountLabel {
                         color: "black"
                         text: modelData
                         anchors.centerIn: parent
-                        font.family: AccountStyle.core.name
-                        font.pixelSize: AccountStyle.core.size
                     }
                 }
 
@@ -630,14 +613,13 @@ Current Version beta 0.9")
 
             background: AccountBackground {}
 
-            Label {
+            AccountLabel {
                 id: labelDelete
                 property string account: accountSelect.currentText
                 text: qsTr("Delete") + " " + account + " ?"
                 font.family: AccountStyle.title.name
                 font.pixelSize: AccountStyle.title.size
                 anchors.horizontalCenter: parent.horizontalCenter
-                
             }
 
             AccountButton {
@@ -678,14 +660,12 @@ Current Version beta 0.9")
             TabButton {
                 id: listTabButton
     
-                contentItem: Label {
+                contentItem: AccountLabel {
                     text: modelData
-                    horizontalAlignment: Qt.AlignHCenter
-                    verticalAlignment: Qt.AlignVCenter
+
                     color: tabBar.currentItem === listTabButton ? "black" : "darkseagreen"
                     font.family: AccountStyle.title.name
                     font.pixelSize: AccountStyle.title.size
-                    fontSizeMode: Text.Fit
                 }
     
                 MouseArea {

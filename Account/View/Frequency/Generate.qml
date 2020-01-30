@@ -42,13 +42,12 @@ Popup {
             id: l
             clip: false
             
-            Label {
+            AccountLabel {
                 Layout.row: 0
                 Layout.column: 0
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 font.family: AccountStyle.title.name
                 font.pixelSize: AccountStyle.title.size2
-                fontSizeMode: Text.Fit
                 text: qsTr("From")
             }
             
@@ -63,14 +62,13 @@ Popup {
                 
             }
             
-            Label {
+            AccountLabel {
                 Layout.row: 0
                 Layout.column: 1
                 text:qsTr("To")
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 font.family: AccountStyle.title.name
                 font.pixelSize: AccountStyle.title.size2
-                fontSizeMode: Text.Fit
             }
             
             C.CalendarButton {
