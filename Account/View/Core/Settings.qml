@@ -74,7 +74,7 @@ Dialog {
                         text: qsTr("Budget")
                     }
                     
-                    CheckBox {
+                    AccountCheckBox {
                         objectName: "budget"
                     }
                     
@@ -82,7 +82,7 @@ Dialog {
                         text: qsTr("Frequency")
                     }
                     
-                    CheckBox {
+                    AccountCheckBox {
                         objectName: "frequency"
                     }
                     
@@ -90,7 +90,7 @@ Dialog {
                         text: qsTr("CommonExpanse")
                     }
                     
-                    CheckBox {
+                    AccountCheckBox {
                         objectName: "common"
                     }
                     
@@ -149,7 +149,7 @@ Dialog {
                     
                     
                     
-                    CheckBox {
+                    AccountCheckBox {
                         Layout.column: 0
                         Layout.row: 1
                         

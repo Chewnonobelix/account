@@ -46,18 +46,9 @@ Popup {
                     
                     Component.onCompleted: tab[modelData.id] = false
                     
-                    CheckBox {
+                    AccountCheckBox {
                         id: rowChecked
                         checked: false
-                        font.family: AccountStyle.core.name
-                        font.pointSize: AccountStyle.core.size
-
-                        MouseArea {
-                            z: -1
-                            acceptedButtons: Qt.NoButton
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                        }
 
                         onCheckedChanged: {
                             tab[modelData.id] = checked;

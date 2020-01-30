@@ -32,7 +32,7 @@ Rectangle {
         
         add.enabled = Qt.binding(function() {return model ? !model.isClose : false})
     }
-        
+    
     color: "transparent"
     
     Adding {
@@ -182,7 +182,7 @@ Rectangle {
             Layout.rowSpan: 1
             Layout.columnSpan: 1 
             text: qsTr("Remove")
-                        
+            
             signal s_remove()
             property var  currentModel: null
             property string currentMember: ""
@@ -192,7 +192,7 @@ Rectangle {
                 enabled = Qt.binding(function() {return currentModel !== null && !model.isClose})    
                 currentMember = Qt.binding(function() {return rep.currentMember})
             }
-                        
+            
             onClicked: {
                 s_remove()
             }
@@ -281,7 +281,8 @@ Rectangle {
                 
             }
         }
-        CheckBox {
+        
+        AccountCheckBox {
             id: close
             objectName: "close"
             Layout.preferredHeight: root.height * 0.05
@@ -298,11 +299,6 @@ Rectangle {
             signal s_checked(bool check)
             onCheckedChanged: { 
                 s_checked(checked)
-            }
-            
-            background: MouseArea {
-                acceptedButtons: Qt.NoButton
-                cursorShape: Qt.PointingHandCursor
             }
         }
         

@@ -1,5 +1,15 @@
-import QtQuick 2.0
+import QtQuick 2.14
+import QtQuick.Controls 2.14
 
-Item {
+CheckBox {
+    id: root
 
+    font.family: AccountStyle.core.name    
+    font.pixelSize: AccountStyle.core.size
+    
+    background: MouseArea {
+        z: -1
+        acceptedButtons: Qt.NoButton
+        cursorShape: Qt.PointingHandCursor
+    }
 }
