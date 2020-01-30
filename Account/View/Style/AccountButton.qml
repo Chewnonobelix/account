@@ -6,16 +6,16 @@ Button {
         
     font.family: AccountStyle.core.name
     font.pixelSize: AccountStyle.core.size
-    MouseArea {
-        z: -1
-        anchors.fill: parent
-        cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
-        acceptedButtons: Qt.NoButton
-    }
     
-    Rectangle {
-        anchors.fill: parent
+    background: Rectangle {
         gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
         border.color: "darkgoldenrod"
+        
+        MouseArea {
+            z: -1
+            anchors.fill: parent
+            cursorShape: parent.enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+            acceptedButtons: Qt.NoButton
+        }        
     }
 }
