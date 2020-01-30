@@ -40,7 +40,7 @@ Dialog {
                 width: parent.width
                 
                 id: general
-                label: AccountLabel {
+                label: AccountHeader {
                     text: qsTr("General")
                     width: general.width
                     height: root.height * 0.10
@@ -54,7 +54,7 @@ Dialog {
                 GridLayout {
                     columns: 2
                     
-                    AccountLabel {
+                    AccountHeader {
                         text: qsTr("Language")
                     }
                     
@@ -67,7 +67,7 @@ Dialog {
             GroupBox {
                 id: features
                 width: parent.width
-                label: AccountLabel {                    
+                label: AccountHeader {                    
                     text: qsTr("Features")
                     width: features.width
                     height: root.height * 0.10
@@ -80,7 +80,7 @@ Dialog {
                 
                 GridLayout {
                     columns: 2
-                    AccountLabel {
+                    AccountHeader {
                         text: qsTr("Budget")
                     }
                     
@@ -88,7 +88,7 @@ Dialog {
                         objectName: "budget"
                     }
                     
-                    AccountLabel {
+                    AccountHeader {
                         text: qsTr("Frequency")
                     }
                     
@@ -131,7 +131,7 @@ Dialog {
             GroupBox {
                 id: database
                 width: parent.width
-                label: AccountLabel {
+                label: AccountHeader {
                     text: qsTr("Database")
                     width:database.width
                     
@@ -146,7 +146,7 @@ Dialog {
                 GridLayout {
                     columns: 3
                     
-                    AccountLabel {
+                    AccountHeader {
                         Layout.column: 1
                         Layout.row: 0
                         text: qsTr("Main database")
@@ -172,7 +172,7 @@ Dialog {
                         checked: true
                     }
                     
-                    AccountLabel {
+                    AccountHeader {
                         Layout.column: 1
                         Layout.row: 1
                         text: qsTr("Backup database")
