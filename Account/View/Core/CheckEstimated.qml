@@ -1,6 +1,6 @@
 import QtQuick 2.11
 import QtQuick.Controls 2.4
-import "../Style" as S
+import "../Style"
 Popup {
     implicitHeight: parent.height
     implicitWidth: parent.width * .33
@@ -12,8 +12,8 @@ Popup {
     
     Label {
         text: qsTr("Entry to check")
-        font.pixelSize: pageStyle.title.size
-        font.family: pageStyle.title.name
+        font.pixelSize: AccountStyle.title.size
+        font.family: AccountStyle.title.name
         fontSizeMode: Text.Fit
         id: header
         anchors.left: parent.left
@@ -21,12 +21,8 @@ Popup {
     }
 
     background: Rectangle {
-        gradient: pageStyle.backgroundGradient
+        gradient: AccountStyle.backgroundGradient
         border.color: "gold"
-    }
-
-    S.AccountStyle {
-        id: pageStyle
     }
 
     property var tab: []
@@ -56,8 +52,8 @@ Popup {
                     CheckBox {
                         id: rowChecked
                         checked: false
-                        font.family: pageStyle.core.name
-                        font.pointSize: pageStyle.core.size
+                        font.family: AccountStyle.core.name
+                        font.pointSize: AccountStyle.core.size
 
                         MouseArea {
                             z: -1
@@ -73,8 +69,8 @@ Popup {
 
 
                     Label {
-                        font.family: pageStyle.core.name
-                        font.pointSize: pageStyle.core.size
+                        font.family: AccountStyle.core.name
+                        font.pointSize: AccountStyle.core.size
                         anchors.verticalCenter: rowChecked.verticalCenter
                         text: modelData.label + " " + Qt.formatDate(modelData.date, "dd-MM-yyyy") + " " + modelData.value + "€"
 
@@ -101,8 +97,8 @@ Popup {
         text: qsTr("Save")
         anchors.bottom: parent.bottom
         height: parent.height * .05
-        font.family: pageStyle.core.name
-        font.pointSize: pageStyle.core.size
+        font.family: AccountStyle.core.name
+        font.pointSize: AccountStyle.core.size
 
         MouseArea {
             anchors.fill: parent
@@ -113,7 +109,7 @@ Popup {
         Rectangle {
             id: saveRect
             anchors.fill: parent
-            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
         }
 
 
@@ -128,8 +124,8 @@ Popup {
         anchors.leftMargin: 10
         anchors.bottom: parent.bottom
         height: parent.height * .05
-        font.family: pageStyle.core.name
-        font.pointSize: pageStyle.core.size
+        font.family: AccountStyle.core.name
+        font.pointSize: AccountStyle.core.size
 
         MouseArea {
             anchors.fill: parent
@@ -140,7 +136,7 @@ Popup {
         Rectangle {
             id: laterRect
             anchors.fill: parent
-            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
         }
 
         ToolTip.text: qsTr("Keep validation for later")

@@ -15,10 +15,6 @@ Rectangle {
     color: "transparent"
     objectName: "commonRect"
 
-    AccountStyle {
-        id: pageStyle
-    }
-
     Popup {
         id: popAddCommon
         objectName: "popAddCommon"
@@ -27,7 +23,7 @@ Rectangle {
 
         anchors.centerIn: parent
         background: Rectangle {
-            gradient: pageStyle.backgroundGradient
+            gradient: AccountStyle.backgroundGradient
             border.color: "gold"
         }
 
@@ -38,8 +34,8 @@ Rectangle {
                 Layout.row: 0
                 Layout.column: 0
 
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 fontSizeMode: Text.Fit
             }
 
@@ -50,8 +46,8 @@ Rectangle {
                 Layout.row: 0
                 Layout.column: 1
                 Layout.fillWidth: true
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
 
                 property bool valid: text.length > 0
 
@@ -79,7 +75,7 @@ Rectangle {
                         cursorShape: Qt.PointingHandCursor
                     }
 
-                    gradient: pageStyle.goldButton
+                    gradient: AccountStyle.goldButton
                 }
             }
             Button {
@@ -94,7 +90,7 @@ Rectangle {
                         cursorShape: Qt.PointingHandCursor
                     }
 
-                    gradient: pageStyle.goldButton
+                    gradient: AccountStyle.goldButton
                 }
 
                 onClicked: popAddCommon.close()
@@ -131,7 +127,7 @@ Rectangle {
                 }
 
                 highlight: Rectangle {
-                    gradient: pageStyle.calSelect
+                    gradient: AccountStyle.calSelect
                 }
 
                 highlightMoveDuration: 0
@@ -145,8 +141,8 @@ Rectangle {
                     verticalAlignment: Qt.AlignVCenter
 
                     fontSizeMode: Text.Fit
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
 
                     MouseArea {
                         anchors.fill: parent
@@ -166,8 +162,8 @@ Rectangle {
                     text: qsTr("Add common expanse")
                     onClicked: popAddCommon.open()
 
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
 
                     background: Rectangle {
                         MouseArea{
@@ -176,7 +172,7 @@ Rectangle {
                             anchors.fill: parent
                         }
 
-                        gradient: pageStyle.goldButton
+                        gradient: AccountStyle.goldButton
                     }
                 }
                 Button {
@@ -186,8 +182,8 @@ Rectangle {
                     height: parent.height
                     text: qsTr("Remove common expanse")
 
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
 
                     signal s_remove(int id)
                     onClicked: s_remove(listCommon.currentModel.id)
@@ -198,7 +194,7 @@ Rectangle {
                             cursorShape: Qt.PointingHandCursor
                             anchors.fill: parent
                         }
-                        gradient: pageStyle.goldButton
+                        gradient: AccountStyle.goldButton
                     }
                 }
             }

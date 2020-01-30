@@ -40,5 +40,7 @@
         <file>Style/AccountTextInput.qml</file>
         <file>Style/AccountSpinbox.qml</file>
         <file>Style/AccountCalendar.qml</file>
+        <file>Style/qmldir</file>
+        <file>Style/AccountBackground.qml</file>
     </qresource>
 </RCC>

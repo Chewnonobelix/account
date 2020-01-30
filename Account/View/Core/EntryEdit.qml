@@ -2,7 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.12
-import "../Style" as S
+import "../Style"
 
 GridLayout {
     id: grid
@@ -15,9 +15,6 @@ GridLayout {
 
     
     property bool opening: false
-    S.AccountStyle {
-        id: pageStyle
-    }
     
     property var entry: null
     
@@ -58,13 +55,13 @@ GridLayout {
         Label {
             id: titleLabel
             text: qsTr("Title")
-            font.pixelSize: pageStyle.title.size
-            font.family: pageStyle.title.name
+            font.pixelSize: AccountStyle.title.size
+            font.family: AccountStyle.title.name
             fontSizeMode: Text.Fit
             horizontalAlignment: Qt.AlignHCenter
             verticalAlignment: Qt.AlignVCenter
             background: Rectangle {
-                gradient: pageStyle.goldHeader
+                gradient: AccountStyle.goldHeader
                 border.color: "darkgoldenrod"
             }
             
@@ -78,8 +75,8 @@ GridLayout {
             width: parent.width
             height: parent.height * 0.59
             text: ""
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+            font.family: AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size
             horizontalAlignment: Qt.AlignHCenter
             verticalAlignment: Qt.AlignVCenter
             onEditingFinished: {
@@ -107,13 +104,13 @@ GridLayout {
         Label {
             id: valueLabel
             text: qsTr("Value")
-            font.pixelSize: pageStyle.title.size
-            font.family: pageStyle.title.name
+            font.pixelSize: AccountStyle.title.size
+            font.family: AccountStyle.title.name
             fontSizeMode: Text.Fit
             horizontalAlignment: Qt.AlignHCenter
             verticalAlignment: Qt.AlignVCenter
             background: Rectangle {
-                gradient: pageStyle.goldHeader
+                gradient: AccountStyle.goldHeader
                 border.color: "darkgoldenrod"
             }
             
@@ -129,8 +126,8 @@ GridLayout {
             enabled: !opening
             
             value: 0
-            font.family:  pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+            font.family:  AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size
             
             ToolTip.text: qsTr("Change transaction's value")
             ToolTip.visible: hovered
@@ -152,13 +149,13 @@ GridLayout {
         Label {
             id: categoryLabel
             text: qsTr("Category")
-            font.pixelSize: pageStyle.title.size
-            font.family: pageStyle.title.name
+            font.pixelSize: AccountStyle.title.size
+            font.family: AccountStyle.title.name
             fontSizeMode: Text.Fit
             horizontalAlignment: Qt.AlignHCenter
             verticalAlignment: Qt.AlignVCenter
             background: Rectangle {
-                gradient: pageStyle.goldHeader
+                gradient: AccountStyle.goldHeader
                 border.color: "darkgoldenrod"
             }
             

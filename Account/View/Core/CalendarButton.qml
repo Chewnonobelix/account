@@ -2,21 +2,17 @@ import QtQuick 2.12
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 2.5
-import "../Style" as S
+import "../Style"
 
 Button {
-    S.AccountStyle {
-        id: pageStyle
-    }
-
     id: button
     text: ""
-    font.family: pageStyle.core.name
-    font.pixelSize: pageStyle.core.size
+    font.family: AccountStyle.core.name
+    font.pixelSize: AccountStyle.core.size
 
     background: Rectangle {
         anchors.fill: parent
-        gradient: pressed ? pageStyle.goldButton : pageStyle.darkGoldButton
+        gradient: pressed ? AccountStyle.goldButton : AccountStyle.darkGoldButton
     }
 
     property bool isOpen: pop.opened
@@ -52,7 +48,7 @@ Button {
                 background: Rectangle {
                     height: 250
                     width: 250
-                    gradient: pageStyle.backgroundGradient
+                    gradient: AccountStyle.backgroundGradient
                     border.color: "gold"
                 }
 
@@ -61,8 +57,8 @@ Button {
                     Label {
                         id: dLabel
                         text: styleData.date.getDate()
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
+                        font.family: AccountStyle.core.name
+                        font.pixelSize: AccountStyle.core.size
                         anchors.centerIn: parent
                         color: styleData.date.getMonth() === dateAdding.visibleMonth ? "black" : "grey"
                     }
@@ -77,7 +73,7 @@ Button {
                     id: navBar
                     height: dateAdding.height/16
 
-                    gradient: pageStyle.goldHeader
+                    gradient: AccountStyle.goldHeader
 
                     Label {
                         id:monthLabel
@@ -85,7 +81,7 @@ Button {
                         color:"black"
                         anchors.centerIn: parent
                         text: Qt.locale().monthName(dateAdding.visibleMonth, Locale.ShortFormat) + " " + dateAdding.visibleYear
-                        font.family: pageStyle.title.name
+                        font.family: AccountStyle.title.name
                         font.pixelSize: height * 0.8
                     }
 
@@ -95,11 +91,11 @@ Button {
                         width: dateAdding.width/14
                         height: parent.height
                         text: ">"
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
+                        font.family: AccountStyle.core.name
+                        font.pixelSize: AccountStyle.core.size
 
                         background: Rectangle {
-                            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                             border.color: "darkgoldenrod"
                             anchors.fill: parent
                         }
@@ -121,13 +117,13 @@ Button {
                         anchors.left: parent.left
                         width: dateAdding.width/14
                         height: parent.height
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
+                        font.family: AccountStyle.core.name
+                        font.pixelSize: AccountStyle.core.size
 
                         text: "<"
 
                         background: Rectangle {
-                            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                             border.color: "darkgoldenrod"
                         }
 
@@ -147,11 +143,11 @@ Button {
 
                 dayOfWeekDelegate: Rectangle {
                     height: dateAdding.height/16
-                    gradient: pageStyle.goldHeader
+                    gradient: AccountStyle.goldHeader
                     Label {
                         anchors.centerIn: parent
                         text: Qt.locale().dayName(styleData.dayOfWeek, Locale.ShortFormat)
-                        font.family: pageStyle.title.name
+                        font.family: AccountStyle.title.name
                     }
                 }
 

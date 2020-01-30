@@ -103,10 +103,6 @@ ApplicationWindow {
         showMaximized()
     }
     
-    AccountStyle {
-        id: pageStyle
-    }
-    
     T.Transfert {
         id: tranfert
         objectName: "transfert"
@@ -131,8 +127,8 @@ ApplicationWindow {
     }
     
     menuBar: MenuBar {
-        font.family: pageStyle.core.name
-        font.pixelSize: pageStyle.core.size
+        font.family: AccountStyle.core.name
+        font.pixelSize: AccountStyle.core.size
         
         objectName: "menuBar"
         Menu {
@@ -141,7 +137,7 @@ ApplicationWindow {
             width: 210
             delegate: MenuItem {
                 background: Rectangle {
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
             }
 
@@ -156,8 +152,8 @@ ApplicationWindow {
                 width: 210
                 title: qsTr("Profile")
                 signal s_profile(string name)
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
 
                 Repeater {
                     id: profileRepeater
@@ -172,10 +168,10 @@ ApplicationWindow {
                             profileRepeater.current = text
                             profileMenu.s_profile(text)
                         }
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
+                        font.family: AccountStyle.core.name
+                        font.pixelSize: AccountStyle.core.size
                         background: Rectangle {
-                            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                         }
                     }
                 }
@@ -185,11 +181,11 @@ ApplicationWindow {
                     objectName: "newProfile"
 
                     onTriggered: popProfile.open()
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
 
                     background: Rectangle {
-                        gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                        gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                     }
                 }
 
@@ -200,11 +196,11 @@ ApplicationWindow {
 
                     signal s_deleteProfile(string name)
                     onTriggered: s_deleteProfile(profileRepeater.current)
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
 
                     background: Rectangle {
-                        gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                        gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                     }
                 }
 
@@ -214,8 +210,8 @@ ApplicationWindow {
                 text: qsTr("&Consolidate")
                 objectName: "xmlMenu"
                 //                checkable: true
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
                 enabled: false
                 signal s_xml
                 onClicked: {
@@ -223,14 +219,14 @@ ApplicationWindow {
                 }
 
                 background: Rectangle {
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
             }
 
             MenuItem {
                 text: qsTr("&Quit")
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
                 id: quitMenu
 
                 indicator: Label {
@@ -238,8 +234,8 @@ ApplicationWindow {
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
                 }
 
                 Shortcut {
@@ -250,7 +246,7 @@ ApplicationWindow {
                 }
 
                 background: Rectangle {
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
 
                 onClicked: {
@@ -261,14 +257,14 @@ ApplicationWindow {
 
         Menu {
             title: qsTr("Account")
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+            font.family: AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size
             width: 210
             MenuItem {
                 id: nAccountMenu
                 text: qsTr("&New account")
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
 
                 onClicked: {
                     adding(true)
@@ -279,8 +275,8 @@ ApplicationWindow {
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
                 }
 
                 Shortcut {
@@ -293,17 +289,17 @@ ApplicationWindow {
                 }
 
                 background: Rectangle {
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
             }
             MenuItem {
                 id: dAccountMenu
                 text: qsTr("&Delete account")
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
                 enabled: accountSelect.model && accountSelect.model.length > 0
                 background: Rectangle {
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
 
                 indicator: Label {
@@ -311,8 +307,8 @@ ApplicationWindow {
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
                 }
 
                 Shortcut {
@@ -332,14 +328,14 @@ ApplicationWindow {
 
         Menu {
             title: qsTr("Current account")
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+            font.family: AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size
 
             MenuItem {
                 id: addEntryMenu
                 text: qsTr("&Add transaction")
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
                 enabled: dAccountMenu.enabled
                 onClicked: {
                     if (enabled) {
@@ -352,8 +348,8 @@ ApplicationWindow {
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
                 }
 
                 Shortcut {
@@ -364,15 +360,15 @@ ApplicationWindow {
                 }
 
                 background: Rectangle {
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
             }
 
             MenuItem {
                 id: removeEntryMenu
                 text: qsTr("&Remove transaction")
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
 
                 enabled: table.currentId !== -1
                 indicator: Label {
@@ -381,8 +377,8 @@ ApplicationWindow {
                     anchors.rightMargin: 10
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
                 }
 
                 Shortcut {
@@ -399,27 +395,27 @@ ApplicationWindow {
                 }
 
                 background: Rectangle {
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
             }
         }
 
         background: Rectangle {
-            gradient: pageStyle.goldHeader
+            gradient: AccountStyle.goldHeader
         }
 
         Menu {
             title: qsTr("?")
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+            font.family: AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size
 
             MenuItem {
                 text: qsTr("About")
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
 
                 background: Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: AccountStyle.goldButton
                 }
 
                 onClicked: about.open()
@@ -432,15 +428,15 @@ ApplicationWindow {
                         anchors.fill: parent
                         text: qsTr("This application is made by Arnaud DUHAMEL
 Current Version beta 0.9")
-                        font.family: pageStyle.title.name
-                        font.pixelSize: pageStyle.title.size
+                        font.family: AccountStyle.title.name
+                        font.pixelSize: AccountStyle.title.size
                         verticalAlignment: Text.AlignVCenter
                         fontSizeMode: Text.Fit
                     }
 
                     background: Rectangle {
                         anchors.fill: parent
-                        gradient: pageStyle.backgroundGradient
+                        gradient: AccountStyle.backgroundGradient
                         border.color: "gold"
                     }
 
@@ -452,7 +448,7 @@ Current Version beta 0.9")
 
                         background: Rectangle {
                             anchors.fill: parent
-                            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                         }
                     }
                 }
@@ -461,7 +457,7 @@ Current Version beta 0.9")
             MenuItem {
                 text: qsTr("Licence")
                 background: Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: AccountStyle.goldButton
                 }
 
                 onTriggered: aboutQt.open()
@@ -473,15 +469,15 @@ Current Version beta 0.9")
                     Label {
                         anchors.fill: parent
                         text: qsTr("This application is made with Qt 5.12 and QML")
-                        font.family: pageStyle.title.name
-                        font.pixelSize: pageStyle.title.size
+                        font.family: AccountStyle.title.name
+                        font.pixelSize: AccountStyle.title.size
                         verticalAlignment: Text.AlignVCenter
                         fontSizeMode: Text.Fit
                     }
 
                     background: Rectangle {
                         anchors.fill: parent
-                        gradient: pageStyle.backgroundGradient
+                        gradient: AccountStyle.backgroundGradient
                         border.color: "gold"
                     }
 
@@ -493,7 +489,7 @@ Current Version beta 0.9")
 
                         background: Rectangle {
                             anchors.fill: parent
-                            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                         }
                     }
                 }
@@ -504,7 +500,7 @@ Current Version beta 0.9")
     background: Rectangle {
         id: backRect
         anchors.fill: parent
-        gradient: pageStyle.backgroundGradient
+        gradient: AccountStyle.backgroundGradient
     }
 
     header: Rectangle {
@@ -525,8 +521,8 @@ Current Version beta 0.9")
                 id: accountTitle
                 objectName: "accountTitle"
                 text: qsTr("Account") + ": " + head.accountName + " = " + head.total.value + "€"
-                font.pixelSize: pageStyle.title.size
-                font.family: pageStyle.title.name
+                font.pixelSize: AccountStyle.title.size
+                font.family: AccountStyle.title.name
                 padding: 10
                 fontSizeMode: Text.Fit
                 color: accountSelect.model && accountSelect.model.length > 0 ? head.total.value > 0 ? "green" : "red" : "transparent"
@@ -538,8 +534,8 @@ Current Version beta 0.9")
                 fontSizeMode: Text.Fit
                 text: qsTr(
                           "Selection total") + ": " + head.selectionTotal.value + " €"
-                font.pixelSize: pageStyle.title.size
-                font.family: pageStyle.title.name
+                font.pixelSize: AccountStyle.title.size
+                font.family: AccountStyle.title.name
                 padding: 10
                 color: accountSelect.model && accountSelect.model.length
                        > 0 ? head.selectionTotal.value > 0 ? "green" : "red" : "transparent"
@@ -552,8 +548,8 @@ Current Version beta 0.9")
             objectName: "accountSelect"
             anchors.right: parent.right
             height: parent.height
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+            font.family: AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size
             enabled: model.length > 0
             signal s_currentTextChange(string text)
             model: []
@@ -568,7 +564,7 @@ Current Version beta 0.9")
                 acceptedButtons: Qt.NoButton
             }
             Rectangle {
-                gradient: pageStyle.goldButton
+                gradient: AccountStyle.goldButton
                 anchors.fill: parent
             }
 
@@ -576,7 +572,7 @@ Current Version beta 0.9")
                 width: accountSelect.width
 
                 contentItem: Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: AccountStyle.goldButton
                     anchors.fill: parent
                     MouseArea {
                         anchors.fill: parent
@@ -587,8 +583,8 @@ Current Version beta 0.9")
                         color: "black"
                         text: modelData
                         anchors.centerIn: parent
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
+                        font.family: AccountStyle.core.name
+                        font.pixelSize: AccountStyle.core.size
                     }
                 }
 
@@ -656,7 +652,7 @@ Current Version beta 0.9")
 
             background: Rectangle {
                 anchors.fill: parent
-                gradient: pageStyle.backgroundGradient
+                gradient: AccountStyle.backgroundGradient
                 border.color: "gold"
             }
 
@@ -664,8 +660,8 @@ Current Version beta 0.9")
                 id: labelDelete
                 property string account: accountSelect.currentText
                 text: qsTr("Delete") + " " + account + " ?"
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 anchors.horizontalCenter: parent.horizontalCenter
                 
             }
@@ -675,8 +671,8 @@ Current Version beta 0.9")
                 text: qsTr("Ok")
                 anchors.top: labelDelete.bottom
                 anchors.topMargin: padding
-                font.pixelSize: pageStyle.core.size
-                font.family: pageStyle.core.name
+                font.pixelSize: AccountStyle.core.size
+                font.family: AccountStyle.core.name
 
                 onClicked: {
                     mainWindow.removeAccount(labelDelete.account)
@@ -685,7 +681,7 @@ Current Version beta 0.9")
 
                 background: Rectangle {
                     id: rectEdit
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
             }
 
@@ -695,8 +691,8 @@ Current Version beta 0.9")
                 anchors.leftMargin: padding
                 anchors.top: labelDelete.bottom
                 anchors.topMargin: padding
-                font.pixelSize: pageStyle.core.size
-                font.family: pageStyle.core.name
+                font.pixelSize: AccountStyle.core.size
+                font.family: AccountStyle.core.name
 
                 text: qsTr("Cancel")
 
@@ -707,7 +703,7 @@ Current Version beta 0.9")
                 background: Rectangle {
                     id: rectEdit2
 
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
             }
         }
@@ -728,8 +724,8 @@ Current Version beta 0.9")
                     horizontalAlignment: Qt.AlignHCenter
                     verticalAlignment: Qt.AlignVCenter
                     color: tabBar.currentItem === listTabButton ? "black" : "darkseagreen"
-                    font.family: pageStyle.title.name
-                    font.pixelSize: pageStyle.title.size
+                    font.family: AccountStyle.title.name
+                    font.pixelSize: AccountStyle.title.size
                     fontSizeMode: Text.Fit
                 }
     

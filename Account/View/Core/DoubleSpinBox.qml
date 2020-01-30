@@ -1,6 +1,8 @@
 import QtQuick 2.13
 import QtQuick.Controls 2.4
 
+import "../Style"
+
 SpinBox {
     id: spinbox
     from: 0
@@ -65,7 +67,7 @@ SpinBox {
             height: parent.height
             width: parent.width * 0.25
             border.color: enabled ? "#21be2b" : "#bdbebf"
-            gradient: enabled ? up.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton: pageStyle.unselectView
+            gradient: enabled ? up.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton: AccountStyle.unselectView
 
 
             MouseArea {
@@ -94,7 +96,7 @@ SpinBox {
             height: parent.height
             width: parent.width * 0.25
             border.color: enabled ? "#21be2b" : "#bdbebf"
-            gradient: enabled ? down.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton: pageStyle.unselectView
+            gradient: enabled ? down.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton: AccountStyle.unselectView
 
             MouseArea {
                 anchors.fill: parent

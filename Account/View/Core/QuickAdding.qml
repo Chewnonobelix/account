@@ -8,9 +8,6 @@ import "../Style"
 Window {
     height: 500
     width: height * 9 / 16
-    AccountStyle {
-        id: pageStyle
-    }
 
     CoreModel {
         id: cModels
@@ -27,7 +24,7 @@ Window {
 
     Rectangle {
         anchors.fill: parent
-        gradient: pageStyle.backgroundGradient
+        gradient: AccountStyle.backgroundGradient
     }
 
     ScrollView {
@@ -46,13 +43,13 @@ Window {
                 Layout.preferredWidth: root.width * .96
                 Layout.columnSpan: 2
                 text: qsTr("Quick adding")
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 fontSizeMode: Text.Fit
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 background: Rectangle {
-                    gradient: pageStyle.goldHeader
+                    gradient: AccountStyle.goldHeader
                 }
 
             }
@@ -67,15 +64,15 @@ Window {
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
 
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
 
                 ToolTip.text: qsTr("Specify income or outcome")
                 ToolTip.visible: hovered
                 ToolTip.delay: 500
 
                 background:  Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: AccountStyle.goldButton
                     anchors.fill: parent
                 }
 
@@ -88,7 +85,7 @@ Window {
                     width: typeComboQuick.width
 
                     contentItem: Rectangle {
-                        gradient: pageStyle.goldButton
+                        gradient: AccountStyle.goldButton
                         anchors.fill: parent
                         MouseArea {
                             anchors.fill: parent
@@ -99,8 +96,8 @@ Window {
                             color: "black"
                             text: name
                             anchors.centerIn: parent
-                            font.family: pageStyle.core.name
-                            font.pixelSize: pageStyle.core.size
+                            font.family: AccountStyle.core.name
+                            font.pixelSize: AccountStyle.core.size
                         }
                     }
 
@@ -113,14 +110,14 @@ Window {
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
 
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 fontSizeMode: Text.Fit
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
 
                 background: Rectangle {
-                    gradient: pageStyle.goldHeader
+                    gradient: AccountStyle.goldHeader
                 }
             }
 
@@ -134,13 +131,13 @@ Window {
                 text: qsTr("Date")
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 fontSizeMode: Text.Fit
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 background: Rectangle {
-                    gradient: pageStyle.goldHeader
+                    gradient: AccountStyle.goldHeader
                 }
             }
 
@@ -154,13 +151,13 @@ Window {
                 text: qsTr("Title")
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 fontSizeMode: Text.Fit
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 background: Rectangle {
-                    gradient: pageStyle.goldHeader
+                    gradient: AccountStyle.goldHeader
                 }
             }
 
@@ -174,13 +171,13 @@ Window {
                 text: qsTr("Value")
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 fontSizeMode: Text.Fit
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 background: Rectangle {
-                    gradient: pageStyle.goldHeader
+                    gradient: AccountStyle.goldHeader
                 }
             }
 
@@ -196,13 +193,13 @@ Window {
                 text: qsTr("Category")
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 fontSizeMode: Text.Fit
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 background: Rectangle {
-                    gradient: pageStyle.goldHeader
+                    gradient: AccountStyle.goldHeader
                 }
             }
 
@@ -212,12 +209,12 @@ Window {
                 Layout.preferredHeight: root.height * .10
                 Layout.preferredWidth: root.width * .47
 
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
 
                 background: Rectangle {
                     anchors.fill: parent
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                     MouseArea {
                         anchors.fill: parent
                         acceptedButtons: Qt.NoButton
@@ -233,8 +230,8 @@ Window {
                 Layout.preferredHeight: root.height * .10
                 Layout.preferredWidth: root.width * .47
 
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
 
                 signal s_clicked()
 
@@ -250,7 +247,7 @@ Window {
                 }
                 background: Rectangle {
                     anchors.fill: parent
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                     MouseArea {
                         anchors.fill: parent
                         acceptedButtons: Qt.NoButton

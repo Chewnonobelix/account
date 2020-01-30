@@ -4,11 +4,7 @@ import QtQuick.Layouts 1.14
 
 import "../Style"
 
-Dialog {
-    AccountStyle {
-        id: pageStyle
-    }
-    
+Dialog {    
     id: root
     title: qsTr("Settings")
     standardButtons: Dialog.Save | Dialog.Cancel
@@ -27,7 +23,7 @@ Dialog {
         alignment: Qt.AlignRight
         
         delegate: Button {
-            background: Rectangle {gradient: pageStyle.goldButton}
+            background: Rectangle {gradient: AccountStyle.goldButton}
         }
     }
 

@@ -2,6 +2,8 @@ import QtQuick 2.13
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.13
 
+import "../Style"
+
 Item {
     id: root
     property int pageIndex: 1
@@ -35,8 +37,8 @@ Item {
             ToolTip.delay: 500
             ToolTip.visible: hovered
             
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+            font.family: AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size
             MouseArea {
                 z: -1
                 anchors.fill: parent
@@ -46,7 +48,7 @@ Item {
             
             Rectangle {
                 anchors.fill: parent
-                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 border.color: "darkgoldenrod"
             }
         }
@@ -65,8 +67,8 @@ Item {
             ToolTip.delay: 500
             ToolTip.visible: hovered
             
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+            font.family: AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size
             MouseArea {
                 z: -1
                 anchors.fill: parent
@@ -76,7 +78,7 @@ Item {
             
             Rectangle {
                 anchors.fill: parent
-                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 border.color: "darkgoldenrod"
             }
         }
@@ -112,8 +114,8 @@ Item {
             ToolTip.delay: 500
             ToolTip.visible: hovered
             
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+            font.family: AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size
             MouseArea {
                 z: -1
                 anchors.fill: parent
@@ -124,7 +126,7 @@ Item {
             Rectangle {
                 anchors.fill: parent
                 border.color: "darkgoldenrod"
-                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
             }
         }
         
@@ -136,8 +138,8 @@ Item {
             
             onClicked: root.pageIndex += 10
             
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+            font.family: AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size
             
             enabled: root.maxPage > 1 || (root.pageIndex < root.maxPage)
             
@@ -155,7 +157,7 @@ Item {
             Rectangle {
                 anchors.fill: parent
                 border.color: "darkgoldenrod"
-                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
             }
         }
     }

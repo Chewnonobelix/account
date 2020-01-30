@@ -7,7 +7,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Window 2.13
 
-import "../Style" as S
+import "../Style"
 
 Popup {
     id: root
@@ -16,11 +16,7 @@ Popup {
         valueLabel.text = ""
         spinbox.value = 0
     }
-    
-    S.AccountStyle {
-        id: pageStyle
-    }
-    
+        
     CoreModel {
         id: models
     }
@@ -53,7 +49,7 @@ Popup {
     bottomPadding: height * 0.05
     
     background: Rectangle {
-        gradient: pageStyle.backgroundGradient
+        gradient: AccountStyle.backgroundGradient
         border.color: "darkgoldenrod"
         id: backRect
     }
@@ -77,8 +73,8 @@ Popup {
             Label {
                 id: labelAdd
                 text: qsTr("Adding")
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 fontSizeMode: Text.Fit
                 
                 horizontalAlignment: Qt.AlignHCenter
@@ -106,8 +102,8 @@ Popup {
             Label{
                 visible: common
                 text: qsTr("Member")
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 fontSizeMode: Text.Fit
                 
                 horizontalAlignment: Qt.AlignHCenter
@@ -134,8 +130,8 @@ Popup {
                 Layout.rowSpan: 1 
                 Layout.columnSpan: 3 
                 
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
                 
                 onTextEdited: {
                     var s = -1
@@ -156,8 +152,8 @@ Popup {
                         anchors.fill: parent
                         
                         color: "grey"
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
+                        font.family: AccountStyle.core.name
+                        font.pixelSize: AccountStyle.core.size
                         verticalAlignment: Qt.AlignVCenter
                         leftPadding: member.leftPadding                        
                     }
@@ -168,8 +164,8 @@ Popup {
                 id: l_new
                 text: qsTr("Add new \n entry")
                 wrapMode: Text.WordWrap
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size2
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size2
                 fontSizeMode: Text.Fit
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
@@ -184,8 +180,8 @@ Popup {
             
             TextField {
                 id: valueLabel
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
                 
                 ToolTip.text: root.newAccount ? qsTr("Please enter an account name") : qsTr("Please complete the entry's title")
                 ToolTip.visible: !valid
@@ -203,8 +199,8 @@ Popup {
             
             DoubleSpinBox {
                 id: spinbox
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
                 
                 ToolTip.text: root.newAccount ? qsTr("Specify account opening value") : qsTr("Specify transaction's value")
                 ToolTip.visible: hovered
@@ -233,15 +229,15 @@ Popup {
                 
                 enabled: !root.newAccount
                 
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
                 
                 ToolTip.text: qsTr("Specify income or outcome")
                 ToolTip.visible: hovered
                 ToolTip.delay: 500
                 
                 background:  Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: AccountStyle.goldButton
                     anchors.fill: parent
                 }
                 
@@ -254,7 +250,7 @@ Popup {
                     width: accountSelect.width
                     
                     contentItem: Rectangle {
-                        gradient: pageStyle.goldButton
+                        gradient: AccountStyle.goldButton
                         anchors.fill: parent
                         MouseArea {
                             anchors.fill: parent
@@ -265,8 +261,8 @@ Popup {
                             color: "black"
                             text: name
                             anchors.centerIn: parent
-                            font.family: pageStyle.core.name
-                            font.pixelSize: pageStyle.core.size
+                            font.family: AccountStyle.core.name
+                            font.pixelSize: AccountStyle.core.size
                         }
                     }
                     
@@ -277,14 +273,14 @@ Popup {
             Button {
                 id: b_save
                 text: qsTr("Save")
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
                 
                 ToolTip.text:  root.newAccount ? qsTr("Please enter an account name") : qsTr("Please complete the entry's title")
                 ToolTip.visible: ttVisible
                 
                 background: Rectangle {
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                     id: saveRect
                     
                     MouseArea {
@@ -319,10 +315,10 @@ Popup {
             Button {
                 id:b_cancel
                 text: qsTr("Cancel")
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
                 background: Rectangle {
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                     id: cancelRect
                 }
                 

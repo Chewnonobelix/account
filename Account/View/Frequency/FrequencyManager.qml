@@ -9,11 +9,7 @@ import Account 1.0
 import "../Style"
 import "../Core"
 
-Rectangle {
-    AccountStyle {
-        id: pageStyle
-    }
-    
+Rectangle {    
     CoreModel {
         id: models
     }
@@ -34,7 +30,7 @@ Rectangle {
     
     Rectangle {
         anchors.fill: parent
-        gradient: pageStyle.unselectView
+        gradient: AccountStyle.unselectView
         
         Generate {
             objectName: "generate"
@@ -58,8 +54,8 @@ Rectangle {
             
             Control2.Label {
                 text: qsTr("Reference") + " ->"
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 fontSizeMode: Text.Fit
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -72,7 +68,7 @@ Rectangle {
                 Layout.rowSpan: 1
                 Layout.alignment: Qt.AlignTop
                 background: Rectangle {
-                    gradient: pageStyle.goldHeader
+                    gradient: AccountStyle.goldHeader
                 }
             }
             
@@ -90,15 +86,15 @@ Rectangle {
                 
                 header:  Control2.Label {
                     text: qsTr("Frequency list")
-                    font.family: pageStyle.title.name
-                    font.pixelSize: pageStyle.title.size2
+                    font.family: AccountStyle.title.name
+                    font.pixelSize: AccountStyle.title.size2
                     fontSizeMode: Text.Fit
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     height: frequencyList.height * .10
                     width: frequencyList.width
                     background: Rectangle {
-                        gradient: pageStyle.goldHeader
+                        gradient: AccountStyle.goldHeader
                     }
                 }
                 
@@ -147,7 +143,7 @@ Rectangle {
                     height: 40
                     width: frequencyList.width
                     
-                    gradient: ref.entry && ListView.isCurrentItem ? ref.entry.type === "income" ? pageStyle.selectViewIn : pageStyle.selectViewOut : pageStyle.unselectView
+                    gradient: ref.entry && ListView.isCurrentItem ? ref.entry.type === "income" ? AccountStyle.selectViewIn : AccountStyle.selectViewOut : AccountStyle.unselectView
                     
                     MouseArea {
                         anchors.fill: parent
@@ -160,8 +156,8 @@ Rectangle {
                     
                     Label {
                         anchors.fill: parent
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
+                        font.family: AccountStyle.core.name
+                        font.pixelSize: AccountStyle.core.size
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -174,8 +170,8 @@ Rectangle {
                 objectName: "addFreq"
                 text: qsTr("+")
                 
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
                 
                 Layout.preferredHeight: parent.usableHeight * 0.05
                 Layout.preferredWidth: parent.usableWidth * 0.09
@@ -197,7 +193,7 @@ Rectangle {
                 
                 Rectangle {
                     anchors.fill: parent
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
             }
             
@@ -205,8 +201,8 @@ Rectangle {
                 objectName: "removeFreq"
                 text: qsTr("-")
                 
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
                 
                 Layout.preferredHeight: parent.usableHeight * 0.05
                 Layout.preferredWidth: parent.usableWidth * 0.09
@@ -228,7 +224,7 @@ Rectangle {
                 
                 Rectangle {
                     anchors.fill: parent
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
             }
             
@@ -292,18 +288,18 @@ Rectangle {
                 
                 background: Rectangle {
                     anchors.fill: parent
-                    gradient: pageStyle.goldButton
+                    gradient: AccountStyle.goldButton
                 }
                 
                 delegate: Control2.ItemDelegate {
                     width: typeCombo.width
                     contentItem: Rectangle {
                         anchors.fill: parent
-                        gradient: pageStyle.goldButton
+                        gradient: AccountStyle.goldButton
                         Label {
                             text: name
-                            font.family: pageStyle.core.name
-                            font.pixelSize: pageStyle.core.size
+                            font.family: AccountStyle.core.name
+                            font.pixelSize: AccountStyle.core.size
                             fontSizeMode: Text.Fit
                             anchors.fill: parent
                             horizontalAlignment: Qt.AlignHCenter
@@ -339,7 +335,7 @@ Rectangle {
                 valueRole: "type"
                 background: Rectangle {
                     anchors.fill: parent
-                    gradient: pageStyle.goldButton
+                    gradient: AccountStyle.goldButton
                 }
                 
                 signal s_updateType(int id, string nType)
@@ -354,11 +350,11 @@ Rectangle {
                     width: typeCombo.width
                     contentItem: Rectangle {
                         anchors.fill: parent
-                        gradient: pageStyle.goldButton
+                        gradient: AccountStyle.goldButton
                         Label {
                             text: name
-                            font.family: pageStyle.core.name
-                            font.pixelSize: pageStyle.core.size
+                            font.family: AccountStyle.core.name
+                            font.pixelSize: AccountStyle.core.size
                             fontSizeMode: Text.Fit
                             anchors.fill: parent
                             horizontalAlignment: Qt.AlignHCenter
@@ -399,12 +395,12 @@ Rectangle {
                 
                 Rectangle {
                     anchors.fill: parent
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                     
                 }
                 
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
             }
             
             Rectangle {
@@ -424,8 +420,8 @@ Rectangle {
                     property int nb: 0
                     text: qsTr(" Number of generation") + ": " + nb
                     fontSizeMode: Text.Fit
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
                     width: parent.width
                     height: parent.height / parent.children.length
                     horizontalAlignment: Qt.AlignHCenter
@@ -439,8 +435,8 @@ Rectangle {
                     property int nb: 0
                     text: qsTr(" Number of entries") + ": " + nb
                     fontSizeMode: Text.Fit
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
                     width: parent.width
                     horizontalAlignment: Qt.AlignHCenter
                     verticalAlignment: Qt.AlignVCenter
@@ -454,8 +450,8 @@ Rectangle {
                     anchors.top: countText.bottom
                     text: qsTr("From") + " " + Qt.formatDate(from, "dd-MM-yyyy") + ", " + qsTr("to") + " " + Qt.formatDate(to, "dd-MM-yyyy")
                     fontSizeMode: Text.Fit
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
                     width: parent.width
                     height: parent.height / parent.children.length
                     horizontalAlignment: Qt.AlignHCenter
@@ -501,7 +497,7 @@ Rectangle {
                 section.criteria: ViewSection.FullString
                 section.labelPositioning: ViewSection.InlineLabels
                 section.delegate: Rectangle {
-                    gradient: pageStyle.goldHeader
+                    gradient: AccountStyle.goldHeader
                     width: ListView.view.width
                     height: ListView.view.height * 0.10
                     Text {
@@ -510,8 +506,8 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         fontSizeMode: Text.Fit
-                        font.family: pageStyle.title.name
-                        font.pixelSize: pageStyle.title.size2
+                        font.family: AccountStyle.title.name
+                        font.pixelSize: AccountStyle.title.size2
                     }
                     
                     Text {
@@ -524,8 +520,8 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         fontSizeMode: Text.Fit
-                        font.family: pageStyle.title.name
-                        font.pixelSize: pageStyle.title.size2
+                        font.family: AccountStyle.title.name
+                        font.pixelSize: AccountStyle.title.size2
                     }
                     
                     MouseArea {
@@ -550,7 +546,7 @@ Rectangle {
                 }
                 
                 highlight: Rectangle {
-                    gradient: pageStyle.calSelect
+                    gradient: AccountStyle.calSelect
                 }
                 
                 highlightMoveDuration: 0
@@ -559,7 +555,7 @@ Rectangle {
                     background: Rectangle {
                         anchors.fill: parent
                         property var index: parent.index
-                        gradient: pageStyle.unselectView
+                        gradient: AccountStyle.unselectView
                     }
                     
                     highlighted: ListView.isCurrentItem
@@ -585,8 +581,8 @@ Rectangle {
                         horizontalAlignment: Qt.AlignHCenter
                         verticalAlignment: Qt.AlignVCenter
                         fontSizeMode: Text.Fit
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
+                        font.family: AccountStyle.core.name
+                        font.pixelSize: AccountStyle.core.size
                     }
                 }
             }

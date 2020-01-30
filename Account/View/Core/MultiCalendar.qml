@@ -3,7 +3,7 @@ import QtQuick.Controls 1.4
 
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Styles 1.4
-import "../Style" as S
+import "../Style"
 
 Calendar {
     id: multiCal
@@ -118,10 +118,6 @@ Calendar {
         gridVisible: true
         gridColor: "goldenrod"
 
-        S.AccountStyle {
-            id: pageStyle
-        }
-
         background: Rectangle {
             color: "transparent"
         }
@@ -130,7 +126,7 @@ Calendar {
             id: navBar
             height: multiCal.height/16
 
-            gradient: pageStyle.goldHeader
+            gradient: AccountStyle.goldHeader
 
             Label {
                 id:monthLabel
@@ -138,7 +134,7 @@ Calendar {
                 color:"black"
                 anchors.centerIn: parent
                 text: Qt.locale().monthName(visibleMonth, Locale.ShortFormat) + " " + visibleYear
-                font.family: pageStyle.title.name
+                font.family: AccountStyle.title.name
                 font.pixelSize: height * 0.8
             }
 
@@ -148,11 +144,11 @@ Calendar {
                 width: multiCal.width/14
                 height: parent.height
                 text: ">"
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
 
                 background: Rectangle {
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                     border.color: "darkgoldenrod"
                     anchors.fill: parent
                 }
@@ -174,13 +170,13 @@ Calendar {
                 anchors.left: parent.left
                 width: multiCal.width/14
                 height: parent.height
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
 
                 text: "<"
 
                 background: Rectangle {
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                     border.color: "darkgoldenrod"
                 }
 
@@ -210,7 +206,7 @@ Calendar {
         }
 
         weekNumberDelegate: Rectangle {
-            gradient: pageStyle.goldHeader
+            gradient: AccountStyle.goldHeader
             width: multiCal.width/14
             height: multiCal.height/7
             anchors.top: navigationBar.bottom
@@ -221,7 +217,7 @@ Calendar {
                 height: parent.height
                 anchors.centerIn: parent
                 text: styleData.weekNumber
-                font.family: pageStyle.title.name
+                font.family: AccountStyle.title.name
                 font.pixelSize: height * 0.3
                 verticalAlignment: Text.AlignVCenter
             }
@@ -230,14 +226,14 @@ Calendar {
         dayOfWeekDelegate: Rectangle {
             anchors.centerIn: parent
             anchors.top: navigationBar.bottom
-            gradient: pageStyle.goldHeader
+            gradient: AccountStyle.goldHeader
             height: multiCal.height/16
             border.color: "darkgoldenrod"
 
             Label {
                 anchors.centerIn: parent
                 height: parent.height
-                font.family: pageStyle.title.name
+                font.family: AccountStyle.title.name
                 font.pixelSize: height * 0.55
                 verticalAlignment: Text.AlignVCenter
                 text: Qt.locale().dayName(styleData.dayOfWeek, Locale.ShortFormat)
@@ -258,7 +254,7 @@ Calendar {
 
                 for(var i in stylesData) {
                     stylesData[i][0].color = (stylesData[i][1].date.getMonth() === (visibleMonth)) ? "black" : "grey"
-                    stylesData[i][0].parent.gradient = pageStyle.backgroundGradient
+                    stylesData[i][0].parent.gradient = AccountStyle.backgroundGradient
                 }
 
                 while(selectedDates.length > 0) {
@@ -307,10 +303,10 @@ Calendar {
                 view.unselectAll()
 
                 if(cs.isSelected(styleData) && checkMonth(styleData)) {
-                    styleRect.gradient = pageStyle.calSelect
+                    styleRect.gradient = AccountStyle.calSelect
                 }
                 else if(checkMonth(styleData)){
-                    styleRect.gradient = pageStyle.unselectView
+                    styleRect.gradient = AccountStyle.unselectView
                 }
 
                 visibleMonth = currentMonth
@@ -323,8 +319,8 @@ Calendar {
                 id: c_date
                 anchors.centerIn: parent
                 text: styleData.date.getDate()
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
                 color:  parent.delCurrentMonth ? "black" : "grey"
                 onTextChanged: {
 

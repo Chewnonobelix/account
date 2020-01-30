@@ -2,12 +2,9 @@ import QtQuick 2.13
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.12
-import "../Style" as S
+import "../Style"
 
 ComboBox {
-    S.AccountStyle {
-        id: pageStyle
-    }
     
     id: root
     
@@ -46,14 +43,14 @@ ComboBox {
     
     background: Rectangle {
         anchors.fill: parent
-        gradient: pageStyle.goldButton
+        gradient: AccountStyle.goldButton
     }
     
     contentItem: TextInput {
         horizontalAlignment: Qt.AlignHCenter
         verticalAlignment: Qt.AlignVCenter
-        font.family: pageStyle.core.name
-        font.pixelSize: pageStyle.core.size
+        font.family: AccountStyle.core.name
+        font.pixelSize: AccountStyle.core.size
         
         text: currentText
         readOnly: !editable
@@ -74,14 +71,14 @@ ComboBox {
     delegate: ItemDelegate {
         width: root.width
         contentItem: Rectangle  {
-            gradient: pageStyle.goldButton
+            gradient: AccountStyle.goldButton
             anchors.fill: parent
             
             Label {
                 color: "black"
                 text: modelData
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
                 anchors.centerIn: parent
             }
             

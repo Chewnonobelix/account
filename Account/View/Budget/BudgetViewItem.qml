@@ -1,12 +1,9 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
-import "../Style" as S
+import "../Style"
 
 MenuItem {
     id: budgetItem
-    S.AccountStyle {
-        id: pageStyle
-    }
 
     property double realValue
     property double to
@@ -45,7 +42,7 @@ MenuItem {
                 anchors.left: parent.left
                 anchors.leftMargin: 10
                 id: titleLab
-                font.family: pageStyle.title.name
+                font.family: AccountStyle.title.name
                 font.pixelSize: 14
                 anchors.verticalCenter: parent.verticalCenter
             }

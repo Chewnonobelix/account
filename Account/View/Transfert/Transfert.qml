@@ -2,15 +2,11 @@ import QtQuick 2.12
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
-import "../Style" as S
+import "../Style"
 import "../Core" as C
 //import Account 1.0
 
 Popup {
-    S.AccountStyle {
-        id: pageStyle
-    }
-
     id: transfertView
 //    closePolicy: Popup.NoAutoClose
 
@@ -35,7 +31,7 @@ Popup {
 
     background: Rectangle {
         border.color: "gold"
-        gradient: pageStyle.backgroundGradient
+        gradient: AccountStyle.backgroundGradient
     }
 
     C.CalendarButton {
@@ -54,30 +50,30 @@ Popup {
         Label {
             id:fromLabel
             text: qsTr("From")
-            font.family: pageStyle.title.name
-            font.pixelSize: pageStyle.title.size
+            font.family: AccountStyle.title.name
+            font.pixelSize: AccountStyle.title.size
             horizontalAlignment: Text.AlignHCenter
         }
 
         Label {
             id:toLabel
             text: qsTr("to")
-            font.family: pageStyle.title.name
-            font.pixelSize: pageStyle.title.size
+            font.family: AccountStyle.title.name
+            font.pixelSize: AccountStyle.title.size
         }
 
         Label {
             id:valueLabel
             text: qsTr("Value")
-            font.family: pageStyle.title.name
-            font.pixelSize: pageStyle.title.size
+            font.family: AccountStyle.title.name
+            font.pixelSize: AccountStyle.title.size
         }
 
         Label {
             id:infoLabel
             text: qsTr("Info")
-            font.family: pageStyle.title.name
-            font.pixelSize: pageStyle.title.size
+            font.family: AccountStyle.title.name
+            font.pixelSize: AccountStyle.title.size
         }
 
 
@@ -87,7 +83,7 @@ Popup {
 
             Rectangle {
                 anchors.fill: parent
-                gradient: pageStyle.goldButton
+                gradient: AccountStyle.goldButton
             }
 
             MouseArea {
@@ -109,7 +105,7 @@ Popup {
 
                 contentItem: Rectangle {
                     anchors.fill: parent
-                    gradient:  pageStyle.goldButton
+                    gradient:  AccountStyle.goldButton
                     Text {
                         id: delegateText
                         text: modelData
@@ -130,7 +126,7 @@ Popup {
 
             Rectangle {
                 anchors.fill: parent
-                gradient: pageStyle.goldButton
+                gradient: AccountStyle.goldButton
             }
 
             MouseArea {
@@ -152,7 +148,7 @@ Popup {
 
                 contentItem: Rectangle {
                     anchors.fill: parent
-                    gradient: pageStyle.goldButton
+                    gradient: AccountStyle.goldButton
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
@@ -197,7 +193,7 @@ Popup {
         Button {
             text: qsTr("Ok")
             background: Rectangle {
-                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
             }
 
             onClicked: {
@@ -215,7 +211,7 @@ Popup {
         Button {
             text: qsTr("Cancel")
             background: Rectangle {
-                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
             }
 
             onClicked: transfertView.close()

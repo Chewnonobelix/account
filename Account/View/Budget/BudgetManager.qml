@@ -20,11 +20,7 @@ Rectangle {
     property bool blocked: false
     
     color: "transparent"
-    
-    AccountStyle {
-        id: pageStyle
-    }
-    
+        
     ReferenceView {
         objectName: "reference"
         anchors.centerIn: parent
@@ -102,7 +98,7 @@ Rectangle {
             section.property: "type"
             section.criteria: ViewSection.FullString
             section.delegate: Rectangle {
-                gradient: pageStyle.goldHeader
+                gradient: AccountStyle.goldHeader
                 width: parent.width
                 height: 30
                 Text {
@@ -111,8 +107,8 @@ Rectangle {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     fontSizeMode: Text.Fit
-                    font.family: pageStyle.title.name
-                    font.pixelSize: pageStyle.title.size2
+                    font.family: AccountStyle.title.name
+                    font.pixelSize: AccountStyle.title.size2
                 }
             }
             
@@ -127,7 +123,7 @@ Rectangle {
                 height: 40
                 id: delItem
                 
-                gradient: categoryModel.getIndex(catName) === catView.currentIndex ? pageStyle.calSelect : pageStyle.unselectView
+                gradient: categoryModel.getIndex(catName) === catView.currentIndex ? AccountStyle.calSelect : AccountStyle.unselectView
                 Label {
                     id: catDisplay
                     color: has ? "black" : "red"
@@ -135,8 +131,8 @@ Rectangle {
                     text: catName
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
                     fontSizeMode: Text.Fit
                 }
                 MouseArea {
@@ -163,13 +159,13 @@ Rectangle {
                     height: delItem.height
                     
                     delegate: Control2.MenuItem {
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
+                        font.family: AccountStyle.core.name
+                        font.pixelSize: AccountStyle.core.size
                                   
                         height: catMenu.height
                         background: Rectangle {
                             anchors.fill: parent
-                            gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                         }
                     }
                     
@@ -210,14 +206,14 @@ Rectangle {
                 width: targetView.width
                 height: targetView.height * .07
                 fontSizeMode: Text.Fit
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 
                 verticalAlignment: Qt.AlignVCenter
                 horizontalAlignment: Qt.AlignHCenter
                 
                 background: Rectangle {
-                    gradient: pageStyle.goldHeader
+                    gradient: AccountStyle.goldHeader
                 }
             }
 
@@ -244,11 +240,11 @@ Rectangle {
                 height: count * 20
                 
                 delegate: Control2.MenuItem {
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
                     height: 20
                     background: Rectangle {
-                        gradient: parent.highlighted ? pageStyle.darkGoldButton : pageStyle.goldButton
+                        gradient: parent.highlighted ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                     }
                 }
                 
@@ -264,7 +260,7 @@ Rectangle {
                 height: 40
                 
                 border.color: "gray"
-                gradient: targetView.currentIndex === index ? pageStyle.calSelect : pageStyle.backgroundGradient
+                gradient: targetView.currentIndex === index ? AccountStyle.calSelect : AccountStyle.backgroundGradient
                 Label {
                     id: targetText
                     anchors.fill: parent
@@ -272,8 +268,8 @@ Rectangle {
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
                     fontSizeMode: Text.Fit
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
                 }
                 MouseArea {
                     anchors.fill: parent
@@ -331,14 +327,14 @@ Rectangle {
                 width: subView.width
                 height: subView.height * .07
                 fontSizeMode: Text.Fit
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 
                 verticalAlignment: Qt.AlignVCenter
                 horizontalAlignment: Qt.AlignHCenter
                 
                 background: Rectangle {
-                    gradient: pageStyle.goldHeader
+                    gradient: AccountStyle.goldHeader
                 }
             }
 
@@ -346,7 +342,7 @@ Rectangle {
             delegate: Rectangle {
                 height: 60
                 width: subView.width
-                gradient: pageStyle.backgroundGradient
+                gradient: AccountStyle.backgroundGradient
                 border.color: "gray"
                 
                 Column {
@@ -358,8 +354,8 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         fontSizeMode: Text.Fit
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.title.size
+                        font.family: AccountStyle.core.name
+                        font.pixelSize: AccountStyle.title.size
                     }
                     
                     BudgetViewItem {

@@ -6,12 +6,9 @@ import "../Style"
 
 Popup {
     id: root
-    AccountStyle {
-        id: style
-    }
 
     background: Rectangle {
-        gradient: style.backgroundGradient
+        gradient: AccountStyle.backgroundGradient
         border.color: "gold"
     }
 
@@ -38,11 +35,11 @@ Popup {
             Layout.preferredWidth: root.width
             Layout.columnSpan: 3
             background: Rectangle {
-                gradient: style.goldHeader
+                gradient: AccountStyle.goldHeader
             }
 
-            font.family: style.title.name
-            font.pixelSize: style.title.size
+            font.family: AccountStyle.title.name
+            font.pixelSize: AccountStyle.title.size
             fontSizeMode: Text.Fit
             horizontalAlignment: Qt.AlignHCenter
             verticalAlignment: Qt.AlignVCenter
@@ -56,13 +53,13 @@ Popup {
         //            Layout.preferredHeight: root.height * 0.34
         //            Layout.preferredWidth: root.width * 0.47
 
-        //            font.family: style.title.name
-        //            font.pixelSize: style.title.size
+        //            font.family: AccountStyle.title.name
+        //            font.pixelSize: AccountStyle.title.size
         //            fontSizeMode: Text.Fit
         //            horizontalAlignment: Qt.AlignHCenter
         //            verticalAlignment: Qt.AlignVCenter
         //            background: Rectangle {
-        //                gradient: style.goldHeader
+        //                gradient: AccountStyle.goldHeader
         //            }
         //        }
 
@@ -98,7 +95,7 @@ Popup {
 
 
             background: Rectangle {
-                gradient: parent.pressed ? style.darkGoldButton : style.goldButton
+                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 MouseArea {
                     anchors.fill: parent
                     acceptedButtons: Qt.NoButton
@@ -119,7 +116,7 @@ Popup {
             }
 
             background: Rectangle {
-                gradient: parent.pressed ? style.darkGoldButton : style.goldButton
+                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 MouseArea {
                     anchors.fill: parent
                     acceptedButtons: Qt.NoButton

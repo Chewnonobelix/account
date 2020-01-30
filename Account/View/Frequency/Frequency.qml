@@ -3,13 +3,9 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.13
 
 import "../Core" as C
-import "../Style" as S
+import "../Style"
 
 Rectangle {    
-    S.AccountStyle {
-        id: pageStyle
-    }
-    
     color: "transparent"
     border.color: "gold"
     
@@ -18,13 +14,13 @@ Rectangle {
         spacing: height * 0.02
         Label {
             text: qsTr("Frequency")
-            font.family: pageStyle.title.name
-            font.pixelSize: pageStyle.title.size
+            font.family: AccountStyle.title.name
+            font.pixelSize: AccountStyle.title.size
             fontSizeMode: Text.Fit
             horizontalAlignment: Qt.AlignHCenter
             verticalAlignment: Qt.AlignVCenter
             background: Rectangle {
-                gradient: pageStyle.goldHeader
+                gradient: AccountStyle.goldHeader
             }
             
             Layout.preferredHeight: parent.height * 0.05
@@ -61,8 +57,8 @@ Rectangle {
                 contentItem: Label {
                     text: Qt.formatDate(modelData.date, "dd-MM-yyyy")
                     fontSizeMode: Text.Fit
-                    font.family: pageStyle.core.name
-                    font.pixelSize: pageStyle.core.size
+                    font.family: AccountStyle.core.name
+                    font.pixelSize: AccountStyle.core.size
                     horizontalAlignment: Qt.AlignHCenter
                     verticalAlignment: Qt.AlignVCenter
                     
@@ -72,7 +68,7 @@ Rectangle {
             
             highlightMoveDuration: 0            
             highlight: Rectangle {
-                gradient: pageStyle.calSelect
+                gradient: AccountStyle.calSelect
             }
         }
         

@@ -32,11 +32,7 @@ Rectangle {
         
         add.enabled = Qt.binding(function() {return model ? !model.isClose : false})
     }
-    
-    AccountStyle {
-        id: pageStyle
-    }    
-    
+        
     color: "transparent"
     
     Adding {
@@ -93,12 +89,12 @@ Rectangle {
                         header: Rectangle {
                             height: listComponent.height * .07
                             width: listComponent.width
-                            gradient: pageStyle.goldHeader
+                            gradient: AccountStyle.goldHeader
                             Label {
                                 anchors.fill: parent
                                 text: modelData
-                                font.pixelSize: pageStyle.title.size
-                                font.family: pageStyle.title.name
+                                font.pixelSize: AccountStyle.title.size
+                                font.family: AccountStyle.title.name
                                 fontSizeMode: Text.Fit
                                 horizontalAlignment: Qt.AlignHCenter
                                 verticalAlignment: Qt.AlignVCenter
@@ -108,12 +104,12 @@ Rectangle {
                         footer: Rectangle {
                             height: listComponent.height * .05
                             width: listComponent.width
-                            gradient: pageStyle.goldHeader
+                            gradient: AccountStyle.goldHeader
                             Label {
                                 anchors.fill: parent
                                 text: root.model.totalForMember(modelData).value
-                                font.pixelSize: pageStyle.title.size
-                                font.family: pageStyle.title.name
+                                font.pixelSize: AccountStyle.title.size
+                                font.family: AccountStyle.title.name
                                 fontSizeMode: Text.Fit
                                 horizontalAlignment: Qt.AlignHCenter
                                 verticalAlignment: Qt.AlignVCenter
@@ -121,7 +117,7 @@ Rectangle {
                         }
                         
                         highlight: Rectangle {
-                            gradient: pageStyle.calSelect
+                            gradient: AccountStyle.calSelect
                         }
                         
                         highlightMoveDuration: 0
@@ -129,7 +125,7 @@ Rectangle {
                         delegate: Rectangle {
                             height: listComponent.height * .07
                             width: listComponent.width
-                            gradient: pageStyle.unselectView
+                            gradient: AccountStyle.unselectView
                             
                             
                             MouseArea {
@@ -159,8 +155,8 @@ Rectangle {
                             Label {
                                 anchors.fill: parent
                                 text: modelData ? modelData.value : 0
-                                font.pixelSize: pageStyle.title.size
-                                font.family: pageStyle.title.name
+                                font.pixelSize: AccountStyle.title.size
+                                font.family: AccountStyle.title.name
                                 fontSizeMode: Text.Fit
                                 horizontalAlignment: Qt.AlignHCenter
                                 verticalAlignment: Qt.AlignVCenter
@@ -184,8 +180,8 @@ Rectangle {
             
             onClicked: addingid.open()
             
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size      
+            font.family: AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size      
             
             background: Rectangle {
                 MouseArea{
@@ -193,7 +189,7 @@ Rectangle {
                     cursorShape: Qt.PointingHandCursor
                     anchors.fill: parent
                 }
-                gradient: pageStyle.goldButton
+                gradient: AccountStyle.goldButton
             }            
         }
         
@@ -208,8 +204,8 @@ Rectangle {
             Layout.columnSpan: 1 
             text: qsTr("Remove")
             
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size            
+            font.family: AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size            
             
             signal s_remove()
             property var  currentModel: null
@@ -227,7 +223,7 @@ Rectangle {
                     cursorShape: Qt.PointingHandCursor
                     anchors.fill: parent
                 }
-                gradient: pageStyle.goldButton
+                gradient: AccountStyle.goldButton
             }
             
             onClicked: {
@@ -257,15 +253,15 @@ Rectangle {
                 height: parent.height * 0.49
                 
                 header: Rectangle {
-                    gradient: pageStyle.goldHeader
+                    gradient: AccountStyle.goldHeader
                     height: recap.height * 0.10
                     width: recap.width
                     
                     Label {
                         anchors.fill: parent
                         text: qsTr("Global abstract")
-                        font.family: pageStyle.title.name
-                        font.pixelSize: pageStyle.title.size
+                        font.family: AccountStyle.title.name
+                        font.pixelSize: AccountStyle.title.size
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Qt.AlignHCenter
                         verticalAlignment: Qt.AlignVCenter
@@ -273,15 +269,15 @@ Rectangle {
                 }
                 
                 delegate: Rectangle {
-                    gradient: pageStyle.unselectView
+                    gradient: AccountStyle.unselectView
                     width: recap.width
                     height: recap.height * .07
                     
                     Label {
                         anchors.fill: parent
                         text: modelData.id + ": " + modelData.total.value + "€"
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
+                        font.family: AccountStyle.core.name
+                        font.pixelSize: AccountStyle.core.size
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Qt.AlignHCenter
                         verticalAlignment: Qt.AlignVCenter
@@ -301,15 +297,15 @@ Rectangle {
                 height: parent.height * 0.49
                 
                 header: Rectangle {
-                    gradient: pageStyle.goldHeader
+                    gradient: AccountStyle.goldHeader
                     height: recap.height * 0.10
                     width: recap.width
                     
                     Label {
                         anchors.fill: parent
                         text: qsTr("Transaction order")
-                        font.family: pageStyle.title.name
-                        font.pixelSize: pageStyle.title.size
+                        font.family: AccountStyle.title.name
+                        font.pixelSize: AccountStyle.title.size
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Qt.AlignHCenter
                         verticalAlignment: Qt.AlignVCenter                        
@@ -317,15 +313,15 @@ Rectangle {
                 }
                 
                 delegate: Rectangle {
-                    gradient: pageStyle.unselectView
+                    gradient: AccountStyle.unselectView
                     width: recap.width
                     height: recap.height * .07
                     
                     Label {
                         anchors.fill: parent
                         text: modelData.from + qsTr(" to ") + modelData.to + ": " + modelData.value + "€"
-                        font.family: pageStyle.core.name
-                        font.pixelSize: pageStyle.core.size
+                        font.family: AccountStyle.core.name
+                        font.pixelSize: AccountStyle.core.size
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Qt.AlignHCenter
                         verticalAlignment: Qt.AlignVCenter
@@ -369,8 +365,8 @@ Rectangle {
             Layout.rowSpan: 1
             Layout.columnSpan: 1 
             
-            font.family: pageStyle.title.name
-            font.pixelSize: pageStyle.title.size
+            font.family: AccountStyle.title.name
+            font.pixelSize: AccountStyle.title.size
             fontSizeMode: Text.Fit
             
             verticalAlignment: Qt.AlignVCenter

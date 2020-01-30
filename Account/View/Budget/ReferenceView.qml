@@ -6,11 +6,7 @@ import QtQuick.Layouts 1.12
 import "../Style"
 import "../Core"
 
-Popup {
-    AccountStyle {
-        id: pageStyle
-    }
-    
+Popup {    
     CoreModel {
         id: models
     }
@@ -22,7 +18,7 @@ Popup {
     contentItem: Rectangle {
         id: rectWindow
         anchors.fill: parent
-        gradient: pageStyle.backgroundGradient
+        gradient: AccountStyle.backgroundGradient
         
         property string budgetName
         border.color: "gold"
@@ -44,8 +40,8 @@ Popup {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 fontSizeMode: Text.Fit
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 
                 Layout.preferredHeight: root.height * 0.25
                 Layout.preferredWidth:  root.width * 0.47
@@ -71,8 +67,8 @@ Popup {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 fontSizeMode: Text.Fit
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 
                 Layout.preferredHeight: root.height * 0.25
                 Layout.preferredWidth:  root.width * 0.47
@@ -99,8 +95,8 @@ Popup {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 fontSizeMode: Text.Fit
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 
                 Layout.preferredHeight: root.height * 0.25
                 Layout.preferredWidth:  root.width * 0.47
@@ -124,12 +120,12 @@ Popup {
                 model: models.freqModel
                 textRole: "name"
                 Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: AccountStyle.goldButton
                     anchors.fill: parent
                 }
                 
-                font.family: pageStyle.core.name
-                font.pixelSize: pageStyle.core.size
+                font.family: AccountStyle.core.name
+                font.pixelSize: AccountStyle.core.size
                 
                 property int currentRole: 0
                 
@@ -139,7 +135,7 @@ Popup {
                     width: freqCombo.width
                     contentItem: Rectangle {
                         anchors.fill: parent
-                        gradient: pageStyle.goldButton
+                        gradient: AccountStyle.goldButton
                         MouseArea {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
@@ -152,8 +148,8 @@ Popup {
                             horizontalAlignment: Qt.AlignHCenter
                             text: name
                             fontSizeMode: Text.Fit
-                            font.family: pageStyle.core.name
-                            font.pixelSize: pageStyle.core.size
+                            font.family: AccountStyle.core.name
+                            font.pixelSize: AccountStyle.core.size
                             
                         }
                     }
@@ -173,7 +169,7 @@ Popup {
                 Layout.alignment: Qt.AlignLeft                
                 
                 background: Rectangle {
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
             }
             
@@ -189,7 +185,7 @@ Popup {
                 Layout.alignment: Qt.AlignRight                
                 
                 background: Rectangle {
-                    gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
             }
             

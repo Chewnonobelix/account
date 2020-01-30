@@ -2,15 +2,12 @@ import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.12
-import "../Style" as S
+import "../Style"
 import "../Frequency" as F
 
 Item {
     id: root
     objectName: "info"
-    S.AccountStyle {
-        id: pageStyle
-    }
     
     property var model: ee.entry
     

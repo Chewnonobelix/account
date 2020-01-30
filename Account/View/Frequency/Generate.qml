@@ -2,7 +2,7 @@ import QtQuick 2.13
 import QtQuick.Controls 2.5
 import QtQuick.Window 2.12
 import QtQuick.Layouts 1.13
-import "../Style" as S
+import "../Style"
 import "../Core" as C
 
 Popup {
@@ -14,11 +14,7 @@ Popup {
     id: generateWin
     
     property var pcenter
-    
-    S.AccountStyle{
-        id: pageStyle
-    }
-    
+        
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.NoButton
@@ -34,13 +30,13 @@ Popup {
     bottomPadding: l.height * 0.05
     
     background: Rectangle {
-        gradient: pageStyle.backgroundGradient
+        gradient: AccountStyle.backgroundGradient
         border.color: "gold"        
     }
 
     contentItem: Rectangle {
         id: visbleRect
-        gradient: pageStyle.unselectView
+        gradient: AccountStyle.unselectView
 
         anchors.centerIn: parent
         clip: false     
@@ -52,8 +48,8 @@ Popup {
                 Layout.row: 0
                 Layout.column: 0
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size2
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size2
                 fontSizeMode: Text.Fit
                 text: qsTr("From")
             }
@@ -74,8 +70,8 @@ Popup {
                 Layout.column: 1
                 text:qsTr("To")
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size2
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size2
                 fontSizeMode: Text.Fit
             }
             
@@ -111,7 +107,7 @@ Popup {
                 }
                 
                 background: Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: AccountStyle.goldButton
                 }
             }
             
@@ -125,7 +121,7 @@ Popup {
                 
                 
                 background: Rectangle {
-                    gradient: pageStyle.goldButton
+                    gradient: AccountStyle.goldButton
                 }
             }
         }

@@ -7,7 +7,7 @@ import QtQuick.Controls 2.13
 import QtQuick.Window 2.13
 
 import "../Budget" as B
-import "../Style" as S
+import "../Style"
 import "../Frequency" as F
 
 Page {
@@ -19,11 +19,7 @@ Page {
     
     property int v_dateMonth: cal.currentMonth + 1
     property int v_dateYear: cal.currentYear
-    
-    S.AccountStyle {
-        id: pageStyle
-    }
-    
+        
     background: Rectangle {
         color: "transparent"
     }
@@ -55,8 +51,8 @@ Page {
         Button {
             id: add
             text: qsTr("Add")
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+            font.family: AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size
             enabled: accountSelect.model.length > 0
             Layout.column: 0
             Layout.row: 1
@@ -72,7 +68,7 @@ Page {
             Rectangle {
                 id: rectAdd
                 anchors.fill: parent
-                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
             }
             
             MouseArea {
@@ -90,8 +86,8 @@ Page {
         Button {
             id: remove
             text: qsTr("Remove")
-            font.family: pageStyle.core.name
-            font.pixelSize: pageStyle.core.size
+            font.family: AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size
             property int index: view.currentRow
             enabled: infoView.visible
             Layout.column: 1
@@ -116,7 +112,7 @@ Page {
                 id: rectRemove
                 
                 anchors.fill: parent
-                gradient: parent.pressed ? pageStyle.darkGoldButton : pageStyle.goldButton
+                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
             }
             onClicked: {
                 if (enabled) {
@@ -139,15 +135,15 @@ Page {
                 objectName: "quickViewDate"
                 property date currentDate
                 background: Rectangle {
-                    gradient: pageStyle.goldHeader
+                    gradient: AccountStyle.goldHeader
                 }
                 
                 text: qsTr("Budget quick view") + ": " + Qt.formatDate(currentDate, "dd-MM-yyyy")
                 height: parent.height * .10
                 width: parent.width
                 fontSizeMode: Text.Fit
-                font.family: pageStyle.title.name
-                font.pixelSize: pageStyle.title.size
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 clip: true
@@ -273,8 +269,8 @@ Page {
                             property string est: view.model[styleData.row] && view.model[styleData.row].info.estimated ? "*" : ""
                             
                             text: styleData.value === "income" ? "+" + est : "-" + est
-                            font.family: pageStyle.core.name
-                            font.pixelSize: pageStyle.core.size
+                            font.family: AccountStyle.core.name
+                            font.pixelSize: AccountStyle.core.size
                             fontSizeMode: Text.Fit
                             horizontalAlignment: Text.AlignHCenter
                             anchors.fill: parent
@@ -304,8 +300,8 @@ Page {
                         
                         Label {
                             text: Qt.formatDate(styleData.value, "dd-MM-yyyy")
-                            font.family: pageStyle.core.name
-                            font.pixelSize: pageStyle.core.size
+                            font.family: AccountStyle.core.name
+                            font.pixelSize: AccountStyle.core.size
                             fontSizeMode: Text.Fit
                             horizontalAlignment: Text.AlignHCenter
                             anchors.fill: parent
@@ -335,8 +331,8 @@ Page {
                         Label {
                             text: styleData.value
                             clip: true
-                            font.family: pageStyle.core.name
-                            font.pixelSize: pageStyle.core.size
+                            font.family: AccountStyle.core.name
+                            font.pixelSize: AccountStyle.core.size
                             fontSizeMode: Text.Fit
                             horizontalAlignment: Text.AlignHCenter
                             anchors.fill: parent
@@ -367,8 +363,8 @@ Page {
                         Label {
                             text: styleData.value
                             clip: true
-                            font.family: pageStyle.core.name
-                            font.pixelSize: pageStyle.core.size
+                            font.family: AccountStyle.core.name
+                            font.pixelSize: AccountStyle.core.size
                             fontSizeMode: Text.Fit
                             verticalAlignment: Text.AlignVCenter
                             anchors.fill: parent
@@ -399,8 +395,8 @@ Page {
                         Label {
                             text: styleData.value
                             clip: true
-                            font.family: pageStyle.core.name
-                            font.pixelSize: pageStyle.core.size
+                            font.family: AccountStyle.core.name
+                            font.pixelSize: AccountStyle.core.size
                             fontSizeMode: Text.Fit
                             horizontalAlignment: Text.AlignHCenter
                             anchors.fill: parent
@@ -409,7 +405,7 @@ Page {
                 }
                 
                 headerDelegate: Rectangle {
-                    gradient: styleData.pressed ? pageStyle.darkGoldButton : pageStyle.goldHeader
+                    gradient: styleData.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldHeader
                     
                     height: view.height * 0.03
                     anchors.centerIn: parent
@@ -421,7 +417,7 @@ Page {
                         height: parent.height * .8
                         anchors.centerIn: parent
                         text: styleData.value
-                        font.family: pageStyle.title.name
+                        font.family: AccountStyle.title.name
                         font.pixelSize: height * 0.85
                         fontSizeMode: Text.Fit
                         
@@ -472,7 +468,7 @@ Page {
                     width: view.width
                     height: view.height * .03
                     
-                    gradient: view.model[styleData.row] && styleData.selected ? view.model[styleData.row].type === "outcome" ? pageStyle.selectViewOut : pageStyle.selectViewIn : pageStyle.unselectView
+                    gradient: view.model[styleData.row] && styleData.selected ? view.model[styleData.row].type === "outcome" ? AccountStyle.selectViewOut : AccountStyle.selectViewIn : AccountStyle.unselectView
                     
                 }
                 

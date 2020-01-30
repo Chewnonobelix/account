@@ -1,0 +1,2 @@
+module AccountStyles
+singleton AccountStyle 1.0 AccountStyle.qml
