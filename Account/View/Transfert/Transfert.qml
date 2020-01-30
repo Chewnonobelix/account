@@ -29,9 +29,7 @@ Popup {
     }
 
 
-    background: Rectangle {
-        border.color: "gold"
-        gradient: AccountStyle.backgroundGradient
+    background: AccountBackground {
     }
 
     C.CalendarButton {

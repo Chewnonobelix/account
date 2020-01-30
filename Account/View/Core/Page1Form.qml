@@ -20,8 +20,8 @@ Page {
     property int v_dateMonth: cal.currentMonth + 1
     property int v_dateYear: cal.currentYear
         
-    background: Rectangle {
-        color: "transparent"
+    background: AccountBackground {
+        invisible: true
     }
     
     GridLayout {

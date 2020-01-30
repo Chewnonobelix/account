@@ -434,11 +434,7 @@ Current Version beta 0.9")
                         fontSizeMode: Text.Fit
                     }
 
-                    background: Rectangle {
-                        anchors.fill: parent
-                        gradient: AccountStyle.backgroundGradient
-                        border.color: "gold"
-                    }
+                    background: AccountBackground {}
 
                     AccountButton {
                         text: qsTr("Ok")
@@ -470,11 +466,7 @@ Current Version beta 0.9")
                         fontSizeMode: Text.Fit
                     }
 
-                    background: Rectangle {
-                        anchors.fill: parent
-                        gradient: AccountStyle.backgroundGradient
-                        border.color: "gold"
-                    }
+                    background: AccountBackground {}
 
                     AccountButton {
                         text: qsTr("Ok")
@@ -487,11 +479,7 @@ Current Version beta 0.9")
         }
     }
 
-    background: Rectangle {
-        id: backRect
-        anchors.fill: parent
-        gradient: AccountStyle.backgroundGradient
-    }
+    background: AccountBackground {}
 
     header: Rectangle {
         height: mainWindow.height * .05
@@ -640,11 +628,7 @@ Current Version beta 0.9")
             width: labelDelete.width * 1.2
             height: (labelDelete.height + delOk.height + 3 * delOk.padding) * 1.1
 
-            background: Rectangle {
-                anchors.fill: parent
-                gradient: AccountStyle.backgroundGradient
-                border.color: "gold"
-            }
+            background: AccountBackground {}
 
             Label {
                 id: labelDelete

@@ -20,9 +20,7 @@ AccountButton {
     
     Popup {
         id: pop
-        background: Rectangle {
-            color: "transparent"
-        }
+        background: AccountBackground{invisible: true}
         
         Calendar {
             id: dateAdding
@@ -38,11 +36,9 @@ AccountButton {
             style: CalendarStyle {
                 gridColor: "goldenrod"
                 gridVisible: true
-                background: Rectangle {
+                background: AccountBackground {
                     height: 250
                     width: 250
-                    gradient: AccountStyle.backgroundGradient
-                    border.color: "gold"
                 }
 
                 dayDelegate: Rectangle {
@@ -78,55 +74,25 @@ AccountButton {
                         font.pixelSize: height * 0.8
                     }
 
-                    Button {
+                    AccountButton {
                         id: nextMonth
                         anchors.right: parent.right
                         width: dateAdding.width/14
                         height: parent.height
                         text: ">"
-                        font.family: AccountStyle.core.name
-                        font.pixelSize: AccountStyle.core.size
-
-                        background: Rectangle {
-                            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                            border.color: "darkgoldenrod"
-                            anchors.fill: parent
-                        }
-
-                        MouseArea {
-                            z: -1
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            acceptedButtons: Qt.NoButton
-                        }
 
                         onClicked: {
                             dateAdding.showNextMonth()
                         }
                     }
 
-                    Button {
+                    AccountButton {
                         id: prevMonth
                         anchors.left: parent.left
                         width: dateAdding.width/14
                         height: parent.height
-                        font.family: AccountStyle.core.name
-                        font.pixelSize: AccountStyle.core.size
 
                         text: "<"
-
-                        background: Rectangle {
-                            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                            border.color: "darkgoldenrod"
-                        }
-
-                        MouseArea {
-                            z: -1
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            acceptedButtons: Qt.NoButton
-                        }
-
 
                         onClicked: {
                             dateAdding.showPreviousMonth()

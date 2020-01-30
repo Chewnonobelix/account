@@ -20,10 +20,7 @@ Popup {
         anchors.right: parent.right
     }
 
-    background: Rectangle {
-        gradient: AccountStyle.backgroundGradient
-        border.color: "gold"
-    }
+    background: AccountBackground{}
 
     property var tab: []
     

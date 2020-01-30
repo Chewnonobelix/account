@@ -118,8 +118,8 @@ Calendar {
         gridVisible: true
         gridColor: "goldenrod"
 
-        background: Rectangle {
-            color: "transparent"
+        background: AccountBackground {
+            invisible: true
         }
 
         navigationBar: Rectangle {

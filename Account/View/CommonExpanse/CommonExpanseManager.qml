@@ -22,10 +22,7 @@ Rectangle {
         signal s_accepted(string name)
 
         anchors.centerIn: parent
-        background: Rectangle {
-            gradient: AccountStyle.backgroundGradient
-            border.color: "gold"
-        }
+        background: AccountBackground{}
 
         GridLayout {
             anchors.fill: parent
@@ -137,25 +134,13 @@ Rectangle {
                 width: parent.width
                 height: parent.height * 0.05
                 spacing: width * 0.02
-                Button {
+                AccountButton {
                     width: parent.width * .49
                     height: parent.height
                     text: qsTr("Add common expanse")
                     onClicked: popAddCommon.open()
-
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
-
-                    background: Rectangle {
-                        MouseArea{
-                            acceptedButtons: Qt.NoButton
-                            cursorShape: Qt.PointingHandCursor
-                            anchors.fill: parent
-                        }
-
-                        gradient: AccountStyle.goldButton
-                    }
                 }
+                
                 AccountButton {
                     id: removeCommon
                     objectName: "removeCommon"

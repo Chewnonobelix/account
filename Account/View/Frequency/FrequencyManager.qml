@@ -506,10 +506,9 @@ Rectangle {
                 highlightMoveDuration: 0
                 delegate: Control2.ItemDelegate {
                     objectName: "entryDel"
-                    background: Rectangle {
-                        anchors.fill: parent
+                    background: AccountBackground {
                         property var index: parent.index
-                        gradient: AccountStyle.unselectView
+                        invisible: true
                     }
                     
                     highlighted: ListView.isCurrentItem

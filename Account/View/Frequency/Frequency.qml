@@ -43,8 +43,8 @@ Rectangle {
                 width: ListView.view.width
                 height: ListView.view.height * 0.07
                 
-                background: Rectangle {
-                    color: "transparent"
+                background: AccountBackground {
+                    invisible: true
                 }
 
                 MouseArea {

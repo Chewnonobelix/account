@@ -29,9 +29,7 @@ Popup {
     topPadding: l.height * 0.05
     bottomPadding: l.height * 0.05
     
-    background: Rectangle {
-        gradient: AccountStyle.backgroundGradient
-        border.color: "gold"        
+    background: AccountBackground {
     }
 
     contentItem: Rectangle {

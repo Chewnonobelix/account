@@ -48,11 +48,7 @@ Popup {
     topPadding: height * 0.05
     bottomPadding: height * 0.05
     
-    background: Rectangle {
-        gradient: AccountStyle.backgroundGradient
-        border.color: "darkgoldenrod"
-        id: backRect
-    }
+    background: AccountBackground{}
     
     
     contentItem: Rectangle {

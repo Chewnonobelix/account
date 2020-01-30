@@ -7,9 +7,7 @@ import "../Style"
 Popup {
     id: root
 
-    background: Rectangle {
-        gradient: AccountStyle.backgroundGradient
-        border.color: "gold"
+    background: AccountBackground {
     }
 
     topPadding: height * 0.02

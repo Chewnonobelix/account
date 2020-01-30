@@ -22,9 +22,8 @@ Window {
     property var incomeCats: []
     property var outcomeCats: []
 
-    Rectangle {
+    AccountBackground {
         anchors.fill: parent
-        gradient: AccountStyle.backgroundGradient
     }
 
     ScrollView {
