@@ -39,7 +39,8 @@ SOURCES += \
     Controller/languagecontroller.cpp \
     Controller/controllertransfert.cpp
 
-RESOURCES += View/qml.qrc
+RESOURCES += \
+    View/Account.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH = $${PWD}\View

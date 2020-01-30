@@ -6,8 +6,8 @@
         <file>qtquickcontrols2.conf</file>
         <file>Core/InformationView.qml</file>
         <file>Core/Adding.qml</file>
-        <file>Core/DoubleSpinBox.qml</file>
-        <file>Core/MultiCalendar.qml</file>
+        <file>Functionnal/DoubleSpinBox.qml</file>
+        <file>Functionnal/MultiCalendar.qml</file>
         <file>Style/AccountStyle.qml</file>
         <file>Core/CheckEstimated.qml</file>
         <file>Style/BASKVILL.TTF</file>

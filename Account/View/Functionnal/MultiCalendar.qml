@@ -128,7 +128,7 @@ Calendar {
 
             gradient: AccountStyle.goldHeader
 
-            Label {
+            AccountLabel {
                 id:monthLabel
                 height: parent.height
                 color:"black"
@@ -182,14 +182,12 @@ Calendar {
             anchors.top: navigationBar.bottom
 
             border.color: "darkgoldenrod"
-            Label {
+            AccountLabel {
                 id: wndLabel
                 height: parent.height
                 anchors.centerIn: parent
                 text: styleData.weekNumber
-                font.family: AccountStyle.title.name
                 font.pixelSize: height * 0.3
-                verticalAlignment: Text.AlignVCenter
             }
         }
 
@@ -200,12 +198,10 @@ Calendar {
             height: multiCal.height/16
             border.color: "darkgoldenrod"
 
-            Label {
+            AccountLabel {
                 anchors.centerIn: parent
                 height: parent.height
-                font.family: AccountStyle.title.name
                 font.pixelSize: height * 0.55
-                verticalAlignment: Text.AlignVCenter
                 text: Qt.locale().dayName(styleData.dayOfWeek, Locale.ShortFormat)
             }
         }
@@ -285,12 +281,11 @@ Calendar {
                 multiCal.s_datesChanged()
             }
 
-            Label {
+            AccountLabel {
                 id: c_date
                 anchors.centerIn: parent
                 text: styleData.date.getDate()
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
+
                 color:  parent.delCurrentMonth ? "black" : "grey"
                 onTextChanged: {
 
