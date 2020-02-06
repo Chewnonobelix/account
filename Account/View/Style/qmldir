@@ -1,2 +1,2 @@
-module AccountStyles
+module Account.View.Style
 singleton AccountStyle 1.0 AccountStyle.qml

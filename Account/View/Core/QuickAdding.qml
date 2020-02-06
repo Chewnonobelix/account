@@ -10,10 +10,6 @@ Window {
     height: 500
     width: height * 9 / 16
 
-    CoreModel {
-        id: cModels
-    }
-
     flags: Qt.Popup
 
     onActiveChanged: if(!active) close()
@@ -46,7 +42,7 @@ Window {
             }
 
             AccountComboBox {
-                model: cModels.typeModel
+                model: CoreModel.typeModel
                 id: typeComboQuick
                 objectName: "type"
                 valueRole: "type"

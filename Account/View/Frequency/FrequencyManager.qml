@@ -10,10 +10,6 @@ import "../Style"
 import "../Core"
 
 Rectangle {    
-    CoreModel {
-        id: models
-    }
-    
     ListModel {
         id: testModel
     }
@@ -202,7 +198,7 @@ Rectangle {
                 onS_catChanged: if(entry && enabled) catChanged(frequencyList.currentModel.id, cat, "manager")
                 
                 onEntryChanged: {
-                    typeCombo.currentIndex = models.typeModel.find(entry ? entry.type: "outcome")
+                    typeCombo.currentIndex = CoreModel.typeModel.find(entry ? entry.type: "outcome")
                 }
                 
                 Component.onCompleted: {
@@ -227,7 +223,7 @@ Rectangle {
                 enabled: ref.enabled
                 
                 
-                model: models.freqModel
+                model: CoreModel.freqModel
                 textRole: "name"
                 signal s_freq(int i, int f)
                 
@@ -240,7 +236,7 @@ Rectangle {
                 id: typeCombo
                 objectName: "type"
                 
-                model: models.typeModel
+                model: CoreModel.typeModel
                 
                 Layout.preferredHeight: parent.usableHeight * 0.05
                 Layout.preferredWidth: parent.usableWidth * 0.24

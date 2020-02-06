@@ -7,11 +7,7 @@ import "../Style"
 import "../Core"
 import "../Functionnal"
 
-Popup {    
-    CoreModel {
-        id: models
-    }
-    
+Popup {        
     id: root
     
     padding: 0
@@ -111,12 +107,12 @@ Popup {
                 Layout.columnSpan: 2
                 Layout.alignment: Qt.AlignRight                
                 
-                model: models.freqModel
+                model: CoreModel.freqModel
                 textRole: "name"
                 
                 property int currentRole: 0
                 
-                onCurrentIndexChanged: currentRole = models.freqModel.get(currentIndex).role
+                onCurrentIndexChanged: currentRole = CoreModel.freqModel.get(currentIndex).role
             }
             
             AccountButton {

@@ -1,0 +1,2 @@
+module Account.View.Core
+singleton CoreModel 1.0 CoreModel.qml

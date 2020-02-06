@@ -17,11 +17,7 @@ Popup {
         valueLabel.text = ""
         spinbox.value = 0
     }
-        
-    CoreModel {
-        id: models
-    }
-    
+            
     signal accept()
     
     property real v_val: spinbox.realValue
@@ -199,7 +195,7 @@ Popup {
                 id: accountSelect
                 objectName: "type"
                 textRole: "name"
-                model: models.typeModel
+                model: CoreModel.typeModel
                 
                 Layout.preferredHeight: parent.secondRow
                 Layout.preferredWidth: root.width * 0.25

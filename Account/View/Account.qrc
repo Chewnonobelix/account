@@ -42,5 +42,6 @@
         <file>Style/AccountCalendar.qml</file>
         <file>Style/qmldir</file>
         <file>Style/AccountBackground.qml</file>
+        <file>Core/qmldir</file>
     </qresource>
 </RCC>

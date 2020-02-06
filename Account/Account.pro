@@ -86,3 +86,5 @@ HEADERS += \
     Model/frequency.h
 
 RC_ICONS = $$PWD/View/Style/tray.ico
+
+DISTFILES +=
