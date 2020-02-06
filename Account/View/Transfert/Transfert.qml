@@ -101,7 +101,7 @@ Popup {
             }
         }
 
-        DoubleSpinBox {
+        AccountSpinbox {
             id: spinVal
             objectName: "spinVal"
         }

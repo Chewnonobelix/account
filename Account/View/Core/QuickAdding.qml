@@ -87,7 +87,7 @@ Window {
                 Layout.preferredWidth: root.width * .47
             }
 
-            DoubleSpinBox {
+            AccountSpinbox {
                 id: valueSpin
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47

@@ -101,7 +101,7 @@ GridLayout {
             width: parent.width
         }
         
-        DoubleSpinBox {
+        AccountSpinbox {
             id: spinbox
             
             height: parent.height * 0.59
@@ -109,8 +109,6 @@ GridLayout {
             enabled: !opening
             
             value: 0
-            font.family:  AccountStyle.core.name
-            font.pixelSize: AccountStyle.core.size
             
             ToolTip.text: qsTr("Change transaction's value")
             ToolTip.visible: hovered

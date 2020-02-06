@@ -75,7 +75,7 @@ Popup {
                 Layout.alignment: Qt.AlignLeft                
             }
             
-            DoubleSpinBox {
+            AccountSpinbox {
                 id: targetValue
                 objectName: "targetValue"
                 

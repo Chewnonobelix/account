@@ -180,10 +180,8 @@ Popup {
                 Layout.columnSpan: 1 
             }
             
-            DoubleSpinBox {
+            AccountSpinbox {
                 id: spinbox
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
                 
                 ToolTip.text: root.newAccount ? qsTr("Specify account opening value") : qsTr("Specify transaction's value")
                 ToolTip.visible: hovered
