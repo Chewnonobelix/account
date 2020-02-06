@@ -213,7 +213,7 @@ Rectangle {
                 }
             }
             
-            Control2.ComboBox {
+            AccountComboBox {
                 id: whenCombo
                 objectName: "whenCombo"
                 
@@ -233,33 +233,10 @@ Rectangle {
                 
                 onCurrentIndexChanged: {
                     if(down && ref.entry) s_freq(frequencyList.currentModel.id, model.get(currentIndex).role)
-                }
-                
-                background: Rectangle {
-                    anchors.fill: parent
-                    gradient: AccountStyle.goldButton
-                }
-                
-                delegate: Control2.ItemDelegate {
-                    width: typeCombo.width
-                    contentItem: Rectangle {
-                        anchors.fill: parent
-                        gradient: AccountStyle.goldButton
-                        AccountLabel {
-                            text: name
-                            anchors.fill: parent
-                        }
-                        MouseArea {
-                            anchors.fill: parent
-                            acceptedButtons: Qt.NoButton
-                            cursorShape: Qt.PointingHandCursor
-                        }
-                    }
-                }
-                
+                }                
             }
             
-            Control2.ComboBox {
+            AccountComboBox {
                 id: typeCombo
                 objectName: "type"
                 
@@ -277,33 +254,12 @@ Rectangle {
                 
                 textRole: "name"
                 valueRole: "type"
-                background: Rectangle {
-                    anchors.fill: parent
-                    gradient: AccountStyle.goldButton
-                }
                 
                 signal s_updateType(int id, string nType)
                 
                 onCurrentIndexChanged: {
                     if(ref.entry && down){ 
                         s_updateType(frequencyList.currentModel.id, model.get(currentIndex).type)
-                    }
-                }
-                
-                delegate: Control2.ItemDelegate {
-                    width: typeCombo.width
-                    contentItem: Rectangle {
-                        anchors.fill: parent
-                        gradient: AccountStyle.goldButton
-                        AccountLabel {
-                            text: name
-                            anchors.fill: parent
-                        }
-                        MouseArea {
-                            anchors.fill: parent
-                            acceptedButtons: Qt.NoButton
-                            cursorShape: Qt.PointingHandCursor
-                        }
                     }
                 }
             }

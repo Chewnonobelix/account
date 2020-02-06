@@ -45,53 +45,16 @@ Window {
                 text: qsTr("Quick adding")
             }
 
-            ComboBox {
+            AccountComboBox {
                 model: cModels.typeModel
                 id: typeComboQuick
                 objectName: "type"
                 valueRole: "type"
                 textRole: "name"
 
-                Layout.preferredHeight: root.height * .15
-                Layout.preferredWidth: root.width * .47
-
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
-
                 ToolTip.text: qsTr("Specify income or outcome")
                 ToolTip.visible: hovered
                 ToolTip.delay: 500
-
-                background:  Rectangle {
-                    gradient: AccountStyle.goldButton
-                    anchors.fill: parent
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    acceptedButtons: Qt.NoButton
-                }
-                delegate: ItemDelegate {
-                    width: typeComboQuick.width
-
-                    contentItem: Rectangle {
-                        gradient: AccountStyle.goldButton
-                        anchors.fill: parent
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            acceptedButtons: Qt.NoButton
-                        }
-                        AccountLabel {
-                            color: "black"
-                            text: name
-                            anchors.centerIn: parent
-                        }
-                    }
-
-                    highlighted: typeComboQuick.highlightedIndex === index
-                }
             }
 
             AccountHeader {

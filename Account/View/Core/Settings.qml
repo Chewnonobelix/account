@@ -51,7 +51,7 @@ Dialog {
                         text: qsTr("Language")
                     }
                     
-                    ComboBox {
+                    AccountComboBox {
                         objectName: "language"
                     }
                 }
@@ -99,7 +99,7 @@ Dialog {
             
             Component {
                 id: db
-                ComboBox {
+                AccountComboBox {
                     textRole: "text"
                     valueRole: "value"
                     

@@ -100,7 +100,7 @@ Popup {
                 Layout.alignment: Qt.AlignLeft                
             }
             
-            ComboBox {
+            AccountComboBox {
                 id: freqCombo
                 objectName: "freqCombo"
                 
@@ -113,35 +113,10 @@ Popup {
                 
                 model: models.freqModel
                 textRole: "name"
-                Rectangle {
-                    gradient: AccountStyle.goldButton
-                    anchors.fill: parent
-                }
-                
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
                 
                 property int currentRole: 0
                 
                 onCurrentIndexChanged: currentRole = models.freqModel.get(currentIndex).role
-                
-                delegate: ItemDelegate{
-                    width: freqCombo.width
-                    contentItem: Rectangle {
-                        anchors.fill: parent
-                        gradient: AccountStyle.goldButton
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            acceptedButtons: Qt.NoButton
-                        }
-                        
-                        AccountLabel {
-                            anchors.centerIn: parent
-                            text: name                            
-                        }
-                    }
-                }
             }
             
             AccountButton {

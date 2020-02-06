@@ -197,7 +197,7 @@ Popup {
                 Layout.columnSpan: 2 
             }
             
-            ComboBox {
+            AccountComboBox {
                 id: accountSelect
                 objectName: "type"
                 textRole: "name"
@@ -211,44 +211,10 @@ Popup {
                 Layout.columnSpan: 2 
                 
                 enabled: !root.newAccount
-                
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
-                
+                                
                 ToolTip.text: qsTr("Specify income or outcome")
                 ToolTip.visible: hovered
                 ToolTip.delay: 500
-                
-                background:  Rectangle {
-                    gradient: AccountStyle.goldButton
-                    anchors.fill: parent
-                }
-                
-                MouseArea {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    acceptedButtons: Qt.NoButton
-                }
-                delegate: ItemDelegate {
-                    width: accountSelect.width
-                    
-                    contentItem: Rectangle {
-                        gradient: AccountStyle.goldButton
-                        anchors.fill: parent
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            acceptedButtons: Qt.NoButton
-                        }
-                        AccountLabel {
-                            color: "black"
-                            text: name
-                            anchors.centerIn: parent
-                        }
-                    }
-                    
-                    highlighted: accountSelect.highlightedIndex === index
-                }
             }
             
             AccountButton {

@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.11
 import QtQuick.Window 2.12
 import "../Style"
 
-ComboBox {
+AccountComboBox {
     
     id: root
     
@@ -27,25 +27,13 @@ ComboBox {
             s_currentTextChanged(currentText)
         }
     }
-
-    MouseArea {
-        anchors.fill: parent
-        z: -1
-        cursorShape: Qt.PointingHandCursor
-        acceptedButtons: Qt.NoButton
-    }
     
     function setting(type) {
         var index = find(type)
         
         return index >= 0 ? index : model.lenth - 1
     }
-    
-    background: Rectangle {
-        anchors.fill: parent
-        gradient: AccountStyle.goldButton
-    }
-    
+        
     contentItem: TextInput {
         horizontalAlignment: Qt.AlignHCenter
         verticalAlignment: Qt.AlignVCenter

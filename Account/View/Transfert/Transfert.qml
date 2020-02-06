@@ -75,20 +75,9 @@ Popup {
         }
 
 
-        ComboBox {
+        AccountComboBox {
             id: fromCombo
             objectName: "fromCombo"
-
-            Rectangle {
-                anchors.fill: parent
-                gradient: AccountStyle.goldButton
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                acceptedButtons: Qt.NoButton
-            }
 
             onCurrentIndexChanged: {
                 if(currentIndex === 0) {
@@ -97,66 +86,17 @@ Popup {
                     toCombo.currentIndex = 0
                 }
             }
-
-            delegate: ItemDelegate {
-                width: fromCombo.width
-
-                contentItem: Rectangle {
-                    anchors.fill: parent
-                    gradient:  AccountStyle.goldButton
-                    Text {
-                        id: delegateText
-                        text: modelData
-                        anchors.centerIn: parent
-                    }
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        acceptedButtons: Qt.NoButton
-                    }
-                }
-            }
         }
 
         ComboBox {
             id: toCombo
             objectName: "toCombo"
 
-            Rectangle {
-                anchors.fill: parent
-                gradient: AccountStyle.goldButton
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                acceptedButtons: Qt.NoButton
-            }
-
             onCurrentIndexChanged: {
                 if(currentIndex === 0) {
                     fromCombo.currentIndex = 1
                 } else if(currentIndex === fromCombo.currentIndex) {
                     fromCombo.currentIndex = 0
-                }
-            }
-
-            delegate: ItemDelegate {
-                width: toCombo.width
-
-                contentItem: Rectangle {
-                    anchors.fill: parent
-                    gradient: AccountStyle.goldButton
-                    MouseArea {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
-                        acceptedButtons: Qt.NoButton
-                    }
-                    Text {
-                        id: delegateText2
-                        text: modelData
-                        anchors.centerIn: parent
-                    }
                 }
             }
         }
