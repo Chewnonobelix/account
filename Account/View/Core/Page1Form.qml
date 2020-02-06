@@ -6,10 +6,10 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 2.13
 import QtQuick.Window 2.13
 
-import "../Budget" as B
+//import Style 1.0
 import "../Style"
-import "../Frequency" as F
 import "../Functionnal"
+import "../Budget"
 
 Page {
     
@@ -114,7 +114,7 @@ Page {
                 clip: true
             }
             
-            B.BudgetView {
+            BudgetView {
                 id: budgetQuick
                 objectName: "budgetQuick"
                 

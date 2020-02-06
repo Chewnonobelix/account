@@ -1,2 +1,9 @@
-module Account.View.Style
+module Style
 singleton AccountStyle 1.0 AccountStyle.qml
+AccountButton 1.0 AccountButton.qml
+AccountLabel 1.0 AccountLabel.qml
+AccountHeader 1.0 AccountHeader.qml
+AccountCheckBox 1.0 AccountCheckBox.qml
+AccountSpinbox 1.0 AccountSpinbox.qml
+AccountBackground 1.0 AccountBackground.qml
+
