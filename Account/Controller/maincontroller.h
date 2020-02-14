@@ -39,6 +39,7 @@ private:
     
     void checkEstimated();
 
+    QList<QDate> dateList() const;    
 protected:
     bool event(QEvent*);
 
@@ -90,6 +91,8 @@ public slots:
     void languageChange();
     
     void loadFeatures();
+    
+    void updateQuickView();
 };
 
 

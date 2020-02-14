@@ -46,7 +46,7 @@ HEADERS +=  \
 INCLUDEPATH = ../Account
 
 RESOURCES += \
-    ../Account/View/qml.qrc
+    ../Account/View/Account.qrc
 
 DISTFILES += \
     ../Account/View/BASKVILL.TTF \

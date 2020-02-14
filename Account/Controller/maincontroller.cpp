@@ -53,6 +53,7 @@ int MainController::exec()
     if(calendar)
     {
         connect(calendar, SIGNAL(s_monthChanged()), this, SLOT(previewCalendar()));
+        connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(updateQuickView()));
         connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(selection()));
     }
     
@@ -184,6 +185,9 @@ int MainController::exec()
     connect(&m_settings, ControllerSettings::s_finish, this, MainController::loadFeatures);
     
     languageChange();
+    updateQuickView();
+    m_graph.exec();
+    
     return 0;
 }
 
@@ -457,19 +461,9 @@ void MainController::selection(int id)
         calculTotal();
     }
     
-    m_graph.exec();
-    QObject* calendar = m_engine.rootObjects().first()->findChild<QObject*>("cal");
-    QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));
-    QJSValue array = mp.read(calendar).value<QJSValue>();
-    QList<QDate> ld;
-    for(int i = 0; i < array.property("length").toInt(); i++)
-        ld<<QDate::fromString(array.property(i).toString(), "dd-MM-yyyy");
+    auto ld = dateList();
     
-    for(int i = 0; i < ld.size(); i++)
-        for(int j = i; j < ld.size(); j++)
-            if(ld[j] < ld[i])
-                ld.swapItemsAt(i,j);
-    
+    qDebug()<<ld;
     QList<Entry> ret;
     
     if(ld.isEmpty())
@@ -552,13 +546,34 @@ void MainController::selection(int id)
     
     //ld.isEmpty() ? m_budget->show(QDate::currentDate()) : m_budget->show(ld.first());
     
+}
+
+void MainController::updateQuickView()
+{
+    auto ld = dateList();
     QObject* quickView = m_engine.rootObjects().first()->findChild<QObject*>("quickViewDate");
     
     if(quickView)
     {
         quickView->setProperty("currentDate", ld.isEmpty() ? QDate::currentDate(): ld.first());
-    }
+    }    
+}
+
+QList<QDate> MainController::dateList() const
+{
+    QObject* calendar = m_engine.rootObjects().first()->findChild<QObject*>("cal");
+    QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));
+    QJSValue array = mp.read(calendar).value<QJSValue>();
+    QList<QDate> ld;
+    for(int i = 0; i < array.property("length").toInt(); i++)
+        ld<<QDate::fromString(array.property(i).toString(), "dd-MM-yyyy");
     
+    for(int i = 0; i < ld.size(); i++)
+        for(int j = i; j < ld.size(); j++)
+            if(ld[j] < ld[i])
+                ld.swapItemsAt(i,j);  
+    
+    return ld;
 }
 
 void MainController::accountChange(QString acc)
