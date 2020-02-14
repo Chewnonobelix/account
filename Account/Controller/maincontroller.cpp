@@ -452,7 +452,6 @@ void MainController::previewCalendar()
     }
 }
 
-
 void MainController::selection(int id)
 {
     if(id == -2)
@@ -463,7 +462,6 @@ void MainController::selection(int id)
     
     auto ld = dateList();
     
-    qDebug()<<ld;
     QList<Entry> ret;
     
     if(ld.isEmpty())
@@ -532,20 +530,11 @@ void MainController::selection(int id)
             
         }
         while(!found && skipper->property("pageIndex").toInt() <= maxPage);
-        
-        if(id == -1)
-        {
-            QMetaObject::invokeMethod(tab, "unselectAll");
-            QMetaObject::invokeMethod(tab, "reset");
-        }
     }
     
     QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
     if(head)
-        head->setProperty("selectionTotal", QVariant::fromValue(t));
-    
-    //ld.isEmpty() ? m_budget->show(QDate::currentDate()) : m_budget->show(ld.first());
-    
+        head->setProperty("selectionTotal", QVariant::fromValue(t));    
 }
 
 void MainController::updateQuickView()
@@ -709,11 +698,6 @@ void MainController::openTransfert()
     m_transfert.exec();
 }
 
-void MainController::openBudgetManager()
-{
-    //    m_budget->exec();
-}
-
 void MainController::addProfile()
 {
     QObject* profiles = m_engine.rootObjects().first()->findChild<QObject*>("popProfile");
@@ -750,12 +734,6 @@ void MainController::deleteProfile(QString name)
     if(m_db->deleteProfile(name))
         changeProfile("Default");
     loadProfiles();
-}
-
-bool MainController::event(QEvent * event)
-{
-    qDebug()<<event->type()<<"Event";
-    return false;
 }
 
 void MainController::languageChange()

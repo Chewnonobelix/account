@@ -40,8 +40,6 @@ private:
     void checkEstimated();
 
     QList<QDate> dateList() const;    
-protected:
-    bool event(QEvent*);
 
 public:
     MainController(int = 0);
@@ -74,8 +72,6 @@ public slots:
     void receiveSum();
 
     void openTransfert();
-
-    void openBudgetManager();
     
     void close();
 
