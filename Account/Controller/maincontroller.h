@@ -39,7 +39,9 @@ private:
     
     void checkEstimated();
 
-    QList<QDate> dateList() const;    
+    QList<QDate> dateList() const;
+
+    QVariantList m_model;
 
 public:
     MainController(int = 0);
@@ -89,6 +91,9 @@ public slots:
     void loadFeatures();
     
     void updateQuickView();
+
+    void buildModel(int = -1);
+    void pageChange(int = -1);
 };
 
 

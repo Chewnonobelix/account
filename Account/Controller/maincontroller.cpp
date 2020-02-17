@@ -54,7 +54,7 @@ int MainController::exec()
     {
         connect(calendar, SIGNAL(s_monthChanged()), this, SLOT(previewCalendar()));
         connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(updateQuickView()));
-        connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(selection()));
+        connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(buildModel()));
     }
     
     QObject* combo = root->findChild<QObject*>("accountSelect");
@@ -94,7 +94,7 @@ int MainController::exec()
     QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
     
     if(skipper)
-        connect(skipper, SIGNAL(s_pageChange()), this, SLOT(selection()));
+        connect(skipper, SIGNAL(s_pageChange()), this, SLOT(pageChange()));
     
     QObject* transfert = root->findChild<QObject*>("transfert");
     
@@ -116,7 +116,7 @@ int MainController::exec()
         {
             QObject* past = f->findChild<QObject*>("frequencyPast");
             if(past)
-                connect(past, SIGNAL(s_showFromFrequency(int)), this, SLOT(selection(int)));
+                connect(past, SIGNAL(s_showFromFrequency(int)), this, SLOT(pageChange(int)));
         }
     }
     
@@ -126,7 +126,7 @@ int MainController::exec()
     baseAbstract<<&m_info;
     
     for(auto it: m_settings.featuresList())
-    {        
+    {
         
         
         if(QMetaType::type(it.toLatin1()) == 0)
@@ -176,7 +176,7 @@ int MainController::exec()
     
     loadProfiles();
     
-    connect(m_db, InterfaceDataSave::s_updateEntry, this, MainController::selection);
+    connect(m_db, InterfaceDataSave::s_updateEntry, this, MainController::buildModel);
     
     m_settings.init(m_engine);
     connect(root, SIGNAL(s_openSetting()), &m_settings, SLOT(open()));
@@ -185,9 +185,10 @@ int MainController::exec()
     connect(&m_settings, ControllerSettings::s_finish, this, MainController::loadFeatures);
     
     languageChange();
+    buildModel();
+
     updateQuickView();
-    m_graph.exec();
-    
+
     return 0;
 }
 
@@ -201,12 +202,12 @@ void MainController::loadFeatures()
     QStringList features;
     features<<QObject::tr("List")<<QObject::tr("Graph");
     for(auto it: m_settings.featuresList())
-    {        
+    {
         qDebug()<<"X"<<it<<m_settings.featureEnable(it);
         if(m_settings.featureEnable(it))
         {
             m_features<<ControllerSettings::features(it);
-            features<<ControllerSettings::features(it)->displayText();        
+            features<<ControllerSettings::features(it)->displayText();
         }
     }
     QObject* swipe = m_engine.rootObjects().first()->findChild<QObject*>("swipe");
@@ -452,89 +453,157 @@ void MainController::previewCalendar()
     }
 }
 
-void MainController::selection(int id)
+void MainController::buildModel(int id)
 {
-    if(id == -2)
-    {
-        id = -1;
-        calculTotal();
-    }
-    
     auto ld = dateList();
-    
+
     QList<Entry> ret;
-    
+
     if(ld.isEmpty())
         ret = m_db->selectEntry(currentAccount()).values();
     else
         for(auto it: ld)
             ret<<m_db->selectEntry(currentAccount()).values(it);
-    
+
     int maxPage = ret.size() < 100 ? 1 : (ret.size() / 100 + 1);
     QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
-    
-    if(skipper)
+
+    if(skipper && id == -1)
     {
         int cMaxPage = skipper->property("maxPage").toInt();
-        
+
         if(maxPage != cMaxPage || id != -1)
         {
             skipper->setProperty("pageIndex", 1);
             skipper->setProperty("maxPage", maxPage);
         }
     }
-    
+
     Total t;
-    
+
+    QVariantList modelList;
+
+    for(auto i = 0 ; i < ret.size(); i++)
+    {
+        t = t + ret[i];
+        QVariantMap map = ret[i];
+
+        map.insert("total", t.value());
+        modelList<<QVariant::fromValue(map);
+    }
+    m_model = modelList;
+    pageChange();
+}
+
+void MainController::pageChange(int id)
+{
+    QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
+
     if(tab && skipper)
     {
-        bool found = (id == -1);
-        
-        int first = 0, fIndex = -1;
-        do
+        int first = 0;
+        QMetaObject::invokeMethod(tab, "unselectAll");
+
+        first = ((skipper->property("pageIndex").toInt()));
+
+        first -= 1;
+        first *= 100;
+
+        QVariantList modelList;
+
+        for(auto i = first ; i < qMin(m_model.size(), first+100); i++)
         {
-            QMetaObject::invokeMethod(tab, "unselectAll");
-            QMetaObject::invokeMethod(tab, "reset");
-            first = ((skipper->property("pageIndex").toInt()));
-            
-            first -= 1;
-            first *= 100;
-            
-            QVariantList modelList;
-            
-            for(auto i = 0 ; i < ret.size(); i++)
-            {
-                t = t + ret[i];
-                
-                if(i >= first && i < qMin(ret.size(), first+100))
-                {
-                    QVariantMap map = ret[i];
-                    
-                    
-                    found |= (id == -1) || (ret[i].id() == id);
-                    
-                    if(ret[i].id() == id) fIndex = i - first;
-                    
-                    map.insert("total", t.value());
-                    map.insert("isSelected", (ret[i].id() == id));
-                    modelList<<QVariant::fromValue(map);
-                }
-                
-            }
-            tab->setProperty("model", modelList);
-            if(!found)
-                skipper->setProperty("pageIndex", skipper->property("pageIndex").toInt() + 1);
-            else
-                QMetaObject::invokeMethod(tab, "setNewIndex", Q_ARG(QVariant, fIndex));
-            
+            modelList<<m_model[i];
         }
-        while(!found && skipper->property("pageIndex").toInt() <= maxPage);
+
+        tab->setProperty("model", modelList);
     }
+}
+
+void MainController::selection(int id)
+{
+//    if(id == -2)
+//    {
+//        id = -1;
+//        calculTotal();
+//    }
     
-    QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
-    if(head)
-        head->setProperty("selectionTotal", QVariant::fromValue(t));    
+//    auto ld = dateList();
+    
+//    QList<Entry> ret;
+    
+//    if(ld.isEmpty())
+//        ret = m_db->selectEntry(currentAccount()).values();
+//    else
+//        for(auto it: ld)
+//            ret<<m_db->selectEntry(currentAccount()).values(it);
+    
+//    int maxPage = ret.size() < 100 ? 1 : (ret.size() / 100 + 1);
+//    QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
+    
+//    if(skipper)
+//    {
+//        int cMaxPage = skipper->property("maxPage").toInt();
+        
+//        if(maxPage != cMaxPage || id != -1)
+//        {
+//            skipper->setProperty("pageIndex", 1);
+//            skipper->setProperty("maxPage", maxPage);
+//        }
+//    }
+    
+//    Total t;
+    
+//    QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
+//    if(tab && skipper)
+//    {
+//        bool found = (id == -1);
+        
+//        int first = 0, fIndex = -1;
+//        do
+//        {
+//            QMetaObject::invokeMethod(tab, "unselectAll");
+//            QMetaObject::invokeMethod(tab, "reset");
+//            first = ((skipper->property("pageIndex").toInt()));
+            
+//            first -= 1;
+//            first *= 100;
+            
+//            QVariantList modelList;
+            
+//            for(auto i = 0 ; i < ret.size(); i++)
+//            {
+//                t = t + ret[i];
+                
+//                if(i >= first && i < qMin(ret.size(), first+100))
+//                {
+//                    QVariantMap map = ret[i];
+                    
+                    
+//                    found |= (id == -1) || (ret[i].id() == id);
+                    
+//                    if(ret[i].id() == id) fIndex = i - first;
+                    
+//                    map.insert("total", t.value());
+//                    map.insert("isSelected", (ret[i].id() == id));
+//                    modelList<<QVariant::fromValue(map);
+//                }
+                
+//            }
+//            tab->setProperty("model", modelList);
+//            if(!found)
+//                skipper->setProperty("pageIndex", skipper->property("pageIndex").toInt() + 1);
+//            else
+//                QMetaObject::invokeMethod(tab, "setNewIndex", Q_ARG(QVariant, fIndex));
+            
+//        }
+//        while(!found && skipper->property("pageIndex").toInt() <= maxPage);
+//    }
+    
+//    QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
+//    if(head)
+//        head->setProperty("selectionTotal", QVariant::fromValue(t));
 }
 
 void MainController::updateQuickView()
@@ -545,7 +614,7 @@ void MainController::updateQuickView()
     if(quickView)
     {
         quickView->setProperty("currentDate", ld.isEmpty() ? QDate::currentDate(): ld.first());
-    }    
+    }
 }
 
 QList<QDate> MainController::dateList() const
@@ -560,7 +629,7 @@ QList<QDate> MainController::dateList() const
     for(int i = 0; i < ld.size(); i++)
         for(int j = i; j < ld.size(); j++)
             if(ld[j] < ld[i])
-                ld.swapItemsAt(i,j);  
+                ld.swapItemsAt(i,j);
     
     return ld;
 }
