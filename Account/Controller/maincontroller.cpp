@@ -102,7 +102,7 @@ int MainController::exec()
     {
         m_transfert.set(transfert);
         connect(root, SIGNAL(openTransfert()), this, SLOT(openTransfert()));
-        connect(&m_transfert, ControllerTransfert::s_finish, this, MainController::selection);
+        connect(&m_transfert, ControllerTransfert::s_finish, this, MainController::buildModel);
     }
     
     QObject* info = root->findChild<QObject*>("infoView");
@@ -232,13 +232,6 @@ void MainController::changeProfile(QString name)
 void MainController::update(Entry e)
 {
     AbstractController::updateEntry(e);
-    selection();
-    
-    QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
-    
-    if(tab)
-        QMetaObject::invokeMethod(tab, "selectFromId", Q_ARG(QVariant, e.id()));
-    
 }
 
 void MainController::add(bool account)
@@ -300,7 +293,6 @@ void MainController::adding()
         e.setAccount(currentAccount());
     }
     AbstractController::addEntry(e);
-    accountChange(currentAccount());
     
     if(adding->property("newAccount").toBool())
         loadAccount();
@@ -309,7 +301,7 @@ void MainController::adding()
     for(auto it: m_db->selectEntry(currentAccount()))
         id = std::max(id, it.id());
     
-    selection(id);
+    pageChange(id);
 }
 
 void MainController::addEntryMain(Entry  e)
@@ -323,9 +315,6 @@ void MainController::addEntryMain(Entry  e)
     e.setInfo(i);
     
     AbstractController::addEntry(e);
-    accountChange(currentAccount());
-    
-    selection();
 }
 
 void MainController::quickOpen()
@@ -356,7 +345,6 @@ void MainController::quickAdding()
         e.setAccount(currentAccount());
         
         m_db->addEntry(e);
-        selection();
     }
 }
 
@@ -381,7 +369,6 @@ void MainController::remove(int id)
     Entry e = AbstractController::entry(id);
     m_db->removeEntry(e);
     accountChange(currentAccount());
-    selection();
 }
 
 void MainController::edit(int id)
@@ -455,6 +442,9 @@ void MainController::previewCalendar()
 
 void MainController::buildModel(int id)
 {
+    if(id < 0) id = -1;
+
+    calculTotal();
     auto ld = dateList();
 
     QList<Entry> ret;
@@ -492,7 +482,12 @@ void MainController::buildModel(int id)
         modelList<<QVariant::fromValue(map);
     }
     m_model = modelList;
-    pageChange();
+
+    QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
+    if(head)
+        head->setProperty("selectionTotal", QVariant::fromValue(t));
+
+    pageChange(id);
 }
 
 void MainController::pageChange(int id)
@@ -505,7 +500,14 @@ void MainController::pageChange(int id)
         int first = 0;
         QMetaObject::invokeMethod(tab, "unselectAll");
 
-        first = ((skipper->property("pageIndex").toInt()));
+        int index = -1;
+
+        if(id != -1)
+            for(int i = 0; i < m_model.size(); i++)
+                if(m_model[i].toMap()["id"] == id)
+                    index = i;
+
+        first = index != -1 ? (index / 100)+1 : ((skipper->property("pageIndex").toInt()));
 
         first -= 1;
         first *= 100;
@@ -518,92 +520,8 @@ void MainController::pageChange(int id)
         }
 
         tab->setProperty("model", modelList);
+        tab->setProperty("currentRow", index%100);
     }
-}
-
-void MainController::selection(int id)
-{
-//    if(id == -2)
-//    {
-//        id = -1;
-//        calculTotal();
-//    }
-    
-//    auto ld = dateList();
-    
-//    QList<Entry> ret;
-    
-//    if(ld.isEmpty())
-//        ret = m_db->selectEntry(currentAccount()).values();
-//    else
-//        for(auto it: ld)
-//            ret<<m_db->selectEntry(currentAccount()).values(it);
-    
-//    int maxPage = ret.size() < 100 ? 1 : (ret.size() / 100 + 1);
-//    QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
-    
-//    if(skipper)
-//    {
-//        int cMaxPage = skipper->property("maxPage").toInt();
-        
-//        if(maxPage != cMaxPage || id != -1)
-//        {
-//            skipper->setProperty("pageIndex", 1);
-//            skipper->setProperty("maxPage", maxPage);
-//        }
-//    }
-    
-//    Total t;
-    
-//    QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
-//    if(tab && skipper)
-//    {
-//        bool found = (id == -1);
-        
-//        int first = 0, fIndex = -1;
-//        do
-//        {
-//            QMetaObject::invokeMethod(tab, "unselectAll");
-//            QMetaObject::invokeMethod(tab, "reset");
-//            first = ((skipper->property("pageIndex").toInt()));
-            
-//            first -= 1;
-//            first *= 100;
-            
-//            QVariantList modelList;
-            
-//            for(auto i = 0 ; i < ret.size(); i++)
-//            {
-//                t = t + ret[i];
-                
-//                if(i >= first && i < qMin(ret.size(), first+100))
-//                {
-//                    QVariantMap map = ret[i];
-                    
-                    
-//                    found |= (id == -1) || (ret[i].id() == id);
-                    
-//                    if(ret[i].id() == id) fIndex = i - first;
-                    
-//                    map.insert("total", t.value());
-//                    map.insert("isSelected", (ret[i].id() == id));
-//                    modelList<<QVariant::fromValue(map);
-//                }
-                
-//            }
-//            tab->setProperty("model", modelList);
-//            if(!found)
-//                skipper->setProperty("pageIndex", skipper->property("pageIndex").toInt() + 1);
-//            else
-//                QMetaObject::invokeMethod(tab, "setNewIndex", Q_ARG(QVariant, fIndex));
-            
-//        }
-//        while(!found && skipper->property("pageIndex").toInt() <= maxPage);
-//    }
-    
-//    QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
-//    if(head)
-//        head->setProperty("selectionTotal", QVariant::fromValue(t));
 }
 
 void MainController::updateQuickView()
@@ -662,7 +580,7 @@ void MainController::accountChange(QString acc)
     
     //m_common.exec();
     
-    selection();
+    buildModel();
     checkEstimated();
 }
 
@@ -748,7 +666,7 @@ void MainController::validateCheckEstimated()
     }
     
     QMetaObject::invokeMethod(popup, "close");
-    selection();
+    buildModel();
 }
 
 void MainController::deleteAccount(QString account)
