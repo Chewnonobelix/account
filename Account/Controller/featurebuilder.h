@@ -5,12 +5,12 @@
 #include <QQmlApplicationEngine>
 #include "abstractcontroller.h"
 
-class FeatureBuilder
+struct FeatureBuilder
 {
-public:
     virtual QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine*, QObject*, QList<AbstractController*>) = 0;    
     virtual QString displayText() const = 0;
     virtual QString baseText() const = 0;
+    QObject* view = nullptr;
 };
 
 #endif // FEATUREBUILDER_H

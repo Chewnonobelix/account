@@ -334,13 +334,10 @@ void ControllerBudget::setCalendar(QObject * cal)
 QSharedPointer<FeatureBuilder> ControllerBudget::build(QQmlApplicationEngine * engine, QObject * root, QList<AbstractController *> controllers)
 {
     Q_UNUSED(controllers)
-    
-    QObject* swipe = root->findChild<QObject*>("swipe");
-    
+        
     auto budget = QSharedPointer<ControllerBudget>::create();
     QQmlComponent budgetComp(engine, QUrl("qrc:/Budget/BudgetManager.qml"));
     QObject* budgetManager = budgetComp.create();
-    QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(budgetManager)));
 
     budget->setManager(budgetManager);
     
@@ -353,8 +350,7 @@ QSharedPointer<FeatureBuilder> ControllerBudget::build(QQmlApplicationEngine * e
     connect(cal, SIGNAL(s_datesChanged()), budget.data(), SLOT(calDateChange()));
     budget->setCalendar(cal);
     connect(m_db, InterfaceDataSave::s_updateEntry, budget.data(), ControllerBudget::updateEntry);
-
-    
+    budget->view = budgetManager;
 
     return budget;
 }

@@ -587,22 +587,7 @@ Current Version beta 0.9")
             month: table.v_dateMonth
             year: table.v_dateYear
         }
-
-//        BudgetManager {
-//            id: bm
-//            visible: true
-//            objectName: "budgetManager"
-//        }
-
-//        FrequencyManager{
-//            id: fm
-//            visible: true
-//            objectName: "frequencyManager"
-//        }
-
-//        CommonExpanseManager {
-//            id: cm
-//        }
+        
 
         Popup {
             id: deleteAccount

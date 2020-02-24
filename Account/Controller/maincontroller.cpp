@@ -3,6 +3,8 @@
 
 MainController::MainController(int storage): AbstractController()
 {
+    Q_UNUSED(storage)
+    
     try
     {
         
@@ -201,26 +203,31 @@ void MainController::loadFeatures()
 {
     QStringList features;
     features<<QObject::tr("List")<<QObject::tr("Graph");
+    QList<QObject*> featureItem;
     for(auto it: m_settings.featuresList())
     {
-        qDebug()<<"X"<<it<<m_settings.featureEnable(it);
         if(m_settings.featureEnable(it))
         {
             m_features<<ControllerSettings::features(it);
             features<<ControllerSettings::features(it)->displayText();
+            featureItem<<ControllerSettings::features(it)->view;
         }
     }
+    
+    
     QObject* swipe = m_engine.rootObjects().first()->findChild<QObject*>("swipe");
+    if(swipe)
+    {
+        while(swipe->property("count").toInt() > 2)
+            QMetaObject::invokeMethod(swipe, "takeItem", Q_ARG(int, swipe->property("count").toInt() - 1));
+        
+        for(auto it: featureItem)
+            QMetaObject::invokeMethod(swipe, "addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(it)));
+    }
     
     QObject* featuresRepetear = m_engine.rootObjects().first()->findChild<QObject*>("features");
     if(featuresRepetear)
-    {
-        qDebug()<<featuresRepetear<<features;
-        
         featuresRepetear->setProperty("model", features);
-    }
-    
-    qDebug()<<features;
 }
 
 void MainController::changeProfile(QString name)
@@ -574,11 +581,6 @@ void MainController::accountChange(QString acc)
     
     if(pageSkip)
         pageSkip->setProperty("maxPage", maxPage);
-    
-    //    for(auto it: m_db->selectEntry(currentAccount()))
-    //        m_freqs->addEntry(it.id());
-    
-    //m_common.exec();
     
     buildModel();
     checkEstimated();

@@ -7,7 +7,7 @@ int ControllerCommon::exec()
         t = m_view->findChild<QObject*>("common")->property("model").value<CommonExpanse>();
     
     QVariantList model;
-
+    
     int index = -1;
     for(auto it: m_db->selectCommon())
     {
@@ -89,7 +89,7 @@ void ControllerCommon::addCommonEntry()
     e.setValue(pop->property("v_val").toDouble());
     e.setType(pop->property("v_type").toString());
     e.setInfo(i);
-
+    
     ce.addEntries(pop->property("v_member").toString().toLower(), e);
     m_db->updateCommon(ce);
     exec();
@@ -105,7 +105,7 @@ void ControllerCommon::removeCommonEntry()
     {
         e = m_view->findChild<QObject*>("common")->findChild<QObject*>("remove")->property("currentModel").value<Entry>();
         member = m_view->findChild<QObject*>("common")->findChild<QObject*>("remove")->property("currentMember").toString();
-
+        
         m_db->updateCommon(ce);
     }
     
@@ -116,18 +116,13 @@ QSharedPointer<FeatureBuilder> ControllerCommon::build(QQmlApplicationEngine * e
 {
     Q_UNUSED(controllers)
     
-    QObject* swipe = root->findChild<QObject*>("swipe");
-    
     auto common = QSharedPointer<ControllerCommon>::create();
     
     QQmlComponent commonComp(engine, QUrl("qrc:/CommonExpanse/CommonExpanseManager.qml"));
     QObject* commonManager = commonComp.create();
-    QMetaObject::invokeMethod(swipe,"addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(commonManager)));
     
-    {
-        common->m_view = commonManager;
-        common->init();
-    }
+    common->m_view = commonManager;
+    common->init();
     
     QObject* commonpop = commonManager->findChild<QObject*>("popAddCommon");
     if(commonpop)
@@ -137,6 +132,8 @@ QSharedPointer<FeatureBuilder> ControllerCommon::build(QQmlApplicationEngine * e
     
     if(removeCommon)
         connect(removeCommon, SIGNAL(s_remove(int)), common.data(), SLOT(removeCommon(int)));        
+    
+    common->view = commonManager;
     
     return common;
 }
