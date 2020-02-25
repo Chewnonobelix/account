@@ -4,7 +4,7 @@ void Worker::run()
 {
     for(auto it = 0; it < list.size(); it++)
     {
-
+        list[it].setId(it == list.size() - 1 ? -1 : -2);
         emit s_add(list[it]);
     }
 

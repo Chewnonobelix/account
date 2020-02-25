@@ -95,7 +95,9 @@ bool ControllerXMLMulti::addEntry(QSharedPointer<Entry> e)
 
 bool ControllerXMLMulti::addEntry(const Entry& e)
 {
+    
     m_mutex.lock();
+    
     int ide = maxId(m_ids["entry"]) + 1;
     int idi = maxId(m_ids["info"]) + 1;
     
@@ -119,7 +121,9 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     close();
     m_mutex.unlock();
     
-    emit s_updateEntry();
+    if(e.id() != -2)
+        emit s_updateEntry();
+
     return true;
 }
 
