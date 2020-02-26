@@ -342,7 +342,7 @@ Page {
                         }
                         
                         AccountLabel {
-                            text: styleData.value
+                            text: styleData.value.value
                             clip: true
                             anchors.fill: parent
                         }

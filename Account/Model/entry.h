@@ -57,5 +57,4 @@ public:
 };
 
 Q_DECLARE_METATYPE(Entry)
-Q_DECLARE_METATYPE(QSharedPointer<Entry>)
 #endif // ENTRY_H

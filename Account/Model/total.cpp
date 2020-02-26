@@ -70,6 +70,7 @@ Total operator -(const Total& t1, const Total& t2)
 
     return (t1 +  temp);
 }
+
 QDate Total::date() const
 {
     return m_date;
