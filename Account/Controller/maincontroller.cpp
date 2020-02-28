@@ -474,13 +474,13 @@ void MainController::buildModel(int id)
     
     auto it = std::find_if(ret.begin(), ret.end(), [id](Entry e) {
             return e.id() == id;            
-});
+    });
     
     int indexOf = (it == ret.end()) ? 0: ret.indexOf(*it);
     
     Total t;
     
-    while(indexOf >= m_model.count())
+    while(indexOf >= m_model.count() && !ret.isEmpty())
     {
         if(!m_model.isEmpty())
             t = m_model.last().toMap()["total"].value<Total>();
@@ -500,6 +500,8 @@ void MainController::buildModel(int id)
     if(head)
         head->setProperty("selectionTotal", QVariant::fromValue(t));
     
+    if(ret.isEmpty())
+        return;
     pageChange(id);
 }
 
@@ -533,9 +535,7 @@ void MainController::pageChange(int id)
         QVariantList modelList;
         
         for(auto i = first ; i < qMin(m_model.size(), first+100); i++)
-        {
             modelList<<m_model[i];
-        }
         
         tab->setProperty("model", modelList);
         tab->setProperty("currentRow", index%100);
@@ -548,9 +548,7 @@ void MainController::updateQuickView()
     QObject* quickView = m_engine.rootObjects().first()->findChild<QObject*>("quickViewDate");
     
     if(quickView)
-    {
         quickView->setProperty("currentDate", ld.isEmpty() ? QDate::currentDate(): ld.first());
-    }
 }
 
 QList<QDate> MainController::dateList() const

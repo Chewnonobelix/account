@@ -326,6 +326,9 @@ bool ControllerXMLMulti::addCategory(QString name, QString type)
     QDomText txt = m_currentAccount.createTextNode(name);
     el.appendChild(txt);
     root.appendChild(el);
+
+    emit s_updateCategory();
+    
     return true;
 }
 
@@ -340,6 +343,8 @@ bool ControllerXMLMulti::removeCategory(QString name)
         if(el.text() == name)
         {
             auto ret = root.removeChild(el);
+            
+            emit s_updateCategory();
             
             return !ret.isNull();
         }
