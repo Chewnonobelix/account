@@ -9,8 +9,6 @@
 #include "Controller/controllercommon.h"
 #include "Model/budget.h"
 
-//#include "Test/xmltest.h"
-
 void testCharge()
 {
     ControllerXMLMulti m_xml;
@@ -61,16 +59,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QApplication app(argc, argv);
-
-    qDebug()<<"ControllerDB"<<qRegisterMetaType<ControllerDB>()<<sizeof(int*);
-    qDebug()<<"ControllerXMLMulti"<<qRegisterMetaType<ControllerXMLMulti>();
-    qDebug()<<"Account::FrequencyEnum QML"<<qmlRegisterUncreatableMetaObject(Account::staticMetaObject, "Account", 1,0, "Account", "This is Account's flags");
-    qDebug()<<"Account::FrequencyEnum"<<qRegisterMetaType<Account::FrequencyEnum>();
-    qDebug()<<"ControllerBudget"<<qRegisterMetaType<ControllerBudget>("BudgetFeature");
-    qDebug()<<"ControllerFrequency"<<qRegisterMetaType<ControllerFrequency>("FrequencyFeature");
-    qDebug()<<"ControllerCommon"<<qRegisterMetaType<ControllerCommon>("CommonExpanseFeature");
-
-    qDebug()<<QMetaType::type("Budget");
 
 
 //    XmlTest test1;

@@ -5,9 +5,16 @@ MainController::MainController(int storage): AbstractController()
 {
     Q_UNUSED(storage)
     
+    qDebug()<<"ControllerDB"<<qRegisterMetaType<ControllerDB>();
+    qDebug()<<"ControllerXMLMulti"<<qRegisterMetaType<ControllerXMLMulti>();
+    qDebug()<<"Account::FrequencyEnum QML"<<qmlRegisterUncreatableMetaObject(Account::staticMetaObject, "Account", 1,0, "Account", "This is Account's flags");
+    qDebug()<<"Account::FrequencyEnum"<<qRegisterMetaType<Account::FrequencyEnum>();
+    qDebug()<<"ControllerBudget"<<qRegisterMetaType<ControllerBudget>("BudgetFeature");
+    qDebug()<<"ControllerFrequency"<<qRegisterMetaType<ControllerFrequency>("FrequencyFeature");
+    qDebug()<<"ControllerCommon"<<qRegisterMetaType<ControllerCommon>("CommonExpanseFeature");
+    
     try
-    {
-        
+    {        
         setDb(m_settings.database().isEmpty() ? "ControllerDB" : m_settings.database());
         m_db->init();
     }
@@ -17,6 +24,7 @@ MainController::MainController(int storage): AbstractController()
     }
     
     m_db->moveToThread(&m_dbThread);
+    
     connect(&m_graph, GraphController::s_sum, this, receiveSum);
     connect(&m_dbThread, QThread::started, m_db, InterfaceDataSave::exec);
     
