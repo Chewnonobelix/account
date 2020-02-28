@@ -452,16 +452,11 @@ void MainController::buildModel(int id)
     if(id < 0) id = -1;
     
     
-//    calculTotal();
-    auto ld = dateList();
+    //    calculTotal();
     
     QList<Entry> ret;
     
-    //    if(ld.isEmpty())
     ret = m_db->selectEntry(currentAccount()).values();
-    //    else
-    //        for(auto it: ld)
-    //            ret<<m_db->selectEntry(currentAccount()).values(it);
     
     int maxPage = ret.size() < 100 ? 1 : (ret.size() / 100 + 1);
     QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
@@ -479,21 +474,19 @@ void MainController::buildModel(int id)
     
     auto it = std::find_if(ret.begin(), ret.end(), [id](Entry e) {
             return e.id() == id;            
-    });
+});
     
     int indexOf = (it == ret.end()) ? 0: ret.indexOf(*it);
     
     Total t;
-        
-    qDebug()<<"Index oif"<<indexOf;
+    
     while(indexOf >= m_model.count())
     {
-        qDebug()<<"Pouic"<<m_model.count()<<indexOf;
         if(!m_model.isEmpty())
             t = m_model.last().toMap()["total"].value<Total>();
         
         int end = m_model.count() + 100;
-        for(auto i = m_model.count() ; i < end; i++)
+        for(auto i = m_model.count() ; i < end && i < ret.count(); i++)
         {
             t = t + ret[i];
             QVariantMap map = ret[i];
@@ -517,6 +510,8 @@ void MainController::pageChange(int id)
     
     if(tab && skipper)
     {
+        auto ld = dateList();
+        
         int first = 0;
         QMetaObject::invokeMethod(tab, "unselectAll");
         
@@ -531,6 +526,9 @@ void MainController::pageChange(int id)
         
         first -= 1;
         first *= 100;
+        
+        if(first >= m_model.count())
+            buildModel(m_db->selectEntry(currentAccount()).values()[first].id());
         
         QVariantList modelList;
         
