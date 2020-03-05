@@ -492,18 +492,6 @@ Current Version beta 0.9")
                 color: accountSelect.model && accountSelect.model.length > 0 ? head.total.value > 0 ? "green" : "red" : "transparent"
                 Layout.preferredWidth: parent.width * .5
             }
-
-            AccountLabel {
-                id: selectLabel
-
-                text: qsTr("Selection total") + ": " + head.selectionTotal.value + " €"
-                font.pixelSize: AccountStyle.title.size
-                font.family: AccountStyle.title.name
-                padding: 10
-                color: accountSelect.model && accountSelect.model.length
-                       > 0 ? head.selectionTotal.value > 0 ? "green" : "red" : "transparent"
-                Layout.preferredWidth: parent.width * .5
-            }
         }
 
         ComboBox {

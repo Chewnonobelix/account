@@ -504,9 +504,7 @@ void MainController::buildModel(int id)
         }
     }
     
-    QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
-    if(head)
-        head->setProperty("selectionTotal", QVariant::fromValue(t));
+    qDebug()<<"Id"<<id<<ret.size();
     
     if(ret.isEmpty())
         return;
