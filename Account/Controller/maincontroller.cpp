@@ -64,7 +64,7 @@ int MainController::exec()
     {
         connect(calendar, SIGNAL(s_monthChanged()), this, SLOT(previewCalendar()));
         connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(updateQuickView()));
-        connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(buildModel()));
+        connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(pageChange()));
     }
     
     QObject* combo = root->findChild<QObject*>("accountSelect");
@@ -457,6 +457,7 @@ void MainController::previewCalendar()
 
 void MainController::buildModel(int id)
 {
+    m_model.clear();
     if(id < 0) id = -1;
     
     
@@ -480,35 +481,16 @@ void MainController::buildModel(int id)
         }
     }
     
-    auto it = std::find_if(ret.begin(), ret.end(), [id](Entry e) {
-            return e.id() == id;            
-    });
-    
-    int indexOf = (it == ret.end()) ? 0: ret.indexOf(*it);
-    
     Total t;
     
-    while(indexOf >= m_model.count() && !ret.isEmpty())
+    for(auto i = 0; i < ret.count(); i++)
     {
-        if(!m_model.isEmpty())
-            t = m_model.last().toMap()["total"].value<Total>();
+        t = t + ret[i];
+        QVariantMap map = ret[i];
         
-        int end = m_model.count() + 100;
-        for(auto i = m_model.count() ; i < end && i < ret.count(); i++)
-        {
-            t = t + ret[i];
-            QVariantMap map = ret[i];
-            
-            map.insert("total", QVariant::fromValue(t));
-            m_model<<QVariant::fromValue(map);
-        }
+        map.insert("total", QVariant::fromValue(t));
+        m_model<<QVariant::fromValue(map);
     }
-    
-    qDebug()<<"Id"<<id<<ret.size();
-    
-    if(ret.isEmpty())
-        return;
-    pageChange(id);
 }
 
 void MainController::pageChange(int id)
@@ -519,24 +501,25 @@ void MainController::pageChange(int id)
     if(tab && skipper)
     {
         auto ld = dateList();
-        
+        int index = -1;        
         int first = 0;
+        
         QMetaObject::invokeMethod(tab, "unselectAll");
         
-        int index = -1;
+        QList<QVariant> currentModel;
         
-        if(id != -1)
-            for(int i = 0; i < m_model.size(); i++)
-                if(m_model[i].toMap()["id"] == id)
-                    index = i;
+        std::for_each(m_model.begin(), m_model.end(), [ld, id, &currentModel, &index](const QVariant& e){
+            if(ld.contains(e.toMap()["date"].toDate()))
+                currentModel<<e;
+            
+            if(id == e.toMap()["id"].toInt())
+                index = currentModel.count() % 100;
+        });
         
         first = index != -1 ? (index / 100)+1 : ((skipper->property("pageIndex").toInt()));
         
         first -= 1;
         first *= 100;
-        
-        if(first >= m_model.count())
-            buildModel(m_db->selectEntry(currentAccount()).values()[first].id());
         
         QVariantList modelList;
         
@@ -597,8 +580,8 @@ void MainController::accountChange(QString acc)
     if(pageSkip)
         pageSkip->setProperty("maxPage", maxPage);
     
-    m_model.clear();
     buildModel();
+    pageChange();
     checkEstimated();
 }
 
