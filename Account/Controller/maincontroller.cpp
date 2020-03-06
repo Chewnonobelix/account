@@ -187,6 +187,7 @@ int MainController::exec()
     loadProfiles();
     
     connect(m_db, InterfaceDataSave::s_updateEntry, this, MainController::buildModel);
+    connect(m_db, InterfaceDataSave::s_updateEntry, this, MainController::pageChange);
     
     m_settings.init(m_engine);
     connect(root, SIGNAL(s_openSetting()), &m_settings, SLOT(open()));
@@ -383,7 +384,7 @@ void MainController::remove(int id)
 {
     Entry e = AbstractController::entry(id);
     m_db->removeEntry(e);
-    accountChange(currentAccount());
+//    accountChange(currentAccount());
 }
 
 void MainController::edit(int id)
@@ -466,7 +467,6 @@ void MainController::buildModel(int id)
     QList<Entry> ret;
     
     ret = m_db->selectEntry(currentAccount()).values();
-    
     int maxPage = ret.size() < 100 ? 1 : (ret.size() / 100 + 1);
     QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
     
