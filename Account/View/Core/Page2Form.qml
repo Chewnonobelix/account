@@ -79,16 +79,16 @@ Rectangle {
         objectName: "chart"
         antialiasing: true
         
-        property int estimatedCount: series(qsTr("estimated")) ? series(qsTr("estimated")).count : 0
+        property int estimatedCount: series("Estimated") ? series("Estimated").count : 0
         
         backgroundColor: "transparent"
         
         function addDataMain(td, t) {
-            series(qsTr("past")).append(td, t)
+            series("Past").append(td, t)
         }
         
         function addDataEstimated(td, t) {
-            series(qsTr("estimated")).append(td, t)
+            series("Estimated").append(td, t)
         }
         
         function setMinMaxDate(min, max) {
@@ -102,23 +102,23 @@ Rectangle {
         }
         
         function clear (){
-            series(qsTr("past")).clear()
-            series(qsTr("estimated")).clear()
+            series("Past").clear()
+            series("Estimated").clear()
         }
         
         function reset () {
         }
         
         Component.onCompleted: {
-            createSeries(ChartView.SeriesTypeLine, qsTr("past"), dta,va)
-            createSeries(ChartView.SeriesTypeLine, qsTr("estimated"), dta,va)
+            createSeries(ChartView.SeriesTypeLine, "past", dta,va)
+            createSeries(ChartView.SeriesTypeLine, "estimated", dta,va)
             
-            series(qsTr("past")).objectName = "mainChart"
-            series(qsTr("past")).pointsVisible = true
-            
-            series(qsTr("estimated")).objectName = "estimatedChart"
-            series(qsTr("estimated")).pointsVisible = true
-            
+            series("past").objectName = "mainChart"
+            series("past").pointsVisible = true
+            series("past").name = qsTr("Past")
+            series("estimated").objectName = "estimatedChart"
+            series("estimated").pointsVisible = true
+            series("estimated").name = qsTr("Estimated")
         }
         
         

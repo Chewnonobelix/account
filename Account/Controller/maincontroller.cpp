@@ -461,9 +461,6 @@ void MainController::buildModel(int id)
     m_model.clear();
     if(id < 0) id = -1;
     
-    
-    //    calculTotal();
-    
     QList<Entry> ret;
     
     ret = m_db->selectEntry(currentAccount()).values();
