@@ -6,9 +6,15 @@ void Worker::run()
     {
         list[it].setId(it == list.size() - 1 ? -1 : -2);
         emit s_add(list[it]);
+        m_progress = (double)it/list.size() * 100.0;
     }
 
     emit s_finish(name);
+}
+
+double Worker::progress() const
+{
+    return m_progress;
 }
 
 Worker& Worker::operator =(const Worker&)

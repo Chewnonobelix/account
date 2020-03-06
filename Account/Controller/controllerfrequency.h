@@ -14,6 +14,11 @@
 class Worker: public QThread
 {
     Q_OBJECT
+
+    Q_PROPERTY(double progress READ progress)
+private:
+    double m_progress;
+
 public:
     QList<Entry> list;
     QString name;
@@ -21,6 +26,8 @@ public:
     Worker& operator =(const Worker&);
     Worker(const Worker&) = delete;
     Worker() = default;
+
+    double progress() const;
 
 public slots:
     void run();
