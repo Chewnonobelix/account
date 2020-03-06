@@ -9,6 +9,8 @@ import Account 1.0
 import "../Style"
 import "../Core"
 
+import Account.Worker 1.0
+
 Rectangle {    
     ListModel {
         id: testModel
@@ -331,6 +333,13 @@ Rectangle {
                     height: parent.height / parent.children.length
                     horizontalAlignment: Qt.AlignHCenter
                     verticalAlignment: Qt.AlignVCenter
+                }
+
+                AccountLabel {
+                    objectName: "worker"
+                    anchors.top: dateText.bottom
+                    property Worker worker: null;
+                    text: qsTr("Progress") + ": "  + (worker ? worker.progress + "%" : "N/A")
                 }
             }
             

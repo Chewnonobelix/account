@@ -12,7 +12,8 @@ MainController::MainController(int storage): AbstractController()
     qDebug()<<"ControllerBudget"<<qRegisterMetaType<ControllerBudget>("BudgetFeature");
     qDebug()<<"ControllerFrequency"<<qRegisterMetaType<ControllerFrequency>("FrequencyFeature");
     qDebug()<<"ControllerCommon"<<qRegisterMetaType<ControllerCommon>("CommonExpanseFeature");
-    
+    qDebug()<<"Worker Qml"<<qmlRegisterUncreatableType<Worker>("Account.Worker",1,0, "Worker", "Generate from backend");
+
     try
     {        
         setDb(m_settings.database().isEmpty() ? "ControllerDB" : m_settings.database());
