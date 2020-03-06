@@ -467,20 +467,7 @@ void MainController::buildModel(int id)
     QList<Entry> ret;
     
     ret = m_db->selectEntry(currentAccount()).values();
-    int maxPage = ret.size() < 100 ? 1 : (ret.size() / 100 + 1);
-    QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
-    
-    if(skipper && id == -1)
-    {
-        int cMaxPage = skipper->property("maxPage").toInt();
-        
-        if(maxPage != cMaxPage || id != -1)
-        {
-            skipper->setProperty("pageIndex", 1);
-            skipper->setProperty("maxPage", maxPage);
-        }
-    }
-    
+
     Total t;
     
     for(auto i = 0; i < ret.count(); i++)
@@ -515,7 +502,11 @@ void MainController::pageChange(int id)
             if(id == e.toMap()["id"].toInt())
                 index = currentModel.count() % 100;
         });
-        
+        currentModel = currentModel.isEmpty() ? m_model : currentModel;
+        int maxPage = currentModel.size() < 100 ? 1 : (currentModel.size() / 100 + 1);
+        skipper->setProperty("maxPage", maxPage);
+
+
         first = index != -1 ? (index / 100)+1 : ((skipper->property("pageIndex").toInt()));
         
         first -= 1;
@@ -523,8 +514,8 @@ void MainController::pageChange(int id)
         
         QVariantList modelList;
         
-        for(auto i = first ; i < qMin(m_model.size(), first+100); i++)
-            modelList<<m_model[i];
+        for(auto i = first ; i < qMin(currentModel.size(), first+100); i++)
+            modelList<<currentModel[i];
         
         tab->setProperty("model", modelList);
         tab->setProperty("currentRow", index%100);
