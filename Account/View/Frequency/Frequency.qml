@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.13
 
 import "../Core" as C
 import "../Style"
+import Account.Frequency 1.0
 
 Rectangle {    
     color: "transparent"
