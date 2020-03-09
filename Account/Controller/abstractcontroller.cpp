@@ -29,11 +29,11 @@ QString AbstractController::currentAccount()
 
 void AbstractController::calculTotal()
 {
-    m_accountTotal = Total();
+//    m_accountTotal = Total();
     
-    auto l = m_db->selectEntry(currentAccount());
-    for(auto it: l)
-        m_accountTotal = m_accountTotal + it;    
+//    auto l = m_db->selectEntry(currentAccount());
+//    for(auto it: l)
+//        m_accountTotal = m_accountTotal + it;    
 }
 
 void AbstractController::addEntry(const Entry& e)

@@ -21,10 +21,31 @@
 #include "controllercommon.h"
 #include "controllersettings.h"
 
+
+class Builder: public QThread
+{
+    Q_OBJECT
+    
+protected:
+    void run() override;
+    
+public:
+    Builder() = default;
+    ~Builder() = default;
+    QList<Entry> init;
+    QVariantList* model;
+    Total t;
+    QMutex* m_mutex;
+    
+signals:
+    void s_part(int = -1);
+};
+
 class MainController: public AbstractController
 {
     Q_OBJECT
 
+    
 private:
     QQmlApplicationEngine m_engine;
     ControllerInformation m_info;
@@ -42,7 +63,9 @@ private:
     QList<QDate> dateList() const;
 
     QVariantList m_model;
-
+    QSharedPointer<QThread> m_modelBuilder = nullptr;
+    QMutex m_modelMutex;
+    
 public:
     MainController(int = 0);
     ~MainController();

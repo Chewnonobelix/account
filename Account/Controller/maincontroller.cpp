@@ -12,20 +12,20 @@ MainController::MainController(int storage): AbstractController()
     qDebug()<<"ControllerBudget"<<qRegisterMetaType<ControllerBudget>("BudgetFeature");
     qDebug()<<"ControllerFrequency"<<qRegisterMetaType<ControllerFrequency>("FrequencyFeature");
     qDebug()<<"ControllerCommon"<<qRegisterMetaType<ControllerCommon>("CommonExpanseFeature");
-
+    
     qDebug()<<"Worker Qml"<<qmlRegisterUncreatableType<Worker>("Account.Frequency",1,0, "Worker", message);
-//    qDebug()<<"Frequency Qml"<<qmlRegisterUncreatableType<Frequency>("Account.Frequency",1,0, "Frequency", message);
-
-//    qDebug()<<"Budget Qml"<<qmlRegisterUncreatableType<Budget>("Account.Budget",1,0, "Budget", message);
-//    qDebug()<<"Subbudget Qml"<<qmlRegisterUncreatableType<SubBudget>("Account.Budget",1,0, "Subbudget", message);
-
-//    qDebug()<<"Common expanse Qml"<<qmlRegisterUncreatableType<CommonExpanse>("Account.CommonExpanse",1,0, "CommonExpanse", message);
-//    qDebug()<<"Closing Qml"<<qmlRegisterUncreatableType<Closing>("Account.CommonExpanse",1,0, "Closing", message);
-
-//    qDebug()<<"Entry Qml"<<qmlRegisterUncreatableType<Entry>("Account.Core",1,0, "Entry", message);
-//    qDebug()<<"Information Qml"<<qmlRegisterUncreatableType<Information>("Account.Core",1,0, "Information", message);
-//    qDebug()<<"Total Qml"<<qmlRegisterUncreatableType<Total>("Account.Core",1,0, "Total", message);
-
+    //    qDebug()<<"Frequency Qml"<<qmlRegisterUncreatableType<Frequency>("Account.Frequency",1,0, "Frequency", message);
+    
+    //    qDebug()<<"Budget Qml"<<qmlRegisterUncreatableType<Budget>("Account.Budget",1,0, "Budget", message);
+    //    qDebug()<<"Subbudget Qml"<<qmlRegisterUncreatableType<SubBudget>("Account.Budget",1,0, "Subbudget", message);
+    
+    //    qDebug()<<"Common expanse Qml"<<qmlRegisterUncreatableType<CommonExpanse>("Account.CommonExpanse",1,0, "CommonExpanse", message);
+    //    qDebug()<<"Closing Qml"<<qmlRegisterUncreatableType<Closing>("Account.CommonExpanse",1,0, "Closing", message);
+    
+    //    qDebug()<<"Entry Qml"<<qmlRegisterUncreatableType<Entry>("Account.Core",1,0, "Entry", message);
+    //    qDebug()<<"Information Qml"<<qmlRegisterUncreatableType<Information>("Account.Core",1,0, "Information", message);
+    //    qDebug()<<"Total Qml"<<qmlRegisterUncreatableType<Total>("Account.Core",1,0, "Total", message);
+    
     qmlRegisterModule("Account.Style", 1, 0);
     try
     {        
@@ -398,7 +398,7 @@ void MainController::remove(int id)
 {
     Entry e = AbstractController::entry(id);
     m_db->removeEntry(e);
-//    accountChange(currentAccount());
+    //    accountChange(currentAccount());
 }
 
 void MainController::edit(int id)
@@ -470,32 +470,61 @@ void MainController::previewCalendar()
     }
 }
 
-void MainController::buildModel(int id)
+void Builder::run()
 {
-    m_model.clear();
-    if(id < 0) id = -1;
+    qDebug()<<"init builder"<<init.count();
+    QVariantList temp;
+    for(auto i = 100; i < init.count(); i++)
+    {
+        t = t + init[i];
+        QVariantMap map = init[i];
+        
+        map.insert("total", QVariant::fromValue(t));
+        temp.append(QVariant::fromValue(map));
+        
+        if(!(i%100))
+        {
+            model->append(temp);
+            qDebug()<<"Progress"<<((double)i/(init.count()-1)*100.0);            
+            emit s_part();
+        }
+    }
+}
+
+void MainController::buildModel(int)
+{
+    if(m_modelBuilder && m_modelBuilder->isRunning())
+        return;
     
+    m_model.clear();    
     QList<Entry> ret;
     
     ret = m_db->selectEntry(currentAccount()).values();
 
     Total t;
-    
-    for(auto i = 0; i < ret.count(); i++)
+    for(auto i = 0; i < qMin(ret.count(), 100); i++)
     {
         t = t + ret[i];
         QVariantMap map = ret[i];
         
-        map.insert("total", QVariant::fromValue(t));
-        m_model<<QVariant::fromValue(map);
+//        map.insert("total", QVariant::fromValue(t));
+        m_model.push_back(QVariant::fromValue(map));
     }
+    
+//    auto n = new Builder;
+//    connect(n, Builder::s_part, this, pageChange, Qt::DirectConnection);
+//    n->init = ret;
+//    n->t = t;
+//    n->model = &m_model;    
+//    m_modelBuilder.reset(n);
+//    m_modelBuilder->start();
 }
 
 void MainController::pageChange(int id)
 {
     QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
-    
+    qDebug()<<"PageChange"<<m_model.size();
     if(tab && skipper)
     {
         auto ld = dateList();
@@ -507,17 +536,18 @@ void MainController::pageChange(int id)
         QList<QVariant> currentModel;
         
         std::for_each(m_model.begin(), m_model.end(), [ld, id, &currentModel, &index](const QVariant& e){
-            if(ld.contains(e.toMap()["date"].toDate()))
+            if(ld.isEmpty() || ld.contains(e.toMap()["date"].toDate()))
                 currentModel<<e;
             
             if(id == e.toMap()["id"].toInt())
                 index = currentModel.count() % 100;
         });
-        currentModel = currentModel.isEmpty() ? m_model : currentModel;
+        
+//        currentModel = currentModel.isEmpty() ? m_model : currentModel;
         int maxPage = currentModel.size() < 100 ? 1 : (currentModel.size() / 100 + 1);
         skipper->setProperty("maxPage", maxPage);
-
-
+        
+        
         first = index != -1 ? (index / 100)+1 : ((skipper->property("pageIndex").toInt()));
         
         first -= 1;
@@ -526,10 +556,14 @@ void MainController::pageChange(int id)
         QVariantList modelList;
         
         for(auto i = first ; i < qMin(currentModel.size(), first+100); i++)
+        {
+            qDebug()<<i<<first<<qMin(currentModel.size(), first+100);
             modelList<<currentModel[i];
-        
+        }
         tab->setProperty("model", modelList);
+        qDebug()<<"Mouais";
         tab->setProperty("currentRow", index%100);
+        qDebug()<<"Con";
     }
 }
 
@@ -575,13 +609,7 @@ void MainController::accountChange(QString acc)
     
     if(tab)
         tab->setProperty("model", QVariantList());
-    
-    int maxPage = m_db->selectEntry(currentAccount()).size() / 100;
-    QObject* pageSkip = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
-    
-    if(pageSkip)
-        pageSkip->setProperty("maxPage", maxPage);
-    
+        
     buildModel();
     pageChange();
     checkEstimated();
@@ -622,13 +650,15 @@ void MainController::loadAccount()
 
 void MainController::checkEstimated()
 {
+    qDebug()<<"Checker";
     QList<Entry> list;
     
-    for(auto it: m_db->selectEntry(currentAccount()))
+    for(auto it: m_model)
     {
         if(it.info().estimated() && it.date() <= QDate::currentDate())
             list<<it;
     }
+    qDebug()<<"youpi"<<list.size();
     QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
     QVariantList vl;
     
