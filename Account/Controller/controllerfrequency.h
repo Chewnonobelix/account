@@ -15,7 +15,8 @@ class Worker: public QThread
 {
     Q_OBJECT
 
-    Q_PROPERTY(double progress READ progress)
+    Q_PROPERTY(double progress READ progress NOTIFY s_progressChanged)
+    
 private:
     double m_progress;
 
@@ -35,6 +36,7 @@ public slots:
 signals:
     void s_finish(QString);
     void s_add(const Entry&);
+    void s_progressChanged(double);
 };
 
 class ControllerFrequency: public AbstractController, public FeatureBuilder
@@ -67,6 +69,8 @@ public:
     QString displayText() const;
     QString baseText() const;
 
+    Q_INVOKABLE QObject* worker(QString) const;
+    
 signals:
     void s_addEntry(Entry);
     void s_select(int = -1);
@@ -91,6 +95,7 @@ public slots:
     void updateFreqFreq(int, int);
     
     void displayEntry(int);
+    void setWorker(QString);
 };
 
 Q_DECLARE_METATYPE(ControllerFrequency)

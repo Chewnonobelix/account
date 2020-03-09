@@ -6,7 +6,9 @@ void Worker::run()
     {
         list[it].setId(it == list.size() - 1 ? -1 : -2);
         emit s_add(list[it]);
-        m_progress = (double)it/list.size() * 100.0;
+        int temp = (double)it/(list.size()-1) * 10000;
+        m_progress = temp / 100.0;
+        emit s_progressChanged(m_progress);
     }
 
     emit s_finish(name);
@@ -101,17 +103,21 @@ void ControllerFrequency::setManager(QObject * manager)
         
     connect(m_generate, SIGNAL(s_generate(QString, QString)), this, SLOT(generate(QString, QString)));
     
-}
-void ControllerFrequency::endThread(QString name)
-{
-    if(m_workers[name])
-    {
-        m_workers[name]->terminate();
-        m_workers[name]->wait();
-        delete m_workers[name];        
-    }
+    QObject* freqList = m_manager->findChild<QObject*>("frequencyList");
     
-    m_workers.remove(name);
+    if(freqList)
+        connect(freqList, SIGNAL(s_modelChanged(QString)), this, SLOT(setWorker(QString)));
+}
+
+void ControllerFrequency::setWorker(QString name)
+{
+    QObject* w = m_manager->findChild<QObject*>("worker");
+    
+    w->setProperty("worker", QVariant::fromValue(m_workers[name]));
+}
+
+void ControllerFrequency::endThread(QString)
+{
     exec();
     emit s_select(-2);
 }
@@ -190,12 +196,16 @@ void ControllerFrequency::generate(QString begin, QString end)
     }
     while(freq != Account::FrequencyEnum::Unique && it <= QDate::fromString(end, "dd-MM-yyyy"));
     
-    m_workers[m_freqs[freqId].name()]= new Worker;
+    if(!m_workers[m_freqs[freqId].name()])
+    {
+        m_workers[m_freqs[freqId].name()]= new Worker;
+        connect(m_workers[m_freqs[freqId].name()], Worker::s_add, m_db, InterfaceDataSave::addEntry, Qt::DirectConnection);
+        connect(m_workers[m_freqs[freqId].name()], Worker::s_finish, this, ControllerFrequency::endThread);
+        m_workers[m_freqs[freqId].name()]->name = m_freqs[freqId].name();
+    }
+    
     m_workers[m_freqs[freqId].name()]->list = lr;
-    m_workers[m_freqs[freqId].name()]->name = m_freqs[freqId].name();
-
-    connect(m_workers[m_freqs[freqId].name()], Worker::s_add, m_db, InterfaceDataSave::addEntry, Qt::DirectConnection);
-    connect(m_workers[m_freqs[freqId].name()], Worker::s_finish, this, ControllerFrequency::endThread);
+    setWorker(m_freqs[freqId].name());
 
     m_workers[m_freqs[freqId].name()]->start();
     QMetaObject::invokeMethod(m_generate, "close");
@@ -353,4 +363,9 @@ QString ControllerFrequency::displayText() const
 QString ControllerFrequency::baseText() const
 {
     return "FrequencyFeature";
+}
+
+QObject* ControllerFrequency::worker(QString name) const
+{
+    return m_workers[name];
 }

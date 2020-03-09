@@ -9,7 +9,7 @@ import Account 1.0
 import "../Style"
 import "../Core"
 
-import Account.Worker 1.0
+import Account.Frequency 1.0
 
 Rectangle {    
     ListModel {
@@ -82,6 +82,11 @@ Rectangle {
                 
                 property var currentModel: null
                 
+                signal s_modelChanged(string name)
+                onCurrentModelChanged: {
+                    if(currentModel) s_modelChanged(currentModel.name)
+                }
+
                 Component.onCompleted: {
                     currentModel = Qt.binding(function() {return enabled && currentIndex > -1 ? model[currentIndex] : null})
                     ref.entry = Qt.binding(function() {return currentModel ? currentModel.reference : null})
