@@ -173,6 +173,8 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
 
 QMultiMap<QDate, Entry> ControllerXMLMulti::selectEntry(QString account)
 {
+    static int count = 0;
+    qDebug()<<"Select entry"<<++count;
     setCurrentAccount(account);
     
     QMultiMap<QDate, Entry> ret;
@@ -668,6 +670,15 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
 {
     QMap<int, Frequency> ret;
     auto freqs = m_currentAccount.elementsByTagName("frequency");
+    
+    QXmlQuery query;
+    query.setFocus(m_currentAccount.toString());
+    query.setQuery("/database/entry[@frequency]");
+    QXmlResultItems buffer;
+    query.evaluateTo(&buffer);
+    QXmlItem it;
+    for(it = buffer.next(); !it.isNull(); it = buffer.next())
+        qDebug()<<it.toAtomicValue();
     
     for(int i = 0; i < freqs.size(); i++)
     {

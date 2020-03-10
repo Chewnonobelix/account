@@ -43,9 +43,7 @@ MainController::MainController(int storage): AbstractController()
     connect(&m_dbThread, QThread::started, m_db, InterfaceDataSave::exec);
     
     m_dbThread.start();
-    
-    m_db->selectProfile();
-}
+ }
 
 MainController::~MainController()
 {
@@ -63,7 +61,7 @@ int MainController::exec()
     
     if (m_engine.rootObjects().isEmpty())
         return -1;
-    
+        
     QObject* root = m_engine.rootObjects().first();
     
     connect(root, SIGNAL(adding(bool)), this, SLOT(add(bool)));
@@ -85,8 +83,8 @@ int MainController::exec()
     
     if(combo)
     {
+        loadAccount();        
         connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
-        loadAccount();
     }
     
     QObject* adding = root->findChild<QObject*>("addingid");
@@ -210,9 +208,6 @@ int MainController::exec()
     connect(&m_settings, ControllerSettings::s_finish, this, MainController::loadFeatures);
     
     languageChange();
-    buildModel();
-    
-    updateQuickView();
     
     return 0;
 }
@@ -556,14 +551,10 @@ void MainController::pageChange(int id)
         QVariantList modelList;
         
         for(auto i = first ; i < qMin(currentModel.size(), first+100); i++)
-        {
-            qDebug()<<i<<first<<qMin(currentModel.size(), first+100);
             modelList<<currentModel[i];
-        }
+
         tab->setProperty("model", modelList);
-        qDebug()<<"Mouais";
         tab->setProperty("currentRow", index%100);
-        qDebug()<<"Con";
     }
 }
 
@@ -636,7 +627,7 @@ void MainController::loadAccount()
             add(true);
         }
         combo->setProperty("model", t);
-        connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
+//        connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
         
         if(t.isEmpty())
         {
@@ -650,15 +641,16 @@ void MainController::loadAccount()
 
 void MainController::checkEstimated()
 {
-    qDebug()<<"Checker";
     QList<Entry> list;
     
-    for(auto it: m_model)
+    for(auto it: m_db->selectEntry(currentAccount()))
     {
         if(it.info().estimated() && it.date() <= QDate::currentDate())
             list<<it;
+        else if(it.date() > QDate::currentDate())
+            break;
     }
-    qDebug()<<"youpi"<<list.size();
+    
     QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
     QVariantList vl;
     

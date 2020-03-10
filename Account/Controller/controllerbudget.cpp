@@ -33,14 +33,15 @@ void ControllerBudget::update(int)
 
 bool ControllerBudget::addTo(int id)
 {
-    Entry e = entry(id);
+    //TODO CONGESTION POINT BUDGET
+//    Entry e = entry(id);
 
-    bool ret = m_budgets.contains(e.info().category());
+//    bool ret = m_budgets.contains(e.info().category());
 
-    if(m_budgets.contains(e.info().category()))
-        m_budgets[e.info().category()]<<(e);
+//    if(m_budgets.contains(e.info().category()))
+//        m_budgets[e.info().category()]<<(e);
 
-    return ret;
+    return false;
 }
 
 void ControllerBudget::openManager()

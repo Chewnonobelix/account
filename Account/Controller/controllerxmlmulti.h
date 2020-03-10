@@ -5,7 +5,10 @@
 #include <QDebug>
 #include <QMutex>
 #include <QDomDocument>
-
+#include <QXmlQuery>
+#include <QXmlSerializer>
+#include <QBuffer>
+#include <QXmlResultItems>
 #include "interfacedatasave.h"
 
 class ControllerXMLMulti: public InterfaceDataSave

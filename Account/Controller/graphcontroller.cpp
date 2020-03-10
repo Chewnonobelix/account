@@ -30,11 +30,12 @@ int GraphController::exec()
 {
     m_sum.clear();
 
-    if(!m_view)
+    if(!m_view || true)
         return -1;
 
     QMetaObject::invokeMethod(m_view, "clear");
-    auto dateList = m_db->selectEntry(currentAccount()).uniqueKeys();
+    auto model = m_db->selectEntry(currentAccount());
+    auto dateList = model.uniqueKeys();
     std::sort(dateList.begin(), dateList.end());
     QList<QDate> keysT;
     QDate minDate , maxDate;
@@ -58,7 +59,7 @@ int GraphController::exec()
     QList<QPair<Total, bool>> sum;
     for(auto it: keysT)
     {
-        auto l = m_db->selectEntry(currentAccount()).values(it);
+        auto l = model.values(it);
         if(l.isEmpty())
         {
             Entry e;

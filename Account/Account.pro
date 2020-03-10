@@ -1,4 +1,4 @@
-QT += quick sql core xml widgets charts qml gui
+QT += quick sql core xml widgets charts qml gui xmlpatterns
 CONFIG += c++17
 
 ##Command de deploiement: windeployeqt --qmldir %{sourceDir}\Account\View
