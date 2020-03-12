@@ -39,7 +39,7 @@ QSharedPointer<FeatureBuilder> ControllerFrequency::build(QQmlApplicationEngine 
     
     auto freqs = QSharedPointer<ControllerFrequency>::create();
     
-    connect(root, SIGNAL(s_openFrequencyManager()), freqs.data(), SLOT(openManager()));
+    connect(frequency, SIGNAL(s_open()), freqs.data(), SLOT(openManager()));
     
 
     freqs->setManager(frequency);
@@ -122,13 +122,6 @@ void ControllerFrequency::endThread(QString)
     emit s_select(-2);
 }
 
-void ControllerFrequency::addEntry(int e)
-{
-    Entry ent = entry(e);
-    if(ent.hasMetadata("freqency") && m_freqs.contains(ent.metaData<int>("frequency")))
-        m_freqs[ent.metaData<int>("frequency")]<<ent;
-}
-
 void ControllerFrequency::loadCat()
 {
     auto cat = m_db->selectCategory();
@@ -150,6 +143,11 @@ int ControllerFrequency::exec()
     for(auto it: freqs)
         m_freqs[it.id()] = it;
     
+    m_filler.model = &m_freqs;
+    m_filler.entries = m_db->selectEntry(currentAccount()).values();
+    qDebug()<<"pute";
+    m_filler.start();
+    qDebug()<<"Double pute"<<m_filler.isRunning();
     loadCat();
     
     m_model.clear();

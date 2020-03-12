@@ -64,6 +64,7 @@ HEADERS += \
     Controller/controllersettings.h \
     Controller/dbrequestsinit.h \
     Controller/featurebuilder.h \
+    Controller/filler.h \
     Model/commonexpanse.h \
     Model/entry.h \
     Model/frequency.h \

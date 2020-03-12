@@ -16,6 +16,10 @@ Rectangle {
         id: testModel
     }
     
+    onFocusChanged: s_open()
+    
+    signal s_open()
+    
     color: "transparent"
     
     id: root

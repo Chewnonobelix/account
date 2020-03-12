@@ -10,6 +10,7 @@
 #include "featurebuilder.h"
 #include "Model/frequency.h"
 #include "Model/entry.h"
+#include "filler.h"
 
 class Worker: public QThread
 {
@@ -53,13 +54,13 @@ private:
     QList<QVariant> m_model; 
     
     void loadCat();
+    Filler<int, Frequency> m_filler;
+    
 public:
     ControllerFrequency();
     inline ControllerFrequency(const ControllerFrequency& f): AbstractController(f) {}
     ~ControllerFrequency() = default;
-    
-    void addEntry(int);
-    
+        
     int exec();
     void closeManager();
     

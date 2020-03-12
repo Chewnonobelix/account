@@ -671,15 +671,6 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
     QMap<int, Frequency> ret;
     auto freqs = m_currentAccount.elementsByTagName("frequency");
     
-    QXmlQuery query;
-    query.setFocus(m_currentAccount.toString());
-    query.setQuery("/database/entry[@frequency]");
-    QXmlResultItems buffer;
-    query.evaluateTo(&buffer);
-    QXmlItem it;
-    for(it = buffer.next(); !it.isNull(); it = buffer.next())
-        qDebug()<<it.toAtomicValue();
-    
     for(int i = 0; i < freqs.size(); i++)
     {
         auto el = freqs.at(i).toElement();
@@ -703,11 +694,11 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
         
     }
     
-    auto entries = selectEntry(m_accounts.key(m_currentAccount));
+//    auto entries = selectEntry(m_accounts.key(m_currentAccount));
     
-    for(auto it: entries)
-        if(it.metaDataList().contains("frequency"))
-            ret[it.metaData<int>("frequency")] << it;
+//    for(auto it: entries)
+//        if(it.metaDataList().contains("frequency"))
+//            ret[it.metaData<int>("frequency")] << it;
     return ret.values();
 }
 
