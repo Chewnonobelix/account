@@ -95,10 +95,8 @@ QList<LinkedEntry> Frequency::entries() const
 
 Frequency& Frequency::operator<< (const Entry& e)
 {   
-    //TODO CONGESTION POINT FREQUENCY
     if(e.hasMetadata("frequency") && e.metaData<int>("frequency") == id())
     {
-        qDebug()<<"Fill"<<e.id()<<id();
         LinkedEntry le;
         le.m_id = e.id();
         le.m_date = e.date();

@@ -7,19 +7,17 @@
 template<class Key, class Model>
 class Filler: public QThread
 {
+
 protected:
     void run()
     {
-        qDebug()<<"Begin"<<entries.size()<<model->size();
         for(auto it: entries)
-            for(auto it2: *model)
+            for(auto& it2: *model)
                 it2<<it;
-        
-        qDebug()<<"End";
     }
     
 public:
-    QMap<Key, Model>* model;
+    QMap<Key, Model>* model = nullptr;
     QList<Entry> entries;
 };
 

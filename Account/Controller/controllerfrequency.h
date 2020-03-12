@@ -97,6 +97,8 @@ public slots:
     
     void displayEntry(int);
     void setWorker(QString);
+
+    void endFill();
 };
 
 Q_DECLARE_METATYPE(ControllerFrequency)

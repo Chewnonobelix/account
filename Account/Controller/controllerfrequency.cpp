@@ -107,6 +107,8 @@ void ControllerFrequency::setManager(QObject * manager)
     
     if(freqList)
         connect(freqList, SIGNAL(s_modelChanged(QString)), this, SLOT(setWorker(QString)));
+
+    connect((QThread*)&m_filler, SIGNAL(finished()), this, SLOT(endFill()));
 }
 
 void ControllerFrequency::setWorker(QString name)
@@ -135,6 +137,12 @@ void ControllerFrequency::loadCat()
     ee->setProperty("outcomeList", outcome);    
 }
 
+void ControllerFrequency::endFill()
+{
+    for(auto it: m_freqs)
+        qDebug()<<"Kermitterand"<<it.id()<<it.listEntries().size();
+}
+
 int ControllerFrequency::exec()
 {
     auto freqs = m_db->selectFrequency();
@@ -143,11 +151,13 @@ int ControllerFrequency::exec()
     for(auto it: freqs)
         m_freqs[it.id()] = it;
     
-    m_filler.model = &m_freqs;
+    if(!m_filler.model)
+        m_filler.model = &m_freqs;
+
     m_filler.entries = m_db->selectEntry(currentAccount()).values();
-    qDebug()<<"pute";
+
     m_filler.start();
-    qDebug()<<"Double pute"<<m_filler.isRunning();
+
     loadCat();
     
     m_model.clear();
