@@ -8,6 +8,7 @@
 #include "Model/budget.h"
 #include "abstractcontroller.h"
 #include "featurebuilder.h"
+#include "filler.h"
 
 class ControllerBudget: public AbstractController, public FeatureBuilder
 {
@@ -21,6 +22,7 @@ private:
     QMap<QString, Budget> m_budgets;
     QDate m_currentDate;
     QString m_selected;
+    Filler<QString, Budget> m_filler;
     
     void update(int);
     

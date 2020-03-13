@@ -126,19 +126,20 @@ void ControllerBudget::show(QDate date)
 
 void ControllerBudget::reload()
 {
+    if(m_filler.isRunning())
+        return;
+    
     m_budgets.clear();;
 
     auto l = m_db->selectBudgets();
 
     for(auto b: l)
-    {
         m_budgets[b.category()] = b;
-    }
 
-    auto e = m_db->selectEntry(currentAccount());
-    for(auto it: e)
-        addTo(it.id());
+    m_filler.entries = m_db->selectEntry(currentAccount()).values();
 
+    m_filler.start();
+    
     show(m_currentDate);
 }
 
@@ -299,6 +300,7 @@ void ControllerBudget::showTarget(QString catName, QString date, bool all)
 void ControllerBudget::setManager(QObject * manager)
 {
     m_view = manager;
+    m_filler.model = &m_budgets;
     
     if(m_view)
     {
