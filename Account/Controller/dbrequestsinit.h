@@ -85,7 +85,6 @@ const auto frequency_table = QString("CREATE TABLE `frequency` ("
                                          "`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
                                          "`freq` INTEGER NOT NULL,"
                                          "`nbGroup` INTEGER NOT NULL,"
-                                         "`end` date DEFAULT NULL,"
                                          "`profile` TEXT NOT NULL DEFAULT 'Default',"
                                          "`account` TEXT NOT NULL"
                                        ")");

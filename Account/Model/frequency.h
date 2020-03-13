@@ -6,14 +6,6 @@
 #include "accountglobal.h"
 #include "entry.h"
 
-struct LinkedEntry{
-    int m_id;
-    QDate m_date;
-    int m_group;       
-};
-
-Q_DECLARE_METATYPE(LinkedEntry)
-
 class Frequency
 {
     Q_GADGET
@@ -22,8 +14,10 @@ class Frequency
     Q_PROPERTY(QString name READ name)
     Q_PROPERTY(Entry reference READ referenceEntry)
     Q_PROPERTY(QDate end READ end)
+    Q_PROPERTY(QDate begin READ begin)
     Q_PROPERTY(int nbGroup READ nbGroup)
     Q_PROPERTY(Account::FrequencyEnum freq READ freq)
+    Q_PROPERTY(int count READ count)
     
 public:
     
@@ -31,8 +25,9 @@ private:
     
     int m_id;
     Account::FrequencyEnum m_freq;
-    QList<LinkedEntry> m_entriesId;
+    QList<QVariant> m_entriesId;
     QDate m_end;
+    QDate m_begin;
     Entry m_referenceEntry;
     int m_nbGroup;
     
@@ -50,21 +45,23 @@ public:
     Account::FrequencyEnum freq() const;
     void setFreq(Account::FrequencyEnum);
     
-    QList<LinkedEntry> entries() const;
-    Q_INVOKABLE QVariantList listEntries() const;
+    Q_INVOKABLE QVariantList  entries() const;
     Q_INVOKABLE QVariantList listEntries(int) const;
     
     Frequency& operator<< (const Entry&);
     
     Entry clone(const Entry&) const;
     QDate end() const;
+    QDate begin() const;
     void setEnd(QDate);
+    void setBegin(QDate);
     Q_INVOKABLE bool isUnlimited() const;
     Entry referenceEntry() const;
     void setReferenceEntry(Entry referenceEntry);
     int nbGroup() const;
     void setNbGroup(int nbGroup);
     QString name() const;
+    int count() const;
 };
 
 Q_DECLARE_METATYPE(Frequency)

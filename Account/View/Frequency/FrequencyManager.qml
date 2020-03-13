@@ -96,7 +96,7 @@ Rectangle {
                     ref.entry = Qt.binding(function() {return currentModel ? currentModel.reference : null})
                     
                     groupText.nb = Qt.binding(function() {return currentModel ? currentModel.nbGroup : 0})
-                    countText.nb = Qt.binding(function() {return currentModel ? currentModel.listEntries().length : 0})
+                    countText.nb = Qt.binding(function() {return currentModel ? currentModel.count : 0})
                     pageChanger.maxPage = Qt.binding(function() {return countText.nb / 100 + 1})
                     whenCombo.enabled = Qt.binding(function() {return count !== 0})
                 }
@@ -114,18 +114,7 @@ Rectangle {
                         pageChanger.pageIndex = 1
                         
                         whenCombo.currentIndex = whenCombo.model.findIndex(model[currentIndex].freq + 0)
-                        
-                        dateText.from = model[currentIndex].listEntries()[0] ? model[currentIndex].listEntries()[0].date : new Date()
-                        dateText.to = dateText.from
-                        
-                        for(var i = 0; i < model[currentIndex].listEntries().length; i++) {
-                            if(model[currentIndex].listEntries()[i].date < dateText.from)
-                                dateText.from = model[currentIndex].listEntries()[i].date
-                            
-                            if(model[currentIndex].listEntries()[i].date > dateText.to)
-                                dateText.to = model[currentIndex].listEntries()[i].date
-                        }
-                        
+                                                                        
                         pageChanger.s_pageChange()
                     }
                 }
@@ -331,8 +320,8 @@ Rectangle {
                 
                 Text {
                     id: dateText
-                    property var from
-                    property var to
+                    property var from: frequencyList.currentModel ? frequencyList.currentModel.begin: ""
+                    property var to: frequencyList.currentModel ? frequencyList.currentModel.end: ""
                     anchors.top: countText.bottom
                     text: qsTr("From") + " " + Qt.formatDate(from, "dd-MM-yyyy") + ", " + qsTr("to") + " " + Qt.formatDate(to, "dd-MM-yyyy")
                     fontSizeMode: Text.Fit
@@ -490,7 +479,7 @@ Rectangle {
                     var i = pageIndex - 1
                     
                     for(var j = 0 ; j < 100; j++) {
-                        if(j+100*i < frequencyList.model[frequencyList.currentIndex].listEntries().length) testModel.append(frequencyList.model[frequencyList.currentIndex].listEntries()[j+100*i])
+                        if(j+100*i < frequencyList.model[frequencyList.currentIndex].entries().length) testModel.append(frequencyList.model[frequencyList.currentIndex].entries()[j+100*i])
                     }
                 }
             }

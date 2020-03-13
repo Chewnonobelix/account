@@ -173,8 +173,6 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
 
 QMultiMap<QDate, Entry> ControllerXMLMulti::selectEntry(QString account)
 {
-    static int count = 0;
-    qDebug()<<"Select entry"<<++count;
     setCurrentAccount(account);
     
     QMultiMap<QDate, Entry> ret;
@@ -605,7 +603,6 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
             in.setId(id);
             e.setInfo(in);
             addEntryNode(e, current, "referenceEntry");
-            adder(current, "end", f.end().toString("dd-MM-yyyy"));
         }
     }
     
@@ -679,7 +676,7 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
         f.setFreq((Account::FrequencyEnum)el.attribute("freq").toInt());
         
         auto child = el.elementsByTagName("end").at(0).toElement();
-        f.setEnd(QDate::fromString(child.text(), "dd-MM-yyyy"));
+
         auto nb = el.elementsByTagName("nbGroup");
         
         if(!nb.isEmpty())
@@ -694,11 +691,6 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
         
     }
     
-//    auto entries = selectEntry(m_accounts.key(m_currentAccount));
-    
-//    for(auto it: entries)
-//        if(it.metaDataList().contains("frequency"))
-//            ret[it.metaData<int>("frequency")] << it;
     return ret.values();
 }
 

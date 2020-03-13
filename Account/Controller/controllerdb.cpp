@@ -750,7 +750,6 @@ QList<Frequency> ControllerDB::selectFrequency()
             f.setId(m_selectFrequency->value("id").toInt());
             f.setFreq((Account::FrequencyEnum)m_selectFrequency->value("freq").toInt());
             f.setNbGroup(m_selectFrequency->value("nbGroup").toInt());
-            f.setEnd(m_selectFrequency->value("end").toDate());
             
             m_selectFrequencyReference->bindValue(":f", f.id());
             

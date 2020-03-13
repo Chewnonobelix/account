@@ -519,7 +519,7 @@ void MainController::pageChange(int id)
 {
     QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
-    qDebug()<<"PageChange"<<m_model.size();
+
     if(tab && skipper)
     {
         auto ld = dateList();

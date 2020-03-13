@@ -139,8 +139,13 @@ void ControllerFrequency::loadCat()
 
 void ControllerFrequency::endFill()
 {
-    for(auto it: m_freqs)
-        qDebug()<<"Kermitterand"<<it.id()<<it.listEntries().size();
+    m_model.clear();
+    
+    for(auto it = m_freqs.begin(); it != m_freqs.end(); it++)
+        m_model<<QVariant::fromValue(*it);
+    
+    QObject* model = m_manager->findChild<QObject*>("frequencyList");
+    model->setProperty("model", m_model);    
 }
 
 int ControllerFrequency::exec()
@@ -236,7 +241,6 @@ void ControllerFrequency::openManager()
 void ControllerFrequency::closeManager()
 {
     QMetaObject::invokeMethod(m_generate, "close");
-    
 }
 
 void ControllerFrequency::addFrequency()
