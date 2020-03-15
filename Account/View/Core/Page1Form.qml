@@ -106,7 +106,7 @@ Page {
             AccountHeader {
                 id: quickViewDate
                 objectName: "quickViewDate"
-                property date currentDate
+                property date currentDate: new Date()
                 
                 text: qsTr("Budget quick view") + ": " + Qt.formatDate(currentDate, "dd-MM-yyyy")
                 height: parent.height * .10

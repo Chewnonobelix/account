@@ -16,10 +16,6 @@ Item {
         budgetModel2.clear()
     }
 
-//    Rectangle {
-//        anchors.fill: parent
-//    }
-
     ListModel {
         id: budgetModel1
         //target, currentValue, name,date
