@@ -270,6 +270,7 @@ void ControllerBudget::showTarget(QString catName, QString date, bool all)
     QMetaObject::invokeMethod(m_view, "clearSub");
 
     auto list = m_budgets[catName].subs();
+    
     if(!all)
     {
         QDate d = QDate::fromString(date, "dd-MM-yyyy");
