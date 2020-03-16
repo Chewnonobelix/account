@@ -26,25 +26,15 @@ void Budget::setId(int i)
 
 bool Budget::addEntry(Entry e)
 {
-    bool ret = false;
+    m_subit = std::find_if(m_subs.begin(), m_subs.end(), [e](const SubBudget& it) {
+        return it.in(e.date());    
+    });
 
-    while(!ret)
-    {
-        for(SubBudget& it: m_subs)
-        {
-            if(it.in(e.date()))
-                ret = it.addEntry(e);
-            
-            if(it.in(e.date()) && !ret)
-                return false;
-        }
-            
-
-        if(!ret)
-            if(!createSub(e.date()))
-                break;
-    }
-    return ret;
+    if(m_subit == m_subs.end())
+        createSub(e.date());
+    
+    
+    return (*m_subit).addEntry(e);;
 }
 
 bool Budget::removeEntry(Entry e)
@@ -110,7 +100,7 @@ bool Budget::createSub(QDate d)
     sub.setEnd(end);
 
     while(!sub.in(d))
-    {        
+    {                
         if(d < start)
         {
             start = previous(start);
@@ -146,7 +136,7 @@ bool Budget::createSub(QDate d)
 
     sub.setTarget(tar);
     m_subs[sub.begin()] = sub;
-
+    m_subit = m_subs.find(sub.begin());
     return ret;
 }
 
@@ -161,7 +151,13 @@ double Budget::current(QDate d)
 
 Account::FrequencyEnum Budget::frequency(QDate d) const
 {
-    return m_frequency.value(d, Account::FrequencyEnum::Day);
+    Account::FrequencyEnum ret;
+    auto it = m_frequency.begin();
+    for(; it != m_frequency.end(); it++)
+        if((d >= it.key() && d < (it+1).key()) || (it+1) == m_frequency.end())
+            ret = it.value();
+    
+    return ret;
 }
 
 void Budget::setFrequency(QDate d, Account::FrequencyEnum f)

@@ -25,6 +25,8 @@ private:
     QMap<QDate, double> m_targets;
     QMap<QDate, SubBudget> m_subs;
 
+    QMap<QDate, SubBudget>::iterator m_subit = m_subs.end();
+    
     QDate next(QDate) const;
     QDate previous(QDate) const;
 
