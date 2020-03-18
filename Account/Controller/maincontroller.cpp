@@ -28,7 +28,7 @@ MainController::MainController(int storage): AbstractController()
     
     qmlRegisterModule("Account.Style", 1, 0);
     try
-    {        
+    {
         setDb(m_settings.database().isEmpty() ? "ControllerDB" : m_settings.database());
         m_db->init();
     }
@@ -43,7 +43,7 @@ MainController::MainController(int storage): AbstractController()
     connect(&m_dbThread, QThread::started, m_db, InterfaceDataSave::exec);
     
     m_dbThread.start();
- }
+}
 
 MainController::~MainController()
 {
@@ -61,7 +61,7 @@ int MainController::exec()
     
     if (m_engine.rootObjects().isEmpty())
         return -1;
-        
+
     QObject* root = m_engine.rootObjects().first();
     
     connect(root, SIGNAL(adding(bool)), this, SLOT(add(bool)));
@@ -83,7 +83,7 @@ int MainController::exec()
     
     if(combo)
     {
-        loadAccount();        
+        loadAccount();
         connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
     }
     
@@ -394,7 +394,6 @@ void MainController::remove(int id)
 {
     Entry e = AbstractController::entry(id);
     m_db->removeEntry(e);
-    //    accountChange(currentAccount());
 }
 
 void MainController::edit(int id)
@@ -481,8 +480,7 @@ void Builder::run()
         if(!(i%100))
         {
             model->append(temp);
-            qDebug()<<"Progress"<<((double)i/(init.count()-1)*100.0);            
-            emit s_part();
+            qDebug()<<"Progress"<<((double)i/(init.count()-1)*100.0);
         }
     }
 }
@@ -492,7 +490,7 @@ void MainController::buildModel(int)
     if(m_modelBuilder && m_modelBuilder->isRunning())
         return;
     
-    m_model.clear();    
+    m_model.clear();
     QList<Entry> ret;
     
     ret = m_db->selectEntry(currentAccount()).values();
@@ -503,7 +501,7 @@ void MainController::buildModel(int)
         t = t + ret[i];
         QVariantMap map = ret[i];
         
-//        map.insert("total", QVariant::fromValue(t));
+        map.insert("total", QVariant::fromValue(t));
         m_model.push_back(QVariant::fromValue(map));
     }
     
@@ -529,7 +527,7 @@ void MainController::pageChange(int id)
     if(tab && skipper)
     {
         auto ld = dateList();
-        int index = -1;        
+        int index = -1;
         int first = 0;
         
         QMetaObject::invokeMethod(tab, "unselectAll");
@@ -544,7 +542,6 @@ void MainController::pageChange(int id)
                 index = currentModel.count() % 100;
         });
         
-//        currentModel = currentModel.isEmpty() ? m_model : currentModel;
         int maxPage = currentModel.size() < 100 ? 1 : (currentModel.size() / 100 + 1);
         skipper->setProperty("maxPage", maxPage);
         
@@ -606,7 +603,7 @@ void MainController::accountChange(QString acc)
     
     if(tab)
         tab->setProperty("model", QVariantList());
-        
+
     buildModel();
     pageChange();
     checkEstimated();
@@ -633,7 +630,6 @@ void MainController::loadAccount()
             add(true);
         }
         combo->setProperty("model", t);
-//        connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
         
         if(t.isEmpty())
         {

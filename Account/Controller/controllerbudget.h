@@ -31,7 +31,6 @@ public:
     ControllerBudget(const ControllerBudget &);
     
     ~ControllerBudget();
-    bool addTo(int);
     bool removeFrom(int);
 
     int exec();

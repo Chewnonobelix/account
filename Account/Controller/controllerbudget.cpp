@@ -31,19 +31,6 @@ void ControllerBudget::update(int)
     }
 }
 
-bool ControllerBudget::addTo(int id)
-{
-    //TODO CONGESTION POINT BUDGET
-//    Entry e = entry(id);
-
-//    bool ret = m_budgets.contains(e.info().category());
-
-//    if(m_budgets.contains(e.info().category()))
-//        m_budgets[e.info().category()]<<(e);
-
-    return false;
-}
-
 void ControllerBudget::openManager()
 {
     if(m_view)

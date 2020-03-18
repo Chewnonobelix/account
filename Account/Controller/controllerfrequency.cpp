@@ -33,7 +33,8 @@ ControllerFrequency::ControllerFrequency()
 QSharedPointer<FeatureBuilder> ControllerFrequency::build(QQmlApplicationEngine * engine, QObject * root, QList<AbstractController *> contollers)
 {    
     Q_UNUSED(contollers)
-    
+    Q_UNUSED(root)
+
     QQmlComponent frequencyComp(engine, QUrl("qrc:/Frequency/FrequencyManager.qml"));
     QObject* frequency = frequencyComp.create();
     
