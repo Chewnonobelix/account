@@ -118,6 +118,17 @@ Entry::operator QVariantMap() const
     ret.insert("type", type());
     ret.insert("info", QVariant::fromValue(info()));
     ret.insert("label", label());
-    
+    ret.insert("isBlock", isBlocked());
     return ret;
 }
+
+bool Entry::isBlocked() const
+{
+    return hasMetadata("blocked") && metaData<bool>("blocked");
+}
+
+void Entry::setBlocked(bool b)
+{
+    setMetadata("blocked", b);
+}
+

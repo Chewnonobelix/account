@@ -21,6 +21,7 @@ class Entry: public MetaData
     Q_PROPERTY(Information info READ info)
     Q_PROPERTY(QString label READ label)
     Q_PROPERTY(int id READ id)
+    Q_PROPERTY(bool isBlocked READ isBlocked)
 
 private:
 
@@ -29,7 +30,7 @@ private:
     QDate m_date;
     QString m_type;
     Information m_info;
-    
+
 public:
     Entry();
     Entry(const Entry&);
@@ -52,6 +53,8 @@ public:
     Information info() const;
     void setInfo(Information info);
     QString label() const;
+    bool isBlocked() const;
+    void setBlocked(bool);
 
     operator QVariantMap() const;
 };

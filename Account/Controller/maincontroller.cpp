@@ -297,6 +297,7 @@ void MainController::adding()
         Information i;
         i.setTitle("Initial");
         e.setInfo(i);
+        e.setBlocked(true);
     }
     else
     {

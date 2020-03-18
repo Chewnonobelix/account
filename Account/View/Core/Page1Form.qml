@@ -502,8 +502,8 @@ Page {
     
     
     Component.onCompleted: {
-        currentId = Qt.binding(function() {return view.currentEntry && view.currentEntry.label !== "Initial" ? view.currentEntry.id : -1})
+        currentId = Qt.binding(function() {return view.currentEntry && !view.currentEntry.isBlocked ? view.currentEntry.id : -1})
     }
     
-    property int currentId: view.selection.count !== 0 && model[view.currentRow].label !== "Initial" ? model[view.currentRow].id : -1
+    property int currentId: view.selection.count !== 0 && !model[view.currentRow].isBlocked ? model[view.currentRow].id : -1
 }
