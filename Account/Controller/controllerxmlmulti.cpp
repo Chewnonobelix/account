@@ -27,7 +27,10 @@ void ControllerXMLMulti::close()
     QDir dir;
     
     dir.cd("data");
-    
+
+    if(!dir.exists(currentProfile()))
+        dir.mkdir(currentProfile());
+
     for(auto it = m_accounts.begin(); it != m_accounts.end(); it++)
     {
         if(!it.key().isEmpty())
@@ -232,7 +235,7 @@ bool ControllerXMLMulti::removeAccount(QString account)
     QDir dir;
     dir.cd("data");
     QFile file;
-    file.setFileName("data\\" + account + ".xml");
+    file.setFileName("data\\" + currentProfile() + "\\" + account + ".xml");
     
     bool ret = (m_accounts.remove(account) > 0 && file.remove());
     
