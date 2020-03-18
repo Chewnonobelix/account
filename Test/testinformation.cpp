@@ -12,7 +12,12 @@ TestInformation::TestInformation(QObject *parent) : QObject(parent)
 }
 
 void TestInformation::initTestCase()
-{}
+{    model2.setId(id);
+     model2.setIdEntry(ide);
+     model2.setCategory(category);
+     model2.setEstimated(estimated);
+     model2.setTitle(title);
+}
 
 void TestInformation::cleanupTestCase()
 {}
@@ -87,11 +92,6 @@ void TestInformation::testCopyConstructor()
 
 void TestInformation::testEquality()
 {
-    model2.setId(id);
-    model2.setIdEntry(ide);
-    model2.setCategory(category);
-    model2.setEstimated(estimated);
-    model2.setTitle(title);
 
     QCOMPARE(model, model2);
 }

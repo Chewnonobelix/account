@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include "testinformation.h"
+#include "testentry.h"
 
 int main(int argc, char** argv)
 {
@@ -12,6 +13,9 @@ int main(int argc, char** argv)
     TestInformation ti;
 
     status |= QTest::qExec(&ti, argc, argv);
+
+    TestEntry te;
+    status |= QTest::qExec(&te, argc, argv);
 
     return status;
 }

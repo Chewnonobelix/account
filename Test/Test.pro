@@ -21,6 +21,7 @@ SOURCES +=  \
     ../Account/Model/subbudget.cpp \
     ../Account/Model/total.cpp \
     main.cpp \
+    testentry.cpp \
     testinformation.cpp
 
 HEADERS +=  \
@@ -38,6 +39,7 @@ HEADERS +=  \
     ../Account/Model/metadata.h \
     ../Account/Model/subbudget.h \
     ../Account/Model/total.h \
+    testentry.h \
     testinformation.h
 
 INCLUDEPATH = ../Account
