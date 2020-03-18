@@ -2,7 +2,7 @@ TEMPLATE = subdirs
 
 SUBDIRS = \
 Account \
-#Test
+Test
 
 TRANSLATIONS += Account\Francais.ts \
                 Account\English.ts
