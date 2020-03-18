@@ -36,10 +36,7 @@ public:
     QVariantList* model;
     Total t;
     QMutex* m_mutex;
-    
-signals:
-    void s_part(int = -1);
-};
+ };
 
 class MainController: public AbstractController
 {
@@ -63,7 +60,7 @@ private:
     QList<QDate> dateList() const;
 
     QVariantList m_model;
-    QSharedPointer<QThread> m_modelBuilder = nullptr;
+    QSharedPointer<Builder> m_modelBuilder = nullptr;
     QMutex m_modelMutex;
     
 public:

@@ -507,13 +507,18 @@ void MainController::buildModel(int)
         m_model.push_back(QVariant::fromValue(map));
     }
     
-//    auto n = new Builder;
-//    connect(n, Builder::s_part, this, pageChange, Qt::DirectConnection);
-//    n->init = ret;
-//    n->t = t;
-//    n->model = &m_model;    
-//    m_modelBuilder.reset(n);
-//    m_modelBuilder->start();
+    if(!m_modelBuilder)
+    {
+        m_modelBuilder.reset(new Builder);
+        m_modelBuilder->setObjectName("Builder Thread");
+    }
+
+    m_modelBuilder->init = ret;
+
+    m_modelBuilder->t = t;
+    m_modelBuilder->model = &m_model;
+
+    m_modelBuilder->start();
 }
 
 void MainController::pageChange(int id)
