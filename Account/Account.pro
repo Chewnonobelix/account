@@ -1,5 +1,5 @@
 QT += quick sql core xml widgets charts qml gui xmlpatterns
-CONFIG += c++17
+CONFIG += c++17 windeployqt
 
 ##Command de deploiement: windeployeqt --qmldir %{sourceDir}\Account\View
 # The following define makes your compiler emit warnings if you use

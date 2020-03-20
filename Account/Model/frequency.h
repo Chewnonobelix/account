@@ -55,7 +55,7 @@ public:
     QDate begin() const;
     void setEnd(QDate);
     void setBegin(QDate);
-    Q_INVOKABLE bool isUnlimited() const;
+
     Entry referenceEntry() const;
     void setReferenceEntry(Entry referenceEntry);
     int nbGroup() const;

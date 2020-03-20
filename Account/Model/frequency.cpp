@@ -128,11 +128,6 @@ Frequency& Frequency::operator<< (const Entry& e)
     return *this;
 }
 
-bool Frequency::isUnlimited() const
-{
-    return !m_end.isValid();
-}
-
 QString Frequency::name() const
 {
     return m_referenceEntry.info().title();
