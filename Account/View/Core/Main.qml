@@ -144,6 +144,9 @@ ApplicationWindow {
             MenuItem {
                 text: qsTr("Settings")
                 onTriggered: s_openSetting()
+                background: Rectangle {
+                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
+                }
             }
 
             Menu {

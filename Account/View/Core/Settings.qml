@@ -15,11 +15,20 @@ Dialog {
     anchors.centerIn: parent
     clip: true
     
+    header: AccountHeader {
+        height: root.height * .10
+        width: root.width
+        text: root.title
+    }
+
     background: AccountBackground{}
     
     footer: DialogButtonBox {
         alignment: Qt.AlignRight
-        
+        background: Rectangle {
+            color: "transparent"
+        }
+
         delegate: AccountButton {}
     }
 
@@ -47,8 +56,9 @@ Dialog {
                 GridLayout {
                     columns: 2
                     
-                    AccountHeader {
+                    AccountLabel {
                         text: qsTr("Language")
+                        font.family: AccountStyle.title.name
                     }
                     
                     AccountComboBox {
@@ -70,16 +80,18 @@ Dialog {
                 
                 GridLayout {
                     columns: 2
-                    AccountHeader {
+                    AccountLabel {
                         text: qsTr("Budget")
+                        font.family: AccountStyle.title.name
                     }
                     
                     AccountCheckBox {
                         objectName: "budget"
                     }
                     
-                    AccountHeader {
+                    AccountLabel {
                         text: qsTr("Frequency")
+                        font.family: AccountStyle.title.name
                     }
                     
                     AccountCheckBox {
@@ -88,6 +100,7 @@ Dialog {
                     
                     AccountLabel {
                         text: qsTr("CommonExpanse")
+                        font.family: AccountStyle.title.name
                     }
                     
                     AccountCheckBox {
@@ -133,10 +146,11 @@ Dialog {
                 GridLayout {
                     columns: 3
                     
-                    AccountHeader {
+                    AccountLabel {
                         Layout.column: 1
                         Layout.row: 0
                         text: qsTr("Main database")
+                        font.family: AccountStyle.title.name
                     }
                     
                     Loader {
@@ -159,10 +173,11 @@ Dialog {
                         checked: true
                     }
                     
-                    AccountHeader {
+                    AccountLabel {
                         Layout.column: 1
                         Layout.row: 1
                         text: qsTr("Backup database")
+                        font.family: AccountStyle.title.name
                     }
                     
                     Loader {
