@@ -7,11 +7,6 @@ const double value = 2.12;
 const bool blacked = true;
 const QDate date = QDate::currentDate();
 
-TestEntry::TestEntry(QObject *parent) : QObject(parent)
-{
-
-}
-
 void TestEntry::initTestCase()
 {
     model2.setId(ide);

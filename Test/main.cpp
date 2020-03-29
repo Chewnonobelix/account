@@ -4,6 +4,7 @@
 
 #include "testinformation.h"
 #include "testentry.h"
+#include "testfrequency.h"
 
 int main(int argc, char** argv)
 {
@@ -16,6 +17,10 @@ int main(int argc, char** argv)
 
     TestEntry te;
     status |= QTest::qExec(&te, argc, argv);
+
+
+    TestFrequency tf;
+    status |= QTest::qExec(&tf, argc, argv);
 
     return status;
 }

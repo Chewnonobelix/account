@@ -22,6 +22,7 @@ SOURCES +=  \
     ../Account/Model/total.cpp \
     main.cpp \
     testentry.cpp \
+    testfrequency.cpp \
     testinformation.cpp
 
 HEADERS +=  \
@@ -40,6 +41,7 @@ HEADERS +=  \
     ../Account/Model/subbudget.h \
     ../Account/Model/total.h \
     testentry.h \
+    testfrequency.h \
     testinformation.h
 
 INCLUDEPATH = ../Account

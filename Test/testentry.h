@@ -13,7 +13,7 @@ private:
     QSharedPointer<Entry> copy = nullptr;
 
 public:
-    explicit TestEntry(QObject *parent = nullptr);
+    TestEntry() = default;
 
 private slots:
     void initTestCase();
