@@ -92,7 +92,7 @@ Rectangle {
                 }
 
                 Component.onCompleted: {
-                    currentModel = Qt.binding(function() {return enabled && currentIndex > -1 ? model[currentIndex] : null})
+
                     ref.entry = Qt.binding(function() {return currentModel ? currentModel.reference : null})
                     
                     groupText.nb = Qt.binding(function() {return currentModel ? currentModel.nbGroup : 0})
@@ -116,6 +116,7 @@ Rectangle {
                         whenCombo.currentIndex = whenCombo.model.findIndex(model[currentIndex].freq + 0)
                                                                         
                         pageChanger.s_pageChange()
+                        currentModel = enabled && currentIndex > -1 ? model[currentIndex] : null
                     }
                 }
                 
@@ -290,52 +291,40 @@ Rectangle {
                 color: "transparent"
                 border.color: "gold"
                 
-                Text {
+                AccountLabel {
                     id: groupText
                     property int nb: 0
-                    text: qsTr(" Number of generation") + ": " + nb
-                    fontSizeMode: Text.Fit
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
+                    text: qsTr("Number of generation") + ": " + nb
                     width: parent.width
                     height: parent.height / parent.children.length
-                    horizontalAlignment: Qt.AlignHCenter
-                    verticalAlignment: Qt.AlignVCenter
                 }
                 
-                Text {
+                AccountLabel {
                     id: countText
                     anchors.top: groupText.bottom
                     
                     property int nb: 0
-                    text: qsTr(" Number of entries") + ": " + nb
-                    fontSizeMode: Text.Fit
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
+                    text: qsTr("Number of entries") + ": " + nb
                     width: parent.width
-                    horizontalAlignment: Qt.AlignHCenter
-                    verticalAlignment: Qt.AlignVCenter
                     height: parent.height / parent.children.length
                 }
                 
-                Text {
+                AccountLabel {
                     id: dateText
                     property var from: frequencyList.currentModel ? frequencyList.currentModel.begin: ""
                     property var to: frequencyList.currentModel ? frequencyList.currentModel.end: ""
                     anchors.top: countText.bottom
                     text: qsTr("From") + " " + Qt.formatDate(from, "dd-MM-yyyy") + ", " + qsTr("to") + " " + Qt.formatDate(to, "dd-MM-yyyy")
-                    fontSizeMode: Text.Fit
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
                     width: parent.width
                     height: parent.height / parent.children.length
-                    horizontalAlignment: Qt.AlignHCenter
-                    verticalAlignment: Qt.AlignVCenter
                 }
 
                 AccountLabel {
                     objectName: "worker"
                     anchors.top: dateText.bottom
+                    width: parent.width
+                    height: parent.height / parent.children.length
+
                     property Worker worker: null;
                     text: qsTr("Progress") + ": "  + (worker ? worker.progress + "%" : "N/A")
                 }
