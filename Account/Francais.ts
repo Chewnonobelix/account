@@ -1,68 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR" sourcelanguage="fr_FR">
+<TS version="2.1" language="fr_FR" sourcelanguage="fr_FR">
 <context>
     <name>Adding</name>
     <message>
-        <location filename="View/Core/Adding.qml" line="45"/>
+        <location filename="View/Core/Adding.qml" line="38"/>
         <source>Add new account</source>
         <translation>Ajouter un nouveau compte</translation>
     </message>
     <message>
-        <location filename="View/Core/Adding.qml" line="45"/>
+        <location filename="View/Core/Adding.qml" line="38"/>
         <source>Add new entry</source>
         <translation>Ajouter une nouvelle transaction</translation>
     </message>
     <message>
-        <location filename="View/Core/Adding.qml" line="79"/>
+        <location filename="View/Core/Adding.qml" line="68"/>
         <source>Adding</source>
         <translation>Ajout</translation>
     </message>
     <message>
-        <location filename="View/Core/Adding.qml" line="108"/>
+        <location filename="View/Core/Adding.qml" line="93"/>
         <source>Member</source>
         <translation>Membre</translation>
     </message>
     <message>
-        <location filename="View/Core/Adding.qml" line="169"/>
+        <location filename="View/Core/Adding.qml" line="147"/>
         <source>Add new 
  entry</source>
         <translation>Ajouter une nouvelle transaction</translation>
     </message>
     <message>
-        <location filename="View/Core/Adding.qml" line="190"/>
-        <location filename="View/Core/Adding.qml" line="283"/>
+        <location filename="View/Core/Adding.qml" line="165"/>
+        <location filename="View/Core/Adding.qml" line="218"/>
         <source>Please enter an account name</source>
         <translation>Entrez un nom de compte</translation>
     </message>
     <message>
-        <location filename="View/Core/Adding.qml" line="190"/>
-        <location filename="View/Core/Adding.qml" line="283"/>
+        <location filename="View/Core/Adding.qml" line="165"/>
+        <location filename="View/Core/Adding.qml" line="218"/>
         <source>Please complete the entry&apos;s title</source>
         <translation>Ajoutez un titre à la transaction</translation>
     </message>
     <message>
-        <location filename="View/Core/Adding.qml" line="209"/>
+        <location filename="View/Core/Adding.qml" line="182"/>
         <source>Specify account opening value</source>
         <translation>Spécifiez la valeur d&apos;initialisation du compte</translation>
     </message>
     <message>
-        <location filename="View/Core/Adding.qml" line="209"/>
+        <location filename="View/Core/Adding.qml" line="182"/>
         <source>Specify transaction&apos;s value</source>
         <translation>Ajoutez une valeur de transaction</translation>
     </message>
     <message>
-        <location filename="View/Core/Adding.qml" line="239"/>
+        <location filename="View/Core/Adding.qml" line="209"/>
         <source>Specify income or outcome</source>
         <translation>Selectionnez revenu ou dépense</translation>
     </message>
     <message>
-        <location filename="View/Core/Adding.qml" line="279"/>
+        <location filename="View/Core/Adding.qml" line="216"/>
         <source>Save</source>
         <translation>Sauvegarder</translation>
     </message>
     <message>
-        <location filename="View/Core/Adding.qml" line="321"/>
+        <location filename="View/Core/Adding.qml" line="245"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -70,43 +70,43 @@
 <context>
     <name>BudgetManager</name>
     <message>
-        <location filename="View/Budget/BudgetManager.qml" line="178"/>
+        <location filename="View/Budget/BudgetManager.qml" line="170"/>
         <source>Remove budget</source>
         <translation>Supprimer</translation>
     </message>
     <message>
-        <location filename="View/Budget/BudgetManager.qml" line="178"/>
+        <location filename="View/Budget/BudgetManager.qml" line="170"/>
         <source>Add budget</source>
         <translation>Ajout</translation>
     </message>
     <message>
-        <location filename="View/Budget/BudgetManager.qml" line="209"/>
-        <location filename="View/Budget/BudgetManager.qml" line="271"/>
+        <location filename="View/Budget/BudgetManager.qml" line="201"/>
+        <location filename="View/Budget/BudgetManager.qml" line="253"/>
         <source>Target</source>
         <translation>Cible</translation>
     </message>
     <message>
-        <location filename="View/Budget/BudgetManager.qml" line="233"/>
+        <location filename="View/Budget/BudgetManager.qml" line="215"/>
         <source>Remove target</source>
         <translation>Supprimer</translation>
     </message>
     <message>
-        <location filename="View/Budget/BudgetManager.qml" line="257"/>
+        <location filename="View/Budget/BudgetManager.qml" line="239"/>
         <source>Add target</source>
         <translation>Ajout</translation>
     </message>
     <message>
-        <location filename="View/Budget/BudgetManager.qml" line="271"/>
+        <location filename="View/Budget/BudgetManager.qml" line="253"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="View/Budget/BudgetManager.qml" line="271"/>
+        <location filename="View/Budget/BudgetManager.qml" line="253"/>
         <source>€</source>
         <translation>€</translation>
     </message>
     <message>
-        <location filename="View/Budget/BudgetManager.qml" line="330"/>
+        <location filename="View/Budget/BudgetManager.qml" line="308"/>
         <source>All sub budget</source>
         <translation>Tout les sous budget</translation>
     </message>
@@ -114,7 +114,7 @@
 <context>
     <name>CategoryItem</name>
     <message>
-        <location filename="View/Core/CategoryItem.qml" line="94"/>
+        <location filename="View/Core/CategoryItem.qml" line="77"/>
         <source>Add a new category</source>
         <translation>Ajouter une nouvelle categorie</translation>
     </message>
@@ -127,22 +127,22 @@
         <translation>Transaction à valider</translation>
     </message>
     <message>
-        <location filename="View/Core/CheckEstimated.qml" line="89"/>
+        <location filename="View/Core/CheckEstimated.qml" line="71"/>
         <source>Select transaction for validation</source>
         <translation>Selectionnez des transactions pour validation</translation>
     </message>
     <message>
-        <location filename="View/Core/CheckEstimated.qml" line="101"/>
+        <location filename="View/Core/CheckEstimated.qml" line="83"/>
         <source>Save</source>
         <translation>Sauvegarder</translation>
     </message>
     <message>
-        <location filename="View/Core/CheckEstimated.qml" line="126"/>
+        <location filename="View/Core/CheckEstimated.qml" line="93"/>
         <source>Later</source>
         <translation>Plus tard</translation>
     </message>
     <message>
-        <location filename="View/Core/CheckEstimated.qml" line="146"/>
+        <location filename="View/Core/CheckEstimated.qml" line="99"/>
         <source>Keep validation for later</source>
         <translation>Garder la validation pour plus tard</translation>
     </message>
@@ -150,27 +150,27 @@
 <context>
     <name>CommonExpanseManager</name>
     <message>
-        <location filename="View/CommonExpanse/CommonExpanseManager.qml" line="37"/>
+        <location filename="View/CommonExpanse/CommonExpanseManager.qml" line="30"/>
         <source>Session name</source>
         <translation>Nom de la session</translation>
     </message>
     <message>
-        <location filename="View/CommonExpanse/CommonExpanseManager.qml" line="66"/>
+        <location filename="View/CommonExpanse/CommonExpanseManager.qml" line="58"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="View/CommonExpanse/CommonExpanseManager.qml" line="86"/>
+        <location filename="View/CommonExpanse/CommonExpanseManager.qml" line="69"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="View/CommonExpanse/CommonExpanseManager.qml" line="166"/>
+        <location filename="View/CommonExpanse/CommonExpanseManager.qml" line="132"/>
         <source>Add common expanse</source>
         <translation>Ajouter</translation>
     </message>
     <message>
-        <location filename="View/CommonExpanse/CommonExpanseManager.qml" line="187"/>
+        <location filename="View/CommonExpanse/CommonExpanseManager.qml" line="141"/>
         <source>Remove common expanse</source>
         <translation>Supprimer</translation>
     </message>
@@ -178,42 +178,42 @@
 <context>
     <name>CommonExpanseView</name>
     <message>
-        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="142"/>
+        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="132"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="143"/>
+        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="133"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="183"/>
+        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="170"/>
         <source>Add</source>
         <translation>Ajouter</translation>
     </message>
     <message>
-        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="209"/>
+        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="184"/>
         <source>Remove</source>
         <translation>Supprimer</translation>
     </message>
     <message>
-        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="266"/>
+        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="229"/>
         <source>Global abstract</source>
         <translation>Résumé global</translation>
     </message>
     <message>
-        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="310"/>
+        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="265"/>
         <source>Transaction order</source>
         <translation>Ordre des transactions</translation>
     </message>
     <message>
-        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="326"/>
+        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="278"/>
         <source> to </source>
-        <translation>à</translation>
+        <translation> à </translation>
     </message>
     <message>
-        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="348"/>
+        <location filename="View/CommonExpanse/CommonExpanseView.qml" line="295"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
@@ -221,7 +221,7 @@
 <context>
     <name>ControllerBudget</name>
     <message>
-        <location filename="Controller/controllerbudget.cpp" line="364"/>
+        <location filename="Controller/controllerbudget.cpp" line="353"/>
         <source>Budget</source>
         <translation>Budget</translation>
     </message>
@@ -229,7 +229,7 @@
 <context>
     <name>ControllerCommon</name>
     <message>
-        <location filename="Controller/controllercommon.cpp" line="146"/>
+        <location filename="Controller/controllercommon.cpp" line="144"/>
         <source>Common Expanse</source>
         <translation>Dépense commune</translation>
     </message>
@@ -237,7 +237,7 @@
 <context>
     <name>ControllerFrequency</name>
     <message>
-        <location filename="Controller/controllerfrequency.cpp" line="344"/>
+        <location filename="Controller/controllerfrequency.cpp" line="373"/>
         <source>Frequency</source>
         <translation>Transaction régulière</translation>
     </message>
@@ -245,42 +245,42 @@
 <context>
     <name>CoreModel</name>
     <message>
-        <location filename="View/Core/CoreModel.qml" line="19"/>
+        <location filename="View/Core/CoreModel.qml" line="20"/>
         <source>Unique</source>
         <translation>Unique</translation>
     </message>
     <message>
-        <location filename="View/Core/CoreModel.qml" line="24"/>
+        <location filename="View/Core/CoreModel.qml" line="25"/>
         <source>Day</source>
         <translation>Jour</translation>
     </message>
     <message>
-        <location filename="View/Core/CoreModel.qml" line="28"/>
+        <location filename="View/Core/CoreModel.qml" line="29"/>
         <source>Week</source>
         <translation>Semaine</translation>
     </message>
     <message>
-        <location filename="View/Core/CoreModel.qml" line="32"/>
+        <location filename="View/Core/CoreModel.qml" line="33"/>
         <source>Month</source>
         <translation>Mois</translation>
     </message>
     <message>
-        <location filename="View/Core/CoreModel.qml" line="36"/>
+        <location filename="View/Core/CoreModel.qml" line="37"/>
         <source>Quarter</source>
         <translation>Trimestre</translation>
     </message>
     <message>
-        <location filename="View/Core/CoreModel.qml" line="40"/>
+        <location filename="View/Core/CoreModel.qml" line="41"/>
         <source>Year</source>
         <translation>Année</translation>
     </message>
     <message>
-        <location filename="View/Core/CoreModel.qml" line="52"/>
+        <location filename="View/Core/CoreModel.qml" line="53"/>
         <source>Income</source>
         <translation>Revenu</translation>
     </message>
     <message>
-        <location filename="View/Core/CoreModel.qml" line="53"/>
+        <location filename="View/Core/CoreModel.qml" line="54"/>
         <source>Outcome</source>
         <translation>Dépense</translation>
     </message>
@@ -288,27 +288,27 @@
 <context>
     <name>EntryEdit</name>
     <message>
-        <location filename="View/Core/EntryEdit.qml" line="60"/>
+        <location filename="View/Core/EntryEdit.qml" line="58"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="View/Core/EntryEdit.qml" line="91"/>
+        <location filename="View/Core/EntryEdit.qml" line="80"/>
         <source>Change transaction&apos;s title</source>
         <translation>Changer le titre de la transaction</translation>
     </message>
     <message>
-        <location filename="View/Core/EntryEdit.qml" line="109"/>
+        <location filename="View/Core/EntryEdit.qml" line="98"/>
         <source>Value</source>
         <translation>Valeur</translation>
     </message>
     <message>
-        <location filename="View/Core/EntryEdit.qml" line="135"/>
+        <location filename="View/Core/EntryEdit.qml" line="113"/>
         <source>Change transaction&apos;s value</source>
         <translation>Changer la valeur de la transaction</translation>
     </message>
     <message>
-        <location filename="View/Core/EntryEdit.qml" line="154"/>
+        <location filename="View/Core/EntryEdit.qml" line="132"/>
         <source>Category</source>
         <translation>Catégorie</translation>
     </message>
@@ -316,7 +316,7 @@
 <context>
     <name>Frequency</name>
     <message>
-        <location filename="View/Frequency/Frequency.qml" line="20"/>
+        <location filename="View/Frequency/Frequency.qml" line="17"/>
         <source>Frequency</source>
         <translation>Transaction régulière</translation>
     </message>
@@ -324,70 +324,75 @@
 <context>
     <name>FrequencyManager</name>
     <message>
-        <location filename="View/Frequency/FrequencyManager.qml" line="60"/>
+        <location filename="View/Frequency/FrequencyManager.qml" line="58"/>
         <source>Reference</source>
         <translation>Référence</translation>
     </message>
     <message>
-        <location filename="View/Frequency/FrequencyManager.qml" line="92"/>
+        <location filename="View/Frequency/FrequencyManager.qml" line="82"/>
         <source>Frequency list</source>
         <translation>Liste des récurences</translation>
     </message>
     <message>
-        <location filename="View/Frequency/FrequencyManager.qml" line="175"/>
+        <location filename="View/Frequency/FrequencyManager.qml" line="146"/>
         <source>+</source>
         <translation>+</translation>
     </message>
     <message>
-        <location filename="View/Frequency/FrequencyManager.qml" line="206"/>
+        <location filename="View/Frequency/FrequencyManager.qml" line="162"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="View/Frequency/FrequencyManager.qml" line="378"/>
+        <location filename="View/Frequency/FrequencyManager.qml" line="265"/>
         <source>Generate</source>
         <translation>Générer</translation>
     </message>
     <message>
-        <location filename="View/Frequency/FrequencyManager.qml" line="425"/>
+        <location filename="View/Frequency/FrequencyManager.qml" line="296"/>
         <source> Number of generation</source>
         <translation>Nombre de génération</translation>
     </message>
     <message>
-        <location filename="View/Frequency/FrequencyManager.qml" line="440"/>
+        <location filename="View/Frequency/FrequencyManager.qml" line="311"/>
         <source> Number of entries</source>
         <translation>Nombre de transactions</translation>
     </message>
     <message>
-        <location filename="View/Frequency/FrequencyManager.qml" line="455"/>
+        <location filename="View/Frequency/FrequencyManager.qml" line="326"/>
         <source>From</source>
         <translation>Depuis</translation>
     </message>
     <message>
-        <location filename="View/Frequency/FrequencyManager.qml" line="455"/>
+        <location filename="View/Frequency/FrequencyManager.qml" line="326"/>
         <source>to</source>
         <translation>A</translation>
+    </message>
+    <message>
+        <location filename="View/Frequency/FrequencyManager.qml" line="340"/>
+        <source>Progress</source>
+        <translation>Progréssion</translation>
     </message>
 </context>
 <context>
     <name>Generate</name>
     <message>
-        <location filename="View/Frequency/Generate.qml" line="58"/>
+        <location filename="View/Frequency/Generate.qml" line="51"/>
         <source>From</source>
         <translation>Depuis</translation>
     </message>
     <message>
-        <location filename="View/Frequency/Generate.qml" line="75"/>
+        <location filename="View/Frequency/Generate.qml" line="68"/>
         <source>To</source>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="View/Frequency/Generate.qml" line="107"/>
+        <location filename="View/Frequency/Generate.qml" line="99"/>
         <source>Generate</source>
         <translation>Générer</translation>
     </message>
     <message>
-        <location filename="View/Frequency/Generate.qml" line="123"/>
+        <location filename="View/Frequency/Generate.qml" line="111"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -395,17 +400,17 @@
 <context>
     <name>GraphController</name>
     <message>
-        <location filename="Controller/graphcontroller.cpp" line="151"/>
+        <location filename="Controller/graphcontroller.cpp" line="152"/>
         <source>one month</source>
         <translation>Un mois</translation>
     </message>
     <message>
-        <location filename="Controller/graphcontroller.cpp" line="170"/>
+        <location filename="Controller/graphcontroller.cpp" line="171"/>
         <source>one year</source>
         <translation>Une année</translation>
     </message>
     <message>
-        <location filename="Controller/graphcontroller.cpp" line="199"/>
+        <location filename="Controller/graphcontroller.cpp" line="200"/>
         <source>all years</source>
         <translation>Tout</translation>
     </message>
@@ -413,22 +418,22 @@
 <context>
     <name>Main</name>
     <message>
-        <location filename="View/Core/Main.qml" line="81"/>
+        <location filename="View/Core/Main.qml" line="85"/>
         <source>Quick add</source>
         <translation>Ajout rapide</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="86"/>
+        <location filename="View/Core/Main.qml" line="90"/>
         <source>Show normal</source>
         <translation>Restaurer</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="86"/>
+        <location filename="View/Core/Main.qml" line="90"/>
         <source>Hide</source>
         <translation>Cacher</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="91"/>
+        <location filename="View/Core/Main.qml" line="95"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
@@ -438,53 +443,58 @@
         <translation>&amp;Fichier</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="148"/>
+        <location filename="View/Core/Main.qml" line="145"/>
+        <source>Settings</source>
+        <translation>Options</translation>
+    </message>
+    <message>
+        <location filename="View/Core/Main.qml" line="156"/>
         <source>Profile</source>
         <translation>Profile</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="175"/>
+        <location filename="View/Core/Main.qml" line="183"/>
         <source>New profile</source>
         <translation>Nouveau profile</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="188"/>
+        <location filename="View/Core/Main.qml" line="196"/>
         <source>Delete profile</source>
         <translation>Supprimer le profile</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="205"/>
+        <location filename="View/Core/Main.qml" line="213"/>
         <source>&amp;Consolidate</source>
         <translation>&amp;Consolider</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="222"/>
+        <location filename="View/Core/Main.qml" line="230"/>
         <source>&amp;Quit</source>
         <translation>&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="254"/>
-        <location filename="View/Core/Main.qml" line="518"/>
+        <location filename="View/Core/Main.qml" line="260"/>
+        <location filename="View/Core/Main.qml" line="490"/>
         <source>Account</source>
         <translation>Compte</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="260"/>
+        <location filename="View/Core/Main.qml" line="266"/>
         <source>&amp;New account</source>
         <translation>&amp;Nouveau compte</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="292"/>
+        <location filename="View/Core/Main.qml" line="296"/>
         <source>&amp;Delete account</source>
         <translation>&amp;Supprimer le compte</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="325"/>
+        <location filename="View/Core/Main.qml" line="327"/>
         <source>Current account</source>
         <translation>Compte courant</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="331"/>
+        <location filename="View/Core/Main.qml" line="333"/>
         <source>&amp;Add transaction</source>
         <translation>&amp;Ajouter une transaction</translation>
     </message>
@@ -494,93 +504,87 @@
         <translation>&amp;Supprimer une transaction</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="403"/>
+        <location filename="View/Core/Main.qml" line="401"/>
         <source>?</source>
         <translation>?</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="408"/>
+        <location filename="View/Core/Main.qml" line="406"/>
         <source>About</source>
         <translation>A propos</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="424"/>
+        <location filename="View/Core/Main.qml" line="422"/>
         <source>This application is made by Arnaud DUHAMEL
 Current Version beta 0.9</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="439"/>
-        <location filename="View/Core/Main.qml" line="480"/>
-        <location filename="View/Core/Main.qml" line="666"/>
+        <location filename="View/Core/Main.qml" line="431"/>
+        <location filename="View/Core/Main.qml" line="461"/>
+        <location filename="View/Core/Main.qml" line="603"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="453"/>
+        <location filename="View/Core/Main.qml" line="440"/>
         <source>Licence</source>
         <translation>License</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="466"/>
+        <location filename="View/Core/Main.qml" line="453"/>
         <source>This application is made with Qt 5.12 and QML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="530"/>
         <source>Selection total</source>
-        <translation>Total de la sélection</translation>
+        <translation type="vanished">Total de la sélection</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="552"/>
+        <location filename="View/Core/Main.qml" line="511"/>
         <source>Select account</source>
         <translation>Compte courant</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="657"/>
+        <location filename="View/Core/Main.qml" line="595"/>
         <source>Delete</source>
         <translation>Supprimer</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="692"/>
+        <location filename="View/Core/Main.qml" line="620"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="713"/>
         <source>List</source>
-        <translation>Liste</translation>
+        <translation type="vanished">Liste</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="713"/>
         <source>Graph</source>
-        <translation>Graphique</translation>
+        <translation type="vanished">Graphique</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="713"/>
         <source>Budget</source>
-        <translation>Budget</translation>
+        <translation type="vanished">Budget</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="713"/>
         <source>Frequency</source>
-        <translation>Récurence</translation>
+        <translation type="vanished">Récurence</translation>
     </message>
     <message>
-        <location filename="View/Core/Main.qml" line="713"/>
         <source>Common expanse</source>
-        <translation>Dépense commune</translation>
+        <translation type="vanished">Dépense commune</translation>
     </message>
 </context>
 <context>
     <name>MultiCalendar</name>
     <message>
-        <location filename="View/Core/MultiCalendar.qml" line="270"/>
+        <location filename="View/Functionnal/MultiCalendar.qml" line="232"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="View/Core/MultiCalendar.qml" line="270"/>
+        <location filename="View/Functionnal/MultiCalendar.qml" line="232"/>
         <source>Day transaction</source>
         <translation>Transaction journalière</translation>
     </message>
@@ -588,17 +592,17 @@ Current Version beta 0.9</source>
 <context>
     <name>NewProfile</name>
     <message>
-        <location filename="View/MultiProfile/NewProfile.qml" line="34"/>
+        <location filename="View/MultiProfile/NewProfile.qml" line="29"/>
         <source>Profile name</source>
         <translation>Nom du profil</translation>
     </message>
     <message>
-        <location filename="View/MultiProfile/NewProfile.qml" line="93"/>
+        <location filename="View/MultiProfile/NewProfile.qml" line="79"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="View/MultiProfile/NewProfile.qml" line="111"/>
+        <location filename="View/MultiProfile/NewProfile.qml" line="87"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -606,57 +610,57 @@ Current Version beta 0.9</source>
 <context>
     <name>Page1Form</name>
     <message>
-        <location filename="View/Core/Page1Form.qml" line="57"/>
+        <location filename="View/Core/Page1Form.qml" line="54"/>
         <source>Add</source>
         <translation>Ajouter</translation>
     </message>
     <message>
-        <location filename="View/Core/Page1Form.qml" line="68"/>
+        <location filename="View/Core/Page1Form.qml" line="64"/>
         <source>Add new transaction</source>
         <translation>Ajouter une nouvelle transaction</translation>
     </message>
     <message>
-        <location filename="View/Core/Page1Form.qml" line="92"/>
+        <location filename="View/Core/Page1Form.qml" line="75"/>
         <source>Remove</source>
         <translation>Supprimer</translation>
     </message>
     <message>
-        <location filename="View/Core/Page1Form.qml" line="104"/>
+        <location filename="View/Core/Page1Form.qml" line="86"/>
         <source>Remove select transaction</source>
         <translation>Supprimer la transaction sélectionner</translation>
     </message>
     <message>
-        <location filename="View/Core/Page1Form.qml" line="145"/>
+        <location filename="View/Core/Page1Form.qml" line="111"/>
         <source>Budget quick view</source>
         <translation>Prévisualisation budget</translation>
     </message>
     <message>
-        <location filename="View/Core/Page1Form.qml" line="255"/>
+        <location filename="View/Core/Page1Form.qml" line="216"/>
         <source>[+/-]</source>
         <translation>[+/-]</translation>
     </message>
     <message>
-        <location filename="View/Core/Page1Form.qml" line="260"/>
+        <location filename="View/Core/Page1Form.qml" line="221"/>
         <source>estimated entry</source>
         <translation>Transaction prévisionnelle</translation>
     </message>
     <message>
-        <location filename="View/Core/Page1Form.qml" line="287"/>
+        <location filename="View/Core/Page1Form.qml" line="244"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="View/Core/Page1Form.qml" line="318"/>
+        <location filename="View/Core/Page1Form.qml" line="271"/>
         <source>Value</source>
         <translation>Valeur</translation>
     </message>
     <message>
-        <location filename="View/Core/Page1Form.qml" line="349"/>
+        <location filename="View/Core/Page1Form.qml" line="298"/>
         <source>Label</source>
         <translation>Intituler</translation>
     </message>
     <message>
-        <location filename="View/Core/Page1Form.qml" line="381"/>
+        <location filename="View/Core/Page1Form.qml" line="326"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
@@ -664,69 +668,65 @@ Current Version beta 0.9</source>
 <context>
     <name>Page2Form</name>
     <message>
-        <location filename="View/Core/Page2Form.qml" line="28"/>
+        <location filename="View/Core/Page2Form.qml" line="25"/>
         <source>&gt;</source>
         <translation>&gt;</translation>
     </message>
     <message>
-        <location filename="View/Core/Page2Form.qml" line="46"/>
+        <location filename="View/Core/Page2Form.qml" line="38"/>
         <source>&lt;</source>
         <translation>&lt;</translation>
     </message>
     <message>
-        <location filename="View/Core/Page2Form.qml" line="87"/>
+        <location filename="View/Core/Page2Form.qml" line="74"/>
         <source>month</source>
         <translation>Mois</translation>
     </message>
     <message>
-        <location filename="View/Core/Page2Form.qml" line="89"/>
+        <location filename="View/Core/Page2Form.qml" line="76"/>
         <source>Account evolution</source>
         <translation>Evolution du compte</translation>
     </message>
     <message>
-        <location filename="View/Core/Page2Form.qml" line="95"/>
-        <location filename="View/Core/Page2Form.qml" line="104"/>
-        <location filename="View/Core/Page2Form.qml" line="119"/>
-        <location filename="View/Core/Page2Form.qml" line="127"/>
-        <location filename="View/Core/Page2Form.qml" line="132"/>
-        <location filename="View/Core/Page2Form.qml" line="133"/>
-        <source>estimated</source>
+        <location filename="View/Core/Page2Form.qml" line="121"/>
+        <source>Estimated</source>
         <translation>Prévisionnel</translation>
     </message>
     <message>
-        <location filename="View/Core/Page2Form.qml" line="100"/>
+        <source>estimated</source>
+        <translation type="vanished">Prévisionnel</translation>
+    </message>
+    <message>
         <location filename="View/Core/Page2Form.qml" line="118"/>
-        <location filename="View/Core/Page2Form.qml" line="126"/>
-        <location filename="View/Core/Page2Form.qml" line="129"/>
-        <location filename="View/Core/Page2Form.qml" line="130"/>
-        <source>past</source>
+        <source>Past</source>
+        <oldsource>past</oldsource>
         <translation>Passé</translation>
     </message>
 </context>
 <context>
     <name>PageChanger</name>
     <message>
-        <location filename="View/Core/PageChanger.qml" line="34"/>
+        <location filename="View/Core/PageChanger.qml" line="36"/>
         <source>Previous 10 pages</source>
         <translation>Reculer de 10 pages</translation>
     </message>
     <message>
-        <location filename="View/Core/PageChanger.qml" line="64"/>
+        <location filename="View/Core/PageChanger.qml" line="51"/>
         <source>Previous page</source>
         <translation>Reculer d&apos;une page</translation>
     </message>
     <message>
-        <location filename="View/Core/PageChanger.qml" line="96"/>
+        <location filename="View/Core/PageChanger.qml" line="68"/>
         <source>Current page</source>
         <translation>Page courante</translation>
     </message>
     <message>
-        <location filename="View/Core/PageChanger.qml" line="111"/>
+        <location filename="View/Core/PageChanger.qml" line="83"/>
         <source>Next page</source>
         <translation>Avancer d&apos;une page</translation>
     </message>
     <message>
-        <location filename="View/Core/PageChanger.qml" line="144"/>
+        <location filename="View/Core/PageChanger.qml" line="98"/>
         <source>Next 10 pages</source>
         <translation>Avancer de 10 pages</translation>
     </message>
@@ -734,30 +734,12 @@ Current Version beta 0.9</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="Controller/controllersettings.cpp" line="16"/>
-        <location filename="Controller/controllersettings.cpp" line="17"/>
-        <source>FFrequency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Controller/controllersettings.cpp" line="19"/>
-        <location filename="Controller/controllersettings.cpp" line="20"/>
-        <source>FBudget</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Controller/controllersettings.cpp" line="22"/>
-        <location filename="Controller/controllersettings.cpp" line="23"/>
-        <source>FCommonExpanse</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="Controller/maincontroller.cpp" line="124"/>
+        <location filename="Controller/maincontroller.cpp" line="223"/>
         <source>List</source>
         <translation>Liste</translation>
     </message>
     <message>
-        <location filename="Controller/maincontroller.cpp" line="124"/>
+        <location filename="Controller/maincontroller.cpp" line="223"/>
         <source>Graph</source>
         <translation>Graphique</translation>
     </message>
@@ -765,47 +747,47 @@ Current Version beta 0.9</source>
 <context>
     <name>QuickAdding</name>
     <message>
-        <location filename="View/Core/QuickAdding.qml" line="48"/>
+        <location filename="View/Core/QuickAdding.qml" line="41"/>
         <source>Quick adding</source>
         <translation>Ajout rapide</translation>
     </message>
     <message>
-        <location filename="View/Core/QuickAdding.qml" line="73"/>
+        <location filename="View/Core/QuickAdding.qml" line="51"/>
         <source>Specify income or outcome</source>
         <translation>Spécifier revenu ou dépense</translation>
     </message>
     <message>
-        <location filename="View/Core/QuickAdding.qml" line="112"/>
+        <location filename="View/Core/QuickAdding.qml" line="57"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="View/Core/QuickAdding.qml" line="134"/>
+        <location filename="View/Core/QuickAdding.qml" line="69"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="View/Core/QuickAdding.qml" line="154"/>
+        <location filename="View/Core/QuickAdding.qml" line="81"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="View/Core/QuickAdding.qml" line="174"/>
+        <location filename="View/Core/QuickAdding.qml" line="93"/>
         <source>Value</source>
         <translation>Valeur</translation>
     </message>
     <message>
-        <location filename="View/Core/QuickAdding.qml" line="196"/>
+        <location filename="View/Core/QuickAdding.qml" line="107"/>
         <source>Category</source>
         <translation>Catégorie</translation>
     </message>
     <message>
-        <location filename="View/Core/QuickAdding.qml" line="210"/>
+        <location filename="View/Core/QuickAdding.qml" line="113"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="View/Core/QuickAdding.qml" line="231"/>
+        <location filename="View/Core/QuickAdding.qml" line="120"/>
         <source>Add</source>
         <translation>Ajouter</translation>
     </message>
@@ -813,55 +795,123 @@ Current Version beta 0.9</source>
 <context>
     <name>ReferenceView</name>
     <message>
-        <location filename="View/Budget/ReferenceView.qml" line="43"/>
+        <location filename="View/Budget/ReferenceView.qml" line="36"/>
         <source>From</source>
         <translation>Depuis</translation>
     </message>
     <message>
-        <location filename="View/Budget/ReferenceView.qml" line="70"/>
+        <location filename="View/Budget/ReferenceView.qml" line="61"/>
         <source>Target</source>
         <translation>Cible</translation>
     </message>
     <message>
-        <location filename="View/Budget/ReferenceView.qml" line="98"/>
+        <location filename="View/Budget/ReferenceView.qml" line="87"/>
         <source>Every</source>
         <translation>Tout les</translation>
     </message>
 </context>
 <context>
+    <name>Settings</name>
+    <message>
+        <location filename="View/Core/Settings.qml" line="9"/>
+        <source>Settings</source>
+        <translation>Options</translation>
+    </message>
+    <message>
+        <location filename="View/Core/Settings.qml" line="50"/>
+        <source>General</source>
+        <translation>Général</translation>
+    </message>
+    <message>
+        <location filename="View/Core/Settings.qml" line="70"/>
+        <source>Language</source>
+        <translation>Langage</translation>
+    </message>
+    <message>
+        <location filename="View/Core/Settings.qml" line="84"/>
+        <source>Features</source>
+        <translation>Fonctionnalitées</translation>
+    </message>
+    <message>
+        <location filename="View/Core/Settings.qml" line="99"/>
+        <source>Budget</source>
+        <translation>Budget</translation>
+    </message>
+    <message>
+        <location filename="View/Core/Settings.qml" line="108"/>
+        <source>Frequency</source>
+        <translation>Recurrence</translation>
+    </message>
+    <message>
+        <location filename="View/Core/Settings.qml" line="117"/>
+        <source>CommonExpanse</source>
+        <translation>Dépense commune</translation>
+    </message>
+    <message>
+        <location filename="View/Core/Settings.qml" line="136"/>
+        <source>Xml</source>
+        <translation>Xml</translation>
+    </message>
+    <message>
+        <location filename="View/Core/Settings.qml" line="141"/>
+        <source>Sql</source>
+        <translation>Sql</translation>
+    </message>
+    <message>
+        <location filename="View/Core/Settings.qml" line="152"/>
+        <source>Database</source>
+        <translation>Base de données</translation>
+    </message>
+    <message>
+        <location filename="View/Core/Settings.qml" line="168"/>
+        <source>Main database</source>
+        <translation>Base de données principale</translation>
+    </message>
+    <message>
+        <location filename="View/Core/Settings.qml" line="188"/>
+        <source>Enable</source>
+        <translation>Activé</translation>
+    </message>
+    <message>
+        <location filename="View/Core/Settings.qml" line="195"/>
+        <source>Backup database</source>
+        <translation>Base de données de secours</translation>
+    </message>
+</context>
+<context>
     <name>Transfert</name>
     <message>
-        <location filename="View/Transfert/Transfert.qml" line="56"/>
+        <location filename="View/Transfert/Transfert.qml" line="51"/>
         <source>From</source>
         <translation>Depuis</translation>
     </message>
     <message>
-        <location filename="View/Transfert/Transfert.qml" line="64"/>
+        <location filename="View/Transfert/Transfert.qml" line="58"/>
         <source>to</source>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="View/Transfert/Transfert.qml" line="71"/>
+        <location filename="View/Transfert/Transfert.qml" line="65"/>
         <source>Value</source>
         <translation>Valeur</translation>
     </message>
     <message>
-        <location filename="View/Transfert/Transfert.qml" line="78"/>
+        <location filename="View/Transfert/Transfert.qml" line="72"/>
         <source>Info</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="View/Transfert/Transfert.qml" line="180"/>
+        <location filename="View/Transfert/Transfert.qml" line="114"/>
         <source>Please complete the entry&apos;s title</source>
         <translation>Ajoutez un titre à la transaction</translation>
     </message>
     <message>
-        <location filename="View/Transfert/Transfert.qml" line="198"/>
+        <location filename="View/Transfert/Transfert.qml" line="125"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="View/Transfert/Transfert.qml" line="216"/>
+        <location filename="View/Transfert/Transfert.qml" line="140"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
