@@ -145,16 +145,18 @@ Dialog {
                 
                 GridLayout {
                     columns: 3
-                    
+                    columnSpacing: root.width * 0.02
+                    rowSpacing: root.height * 0.02
+
                     AccountLabel {
-                        Layout.column: 1
+                        Layout.column: 0
                         Layout.row: 0
                         text: qsTr("Main database")
                         font.family: AccountStyle.title.name
                     }
                     
                     Loader {
-                        Layout.column: 2
+                        Layout.column: 1
                         Layout.row: 0
                         objectName: "primary"
                         active: true
@@ -164,7 +166,7 @@ Dialog {
                     
                     
                     AccountCheckBox {
-                        Layout.column: 0
+                        Layout.column: 2
                         Layout.row: 1
                         
                         id: secondadyEnable
@@ -174,14 +176,14 @@ Dialog {
                     }
                     
                     AccountLabel {
-                        Layout.column: 1
+                        Layout.column: 0
                         Layout.row: 1
                         text: qsTr("Backup database")
                         font.family: AccountStyle.title.name
                     }
                     
                     Loader {
-                        Layout.column: 2
+                        Layout.column: 1
                         Layout.row: 1
                         objectName: "backup"
                         sourceComponent: db
