@@ -12,10 +12,11 @@ ComboBox {
     font.family: AccountStyle.core.name
     font.pixelSize: AccountStyle.core.size
     
+
     delegate: ItemDelegate{
         id: del
         width: root.width
-        text: name
+        text: textRole ? name : modelData
         
         font.family: AccountStyle.core.name
         font.pixelSize: AccountStyle.core.size
