@@ -114,6 +114,9 @@ public slots:
 
     void buildModel(int = -1);
     void pageChange(int = -1);
+
+    void sortRole(QString);
+    void sortOrder(int);
 };
 
 

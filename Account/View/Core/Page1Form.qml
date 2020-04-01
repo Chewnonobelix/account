@@ -371,20 +371,15 @@ Page {
                     }
                 }
                 
-                onSortIndicatorColumnChanged: {
-                    sort(getColumn(sortIndicatorColumn).role, sortIndicatorOrder)
+                signal s_sortRole(string role)
+                signal s_sortOrder(int order)
 
-                    if (selection.count !== 0) {
-                        s_view(model[currentRow].id)
-                    }
+                onSortIndicatorColumnChanged: {
+                    s_sortRole(getColumn(sortIndicatorColumn).role)
                 }
                 
                 onSortIndicatorOrderChanged: {
-                    sort(getColumn(sortIndicatorColumn).role, sortIndicatorOrder)
-
-                    if (selection.count !== 0) {
-                        s_view(model[currentRow].id)
-                    }
+                    s_sortOrder(sortIndicatorOrder)
                 }
                 
                 function getToolTip(index) {

@@ -176,7 +176,7 @@ void ControllerSettings::save()
 
 QString ControllerSettings::sortingRole() const
 {
-    return m_settings.value("SortingRole", "name").toString();
+    return m_settings.value("SortingRole", "label").toString();
 }
 
 void ControllerSettings::setSortingRole(QString role)

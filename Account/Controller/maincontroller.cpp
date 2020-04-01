@@ -95,8 +95,12 @@ int MainController::exec()
     QObject* view = root->findChild<QObject*>("entryView");
     
     if(view)
+    {
         connect(view, SIGNAL(s_view(int)), this, SLOT(edit(int)));
-    
+        connect(view, SIGNAL(s_sortRole(QString)), this, SLOT(sortRole(QString)));
+        connect(view, SIGNAL(s_sortOrder(int)), this, SLOT(sortOrder(int)));
+    }
+
     QObject* xml = root->findChild<QObject*>("xmlMenu");
     if(xml)
         connect(xml, SIGNAL(s_xml()), this, SLOT(toXml()));
@@ -467,7 +471,6 @@ void MainController::previewCalendar()
 
 void Builder::run()
 {
-    qDebug()<<"init builder"<<init.count();
     QVariantList temp;
     for(auto i = 100; i < init.count(); i++)
     {
@@ -476,13 +479,13 @@ void Builder::run()
         
         map.insert("total", QVariant::fromValue(t));
         temp.append(QVariant::fromValue(map));
-        
+
         if(!(i%100))
         {
-            model->append(temp);
             qDebug()<<"Progress"<<((double)i/(init.count()-1)*100.0);
         }
     }
+    model->append(temp);
 }
 
 void MainController::buildModel(int)
@@ -552,12 +555,20 @@ void MainController::pageChange(int id)
         QVariantList modelList;
         
         for(auto i = first ; i < qMin(currentModel.size(), first+100); i++)
-        {
             modelList<<currentModel[i];
-            if(id == modelList.last().toMap()["id"].toInt())
-                index = modelList.count() - 1;
+        Qt::SortOrder order = m_settings.sortOrder();
+        QString role = m_settings.sortingRole();
 
-        }
+        std::sort(modelList.begin(), modelList.end(), [order, role](QVariant a, QVariant b) {
+                    if(order == Qt::AscendingOrder)
+                        return (a.toMap()[role] < b.toMap()[role]);
+                    else
+                        return (a.toMap()[role] > b.toMap()[role]);
+            });
+
+        for(auto i = 0; i < modelList.size(); i++)
+            if(modelList[i].toMap()["id"] == id)
+                index = i;
 
         tab->setProperty("model", modelList);
         tab->setProperty("currentRow", index);
@@ -756,4 +767,18 @@ void MainController::deleteProfile(QString name)
 void MainController::languageChange()
 {
     m_engine.retranslate();
+}
+
+void MainController::sortRole(QString role)
+{
+    m_settings.setSortingRole(role);
+    int id = m_engine.rootObjects().first()->findChild<QObject*>("table")->property("currentId").toInt();
+    pageChange(id);
+}
+
+void MainController::sortOrder(int order)
+{
+    m_settings.setSortOrdre((Qt::SortOrder)order);
+    int id = m_engine.rootObjects().first()->findChild<QObject*>("table")->property("currentId").toInt();
+    pageChange(id);
 }
