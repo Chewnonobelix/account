@@ -135,7 +135,6 @@ Dialog {
                     textRole: "name"
                     valueRole: "value"
                     
-                    onCurrentValueChanged: console.log(currentValue)
                     model: ListModel {
                         ListElement {
                             name: qsTr("Xml")

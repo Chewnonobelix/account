@@ -23,9 +23,7 @@ private:
     QDate m_currentDate;
     QString m_selected;
     Filler<QString, Budget> m_filler;
-    
-    void update(int);
-    
+        
 public:
     ControllerBudget();
     ControllerBudget(const ControllerBudget &);
@@ -53,7 +51,6 @@ public slots:
     void removeTarget(QString, QString);
     void editReference();
     void showTarget(QString, QString, bool);
-//    void addBudget(QString, QDate, Account::FrequencyEnum);
 
     void addBudget(QString);
     void editBudget(QString);

@@ -4,8 +4,6 @@ QMap<QString, QSharedPointer<FeatureBuilder>> ControllerSettings::registredFeatu
 
 ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSettings::UserScope, "Chewnonobelix Inc", "Account")
 {
-        for(auto it: m_settings.allKeys())
-        qDebug()<<it<<m_settings.value(it).type()<<m_settings.value(it).typeName();
 }
 
 ControllerSettings::~ControllerSettings()

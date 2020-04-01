@@ -701,7 +701,6 @@ bool ControllerDB::addFrequency(const Frequency & f)
             }
             
         }
-        qDebug()<<"add frequency"<<m_addFrequency->lastError()<<m_addFrequencyReference->lastError()<<m_addInformation->lastError();
     }
     return false;
 }

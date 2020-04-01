@@ -479,11 +479,6 @@ void Builder::run()
         
         map.insert("total", QVariant::fromValue(t));
         temp.append(QVariant::fromValue(map));
-
-        if(!(i%100))
-        {
-            qDebug()<<"Progress"<<((double)i/(init.count()-1)*100.0);
-        }
     }
     model->append(temp);
 }

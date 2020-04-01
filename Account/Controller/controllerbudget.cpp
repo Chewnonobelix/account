@@ -20,17 +20,6 @@ void ControllerBudget::closeManager()
         QMetaObject::invokeMethod(m_referenceView, "close");
 }
 
-void ControllerBudget::update(int)
-{
-    QObject* view = nullptr/* = m_views[id]*/;
-
-    if(view)
-    {
-        qDebug()<<"Update view budget";
-        //TODO
-    }
-}
-
 void ControllerBudget::openManager()
 {
     if(m_view)
