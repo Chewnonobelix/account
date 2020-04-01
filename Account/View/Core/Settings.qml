@@ -95,7 +95,7 @@ Dialog {
                 }
                 
                 GridLayout {
-                    columns: 2
+                    columns: 1
                     columnSpacing: root.width * 0.02
                     rowSpacing: root.height * 0.02
 
@@ -105,37 +105,26 @@ Dialog {
                     anchors.rightMargin: root.width * 0.02
                     anchors.leftMargin: root.width * 0.02
 
-                    AccountLabel {
-                        text: qsTr("Budget")
-                        font.family: AccountStyle.title.name
-                        Layout.preferredHeight: root.height * 0.07
-                    }
                     
                     AccountCheckBox {
                         objectName: "budget"
                         Layout.preferredHeight: root.height * 0.07
-                    }
-                    
-                    AccountLabel {
-                        text: qsTr("Frequency")
+                        text: qsTr("Budget")
                         font.family: AccountStyle.title.name
-                        Layout.preferredHeight: root.height * 0.07
                     }
-                    
+                                        
                     AccountCheckBox {
                         objectName: "frequency"
                         Layout.preferredHeight: root.height * 0.07
-                    }
-                    
-                    AccountLabel {
-                        text: qsTr("CommonExpanse")
+                        text: qsTr("Frequency")
                         font.family: AccountStyle.title.name
-                        Layout.preferredHeight: root.height * 0.07
-                   }
-                    
+                    }
+                                        
                     AccountCheckBox {
                         objectName: "common"
                         Layout.preferredHeight: root.height * 0.07
+                        text: qsTr("CommonExpanse")
+                        font.family: AccountStyle.title.name
                     }
                 }
             }
@@ -192,6 +181,9 @@ Dialog {
                         text: qsTr("Main database")
                         font.family: AccountStyle.title.name
                         Layout.preferredHeight: root.height * 0.07
+                        Layout.preferredWidth:  database.width * .60
+                        horizontalAlignment: Qt.AlignLeft
+
                     }
                     
                     Loader {
@@ -206,23 +198,19 @@ Dialog {
                     
                     
                     AccountCheckBox {
-                        Layout.column: 2
+                        Layout.column: 0
                         Layout.row: 1
                         
                         id: secondadyEnable
                         objectName: "useBackup"
-                        text: qsTr("Enable")
+                        text: qsTr("Backup database")
                         checked: true
                         Layout.preferredHeight: root.height * 0.07
+                        Layout.preferredWidth:  database.width * .60
+                        font.family: AccountStyle.title.name
+                        LayoutMirroring.enabled: true
                     }
                     
-                    AccountLabel {
-                        Layout.column: 0
-                        Layout.row: 1
-                        text: qsTr("Backup database")
-                        font.family: AccountStyle.title.name
-                        Layout.preferredHeight: root.height * 0.07
-                    }
                     
                     Loader {
                         Layout.column: 1
