@@ -538,8 +538,6 @@ void MainController::pageChange(int id)
             if(ld.isEmpty() || ld.contains(e.toMap()["date"].toDate()))
                 currentModel<<e;
             
-            if(id == e.toMap()["id"].toInt())
-                index = currentModel.count() % 100;
         });
         
         int maxPage = currentModel.size() < 100 ? 1 : (currentModel.size() / 100 + 1);
@@ -554,10 +552,15 @@ void MainController::pageChange(int id)
         QVariantList modelList;
         
         for(auto i = first ; i < qMin(currentModel.size(), first+100); i++)
+        {
             modelList<<currentModel[i];
+            if(id == modelList.last().toMap()["id"].toInt())
+                index = modelList.count() - 1;
+
+        }
 
         tab->setProperty("model", modelList);
-        tab->setProperty("currentRow", index%100);
+        tab->setProperty("currentRow", index);
     }
 }
 
