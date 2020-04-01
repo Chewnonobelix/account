@@ -12,6 +12,10 @@
 class InterfaceDataSave: public QObject
 {
     Q_OBJECT
+
+protected:
+    bool backup = false;
+
 public:
     InterfaceDataSave() = default;
     inline InterfaceDataSave(const InterfaceDataSave&): QObject(nullptr) {}

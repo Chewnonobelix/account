@@ -2,8 +2,9 @@
 #include "dbrequestsinit.h"
 #include <QDebug>
 
-ControllerDB::ControllerDB(): m_currentProfile("Default")
+ControllerDB::ControllerDB(bool backup): m_currentProfile("Default")
 {
+    this->backup = backup;
 }
 
 ControllerDB::ControllerDB(const ControllerDB& d): InterfaceDataSave(d), m_currentProfile(d.m_currentProfile)
@@ -22,7 +23,9 @@ bool ControllerDB::init()
     
     m_db = QSqlDatabase::addDatabase("QSQLITE");
     
-    m_db.setDatabaseName("account");
+    QString name = QString("account%1").arg(backup ? "_backup" : "");
+
+    m_db.setDatabaseName(name);
     m_db.open();
     
     if(m_db.tables().isEmpty())
@@ -81,8 +84,8 @@ void ControllerDB::prepareEntry()
                                            "WHERE account=:a AND profile=:p AND frequencyReference IS NULL AND "
                                            "id NOT IN (SELECT entry FROM commonEntry) ")<<m_selectEntry->lastError();
     
-    qDebug()<<"AE"<<m_addEntry->prepare("INSERT INTO account (account, value, date_eff, type, profile) "
-                                        "VALUES (:account,:value,:date,:type, :profile)")<<m_addEntry->lastError();
+    qDebug()<<"AE"<<m_addEntry->prepare("INSERT INTO account (id, account, value, date_eff, type, profile) "
+                                        "VALUES (:id, :account,:value,:date,:type, :profile)")<<m_addEntry->lastError();
     
     qDebug()<<"RE"<<m_removeEntry->prepare("DELETE FROM account "
                                            "WHERE id=:id")<<m_removeEntry->lastError();
@@ -112,8 +115,8 @@ void ControllerDB::prepareInformation()
     m_removeInformation = SqlQuery::create(m_db);
     m_selectInformation = SqlQuery::create(m_db);
     
-    qDebug()<<"AI"<<m_addInformation->prepare("INSERT INTO information (idEntry, info, prev, category) "
-                                              "VALUES(:ide, :title, :prev, :cat)")<<m_addInformation->lastError();
+    qDebug()<<"AI"<<m_addInformation->prepare("INSERT INTO information (id, idEntry, info, prev, category) "
+                                              "VALUES(:id, :ide, :title, :prev, :cat)")<<m_addInformation->lastError();
     
     qDebug()<<"UI"<<m_updateInfo->prepare("UPDATE information "
                                           "SET info=:title , prev=:estimated , category=:cat "
@@ -163,8 +166,8 @@ void ControllerDB::prepareBudget()
     m_updateSubbudget = SqlQuery::create(m_db);
     m_addSubbudget = SqlQuery::create(m_db);
     
-    qDebug()<<"AB"<<m_addBudget->prepare("INSERT INTO budget (account, category, reference, profile)"
-                                         "VALUES (:account, :category, :reference, :profile)")<<m_addBudget->lastError();
+    qDebug()<<"AB"<<m_addBudget->prepare("INSERT INTO budget (id, account, category, reference, profile)"
+                                         "VALUES (:id, :account, :category, :reference, :profile)")<<m_addBudget->lastError();
     
     qDebug()<<"UB"<<m_updateBudget->prepare("UPDATE budget "
                                             "SET category=:c, reference=:r "
@@ -207,8 +210,8 @@ void ControllerDB::prepareFrequency()
     qDebug()<<"SFR"<<m_selectFrequencyReference->prepare("SELECT * FROM account "
                                                          "WHERE frequencyReference=:f")<<m_selectFrequency->lastError();
     
-    qDebug()<<"AF"<<m_addFrequency->prepare("INSERT INTO frequency (freq, nbGroup, account, profile) "
-                                            "VALUES (:freq, :nbGroup, :account, :profile)")<<m_addFrequency->lastError();
+    qDebug()<<"AF"<<m_addFrequency->prepare("INSERT INTO frequency (id, freq, nbGroup, account, profile) "
+                                            "VALUES (:id, :freq, :nbGroup, :account, :profile)")<<m_addFrequency->lastError();
     
     qDebug()<<"AFR"<<m_addFrequencyReference->prepare("INSERT INTO account (account, value, type, date_eff, profile, frequencyReference) "
                                                       "VALUES(:a, :v, :t, :d, :p, :f)")<<m_addFrequencyReference->lastError();
@@ -233,8 +236,8 @@ void ControllerDB::prepareCommon()
     m_selectCommonEntry = SqlQuery::create(m_db);
     m_addCommonEntryInformation = SqlQuery::create(m_db);
     
-    qDebug()<<"ACEX"<<m_addCommon->prepare("INSERT INTO commonExpanse (begin, isClose, title, profile, account) "
-                                           "VALUES (:b, :c, :t, :p, :a)")<<m_addCommon->lastError();
+    qDebug()<<"ACEX"<<m_addCommon->prepare("INSERT INTO commonExpanse (id, begin, isClose, title, profile, account) "
+                                           "VALUES (:i, :b, :c, :t, :p, :a)")<<m_addCommon->lastError();
     
     qDebug()<<"SCEX"<<m_selectCommon->prepare("SELECT * FROM commonExpanse "
                                               "WHERE account=:a AND profile=:p")<<m_selectCommon->lastError();
@@ -360,7 +363,8 @@ bool ControllerDB::addEntry(const Entry & e)
         m_addEntry->bindValue(":date", QVariant(e.date()));
         m_addEntry->bindValue(":type", QVariant(e.type()));
         m_addEntry->bindValue(":profile", m_currentProfile);
-        
+        if(backup)
+            m_addEntry->bindValue(":id", e.id());
         
         ret = m_addEntry->exec();
         int id = m_addEntry->lastInsertId().toInt();
@@ -371,7 +375,9 @@ bool ControllerDB::addEntry(const Entry & e)
             m_addInformation->bindValue(":ide", id);
             m_addInformation->bindValue(":title", e.info().title());
             m_addInformation->bindValue(":prev",e.info().estimated());
-            
+            if(backup)
+                m_addInformation->bindValue(":id", e.info().id());
+
             ret &= m_addInformation->exec();
         }
         
@@ -587,6 +593,9 @@ bool ControllerDB::addBudget(const Budget& b)
         m_addBudget->bindValue(":account", m_currentAccount);
         m_addBudget->bindValue(":profile", m_currentProfile);
         m_addBudget->bindValue(":reference", b.reference());
+        if(backup)
+            m_addBudget->bindValue(":id", b.id());
+
         auto reqc = m_db.exec("SELECT * FROM categories WHERE profile='"+m_currentProfile+"' AND account='"+m_currentAccount+"' AND name='"+b.category()+"' ");
         
         reqc.seek(0);
@@ -676,6 +685,9 @@ bool ControllerDB::addFrequency(const Frequency & f)
         m_addFrequency->bindValue(":account", QVariant::fromValue(m_currentAccount));
         m_addFrequency->bindValue(":profile", QVariant::fromValue(m_currentProfile));
         
+        if(backup)
+            m_addFrequency->bindValue(":id", f.id());
+
         if(m_addFrequency->exec())
         {
             int id = m_addFrequency->lastInsertId().toInt();
@@ -860,7 +872,9 @@ bool ControllerDB::addCommon(const CommonExpanse& c)
         m_addCommon->bindValue(":t", c.title());
         m_addCommon->bindValue(":p", m_currentProfile);
         m_addCommon->bindValue(":a", m_currentAccount);
-        
+        if(backup)
+            m_addCommon->bindValue(":i", c.id());
+
         emit s_updateCommon();
         return m_addCommon->exec();
     }

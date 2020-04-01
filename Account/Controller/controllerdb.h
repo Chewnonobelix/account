@@ -84,7 +84,7 @@ private:
     void prepareProfile();
     
 public:
-    ControllerDB();
+    ControllerDB(bool = false);
     ControllerDB(const ControllerDB&d);
     ~ControllerDB();
     
