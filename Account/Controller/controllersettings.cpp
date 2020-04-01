@@ -173,3 +173,24 @@ void ControllerSettings::save()
         setBackup(obj->property("currentValue").toString());
     }
 }
+
+QString ControllerSettings::sortingRole() const
+{
+    return m_settings.value("SortingRole", "name").toString();
+}
+
+void ControllerSettings::setSortingRole(QString role)
+{
+    m_settings.setValue("SortingRole", role);
+}
+
+Qt::SortOrder ControllerSettings::sortOrder() const
+{
+    return (Qt::SortOrder)(m_settings.value("SortOrder", 0).toInt());
+}
+
+void ControllerSettings::setSortOrdre(Qt::SortOrder order)
+{
+    m_settings.setValue("SortOrder", order);
+}
+

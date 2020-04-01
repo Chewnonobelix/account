@@ -42,7 +42,13 @@ public:
     bool featureEnable(QString) const;
     void setFeatureEnable(QString, bool);
     QStringList featuresList() const;
-    
+
+    QString sortingRole() const;
+    void setSortingRole(QString);
+    Qt::SortOrder sortOrder() const;
+    void setSortOrdre(Qt::SortOrder);
+
+
     static void registerFeature(QSharedPointer<FeatureBuilder>);
     static inline QStringList registredFeature() {return registredFeatures.keys();}
     static inline QSharedPointer<FeatureBuilder> features(QString name) {return registredFeatures[name];}
