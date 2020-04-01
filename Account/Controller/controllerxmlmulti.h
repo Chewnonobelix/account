@@ -44,7 +44,7 @@ protected:
     void timerEvent(QTimerEvent*);
 
 public:
-    ControllerXMLMulti();
+    ControllerXMLMulti(bool = false);
     ControllerXMLMulti(const ControllerXMLMulti&);
     ~ControllerXMLMulti();
 

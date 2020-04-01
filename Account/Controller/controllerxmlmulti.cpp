@@ -1,9 +1,9 @@
 #include "controllerxmlmulti.h"
 
 
-ControllerXMLMulti::ControllerXMLMulti(): InterfaceDataSave(), m_timer(-1), m_currentProfile("Default")
+ControllerXMLMulti::ControllerXMLMulti(bool backup): InterfaceDataSave(), m_timer(-1), m_currentProfile("Default")
 {
-    
+    this->backup = backup;
 }
 
 ControllerXMLMulti::ControllerXMLMulti(const ControllerXMLMulti& c): InterfaceDataSave(c), m_timer(-1)
@@ -101,8 +101,8 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     
     m_mutex.lock();
     
-    int ide = maxId(m_ids["entry"]) + 1;
-    int idi = maxId(m_ids["info"]) + 1;
+    int ide = backup ? e.id() : maxId(m_ids["entry"]) + 1;
+    int idi = backup ? e.info().id() : maxId(m_ids["info"]) + 1;
     
     m_ids["entry"]<<ide;
     m_ids["info"]<<idi;
@@ -384,7 +384,7 @@ bool ControllerXMLMulti::addBudget(const Budget& b)
     
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
     QDomElement el = m_currentAccount.createElement("budget");
-    int id = maxId(m_ids["budget"]) + 1;
+    int id = backup ? b.id() : maxId(m_ids["budget"]) + 1;
     
     m_ids["budget"]<<id;
     el.setAttribute("id", id);
@@ -512,10 +512,11 @@ bool ControllerXMLMulti::updateBudget(const Budget & b)
 bool ControllerXMLMulti::init()
 {
     QDir dir;
-    if(!dir.cd("data"))
+    QString basename = QString("data%1").arg(backup ? "_backup" : "");
+    if(!dir.cd(basename))
     {
-        dir.mkdir("data");
-        dir.cd("data");
+        dir.mkdir(basename);
+        dir.cd(basename);
     }
     
     dir.cd(m_currentProfile);
@@ -529,7 +530,7 @@ bool ControllerXMLMulti::init()
         
         QDomDocument doc;
         QFile file;
-        file.setFileName("data\\"+m_currentProfile+"\\"+filename);
+        file.setFileName(basename+"\\"+m_currentProfile+"\\"+filename);
         file.open(QIODevice::ReadWrite);
         auto read64 = file.readAll();
         auto read =  QByteArray::fromBase64(read64);
@@ -584,7 +585,7 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
 {
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
     
-    int id = maxId(m_ids["frequency"]) + 1;
+    int id = backup ? f.id() : maxId(m_ids["frequency"]) + 1;
     m_ids["frequency"]<<id;
     QMap<QString, QString> attr;
     attr["id"] = QString::number(id);
@@ -750,7 +751,7 @@ bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
 {
     m_mutex.lock();
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
-    int id = maxId(m_ids["common"]) + 1;
+    int id = backup? ce.id() : maxId(m_ids["common"]) + 1;
     
     QMap<QString, QString> att;
     att["id"] = QString::number(id);
