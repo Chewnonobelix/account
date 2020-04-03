@@ -1,59 +1,110 @@
 #include "xmltosql.h"
 
-XmltoSql::XmltoSql(ControllerXMLMulti& xml): m_xml(xml)
+TransfertDatabase::TransfertDatabase(InterfaceDataSave* backup): m_backup(backup)
 {
 
 }
 
-bool XmltoSql::transfertEntries()
+bool TransfertDatabase::transfertEntries()
 {
     bool ret = true;
 
-    auto accounts = m_xml.selectAccount();
-
-    for(auto account: accounts)
-    {
-        auto entriesXml = m_xml.selectEntry(account);
-        auto entriesDb = m_db.selectEntry(account);
-
-        QMap<int, Entry> map;
-
-        for(auto it: entriesDb)
-            map[it.id()] = it;
-
-        for(auto it: entriesXml)
+    for(auto it: accounts)
+        for(auto it2: m_db->selectEntry(it))
         {
-            if(map.contains(it.id()))
-                ret &= m_db.updateEntry(it);
-            else
-                ret &= m_db.addEntry(it);
+            ret &= m_backup->addEntry(it2);
+            ret &= m_backup->updateEntry(it2);
+        }
+
+    return ret;
+}
+
+bool TransfertDatabase::transfertCategories()
+{
+    bool ret = true;
+
+    for(auto it: accounts)
+    {
+        m_db->setCurrentAccount(it);
+        m_backup->setCurrentAccount(it);
+
+        auto cats = m_db->selectCategory();
+        for(auto it2 = cats.begin(); it2 != cats.end(); it2++)
+        {
+            m_backup->addCategory(it2.value(), it2.key());
         }
     }
-
     return ret;
 }
 
-bool XmltoSql::transfertcategories()
+int TransfertDatabase::exec()
 {
-    bool ret = false;
+    QString cAccount = currentAccount();
 
-    auto categoriesXml = m_xml.selectCategory();
-    auto categoriesDb = m_db.selectCategory();
+    bool ret = true;
+    accounts = m_db->selectAccount();
 
-    //TODO
+    ret &= transfertEntries();
+    ret &= transfertCategories();
+    ret &= transfertBudget();
+    ret &= transfertFrequency();
+    ret &= transfertCommon();
+
+    setCurrentAccount(cAccount);
+
     return ret;
-
 }
 
-bool XmltoSql::exec()
+bool TransfertDatabase::transfertBudget()
 {
     bool ret = true;
 
-    if(!m_db.isConnected())
-        return false;
+    for(auto it: accounts)
+    {
+        m_db->setCurrentAccount(it);
+        m_backup->setCurrentAccount(it);
 
-    ret = transfertEntries();
-    ret &= transfertcategories();
+        for(auto it2: m_db->selectBudgets())
+        {
+            ret &= m_backup->addBudget(it2);
+            ret &= m_backup->updateBudget(it2);
+        }
+    }
+    return ret;
+}
 
+bool TransfertDatabase::transfertFrequency()
+{
+    bool ret = true;
+
+    for(auto it: accounts)
+    {
+        m_db->setCurrentAccount(it);
+        m_backup->setCurrentAccount(it);
+
+        for(auto it2: m_db->selectFrequency())
+        {
+            ret &= m_backup->addFrequency(it2);
+            ret &= m_backup->updateFrequency(it2);
+        }
+    }
+    return ret;
+}
+
+bool TransfertDatabase::transfertCommon()
+{
+    bool ret = true;
+
+    for(auto it: accounts)
+    {
+        m_db->setCurrentAccount(it);
+        m_backup->setCurrentAccount(it);
+
+        for(auto it2: m_db->selectCommon())
+        {
+            ret &= m_backup->addCommon(it2);
+            ret &= m_backup->updateCommon(it2);
+        }
+    }
     return ret;
 }

@@ -71,7 +71,6 @@ private:
     SqlQuery m_selectCommonTable;
     SqlQuery m_addCommonEntryInformation;
     
-    QString m_currentProfile;
     QString m_currentAccount;
     
     void prepareEntry();
@@ -91,42 +90,43 @@ public:
     bool isConnected() const;
 public slots:
     bool addEntry(QSharedPointer<Entry>) {return false;}
-    bool addEntry(const Entry&);
-    QMultiMap<QDate, Entry> selectEntry(QString);
-    bool removeEntry(const Entry&);
+    bool addEntry(const Entry&)  override;
+    QMultiMap<QDate, Entry> selectEntry(QString) override;
+    bool removeEntry(const Entry&) override;
     
-    QStringList selectAccount();
-    bool removeAccount(QString);
+    QStringList selectAccount() override;
+    bool removeAccount(QString) override;
+    void setCurrentAccount(QString) override;
+
+    bool updateInfo(const Entry&) override;
+    bool updateEntry(const Entry &) override;
     
-    bool updateInfo(const Entry&);
-    bool updateEntry(const Entry &);
+    bool addCategory(QString, QString) override;
+    bool removeCategory(QString) override;
+    QMultiMap<QString, QString> selectCategory() override;
     
-    bool addCategory(QString, QString);
-    bool removeCategory(QString);
-    QMultiMap<QString, QString> selectCategory();
+    virtual bool addBudget(const Budget&) override;
+    virtual bool removeBudget(const Budget&) override;
+    virtual QList<Budget> selectBudgets() override;
+    virtual bool updateBudget(const Budget &) override;
     
-    virtual bool addBudget(const Budget&);
-    virtual bool removeBudget(const Budget&);
-    virtual QList<Budget> selectBudgets();
-    virtual bool updateBudget(const Budget &);
+    virtual bool addFrequency(const Frequency&) override;
+    virtual bool removeFrequency(const Frequency&) override;
+    virtual bool updateFrequency(const Frequency&) override;
+    virtual QList<Frequency> selectFrequency() override;
     
-    virtual bool addFrequency(const Frequency&);
-    virtual bool removeFrequency(const Frequency&);
-    virtual bool updateFrequency(const Frequency&);
-    virtual QList<Frequency> selectFrequency();
+    virtual QMap<int, CommonExpanse> selectCommon() override;
+    virtual bool addCommon(const CommonExpanse&) override;
+    virtual bool removeCommon(const CommonExpanse&) override;
+    virtual bool updateCommon(const CommonExpanse&) override;
     
-    virtual QMap<int, CommonExpanse> selectCommon();
-    virtual bool addCommon(const CommonExpanse&);
-    virtual bool removeCommon(const CommonExpanse&);
-    virtual bool updateCommon(const CommonExpanse&);
+    virtual QStringList selectProfile() override;
+    virtual void setProfile(QString) override;
+    virtual bool addProfile(QString, QString) override;
+    virtual QString currentProfile() override;
+    virtual bool deleteProfile(QString) override;
     
-    virtual QStringList selectProfile();
-    virtual void setProfile(QString);
-    virtual bool addProfile(QString, QString);
-    virtual QString currentProfile();
-    virtual bool deleteProfile(QString);
-    
-    bool init();
+    bool init() override;
 };
 
 Q_DECLARE_METATYPE(ControllerDB)

@@ -1,14 +1,18 @@
 #include "controllerdb.h"
 #include "dbrequestsinit.h"
 #include <QDebug>
+#include <QDir>
 
-ControllerDB::ControllerDB(bool backup): m_currentProfile("Default")
+ControllerDB::ControllerDB(bool backup)
 {
     this->backup = backup;
+    m_currentProfile = "Default";
 }
 
-ControllerDB::ControllerDB(const ControllerDB& d): InterfaceDataSave(d), m_currentProfile(d.m_currentProfile)
-{}
+ControllerDB::ControllerDB(const ControllerDB& d): InterfaceDataSave(d)
+{
+    m_currentProfile = d.m_currentProfile;
+}
 
 ControllerDB::~ControllerDB()
 {
@@ -20,7 +24,11 @@ ControllerDB::~ControllerDB()
 
 bool ControllerDB::init()
 {
-    
+    if(backup)
+    {
+        QDir dir;
+        dir.remove("account_backup");
+    }
     m_db = QSqlDatabase::addDatabase("QSQLITE");
     
     QString name = QString("account%1").arg(backup ? "_backup" : "");
@@ -304,6 +312,11 @@ bool ControllerDB::removeAccount(QString name)
     }
     
     return ret;
+}
+
+void ControllerDB::setCurrentAccount(QString account)
+{
+    m_currentAccount = account;
 }
 
 QStringList ControllerDB::selectProfile() 

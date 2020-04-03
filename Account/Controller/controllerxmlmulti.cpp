@@ -26,7 +26,12 @@ void ControllerXMLMulti::close()
     
     QDir dir;
     
-    dir.cd("data");
+    QString basename = QString("data%1").arg(backup ? "_backup" : "");
+    if(!dir.cd(basename))
+    {
+        dir.mkdir(basename);
+        dir.cd(basename);
+    }
 
     if(!dir.exists(currentProfile()))
         dir.mkdir(currentProfile());
@@ -35,12 +40,12 @@ void ControllerXMLMulti::close()
     {
         if(!it.key().isEmpty())
         {
-            QFile file("data\\" + m_currentProfile + "\\" + it.key() + ".xml");
+            QFile file(basename + "\\" + m_currentProfile + "\\" + it.key() + ".xml");
             file.open(QIODevice::WriteOnly);
             auto write64 = it.value().toByteArray().toBase64();
             file.write(write64);
             file.close();
-            QFile file2("data\\" + m_currentProfile + "\\" + it.key() + "_clear.xml");
+            QFile file2(basename + "\\" + m_currentProfile + "\\" + it.key() + "_clear.xml");
             file2.open(QIODevice::WriteOnly);
             auto write642 = it.value().toByteArray();
             file2.write(write642);
@@ -512,7 +517,10 @@ bool ControllerXMLMulti::updateBudget(const Budget & b)
 bool ControllerXMLMulti::init()
 {
     QDir dir;
+
     QString basename = QString("data%1").arg(backup ? "_backup" : "");
+
+
     if(!dir.cd(basename))
     {
         dir.mkdir(basename);
@@ -520,6 +528,9 @@ bool ControllerXMLMulti::init()
     }
     
     dir.cd(m_currentProfile);
+
+    if(backup)
+        qDebug()<<"Remove back"<<dir.removeRecursively();
 
     auto infoList = dir.entryList(QStringList("*.xml"), QDir::Files);
     m_accounts.clear();

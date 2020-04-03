@@ -15,12 +15,13 @@ class InterfaceDataSave: public QObject
 
 protected:
     bool backup = false;
+    QString m_currentProfile;
 
 public:
     InterfaceDataSave() = default;
     inline InterfaceDataSave(const InterfaceDataSave&): QObject(nullptr) {}
     virtual ~InterfaceDataSave() {}
-    
+    inline void setBackup(bool back) { backup = back;}
 signals:
     void s_updateEntry(int = -1);
     void s_updateCategory();
@@ -38,7 +39,8 @@ public slots:
     
     virtual QStringList selectAccount() = 0;
     virtual bool removeAccount(QString) = 0;
-    
+    virtual void setCurrentAccount(QString) = 0;
+
     virtual bool updateInfo(const Entry&) = 0;
     virtual bool updateEntry(const Entry&) = 0;
     

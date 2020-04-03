@@ -1,21 +1,26 @@
 #ifndef XMLTOSQL_H
 #define XMLTOSQL_H
 
+#include "abstractcontroller.h"
 #include "controllerdb.h"
 #include "controllerxmlmulti.h"
 
-class XmltoSql
+class TransfertDatabase: public AbstractController
 {
-    ControllerDB m_db;
-    ControllerXMLMulti& m_xml;
+    InterfaceDataSave* m_backup;
 
     bool transfertEntries();
-    bool transfertcategories();
+    bool transfertCategories();
+    bool transfertBudget();
+    bool transfertFrequency();
+    bool transfertCommon();
+
+    QStringList accounts;
 
 public:
-    XmltoSql(ControllerXMLMulti&);
+    TransfertDatabase(InterfaceDataSave*);
 
-    bool exec();
+    int exec();
 };
 
 #endif // XMLTOSQL_H

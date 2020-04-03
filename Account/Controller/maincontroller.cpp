@@ -621,9 +621,22 @@ void MainController::accountChange(QString acc)
 void MainController::toXml()
 {
     qDebug()<<"To Sql";
-    XmltoSql xts(*dynamic_cast<ControllerXMLMulti*>(m_db));
-    
-    bool ret = xts.exec();
+    bool ret = false;
+    InterfaceDataSave* back = nullptr;
+
+    int type = QMetaType::type(m_settings.backup().toLatin1());
+    if(type == QMetaType::UnknownType)
+        throw QString("Unknow DB type");
+
+    back = (InterfaceDataSave*)(QMetaType::create(type));
+    back->setBackup(true);
+    back->init();
+    if(back && m_settings.backupEnable())
+    {
+        TransfertDatabase tdb(back);
+        ret = tdb.exec();
+    }
+
     qDebug()<<ret;
 }
 

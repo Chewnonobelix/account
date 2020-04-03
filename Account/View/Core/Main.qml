@@ -215,7 +215,7 @@ ApplicationWindow {
                 //                checkable: true
                 font.family: AccountStyle.core.name
                 font.pixelSize: AccountStyle.core.size
-                enabled: false
+                enabled: true
                 signal s_xml
                 onClicked: {
                     s_xml()

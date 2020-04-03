@@ -50,7 +50,6 @@ public:
 
     void close();
 
-    void setCurrentAccount(QString);
 
 public slots:
 
@@ -61,6 +60,7 @@ public slots:
 
     virtual QStringList selectAccount();
     virtual bool removeAccount(QString);
+    virtual void setCurrentAccount(QString);
 
     virtual bool updateInfo(const Entry&);
     virtual bool updateEntry(const Entry &);
