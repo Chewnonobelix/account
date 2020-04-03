@@ -39,8 +39,6 @@ bool TransfertDatabase::transfertCategories()
 
 int TransfertDatabase::exec()
 {
-    QString cAccount = currentAccount();
-
     bool ret = true;
     accounts = m_db->selectAccount();
 
@@ -49,8 +47,6 @@ int TransfertDatabase::exec()
     ret &= transfertBudget();
     ret &= transfertFrequency();
     ret &= transfertCommon();
-
-    setCurrentAccount(cAccount);
 
     return ret;
 }

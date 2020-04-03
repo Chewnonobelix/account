@@ -5,9 +5,11 @@
 #include "controllerdb.h"
 #include "controllerxmlmulti.h"
 
-class TransfertDatabase: public AbstractController
+class TransfertDatabase
 {
+private:
     InterfaceDataSave* m_backup;
+    InterfaceDataSave* m_db;
 
     bool transfertEntries();
     bool transfertCategories();
@@ -18,7 +20,7 @@ class TransfertDatabase: public AbstractController
     QStringList accounts;
 
 public:
-    TransfertDatabase(InterfaceDataSave*);
+    TransfertDatabase(InterfaceDataSave*, InterfaceDataSave*);
 
     int exec();
 };
