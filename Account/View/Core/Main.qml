@@ -210,23 +210,6 @@ ApplicationWindow {
             }
 
             MenuItem {
-                text: qsTr("&Consolidate")
-                objectName: "xmlMenu"
-                //                checkable: true
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
-                enabled: true
-                signal s_xml
-                onClicked: {
-                    s_xml()
-                }
-
-                background: Rectangle {
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                }
-            }
-
-            MenuItem {
                 text: qsTr("&Quit")
                 font.family: AccountStyle.core.name
                 font.pixelSize: AccountStyle.core.size

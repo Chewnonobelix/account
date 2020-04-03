@@ -164,7 +164,7 @@ Dialog {
                 background: AccountBackground{invisible: true}
                 
                 GridLayout {
-                    columns: 3
+                    columns: 2
                     columnSpacing: root.width * 0.02
                     rowSpacing: root.height * 0.02
 
@@ -180,7 +180,7 @@ Dialog {
                         text: qsTr("Main database")
                         font.family: AccountStyle.title.name
                         Layout.preferredHeight: root.height * 0.07
-                        Layout.preferredWidth:  database.width * .60
+                        Layout.preferredWidth:  database.width * .40
                         horizontalAlignment: Qt.AlignLeft
 
                     }
@@ -192,6 +192,7 @@ Dialog {
                         active: true
                         sourceComponent: db
                         Layout.preferredHeight: root.height * 0.07
+                        Layout.preferredWidth: root.width * 0.50
                     }
                     
                     
@@ -205,7 +206,7 @@ Dialog {
                         text: qsTr("Backup database")
                         checked: true
                         Layout.preferredHeight: root.height * 0.07
-                        Layout.preferredWidth:  database.width * .60
+                        Layout.preferredWidth:  database.width * .40
                         font.family: AccountStyle.title.name
                         LayoutMirroring.enabled: true
                     }
@@ -218,6 +219,34 @@ Dialog {
                         sourceComponent: db
                         active: secondadyEnable.checked
                         Layout.preferredHeight: root.height * 0.07
+                        Layout.preferredWidth: root.width * 0.50
+                    }
+
+                    AccountCheckBox {
+                        text: qsTr("Auto backup")
+                        objectName: "autoconsolidate"
+                        visible: secondadyEnable.checked
+                        LayoutMirroring.enabled: true
+                        Layout.preferredHeight: root.height * 0.07
+                        Layout.preferredWidth:  database.width * .40
+                        font.family: AccountStyle.title.name
+                    }
+
+                    Row {
+                        Layout.row: 2
+                        Layout.column: 1
+                        spacing: root.width * 0.02
+                        AccountButton {
+                            text: qsTr("Save backup")
+                            enabled: secondadyEnable.checked
+                            Layout.preferredHeight: root.height * 0.07
+                        }
+
+                        AccountButton {
+                            text: qsTr("Restore backup")
+
+                            Layout.preferredHeight: root.height * 0.07
+                        }
                     }
                 }
             }
