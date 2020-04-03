@@ -60,7 +60,8 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-
+    app.setApplicationName("Account");
+    app.setOrganizationName("Chewnonobelix Inc");
 //    XmlTest test1;
 
     if(argc > 1 && app.arguments().contains("--test"))
