@@ -26,6 +26,9 @@ void Budget::setId(int i)
 
 bool Budget::addEntry(Entry e)
 {
+    if(m_targets.isEmpty())
+        return false;
+
     m_subit = std::find_if(m_subs.begin(), m_subs.end(), [e](const SubBudget& it) {
         return it.in(e.date());    
     });
