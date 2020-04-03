@@ -80,8 +80,6 @@ public slots:
     void accountChange(QString);
     void addEntryMain(Entry);
 
-    void toXml();
-
     void update(Entry);
 
     void loadAccount();

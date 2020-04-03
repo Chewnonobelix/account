@@ -11,6 +11,7 @@
 #include <QFileInfo>
 #include "abstractcontroller.h"
 #include "featurebuilder.h"
+#include "xmltosql.h"
 
 class ControllerSettings: public AbstractController
 {
@@ -23,6 +24,7 @@ private:
     static QMap<QString, QSharedPointer<FeatureBuilder>> registredFeatures;
     
     QObject* m_view;
+    InterfaceDataSave* back = nullptr;
 
 public:
     ControllerSettings();
@@ -31,11 +33,13 @@ public:
     void init(QQmlEngine&);
     QString database() const;
     void setDatabase(QString);
-    QString backup() const;
+    QString backupType() const;
     void setBackup(QString);
     bool backupEnable() const;
     void setBackupEnable(bool);
-    
+    bool autoBackup() const;
+    void setAutobackup(bool);
+
     QString language() const;
     void setLanguage(QString);
 
@@ -57,10 +61,13 @@ public:
 signals:
     void s_finish();
     void s_language();
-    
+    void s_closedb();
+
 public slots:
     void open();
     void save();
+    void restore();
+    void backup();
 };
 
 #endif // CONTROLLERSETTINGS_H

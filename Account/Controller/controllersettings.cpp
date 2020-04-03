@@ -51,7 +51,7 @@ void ControllerSettings::setDatabase(QString db)
     m_settings.setValue("Database/Main", db);
 }
 
-QString ControllerSettings::backup() const
+QString ControllerSettings::backupType() const
 {
     return m_settings.value("Database/Backup").toString();
 }
@@ -132,8 +132,10 @@ void ControllerSettings::open()
     if(backupEnable())
     {
         obj = m_view->findChild<QObject*>("backup")->property("item").value<QObject*>();
-        QMetaObject::invokeMethod(obj, "indexOfValue", Q_RETURN_ARG(int, index), Q_ARG(QVariant, backup()));
+        QMetaObject::invokeMethod(obj, "indexOfValue", Q_RETURN_ARG(int, index), Q_ARG(QVariant, backupType()));
         obj->setProperty("currentIndex", index);
+        obj = m_view->findChild<QObject*>("autoconsolidate");
+        obj->setProperty("checked", autoBackup());
     }
 
     QMetaObject::invokeMethod(m_view, "open");
@@ -169,6 +171,12 @@ void ControllerSettings::save()
     {
         obj = m_view->findChild<QObject*>("backup")->property("item").value<QObject*>();
         setBackup(obj->property("currentValue").toString());
+        obj = m_view->findChild<QObject*>("autoconsolidate");
+        setAutobackup(obj->property("checked").toBool());
+    }
+    else
+    {
+        setAutobackup(false);
     }
 }
 
@@ -192,3 +200,49 @@ void ControllerSettings::setSortOrdre(Qt::SortOrder order)
     m_settings.setValue("SortOrder", order);
 }
 
+bool ControllerSettings::autoBackup() const
+{
+    return m_settings.value("Database/autobackup", false).toBool();
+}
+
+void ControllerSettings::setAutobackup(bool autobackup)
+{
+    m_settings.setValue("Database/autobackup", autobackup);
+}
+
+void ControllerSettings::restore()
+{
+    qDebug()<<"Restore Backup";
+
+    emit s_closedb();
+    AbstractController::deleteDb();
+
+
+}
+
+void ControllerSettings::backup()
+{
+    if(!backupEnable())
+    {
+        qDebug()<<"Backup unable";
+        return;
+    }
+
+    qDebug()<<"Backup";
+    bool ret = false;
+
+    int type = QMetaType::type(backupType().toLatin1());
+    if(type == QMetaType::UnknownType)
+        throw QString("Unknow DB type");
+
+    back = (InterfaceDataSave*)(QMetaType::create(type));
+    back->setBackup(true);
+    back->init();
+    if(back && backupEnable())
+    {
+        TransfertDatabase tdb(m_db, back);
+        ret = tdb.exec();
+    }
+
+    qDebug()<<ret;
+}

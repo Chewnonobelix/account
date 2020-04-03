@@ -618,28 +618,6 @@ void MainController::accountChange(QString acc)
     checkEstimated();
 }
 
-void MainController::toXml()
-{
-    qDebug()<<"To Sql";
-    bool ret = false;
-    InterfaceDataSave* back = nullptr;
-
-    int type = QMetaType::type(m_settings.backup().toLatin1());
-    if(type == QMetaType::UnknownType)
-        throw QString("Unknow DB type");
-
-    back = (InterfaceDataSave*)(QMetaType::create(type));
-    back->setBackup(true);
-    back->init();
-    if(back && m_settings.backupEnable())
-    {
-        TransfertDatabase tdb(back);
-        ret = tdb.exec();
-    }
-
-    qDebug()<<ret;
-}
-
 void MainController::loadAccount()
 {
     QObject* combo = m_engine.rootObjects().first()->findChild<QObject*>("accountSelect");
