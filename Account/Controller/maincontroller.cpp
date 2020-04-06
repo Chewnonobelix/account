@@ -211,6 +211,14 @@ int MainController::exec()
     connect(&m_settings, ControllerSettings::s_language, this, MainController::languageChange);
     connect(&m_settings, ControllerSettings::s_finish, this, MainController::loadFeatures);
     
+    QObject* licence = root->findChild<QObject*>("licence");
+    if(licence)
+        connect(licence, SIGNAL(opened()), this, SLOT(licence()));
+
+    QObject* howto = root->findChild<QObject*>("howto");
+    if(howto)
+        connect(howto, SIGNAL(opened()), this, SLOT(readme()));
+
     languageChange();
     
     return 0;
@@ -219,6 +227,37 @@ int MainController::exec()
 void MainController::close()
 {
     QApplication::closeAllWindows();
+}
+
+void MainController::readme()
+{
+    QString language = m_settings.language();
+    QDir dir;
+    auto e = dir.entryInfoList(QStringList(language+"*.qm"));
+    QString code = e.first().baseName().split("_").last().split(".").first();
+
+    QFile f ("README_"+code+".md");
+    if(!f.open(QIODevice::ReadOnly))
+        return;
+
+    QObject* readme = m_engine.rootObjects().first()->findChild<QObject*>("howto");
+
+    readme->setProperty("text", f.readAll());
+    f.close();
+}
+
+void MainController::licence()
+{
+    QObject* licence = m_engine.rootObjects().first()->findChild<QObject*>("licence");
+    if(licence)
+    {
+        QFile f("LICENSE.md");
+        if(!f.open(QIODevice::ReadOnly))
+            return;
+        QString l = f.readAll();
+        f.close();
+        licence->setProperty("text", l);
+    }
 }
 
 void MainController::loadFeatures()

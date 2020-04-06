@@ -115,6 +115,9 @@ public slots:
 
     void sortRole(QString);
     void sortOrder(int);
+
+    void licence();
+    void readme();
 };
 
 

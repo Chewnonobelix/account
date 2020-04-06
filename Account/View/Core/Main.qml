@@ -398,14 +398,19 @@ ApplicationWindow {
 
                 Popup {
                     id: about
-                    height: 200
-                    width: 600
-                    AccountLabel {
+                    objectName: "about"
+                    height: 740
+                    width: 740
+
+                    property string text: "Unable to load readme"
+                    ScrollView {
                         anchors.fill: parent
-                        text: qsTr("This application is made by Arnaud DUHAMEL
-Current Version beta 0.9")
-                        font.family: AccountStyle.title.name
-                        font.pixelSize: AccountStyle.title.size
+                        clip: true
+
+                        AccountLabel {
+                            text: about.text
+                            anchors.fill: parent
+                        }
                     }
 
                     background: AccountBackground {}
@@ -429,13 +434,21 @@ Current Version beta 0.9")
 
                 Popup {
                     id: aboutQt
-                    height: 200
-                    width: 600
-                    AccountLabel {
+                    objectName: "licence"
+                    height: 740
+                    width: 740
+
+                    property string text: "Unable to load licence"
+
+                    ScrollView{
                         anchors.fill: parent
-                        text: qsTr("This application is made with Qt 5.12 and QML")
-                        font.family: AccountStyle.title.name
-                        font.pixelSize: AccountStyle.title.size
+                        clip: true
+                        AccountLabel {
+                            anchors.centerIn: parent
+                            clip: true
+                            text: aboutQt.text
+                            fontSizeMode: Text.Fit
+                        }
                     }
 
                     background: AccountBackground {}
@@ -443,6 +456,42 @@ Current Version beta 0.9")
                     AccountButton {
                         text: qsTr("Ok")
                         onClicked: aboutQt.close()
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
+                    }
+                }
+            }
+
+            MenuItem {
+                text: qsTr("How to")
+                background: Rectangle {
+                    gradient: AccountStyle.goldButton
+                }
+
+                onTriggered: howto.open()
+
+                Popup {
+                    id: howto
+                    objectName: "howto"
+                    height: 740
+                    width: 740
+                    property string text: "Unable to load readme"
+
+                    ScrollView {
+                        anchors.fill: parent
+                        clip: true
+                        AccountLabel {
+                            clip: true
+                            text: howto.text
+                            anchors.centerIn: parent
+                            horizontalAlignment: Qt.Left
+                        }
+                    }
+                    background: AccountBackground {}
+
+                    AccountButton {
+                        text: qsTr("Ok")
+                        onClicked: howto.close()
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
                     }
@@ -618,7 +667,7 @@ Current Version beta 0.9")
 
             TabButton {
                 id: listTabButton
-    
+
                 contentItem: AccountLabel {
                     text: modelData
 
@@ -626,13 +675,13 @@ Current Version beta 0.9")
                     font.family: AccountStyle.title.name
                     font.pixelSize: AccountStyle.title.size
                 }
-    
+
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
                     acceptedButtons: Qt.NoButton
                 }
-    
+
                 background: Rectangle {
                     color: tabBar.currentItem === parent ? "darkseagreen" : "white"
                 }
