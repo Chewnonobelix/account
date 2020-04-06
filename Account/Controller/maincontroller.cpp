@@ -219,6 +219,10 @@ int MainController::exec()
     if(howto)
         connect(howto, SIGNAL(opened()), this, SLOT(readme()));
 
+    QObject* about = root->findChild<QObject*>("about");
+    if(about)
+        connect(about, SIGNAL(opened()), this, SLOT(about()));
+
     languageChange();
     
     return 0;
@@ -227,6 +231,20 @@ int MainController::exec()
 void MainController::close()
 {
     QApplication::closeAllWindows();
+}
+
+void MainController::about()
+{
+    QObject* licence = m_engine.rootObjects().first()->findChild<QObject*>("about");
+    if(licence)
+    {
+        QFile f("ABOUT.md");
+        if(!f.open(QIODevice::ReadOnly))
+            return;
+        QString l = f.readAll();
+        f.close();
+        licence->setProperty("text", l);
+    }
 }
 
 void MainController::readme()

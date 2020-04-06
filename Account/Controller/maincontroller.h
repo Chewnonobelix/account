@@ -118,6 +118,7 @@ public slots:
 
     void licence();
     void readme();
+    void about();
 };
 
 

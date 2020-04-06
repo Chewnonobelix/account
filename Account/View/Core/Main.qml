@@ -399,17 +399,19 @@ ApplicationWindow {
                 Popup {
                     id: about
                     objectName: "about"
-                    height: 740
-                    width: 740
+                    height: 300
+                    width: 700
 
-                    property string text: "Unable to load readme"
+                    property string text: "Unable to about"
                     ScrollView {
                         anchors.fill: parent
                         clip: true
 
                         AccountLabel {
                             text: about.text
-                            anchors.fill: parent
+                            anchors.centerIn: parent
+                            font.family: AccountStyle.title.name
+                            font.pixelSize: AccountStyle.title.size
                         }
                     }
 
