@@ -30,7 +30,7 @@ int GraphController::exec()
 {
     m_sum.clear();
 
-    if(!m_view || true)
+    if(!m_view)
         return -1;
 
     QMetaObject::invokeMethod(m_view, "clear");
