@@ -77,7 +77,7 @@ Rectangle {
                 Layout.column: 0
                 Layout.columnSpan: 2
                 Layout.rowSpan: 3
-                
+                currentIndex: -1
                 header:  AccountHeader {
                     text: qsTr("Frequency list")
                     height: frequencyList.height * .10
@@ -92,13 +92,12 @@ Rectangle {
                 }
 
                 Component.onCompleted: {
-
                     ref.entry = Qt.binding(function() {return currentModel ? currentModel.reference : null})
-                    
                     groupText.nb = Qt.binding(function() {return currentModel ? currentModel.nbGroup : 0})
                     countText.nb = Qt.binding(function() {return currentModel ? currentModel.count : 0})
                     pageChanger.maxPage = Qt.binding(function() {return countText.nb / 100 + 1})
                     whenCombo.enabled = Qt.binding(function() {return count !== 0})
+                    whenCombo.currentIndex = Qt.binding(function() {return currentModel  ? whenCombo.model.findIndex(currentModel.freq + 0) : 0})
                 }
                 
                 clip: true
@@ -108,13 +107,13 @@ Rectangle {
                     color: "transparent"
                 }
                 
+                onModelChanged: {
+                    currentIndex = -1
+                }
                 
                 onCurrentIndexChanged: {
-                    if(enabled) {                        
-                        pageChanger.pageIndex = 1
-                        
-                        whenCombo.currentIndex = whenCombo.model.findIndex(model[currentIndex].freq + 0)
-                                                                        
+                    if(enabled) {
+                        pageChanger.pageIndex = 1                                                                        
                         pageChanger.s_pageChange()
                         currentModel = enabled && currentIndex > -1 ? model[currentIndex] : null
                     }
@@ -466,9 +465,10 @@ Rectangle {
                     testModel.clear()
                     
                     var i = pageIndex - 1
-                    
-                    for(var j = 0 ; j < 100; j++) {
-                        if(j+100*i < frequencyList.model[frequencyList.currentIndex].entries().length) testModel.append(frequencyList.model[frequencyList.currentIndex].entries()[j+100*i])
+                    if(frequencyList.currentModel) {
+                        for(var j = 0 ; j < 100; j++) {
+                            if(j+100*i < frequencyList.currentModel.entries().length) testModel.append(frequencyList.currentModel.entries()[j+100*i])
+                        }
                     }
                 }
             }

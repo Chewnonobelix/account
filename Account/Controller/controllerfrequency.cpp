@@ -110,6 +110,8 @@ void ControllerFrequency::setManager(QObject * manager)
         connect(freqList, SIGNAL(s_modelChanged(QString)), this, SLOT(setWorker(QString)));
 
     connect((QThread*)&m_filler, SIGNAL(finished()), this, SLOT(endFill()));
+
+    connect(m_db, InterfaceDataSave::s_updateFrequency, this, ControllerFrequency::exec);
 }
 
 void ControllerFrequency::setWorker(QString name)
@@ -141,12 +143,19 @@ void ControllerFrequency::loadCat()
 void ControllerFrequency::endFill()
 {
     m_model.clear();
-    
-    for(auto it = m_freqs.begin(); it != m_freqs.end(); it++)
-        m_model<<QVariant::fromValue(*it);
-    
+        
     QObject* model = m_manager->findChild<QObject*>("frequencyList");
-    model->setProperty("model", m_model);    
+    int id = model->property("currentModel").isNull() ? -1 : model->property("currentModel").value<Frequency>().id();
+    int index = -1;
+    for(auto it = m_freqs.begin(); it != m_freqs.end(); it++)
+    {
+        m_model<<QVariant::fromValue(*it);
+        if(it->id() == id)
+            index = m_model.count() - 1;
+    }
+
+    model->setProperty("model", m_model);
+    model->setProperty("currentIndex", index);
 }
 
 int ControllerFrequency::exec()
@@ -165,14 +174,6 @@ int ControllerFrequency::exec()
     m_filler.start();
 
     loadCat();
-    
-    m_model.clear();
-    
-    for(auto it = m_freqs.begin(); it != m_freqs.end(); it++)
-        m_model<<QVariant::fromValue(*it);
-    
-    QObject* model = m_manager->findChild<QObject*>("frequencyList");
-    model->setProperty("model", m_model);    
     
     return 0;
 }
@@ -279,14 +280,6 @@ void ControllerFrequency::updateFreqName(int id, QString name)
     m_freqs[id].setReferenceEntry(ref);
     
     m_db->updateFrequency(m_freqs[id]);
-    auto list = m_manager->findChild<QObject*>("frequencyList");
-    list->setProperty("enabled", false);    
-    exec();
-    
-    for(int i = 0; i < m_model.size(); i++)
-        if(m_model[i].value<Frequency>().id() == id)
-            list->setProperty("currentIndex", i);
-    list->setProperty("enabled", true);        
 }
 
 void ControllerFrequency::updateFreqValue(int id, double value)
@@ -296,14 +289,6 @@ void ControllerFrequency::updateFreqValue(int id, double value)
     m_freqs[id].setReferenceEntry(ref);
     
     m_db->updateFrequency(m_freqs[id]);
-    auto list = m_manager->findChild<QObject*>("frequencyList");
-    list->setProperty("enabled", false);    
-    exec();
-    
-    for(int i = 0; i < m_model.size(); i++)
-        if(m_model[i].value<Frequency>().id() == id)
-            list->setProperty("currentIndex", i);   
-    list->setProperty("enabled", true);        
 }
 
 void ControllerFrequency::updateFreqCat(int id, QString cat)
@@ -316,15 +301,6 @@ void ControllerFrequency::updateFreqCat(int id, QString cat)
     m_freqs[id].setReferenceEntry(ref);
     
     m_db->updateFrequency(m_freqs[id]);
-    auto list = m_manager->findChild<QObject*>("frequencyList");
-    list->setProperty("enabled", false);    
-    exec();
-    
-    for(int i = 0; i < m_model.size(); i++)
-        if(m_model[i].value<Frequency>().id() == id)
-            list->setProperty("currentIndex", i);
-    list->setProperty("enabled", true);        
-    
 }
 
 void ControllerFrequency::updateFreqType(int id, QString type)
@@ -337,28 +313,12 @@ void ControllerFrequency::updateFreqType(int id, QString type)
     m_freqs[id].setReferenceEntry(ref);
     
     m_db->updateFrequency(m_freqs[id]);
-    auto list = m_manager->findChild<QObject*>("frequencyList");
-    list->setProperty("enabled", false);    
-    exec();
-    
-    for(int i = 0; i < m_model.size(); i++)
-        if(m_model[i].value<Frequency>().id() == id)
-            list->setProperty("currentIndex", i);   
-    list->setProperty("enabled", true);        
 }
 
 void ControllerFrequency::updateFreqFreq(int id, int f)
 {
     m_freqs[id].setFreq((Account::FrequencyEnum)f);
     m_db->updateFrequency(m_freqs[id]);
-    auto list = m_manager->findChild<QObject*>("frequencyList");
-    list->setProperty("enabled", false);    
-    exec();
-    
-    for(int i = 0; i < m_model.size(); i++)
-        if(m_model[i].value<Frequency>().id() == id)
-            list->setProperty("currentIndex", i);
-    list->setProperty("enabled", true);        
 }
 
 void ControllerFrequency::displayEntry(int id)

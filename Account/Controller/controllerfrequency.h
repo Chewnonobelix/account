@@ -61,7 +61,6 @@ public:
     inline ControllerFrequency(const ControllerFrequency& f): AbstractController(f) {}
     ~ControllerFrequency() = default;
         
-    int exec();
     void closeManager();
     
     void setManager(QObject*);
@@ -78,6 +77,8 @@ signals:
     void s_show();
 
 public slots:
+    int exec();
+
     void endThread(QString);
     void generate(QString, QString);
     void openGenerate(int);
