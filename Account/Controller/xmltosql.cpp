@@ -48,10 +48,11 @@ int TransfertDatabase::exec()
     ret &= transfertFrequency();
     ret &= transfertCommon();
 
+    delete m_backup;
     QProcess zipper;
     QString date = QDateTime::currentDateTime().toString("dd_MM_yyyy_hh_mm_ss");
     QStringList argument;
-    argument<<"-r"<<"a"<<"backup_"+date+".bcka"<< (backuptype == "ControllerXMLMulti" ? "data_backup/" : "account_backup");
+    argument<<"-sdel"<<"-r"<<"a"<<"backup_"+date+".bck"+(backuptype == "ControllerXMLMulti" ? "x" : "s")<< (backuptype == "ControllerXMLMulti" ? "data_backup/" : "account_backup");
     zipper.start("7z.exe", argument);
     zipper.waitForFinished();
 

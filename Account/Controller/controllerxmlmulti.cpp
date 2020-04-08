@@ -529,9 +529,6 @@ bool ControllerXMLMulti::init()
     
     dir.cd(m_currentProfile);
 
-    if(backup)
-        qDebug()<<"Remove back"<<dir.removeRecursively();
-
     auto infoList = dir.entryList(QStringList("*.xml"), QDir::Files);
     m_accounts.clear();
     for(auto filename: infoList)

@@ -232,7 +232,6 @@ void ControllerSettings::backup()
         return;
     }
 
-    qDebug()<<"Backup";
     bool ret = false;
 
     int type = QMetaType::type(backupType().toLatin1());
@@ -247,6 +246,4 @@ void ControllerSettings::backup()
         TransfertDatabase tdb(m_db, back, backupType());
         ret = tdb.exec();
     }
-
-    qDebug()<<ret;
 }
