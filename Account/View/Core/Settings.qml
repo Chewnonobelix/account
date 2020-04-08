@@ -1,4 +1,5 @@
 import QtQuick 2.14
+import QtQuick.Dialogs 1.3
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 
@@ -248,6 +249,16 @@ Dialog {
                             text: qsTr("Restore backup")
 
                             Layout.preferredHeight: root.height * 0.07
+
+                            onClicked: restoreDialog.open()
+
+                            FileDialog {
+                                id: restoreDialog
+                                objectName: "restoreDialog"
+                                selectExisting: true
+                                nameFilters: ["Account backup (*.bcka)"]
+                                title: qsTr("Restore backup")
+                            }
                         }
                     }
                 }
