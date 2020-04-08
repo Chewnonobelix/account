@@ -1,6 +1,6 @@
 #include "xmltosql.h"
 
-TransfertDatabase::TransfertDatabase(InterfaceDataSave* backup): m_backup(backup)
+TransfertDatabase::TransfertDatabase(InterfaceDataSave* main, InterfaceDataSave* backup, QString type):m_backup(backup),  m_db(main), backuptype(type)
 {
 
 }
@@ -47,6 +47,13 @@ int TransfertDatabase::exec()
     ret &= transfertBudget();
     ret &= transfertFrequency();
     ret &= transfertCommon();
+
+    QProcess zipper;
+    QString date = QDateTime::currentDateTime().toString("dd_MM_yyyy_hh_mm_ss");
+    QStringList argument;
+    argument<<"-r"<<"a"<<"backup_"+date+".bcka"<< (backuptype == "ControllerXMLMulti" ? "data_backup/" : "account_backup");
+    zipper.start("7z.exe", argument);
+    zipper.waitForFinished();
 
     return ret;
 }

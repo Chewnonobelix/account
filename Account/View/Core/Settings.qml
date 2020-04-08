@@ -220,6 +220,7 @@ Dialog {
                         active: secondadyEnable.checked
                         Layout.preferredHeight: root.height * 0.07
                         Layout.preferredWidth: root.width * 0.50
+                        id: backup
                     }
 
                     AccountCheckBox {
@@ -237,6 +238,7 @@ Dialog {
                         Layout.column: 1
                         spacing: root.width * 0.02
                         AccountButton {
+                            objectName: "saveBackup"
                             text: qsTr("Save backup")
                             enabled: secondadyEnable.checked
                             Layout.preferredHeight: root.height * 0.07

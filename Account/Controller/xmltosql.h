@@ -1,6 +1,7 @@
 #ifndef XMLTOSQL_H
 #define XMLTOSQL_H
 
+#include <QProcess>
 #include "abstractcontroller.h"
 #include "controllerdb.h"
 #include "controllerxmlmulti.h"
@@ -18,9 +19,9 @@ private:
     bool transfertCommon();
 
     QStringList accounts;
-
+    QString backuptype;
 public:
-    TransfertDatabase(InterfaceDataSave*, InterfaceDataSave*);
+    TransfertDatabase(InterfaceDataSave*, InterfaceDataSave*, QString);
 
     int exec();
 };

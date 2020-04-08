@@ -34,6 +34,10 @@ void ControllerSettings::init(QQmlEngine & engine)
 
     QObject* obj = m_view->findChild<QObject*>("language");
     obj->setProperty("model", QVariant::fromValue(availableLanguage));
+
+    QObject* back = m_view->findChild<QObject*>("saveBackup");
+    if(back)
+        connect(back, SIGNAL(clicked()), this, SLOT(backup()));
 }
 
 void ControllerSettings::registerFeature(QSharedPointer<FeatureBuilder> f)
@@ -240,7 +244,7 @@ void ControllerSettings::backup()
     back->init();
     if(back && backupEnable())
     {
-        TransfertDatabase tdb(m_db, back);
+        TransfertDatabase tdb(m_db, back, backupType());
         ret = tdb.exec();
     }
 

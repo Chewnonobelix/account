@@ -26,7 +26,7 @@ void ControllerXMLMulti::close()
     
     QDir dir;
     
-    QString basename = QString("data%1").arg(backup ? "_backup" : "");
+    QString basename = QString(m_path+"%1").arg(backup ? "_backup" : "");
     if(!dir.cd(basename))
     {
         dir.mkdir(basename);
@@ -518,7 +518,7 @@ bool ControllerXMLMulti::init()
 {
     QDir dir;
 
-    QString basename = QString("data%1").arg(backup ? "_backup" : "");
+    QString basename = QString(m_path+"%1").arg(backup ? "_backup" : "");
 
 
     if(!dir.cd(basename))

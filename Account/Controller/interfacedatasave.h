@@ -15,13 +15,15 @@ class InterfaceDataSave: public QObject
 
 protected:
     bool backup = false;
-    QString m_currentProfile;
+    QString m_currentProfile = "Default";
+    QString m_path = "data";
 
 public:
     InterfaceDataSave() = default;
     inline InterfaceDataSave(const InterfaceDataSave&): QObject(nullptr) {}
     virtual ~InterfaceDataSave() {}
     inline void setBackup(bool back) { backup = back;}
+    inline void setPath(QString path) {m_path = path;}
 signals:
     void s_updateEntry(int = -1);
     void s_updateCategory();
