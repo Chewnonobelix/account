@@ -38,6 +38,10 @@ void ControllerSettings::init(QQmlEngine & engine)
     QObject* back = m_view->findChild<QObject*>("saveBackup");
     if(back)
         connect(back, SIGNAL(clicked()), this, SLOT(backup()));
+
+    QObject* restorer = m_view->findChild<QObject*>("restoreDialog");
+    if(restorer)
+        connect(restorer, SIGNAL(s_restore(QString)), this, SLOT(restore(QString)));
 }
 
 void ControllerSettings::registerFeature(QSharedPointer<FeatureBuilder> f)
@@ -214,9 +218,9 @@ void ControllerSettings::setAutobackup(bool autobackup)
     m_settings.setValue("Database/autobackup", autobackup);
 }
 
-void ControllerSettings::restore()
+void ControllerSettings::restore(QString backdb)
 {
-    qDebug()<<"Restore Backup";
+    qDebug()<<"Restore Backup"<<backdb<<backdb[backdb.size()-1];
 
     emit s_closedb();
     AbstractController::deleteDb();
@@ -232,18 +236,29 @@ void ControllerSettings::backup()
         return;
     }
 
-    bool ret = false;
-
-    int type = QMetaType::type(backupType().toLatin1());
-    if(type == QMetaType::UnknownType)
-        throw QString("Unknow DB type");
-
-    back = (InterfaceDataSave*)(QMetaType::create(type));
-    back->setBackup(true);
-    back->init();
+    auto back = createDb(backupType(), true);
     if(back && backupEnable())
     {
-        TransfertDatabase tdb(m_db, back, backupType());
+        bool ret = false;
+
+        TransfertDatabase tdb(m_db, back);
         ret = tdb.exec();
+
+        qDebug()<<"Backup sucess"<<ret;
     }
+}
+
+InterfaceDataSave* ControllerSettings::createDb(QString type, bool b) const
+{
+    InterfaceDataSave* ret = nullptr;
+
+    int t = QMetaType::type(type.toLatin1());
+    if(t == QMetaType::UnknownType)
+        throw QString("Unknow DB type");
+
+    ret = (InterfaceDataSave*)(QMetaType::create(t));
+    ret->setBackup(b);
+    ret->init();
+
+    return ret;
 }

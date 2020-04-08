@@ -52,6 +52,7 @@ public:
     Qt::SortOrder sortOrder() const;
     void setSortOrdre(Qt::SortOrder);
 
+    InterfaceDataSave* createDb(QString, bool = false) const;
 
     static void registerFeature(QSharedPointer<FeatureBuilder>);
     static inline QStringList registredFeature() {return registredFeatures.keys();}
@@ -66,7 +67,7 @@ signals:
 public slots:
     void open();
     void save();
-    void restore();
+    void restore(QString back);
     void backup();
 };
 

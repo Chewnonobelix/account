@@ -256,8 +256,10 @@ Dialog {
                                 id: restoreDialog
                                 objectName: "restoreDialog"
                                 selectExisting: true
-                                nameFilters: ["Account backup (*.bcka)"]
+                                nameFilters: ["Account backup (*.bckx *.bcks)"]
                                 title: qsTr("Restore backup")
+                                signal s_restore(string file)
+                                onAccepted: s_restore(fileUrl)
                             }
                         }
                     }
