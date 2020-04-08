@@ -1,6 +1,6 @@
 #include "xmltosql.h"
 
-TransfertDatabase::TransfertDatabase(InterfaceDataSave* main, InterfaceDataSave* backup, QString type):m_backup(backup),  m_db(main), backuptype(type)
+TransfertDatabase::TransfertDatabase(InterfaceDataSave* main, InterfaceDataSave* backup):m_backup(backup),  m_db(main)
 {
 
 }

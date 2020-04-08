@@ -106,8 +106,8 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     
     m_mutex.lock();
     
-    int ide = backup ? e.id() : maxId(m_ids["entry"]) + 1;
-    int idi = backup ? e.info().id() : maxId(m_ids["info"]) + 1;
+    int ide = e.id() != -1 ? e.id() : maxId(m_ids["entry"]) + 1;
+    int idi = e.info().id() != -1 ? e.info().id() : maxId(m_ids["info"]) + 1;
     
     m_ids["entry"]<<ide;
     m_ids["info"]<<idi;
@@ -389,7 +389,7 @@ bool ControllerXMLMulti::addBudget(const Budget& b)
     
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
     QDomElement el = m_currentAccount.createElement("budget");
-    int id = backup ? b.id() : maxId(m_ids["budget"]) + 1;
+    int id = b.id() != -1 ? b.id() : maxId(m_ids["budget"]) + 1;
     
     m_ids["budget"]<<id;
     el.setAttribute("id", id);
@@ -593,7 +593,7 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
 {
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
     
-    int id = backup ? f.id() : maxId(m_ids["frequency"]) + 1;
+    int id = f.id() != -1 ? f.id() : maxId(m_ids["frequency"]) + 1;
     m_ids["frequency"]<<id;
     QMap<QString, QString> attr;
     attr["id"] = QString::number(id);
@@ -759,7 +759,7 @@ bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
 {
     m_mutex.lock();
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
-    int id = backup? ce.id() : maxId(m_ids["common"]) + 1;
+    int id = ce.id() != -1 ? ce.id() : maxId(m_ids["common"]) + 1;
     
     QMap<QString, QString> att;
     att["id"] = QString::number(id);

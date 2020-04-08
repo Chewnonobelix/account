@@ -368,7 +368,7 @@ bool ControllerDB::deleteProfile(QString name)
 bool ControllerDB::addEntry(const Entry & e)
 {        
     bool ret = false;
-    if(isConnected() && e.id() < 0)
+    if(isConnected())
     {
         
         m_addEntry->bindValue(":account", e.account().isEmpty() ? m_currentAccount : e.account());
@@ -376,11 +376,11 @@ bool ControllerDB::addEntry(const Entry & e)
         m_addEntry->bindValue(":date", QVariant(e.date()));
         m_addEntry->bindValue(":type", QVariant(e.type()));
         m_addEntry->bindValue(":profile", m_currentProfile);
-        if(backup)
+        if(e.id() != -1)
             m_addEntry->bindValue(":id", e.id());
         
         ret = m_addEntry->exec();
-        int id = m_addEntry->lastInsertId().toInt();
+        int id = e.id() != -1 ? e.id() : m_addEntry->lastInsertId().toInt();
         
         if(ret && id >= 0)
         {
@@ -388,7 +388,7 @@ bool ControllerDB::addEntry(const Entry & e)
             m_addInformation->bindValue(":ide", id);
             m_addInformation->bindValue(":title", e.info().title());
             m_addInformation->bindValue(":prev",e.info().estimated());
-            if(backup)
+            if(e.info().id())
                 m_addInformation->bindValue(":id", e.info().id());
 
             ret &= m_addInformation->exec();
@@ -606,7 +606,7 @@ bool ControllerDB::addBudget(const Budget& b)
         m_addBudget->bindValue(":account", m_currentAccount);
         m_addBudget->bindValue(":profile", m_currentProfile);
         m_addBudget->bindValue(":reference", b.reference());
-        if(backup)
+        if(b.id())
             m_addBudget->bindValue(":id", b.id());
 
         auto reqc = m_db.exec("SELECT * FROM categories WHERE profile='"+m_currentProfile+"' AND account='"+m_currentAccount+"' AND name='"+b.category()+"' ");
@@ -698,7 +698,7 @@ bool ControllerDB::addFrequency(const Frequency & f)
         m_addFrequency->bindValue(":account", QVariant::fromValue(m_currentAccount));
         m_addFrequency->bindValue(":profile", QVariant::fromValue(m_currentProfile));
         
-        if(backup)
+        if(f.id())
             m_addFrequency->bindValue(":id", f.id());
 
         if(m_addFrequency->exec())
@@ -885,7 +885,7 @@ bool ControllerDB::addCommon(const CommonExpanse& c)
         m_addCommon->bindValue(":t", c.title());
         m_addCommon->bindValue(":p", m_currentProfile);
         m_addCommon->bindValue(":a", m_currentAccount);
-        if(backup)
+        if(c.id())
             m_addCommon->bindValue(":i", c.id());
 
         emit s_updateCommon();

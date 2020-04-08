@@ -21,7 +21,7 @@ private:
     QStringList accounts;
     QString backuptype;
 public:
-    TransfertDatabase(InterfaceDataSave*, InterfaceDataSave*, QString);
+    TransfertDatabase(InterfaceDataSave*, InterfaceDataSave*);
 
     int exec();
 };
