@@ -27,6 +27,8 @@ MainController::MainController(int storage): AbstractController()
     //    qDebug()<<"Total Qml"<<qmlRegisterUncreatableType<Total>("Account.Core",1,0, "Total", message);
     
     qmlRegisterModule("Account.Style", 1, 0);
+    m_mainThread = thread();
+
     try
     {
         setDb(m_settings.database().isEmpty() ? "ControllerDB" : m_settings.database());
@@ -589,7 +591,7 @@ void MainController::pageChange(int id)
         
         QList<QVariant> currentModel;
         
-        std::for_each(m_model.begin(), m_model.end(), [ld, id, &currentModel, &index](const QVariant& e){
+        std::for_each(m_model.begin(), m_model.end(), [ld, &currentModel](const QVariant& e){
             if(ld.isEmpty() || ld.contains(e.toMap()["date"].toDate()))
                 currentModel<<e;
             

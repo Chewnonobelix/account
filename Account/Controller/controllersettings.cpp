@@ -222,10 +222,49 @@ void ControllerSettings::restore(QString backdb)
 {
     qDebug()<<"Restore Backup"<<backdb<<backdb[backdb.size()-1];
 
+    QString dbtype; QChar c = (backdb[backdb.size()-1]);
+
+    switch (c.toLatin1())
+    {
+    case 's':
+        dbtype = "ControllerDB";
+        break;
+    case 'x':
+    default:
+        dbtype = "ControllerXMLMulti";
+        break;
+    }
+
+    QProcess unzipper;
+
+    unzipper.start("7z", QStringList()<<"e"<<backdb.remove("file:///"));
+
+    unzipper.waitForFinished();
+
     emit s_closedb();
-    AbstractController::deleteDb();
+//    AbstractController::deleteDb();
 
+    setDb(database());
 
+    auto back = createDb(dbtype, true);
+
+    TransfertDatabase tdb(back, m_db);
+    auto ret = tdb.exec();
+
+    qDebug()<<"Restore"<<ret;
+
+    QDir dir;
+    switch(c.toLatin1())
+    {
+    case 's':
+        dir.remove("account_backup");
+        break;
+    case 'x':
+    default:
+        dir.cd("data_backup");
+        dir.removeRecursively();
+        break;
+    }
 }
 
 void ControllerSettings::backup()

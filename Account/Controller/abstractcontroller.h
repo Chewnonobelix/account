@@ -7,6 +7,7 @@
 #include <QObject>
 #include <QDebug>
 #include <QRandomGenerator>
+#include <QThread>
 #include "Model/entry.h"
 //#include "Model/categories.h"
 #include "Model/total.h"
@@ -23,7 +24,8 @@ private:
     
 protected:
     static InterfaceDataSave* m_db;
-    
+    static QThread* m_mainThread;
+
 public:
     AbstractController();
     inline AbstractController(const AbstractController&): QObject(nullptr) {}
