@@ -24,6 +24,7 @@ public:
     virtual ~InterfaceDataSave() {}
     inline void setBackup(bool back) { backup = back;}
     inline void setPath(QString path) {m_path = path;}
+
 signals:
     void s_updateEntry(int = -1);
     void s_updateCategory();

@@ -32,7 +32,6 @@ MainController::MainController(int storage): AbstractController()
     try
     {
         setDb(m_settings.database().isEmpty() ? "ControllerDB" : m_settings.database());
-//        m_db->init();
     }
     catch(QString except)
     {
@@ -232,6 +231,10 @@ int MainController::exec()
 
 void MainController::close()
 {
+    if(m_settings.autoBackup())
+    {
+        m_settings.backup();
+    }
     QApplication::closeAllWindows();
 }
 

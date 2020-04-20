@@ -893,9 +893,10 @@ void ControllerXMLMulti::setProfile(QString profile)
 bool ControllerXMLMulti::addProfile(QString name, QString password)
 {
     Q_UNUSED(password)
+    QString basename = QString(m_path+"%1").arg(backup ? "_backup" : "");
 
     QDir dir;
-    dir.cd("data");
+    dir.cd(basename);
     return dir.mkdir(name);
 }
 

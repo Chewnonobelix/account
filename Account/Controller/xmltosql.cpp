@@ -49,7 +49,7 @@ int TransfertDatabase::exec()
     ret &= transfertCommon();
 
     delete m_backup;
-    qDebug()<<"Restore bool"<<ret;
+
     return ret;
 }
 

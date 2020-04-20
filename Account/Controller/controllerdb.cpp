@@ -368,7 +368,7 @@ bool ControllerDB::deleteProfile(QString name)
 bool ControllerDB::addEntry(const Entry & e)
 {        
     bool ret = false;
-    qDebug()<<isConnected();
+
     if(isConnected())
     {
         
@@ -380,7 +380,6 @@ bool ControllerDB::addEntry(const Entry & e)
         if(e.id() > -1)
             m_addEntry->bindValue(":id", e.id());
         ret = m_addEntry->exec();
-        qDebug()<<"Add"<<m_addEntry->lastQuery()<<m_addEntry->lastError();
 
         int id = e.id() != -1 ? e.id() : m_addEntry->lastInsertId().toInt();
         
