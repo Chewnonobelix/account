@@ -166,7 +166,7 @@ Page {
                 backgroundVisible: false
                 Connections {
                     target: cal
-                    onS_datesChanged: {
+                    function onS_datesChanged() {
                         view.reset()
                     }
                 }

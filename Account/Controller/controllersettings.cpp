@@ -237,11 +237,10 @@ void ControllerSettings::restore(QString backdb)
 
     QProcess unzipper;
 
-    unzipper.start("7z", QStringList()<<"e"<<backdb.remove("file:///"));
+    unzipper.start("7z", QStringList()<<"x"<<backdb.remove("file:///"));
 
     unzipper.waitForFinished();
 
-    emit s_closedb();
 //    AbstractController::deleteDb();
 
     setDb(database());
@@ -282,6 +281,13 @@ void ControllerSettings::backup()
 
         TransfertDatabase tdb(m_db, back);
         ret = tdb.exec();
+
+        QProcess zipper;
+        QString date = QDateTime::currentDateTime().toString("dd_MM_yyyy_hh_mm_ss");
+        QStringList argument;
+        argument<<"-sdel"<<"-r"<<"a"<<"backup_"+date+".bck"+(backupType() == "ControllerXMLMulti" ? "x" : "s")<< (backupType() == "ControllerXMLMulti" ? "data_backup/" : "account_backup");
+        zipper.start("7z", argument);
+        zipper.waitForFinished();
 
         qDebug()<<"Backup sucess"<<ret;
     }

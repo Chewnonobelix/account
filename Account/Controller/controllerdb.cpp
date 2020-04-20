@@ -368,6 +368,7 @@ bool ControllerDB::deleteProfile(QString name)
 bool ControllerDB::addEntry(const Entry & e)
 {        
     bool ret = false;
+    qDebug()<<isConnected();
     if(isConnected())
     {
         
@@ -376,10 +377,11 @@ bool ControllerDB::addEntry(const Entry & e)
         m_addEntry->bindValue(":date", QVariant(e.date()));
         m_addEntry->bindValue(":type", QVariant(e.type()));
         m_addEntry->bindValue(":profile", m_currentProfile);
-        if(e.id() != -1)
+        if(e.id() > -1)
             m_addEntry->bindValue(":id", e.id());
-        
         ret = m_addEntry->exec();
+        qDebug()<<"Add"<<m_addEntry->lastQuery()<<m_addEntry->lastError();
+
         int id = e.id() != -1 ? e.id() : m_addEntry->lastInsertId().toInt();
         
         if(ret && id >= 0)
@@ -606,7 +608,7 @@ bool ControllerDB::addBudget(const Budget& b)
         m_addBudget->bindValue(":account", m_currentAccount);
         m_addBudget->bindValue(":profile", m_currentProfile);
         m_addBudget->bindValue(":reference", b.reference());
-        if(b.id())
+        if(b.id() > -1)
             m_addBudget->bindValue(":id", b.id());
 
         auto reqc = m_db.exec("SELECT * FROM categories WHERE profile='"+m_currentProfile+"' AND account='"+m_currentAccount+"' AND name='"+b.category()+"' ");
@@ -698,7 +700,7 @@ bool ControllerDB::addFrequency(const Frequency & f)
         m_addFrequency->bindValue(":account", QVariant::fromValue(m_currentAccount));
         m_addFrequency->bindValue(":profile", QVariant::fromValue(m_currentProfile));
         
-        if(f.id())
+        if(f.id() > -1)
             m_addFrequency->bindValue(":id", f.id());
 
         if(m_addFrequency->exec())
@@ -885,7 +887,7 @@ bool ControllerDB::addCommon(const CommonExpanse& c)
         m_addCommon->bindValue(":t", c.title());
         m_addCommon->bindValue(":p", m_currentProfile);
         m_addCommon->bindValue(":a", m_currentAccount);
-        if(c.id())
+        if(c.id() > -1)
             m_addCommon->bindValue(":i", c.id());
 
         emit s_updateCommon();

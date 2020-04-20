@@ -23,7 +23,7 @@ public:
     
 private:
     
-    int m_id;
+    int m_id = -1;
     Account::FrequencyEnum m_freq;
     QList<QVariant> m_entriesId;
     QDate m_end;

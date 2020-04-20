@@ -92,6 +92,7 @@ void AbstractController::setDb(QString name)
         delete m_db;
     }
     m_db = (InterfaceDataSave*)(QMetaType::create(type));
+    m_db->init();
 
 }
 
