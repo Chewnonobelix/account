@@ -24,7 +24,7 @@ private:
     
 protected:
     static InterfaceDataSave* m_db;
-    static QThread* m_mainThread;
+    static QThread* m_dbThread;
 
 public:
     AbstractController();

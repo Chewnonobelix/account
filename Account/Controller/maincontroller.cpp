@@ -27,8 +27,8 @@ MainController::MainController(int storage): AbstractController()
     //    qDebug()<<"Total Qml"<<qmlRegisterUncreatableType<Total>("Account.Core",1,0, "Total", message);
     
     qmlRegisterModule("Account.Style", 1, 0);
-    m_mainThread = thread();
-
+    m_dbThread = new QThread;;
+    connect(m_dbThread, QThread::started, this, MainController::reload);
     try
     {
         setDb(m_settings.database().isEmpty() ? "ControllerDB" : m_settings.database());
@@ -38,29 +38,33 @@ MainController::MainController(int storage): AbstractController()
         qDebug()<<except;
     }
     
-    m_db->moveToThread(&m_dbThread);
     
     connect(&m_graph, GraphController::s_sum, this, receiveSum);
-    connect(&m_dbThread, QThread::started, m_db, InterfaceDataSave::exec);
     
-    m_dbThread.start();
 }
 
 MainController::~MainController()
 {
-    if(m_dbThread.isRunning())
+    if(m_dbThread->isRunning())
     {
-        m_dbThread.terminate();
-        m_dbThread.wait();
+        m_dbThread->terminate();
+        m_dbThread->wait();
+        delete m_dbThread;
     }
     AbstractController::deleteDb();
+}
+
+void MainController::reload()
+{
+    loadAccount();
+    buildModel();
 }
 
 int MainController::exec()
 {
     m_engine.load(QUrl(QStringLiteral("qrc:/Core/Main.qml")));
     
-    if (m_engine.rootObjects().isEmpty())
+    if (m_engine.rootObjects().size() != 1)
         return -1;
 
     QObject* root = m_engine.rootObjects().first();
@@ -380,7 +384,7 @@ void MainController::adding()
         Information i;
         i.setTitle(label.toString());
         e.setInfo(i);
-        if(date > QDate::currentDate())
+        if(date.toDate() > QDate::currentDate())
             i.setEstimated(true);
         e.setAccount(currentAccount());
     }

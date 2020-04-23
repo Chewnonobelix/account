@@ -186,6 +186,8 @@ void ControllerSettings::save()
     {
         setAutobackup(false);
     }
+
+    AbstractController::setDb(database());
 }
 
 QString ControllerSettings::sortingRole() const

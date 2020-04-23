@@ -52,9 +52,7 @@ private:
     ControllerSettings m_settings;
 
     QList<QSharedPointer<FeatureBuilder>> m_features;
-    
-    QThread m_dbThread;
-    
+        
     void checkEstimated();
 
     QList<QDate> dateList() const;
@@ -119,6 +117,8 @@ public slots:
     void licence();
     void readme();
     void about();
+
+    void reload();
 };
 
 

@@ -43,5 +43,6 @@
         <file>Style/qmldir</file>
         <file>Style/AccountBackground.qml</file>
         <file>Core/qmldir</file>
+        <file>Core/Syncing.qml</file>
     </qresource>
 </RCC>

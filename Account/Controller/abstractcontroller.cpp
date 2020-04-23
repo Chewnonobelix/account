@@ -3,7 +3,7 @@
 QString AbstractController::m_account = QString();
 InterfaceDataSave* AbstractController::m_db = nullptr;
 Total AbstractController::m_accountTotal = Total();
-QThread* AbstractController::m_mainThread = nullptr;
+QThread* AbstractController::m_dbThread = nullptr;
 
 AbstractController::AbstractController(): QObject(nullptr)
 {
@@ -88,12 +88,14 @@ void AbstractController::setDb(QString name)
     {
         m_db->thread()->terminate();
         m_db->thread()->wait();
-        //m_db->moveToThread(m_mainThread);
+
         delete m_db;
     }
     m_db = (InterfaceDataSave*)(QMetaType::create(type));
     m_db->init();
-
+    m_db->moveToThread(m_dbThread);
+    connect(m_dbThread, QThread::started, m_db, InterfaceDataSave::exec);
+    m_dbThread->start();
 }
 
 void AbstractController::deleteDb()
