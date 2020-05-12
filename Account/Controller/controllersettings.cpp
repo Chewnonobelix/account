@@ -249,10 +249,12 @@ void ControllerSettings::restore(QString backdb)
 
     auto back = createDb(dbtype, true);
 
-    TransfertDatabase tdb(back, m_db);
-    auto ret = tdb.exec();
+    m_backupper.m_db = back;
+    m_backupper.m_backup = m_db;
+    m_backupper.start();
 
-    qDebug()<<"Restore"<<ret;
+    m_backupper.wait();
+    qDebug()<<"Restore"<<m_backupper.isSucess();
 
     QDir dir;
     switch(c.toLatin1())
@@ -279,21 +281,13 @@ void ControllerSettings::backup()
     auto back = createDb(backupType(), true);
     if(back && backupEnable())
     {
-        bool ret = false;
+        connect(&m_backupper, TransfertDatabase::finished, this, ControllerSettings::endBackup);
+        m_backupper.m_db = m_db;
+        m_backupper.m_backup = back;
 
-        TransfertDatabase tdb(m_db, back);
-        ret = tdb.exec();
+        m_backupper.start();
+        qDebug()<<thread()<<m_backupper.thread();
 
-        if(ret)
-        {
-            QProcess zipper;
-            QString date = QDateTime::currentDateTime().toString("dd_MM_yyyy_hh_mm_ss");
-            QStringList argument;
-            argument<<"-sdel"<<"-r"<<"a"<<"backup_"+date+".bck"+(backupType() == "ControllerXMLMulti" ? "x" : "s")<< (backupType() == "ControllerXMLMulti" ? "data_backup/" : "account_backup");
-            zipper.start("7z", argument);
-            zipper.waitForFinished();
-        }
-        qDebug()<<"Backup sucess"<<ret;
     }
 }
 
@@ -310,4 +304,21 @@ InterfaceDataSave* ControllerSettings::createDb(QString type, bool b) const
     ret->init();
 
     return ret;
+}
+
+void ControllerSettings::endBackup()
+{
+    disconnect(&m_backupper, QThread::finished, this, ControllerSettings::endBackup);
+    if(m_backupper.isSucess())
+    {
+        QProcess zipper;
+        QString date = QDateTime::currentDateTime().toString("dd_MM_yyyy_hh_mm_ss");
+        QStringList argument;
+        argument<<"-sdel"<<"-r"<<"a"<<"backup_"+date+".bck"+(backupType() == "ControllerXMLMulti" ? "x" : "s")<< (backupType() == "ControllerXMLMulti" ? "data_backup/" : "account_backup");
+        zipper.start("7z", argument);
+        zipper.waitForFinished();
+    }
+    qDebug()<<"Backup sucess"<<m_backupper.isSucess();
+
+    emit s_finishBackup();
 }

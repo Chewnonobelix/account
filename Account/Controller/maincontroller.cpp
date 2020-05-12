@@ -235,11 +235,22 @@ int MainController::exec()
 
 void MainController::close()
 {
+    connect(&m_settings, ControllerSettings::s_finishBackup, QApplication::closeAllWindows);
+    connect(&m_settings, ControllerSettings::s_finishBackup, QCoreApplication::quit);
     if(m_settings.autoBackup())
     {
+        QQmlComponent syncomp(&m_engine, "qrc:/Core/Syncing.qml");
+        auto sync = syncomp.create();
+        sync->setProperty("visible", true);
+
         m_settings.backup();
+
     }
-    QApplication::closeAllWindows();
+    else
+    {
+        QApplication::closeAllWindows();
+        QCoreApplication::quit();
+    }
 }
 
 void MainController::about()

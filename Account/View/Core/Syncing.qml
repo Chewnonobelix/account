@@ -1,19 +1,31 @@
 import QtQuick 2.15
-import QtQuick.Dialogs 1.2
+import QtQuick.Window 2.12
 import QtQuick.Controls 2.14
-
+import QtQuick.Layouts 1.15
 import "../Style"
 
-Popup {
+Window {
     objectName: "syncingpop"
-    onOpened: busy.running = true
-    onClosed: busy.running = false
-    BusyIndicator {
-        id: busy
-        running: false
+    id: root
+
+    property bool backup: true
+    flags: Qt.SplashScreen
+    AccountBackground {
+        anchors.fill: parent
     }
 
-    AccountLabel {
-        text: qsTr("Syncing") + " ..."
+    ColumnLayout {
+        anchors.fill: parent
+
+        BusyIndicator {
+            id: busy
+            running: root.visible
+            Layout.fillWidth: true
+        }
+
+        AccountLabel {
+            Layout.fillWidth: true
+            text: root.backup ? qsTr("Backup") : qsTr("Restoring") + " ..."
+        }
     }
 }

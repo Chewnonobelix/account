@@ -25,6 +25,7 @@ private:
     
     QObject* m_view;
     InterfaceDataSave* back = nullptr;
+    TransfertDatabase m_backupper;
 
 public:
     ControllerSettings();
@@ -39,7 +40,7 @@ public:
     void setBackupEnable(bool);
     bool autoBackup() const;
     void setAutobackup(bool);
-
+    inline bool isBackuping() const {return m_backupper.isRunning();}
     QString language() const;
     void setLanguage(QString);
 
@@ -63,12 +64,14 @@ signals:
     void s_finish();
     void s_language();
     void s_closedb();
+    void s_finishBackup();
 
 public slots:
     void open();
     void save();
     void restore(QString back);
     void backup();
+    void endBackup();
 };
 
 #endif // CONTROLLERSETTINGS_H

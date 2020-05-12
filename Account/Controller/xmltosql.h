@@ -6,11 +6,9 @@
 #include "controllerdb.h"
 #include "controllerxmlmulti.h"
 
-class TransfertDatabase
+class TransfertDatabase: public QThread
 {
 private:
-    InterfaceDataSave* m_backup;
-    InterfaceDataSave* m_db;
 
     bool transfertEntries();
     bool transfertCategories();
@@ -20,10 +18,19 @@ private:
 
     QStringList accounts;
     QString backuptype;
-public:
-    TransfertDatabase(InterfaceDataSave*, InterfaceDataSave*);
 
-    int exec();
+    bool m_sucess = true;
+
+protected:
+    void run() override;
+
+public:
+    TransfertDatabase();
+    inline bool isSucess() {return m_sucess;}
+    InterfaceDataSave* m_backup;
+    InterfaceDataSave* m_db;
+
+
 };
 
 #endif // XMLTOSQL_H

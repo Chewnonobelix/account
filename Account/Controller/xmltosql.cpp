@@ -1,6 +1,6 @@
 #include "xmltosql.h"
 
-TransfertDatabase::TransfertDatabase(InterfaceDataSave* main, InterfaceDataSave* backup):m_backup(backup),  m_db(main)
+TransfertDatabase::TransfertDatabase()
 {
 
 }
@@ -37,20 +37,19 @@ bool TransfertDatabase::transfertCategories()
     return ret;
 }
 
-int TransfertDatabase::exec()
+void TransfertDatabase::run()
 {
-    bool ret = true;
+    m_sucess = true;
     accounts = m_db->selectAccount();
 
-    ret &= transfertEntries();
-    ret &= transfertCategories();
-    ret &= transfertBudget();
-    ret &= transfertFrequency();
-    ret &= transfertCommon();
+    m_sucess &= transfertEntries();
+    m_sucess &= transfertCategories();
+    m_sucess &= transfertBudget();
+    m_sucess &= transfertFrequency();
+    m_sucess &= transfertCommon();
 
     delete m_backup;
 
-    return ret;
 }
 
 bool TransfertDatabase::transfertBudget()
