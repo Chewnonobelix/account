@@ -1,24 +1,19 @@
 #include "controllerxmlmulti.h"
 
 
-ControllerXMLMulti::ControllerXMLMulti(bool backup): InterfaceDataSave(), m_timer(-1), m_currentProfile("Default")
+ControllerXMLMulti::ControllerXMLMulti(bool backup): InterfaceDataSave(), m_currentProfile("Default")
 {
     this->backup = backup;
 }
 
-ControllerXMLMulti::ControllerXMLMulti(const ControllerXMLMulti& c): InterfaceDataSave(c), m_timer(-1)
+ControllerXMLMulti::ControllerXMLMulti(const ControllerXMLMulti& c): InterfaceDataSave(c)
 {
     
 }
 
 ControllerXMLMulti::~ControllerXMLMulti()
-{
-    if(m_timer != -1)
-        killTimer(m_timer);
-    m_timer = -1;
-    
+{    
     close();
-    
 }
 
 void ControllerXMLMulti::close()
@@ -554,7 +549,6 @@ bool ControllerXMLMulti::init()
         
         file.close();
     }
-    m_timer = startTimer(60*1000*5); //5 mins
     
     return true;
 }
@@ -704,11 +698,6 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
     }
     
     return ret.values();
-}
-
-void ControllerXMLMulti::timerEvent(QTimerEvent *)
-{
-    close();
 }
 
 QMap<int, CommonExpanse> ControllerXMLMulti::selectCommon()

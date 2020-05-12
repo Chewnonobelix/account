@@ -18,7 +18,6 @@ private:
     QMap<QString, QDomDocument> m_accounts;
     
     QMap<QString, QSet<int>> m_ids;
-    int m_timer;
 
     QDomDocument m_currentAccount;
     QString m_currentProfile;
@@ -41,7 +40,6 @@ private:
     Entry selectEntryNode(QDomElement&);
 
 protected:
-    void timerEvent(QTimerEvent*);
 
 public:
     ControllerXMLMulti(bool = false);
