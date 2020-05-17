@@ -4,6 +4,7 @@ QMap<QString, QSharedPointer<FeatureBuilder>> ControllerSettings::registredFeatu
 
 ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSettings::UserScope, "Chewnonobelix Inc", "Account")
 {
+
 }
 
 ControllerSettings::~ControllerSettings()
@@ -15,6 +16,8 @@ ControllerSettings::~ControllerSettings()
 void ControllerSettings::init(QQmlEngine & engine)
 {
     QObject* root = ((QQmlApplicationEngine&)engine).rootObjects().first();
+    QQmlComponent syncomp(&engine, "qrc:/Core/Syncing.qml");
+    m_splash = syncomp.create();
 
     m_view = root->findChild<QObject*>("settings");
 
@@ -223,7 +226,8 @@ void ControllerSettings::setAutobackup(bool autobackup)
 void ControllerSettings::restore(QString backdb)
 {
     qDebug()<<"Restore Backup"<<backdb<<backdb[backdb.size()-1];
-
+    m_splash->setProperty("visible", true);
+    m_splash->setProperty("backup", false);
     QString dbtype; QChar c = (backdb[backdb.size()-1]);
 
     switch (c.toLatin1())
@@ -248,26 +252,11 @@ void ControllerSettings::restore(QString backdb)
     setDb(database());
 
     auto back = createDb(dbtype, true);
+    connect(&m_backupper, QThread::finished, this, ControllerSettings::endRestore);
 
     m_backupper.m_db = back;
     m_backupper.m_backup = m_db;
     m_backupper.start();
-
-    m_backupper.wait();
-    qDebug()<<"Restore"<<m_backupper.isSucess();
-
-    QDir dir;
-    switch(c.toLatin1())
-    {
-    case 's':
-        dir.remove("account_backup");
-        break;
-    case 'x':
-    default:
-        dir.cd("data_backup");
-        dir.removeRecursively();
-        break;
-    }
 }
 
 void ControllerSettings::backup()
@@ -281,6 +270,9 @@ void ControllerSettings::backup()
     auto back = createDb(backupType(), true);
     if(back && backupEnable())
     {
+        m_splash->setProperty("visible", true);
+        m_splash->setProperty("backup", true);
+
         connect(&m_backupper, TransfertDatabase::finished, this, ControllerSettings::endBackup);
         m_backupper.m_db = m_db;
         m_backupper.m_backup = back;
@@ -309,6 +301,7 @@ InterfaceDataSave* ControllerSettings::createDb(QString type, bool b) const
 void ControllerSettings::endBackup()
 {
     disconnect(&m_backupper, QThread::finished, this, ControllerSettings::endBackup);
+    delete m_backupper.m_backup;
     if(m_backupper.isSucess())
     {
         QProcess zipper;
@@ -317,8 +310,37 @@ void ControllerSettings::endBackup()
         argument<<"-sdel"<<"-r"<<"a"<<"backup_"+date+".bck"+(backupType() == "ControllerXMLMulti" ? "x" : "s")<< (backupType() == "ControllerXMLMulti" ? "data_backup/" : "account_backup");
         zipper.start("7z", argument);
         zipper.waitForFinished();
+        qDebug()<<zipper.readAllStandardOutput();
     }
     qDebug()<<"Backup sucess"<<m_backupper.isSucess();
+    m_splash->setProperty("visible", false);
 
     emit s_finishBackup();
+}
+
+void ControllerSettings::endRestore()
+{
+    disconnect(&m_backupper, QThread::finished, this, ControllerSettings::endRestore);
+
+    qDebug()<<"Restore"<<m_backupper.isSucess();
+    m_splash->setProperty("visible", false);
+    delete m_backupper.m_db;
+    QDir dir;
+    auto filters = dir.entryInfoList(QStringList({"data_backup", "account_backup"}));
+
+    qDebug()<<filters.size();
+    for(auto it: filters)
+    {
+        qDebug()<<it<<it.filePath();
+        if(it.isDir())
+        {
+            QDir d;
+            d.cd(it.filePath());
+            d.removeRecursively();
+        }
+        else
+        {
+            QFile::remove(it.filePath());
+        }
+    }
 }

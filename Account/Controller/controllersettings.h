@@ -23,7 +23,7 @@ private:
     
     static QMap<QString, QSharedPointer<FeatureBuilder>> registredFeatures;
     
-    QObject* m_view;
+    QObject* m_view = nullptr, *m_splash = nullptr;
     InterfaceDataSave* back = nullptr;
     TransfertDatabase m_backupper;
 
@@ -72,6 +72,7 @@ public slots:
     void restore(QString back);
     void backup();
     void endBackup();
+    void endRestore();
 };
 
 #endif // CONTROLLERSETTINGS_H

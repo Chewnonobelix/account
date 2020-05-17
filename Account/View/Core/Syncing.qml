@@ -10,6 +10,7 @@ Window {
 
     property bool backup: true
     flags: Qt.SplashScreen
+    modality: Qt.ApplicationModal
     AccountBackground {
         anchors.fill: parent
     }

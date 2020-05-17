@@ -91,11 +91,12 @@ void AbstractController::setDb(QString name)
 
         delete m_db;
     }
+    m_dbThread->start();
+
     m_db = (InterfaceDataSave*)(QMetaType::create(type));
     m_db->init();
     m_db->moveToThread(m_dbThread);
     connect(m_dbThread, QThread::started, m_db, InterfaceDataSave::exec);
-    m_dbThread->start();
 }
 
 void AbstractController::deleteDb()

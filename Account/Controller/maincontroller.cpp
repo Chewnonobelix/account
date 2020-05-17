@@ -239,12 +239,7 @@ void MainController::close()
     connect(&m_settings, ControllerSettings::s_finishBackup, QCoreApplication::quit);
     if(m_settings.autoBackup())
     {
-        QQmlComponent syncomp(&m_engine, "qrc:/Core/Syncing.qml");
-        auto sync = syncomp.create();
-        sync->setProperty("visible", true);
-
         m_settings.backup();
-
     }
     else
     {
@@ -702,10 +697,6 @@ void MainController::loadAccount()
     if(combo)
     {
         QStringList t = m_db->selectAccount();
-        if(t.size() == 0)
-        {
-            add(true);
-        }
         combo->setProperty("model", t);
         
         if(t.isEmpty())
