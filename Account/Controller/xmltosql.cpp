@@ -47,9 +47,6 @@ void TransfertDatabase::run()
     m_sucess &= transfertBudget();
     m_sucess &= transfertFrequency();
     m_sucess &= transfertCommon();
-
-    delete m_backup;
-
 }
 
 bool TransfertDatabase::transfertBudget()

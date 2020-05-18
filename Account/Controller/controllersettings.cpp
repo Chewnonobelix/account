@@ -302,6 +302,7 @@ void ControllerSettings::endBackup()
 {
     disconnect(&m_backupper, QThread::finished, this, ControllerSettings::endBackup);
     delete m_backupper.m_backup;
+    m_backupper.m_backup = m_backupper.m_db = nullptr;
     if(m_backupper.isSucess())
     {
         QProcess zipper;
@@ -325,6 +326,7 @@ void ControllerSettings::endRestore()
     qDebug()<<"Restore"<<m_backupper.isSucess();
     m_splash->setProperty("visible", false);
     delete m_backupper.m_db;
+    m_backupper.m_backup = m_backupper.m_db = nullptr;
     QDir dir;
     auto filters = dir.entryInfoList(QStringList({"data_backup", "account_backup"}));
 

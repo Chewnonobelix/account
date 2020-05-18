@@ -24,13 +24,25 @@ ControllerDB::~ControllerDB()
 
 bool ControllerDB::init()
 {
+    if(m_db.connectionNames().contains("default"))
+    {
+        m_db.database("default").close();
+        m_db.removeDatabase("default");
+    }
+    
+    if(m_db.connectionNames().contains("backup"))
+    {
+        m_db.database("backup").close();
+        m_db.removeDatabase("backup");
+    }
+
     if(backup)
     {
         QDir dir;
         dir.remove("account_backup");
     }
-    m_db = QSqlDatabase::addDatabase("QSQLITE");
-    
+    m_db = QSqlDatabase::addDatabase("QSQLITE", backup ? "backup" : "default");
+    qDebug()<<"Back?"<<backup<<m_db.connectionNames()<<m_db.connectionName();
     QString name = QString("account%1").arg(backup ? "_backup" : "");
 
     m_db.setDatabaseName(name);
@@ -437,6 +449,7 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
             t.setDate(m_selectEntry->value("date_eff").toDate());
             t.setValue(m_selectEntry->value("value").toDouble());
             t.setType(m_selectEntry->value("type").toString());
+            t.setAccount(m_selectEntry->value("account").toString());
             
             m_selectInformation->bindValue(":ide", t.id());
             bool inf = m_selectInformation->exec();
