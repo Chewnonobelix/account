@@ -169,6 +169,9 @@ int MainController::exec()
         QMetaType mt(QMetaType::type(it.toLatin1()));
         AbstractController* p = (AbstractController*)mt.create();
         auto sp = dynamic_cast<FeatureBuilder*>(p)->build(&m_engine, root, baseAbstract);
+        if(sp.dynamicCast<QObject>())
+            sp.dynamicCast<QObject>()->setParent(this);
+
         ControllerSettings::registerFeature(sp);
         mt.destroy(p);
     }

@@ -4,7 +4,6 @@ void Worker::run()
 {
     for(auto it = 0; it < list.size(); it++)
     {
-        list[it].setId(it == list.size() - 1 ? -1 : -2);
         emit s_add(list[it]);
         int temp = (double)it/(list.size()-1) * 10000;
         m_progress = temp / 100.0;
@@ -124,7 +123,12 @@ void ControllerFrequency::setWorker(QString name)
 void ControllerFrequency::endThread(QString)
 {
     exec();
-    emit s_select(-2);
+
+    int index = parent()->metaObject()->indexOfMethod("buildModel()");
+    parent()->metaObject()->method(index).invoke(parent(), Qt::DirectConnection);
+
+    index = parent()->metaObject()->indexOfMethod("pageChange()");
+    parent()->metaObject()->method(index).invoke(parent(), Qt::DirectConnection);
 }
 
 void ControllerFrequency::loadCat()

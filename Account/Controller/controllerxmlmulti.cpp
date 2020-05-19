@@ -124,8 +124,10 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     close();
     m_mutex.unlock();
     
-    if(e.id() != -2)
+    if(!et.hasMetadata("notemit"))
         emit s_updateEntry();
+    else
+        et.removeMetaData("notemit");
 
     return true;
 }

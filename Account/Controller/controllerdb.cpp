@@ -380,7 +380,7 @@ bool ControllerDB::deleteProfile(QString name)
 bool ControllerDB::addEntry(const Entry & e)
 {        
     bool ret = false;
-
+    Entry et = e;
     if(isConnected())
     {
         
@@ -421,8 +421,10 @@ bool ControllerDB::addEntry(const Entry & e)
         }
     }
     
-    if(e.id() != -2)
+    if(!et.hasMetadata("notemit"))
         emit s_updateEntry();
+    else
+        et.removeMetaData("notemit");
 
     return ret;
 }

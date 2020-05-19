@@ -96,6 +96,7 @@ Entry Frequency::clone(const Entry & e) const
     Entry ret(e);
     ret.setMetadata("frequency", id());
     ret.setId(-1);
+    ret.setMetadata("notemit", true);
     return ret;
 }
 

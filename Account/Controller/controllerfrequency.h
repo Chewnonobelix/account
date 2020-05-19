@@ -5,6 +5,8 @@
 #include <QQmlComponent>
 #include <QQuickItem>
 #include <QQmlPropertyMap>
+#include <QMetaMethod>
+#include <QMetaObject>
 #include <QThread>
 #include "abstractcontroller.h"
 #include "featurebuilder.h"
