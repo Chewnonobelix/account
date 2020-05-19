@@ -384,6 +384,9 @@ bool ControllerDB::addEntry(const Entry & e)
     if(isConnected())
     {
         
+        if(et.hasMetadata("notemit"))
+            et.removeMetaData("notemit");
+
         m_addEntry->bindValue(":account", e.account().isEmpty() ? m_currentAccount : e.account());
         m_addEntry->bindValue(":value", QVariant(e.value()));
         m_addEntry->bindValue(":date", QVariant(e.date()));
@@ -407,7 +410,7 @@ bool ControllerDB::addEntry(const Entry & e)
             ret &= m_addInformation->exec();
         }
         
-        auto meta = e.metaDataList();
+        auto meta = et.metaDataList();
         for(auto it: meta)
         {
             if(it == "id")
@@ -421,10 +424,8 @@ bool ControllerDB::addEntry(const Entry & e)
         }
     }
     
-    if(!et.hasMetadata("notemit"))
+    if(!e.hasMetadata("notemit"))
         emit s_updateEntry();
-    else
-        et.removeMetaData("notemit");
 
     return ret;
 }

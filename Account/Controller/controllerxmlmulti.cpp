@@ -112,7 +112,9 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     info.setIdEntry(ide);
     et.setInfo(info);
     et.setId(ide);
-    
+    if(et.hasMetadata("notemit"))
+        et.removeMetaData("notemit");
+
     if(!m_accounts.contains(et.account()))
         createAccount(et.account());
     
@@ -124,10 +126,8 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     close();
     m_mutex.unlock();
     
-    if(!et.hasMetadata("notemit"))
+    if(!e.hasMetadata("notemit"))
         emit s_updateEntry();
-    else
-        et.removeMetaData("notemit");
 
     return true;
 }

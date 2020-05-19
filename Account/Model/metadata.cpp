@@ -35,3 +35,8 @@ MetaData& MetaData::operator = (const MetaData& md)
 
     return *this;
 }
+
+void MetaData::removeMetaData(QString key)
+{
+    m_metaData.remove(key);
+}

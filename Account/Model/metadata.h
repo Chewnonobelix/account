@@ -17,7 +17,7 @@ public:
     bool hasMetadata() const;
     bool hasMetadata(QString) const;
     QStringList metaDataList() const;
-
+    void removeMetaData(QString);
     template<class T>
     void setMetadata(QString name, T val)
     {
