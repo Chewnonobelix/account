@@ -345,4 +345,6 @@ void ControllerSettings::endRestore()
             QFile::remove(it.filePath());
         }
     }
+
+    emit s_finishBackup();
 }
