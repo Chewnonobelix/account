@@ -17,6 +17,7 @@ SOURCES += \
     Controller/controllerbudget.cpp \
     Controller/controllercommon.cpp \
     Controller/controllerfrequency.cpp \
+    Controller/controllerpiegraph.cpp \
     Controller/controllersettings.cpp \
     Controller/interfacedatasave.cpp \
     Model/accountglobal.cpp \
@@ -61,6 +62,7 @@ HEADERS += \
     Controller/controllerbudget.h \
     Controller/controllercommon.h \
     Controller/controllerfrequency.h \
+    Controller/controllerpiegraph.h \
     Controller/controllersettings.h \
     Controller/dbrequestsinit.h \
     Controller/featurebuilder.h \

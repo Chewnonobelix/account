@@ -1,16 +1,16 @@
 #include "graphcontroller.h"
 
-GraphController::GraphController(): AbstractController(), m_view(nullptr), m_gran(month)
+TimeGraphController::TimeGraphController(): AbstractController(), m_view(nullptr), m_gran(month)
 {
 
 }
 
-GraphController::~GraphController()
+TimeGraphController::~TimeGraphController()
 {
 }
 
 
-void GraphController::set(QObject * view)
+void TimeGraphController::set(QObject * view)
 {
     m_view = view;
 
@@ -21,12 +21,12 @@ void GraphController::set(QObject * view)
     }
 }
 
-QMap<QDate, Total> GraphController::sum() const
+QMap<QDate, Total> TimeGraphController::sum() const
 {
     return m_sum;
 }
 
-int GraphController::exec()
+int TimeGraphController::exec()
 {
     m_sum.clear();
 
@@ -90,13 +90,13 @@ int GraphController::exec()
     return 0;
 }
 
-void GraphController::change(int nGranularity)
+void TimeGraphController::change(int nGranularity)
 {
     m_gran = (granularity)((m_gran + nGranularity + 3)%3);
     increment();
 }
 
-void GraphController::increment(int inc)
+void TimeGraphController::increment(int inc)
 {
     QMetaObject::invokeMethod(m_view, "clear");
 

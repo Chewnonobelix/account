@@ -6,8 +6,8 @@ import QtQuick.Controls 2.4
 import "../Style"
 
 Rectangle {
-    implicitWidth: parent.width
-    implicitHeight: parent.height
+//    implicitWidth: parent.width
+//    implicitHeight: parent.height
     id: pageChart
     
     

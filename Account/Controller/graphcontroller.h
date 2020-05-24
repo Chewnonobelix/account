@@ -1,10 +1,10 @@
-#ifndef GRAPHCONTROLLER_H
-#define GRAPHCONTROLLER_H
+#ifndef TimeGraphController_H
+#define TimeGraphController_H
 
 #include <QThread>
 #include "abstractcontroller.h"
 
-class GraphController: public AbstractController
+class TimeGraphController: public AbstractController
 {
     Q_OBJECT
 public:
@@ -20,8 +20,8 @@ private:
     int m_current;
 
 public:
-    GraphController();
-    ~GraphController();
+    TimeGraphController();
+    ~TimeGraphController();
     void set(QObject*);
     int exec();
 
@@ -36,4 +36,4 @@ signals:
     void s_sum();
 };
 
-#endif // GRAPHCONTROLLER_H
+#endif // TimeGraphController_H

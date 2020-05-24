@@ -39,7 +39,7 @@ MainController::MainController(int storage): AbstractController()
     }
     
     
-    connect(&m_graph, GraphController::s_sum, this, receiveSum);
+    connect(&m_graph, TimeGraphController::s_sum, this, receiveSum);
     
 }
 

@@ -2,7 +2,7 @@
     <qresource prefix="/">
         <file>Core/Main.qml</file>
         <file>Core/Page1Form.qml</file>
-        <file>Core/Page2Form.qml</file>
+        <file>Graph/Page2Form.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>Core/InformationView.qml</file>
         <file>Core/Adding.qml</file>
@@ -44,5 +44,7 @@
         <file>Style/AccountBackground.qml</file>
         <file>Core/qmldir</file>
         <file>Core/Syncing.qml</file>
+        <file>Graph/PieCategory.qml</file>
+        <file>Functionnal/PageView.qml</file>
     </qresource>
 </RCC>

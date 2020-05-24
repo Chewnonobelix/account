@@ -14,6 +14,8 @@ import "../CommonExpanse"
 import "../Budget"
 import "../Frequency"
 import "../MultiProfile"
+import "../Graph"
+import "../Functionnal"
 
 ApplicationWindow {
     visible: true
@@ -591,6 +593,7 @@ ApplicationWindow {
         id: swipeView
         objectName: "swipe"
         currentIndex: tabBar.currentIndex
+        interactive: false
 
         anchors.fill: parent
         anchors.topMargin: mainWindow.height * 0.01
@@ -607,12 +610,37 @@ ApplicationWindow {
             objectName: "table"
         }
 
-        Page2Form {
-            id: graph
-            month: table.v_dateMonth
-            year: table.v_dateYear
+        PageView {
+            id: graphSwipe
+            //            orientation: Qt.Vertical
+
+            Component.onCompleted: {
+                console.log(children)
+            }
+
+            initialItem: graph
+            property var model: [graph, pie]
+            Page2Form {
+                id: graph
+                month: table.v_dateMonth
+                year: table.v_dateYear
+                property int f: parent.model.find(this)
+                Component.onCompleted: console.log("p2", z)
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        graphSwipe.pop()
+                        graphSwipe.push(pie)
+                    }
+                }
+            }
+
+            PieCategory {
+                id: pie
+                Component.onCompleted: console.log("pc", z)
+            }
+
         }
-        
 
         Popup {
             id: deleteAccount
