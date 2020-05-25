@@ -3,55 +3,26 @@ import QtCharts 2.2
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.4
+import QtQuick.Layouts 1.15
 import "../Style"
 
-Rectangle {
-//    implicitWidth: parent.width
-//    implicitHeight: parent.height
+GridLayout {
+    //    implicitWidth: parent.width
+    //    implicitHeight: parent.height
     id: pageChart
     
     
-    color: "transparent"
     
     property int month
     property int year
-    
-    AccountButton {
-        id: next
-        enabled: chart.okNext
-        
-        anchors.left: chart.right
-        anchors.verticalCenter: chart.verticalCenter
-        text: qsTr(">")
-        height: chart.height
-        width: parent.width * 0.025
-                
-        onClicked: {
-            chart.s_increment(1)
-        }
-    }
-    
-    AccountButton {
-        id: prev
-        anchors.right: chart.left
-        anchors.verticalCenter: chart.verticalCenter
-        text: qsTr("<")
-        height: chart.height
-        width: parent.width * 0.025
-        
-        enabled: chart.okPrev
-                
-        onClicked: {
-            chart.s_increment(-1)
-        }
-    }
-    
+    rowSpacing: pageChart.height * .02
+    columnSpacing: pageChart.width * .02
     ChartView {
-        anchors.centerIn: parent
-        
-        height: parent.height
-        width: parent.width * .95
         id: chart
+       
+        Layout.preferredHeight: pageChart.height * 0.93
+        Layout.fillWidth: true
+        Layout.columnSpan: 3
         
         property bool okNext: true
         property bool okPrev: true
@@ -139,4 +110,55 @@ Rectangle {
             
         }
     }
+    
+        
+        AccountButton {
+            id: prev
+            text: qsTr("<<")
+        
+            Layout.preferredHeight: pageChart.height * 0.05
+            Layout.preferredWidth: pageChart.width * 0.2
+            Layout.columnSpan: 1
+            Layout.column: 0            
+            Layout.row: 1 
+            
+            enabled: chart.okPrev
+            
+            onClicked: {
+                chart.s_increment(-1)
+            }
+        }
+        
+        AccountLabel {
+            text: Qt.formatDate("01-"+chart.month+"1900", "MMMM") + " - " + chart.years
+            Layout.preferredHeight: pageChart.height * 0.05
+            Layout.preferredWidth: pageChart.width * 0.4
+            Layout.columnSpan: 1
+            Layout.column: 1            
+            Layout.row: 1 
+            font.family: AccountStyle.title.name
+            font.pixelSize: AccountStyle.title.size
+            
+        }
+        
+        AccountButton {
+            id: next
+            enabled: chart.okNext
+            
+            text: qsTr(">>")
+
+            Layout.preferredHeight: pageChart.height * 0.05
+            Layout.preferredWidth: pageChart.width * 0.1
+            Layout.alignment: Qt.AlignLeft
+            Layout.columnSpan: 1
+            Layout.column: 2            
+            Layout.row: 1 
+
+            
+            onClicked: {
+                chart.s_increment(1)
+            }
+        }
+        
+    
 }
