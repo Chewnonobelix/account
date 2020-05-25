@@ -14,9 +14,7 @@ class ControllerBudget: public AbstractController, public FeatureBuilder
 {
     Q_OBJECT
     
-private:
-    QQmlApplicationEngine m_eng;
-    
+private:    
     QObject* m_view, *m_referenceView, *m_quickView, *m_cal;
     QMap<QString, QObject*> m_views;
     QMap<QString, Budget> m_budgets;
@@ -28,7 +26,7 @@ public:
     ControllerBudget();
     ControllerBudget(const ControllerBudget &);
     
-    ~ControllerBudget();
+    ~ControllerBudget() = default;
     bool removeFrom(int);
 
     int exec();

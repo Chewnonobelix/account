@@ -11,10 +11,9 @@ class ControllerCommon: public AbstractController, public FeatureBuilder
     Q_OBJECT
     
 private:
-    QQmlApplicationEngine m_engine;
     
 public:
-    QObject* m_view;
+    QObject* m_view = nullptr;
     
     ControllerCommon() = default;
     inline ControllerCommon(const ControllerCommon & c): AbstractController(c) {}

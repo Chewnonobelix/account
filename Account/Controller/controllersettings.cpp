@@ -11,6 +11,8 @@ ControllerSettings::~ControllerSettings()
 {
     for(auto it: m_language)
         delete it;
+    
+    registredFeatures.clear();    
 }
 
 void ControllerSettings::init(QQmlEngine & engine)

@@ -10,10 +10,6 @@ ControllerBudget::ControllerBudget()
 ControllerBudget::ControllerBudget(const ControllerBudget & b): AbstractController(b)
 {}
 
-ControllerBudget::~ControllerBudget()
-{
-}
-
 void ControllerBudget::closeManager()
 {    
     if(m_referenceView)
