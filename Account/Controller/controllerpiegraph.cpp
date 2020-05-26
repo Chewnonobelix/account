@@ -2,7 +2,7 @@
 
 ControllerPieGraph::ControllerPieGraph(QObject*)
 {
-
+    
 }
 
 int ControllerPieGraph::exec()
@@ -28,8 +28,7 @@ int ControllerPieGraph::exec()
     auto setter = [](QMap<QString, Total> s, QObject* pie) {
         for(auto it = s.begin(); it != s.end(); it++) 
         {
-            QVariant slice;
-            qDebug()<<QMetaObject::invokeMethod(pie, "append", Q_ARG(QVariant, it.key().isEmpty() ? tr("Unknow") : it.key()), Q_ARG(QVariant, it.value().value()));
+            QMetaObject::invokeMethod(pie, "append", Q_ARG(QVariant, it.key().isEmpty() ? tr("Unknow") : it.key()), Q_ARG(QVariant, it.value().value()));
         }
     };
     
@@ -39,6 +38,7 @@ int ControllerPieGraph::exec()
 
 void ControllerPieGraph::init(const QQmlApplicationEngine &engine)
 {
+    connect(m_db, InterfaceDataSave::s_updateEntry, this, ControllerPieGraph::exec);
     m_income = engine.rootObjects().first()->findChild<QObject*>("incomingPie");
     m_outcome = engine.rootObjects().first()->findChild<QObject*>("outcomePie");
 }

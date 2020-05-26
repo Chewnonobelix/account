@@ -13,7 +13,8 @@ TimeGraphController::~TimeGraphController()
 void TimeGraphController::set(QObject * view)
 {
     m_view = view;
-
+    connect(m_db, InterfaceDataSave::s_updateEntry, this, TimeGraphController::exec);
+    
     if(m_view)
     {
         connect(m_view, SIGNAL(s_increment(int)), this, SLOT(increment(int)));

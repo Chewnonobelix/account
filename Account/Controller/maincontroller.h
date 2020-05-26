@@ -46,10 +46,11 @@ class MainController: public AbstractController
 private:
     QQmlApplicationEngine m_engine;
     ControllerInformation m_info;
-    TimeGraphController m_graph;
     LanguageController m_lang;
     ControllerTransfert m_transfert;
     ControllerSettings m_settings;
+
+    TimeGraphController m_graph;
     ControllerPieGraph m_pie;
     
     QList<QSharedPointer<FeatureBuilder>> m_features;

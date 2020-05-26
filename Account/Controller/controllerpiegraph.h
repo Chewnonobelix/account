@@ -14,8 +14,10 @@ private:
 public:
     ControllerPieGraph(QObject* = nullptr);
     
-    int exec();
     void init(const QQmlApplicationEngine&);
+    
+public slots:
+    int exec();    
 };
 
 #endif // CONTROLLERPIEGRAPH_H
