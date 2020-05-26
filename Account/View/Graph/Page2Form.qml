@@ -4,6 +4,9 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.15
+
+import Account 1.0
+
 import "../Style"
 
 GridLayout {
@@ -13,13 +16,11 @@ GridLayout {
     
     
     
-    property int month
-    property int year
     rowSpacing: pageChart.height * .02
     columnSpacing: pageChart.width * .02
     ChartView {
         id: chart
-       
+        
         Layout.preferredHeight: pageChart.height * 0.93
         Layout.fillWidth: true
         Layout.columnSpan: 3
@@ -36,9 +37,8 @@ GridLayout {
             }
         }
         
-        property int month: parent.month
-        property int years: parent.year
-        
+        property date currentDate: new Date()
+        property var currentGran: Account.Month
         signal s_increment(int i)
         signal s_zoom(int dir)
         
@@ -111,54 +111,52 @@ GridLayout {
         }
     }
     
-        
-        AccountButton {
-            id: prev
-            text: qsTr("<<")
-        
-            Layout.preferredHeight: pageChart.height * 0.05
-            Layout.preferredWidth: pageChart.width * 0.2
-            Layout.columnSpan: 1
-            Layout.column: 0            
-            Layout.row: 1 
-            
-            enabled: chart.okPrev
-            
-            onClicked: {
-                chart.s_increment(-1)
-            }
-        }
-        
-        AccountLabel {
-            text: Qt.formatDate("01-"+chart.month+"1900", "MMMM") + " - " + chart.years
-            Layout.preferredHeight: pageChart.height * 0.05
-            Layout.preferredWidth: pageChart.width * 0.4
-            Layout.columnSpan: 1
-            Layout.column: 1            
-            Layout.row: 1 
-            font.family: AccountStyle.title.name
-            font.pixelSize: AccountStyle.title.size
-            
-        }
-        
-        AccountButton {
-            id: next
-            enabled: chart.okNext
-            
-            text: qsTr(">>")
-
-            Layout.preferredHeight: pageChart.height * 0.05
-            Layout.preferredWidth: pageChart.width * 0.1
-            Layout.alignment: Qt.AlignLeft
-            Layout.columnSpan: 1
-            Layout.column: 2            
-            Layout.row: 1 
-
-            
-            onClicked: {
-                chart.s_increment(1)
-            }
-        }
-        
     
+    AccountButton {
+        id: prev
+        text: qsTr("<<")
+        
+        Layout.preferredHeight: pageChart.height * 0.05
+        Layout.preferredWidth: pageChart.width * 0.2
+        Layout.columnSpan: 1
+        Layout.column: 0            
+        Layout.row: 1 
+        
+        enabled: chart.okPrev
+        
+        onClicked: {
+            chart.s_increment(-1)
+        }
+    }
+    
+    AccountLabel {
+        text: Qt.formatDate(chart.currentDate, chart.currentGran === Account.Month ? "MMMM-yyyy" : chart.currentGran === Account.Year ? "yyyy" : "")
+        Layout.preferredHeight: pageChart.height * 0.05
+        Layout.preferredWidth: pageChart.width * 0.4
+        Layout.columnSpan: 1
+        Layout.column: 1            
+        Layout.row: 1 
+        font.family: AccountStyle.title.name
+        font.pixelSize: AccountStyle.title.size
+        
+    }
+    
+    AccountButton {
+        id: next
+        enabled: chart.okNext
+        
+        text: qsTr(">>")
+        
+        Layout.preferredHeight: pageChart.height * 0.05
+        Layout.preferredWidth: pageChart.width * 0.1
+        Layout.alignment: Qt.AlignLeft
+        Layout.columnSpan: 1
+        Layout.column: 2            
+        Layout.row: 1 
+        
+        
+        onClicked: {
+            chart.s_increment(1)
+        }
+    }
 }
