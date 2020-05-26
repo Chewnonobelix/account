@@ -14,6 +14,9 @@ namespace Account
     enum TypeEnum {outcome = -1, income = 1};
     Q_ENUM_NS(TypeEnum)
     
+    enum Granularity {Month = 3, Year = 5, Over};
+    Q_ENUM_NS(Granularity)
+    
     int nbDay(QDate, FrequencyEnum);
 }
 

@@ -3,12 +3,12 @@
 
 #include <QThread>
 #include "abstractcontroller.h"
+#include "Model/accountglobal.h"
 
 class TimeGraphController: public AbstractController
 {
     Q_OBJECT
 public:
-    enum granularity {month, year, over};
 
 private:
     QObject* m_view;
@@ -16,7 +16,7 @@ private:
     QMap<QDate, Total> m_sum;
 
     QThread m_thread;
-    granularity m_gran;
+    Account::Granularity m_gran;
     int m_current;
 
 public:

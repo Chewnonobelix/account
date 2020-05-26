@@ -1,6 +1,6 @@
 #include "graphcontroller.h"
 
-TimeGraphController::TimeGraphController(): AbstractController(), m_view(nullptr), m_gran(month)
+TimeGraphController::TimeGraphController(): AbstractController(), m_view(nullptr), m_gran(Account::Month)
 {
 
 }
@@ -82,17 +82,33 @@ int TimeGraphController::exec()
         m_sum[t.date()] = t;
     }
 
-
-
     increment();
 
     emit s_sum();
     return 0;
 }
 
+Account::Granularity next(Account::Granularity g, int way)
+{
+    switch (g)
+    {
+    case Account::Month:
+            return way > 0 ? Account::Year : Account::Over;
+        break;
+    case Account::Year:
+        return way > 0 ? Account::Over : Account::Month;
+        break;
+    case Account::Over:
+        return way > 0 ? Account::Month : Account::Year;
+        break;
+    }    
+}
+
 void TimeGraphController::change(int nGranularity)
 {
-    m_gran = (granularity)((m_gran + nGranularity + 3)%3);
+    m_gran = next(m_gran, nGranularity);
+    
+    m_view->setProperty("currentGran", m_gran);
     increment();
 }
 
@@ -101,8 +117,9 @@ void TimeGraphController::increment(int inc)
     QMetaObject::invokeMethod(m_view, "clear");
 
     QMap<QDate, Total> ret;
-    int cMonth = m_view->property("month").toInt();
-    int cYear = m_view->property("years").toInt();
+    QDate date = m_view->property("currentDate").toDate();
+    int cMonth = date.month();
+    int cYear = date.year();
     QDate itDate, lastDay;
     QSharedPointer<int> minVal, maxVal;
 
@@ -130,12 +147,12 @@ void TimeGraphController::increment(int inc)
         }
     };
 
-    m_view->setProperty("okPrev", (m_gran != over));
-    m_view->setProperty("okNext", (m_gran != over));
+    m_view->setProperty("okPrev", (m_gran != Account::Over));
+    m_view->setProperty("okNext", (m_gran != Account::Over));
 
     switch(m_gran)
     {
-    case month:
+    case Account::Month:
         cMonth += inc;
 
         if(cMonth == 0)
@@ -162,7 +179,7 @@ void TimeGraphController::increment(int inc)
         }
         break;
 
-    case year:
+    case Account::Year:
         cYear += inc;
         itDate.setDate(cYear, 1, 1);
         if(m_sum.contains(itDate))
@@ -192,7 +209,7 @@ void TimeGraphController::increment(int inc)
         }
         break;
 
-    case over:
+    case Account::Over:
         itDate = m_sum.first().date();
         ret[itDate] = m_sum[itDate];
         itDate = itDate.addDays(itDate.daysInMonth() - itDate.day());
@@ -220,9 +237,10 @@ void TimeGraphController::increment(int inc)
         }
         break;
     }
+    
+    date.setDate(cYear, cMonth, 1);
 
-    m_view->setProperty("month", cMonth);
-    m_view->setProperty("years", cYear);
+    m_view->setProperty("currentDate", date);
 
     QDate minDate, maxDate;
     if(!ret.isEmpty())
