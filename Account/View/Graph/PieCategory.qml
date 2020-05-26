@@ -13,15 +13,25 @@ GridLayout {
         Layout.fillHeight: true
         Layout.fillWidth: true
         backgroundColor: "transparent"
+        objectName: "incomingPie"
+        
+        function clear() {
+            incoming.clear()
+        }
+        
+        function append(name, value) {
+            incoming.append(name, value)
+        }
+
         PieSeries {
             name: "incoming"
-            PieSlice {
-                label: "test"
-                value: 1.3
-            }
-            PieSlice {
-                label: "test2"
-                value: 1
+            id: incoming
+
+            onHovered: {
+                slice.exploded = state
+                slice.labelVisible = state
+                tool.visible = state
+                tool.text = (slice.percentage*100).toFixed(2) + "%"
             }
         }
     }
@@ -30,38 +40,30 @@ GridLayout {
         Layout.fillHeight: true
         Layout.fillWidth: true
         backgroundColor: "transparent"
+        objectName: "outcomePie"
+        
+        function clear() {
+            outcome.clear()
+        }
+        
+        function append(name, value) {
+            outcome.append(name, value)
+        }
         
         ToolTip {
-            text: "parent.percentage" + "%"
             id: tool
         }
         
         PieSeries {
-            name: "outcome"
-            PieSlice {
-                label: "test3"
-                value: 1.5
-            }
-            PieSlice {
-                label: "test4"
-                value: 1
-            }
-            
-            PieSlice {
-                label: "test5"
-                value: 3
-                
-            }
-            
+            id: outcome
+            name: "outcome"            
             
             onHovered: {
                 slice.exploded = state
                 slice.labelVisible = state
                 tool.visible = state
                 tool.text = (slice.percentage*100).toFixed(2) + "%"
-                if(state) console.log(slice.label, slice.value, slice.percentage, state)
             }
         }
-        
     }
 }

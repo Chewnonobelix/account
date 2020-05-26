@@ -20,7 +20,7 @@
 #include "controllerfrequency.h"
 #include "controllercommon.h"
 #include "controllersettings.h"
-
+#include "controllerpiegraph.h"
 
 class Builder: public QThread
 {
@@ -50,7 +50,8 @@ private:
     LanguageController m_lang;
     ControllerTransfert m_transfert;
     ControllerSettings m_settings;
-
+    ControllerPieGraph m_pie;
+    
     QList<QSharedPointer<FeatureBuilder>> m_features;
         
     void checkEstimated();

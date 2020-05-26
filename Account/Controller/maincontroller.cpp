@@ -231,6 +231,9 @@ int MainController::exec()
     if(about)
         connect(about, SIGNAL(opened()), this, SLOT(about()));
 
+    m_pie.init(m_engine);
+    m_pie.exec();
+    
     languageChange();
     
     return 0;
