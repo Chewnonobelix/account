@@ -10,8 +10,9 @@ StackView {
 
     PageIndicator {
         anchors.right: root.right
-        width: parent.height
-        height: parent.width * 0.05
+        anchors.verticalCenter: parent.verticalCenter
+//        width: parent.height
+//        height: parent.width * 0.05
         id: pageChange
         count: root.children.length - 1
         currentIndex: -1
@@ -22,7 +23,7 @@ StackView {
             border.color: "gold"
         }
 
-        rotation: -90
+        rotation: 90
         onCurrentIndexChanged: {
             var i = (currentIndex + 1) % (count)
             root.clear()
