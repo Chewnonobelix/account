@@ -19,6 +19,7 @@ void ControllerPieGraph::init(const QQmlApplicationEngine &engine)
     m_view = engine.rootObjects().first()->findChild<QObject*>("pieCategory");
 
     connect(m_view, SIGNAL(s_zoom(int)), this, SLOT(change(int)));
+    connect(m_view, SIGNAL(s_increment(int)), this, SLOT(increment(int)));
 }
 
 Account::Granularity next(Account::Granularity g, int way)
@@ -70,6 +71,20 @@ void ControllerPieGraph::increment(int inc)
     auto entries = m_db->selectEntry(currentAccount());
 
     QDate date = m_view->property("currentDate").toDate();
+
+    switch (m_gran)
+    {
+    case Account::Month:
+        date = date.addMonths(inc*1);
+        break;
+    case Account::Year:
+        date = date.addYears(inc*1);
+        break;
+    case Account::Over:
+        break;
+    }
+
+    m_view->setProperty("currentDate", date);
 
     QMap<QString, QMap<QString, Total>> sum;
     for(auto it: entries)

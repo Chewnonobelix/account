@@ -141,7 +141,7 @@ Rectangle {
 //            enabled: chart.okPrev
 
             onClicked: {
-                root.s_increment(-1)
+                root.s_increment(1)
             }
         }
 
