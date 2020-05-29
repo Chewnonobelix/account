@@ -615,13 +615,13 @@ ApplicationWindow {
             Page2Form {
                 id: graph
                 
-                anchors.fill: parent
+//                anchors.fill: parent
             }
 
             PieCategory {
                 id: pie
-
-                anchors.fill: parent
+                objectName: "pieCategory"
+//                anchors.fill: parent
                 
             }
 

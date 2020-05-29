@@ -89,7 +89,7 @@ int TimeGraphController::exec()
     return 0;
 }
 
-Account::Granularity next(Account::Granularity g, int way)
+Account::Granularity nexts(Account::Granularity g, int way)
 {
     switch (g)
     {
@@ -107,7 +107,7 @@ Account::Granularity next(Account::Granularity g, int way)
 
 void TimeGraphController::change(int nGranularity)
 {
-    m_gran = next(m_gran, nGranularity);
+    m_gran = nexts(m_gran, nGranularity);
     
     m_view->setProperty("currentGran", m_gran);
     increment();
