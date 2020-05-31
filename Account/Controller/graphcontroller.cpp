@@ -89,33 +89,20 @@ int TimeGraphController::exec()
     return 0;
 }
 
-Account::Granularity nexts(Account::Granularity g, int way)
+
+void TimeGraphController::setDate(QDate d)
 {
-    switch (g)
-    {
-    case Account::Month:
-            return way > 0 ? Account::Year : Account::Over;
-        break;
-    case Account::Year:
-        return way > 0 ? Account::Over : Account::Month;
-        break;
-    case Account::Over:
-        return way > 0 ? Account::Month : Account::Year;
-        break;
-    }    
+    m_view->setProperty("currentDate", d);
 }
 
-void TimeGraphController::change(int nGranularity)
+void TimeGraphController::setGran(Account::Granularity g)
 {
-    m_gran = nexts(m_gran, nGranularity);
-    
-    m_view->setProperty("currentGran", m_gran);
-    increment();
+    m_view->setProperty("currentGran", g);
+    m_gran = g;
 }
 
 void TimeGraphController::increment(int inc)
 {
-    QMetaObject::invokeMethod(m_view, "clear");
 
     QMap<QDate, Total> ret;
     QDate date = m_view->property("currentDate").toDate();
@@ -276,4 +263,15 @@ void TimeGraphController::increment(int inc)
             QMetaObject::invokeMethod(m_view, "addDataMain", Q_ARG(QVariant,it.value().date()), Q_ARG(QVariant, it.value().value()));
 
     }
+}
+
+void TimeGraphController::add(const Entry & e)
+{
+
+}
+
+void TimeGraphController::clear()
+{
+    QMetaObject::invokeMethod(m_view, "clear");
+    m_sum.clear();
 }
