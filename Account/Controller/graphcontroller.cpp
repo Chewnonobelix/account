@@ -268,7 +268,37 @@ void TimeGraphController::increment(int inc)
 
 void TimeGraphController::add(const Entry & e)
 {
+    QDate temp;
+    switch(m_gran)
+    {
+    case Account::Month:
+        m_sum[e.date()] = m_sum[e.date()] +  e;
+        break;
 
+    case Account::Over:
+    case Account::Year:
+        temp = e.date();
+        temp = temp.addDays(-(e.date().day()-1));
+        m_sum[temp] = m_sum[temp] + e;
+        break;
+    }
+
+    QDate mind = m_sum.firstKey(), maxd = m_sum.lastKey();
+
+    double min = m_sum.first().value(), max = m_sum.first().value();
+    for(auto it = m_sum.begin(); it != m_sum.end(); it++)
+    {
+        min = it->value() < min ? it->value() : min;
+        max = it->value() > max ? it->value() : max;
+
+        if(it.value().date() > QDate::currentDate() && m_view->property("estimatedCount").toInt() == 0 && it != ret.begin())
+            QMetaObject::invokeMethod(m_view, "addDataEstimated", Q_ARG(QVariant,(it-1).value().date()), Q_ARG(QVariant, (it-1).value().value()));
+        if(it.value().date() > QDate::currentDate())
+            QMetaObject::invokeMethod(m_view, "addDataEstimated", Q_ARG(QVariant,it.value().date()), Q_ARG(QVariant, it.value().value()));
+        else
+            QMetaObject::invokeMethod(m_view, "addDataMain", Q_ARG(QVariant,it.value().date()), Q_ARG(QVariant, it.value().value()));
+
+    }
 }
 
 void TimeGraphController::clear()
