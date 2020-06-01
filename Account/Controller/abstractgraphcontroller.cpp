@@ -29,7 +29,36 @@ void AbstractGraphController::change(int way)
     increment();
 }
 
-void AbstractGraphController::increment(int)
+void AbstractGraphController::increment(int nb)
 {
+    switch(m_currentGran)
+    {
+    case Account::Month:
+        m_currentDate = m_currentDate.addMonths(nb*1);
+        break;
+    case Account::Year:
+        m_currentDate = m_currentDate.addYears(nb*1);
+        break;
+    case Account::Over:
+        break;
+    }
+
+    auto e = m_db->selectEntry(currentAccount());
+
+    for(auto it: e)
+    {
+        bool b = (m_currentGran == Account::Month && (it.date().month() == m_currentDate.month()) &&
+                (it.date().year() == m_currentDate.year()));
+
+        b |= (m_currentGran == Account::Year && (it.date().year() == m_currentDate.year()));
+
+        b |= (m_currentGran == Account::Over);
+
+        if(b)
+        {
+            for(auto it2: m_graphList)
+                it2->add(it);
+        }
+    }
 
 }

@@ -99,6 +99,10 @@ void TimeGraphController::setGran(Account::Granularity g)
 {
     m_view->setProperty("currentGran", g);
     m_gran = g;
+
+    if(m_gran == Account::Year) m_view->setProperty("granularity", tr("one year"));
+    if(m_gran == Account::Month) m_view->setProperty("granularity", tr("one month"));
+    if(m_gran == Account::Over) m_view->setProperty("granularity", tr("all years"));
 }
 
 void TimeGraphController::increment(int inc)
@@ -154,7 +158,6 @@ void TimeGraphController::increment(int inc)
             cYear ++;
         }
 
-        m_view->setProperty("granularity", tr("one month"));
 
         for(auto it: m_sum)
         {
@@ -173,7 +176,6 @@ void TimeGraphController::increment(int inc)
         if(m_sum.contains(itDate))
             ret[itDate] = m_sum[itDate];
         itDate = itDate.addDays(30);
-        m_view->setProperty("granularity", tr("one year"));
 
         if(!m_sum.contains(itDate.addMonths(-1)))
             ret[m_sum.first().date()] = m_sum.first();
@@ -202,7 +204,6 @@ void TimeGraphController::increment(int inc)
         ret[itDate] = m_sum[itDate];
         itDate = itDate.addDays(itDate.daysInMonth() - itDate.day());
         lastDay = m_sum.last().date();
-        m_view->setProperty("granularity", tr("all years"));
         while(itDate < lastDay)
         {
             if(m_sum.contains(itDate))
