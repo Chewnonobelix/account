@@ -1,6 +1,7 @@
 #ifndef ABSTRACTGRAPHCONTROLLER_H
 #define ABSTRACTGRAPHCONTROLLER_H
 
+#include <QQmlApplicationEngine>
 #include "abstractcontroller.h"
 #include "InterfaceGraph.h"
 
@@ -15,7 +16,8 @@ private:
 public:
     AbstractGraphController() = default;
     ~AbstractGraphController() = default;
-
+    void set(const QQmlApplicationEngine&);
+    
 public slots:
     void change(int);
     void increment(int = 0);

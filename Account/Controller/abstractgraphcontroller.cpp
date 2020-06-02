@@ -60,5 +60,10 @@ void AbstractGraphController::increment(int nb)
                 it2->add(it);
         }
     }
+}
 
+void AbstractGraphController::set(const QQmlApplicationEngine & eng)
+{
+    for(auto it: m_graphList)
+        it->setView(eng);
 }

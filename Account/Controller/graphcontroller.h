@@ -33,7 +33,8 @@ public:
     void clear() override;
     void setDate(QDate) override;
     void setGran(Account::Granularity) override;
-
+    void setView(const QQmlApplicationEngine &) override;
+    
 public slots:
     void increment(int = 0);
 

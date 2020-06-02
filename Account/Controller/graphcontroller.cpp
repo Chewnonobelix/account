@@ -306,3 +306,8 @@ void TimeGraphController::clear()
     QMetaObject::invokeMethod(m_view, "clear");
     m_sum.clear();
 }
+
+void TimeGraphController::setView(const QQmlApplicationEngine & engine)
+{
+    m_view = engine.rootObjects().first()->findChild<QObject*>("timeGraph");
+}

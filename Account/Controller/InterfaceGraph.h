@@ -1,6 +1,7 @@
 #ifndef INTERFACEGRAPH_H
 #define INTERFACEGRAPH_H
 
+#include <QQmlApplicationEngine>
 #include "Model/entry.h"
 #include "Model/accountglobal.h"
 
@@ -11,6 +12,7 @@ public:
     virtual void clear() = 0;
     virtual void setDate(QDate) = 0;
     virtual void setGran(Account::Granularity) = 0;
+    virtual void setView(const QQmlApplicationEngine&) = 0;
 };
 
 #endif // INTERFACEGRAPH_H
