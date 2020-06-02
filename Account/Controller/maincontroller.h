@@ -21,6 +21,7 @@
 #include "controllercommon.h"
 #include "controllersettings.h"
 #include "controllerpiegraph.h"
+#include "abstractgraphcontroller.h"
 
 class Builder: public QThread
 {
@@ -50,7 +51,8 @@ private:
     ControllerTransfert m_transfert;
     ControllerSettings m_settings;
 
-    TimeGraphController m_graph;
+    AbstractGraphController m_graph;
+//    TimeGraphController m_graph;
     ControllerPieGraph m_pie;
     
     QList<QSharedPointer<FeatureBuilder>> m_features;

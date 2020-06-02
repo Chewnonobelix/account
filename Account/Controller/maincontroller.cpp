@@ -39,7 +39,7 @@ MainController::MainController(int storage): AbstractController()
     }
     
     
-    connect(&m_graph, TimeGraphController::s_sum, this, receiveSum);
+    //    connect(&m_graph, TimeGraphController::s_sum, this, receiveSum);
     
 }
 
@@ -66,7 +66,7 @@ int MainController::exec()
     
     if (m_engine.rootObjects().size() != 1)
         return -1;
-
+    
     QObject* root = m_engine.rootObjects().first();
     
     connect(root, SIGNAL(adding(bool)), this, SLOT(add(bool)));
@@ -105,17 +105,11 @@ int MainController::exec()
         connect(view, SIGNAL(s_sortRole(QString)), this, SLOT(sortRole(QString)));
         connect(view, SIGNAL(s_sortOrder(int)), this, SLOT(sortOrder(int)));
     }
-
+    
     QObject* xml = root->findChild<QObject*>("xmlMenu");
     if(xml)
         connect(xml, SIGNAL(s_xml()), this, SLOT(toXml()));
     
-    QObject* graph = root->findChild<QObject*>("chart");
-    if(graph)
-    {
-        m_graph.set(graph);
-        m_graph.exec();
-    }
     
     QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
     
@@ -171,7 +165,7 @@ int MainController::exec()
         auto sp = dynamic_cast<FeatureBuilder*>(p)->build(&m_engine, root, baseAbstract);
         if(sp.dynamicCast<QObject>())
             sp.dynamicCast<QObject>()->setParent(this);
-
+        
         ControllerSettings::registerFeature(sp);
         mt.destroy(p);
     }
@@ -222,17 +216,20 @@ int MainController::exec()
     QObject* licence = root->findChild<QObject*>("licence");
     if(licence)
         connect(licence, SIGNAL(opened()), this, SLOT(licence()));
-
+    
     QObject* howto = root->findChild<QObject*>("howto");
     if(howto)
         connect(howto, SIGNAL(opened()), this, SLOT(readme()));
-
+    
     QObject* about = root->findChild<QObject*>("about");
     if(about)
         connect(about, SIGNAL(opened()), this, SLOT(about()));
-
+    
+    m_graph.set(m_engine);
+    connect(m_db, InterfaceDataSave::s_updateEntry, &m_graph, AbstractGraphController::exec);
+    m_graph.exec();
     m_pie.init(m_engine);
-    m_pie.exec();
+        m_pie.exec();
     
     languageChange();
     
@@ -274,13 +271,13 @@ void MainController::readme()
     QDir dir;
     auto e = dir.entryInfoList(QStringList(language+"*.qm"));
     QString code = e.first().baseName().split("_").last().split(".").first();
-
+    
     QFile f ("README_"+code+".md");
     if(!f.open(QIODevice::ReadOnly))
         return;
-
+    
     QObject* readme = m_engine.rootObjects().first()->findChild<QObject*>("howto");
-
+    
     readme->setProperty("text", f.readAll());
     f.close();
 }
@@ -485,7 +482,7 @@ void MainController::edit(int id)
 
 void MainController::previewCalendar()
 {
-    QMap<QDate, Total> all = m_graph.sum();
+    QMap<QDate, Total> all /*= m_graph.sum()*/;
     QObject* cal = m_engine.rootObjects().first()->findChild<QObject*>("cal");
     int month;
     int year;
@@ -570,7 +567,7 @@ void MainController::buildModel(int)
     QList<Entry> ret;
     
     ret = m_db->selectEntry(currentAccount()).values();
-
+    
     Total t;
     for(auto i = 0; i < qMin(ret.count(), 100); i++)
     {
@@ -586,12 +583,12 @@ void MainController::buildModel(int)
         m_modelBuilder.reset(new Builder);
         m_modelBuilder->setObjectName("Builder Thread");
     }
-
+    
     m_modelBuilder->init = ret;
-
+    
     m_modelBuilder->t = t;
     m_modelBuilder->model = &m_model;
-
+    
     m_modelBuilder->start();
 }
 
@@ -599,7 +596,7 @@ void MainController::pageChange(int id)
 {
     QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
-
+    
     if(tab && skipper)
     {
         auto ld = dateList();
@@ -631,18 +628,18 @@ void MainController::pageChange(int id)
             modelList<<currentModel[i];
         Qt::SortOrder order = m_settings.sortOrder();
         QString role = m_settings.sortingRole();
-
+        
         std::sort(modelList.begin(), modelList.end(), [order, role](QVariant a, QVariant b) {
-                    if(order == Qt::AscendingOrder)
-                        return (a.toMap()[role] < b.toMap()[role]);
-                    else
-                        return (a.toMap()[role] > b.toMap()[role]);
-            });
-
+            if(order == Qt::AscendingOrder)
+                return (a.toMap()[role] < b.toMap()[role]);
+            else
+                return (a.toMap()[role] > b.toMap()[role]);
+        });
+        
         for(auto i = 0; i < modelList.size(); i++)
             if(modelList[i].toMap()["id"] == id)
                 index = i;
-
+        
         tab->setProperty("model", modelList);
         tab->setProperty("currentRow", index);
     }
@@ -690,7 +687,7 @@ void MainController::accountChange(QString acc)
     
     if(tab)
         tab->setProperty("model", QVariantList());
-
+    
     buildModel();
     pageChange();
     checkEstimated();
