@@ -610,21 +610,8 @@ ApplicationWindow {
             objectName: "table"
         }
 
-        PageView {
-            id: graphSwipe
-            Page2Form {
-                id: graph
-                
-//                anchors.fill: parent
-            }
-
-            PieCategory {
-                id: pie
-                objectName: "pieCategory"
-//                anchors.fill: parent
-                
-            }
-
+        CommonGraph {
+            id: graph
         }
 
         Popup {
