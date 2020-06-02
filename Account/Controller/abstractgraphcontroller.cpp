@@ -1,8 +1,18 @@
 #include "abstractgraphcontroller.h"
 
+AbstractGraphController::AbstractGraphController()
+{
+    m_graphList<<QSharedPointer<InterfaceGraph>(new TimeGraphController);    
+}
+
+AbstractGraphController::~AbstractGraphController()
+{
+    m_graphList.clear();
+}
+
 int AbstractGraphController::exec()
 {
-    auto entries = m_db->selectEntry(currentAccount());
+    increment();
 
 
     return 0;

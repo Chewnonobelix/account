@@ -4,6 +4,7 @@
 #include <QQmlApplicationEngine>
 #include "abstractcontroller.h"
 #include "InterfaceGraph.h"
+#include "graphcontroller.h"
 
 class AbstractGraphController : public AbstractController
 {
@@ -14,8 +15,8 @@ private:
     QList<QSharedPointer<InterfaceGraph>> m_graphList;
 
 public:
-    AbstractGraphController() = default;
-    ~AbstractGraphController() = default;
+    AbstractGraphController();
+    ~AbstractGraphController();
     void set(const QQmlApplicationEngine&);
     
 public slots:
