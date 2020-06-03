@@ -10,19 +10,7 @@ import Account 1.0
 import "../Style"
 
 ChartView {
-    id: chart
-    
-    
-    
-    MouseArea {
-        acceptedButtons: Qt.NoButton
-        anchors.fill: parent
-        
-        onWheel: {
-            parent.s_zoom(wheel.angleDelta.y > 0 ? -1 : 1)
-        }
-    }
-    
+    id: chart    
     
     property string granularity: qsTr("month")
     

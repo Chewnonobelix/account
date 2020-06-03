@@ -11,12 +11,6 @@ import "../Style"
 Rectangle {
     id: root
 
-    MouseArea {
-        anchors.fill: parent
-        acceptedButtons: Qt.NoButton
-        onWheel: root.s_zoom(wheel.angleDelta.y > 0 ? -1 : 1)
-    }
-
     property date currentDate: new Date()
     property var gran: Account.Month
 

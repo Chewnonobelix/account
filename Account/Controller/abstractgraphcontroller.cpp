@@ -21,6 +21,7 @@ int AbstractGraphController::exec()
 
 void AbstractGraphController::change(int way)
 {
+    qDebug()<<"Change"<<way<<m_currentGran;
     switch (m_currentGran)
     {
     case Account::Month:
@@ -34,6 +35,7 @@ void AbstractGraphController::change(int way)
         break;
     }
 
+    qDebug()<<m_currentGran;
     for(auto it: m_graphList)
         it->setGran(m_currentGran);
 
@@ -81,6 +83,10 @@ void AbstractGraphController::increment(int nb)
 
 void AbstractGraphController::set(const QQmlApplicationEngine & eng)
 {
+    auto v = eng.rootObjects().first()->findChild<QObject*>("graph")->findChild<QObject*>("root");
+
+    connect(v, SIGNAL(s_zoom(int)), this, SLOT(change(int)));
+
     for(auto it: m_graphList)
         it->setView(eng);
 }

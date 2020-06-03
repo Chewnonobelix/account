@@ -612,6 +612,7 @@ ApplicationWindow {
 
         CommonGraph {
             id: graph
+            objectName: "graph"
         }
 
         Popup {
