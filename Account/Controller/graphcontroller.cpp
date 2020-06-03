@@ -317,7 +317,6 @@ void TimeGraphController::add(const Entry & e)
             QMetaObject::invokeMethod(m_view, "addDataEstimated", Q_ARG(QVariant,it.value().date()), Q_ARG(QVariant, it.value().value()));
         else
             QMetaObject::invokeMethod(m_view, "addDataMain", Q_ARG(QVariant,it.value().date()), Q_ARG(QVariant, it.value().value()));
-
     }
     
     
