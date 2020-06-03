@@ -62,7 +62,7 @@ GridLayout {
         
         
         onClicked: {
-            chart.s_increment(1)
+            root.s_increment(1)
         }
     }
     

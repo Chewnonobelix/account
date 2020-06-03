@@ -23,11 +23,8 @@ private:
 public:
     TimeGraphController();
     ~TimeGraphController();
-    void set(QObject*);
+
     int exec() override;
-
-
-    QMap<QDate, Total> sum() const;
 
     void add(const Entry &) override;
     void clear() override;
@@ -35,11 +32,7 @@ public:
     void setGran(Account::Granularity) override;
     void setView(const QQmlApplicationEngine &) override;
     
-public slots:
-    void increment(int = 0);
 
-signals:
-    void s_sum();
 };
 
 #endif // TimeGraphController_H

@@ -228,8 +228,6 @@ int MainController::exec()
     m_graph.set(m_engine);
     connect(m_db, InterfaceDataSave::s_updateEntry, &m_graph, AbstractGraphController::exec);
     m_graph.exec();
-    m_pie.init(m_engine);
-        m_pie.exec();
     
     languageChange();
     

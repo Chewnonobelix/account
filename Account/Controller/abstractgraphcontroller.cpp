@@ -2,7 +2,8 @@
 
 AbstractGraphController::AbstractGraphController()
 {
-    m_graphList<<QSharedPointer<InterfaceGraph>(new TimeGraphController);    
+    m_graphList<<QSharedPointer<InterfaceGraph>(new TimeGraphController)
+              <<QSharedPointer<InterfaceGraph>(new ControllerPieGraph);
 }
 
 AbstractGraphController::~AbstractGraphController()
@@ -51,6 +52,12 @@ void AbstractGraphController::increment(int nb)
         break;
     case Account::Over:
         break;
+    }
+
+    for(auto it: m_graphList)
+    {
+        it->setDate(m_currentDate);
+        it->clear();
     }
 
     auto e = m_db->selectEntry(currentAccount());

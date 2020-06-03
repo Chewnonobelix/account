@@ -5,6 +5,7 @@
 #include "abstractcontroller.h"
 #include "InterfaceGraph.h"
 #include "graphcontroller.h"
+#include "controllerpiegraph.h"
 
 class AbstractGraphController : public AbstractController
 {
