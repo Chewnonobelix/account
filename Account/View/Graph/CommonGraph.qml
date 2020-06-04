@@ -16,7 +16,7 @@ MouseArea{
         objectName: "root"
         anchors.fill: parent
         rowSpacing: height * 0.02
-        columnSpacing: width * 0.02
+        columnSpacing: 0
 
         property date currentDate: new Date()
         property var currentGran: Account.Month
@@ -30,10 +30,11 @@ MouseArea{
             text: qsTr("<<")
 
             Layout.preferredHeight: root.height * 0.05
-            Layout.preferredWidth: root.width * 0.2
+            Layout.preferredWidth: root.width * 0.3
             Layout.columnSpan: 1
             Layout.column: 0
             Layout.row: 1
+            Layout.alignment: Qt.AlignRight
 
             enabled: root.okPrev
 
@@ -42,15 +43,16 @@ MouseArea{
             }
         }
 
-        AccountLabel {
+        AccountHeader {
             text: Qt.formatDate(root.currentDate, root.currentGran === Account.Month ? "MMMM-yyyy" : root.currentGran === Account.Year ? "yyyy" : "")
             Layout.preferredHeight: root.height * 0.05
             Layout.preferredWidth: root.width * 0.4
+            Layout.alignment: Qt.AlignCenter
             Layout.columnSpan: 1
             Layout.column: 1
             Layout.row: 1
-            font.family: AccountStyle.title.name
-            font.pixelSize: AccountStyle.title.size
+//            font.family: AccountStyle.title.name
+//            font.pixelSize: AccountStyle.title.size
 
         }
 
@@ -61,12 +63,11 @@ MouseArea{
             text: qsTr(">>")
 
             Layout.preferredHeight: root.height * 0.05
-            Layout.preferredWidth: root.width * 0.1
+            Layout.preferredWidth: root.width * 0.3
             Layout.alignment: Qt.AlignLeft
             Layout.columnSpan: 1
             Layout.column: 2
             Layout.row: 1
-
 
             onClicked: {
                 root.s_increment(1)
