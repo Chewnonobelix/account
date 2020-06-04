@@ -43,7 +43,6 @@ void TimeGraphController::add(const Entry & e)
         for(auto it = ent.begin(); it != ent.end() && it->date() < e.date(); it++)
             t = t + *it;
         m_sum[t.date()] = t;
-        if(!t.date().isValid()) qDebug()<<"Lol";
     }
     
     QDate temp;
@@ -70,10 +69,10 @@ void TimeGraphController::add(const Entry & e)
         break;
     }
 
-    QDate mind = m_sum.firstKey(), maxd = m_sum.lastKey();
+    QDate mind = (m_sum.begin()+1).key(), maxd = m_sum.lastKey();
     
     double min = m_sum.first().value(), max = m_sum.first().value();
-    for(auto it = m_sum.begin(); it != m_sum.end(); it++)
+    for(auto it = m_sum.begin()+1; it != m_sum.end(); it++)
     {
         min = it->value() < min ? it->value() : min;
         max = it->value() > max ? it->value() : max;
@@ -82,7 +81,6 @@ void TimeGraphController::add(const Entry & e)
         if(!it->date().isValid())
             continue;
 
-        qDebug()<<"Add"<<it->date()<<it->value()<<it.key();
         if(it.value().date() > QDate::currentDate() && m_view->property("estimatedCount").toInt() == 0 && it != m_sum.begin())
             QMetaObject::invokeMethod(m_view, "addDataEstimated", Q_ARG(QVariant,(it-1).value().date()), Q_ARG(QVariant, (it-1).value().value()));
         if(it.value().date() > QDate::currentDate())
@@ -91,10 +89,8 @@ void TimeGraphController::add(const Entry & e)
             QMetaObject::invokeMethod(m_view, "addDataMain", Q_ARG(QVariant,it.value().date()), Q_ARG(QVariant, it.value().value()));
     }
     
-    
     QMetaObject::invokeMethod(m_view, "setMinMaxDate", Q_ARG(QVariant, mind), Q_ARG(QVariant, maxd));
     QMetaObject::invokeMethod(m_view, "setMinMaxValue", Q_ARG(QVariant, min), Q_ARG(QVariant, max));
-    
 }
 
 void TimeGraphController::clear()

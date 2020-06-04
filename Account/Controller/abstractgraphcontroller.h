@@ -14,7 +14,8 @@ private:
     Account::Granularity m_currentGran = Account::Month;
     QDate m_currentDate = QDate::currentDate();
     QList<QSharedPointer<InterfaceGraph>> m_graphList;
-
+    QObject* m_view = nullptr;
+    
 public:
     AbstractGraphController();
     ~AbstractGraphController();

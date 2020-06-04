@@ -15,7 +15,6 @@ int AbstractGraphController::exec()
 {
     increment();
 
-
     return 0;
 }
 
@@ -56,6 +55,8 @@ void AbstractGraphController::increment(int nb)
         break;
     }
 
+    m_view->setProperty("currentDate", m_currentDate);
+    
     for(auto it: m_graphList)
     {
         it->setDate(m_currentDate);
@@ -83,9 +84,10 @@ void AbstractGraphController::increment(int nb)
 
 void AbstractGraphController::set(const QQmlApplicationEngine & eng)
 {
-    auto v = eng.rootObjects().first()->findChild<QObject*>("graph")->findChild<QObject*>("root");
+    m_view = eng.rootObjects().first()->findChild<QObject*>("graph")->findChild<QObject*>("root");
 
-    connect(v, SIGNAL(s_zoom(int)), this, SLOT(change(int)));
+    connect(m_view, SIGNAL(s_zoom(int)), this, SLOT(change(int)));
+    connect(m_view, SIGNAL(s_increment(int)), this, SLOT(increment(int)));
 
     for(auto it: m_graphList)
         it->setView(eng);
