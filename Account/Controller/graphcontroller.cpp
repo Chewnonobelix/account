@@ -77,10 +77,6 @@ void TimeGraphController::add(const Entry & e)
         min = it->value() < min ? it->value() : min;
         max = it->value() > max ? it->value() : max;
 
-
-        if(!it->date().isValid())
-            continue;
-
         if(it.value().date() > QDate::currentDate() && m_view->property("estimatedCount").toInt() == 0 && it != m_sum.begin())
             QMetaObject::invokeMethod(m_view, "addDataEstimated", Q_ARG(QVariant,(it-1).value().date()), Q_ARG(QVariant, (it-1).value().value()));
         if(it.value().date() > QDate::currentDate())
