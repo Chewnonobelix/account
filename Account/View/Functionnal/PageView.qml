@@ -36,8 +36,50 @@ StackView {
     }
     Component.onCompleted: {
         pageChange.currentIndex = 0
+        for(var i = i; i < children.length; i++) {
+            children[i].width = root.width * 0.9
+            children[i].heigth = root.height * 0.9
+        }
     }
     
+    pushEnter: Transition {
+        ParallelAnimation {
+            PropertyAnimation {
+                properties: "x"
+                to: root.x + (root.width*0.09)
+            }
+            PropertyAnimation {
+                properties: "y"
+                to: root.y + (root.height*0.09)
+            }
+            PropertyAnimation {
+                properties: "opacity"
+                to: 1
+            }
+        }
+    }
+
+    pushExit: Transition {
+        ParallelAnimation {
+            PropertyAnimation {
+                properties: "width"
+                to: root.width * 0.9
+            }
+            PropertyAnimation {
+                properties: "height"
+                to: root.height * 0.9
+            }
+            PropertyAnimation {
+                properties: "opacity"
+                to: 0.1
+            }
+            PropertyAnimation {
+                properties: "StackView.visible"
+                to: true
+            }
+        }
+
+    }
     
 //        property real offset: 10
 //        width: 100; height: 100
