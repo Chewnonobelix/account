@@ -14,6 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Controller/abstractgraphcontroller.cpp \
     Controller/controllerbudget.cpp \
     Controller/controllercommon.cpp \
     Controller/controllerfrequency.cpp \
@@ -59,6 +60,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 #                account_en.ts \
 
 HEADERS += \
+    Controller/InterfaceGraph.h \
+    Controller/abstractgraphcontroller.h \
     Controller/controllerbudget.h \
     Controller/controllercommon.h \
     Controller/controllerfrequency.h \

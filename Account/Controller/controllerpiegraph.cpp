@@ -2,100 +2,29 @@
 
 ControllerPieGraph::ControllerPieGraph(QObject*)
 {
-    
+
 }
 
 int ControllerPieGraph::exec()
 {
-    increment();
     return 0;
 }
 
-void ControllerPieGraph::init(const QQmlApplicationEngine &engine)
+void ControllerPieGraph::clear()
 {
-    connect(m_db, InterfaceDataSave::s_updateEntry, this, ControllerPieGraph::exec);
-    m_income = engine.rootObjects().first()->findChild<QObject*>("incomingPie");
-    m_outcome = engine.rootObjects().first()->findChild<QObject*>("outcomePie");
-    m_view = engine.rootObjects().first()->findChild<QObject*>("pieCategory");
-
-    connect(m_view, SIGNAL(s_zoom(int)), this, SLOT(change(int)));
-    connect(m_view, SIGNAL(s_increment(int)), this, SLOT(increment(int)));
+    m_entries.clear();
 }
 
-Account::Granularity next(Account::Granularity g, int way)
+void ControllerPieGraph::setDate(QDate d)
 {
-    switch (g)
-    {
-    case Account::Month:
-        return way > 0 ? Account::Year : Account::Over;
-        break;
-    case Account::Year:
-        return way > 0 ? Account::Over : Account::Month;
-        break;
-    case Account::Over:
-        return way > 0 ? Account::Month : Account::Year;
-        break;
-    }
+    m_view->setProperty("currentDate", d);
 }
 
-void ControllerPieGraph::change(int nGranularity)
+void ControllerPieGraph::add(const Entry & e)
 {
-    m_gran = next(m_gran, nGranularity);
-
-    m_view->setProperty("gran", m_gran);
-    increment();
-}
-
-bool isValid(Account::Granularity g, QDate d, QDate c)
-{
-    bool ret = false;
-    switch(g)
-    {
-    case Account::Month:
-        ret = (d.month() == c.month() && d.year() == c.year());
-        break;
-    case Account::Year:
-        ret = d.year() == c.year();
-        break;
-    case Account::Over:
-        ret = true;
-        break;
-    }
-
-
-    return ret;
-}
-
-void ControllerPieGraph::increment(int inc)
-{
-    auto entries = m_db->selectEntry(currentAccount());
-
-    QDate date = m_view->property("currentDate").toDate();
-
-    switch (m_gran)
-    {
-    case Account::Month:
-        date = date.addMonths(inc*1);
-        break;
-    case Account::Year:
-        date = date.addYears(inc*1);
-        break;
-    case Account::Over:
-        break;
-    }
-
-    m_view->setProperty("currentDate", date);
-
-    QMap<QString, QMap<QString, Total>> sum;
-    for(auto it: entries)
-    {
-        if(isValid(m_gran, it.date(), date))
-        {
-            Total t = sum[it.type()][it.info().category()];
-            t = t + it;
-            sum[it.type()][it.info().category()] = t;
-        }
-    }
+    Total t = m_entries[e.type()][e.info().category()];
+    t = t + e;
+    m_entries[e.type()][e.info().category()] = t;
 
     QMetaObject::invokeMethod(m_income, "clear");
     QMetaObject::invokeMethod(m_outcome, "clear");
@@ -107,7 +36,20 @@ void ControllerPieGraph::increment(int inc)
         }
     };
 
-    setter(sum["income"], m_income);
-    setter(sum["outcome"], m_outcome);
-
+    setter(m_entries["income"], m_income);
+    setter(m_entries["outcome"], m_outcome);
 }
+
+void ControllerPieGraph::setGran(Account::Granularity g)
+{
+    m_view->setProperty("gran", g);
+}
+
+void ControllerPieGraph::setView(const QQmlApplicationEngine & eng)
+{
+    m_income = eng.rootObjects().first()->findChild<QObject*>("incomingPie");
+    m_outcome = eng.rootObjects().first()->findChild<QObject*>("outcomePie");
+    m_view = eng.rootObjects().first()->findChild<QObject*>("pieCategory");
+}
+
+

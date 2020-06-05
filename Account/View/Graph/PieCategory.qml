@@ -11,12 +11,6 @@ import "../Style"
 Rectangle {
     id: root
 
-    MouseArea {
-        anchors.fill: parent
-        acceptedButtons: Qt.NoButton
-        onWheel: root.s_zoom(wheel.angleDelta.y > 0 ? -1 : 1)
-    }
-
     property date currentDate: new Date()
     property var gran: Account.Month
 
@@ -99,51 +93,5 @@ Rectangle {
                 }
             }
         }
-
-        AccountButton {
-            id: prev
-            text: qsTr("<<")
-
-            Layout.preferredHeight: root.height * 0.05
-            Layout.preferredWidth: root.width * 0.2
-            Layout.columnSpan: 1
-            Layout.column: 0
-            Layout.row: 1
-
-//            enabled: chart.okPrev
-
-            onClicked: {
-                root.s_increment(-1)
-            }
-        }
-
-        AccountLabel {
-            text: Qt.formatDate(root.currentDate, root.gran === Account.Month ? "MMMM-yyyy" : root.gran === Account.Year ? "yyyy" : "")
-            Layout.preferredHeight: root.height * 0.05
-            Layout.preferredWidth: root.width * 0.4
-            Layout.columnSpan: 2
-            Layout.column: 1
-            Layout.row: 1
-            font.family: AccountStyle.title.name
-            font.pixelSize: AccountStyle.title.size
-        }
-
-        AccountButton {
-            id: next
-            text: qsTr(">>")
-
-            Layout.preferredHeight: root.height * 0.05
-            Layout.preferredWidth: root.width * 0.2
-            Layout.columnSpan: 1
-            Layout.column: 3
-            Layout.row: 1
-
-//            enabled: chart.okPrev
-
-            onClicked: {
-                root.s_increment(1)
-            }
-        }
-
     }
 }

@@ -4,8 +4,9 @@
 #include <QThread>
 #include "abstractcontroller.h"
 #include "Model/accountglobal.h"
+#include "InterfaceGraph.h"
 
-class TimeGraphController: public AbstractController
+class TimeGraphController: public AbstractController, public InterfaceGraph
 {
     Q_OBJECT
 public:
@@ -22,18 +23,16 @@ private:
 public:
     TimeGraphController();
     ~TimeGraphController();
-    void set(QObject*);
-    int exec();
 
+    int exec() override;
 
-    QMap<QDate, Total> sum() const;
+    void add(const Entry &) override;
+    void clear() override;
+    void setDate(QDate) override;
+    void setGran(Account::Granularity) override;
+    void setView(const QQmlApplicationEngine &) override;
+    
 
-public slots:
-    void change(int);
-    void increment(int = 0);
-
-signals:
-    void s_sum();
 };
 
 #endif // TimeGraphController_H
