@@ -24,6 +24,7 @@ public:
     void add(const Entry &) override;
     void setGran(Account::Granularity) override;
     void setView(const QQmlApplicationEngine &) override;
+    void update() override;
 
 public slots:
     int exec() override;

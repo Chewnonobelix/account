@@ -13,6 +13,7 @@ public:
     virtual void setDate(QDate) = 0;
     virtual void setGran(Account::Granularity) = 0;
     virtual void setView(const QQmlApplicationEngine&) = 0;
+    virtual void update() = 0;
 };
 
 #endif // INTERFACEGRAPH_H

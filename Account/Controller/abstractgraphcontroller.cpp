@@ -78,6 +78,9 @@ void AbstractGraphController::increment(int nb)
                 it2->add(it);
         }
     }
+
+    for(auto it2: m_graphList)
+        it2->update();
 }
 
 void AbstractGraphController::set(const QQmlApplicationEngine & eng)

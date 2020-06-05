@@ -31,8 +31,7 @@ public:
     void setDate(QDate) override;
     void setGran(Account::Granularity) override;
     void setView(const QQmlApplicationEngine &) override;
-    
-
+    void update() override;
 };
 
 #endif // TimeGraphController_H

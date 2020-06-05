@@ -25,7 +25,11 @@ void ControllerPieGraph::add(const Entry & e)
     Total t = m_entries[e.type()][e.info().category()];
     t = t + e;
     m_entries[e.type()][e.info().category()] = t;
+}
 
+
+void ControllerPieGraph::update()
+{
     QMetaObject::invokeMethod(m_income, "clear");
     QMetaObject::invokeMethod(m_outcome, "clear");
 

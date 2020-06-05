@@ -68,9 +68,12 @@ void TimeGraphController::add(const Entry & e)
         m_sum[temp] = m_sum[temp] + e;
         break;
     }
+}
 
+void TimeGraphController::update()
+{
     QDate mind = (m_sum.begin()+1).key(), maxd = m_sum.lastKey();
-    
+
     double min = m_sum.first().value(), max = m_sum.first().value();
     for(auto it = m_sum.begin()+1; it != m_sum.end(); it++)
     {
@@ -84,7 +87,7 @@ void TimeGraphController::add(const Entry & e)
             QMetaObject::invokeMethod(m_view, "addDataEstimated", Q_ARG(QVariant,it.key()), Q_ARG(QVariant, it.value().value()));
 
     }
-    
+
     QMetaObject::invokeMethod(m_view, "setMinMaxDate", Q_ARG(QVariant, mind), Q_ARG(QVariant, maxd));
     QMetaObject::invokeMethod(m_view, "setMinMaxValue", Q_ARG(QVariant, min), Q_ARG(QVariant, max));
 }
