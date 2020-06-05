@@ -20,7 +20,6 @@ int AbstractGraphController::exec()
 
 void AbstractGraphController::change(int way)
 {
-    qDebug()<<"Change"<<way<<m_currentGran;
     switch (m_currentGran)
     {
     case Account::Month:
@@ -34,7 +33,6 @@ void AbstractGraphController::change(int way)
         break;
     }
 
-    qDebug()<<m_currentGran;
     for(auto it: m_graphList)
         it->setGran(m_currentGran);
 
