@@ -30,7 +30,9 @@ MouseArea{
             text: qsTr("<<")
 
             Layout.preferredHeight: root.height * 0.05
-            Layout.preferredWidth: root.width * 0.3
+            Layout.preferredWidth: root.width * 0.1
+            Layout.leftMargin: root.width * 0.2
+
             Layout.columnSpan: 1
             Layout.column: 0
             Layout.row: 1
@@ -63,7 +65,8 @@ MouseArea{
             text: qsTr(">>")
 
             Layout.preferredHeight: root.height * 0.05
-            Layout.preferredWidth: root.width * 0.3
+            Layout.preferredWidth: root.width * 0.1
+            Layout.rightMargin: root.width * 0.2
             Layout.alignment: Qt.AlignLeft
             Layout.columnSpan: 1
             Layout.column: 2
