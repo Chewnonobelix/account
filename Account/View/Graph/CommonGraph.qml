@@ -113,18 +113,25 @@ MouseArea{
 
             Rectangle {
                 color: "blue"
+                objectName: "blue"
+                
+                onStateChanged: console.log(state)
+//                onStatesChanged: console.log(states, states.length)
             }
 
             Rectangle {
                 color: "red"
+                objectName: "red"
             }
 
             Rectangle {
                 color: "green"
+                objectName: "green"
             }
 
             Rectangle {
                 color: "yellow"
+                objectName: "yellow"
             }
         }
     }
