@@ -53,8 +53,8 @@ MouseArea{
             Layout.columnSpan: 1
             Layout.column: 1
             Layout.row: 1
-//            font.family: AccountStyle.title.name
-//            font.pixelSize: AccountStyle.title.size
+            //            font.family: AccountStyle.title.name
+            //            font.pixelSize: AccountStyle.title.size
 
         }
 
@@ -79,25 +79,53 @@ MouseArea{
 
         PageView {
             id: graphSwipe
-            Layout.preferredHeight: root.height * 0.93
+            Layout.preferredHeight: root.height * 0.90
             Layout.fillWidth: true
             Layout.columnSpan: 3
             Layout.column: 0
             Layout.row: 0
-            Page2Form {
-                id: graph
-                objectName: "timeGraph"
-                //                anchors.fill: parent
 
+//            Rectangle {
+//                border.color: "gold"
+//                AccountBackground {
+//                    invisible: false
+//                    anchors.fill: parent
+
+//                }
+
+//                Page2Form {
+//                    id: graph
+//                    objectName: "timeGraph"
+//                    anchors.fill: parent
+//                }
+
+////                onXChanged: console.log(x,y,z)
+////                onZChanged: console.log(z, Math.max(0, this.z * (graphSwipe.width*0.1/graphSwipe.c)))
+//            }
+
+//            PieCategory {
+//                id: pie
+//                objectName: "pieCategory"
+//                //                anchors.fill: parent
+
+//            }
+
+
+            Rectangle {
+                color: "blue"
             }
 
-            PieCategory {
-                id: pie
-                objectName: "pieCategory"
-                //                anchors.fill: parent
-
+            Rectangle {
+                color: "red"
             }
 
+            Rectangle {
+                color: "green"
+            }
+
+            Rectangle {
+                color: "yellow"
+            }
         }
     }
 }
