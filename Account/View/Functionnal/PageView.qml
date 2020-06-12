@@ -23,126 +23,76 @@ StackView {
         
         rotation: 90
         onCurrentIndexChanged: {
+            var l = []
+            for(var i = 0; i < count; i++) {
+                var t = root.children[i+1]
+                if(t.z === 5 && i !== currentIndex) {
+                    t.z = root.children[currentIndex+1].z
+                }
+
+                l[i] = t.z
+            }
+            
+
             root.replace(root.currentItem, root.children[(currentIndex+1)])
             
             console.log(currentIndex, root.currentItem.objectName)
-            for(var i = 0; i < count; i++) {
-                var t = root.children[i+1]
-                if(i !== currentIndex) {                   
-                    t.z = (t.z - 1) < 0 ? 0 : t.z - 1
-                }
-                else {
-                    t.z = 5
-                }
-                
-                console.log("move", i, t.objectName, t.z, t.states.length)                
-            }
+            console.log(l)
         }
     }
     
     Component.onCompleted: {
-        pageChange.currentIndex = 0
         
+        console.log(transitions.length)
         for(var i = 1; i < children.length; i++) {
             children[i].width = Qt.binding(function() { return root.width * 0.9})
             children[i].height = Qt.binding(function() { return root.height * 0.9 })
             children[i].StackView.visible = true
-            children[i].z = (5 - i) < 1 ? 0 : (5-i)
-            
-            children[i].states = Qt.binding( function(){ return [ 
-                        State {
-                            name: "background"
-                            when: zChanged && z < 5
-                            PropertyChanges {
-                                target: children[i]
-                                x: z*(root.width*0.1/root.c) < 0 ? 0 : z * (root.width*0.1/root.c)
-                            }
-                            PropertyChanges {
-                                target: children[i]
-                                y: z*(root.height*0.1/root.c) < 0 ? 0 : z * (root.height*0.1/root.c)
-                            }
-                        }
-                        , 
-                        State {
-                            name: "front"
-                            when: zChanged && z === 5
-                            
-                            PropertyChanges {
-                                target: children[i]
-                                x: root.width*0.1
-                            }
-                            PropertyChanges {
-                                target: children[i]
-                                y: root.height*0.1
-                            }
-                        }] })
-            
+            children[i].z = (5 - i + 1) < 1 ? 0 : (5-i + 1)
         }
-    }
-    
-    //    State {
-    //        name: "background"
-    //        when: zChanged && z < 5
-    //        property var item: null
-    //        PropertyChanges {
-    //            target: parent.item
-    //            x: z*(root.width*0.1/root.c) < 0 ? 0 : z * (root.width*0.1/root.c)
-    //        }
-    //        PropertyChanges {
-    //            target: parent.item
-    //            y: z*(root.height*0.1/root.c) < 0 ? 0 : z * (root.height*0.1/root.c)
-    //        }
-    //    }
-    State {
-        id: front
-        name: "front"
-        when: zChanged && z === 5
-        property var item: null
-        PropertyChanges {
-            target: parent.item
-            x: root.width*0.1
-        }
-        PropertyChanges {
-            target: parent.item
-            y: root.height*0.1
-        }
+        pageChange.currentIndex = 0
+        
     }
     
     initialItem: children[1]
     
     property int c: Math.min(pageChange.count - 1, 5)
     
-    //    replaceEnter: Transition {
-    //        ParallelAnimation {
-    //            PropertyAnimation {
-    //                properties: "state"
-    //                to: front
-    //            }
-    //            PropertyAnimation {
-    //                properties: "z"
-    //                to: 5
-    //            }
-    //            PropertyAnimation {
-    //                properties: "opacity"
-    //                to: 1
-    //            }
-    //        }
-    //    }
+    replaceEnter: Transition {
+        id: enter
+        ParallelAnimation {
+            XAnimator {
+                from: root.x
+                to: root.width*0.1
+            }
+            YAnimator {
+                from: root.y
+                to: root.height*0.1
+            }
+            PropertyAnimation {
+                properties: "opacity"
+                to: 1
+            }
+        }
+    }
     
-    //    replaceExit: Transition {
-    //        id: out
-    //        ParallelAnimation {
-    //            PropertyAnimation {
-    //                properties: "opacity"
-    //                to: 1
-    //            }
-    //            PropertyAnimation {
-    //                properties: "state"
-    //                to: background
-    //            }
-    
-    //        }
-    //    }
+    replaceExit: Transition {
+        id: out
+        ParallelAnimation {
+            PropertyAnimation {
+                properties: "opacity"
+                to: 1
+            }
+            XAnimator {
+                from: out.ViewTransition.item.x
+                to: (root.width*0.1/5) * 4
+            }
+            YAnimator {
+                from: out.ViewTransition.item.y
+                to: (root.height*0.1/5) * 4
+            }            
+        }
+    }
     
     //        property real offset: 10
     //        width: 100; height: 100
