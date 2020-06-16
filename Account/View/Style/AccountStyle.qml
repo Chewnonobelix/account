@@ -115,7 +115,7 @@ QtObject {
         }
     }
     
-    property Gradient backgroundGradient:     Gradient {
+    property Gradient backgroundGradient: Gradient {
         id: backgroundGradient
         GradientStop {
             color: "darkseagreen"

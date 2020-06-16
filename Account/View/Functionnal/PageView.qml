@@ -13,61 +13,56 @@ StackView {
         anchors.verticalCenter: parent.verticalCenter
         id: pageChange
         count: root.children.length - 1
-        currentIndex: -1
+        currentIndex: 0
         z: root.children.length+10
         interactive: true
         
-        background: Rectangle {
-            border.color: "gold"
-        }
         
         rotation: 90
         onCurrentIndexChanged: {
             var l = []
             for(var i = 0; i < count; i++) {
                 var t = root.children[i+1]
-                if(t.z === 5 && i !== currentIndex) {
+                if(t.z === 5) {
                     t.z = root.children[currentIndex+1].z
+                    root.children[currentIndex+1].z = 5
                 }
-
-                l[i] = t.z
             }
-            
-
             root.replace(root.currentItem, root.children[(currentIndex+1)])
-            
-            console.log(currentIndex, root.currentItem.objectName)
-            console.log(l)
         }
     }
-    
+
     Component.onCompleted: {
-        
-        console.log(transitions.length)
-        for(var i = 1; i < children.length; i++) {
-            children[i].width = Qt.binding(function() { return root.width * 0.9})
-            children[i].height = Qt.binding(function() { return root.height * 0.9 })
-            children[i].StackView.visible = true
-            children[i].z = (5 - i + 1) < 1 ? 0 : (5-i + 1)
+        for(var i = 1; i < children.length-1; i++) {
+            var temp = children[i]
+            temp.width = Qt.binding(function() { return root.width * 0.9})
+            temp.height = Qt.binding(function() { return root.height * 0.9 })
+            temp.StackView.visible = true
+            temp.z = (5 - i + 1) < 1 ? 0 : (5-i + 1)
+
+
+            temp.x = Qt.binding(function() { return (root.width*0.08/5) * (this.z) })
+            temp.y = Qt.binding(function() { return (root.height*0.08/5) * (this.z) })
         }
+        root.replace(initialItem, root.children[1])
         pageChange.currentIndex = 0
-        
     }
     
-    initialItem: children[1]
-    
-    property int c: Math.min(pageChange.count - 1, 5)
-    
+    onVisibleChanged: console.log("prout")
+    initialItem: Rectangle {
+
+    }
+
     replaceEnter: Transition {
         id: enter
         ParallelAnimation {
             XAnimator {
                 from: root.x
-                to: root.width*0.1
+                to: root.width*0.08
             }
             YAnimator {
                 from: root.y
-                to: root.height*0.1
+                to: root.height*0.08
             }
             PropertyAnimation {
                 properties: "opacity"
@@ -81,58 +76,16 @@ StackView {
         ParallelAnimation {
             PropertyAnimation {
                 properties: "opacity"
-                to: 1
+                to: 0.5
             }
             XAnimator {
                 from: out.ViewTransition.item.x
-                to: (root.width*0.1/5) * 4
+                to: (root.width*0.08/5) * out.ViewTransition.item.z
             }
             YAnimator {
                 from: out.ViewTransition.item.y
-                to: (root.height*0.1/5) * 4
-            }            
+                to: (root.height*0.08/5) * out.ViewTransition.item.z
+            }
         }
     }
-    
-    //        property real offset: 10
-    //        width: 100; height: 100
-    
-    //        initialItem: Component {
-    //            id: page
-    //            Rectangle {
-    //                property real pos: StackView.index * root.offset
-    //                property real hue: Math.random()
-    //                color: Qt.hsla(hue, 0.5, 0.8, 0.6)
-    //                border.color: Qt.hsla(hue, 0.5, 0.5, 0.9)
-    //                StackView.visible: true
-    //            }
-    //        }
-    
-    //        replaceEnter: Transition {
-    //            id: pushEnter
-    //            ParallelAnimation {
-    //                PropertyAction { property: "x"; value: pushEnter.ViewTransition.item.pos }
-    //                NumberAnimation { properties: "y"; from: pushEnter.ViewTransition.item.pos + root.offset; to: pushEnter.ViewTransition.item.pos; duration: 400; easing.type: Easing.OutCubic }
-    //                NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 400; easing.type: Easing.OutCubic }
-    //            }
-    //        }
-    //        popExit: Transition {
-    //            id: popExit
-    //            ParallelAnimation {
-    //                PropertyAction { property: "x"; value: popExit.ViewTransition.item.pos }
-    //                NumberAnimation { properties: "y"; from: popExit.ViewTransition.item.pos; to: popExit.ViewTransition.item.pos + root.offset; duration: 400; easing.type: Easing.OutCubic }
-    //                NumberAnimation { property: "opacity"; from: 1; to: 0; duration: 400; easing.type: Easing.OutCubic }
-    //            }
-    //        }
-    
-    //        replaceExit: Transition {
-    //            id: pushExit
-    //            PropertyAction { property: "x"; value: pushExit.ViewTransition.item.pos }
-    //            PropertyAction { property: "y"; value: pushExit.ViewTransition.item.pos }
-    //        }
-    //        popEnter: Transition {
-    //            id: popEnter
-    //            PropertyAction { property: "x"; value: popEnter.ViewTransition.item.pos }
-    //            PropertyAction { property: "y"; value: popEnter.ViewTransition.item.pos }
-    //        }
 }

@@ -57,7 +57,7 @@ void AbstractGraphController::increment(int nb)
     
     for(auto it: m_graphList)
     {
-//        it->setDate(m_currentDate);
+        it->setDate(m_currentDate);
         it->clear();
     }
 
@@ -79,8 +79,8 @@ void AbstractGraphController::increment(int nb)
         }
     }
 
-//    for(auto it2: m_graphList)
-//        it2->update();
+    for(auto it2: m_graphList)
+        it2->update();
 }
 
 void AbstractGraphController::set(const QQmlApplicationEngine & eng)
@@ -90,6 +90,6 @@ void AbstractGraphController::set(const QQmlApplicationEngine & eng)
     connect(m_view, SIGNAL(s_zoom(int)), this, SLOT(change(int)));
     connect(m_view, SIGNAL(s_increment(int)), this, SLOT(increment(int)));
 
-//    for(auto it: m_graphList)
-//        it->setView(eng);
+    for(auto it: m_graphList)
+        it->setView(eng);
 }
