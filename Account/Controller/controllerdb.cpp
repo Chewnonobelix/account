@@ -236,7 +236,7 @@ void ControllerDB::prepareFrequency()
                                                "WHERE id=:id" )<<m_removeFrequency->lastError();
     
     qDebug()<<"UF"<<m_updateFrequency->prepare("UPDATE frequency "
-                                               "SET freq=:f, nbGroup=:ng "
+                                               "SET freq=:f, nbGroup=:ng, endless=:el "
                                                "WHERE id=:id")<<m_updateFrequency->lastError();
 }
 
@@ -763,6 +763,7 @@ bool ControllerDB::updateFrequency(const Frequency& f)
         m_updateFrequency->bindValue(":f", (int)f.freq());
         m_updateFrequency->bindValue(":ng", f.nbGroup());
         m_updateFrequency->bindValue(":id", f.id());
+        m_updateFrequency->bindValue(":el", f.endless());
         
         emit s_updateFrequency();
         return ret && m_updateFrequency->exec();
@@ -787,7 +788,7 @@ QList<Frequency> ControllerDB::selectFrequency()
             f.setId(m_selectFrequency->value("id").toInt());
             f.setFreq((Account::FrequencyEnum)m_selectFrequency->value("freq").toInt());
             f.setNbGroup(m_selectFrequency->value("nbGroup").toInt());
-            
+            f.setEndless(m_selectFrequency->value("endless").toInt());
             m_selectFrequencyReference->bindValue(":f", f.id());
             
             if(!m_selectFrequencyReference->exec())

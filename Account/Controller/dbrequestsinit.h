@@ -87,6 +87,7 @@ const auto frequency_table = QString("CREATE TABLE `frequency` ("
                                          "`nbGroup` INTEGER NOT NULL,"
                                          "`profile` TEXT NOT NULL DEFAULT 'Default',"
                                          "`account` TEXT NOT NULL"
+                                         "`endless` tinyint(1) NOT NULL DEFAULT '0'"
                                        ")");
 
 const auto trigger_delete_frequency = QString("CREATE TRIGGER delete_frequency BEFORE DELETE ON frequency "
