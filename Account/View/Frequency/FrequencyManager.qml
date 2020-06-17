@@ -98,6 +98,7 @@ Rectangle {
                     pageChanger.maxPage = Qt.binding(function() {return countText.nb / 100 + 1})
                     whenCombo.enabled = Qt.binding(function() {return count !== 0})
                     whenCombo.currentIndex = Qt.binding(function() {return currentModel  ? whenCombo.model.findIndex(currentModel.freq + 0) : 0})
+                    endless.checked = Qt.binding(function() {return currentModel ? currentModel.endless : false})
                 }
                 
                 clip: true
@@ -260,10 +261,8 @@ Rectangle {
                 }
             }
             
-            AccountButton {
-                objectName: "generateOpen"
-                text: qsTr("Generate")
-                
+            AccountBackground {
+                invisible: true
                 Layout.preferredHeight: parent.usableHeight * 0.05
                 Layout.preferredWidth: parent.usableWidth * 0.23
                 Layout.row: 1
@@ -271,12 +270,33 @@ Rectangle {
                 Layout.columnSpan: 1
                 Layout.rowSpan: 1
                 
-                enabled: ref.enabled
+                AccountCheckBox {
+                    id: endless
+                    objectName: "endless"
+                    anchors.left: parent.left
+                    text: qsTr("Endless")
+                    signal s_endless(int id, bool e)
+                    
+                    onCheckedChanged: if(frequencyList.currentModel) s_endless(frequencyList.currentModel.id, checked)
+                }
+
+                AccountButton {
+                    objectName: "generateOpen"
+                    text: qsTr("Generate")
+                    
+                    anchors.right: parent.right
+                    anchors.left: endless.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    enabled: ref.enabled && !endless.checked
+                    
+                    signal s_open(int fId)
+                    
+                    onReleased: s_open(frequencyList.currentModel.id)
+                }
                 
-                signal s_open(int fId)
-                
-                onReleased: s_open(frequencyList.currentModel.id)
             }
+
             
             Rectangle {
                 Layout.preferredHeight: parent.usableHeight * 0.20

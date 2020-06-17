@@ -662,6 +662,7 @@ bool ControllerXMLMulti::updateFrequency(const Frequency& f)
             child.setAttribute("freq", (int)f.freq());
             
             setter(child, "nbGroup", QString::number(f.nbGroup()));
+            setter(child, "endless", QString::number(f.endless()));
             
             emit s_updateFrequency();
             
@@ -695,8 +696,9 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
         Entry ref = selectEntryNode(child);
         f.setReferenceEntry(ref);
         
-        ret[f.id()] = f;
-        
+        child = el.elementsByTagName("endless").at(0).toElement();
+        f.setEndless(child.text().toInt());
+        ret[f.id()] = f;        
     }
     
     return ret.values();
