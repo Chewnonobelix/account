@@ -72,6 +72,9 @@ void TimeGraphController::add(const Entry & e)
 
 void TimeGraphController::update()
 {
+    if(m_sum.isEmpty())
+        return;
+    
     QDate mind = (m_sum.begin()+1).key(), maxd = m_sum.lastKey();
 
     double min = m_sum.first().value(), max = m_sum.first().value();

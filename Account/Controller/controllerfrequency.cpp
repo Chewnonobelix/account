@@ -110,6 +110,10 @@ void ControllerFrequency::setManager(QObject * manager)
 
     connect((QThread*)&m_filler, SIGNAL(finished()), this, SLOT(endFill()));
 
+    QObject* freqEndless = m_manager->findChild<QObject*>("endless");
+    if(freqEndless)
+        connect(freqEndless, SIGNAL(s_endless(int, bool)), this, SLOT(updateFreqEndless(int,bool)));
+    
     connect(m_db, InterfaceDataSave::s_updateFrequency, this, ControllerFrequency::exec);
 }
 
@@ -345,4 +349,10 @@ QString ControllerFrequency::baseText() const
 QObject* ControllerFrequency::worker(QString name) const
 {
     return m_workers[name];
+}
+
+void ControllerFrequency::updateFreqEndless(int id, bool e)
+{
+    m_freqs[id].setEndless(e);
+    m_db->updateFrequency(m_freqs[id]);
 }

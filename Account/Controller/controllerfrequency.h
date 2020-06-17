@@ -97,6 +97,7 @@ public slots:
     void updateFreqCat(int, QString);
     void updateFreqType(int, QString);
     void updateFreqFreq(int, int);
+    void updateFreqEndless(int, bool);
     
     void displayEntry(int);
     void setWorker(QString);
