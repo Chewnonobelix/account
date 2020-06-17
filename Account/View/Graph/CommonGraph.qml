@@ -88,35 +88,33 @@ MouseArea{
             Page2Form {
                 id: graph
                 objectName: "timeGraph"
-                onXChanged: console.log("x",x,y)
              }
 
             PieCategory {
                 id: pie
                 objectName: "pieCategory"
-                onXChanged: console.log(x,y)
             }
 
 
-            Rectangle {
-                color: "blue"
-                objectName: "blue"
-            }
+//            Rectangle {
+//                color: "blue"
+//                objectName: "blue"
+//            }
 
-            Rectangle {
-                color: "red"
-                objectName: "red"
-            }
+//            Rectangle {
+//                color: "red"
+//                objectName: "red"
+//            }
 
-            Rectangle {
-                color: "green"
-                objectName: "green"
-            }
+//            Rectangle {
+//                color: "green"
+//                objectName: "green"
+//            }
 
-            Rectangle {
-                color: "yellow"
-                objectName: "yellow"
-            }
+//            Rectangle {
+//                color: "yellow"
+//                objectName: "yellow"
+//            }
         }
     }
 }

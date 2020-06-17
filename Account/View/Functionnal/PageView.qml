@@ -3,10 +3,7 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
 StackView {
-    id: root
-    
-    //    property int index: 0
-    
+    id: root    
     
     PageIndicator {
         anchors.right: root.right
@@ -40,28 +37,29 @@ StackView {
             temp.StackView.visible = true
             temp.z = (5 - i + 1) < 1 ? 0 : (5-i + 1)
 
-
+            temp.opacity = 0.5
             temp.x = Qt.binding(function() { return (root.width*0.08/5) * (this.z) })
             temp.y = Qt.binding(function() { return (root.height*0.08/5) * (this.z) })
         }
         root.replace(initialItem, root.children[1])
-        pageChange.currentIndex = 0
     }
     
-    onVisibleChanged: console.log("prout")
     initialItem: Rectangle {
+        width: root.width * 0.9
+        height: root.height * 0.9
 
+        opacity: 0
+        x: (root.width*0.08/5) * (this.z)
+        y: (root.height*0.08/5) * (this.z)
     }
 
     replaceEnter: Transition {
         id: enter
         ParallelAnimation {
             XAnimator {
-                from: root.x
                 to: root.width*0.08
             }
             YAnimator {
-                from: root.y
                 to: root.height*0.08
             }
             PropertyAnimation {
@@ -79,11 +77,9 @@ StackView {
                 to: 0.5
             }
             XAnimator {
-                from: out.ViewTransition.item.x
                 to: (root.width*0.08/5) * out.ViewTransition.item.z
             }
             YAnimator {
-                from: out.ViewTransition.item.y
                 to: (root.height*0.08/5) * out.ViewTransition.item.z
             }
         }
