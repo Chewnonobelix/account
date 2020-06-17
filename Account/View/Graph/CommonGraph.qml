@@ -53,8 +53,8 @@ MouseArea{
             Layout.columnSpan: 1
             Layout.column: 1
             Layout.row: 1
-//            font.family: AccountStyle.title.name
-//            font.pixelSize: AccountStyle.title.size
+            //            font.family: AccountStyle.title.name
+            //            font.pixelSize: AccountStyle.title.size
 
         }
 
@@ -79,25 +79,42 @@ MouseArea{
 
         PageView {
             id: graphSwipe
-            Layout.preferredHeight: root.height * 0.93
-            Layout.fillWidth: true
+            Layout.preferredHeight: root.height * 0.90
+            Layout.preferredWidth: root.width
             Layout.columnSpan: 3
             Layout.column: 0
             Layout.row: 0
+
             Page2Form {
                 id: graph
                 objectName: "timeGraph"
-                //                anchors.fill: parent
-
-            }
+             }
 
             PieCategory {
                 id: pie
                 objectName: "pieCategory"
-                //                anchors.fill: parent
-
             }
 
+
+//            Rectangle {
+//                color: "blue"
+//                objectName: "blue"
+//            }
+
+//            Rectangle {
+//                color: "red"
+//                objectName: "red"
+//            }
+
+//            Rectangle {
+//                color: "green"
+//                objectName: "green"
+//            }
+
+//            Rectangle {
+//                color: "yellow"
+//                objectName: "yellow"
+//            }
         }
     }
 }
