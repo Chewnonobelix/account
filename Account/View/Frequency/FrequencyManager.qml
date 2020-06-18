@@ -263,7 +263,7 @@ Rectangle {
                 text: qsTr("Endless")
                 signal s_endless(int id, bool e)
 
-                onCheckedChanged: if(frequencyList.currentModel) s_endless(frequencyList.currentModel.id, checked)
+                onClicked: if(frequencyList.currentModel) s_endless(frequencyList.currentModel.id, checked)
             }
 
             AccountButton {
