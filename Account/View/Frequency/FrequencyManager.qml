@@ -84,6 +84,7 @@ Rectangle {
 
             Component.onCompleted: {
                 ref.entry = Qt.binding(function() {return currentModel ? currentModel.reference : null})
+                ref.enabled = Qt.binding(function() {return currentModel !== null})
                 groupText.nb = Qt.binding(function() {return currentModel ? currentModel.nbGroup : 0})
                 countText.nb = Qt.binding(function() {return currentModel ? currentModel.count : 0})
                 pageChanger.maxPage = Qt.binding(function() {return countText.nb / 100 + 1})
@@ -172,7 +173,6 @@ Rectangle {
             Layout.rowSpan: 1
 
 
-            enabled: frequencyList.count !== 0  && whenCombo.enabled
             property var incomeList: []
             property var outcomeList: []
 
