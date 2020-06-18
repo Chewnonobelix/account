@@ -30,10 +30,6 @@ Rectangle {
 
     GridLayout {
         anchors.fill: parent
-        anchors.topMargin: root.height * 0.02
-        anchors.bottomMargin: root.height * 0.02
-        anchors.rightMargin: root.width * 0.02
-        anchors.leftMargin: root.width * 0.02
         id: layout
 
         rowSpacing: root.height * 0.02
@@ -69,11 +65,21 @@ Rectangle {
                 width: frequencyList.width
             }
 
-            property var currentModel: null
+            property var currentModel: currentIndex !== -1 ? model[currentIndex] : null
 
             signal s_modelChanged(string name)
             onCurrentModelChanged: {
-                if(currentModel) s_modelChanged(currentModel.name)
+                if(currentModel) {
+                    s_modelChanged(currentModel.name)
+                    pageChanger.pageIndex = 1
+                    pageChanger.s_pageChange()
+                }
+                else
+                {
+                    testModel.clear()
+                    pageChanger.pageIndex = 0
+                }
+
             }
 
             Component.onCompleted: {
@@ -98,11 +104,6 @@ Rectangle {
             }
 
             onCurrentIndexChanged: {
-                if(enabled) {
-                    pageChanger.pageIndex = 1
-                    pageChanger.s_pageChange()
-                    currentModel = enabled && currentIndex > -1 ? model[currentIndex] : null
-                }
             }
 
             delegate: Rectangle {
