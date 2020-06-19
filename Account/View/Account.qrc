@@ -20,7 +20,6 @@
         <file>Budget/ReferenceView.qml</file>
         <file>Frequency/Frequency.qml</file>
         <file>Frequency/FrequencyManager.qml</file>
-        <file>Frequency/FrequencyReference.qml</file>
         <file>Frequency/Generate.qml</file>
         <file>Core/CategoryItem.qml</file>
         <file>Core/EntryEdit.qml</file>
