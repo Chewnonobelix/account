@@ -32,6 +32,11 @@ Rectangle {
         anchors.fill: parent
         id: layout
 
+        anchors.topMargin: root.height * 0.02
+        anchors.bottomMargin: root.height * 0.02
+        anchors.leftMargin: root.width * 0.02
+        anchors.rightMargin: root.width * 0.02
+
         rowSpacing: root.height * 0.02
         columnSpacing: root.width * 0.02
 
@@ -169,7 +174,7 @@ Rectangle {
             Layout.preferredWidth: root.width * 0.74
             Layout.row: 0
             Layout.column: 2
-            Layout.columnSpan: 3
+            Layout.columnSpan: 6
             Layout.rowSpan: 1
 
 
@@ -204,7 +209,7 @@ Rectangle {
             Layout.preferredWidth: root.width * 0.23
             Layout.row: 1
             Layout.column: 2
-            Layout.columnSpan: 1
+            Layout.columnSpan: 2
             Layout.rowSpan: 1
 
             enabled: ref.enabled
@@ -226,10 +231,10 @@ Rectangle {
             model: CoreModel.typeModel
 
             Layout.preferredHeight: root.height * 0.05
-            Layout.preferredWidth: root.width * 0.24
+            Layout.preferredWidth: root.width * 0.23
             Layout.row: 1
-            Layout.column: 3
-            Layout.columnSpan: 1
+            Layout.column: 4
+            Layout.columnSpan: 2
             Layout.rowSpan: 1
 
             enabled: ref.enabled
@@ -250,10 +255,10 @@ Rectangle {
         AccountBackground {
             invisible: true
             Layout.preferredHeight: root.height * 0.05
-            Layout.preferredWidth: root.width * 0.23
+            Layout.preferredWidth: root.width * 0.24
             Layout.row: 1
-            Layout.column: 4
-            Layout.columnSpan: 1
+            Layout.column: 6
+            Layout.columnSpan: 2
             Layout.rowSpan: 1
 
             AccountCheckBox {
@@ -283,13 +288,12 @@ Rectangle {
 
         }
 
-
         Rectangle {
-            Layout.preferredHeight: root.height * 0.20
-            Layout.preferredWidth: root.width * 0.49
+            Layout.preferredHeight: root.height * 0.27
+            Layout.preferredWidth: root.width * 0.36
             Layout.row: 2
-            Layout.column: 3
-            Layout.columnSpan: 2
+            Layout.column: 5
+            Layout.columnSpan: 3
             Layout.rowSpan: 1
 
             visible: frequencyList.currentIndex !== -1
@@ -343,13 +347,12 @@ Rectangle {
             opening: true
             visible: entryList.currentIndex !== -1 && frequencyList.currentIndex !== -1
 
-            Layout.preferredHeight: root.height * 0.53
-            Layout.preferredWidth: root.width * 0.49
+            Layout.preferredHeight: root.height * 0.45
+            Layout.preferredWidth: root.width * 0.36
             Layout.row: 3
-            Layout.column: 3
-            Layout.columnSpan: 2
+            Layout.column: 5
+            Layout.columnSpan: 3
             Layout.rowSpan: 2
-
         }
 
         ListView {
@@ -357,10 +360,10 @@ Rectangle {
             objectName: "entryList"
 
             Layout.preferredHeight: root.height * 0.70
-            Layout.preferredWidth: root.width * 0.23
+            Layout.preferredWidth: root.width * 0.36
             Layout.row: 2
             Layout.column: 2
-            Layout.columnSpan: 1
+            Layout.columnSpan: 3
             Layout.rowSpan: 2
 
             model: testModel
@@ -461,10 +464,10 @@ Rectangle {
             id: pageChanger
 
             Layout.preferredHeight: root.height * 0.05
-            Layout.preferredWidth: root.width * 0.23
+            Layout.preferredWidth: root.width * 0.36
             Layout.row: 4
             Layout.column: 2
-            Layout.columnSpan: 1
+            Layout.columnSpan: 3
             Layout.rowSpan: 1
 
             onS_pageChange: {
