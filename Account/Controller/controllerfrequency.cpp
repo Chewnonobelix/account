@@ -172,8 +172,17 @@ int ControllerFrequency::exec()
     
     m_freqs.clear();
     for(auto it: freqs)
+    {
         m_freqs[it.id()] = it;
-    
+        if(it.endless() && ((it.end() < QDate::currentDate()) || it.nbGroup() == 0))
+        {
+            m_generate->setProperty("freqId", it.id());
+            m_generate->setProperty("freqGroup", it.nbGroup()+1);
+            auto date = it.end().addDays( Account::nbDay(it.end(), it.freq()));
+            generate(date.toString("dd-MM-yyyy"), date.addYears(1).toString("dd-MM-yyyy"));
+        }
+    }
+
     if(!m_filler.model)
         m_filler.model = &m_freqs;
 
