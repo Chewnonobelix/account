@@ -22,7 +22,6 @@ class Entry: public MetaData
     Q_PROPERTY(QString label READ label)
     Q_PROPERTY(int id READ id)
     Q_PROPERTY(bool isBlocked READ isBlocked)
-    Q_PROPERTY(QString checkedType READ checkType CONSTANT)
 
 private:
 
@@ -31,7 +30,6 @@ private:
     QDate m_date;
     QString m_type;
     Information m_info;
-    inline QString checkType () const {return "Entry";}
 
 public:
     Entry();
