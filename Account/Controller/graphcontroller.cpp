@@ -1,6 +1,6 @@
 #include "graphcontroller.h"
 
-TimeGraphController::TimeGraphController(): AbstractController(), m_view(nullptr), m_gran(Account::Month)
+TimeGraphController::TimeGraphController(): AbstractController(), m_view(nullptr), m_gran(Account::Granularity::Month)
 {
 
 }
@@ -22,12 +22,12 @@ void TimeGraphController::setDate(QDate d)
 
 void TimeGraphController::setGran(Account::Granularity g)
 {
-    m_view->setProperty("currentGran", g);
+    m_view->setProperty("currentGran", QVariant::fromValue(g));
     m_gran = g;
 
-    if(m_gran == Account::Year) m_view->setProperty("granularity", tr("one year"));
-    if(m_gran == Account::Month) m_view->setProperty("granularity", tr("one month"));
-    if(m_gran == Account::Over) m_view->setProperty("granularity", tr("all years"));
+    if(m_gran == Account::Granularity::Year) m_view->setProperty("granularity", tr("one year"));
+    if(m_gran == Account::Granularity::Month) m_view->setProperty("granularity", tr("one month"));
+    if(m_gran == Account::Granularity::Over) m_view->setProperty("granularity", tr("all years"));
 }
 
 void TimeGraphController::add(const Entry & e)
@@ -48,15 +48,15 @@ void TimeGraphController::add(const Entry & e)
     QDate temp;
     switch(m_gran)
     {
-    case Account::Month:
+    case Account::Granularity::Month:
         if(!m_sum.contains(e.date()))
             m_sum[e.date()] = m_sum[e.date().addDays(-1)];
 
         m_sum[e.date()] = m_sum[e.date()] +  e;
         break;
 
-    case Account::Over:
-    case Account::Year:
+    case Account::Granularity::Over:
+    case Account::Granularity::Year:
         temp = e.date();
         temp = temp.addDays(-(e.date().day()-1));
         

@@ -11,7 +11,7 @@ class AbstractGraphController : public AbstractController
 {
     Q_OBJECT
 private:
-    Account::Granularity m_currentGran = Account::Month;
+    Account::Granularity m_currentGran = Account::Granularity::Month;
     QDate m_currentDate = QDate::currentDate();
     QList<QSharedPointer<InterfaceGraph>> m_graphList;
     QObject* m_view = nullptr;

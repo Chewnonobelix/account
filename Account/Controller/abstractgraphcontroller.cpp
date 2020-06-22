@@ -22,14 +22,14 @@ void AbstractGraphController::change(int way)
 {
     switch (m_currentGran)
     {
-    case Account::Month:
-        m_currentGran = way > 0 ? Account::Year : Account::Over;
+    case Account::Granularity::Month:
+        m_currentGran = way > 0 ? Account::Granularity::Year : Account::Granularity::Over;
         break;
-    case Account::Year:
-        m_currentGran = way > 0 ? Account::Over : Account::Month;
+    case Account::Granularity::Year:
+        m_currentGran = way > 0 ? Account::Granularity::Over : Account::Granularity::Month;
         break;
-    case Account::Over:
-        m_currentGran = way > 0 ? Account::Month : Account::Year;
+    case Account::Granularity::Over:
+        m_currentGran = way > 0 ? Account::Granularity::Month : Account::Granularity::Year;
         break;
     }
 
@@ -43,13 +43,13 @@ void AbstractGraphController::increment(int nb)
 {
     switch(m_currentGran)
     {
-    case Account::Month:
+    case Account::Granularity::Month:
         m_currentDate = m_currentDate.addMonths(nb*1);
         break;
-    case Account::Year:
+    case Account::Granularity::Year:
         m_currentDate = m_currentDate.addYears(nb*1);
         break;
-    case Account::Over:
+    case Account::Granularity::Over:
         break;
     }
 
@@ -65,12 +65,12 @@ void AbstractGraphController::increment(int nb)
 
     for(auto it: e)
     {
-        bool b = (m_currentGran == Account::Month && (it.date().month() == m_currentDate.month()) &&
+        bool b = (m_currentGran == Account::Granularity::Month && (it.date().month() == m_currentDate.month()) &&
                 (it.date().year() == m_currentDate.year()));
 
-        b |= (m_currentGran == Account::Year && (it.date().year() == m_currentDate.year()));
+        b |= (m_currentGran == Account::Granularity::Year && (it.date().year() == m_currentDate.year()));
 
-        b |= (m_currentGran == Account::Over);
+        b |= (m_currentGran == Account::Granularity::Over);
 
         if(b)
         {

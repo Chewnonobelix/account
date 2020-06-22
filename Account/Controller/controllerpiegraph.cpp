@@ -46,7 +46,7 @@ void ControllerPieGraph::update()
 
 void ControllerPieGraph::setGran(Account::Granularity g)
 {
-    m_view->setProperty("gran", g);
+    m_view->setProperty("gran", QVariant::fromValue(g));
 }
 
 void ControllerPieGraph::setView(const QQmlApplicationEngine & eng)

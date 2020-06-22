@@ -12,7 +12,7 @@ class ControllerPieGraph: public AbstractController, public InterfaceGraph
 private:
     QObject* m_income = nullptr, *m_outcome = nullptr, *m_view;
 
-    Account::Granularity m_gran = Account::Month;
+    Account::Granularity m_gran = Account::Granularity::Month;
 
     QMap<QString, QMap<QString, Total>> m_entries;
 
