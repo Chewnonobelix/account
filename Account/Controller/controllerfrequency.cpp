@@ -110,6 +110,10 @@ void ControllerFrequency::setManager(QObject * manager)
 
     connect((QThread*)&m_filler, SIGNAL(finished()), this, SLOT(endFill()));
 
+    QObject* freqEndless = m_manager->findChild<QObject*>("endless");
+    if(freqEndless)
+        connect(freqEndless, SIGNAL(s_endless(int, bool)), this, SLOT(updateFreqEndless(int,bool)));
+    
     connect(m_db, InterfaceDataSave::s_updateFrequency, this, ControllerFrequency::exec);
 }
 
@@ -168,8 +172,17 @@ int ControllerFrequency::exec()
     
     m_freqs.clear();
     for(auto it: freqs)
+    {
         m_freqs[it.id()] = it;
-    
+        if(it.endless() && ((it.end() < QDate::currentDate()) || it.nbGroup() == 0))
+        {
+            m_generate->setProperty("freqId", it.id());
+            m_generate->setProperty("freqGroup", it.nbGroup()+1);
+            auto date = it.end().addDays( Account::nbDay(it.end(), it.freq()));
+            generate(date.toString("dd-MM-yyyy"), date.addYears(1).toString("dd-MM-yyyy"));
+        }
+    }
+
     if(!m_filler.model)
         m_filler.model = &m_freqs;
 
@@ -345,4 +358,10 @@ QString ControllerFrequency::baseText() const
 QObject* ControllerFrequency::worker(QString name) const
 {
     return m_workers[name];
+}
+
+void ControllerFrequency::updateFreqEndless(int id, bool e)
+{
+    m_freqs[id].setEndless(e);
+    m_db->updateFrequency(m_freqs[id]);
 }

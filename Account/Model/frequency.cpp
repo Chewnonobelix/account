@@ -61,18 +61,10 @@ void Frequency::setNbGroup(int nbGroup)
     m_nbGroup = nbGroup;
 }
 
-Frequency::Frequency():m_end(QDate::currentDate()), m_begin(QDate::currentDate()),  m_nbGroup(0)
+Frequency::Frequency()
 {
     m_referenceEntry.setType("outcome");
 }
-
-Frequency::Frequency(const Frequency& f): m_id(f.id()), m_freq(f.freq()),
-    m_entriesId(f.entries()), m_end(f.end()), m_begin(f.begin()), m_referenceEntry(f.referenceEntry()),
-    m_nbGroup(f.nbGroup())
-{}
-
-Frequency::~Frequency()
-{}
 
 Frequency& Frequency::operator =(const Frequency& f)
 {
@@ -87,6 +79,7 @@ Frequency& Frequency::operator =(const Frequency& f)
     setBegin(f.begin());
     setReferenceEntry(f.referenceEntry());
     setNbGroup(f.nbGroup());
+    setEndless(f.endless());
     
     return *this;
 }
@@ -145,3 +138,13 @@ QVariantList  Frequency::listEntries(int group) const
     return ret;
 }
 
+
+bool Frequency::endless() const
+{
+    return m_endless;
+}
+
+void Frequency::setEndless(bool e)
+{
+    m_endless = e;
+}
