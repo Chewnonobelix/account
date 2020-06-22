@@ -19,7 +19,8 @@ class Frequency
     Q_PROPERTY(Account::FrequencyEnum freq READ freq)
     Q_PROPERTY(int count READ count)
     Q_PROPERTY(bool endless READ endless)
-    
+    Q_PROPERTY(QString checkedType READ checkType CONSTANT)
+
 public:
     
 private:
@@ -32,6 +33,7 @@ private:
     Entry m_referenceEntry;
     int m_nbGroup = 0;
     bool m_endless = false;
+    inline QString checkType() const {return "Frequency";}
 
 public:
     Frequency();
