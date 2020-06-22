@@ -11,15 +11,12 @@ namespace Account
     enum class FrequencyEnum {Unique = 0, Day = 1, Week = 2, Month = 3, Quarter = 4, Year = 5};
     Q_ENUM_NS(FrequencyEnum)
 
-    enum class TypeEnum {outcome = -1, income = 1};
+    enum TypeEnum {outcome = -1, income = 1};
     Q_ENUM_NS(TypeEnum)
     
-    enum class Granularity {Month = 3, Year = 5, Over};
+    enum Granularity {Month = 3, Year = 5, Over};
     Q_ENUM_NS(Granularity)
     
-    enum class CheckerTypeEnum {Entry, Frequency};
-    Q_ENUM_NS(CheckerTypeEnum)
-
     int nbDay(QDate, FrequencyEnum);
 }
 
