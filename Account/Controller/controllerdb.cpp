@@ -376,13 +376,9 @@ bool ControllerDB::deleteProfile(QString name)
 bool ControllerDB::addEntry(const Entry & e)
 {        
     bool ret = false;
-    Entry et = e;
+
     if(isConnected())
     {
-        
-        if(et.hasMetadata("notemit"))
-            et.removeMetaData("notemit");
-
         m_addEntry->bindValue(":account", e.account().isEmpty() ? m_currentAccount : e.account());
         m_addEntry->bindValue(":value", QVariant(e.value()));
         m_addEntry->bindValue(":date", QVariant(e.date()));
@@ -406,10 +402,10 @@ bool ControllerDB::addEntry(const Entry & e)
             ret &= m_addInformation->exec();
         }
         
-        auto meta = et.metaDataList();
+        auto meta = e.metaDataList();
         for(auto it: meta)
         {
-            if(it == "id")
+            if(it == "id" || it == "notemit")
                 continue;
             
             m_insertMetadata->bindValue(":entry", id);
@@ -499,7 +495,7 @@ bool ControllerDB::updateEntry(const Entry & e)
         auto meta = e.metaDataList();
         for(auto it: meta)
         {
-            if(it == "id")
+            if(it == "id" || it == "notemit")
                 continue;
             
             m_updateMetadata->bindValue(":entry", e.id());

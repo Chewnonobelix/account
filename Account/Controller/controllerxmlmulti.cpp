@@ -290,7 +290,8 @@ bool ControllerXMLMulti::updateEntryNode(const Entry & e, QDomElement & el)
     setter(el, "type", e.type());
         
     for(auto it: e.metaDataList())
-        el.setAttribute(it, e.metaData<QString>(it));
+        if(it != "notemit")
+          el.setAttribute(it, e.metaData<QString>(it));
     
     auto i = el.elementsByTagName("information").at(0).toElement();
     updateInfo(i, e.info());
@@ -312,7 +313,8 @@ bool ControllerXMLMulti::updateEntry(const Entry & e)
         }
     }
     
-    emit s_updateEntry(e.id());
+    if(!e.hasMetadata("notemit"))
+       emit s_updateEntry(e.id());
     
     return true;
 }
