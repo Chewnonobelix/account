@@ -39,7 +39,8 @@ public:
     QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *, QList<AbstractController *>);
     QString displayText() const;
     QString baseText() const;
-    
+    void checker() {}
+
 public slots:
     void calDateChange();
     void open(QString);

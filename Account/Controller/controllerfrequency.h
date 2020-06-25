@@ -70,6 +70,7 @@ public:
     QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *, QList<AbstractController *>);
     QString displayText() const;
     QString baseText() const;
+    void checker();
 
     Q_INVOKABLE QObject* worker(QString) const;
     

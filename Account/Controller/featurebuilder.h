@@ -10,6 +10,7 @@ struct FeatureBuilder
     virtual QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine*, QObject*, QList<AbstractController*>) = 0;    
     virtual QString displayText() const = 0;
     virtual QString baseText() const = 0;
+    virtual void checker() = 0;
     QObject* view = nullptr;
     virtual ~FeatureBuilder() = default;
 };

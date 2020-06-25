@@ -109,7 +109,7 @@ Frequency& Frequency::operator<< (const Entry& e)
     {
         if(e.date() < begin())
             setBegin(e.date());
-        if(e.date() > end())
+        if(e.date() > end() || m_entriesId.isEmpty())
             setEnd(e.date());
         
         QVariantMap le;

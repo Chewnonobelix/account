@@ -25,7 +25,8 @@ public:
     QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *, QList<AbstractController *>);
     QString displayText() const;
     QString baseText() const;
-    
+    void checker() {}
+
 public slots:
     void closeCommon(bool);
     void addCommon(QString);

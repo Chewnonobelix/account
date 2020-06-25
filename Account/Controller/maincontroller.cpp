@@ -712,6 +712,9 @@ void MainController::loadAccount()
 
 void MainController::checkEstimated()
 {
+    for(auto it: m_features)
+        it->checker();
+
     QList<Entry> list;
     
     for(auto it: m_db->selectEntry(currentAccount()))
@@ -760,7 +763,7 @@ void MainController::validateCheckEstimated()
             m_db->removeEntry(e);
         }
     }
-    
+
     QMetaObject::invokeMethod(popup, "close");
     buildModel();
 }

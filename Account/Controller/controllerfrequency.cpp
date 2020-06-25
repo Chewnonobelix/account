@@ -365,3 +365,18 @@ void ControllerFrequency::updateFreqEndless(int id, bool e)
     m_freqs[id].setEndless(e);
     m_db->updateFrequency(m_freqs[id]);
 }
+
+void ControllerFrequency::checker()
+{
+
+    for(auto it: m_freqs)
+    {
+        while(it.endless() && it.end() < QDate::currentDate())
+        {
+            m_generate->setProperty("freqId", it.id());
+            m_generate->setProperty("freqGroup", it.nbGroup()+1);
+            auto date = it.end().addDays( Account::nbDay(it.end(), it.freq()));
+            generate(date.toString("dd-MM-yyyy"), date.addYears(1).toString("dd-MM-yyyy"));
+        }
+    }
+}
