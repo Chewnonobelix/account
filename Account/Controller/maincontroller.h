@@ -52,8 +52,6 @@ private:
     ControllerSettings m_settings;
 
     AbstractGraphController m_graph;
-//    TimeGraphController m_graph;
-    ControllerPieGraph m_pie;
     
     QList<QSharedPointer<FeatureBuilder>> m_features;
         

@@ -34,15 +34,12 @@ QString AbstractController::currentAccount()
 
 void AbstractController::CalcThread::run()
 {
-    qDebug()<<"Run"<<index;
     int start = l.size() / 4;
     start *= index;
     int j = 0;
 
-
     for(j = start; j < (start + (l.size() / 4)) && j < l.size(); j++)
     {
-        qDebug()<<j;
         if(indexes.contains(j))
             continue;
 
@@ -51,7 +48,6 @@ void AbstractController::CalcThread::run()
         *ret = *ret + (l)[j];
         mut->unlock();
     }
-    qDebug()<<"Finish"<<index<<l.size();
 }
 
 void AbstractController::calculTotal()
@@ -71,9 +67,6 @@ void AbstractController::calculTotal()
         pool.last()->start();
         connect(pool.last().data(), CalcThread::finished, this, AbstractController::s_totalChanged);
     }
-    qDebug()<<"Pool"<<pool.size();
-//    for(auto it: l)
-//        m_accountTotal = m_accountTotal + it;    
 }
 
 void AbstractController::addEntry(const Entry& e)
