@@ -123,6 +123,8 @@ public slots:
     void about();
 
     void reload();
+
+    void totalChanged();
 };
 
 
