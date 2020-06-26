@@ -2,11 +2,12 @@
 
 QString AbstractController::m_account = QString();
 InterfaceDataSave* AbstractController::m_db = nullptr;
-Total AbstractController::m_accountTotal = Total();
+QMap<QDate, Total> AbstractController::m_accountTotal = QMap<QDate, Total>();
 QThread* AbstractController::m_dbThread = nullptr;
 QSharedPointer<QMutex> AbstractController::CalcThread::mut = QSharedPointer<QMutex>::create();
 QList<QSharedPointer<AbstractController::CalcThread>> AbstractController::pool = QList<QSharedPointer<AbstractController::CalcThread>>();
 QSet<int> AbstractController::CalcThread::indexes = QSet<int>();
+int AbstractController::CalcThread::nbRunning = 0;
 
 AbstractController::AbstractController(): QObject(nullptr)
 {
@@ -19,7 +20,7 @@ AbstractController::~AbstractController()
 
 }
 
-AbstractController::CalcThread::CalcThread(int index, QList<Entry> l, Total* r):index(index), l(l), ret(r)
+AbstractController::CalcThread::CalcThread(int index, QList<Entry> l, QMap<QDate, Total>* r):index(index), l(l), ret(r)
 {}
 
 void AbstractController::setCurrentAccount(QString a)
@@ -40,32 +41,48 @@ void AbstractController::CalcThread::run()
 
     for(j = start; j < (start + (l.size() / 4)) && j < l.size(); j++)
     {
-        if(indexes.contains(j))
+        if(indexes.contains(j) || !ret)
             continue;
 
         mut->lock();
+        Total t = (*ret)[l[j].date()];
         indexes<<j;
-        *ret = *ret + (l)[j];
+        t = t + (l)[j];
+
+        (*ret)[l[j].date()] = t;
         mut->unlock();
     }
 }
 
+void AbstractController::finishTotalThread()
+{
+    CalcThread::nbRunning --;
+
+    for(auto it = m_accountTotal.begin()+1; it != m_accountTotal.end() && CalcThread::nbRunning == 0; it++)
+    {
+        *it = *it + *(it-1);
+    }
+
+    emit s_totalChanged();
+}
+
 void AbstractController::calculTotal()
 {
-    for(auto it: pool)
-    {
-        it->terminate();
-        it->wait();
-    }
+    if(CalcThread::nbRunning != 0)
+        return;
+
     pool.clear();
     CalcThread::indexes.clear();
-    m_accountTotal = Total();
+    m_accountTotal.clear();
     auto l = m_db->selectEntry(currentAccount()).values();
+
     for(auto i = 0; i < 5; i++)
     {
-        pool<<QSharedPointer<CalcThread>::create(i, l, &m_accountTotal);
-        pool.last()->start();
-        connect(pool.last().data(), CalcThread::finished, this, AbstractController::s_totalChanged);
+        auto t = QSharedPointer<CalcThread>::create(i, l, &m_accountTotal);
+        pool<<t;
+        t->start();
+        CalcThread::nbRunning ++;
+        connect(t.data(), CalcThread::finished, this, AbstractController::finishTotalThread);
     }
 }
 
@@ -142,6 +159,11 @@ void AbstractController::updateEntry(const Entry & e)
 }
 
 Total AbstractController::accountTotal()
+{
+    return m_accountTotal.isEmpty() ? Total(): m_accountTotal.last();
+}
+
+QMap<QDate, Total> AbstractController::allTotal()
 {
     return m_accountTotal;
 }

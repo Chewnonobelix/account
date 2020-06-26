@@ -231,6 +231,7 @@ int MainController::exec()
     
     connect(this, AbstractController::s_totalChanged, this, MainController::totalChanged);
     connect(m_db, InterfaceDataSave::s_updateEntry, this, AbstractController::calculTotal);
+    connect(this, AbstractController::s_totalChanged, this, MainController::previewCalendar);
     languageChange();
     
     return 0;
@@ -482,7 +483,7 @@ void MainController::edit(int id)
 
 void MainController::previewCalendar()
 {
-    QMap<QDate, Total> all /*= m_graph.sum()*/;
+    QMap<QDate, Total> all = allTotal();
     QObject* cal = m_engine.rootObjects().first()->findChild<QObject*>("cal");
     int month;
     int year;
@@ -501,6 +502,11 @@ void MainController::previewCalendar()
         
         if(all.contains(itDate))
             monthPreview<<all[itDate];
+        else if(!monthPreview.isEmpty())
+        {
+            monthPreview<<monthPreview.last();
+            monthPreview.last().setDate(itDate);
+        }
         
         if(all.contains(itDate))
         {

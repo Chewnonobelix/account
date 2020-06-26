@@ -25,17 +25,18 @@ class AbstractController: public QObject
         void run();
 
     public:
-        CalcThread(int, QList<Entry>, Total*);
+        CalcThread(int, QList<Entry>, QMap<QDate, Total>*);
         int index;
         QList<Entry> l;
-        Total* ret;
+        QMap<QDate, Total>* ret;
         static QSharedPointer<QMutex> mut;
         static QSet<int> indexes;
+        static int nbRunning;
     };
 
 private:
     static QString m_account;
-    static Total m_accountTotal;
+    static QMap<QDate, Total> m_accountTotal;
     static QList<QSharedPointer<CalcThread>> pool;
 
 protected:
@@ -62,9 +63,11 @@ public:
     static void deleteDb();
     
     static Total accountTotal();
+    static QMap<QDate, Total> allTotal();
 
 public slots:
     void calculTotal();
+    void finishTotalThread();
 
 signals:
     void s_totalChanged();
