@@ -63,6 +63,7 @@ public:
     static void deleteDb();
     
     static Total accountTotal();
+    static QMap<QDate, Total> allTotal();
 
 public slots:
     void calculTotal();

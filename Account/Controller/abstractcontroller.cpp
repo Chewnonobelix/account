@@ -162,3 +162,8 @@ Total AbstractController::accountTotal()
 {
     return m_accountTotal.isEmpty() ? Total(): m_accountTotal.last();
 }
+
+QMap<QDate, Total> AbstractController::allTotal()
+{
+    return m_accountTotal;
+}
