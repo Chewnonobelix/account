@@ -231,7 +231,7 @@ int MainController::exec()
     
     connect(this, AbstractController::s_totalChanged, this, MainController::totalChanged);
     connect(m_db, InterfaceDataSave::s_updateEntry, this, AbstractController::calculTotal);
-    connect(m_db, InterfaceDataSave::s_updateEntry, this, MainController::previewCalendar);
+    connect(this, AbstractController::s_totalChanged, this, MainController::previewCalendar);
     languageChange();
     
     return 0;
