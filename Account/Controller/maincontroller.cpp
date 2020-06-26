@@ -229,6 +229,8 @@ int MainController::exec()
     connect(m_db, InterfaceDataSave::s_updateEntry, &m_graph, AbstractGraphController::exec);
     m_graph.exec();
     
+    connect(this, AbstractController::s_totalChanged, this, MainController::totalChanged);
+    connect(m_db, InterfaceDataSave::s_updateEntry, this, AbstractController::calculTotal);
     languageChange();
     
     return 0;
@@ -672,7 +674,7 @@ QList<QDate> MainController::dateList() const
 void MainController::accountChange(QString acc)
 {
     AbstractController::setCurrentAccount(acc);
-    
+    calculTotal();
     QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
     
     if(head)
@@ -782,6 +784,16 @@ void MainController::receiveSum()
 void MainController::openTransfert()
 {
     m_transfert.exec();
+}
+
+void MainController::totalChanged()
+{
+    QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
+
+    if(head)
+    {
+        head->setProperty("total", QVariant::fromValue(accountTotal()));
+    }
 }
 
 void MainController::addProfile()

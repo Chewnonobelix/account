@@ -4,6 +4,9 @@ QString AbstractController::m_account = QString();
 InterfaceDataSave* AbstractController::m_db = nullptr;
 Total AbstractController::m_accountTotal = Total();
 QThread* AbstractController::m_dbThread = nullptr;
+QSharedPointer<QMutex> AbstractController::CalcThread::mut = QSharedPointer<QMutex>::create();
+QList<QSharedPointer<AbstractController::CalcThread>> AbstractController::pool = QList<QSharedPointer<AbstractController::CalcThread>>();
+QSet<int> AbstractController::CalcThread::indexes = QSet<int>();
 
 AbstractController::AbstractController(): QObject(nullptr)
 {
@@ -16,23 +19,59 @@ AbstractController::~AbstractController()
 
 }
 
+AbstractController::CalcThread::CalcThread(int index, QList<Entry> l, Total* r):index(index), l(l), ret(r)
+{}
+
 void AbstractController::setCurrentAccount(QString a)
 {
     m_account = a;
-  
-    calculTotal();
-}
+  }
 
 QString AbstractController::currentAccount()
 {
     return m_account;
 }
 
+void AbstractController::CalcThread::run()
+{
+    qDebug()<<"Run"<<index;
+    int start = l.size() / 4;
+    start *= index;
+    int j = 0;
+
+
+    for(j = start; j < (start + (l.size() / 4)) && j < l.size(); j++)
+    {
+        qDebug()<<j;
+        if(indexes.contains(j))
+            continue;
+
+        mut->lock();
+        indexes<<j;
+        *ret = *ret + (l)[j];
+        mut->unlock();
+    }
+    qDebug()<<"Finish"<<index<<l.size();
+}
+
 void AbstractController::calculTotal()
 {
-//    m_accountTotal = Total();
-    
-//    auto l = m_db->selectEntry(currentAccount());
+    for(auto it: pool)
+    {
+        it->terminate();
+        it->wait();
+    }
+    pool.clear();
+    CalcThread::indexes.clear();
+    m_accountTotal = Total();
+    auto l = m_db->selectEntry(currentAccount()).values();
+    for(auto i = 0; i < 5; i++)
+    {
+        pool<<QSharedPointer<CalcThread>::create(i, l, &m_accountTotal);
+        pool.last()->start();
+        connect(pool.last().data(), CalcThread::finished, this, AbstractController::s_totalChanged);
+    }
+    qDebug()<<"Pool"<<pool.size();
 //    for(auto it: l)
 //        m_accountTotal = m_accountTotal + it;    
 }
@@ -63,9 +102,7 @@ void AbstractController::addEntry(const Entry& e)
             updateEntry(init);
         }
     }
-    
-    calculTotal();
-}
+ }
 
 Entry AbstractController::entry(int id)
 {
@@ -109,8 +146,6 @@ void AbstractController::updateEntry(const Entry & e)
 {
     m_db->updateEntry(e);
     m_db->updateInfo(e);
-
-    calculTotal();
 }
 
 Total AbstractController::accountTotal()
