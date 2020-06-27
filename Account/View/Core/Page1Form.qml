@@ -99,7 +99,7 @@ Page {
             Layout.row: 2
             Layout.rowSpan: 1
             Layout.columnSpan: 2
-            Layout.preferredHeight: pageTable.height * 0.61
+            Layout.preferredHeight: pageTable.height * 0.57
             Layout.preferredWidth: pageTable.width * 0.20
             spacing: pageTable.height * .02
             
@@ -130,7 +130,7 @@ Page {
             Layout.rowSpan: 3
             Layout.columnSpan: 1
             
-            Layout.fillHeight: true
+            Layout.preferredHeight: pageTable.height * 0.96
             Layout.preferredWidth: pageTable.width * 0.20
             spacing: 0
             TableView {
@@ -454,7 +454,7 @@ Page {
             Layout.columnSpan: 1
             
             Layout.preferredWidth: pageTable.width * 0.52
-            Layout.preferredHeight: pageTable.height
+            Layout.preferredHeight: pageTable.height * .96
             ScrollBar.horizontal.policy: ScrollBar.AsNeeded
             
             clip: true
