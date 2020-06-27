@@ -29,11 +29,16 @@ Rectangle {
             Layout.column: 0
             Layout.row: 0
             Layout.columnSpan: 2
+            title: qsTr("Income categories")
+            titleFont.family: AccountStyle.title.name
+            titleFont.pixelSize: AccountStyle.title.size
 
             backgroundColor: "transparent"
             objectName: "incomingPie"
             Layout.fillHeight: true
             Layout.fillWidth: true
+            legend.font.family: AccountStyle.core.name
+            legend.font.pixelSize: AccountStyle.core.size
 
             function clear() {
                 incoming.clear()
@@ -68,7 +73,11 @@ Rectangle {
             Layout.column: 2
             Layout.row: 0
             Layout.columnSpan: 2
-
+            title: qsTr("Outcome categories")
+            titleFont.family: AccountStyle.title.name
+            titleFont.pixelSize: AccountStyle.title.size
+            legend.font.family: AccountStyle.core.name
+            legend.font.pixelSize: AccountStyle.core.size
             function clear() {
                 outcome.clear()
             }
