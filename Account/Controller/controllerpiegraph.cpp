@@ -13,6 +13,8 @@ int ControllerPieGraph::exec()
 void ControllerPieGraph::clear()
 {
     m_entries.clear();
+    m_entries["income"][""] = Total();
+    m_entries["outcome"][""] = Total();
 }
 
 void ControllerPieGraph::setDate(QDate d)
@@ -39,6 +41,7 @@ void ControllerPieGraph::update()
             QMetaObject::invokeMethod(pie, "append", Q_ARG(QVariant, it.key().isEmpty() ? tr("Unknow") : it.key()), Q_ARG(QVariant, it.value().value()));
         }
     };
+
 
     setter(m_entries["income"], m_income);
     setter(m_entries["outcome"], m_outcome);
