@@ -700,7 +700,10 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
         
         child = el.elementsByTagName("endless").at(0).toElement();
         f.setEndless(child.text().toInt());
-        ret[f.id()] = f;        
+
+        for(auto it: selectEntry(m_accounts.key(m_currentAccount)))
+            f<<it;
+        ret[f.id()] = f;
     }
     
     return ret.values();

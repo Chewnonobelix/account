@@ -135,11 +135,6 @@ void ControllerInformation::addNewCategory(QString cat)
     
 }
 
-void ControllerInformation::setControllerFrequency(ControllerFrequency * cf)
-{
-    m_controllerFrequency = cf;
-}
-
 void ControllerInformation::pageChange()
 {
     exec();

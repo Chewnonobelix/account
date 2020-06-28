@@ -821,6 +821,9 @@ QList<Frequency> ControllerDB::selectFrequency()
                     ref.setMetadata(m_selectMetadata->value("name").toString(), m_selectMetadata->value("value").toString());
             
             f.setReferenceEntry(ref);
+
+            for(auto it: selectEntry(m_currentAccount))
+                f<<it;
             ret<<f;
         }
         
