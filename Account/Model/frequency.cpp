@@ -115,7 +115,7 @@ Frequency& Frequency::operator<< (const Entry& e)
         QVariantMap le;
         le["id"] = e.id();
         le["date"] = e.date();
-        le["group"] = e.metaData<int>("freqGroup");
+        le["freqGroup"] = e.metaData<int>("freqGroup");
         le["isVisible"] = true;
         m_entriesId<<le;
     }
@@ -127,12 +127,12 @@ QString Frequency::name() const
     return m_referenceEntry.info().title();
 }
 
-QVariantList  Frequency::listEntries(int group) const
+QVariantList Frequency::listEntries(int group) const
 {
     QVariantList ret;
     
     for(auto it: entries())
-        if(it.toMap()["group"].toInt() == group)
+        if(it.toMap()["freqGroup"].toInt() == group)
             ret<<it;
     
     return ret;
