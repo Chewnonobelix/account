@@ -22,6 +22,13 @@ AccountBackground {
 
     }
 
+    onEntryChanged: {
+        title.text = Qt.binding(function() {return entry ? entry.info.title : ""})
+        spinbox.value = Qt.binding(function() {return entry ? entry.value * 100 : 0})
+        category.model = Qt.binding(function() {return catModel})
+        category.currentIndex = Qt.binding(function() {return entry ? category.setting(entry.info.category) : category.model.length - 1})
+    }
+
     GridLayout {
         id: grid
         rows: 3
@@ -36,14 +43,6 @@ AccountBackground {
             categoryLabel.enabled = true
             valueLabel.enabled = true
         }
-        
-        Component.onCompleted: {
-            title.text = Qt.binding(function() {return entry ? entry.info.title : ""})
-            spinbox.value = Qt.binding(function() {return entry ? entry.value * 100 : 0})
-            category.model = Qt.binding(function() {return catModel})
-            category.currentIndex = Qt.binding(function() {return entry ? category.setting(entry.info.category) : category.model.length - 1})
-        }
-
 
         property var tWidth: flow === GridLayout.LeftToRight ? 0.33 : 1
         property var tHeight: flow === GridLayout.LeftToRight ? 1 : 0.32
