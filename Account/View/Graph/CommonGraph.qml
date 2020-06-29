@@ -38,7 +38,7 @@ MouseArea{
             Layout.row: 1
             Layout.alignment: Qt.AlignRight
 
-            enabled: root.okPrev
+            enabled: root.okPrev && root.currentGran !== Account.Over
 
             onClicked: {
                 root.s_increment(-1)
@@ -59,7 +59,7 @@ MouseArea{
 
         AccountButton {
             id: next
-            enabled: root.okNext
+            enabled: root.okNext && root.currentGran !== Account.Over
 
             text: qsTr(">>")
 

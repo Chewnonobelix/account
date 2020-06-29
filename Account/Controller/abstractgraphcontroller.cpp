@@ -64,6 +64,7 @@ void AbstractGraphController::increment(int nb)
 
     auto e = m_db->selectEntry(currentAccount());
 
+    bool next = true, prev = true;
     for(auto it: e)
     {
         bool b = (m_currentGran == Account::Granularity::Month && (it.date().month() == m_currentDate.month()) &&
@@ -73,12 +74,19 @@ void AbstractGraphController::increment(int nb)
 
         b |= (m_currentGran == Account::Granularity::Over);
 
+
         if(b)
         {
+            next &= it.date() != e.uniqueKeys().last();
+            prev &= it.date() != e.uniqueKeys().first();
+
             for(auto it2: m_graphList)
                 it2->add(it);
         }
     }
+
+    m_view->setProperty("okNext", next);
+    m_view->setProperty("okPrev", prev);
 
     for(auto it2: m_graphList)
         it2->update();
