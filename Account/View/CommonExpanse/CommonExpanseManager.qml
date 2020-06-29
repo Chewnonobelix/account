@@ -35,22 +35,14 @@ Rectangle {
                 font.pixelSize: AccountStyle.title.size
             }
 
-            TextField{
+            AccountTextInput{
                 id: commonTitle
                 objectName: "commonTitle"
                 Layout.columnSpan: 3
                 Layout.row: 0
                 Layout.column: 1
                 Layout.fillWidth: true
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
-
-                property bool valid: text.length > 0
-
-
-                background: Rectangle {
-                    border.color: parent.valid ? "blue" : "red"
-                }
+                valid: text.length > 0
             }
 
             AccountButton {

@@ -71,7 +71,7 @@ Window {
                 Layout.preferredWidth: root.width * .47
             }
 
-            TextField {
+            AccountTextInput {
                 id: title
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47

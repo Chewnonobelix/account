@@ -52,7 +52,7 @@ Popup {
         //            }
         //        }
 
-        TextField {
+        AccountTextInput {
             id: profile
             objectName: "profileName"
             Layout.row: 1

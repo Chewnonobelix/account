@@ -34,11 +34,9 @@ AccountComboBox {
         return index >= 0 ? index : model.lenth - 1
     }
         
-    contentItem: TextInput {
+    contentItem: AccountTextInput {
         horizontalAlignment: Qt.AlignHCenter
         verticalAlignment: Qt.AlignVCenter
-        font.family: AccountStyle.core.name
-        font.pixelSize: AccountStyle.core.size
         
         text: currentText
         readOnly: !editable

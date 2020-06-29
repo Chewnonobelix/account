@@ -53,7 +53,7 @@ Item {
             ToolTip.visible: hovered
         }
         
-        TextField {
+        AccountTextInput {
             id: pageSkip
             objectName: "pageSkip"
             text: pagesIndex

@@ -106,7 +106,7 @@ Popup {
             objectName: "spinVal"
         }
 
-        TextField {
+        AccountTextInput {
             id: fieldInfo
             objectName: "fieldInfo"
             width: layoutButton.width

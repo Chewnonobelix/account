@@ -60,14 +60,13 @@ AccountBackground {
                 height: parent.height * 0.39
             }
 
-            TextField {
+            AccountTextInput {
                 id: title
                 enabled: !opening
                 width: parent.width
                 height: parent.height * 0.59
                 text: ""
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
+
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 onEditingFinished: {

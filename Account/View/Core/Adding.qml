@@ -102,11 +102,11 @@ Popup {
                 Layout.columnSpan: 1 
             }
             
-            TextField {
+            AccountTextInput {
                 id: member
                 objectName: "member"
                 visible: common
-                property bool isValid: (common && length > 0) || !common
+                valid: (common && length > 0) || !common
                 
                 Layout.preferredHeight: parent.firstRow
                 Layout.preferredWidth: root.width * 0.41
@@ -114,9 +114,6 @@ Popup {
                 Layout.column: 3
                 Layout.rowSpan: 1 
                 Layout.columnSpan: 3 
-                
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
                 
                 onTextEdited: {
                     var s = -1
@@ -126,19 +123,6 @@ Popup {
                     }
                     
                     completionLabel.text = s !== -1 ? root.completionList[s] : ""
-                }
-                
-                background: Rectangle {
-                    anchors.fill: parent
-                    color: "white"
-                    border.color: member.isValid ? "blue" : "red"
-                    AccountLabel {
-                        id: completionLabel
-                        anchors.fill: parent
-                        
-                        color: "grey"
-                        leftPadding: member.leftPadding                        
-                    }
                 }
             }       
             
@@ -157,7 +141,7 @@ Popup {
                 Layout.columnSpan: 1 
             }
             
-            TextField {
+            AccountTextInput {
                 id: valueLabel
                 font.family: AccountStyle.core.name
                 font.pixelSize: AccountStyle.core.size
@@ -166,8 +150,8 @@ Popup {
                 ToolTip.visible: !valid
                 ToolTip.delay: 100
                 
-                property bool valid: text.length !== 0
-                
+                valid: text.length !== 0
+
                 Layout.preferredHeight: parent.secondRow
                 Layout.preferredWidth: root.width * 0.25
                 Layout.row: 1
