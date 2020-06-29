@@ -33,6 +33,7 @@ void AbstractGraphController::change(int way)
         break;
     }
 
+    m_view->setProperty("currentGran", m_currentGran);
     for(auto it: m_graphList)
         it->setGran(m_currentGran);
 

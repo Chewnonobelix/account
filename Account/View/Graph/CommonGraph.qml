@@ -46,16 +46,15 @@ MouseArea{
         }
 
         AccountHeader {
-            text: Qt.formatDate(root.currentDate, root.currentGran === Account.Month ? "MMMM-yyyy" : root.currentGran === Account.Year ? "yyyy" : "")
+            property string textDate: Qt.formatDate(root.currentDate, root.currentGran === Account.Month ? "MMMM-yyyy" : root.currentGran === Account.Year ? "yyyy" : "")
+            property string granText: root.currentGran === Account.Month ? qsTr("Month") : root.currentGran === Account.Year ? qsTr("Year") : qsTr("All time")
+            text: textDate + " (" + granText + ")"
             Layout.preferredHeight: root.height * 0.05
             Layout.preferredWidth: root.width * 0.4
             Layout.alignment: Qt.AlignCenter
             Layout.columnSpan: 1
             Layout.column: 1
             Layout.row: 1
-            //            font.family: AccountStyle.title.name
-            //            font.pixelSize: AccountStyle.title.size
-
         }
 
         AccountButton {
@@ -94,27 +93,6 @@ MouseArea{
                 id: pie
                 objectName: "pieCategory"
             }
-
-
-//            Rectangle {
-//                color: "blue"
-//                objectName: "blue"
-//            }
-
-//            Rectangle {
-//                color: "red"
-//                objectName: "red"
-//            }
-
-//            Rectangle {
-//                color: "green"
-//                objectName: "green"
-//            }
-
-//            Rectangle {
-//                color: "yellow"
-//                objectName: "yellow"
-//            }
         }
     }
 }
