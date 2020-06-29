@@ -53,11 +53,6 @@ StackView {
         y: (root.height*0.08/5) * (this.z)
     }
 
-    onCurrentItemChanged: {
-        currentItem.x = Qt.binding(function() { return (root.width*0.08/5) * (currentItem.z) })
-        currentItem.y = Qt.binding(function() { return (root.height*0.08/5) * (currentItem.z) })
-    }
-
     replaceEnter: Transition {
         id: enter
         ParallelAnimation {
