@@ -11,13 +11,13 @@ int AbstractController::CalcThread::nbRunning = 0;
 
 AbstractController::AbstractController(): QObject(nullptr)
 {
-
+    
 }
 
 
 AbstractController::~AbstractController()
 {
-
+    
 }
 
 AbstractController::CalcThread::CalcThread(int index, QList<Entry> l, QMap<QDate, Total>* r):index(index), l(l), ret(r)
@@ -26,7 +26,7 @@ AbstractController::CalcThread::CalcThread(int index, QList<Entry> l, QMap<QDate
 void AbstractController::setCurrentAccount(QString a)
 {
     m_account = a;
-  }
+}
 
 QString AbstractController::currentAccount()
 {
@@ -38,17 +38,17 @@ void AbstractController::CalcThread::run()
     int start = l.size() / 4;
     start *= index;
     int j = 0;
-
+    
     for(j = start; j < (start + (l.size() / 4)) && j < l.size(); j++)
     {
         if(indexes.contains(j) || !ret)
             continue;
-
+        
         mut->lock();
         Total t = (*ret)[l[j].date()];
         indexes<<j;
         t = t + (l)[j];
-
+        
         (*ret)[l[j].date()] = t;
         mut->unlock();
     }
@@ -57,12 +57,15 @@ void AbstractController::CalcThread::run()
 void AbstractController::finishTotalThread()
 {
     CalcThread::nbRunning --;
-
-    for(auto it = m_accountTotal.begin()+1; it != m_accountTotal.end() && CalcThread::nbRunning == 0; it++)
+    
+    if(m_accountTotal.size() > 1)
     {
-        *it = *it + *(it-1);
+        for(auto it = m_accountTotal.begin()+1; it != m_accountTotal.end() && CalcThread::nbRunning == 0; it++)
+        {
+            *it = *it + *(it-1);
+        }
     }
-
+        
     emit s_totalChanged();
 }
 
@@ -70,12 +73,12 @@ void AbstractController::calculTotal()
 {
     if(CalcThread::nbRunning != 0)
         return;
-
+    
     pool.clear();
     CalcThread::indexes.clear();
     m_accountTotal.clear();
     auto l = m_db->selectEntry(currentAccount()).values();
-
+    
     for(auto i = 0; i < 5; i++)
     {
         auto t = QSharedPointer<CalcThread>::create(i, l, &m_accountTotal);
@@ -98,13 +101,13 @@ void AbstractController::addEntry(const Entry& e)
         for(auto it: m_db->selectEntry(currentAccount()))
             if(it.label() == "Initial")
                 init = it;
-
+        
         if(et.date() < init.date())
         {
             QMetaEnum qme = QMetaEnum::fromType<Account::TypeEnum>();
             QDate nd = et.date().addDays(-1);
-
-
+            
+            
             init.setDate(nd);
             double val = init.value();
             val -= (et.value()*qme.keysToValue(et.type().toLower().toLatin1()));
@@ -112,16 +115,16 @@ void AbstractController::addEntry(const Entry& e)
             updateEntry(init);
         }
     }
- }
+}
 
 Entry AbstractController::entry(int id)
 {
     Entry ret;
-
+    
     for(auto it: m_db->selectEntry(currentAccount()))
         if(it.id() == id)
             ret = it;
-
+    
     return ret;
 }
 
@@ -130,16 +133,16 @@ void AbstractController::setDb(QString name)
     int type = QMetaType::type(name.toLatin1());
     if(type == QMetaType::UnknownType)
         throw QString("Unknow DB type");
-
+    
     if(m_db != nullptr)
     {
         m_db->thread()->terminate();
         m_db->thread()->wait();
-
+        
         delete m_db;
     }
     m_dbThread->start();
-
+    
     m_db = (InterfaceDataSave*)(QMetaType::create(type));
     m_db->init();
     m_db->moveToThread(m_dbThread);

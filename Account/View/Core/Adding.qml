@@ -204,8 +204,7 @@ Popup {
                                 
                 property bool ttVisible: false
                 onClicked: {
-                    
-                    if(valueLabel.valid && member.isValid) {
+                    if(valueLabel.valid && member.valid) {
                         root.accept()
                         reset()
                         close()

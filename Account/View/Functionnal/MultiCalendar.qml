@@ -316,7 +316,7 @@ Calendar {
                             }
 
                         }
-                        if( index == -1) {
+                        if( index === -1) {
                             selectedDates[selectedDates.length] = Qt.formatDate(styleData.date, format)
                         }
                         else {
