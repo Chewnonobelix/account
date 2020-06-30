@@ -35,11 +35,11 @@ QString AbstractController::currentAccount()
 
 void AbstractController::CalcThread::run()
 {
-    int start = l.size() / 4;
+    int start = std::max(l.size() / 4, 1);
     start *= index;
     int j = 0;
     
-    for(j = start; j < (start + (l.size() / 4)) && j < l.size(); j++)
+    for(j = start; j < (start + (std::max(l.size() / 4, 1))) && j < l.size(); j++)
     {
         if(indexes.contains(j) || !ret)
             continue;
