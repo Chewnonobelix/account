@@ -47,9 +47,10 @@ Calendar {
         }
     }
 
+    readonly property string format: "dd-MM-yyyy"
+
     signal s_datesChanged()
     signal s_monthChanged()
-    readonly property string format: "dd-MM-yyyy"
     property int currentMonth
     property int currentYear
     property bool multiple: true
