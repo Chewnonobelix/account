@@ -46,5 +46,6 @@
         <file>Graph/PieCategory.qml</file>
         <file>Functionnal/PageView.qml</file>
         <file>Graph/CommonGraph.qml</file>
+        <file>Functionnal/ZoomCalendar.qml</file>
     </qresource>
 </RCC>
