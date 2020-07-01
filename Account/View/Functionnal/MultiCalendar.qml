@@ -58,13 +58,6 @@ Calendar {
     visibleYear: currentYear
     weekNumbersVisible: true
 
-    MouseArea {
-        z: -1
-        anchors.fill: parent
-        acceptedButtons: Qt.NoButton
-        onWheel: console.log(wheel.angleDelta)
-    }
-
     function showNextMonth() {
         currentMonth ++
 
