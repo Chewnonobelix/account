@@ -47,5 +47,6 @@
         <file>Functionnal/PageView.qml</file>
         <file>Graph/CommonGraph.qml</file>
         <file>Functionnal/ZoomCalendar.qml</file>
+        <file>Functionnal/CalendarPage.qml</file>
     </qresource>
 </RCC>
