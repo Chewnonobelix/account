@@ -52,6 +52,7 @@ Calendar {
     readonly property string format: "dd-MM-yyyy"
     property int currentMonth
     property int currentYear
+    property bool multiple: true
 
     visibleMonth: currentMonth
     visibleYear: currentYear
@@ -308,7 +309,8 @@ Calendar {
                 cursorShape: parent.checkMonth(styleData) ? Qt.PointingHandCursor: Qt.ArrowCursor
 
                 onClicked: {
-                    if((mouse.modifiers === Qt.ShiftModifier) && parent.checkMonth(styleData)){
+
+                    if((mouse.modifiers === Qt.ShiftModifier) && parent.checkMonth(styleData) && multiCal.multiple){
                         var index = -1
                         for(var i in selectedDates) {
                             if(Qt.formatDate(styleData.date, format) === selectedDates[i]) {
