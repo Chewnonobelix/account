@@ -36,10 +36,9 @@ Page {
         anchors.leftMargin: pageTable.width * 0.02
         
         
-        MultiCalendar {
+        ZoomCalendar {
             id: cal
             objectName: "cal"
-            weekNumbersVisible: true
             
             Layout.column: 0
             Layout.row: 0
