@@ -265,6 +265,8 @@ Rectangle {
                 id: endless
                 objectName: "endless"
                 anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
                 text: qsTr("Endless")
                 signal s_endless(int id, bool e)
 
