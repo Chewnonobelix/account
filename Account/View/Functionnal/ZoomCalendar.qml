@@ -22,20 +22,25 @@ MouseArea {
             CalendarPage {
                 columns: 3
                 rows: 4
-                model: [Date.fromLocaleString(locale, "01-01-1900", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-02-1900", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-03-1900", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-04-1900", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-05-1900", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-06-1900", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-07-1900", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-08-1900", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-09-1900", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-10-1900", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-11-1900", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-12-1900", "dd-MM-yyyy")]
+                label: month.currentYear
+                model: [Date.fromLocaleString(locale, "01-01-"+month.currentYear, "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-02-"+month.currentYear, "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-03-"+month.currentYear, "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-04-"+month.currentYear, "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-05-"+month.currentYear, "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-06-"+month.currentYear, "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-07-"+month.currentYear, "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-08-"+month.currentYear, "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-09-"+month.currentYear, "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-10-"+month.currentYear, "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-11-"+month.currentYear, "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-12-"+month.currentYear, "dd-MM-yyyy")]
 
-                onS_select: console.log(d)
+                onS_select: {
+                    month.currentMonth = Qt.formatDate(d, "MM")   
+                    zoom(2)
+                    console.log(d)
+                }
             }
         }
 
@@ -46,18 +51,24 @@ MouseArea {
             CalendarPage {
                 columns: 5
                 rows: 2
-                model: [Date.fromLocaleString(locale, "01-01-1900", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-02-1901", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-03-1902", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-04-1903", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-05-1904", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-06-1905", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-07-1906", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-08-1907", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-09-1908", "dd-MM-yyyy"),
-                    Date.fromLocaleString(locale, "01-10-1909", "dd-MM-yyyy")]
+                label: Math.floor(month.currentYear/10)+"X"
+                decade: true
+                model: [Date.fromLocaleString(locale, "01-01-"+Math.floor(month.currentYear/10)+"0", "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-02-"+Math.floor(month.currentYear/10)+"1", "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-03-"+Math.floor(month.currentYear/10)+"2", "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-04-"+Math.floor(month.currentYear/10)+"3", "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-05-"+Math.floor(month.currentYear/10)+"4", "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-06-"+Math.floor(month.currentYear/10)+"5", "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-07-"+Math.floor(month.currentYear/10)+"6", "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-08-"+Math.floor(month.currentYear/10)+"7", "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-09-"+Math.floor(month.currentYear/10)+"8", "dd-MM-yyyy"),
+                    Date.fromLocaleString(locale, "01-10-"+Math.floor(month.currentYear/10)+"9", "dd-MM-yyyy")]
 
-                onS_select: console.log(d)
+                onS_select: {
+                    month.currentYear = Qt.formatDate(d, "yyyy")
+                    zoom(2)
+                    console.log(d)
+                }
             }
         }
 
@@ -70,8 +81,8 @@ MouseArea {
         }
     }
 
-    onWheel: {
-        if(wheel.angleDelta.y < 1) {
+    function zoom(way) {
+        if(way < 1) {
             if(root.depth === 2) {
                 root.push(decade)
             }
@@ -80,11 +91,15 @@ MouseArea {
             }
         }
 
-        if(wheel.angleDelta.y > 1) {
+        if(way > 1) {
             if(root.depth > 1) {
                 root.pop()
             }
         }
+    }
+
+    onWheel: {
+        zoom(wheel.angleDelta.y > 1 ? 2 : 0)
     }
 
 

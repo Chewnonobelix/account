@@ -10,7 +10,8 @@ Item {
     property int columns
     property int rows
     property var model:[]
-
+    property bool decade: false
+    
     signal s_select(date d)
     GridLayout {
         anchors.fill: parent
@@ -62,7 +63,7 @@ Item {
 
                     AccountLabel {
                         anchors.fill: parent
-                        text: Qt.formatDate(modelData, "MMM")
+                        text: Qt.formatDate(modelData, decade ? "yy" : "MMM")
 
                     }
                     MouseArea {
