@@ -45,6 +45,10 @@ MouseArea {
                     month.currentMonth = Qt.formatDate(d, "MM") - 1  
                     zoom(2)
                 }
+                
+                onShowNext: month.showNextYear()
+                
+                onShowPrevious: month.showPreviousYear()
             }
         }
         
@@ -72,6 +76,11 @@ MouseArea {
                     month.currentYear = Qt.formatDate(d, "yyyy")
                     zoom(2)
                 }
+                
+                onShowNext: month.currentYear = month.currentYear + 10
+                
+                onShowPrevious: month.currentYear = month.currentYear - 10
+                
             }
         }
         
