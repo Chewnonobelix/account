@@ -13,6 +13,9 @@ Item {
     property bool decade: false
     
     signal s_select(date d)
+    signal showPrevious()
+    signal showNext()
+    
     GridLayout {
         anchors.fill: parent
 
@@ -26,14 +29,14 @@ Item {
             Layout.row: 0
             Layout.preferredHeight: root.height / 16
             Layout.preferredWidth: root.width / 14
+            onClicked: showPrevious()
         }
-        AccountLabel {
+        AccountHeader {
             text: root.label
             Layout.column: 1
             Layout.row: 0
             Layout.preferredHeight: root.height / 16
             Layout.fillWidth: true
-
         }
         AccountButton {
             text: ">"
@@ -41,6 +44,7 @@ Item {
             Layout.row: 0
             Layout.preferredHeight: root.height / 16
             Layout.preferredWidth: root.width / 14
+            onClicked: showNext()
         }
 
         Grid {
@@ -69,6 +73,7 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: root.s_select(modelData)
+                        cursorShape: Qt.PointingHandCursor
                     }
                 }
             }
