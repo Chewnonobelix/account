@@ -16,7 +16,7 @@ MouseArea {
     function set(date) {
         selectedDate = date
     }
-
+    
     StackView {
         id: root
         anchors.fill: parent
@@ -82,6 +82,81 @@ MouseArea {
             onS_datesChanged: area.s_datesChanged()
             onS_monthChanged: area.s_monthChanged()
         }
+        
+        pushEnter: Transition {
+            ParallelAnimation {
+                NumberAnimation {
+                    property: "x"
+                    from: -root.width/2
+                    to: 0
+                }
+                NumberAnimation {
+                    property: "y"
+                    from: -root.height/2
+                    to: 0
+                }
+                NumberAnimation {
+                    property: "width"
+                    from: root.width*2
+                    to: root.width
+                }
+                NumberAnimation {
+                    property: "height"
+                    from: root.height*2
+                    to: root.height
+                }
+            }
+        }
+        
+        popEnter: Transition {
+            ParallelAnimation {
+                NumberAnimation {
+                    property: "x"
+                    from: 0
+                    to: 0
+                }
+                NumberAnimation {
+                    property: "y"
+                    from: 0
+                    to: 0
+                }
+                NumberAnimation {
+                    property: "width"
+                    from: root.width
+                    to: root.width
+                }
+                NumberAnimation {
+                    property: "height"
+                    from: root.height
+                    to: root.height
+                }
+            }
+        }
+
+        popExit: Transition {
+            ParallelAnimation {
+                NumberAnimation {
+                    property: "x"
+                    to: -root.width/2
+                    from: 0
+                }
+                NumberAnimation {
+                    property: "y"
+                    to: -root.height/2
+                    from: 0
+                }
+                NumberAnimation {
+                    property: "width"
+                    to: root.width*2
+                    from: root.width
+                }
+                NumberAnimation {
+                    property: "height"
+                    to: root.height*2
+                    from: root.height
+                }
+            }
+        }
     }
     
     function zoom(way) {
@@ -107,4 +182,5 @@ MouseArea {
     
     
     acceptedButtons: Qt.NoButton
+    
 }
