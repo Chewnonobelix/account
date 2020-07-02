@@ -63,7 +63,7 @@ Item {
 
                     AccountLabel {
                         anchors.fill: parent
-                        text: Qt.formatDate(modelData, decade ? "yy" : "MMM")
+                        text: Qt.formatDate(modelData, decade ? "yyyy" : "MMM")
 
                     }
                     MouseArea {

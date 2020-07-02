@@ -66,7 +66,7 @@ Calendar {
             showNextYear()
             currentMonth = 0
         }
-        visibleMonth = currentMonth
+        visibleMonth = Qt.binding( function() { return currentMonth})
 
         s_monthChanged()
     }
@@ -74,29 +74,26 @@ Calendar {
 
     function showPreviousMonth() {
         currentMonth --
-        visibleMonth = currentMonth
 
         if(currentMonth == -1) {
             showPreviousYear()
             currentMonth = 11
         }
-        visibleMonth = currentMonth
+        visibleMonth = Qt.binding( function() { return currentMonth})
         s_monthChanged()
     }
 
     function showNextYear() {
         currentYear ++
 
-        visibleYear = currentYear
+        visibleYear = Qt.binding( function() { return currentYear})
 
     }
 
 
     function showPreviousYear() {
         currentYear --
-        visibleYear = currentYear
-
-        visibleYear = currentYear
+        visibleYear = Qt.binding( function() { return currentYear})
     }
 
 
@@ -106,6 +103,9 @@ Calendar {
         currentMonth = visibleMonth
         visibleYear = 1900 + new Date().getYear()
         currentYear = visibleYear
+        
+        visibleYear = Qt.binding( function() { return currentYear})
+        visibleMonth = Qt.binding( function() { return currentMonth})        
     }
 
     style: CalendarStyle {
@@ -270,8 +270,8 @@ Calendar {
                     styleRect.gradient = AccountStyle.unselectView
                 }
 
-                visibleMonth = currentMonth
-                visibleYear = currentYear
+                visibleMonth = Qt.binding( function() { return currentMonth})
+                visibleYear = Qt.binding( function() { return currentYear})
 
                 multiCal.s_datesChanged()
             }

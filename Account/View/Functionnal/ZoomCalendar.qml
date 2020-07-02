@@ -9,16 +9,16 @@ MouseArea {
     property int currentMonth: month.currentMonth
     property int currentYear: month.currentYear
     property var selectedDates: month.selectedDates
-
+    
     property bool multiple: true
-
+    
     StackView {
         id: root
         anchors.fill: parent
         clip: true
         Component {
             id: year
-
+            
             CalendarPage {
                 columns: 3
                 rows: 4
@@ -35,19 +35,18 @@ MouseArea {
                     Date.fromLocaleString(locale, "01-10-"+month.currentYear, "dd-MM-yyyy"),
                     Date.fromLocaleString(locale, "01-11-"+month.currentYear, "dd-MM-yyyy"),
                     Date.fromLocaleString(locale, "01-12-"+month.currentYear, "dd-MM-yyyy")]
-
+                
                 onS_select: {
-                    month.currentMonth = Qt.formatDate(d, "MM")   
+                    month.currentMonth = Qt.formatDate(d, "MM") - 1  
                     zoom(2)
-                    console.log(d)
                 }
             }
         }
-
-
+        
+        
         Component {
             id: decade
-
+            
             CalendarPage {
                 columns: 5
                 rows: 2
@@ -63,15 +62,14 @@ MouseArea {
                     Date.fromLocaleString(locale, "01-08-"+Math.floor(month.currentYear/10)+"7", "dd-MM-yyyy"),
                     Date.fromLocaleString(locale, "01-09-"+Math.floor(month.currentYear/10)+"8", "dd-MM-yyyy"),
                     Date.fromLocaleString(locale, "01-10-"+Math.floor(month.currentYear/10)+"9", "dd-MM-yyyy")]
-
+                
                 onS_select: {
                     month.currentYear = Qt.formatDate(d, "yyyy")
                     zoom(2)
-                    console.log(d)
                 }
             }
         }
-
+        
         initialItem: MultiCalendar {
             id: month
             weekNumbersVisible: true
@@ -80,7 +78,7 @@ MouseArea {
             onS_monthChanged: area.s_monthChanged()
         }
     }
-
+    
     function zoom(way) {
         if(way < 1) {
             if(root.depth === 2) {
@@ -90,18 +88,18 @@ MouseArea {
                 root.push(year)
             }
         }
-
+        
         if(way > 1) {
             if(root.depth > 1) {
                 root.pop()
             }
         }
     }
-
+    
     onWheel: {
         zoom(wheel.angleDelta.y > 1 ? 2 : 0)
     }
-
-
+    
+    
     acceptedButtons: Qt.NoButton
 }
