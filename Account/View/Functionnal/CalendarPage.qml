@@ -27,7 +27,7 @@ Item {
             Layout.preferredHeight: root.height / 16
             Layout.preferredWidth: root.width / 14
         }
-        AccountLabel {
+        AccountHeader {
             text: root.label
             Layout.column: 1
             Layout.row: 0
@@ -69,6 +69,7 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: root.s_select(modelData)
+                        cursorShape: Qt.PointingHandCursor
                     }
                 }
             }
