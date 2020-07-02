@@ -9,9 +9,14 @@ MouseArea {
     property int currentMonth: month.currentMonth
     property int currentYear: month.currentYear
     property var selectedDates: month.selectedDates
+    property var selectedDate: month.selectedDate
     
     property bool multiple: true
     
+    function set(date) {
+        selectedDate = date
+    }
+
     StackView {
         id: root
         anchors.fill: parent
