@@ -240,115 +240,253 @@ ApplicationWindow {
         AccountBackground {
             anchors.fill: parent
 
-            Menu {
-                title: qsTr("&File")
+            Column {
+                anchors.fill: parent
+                spacing: 0
 
-                width: drawer.width
-                height: drawer.height * 0.05
-
-                delegate: MenuItem {
-                    background: Rectangle {
-                        gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                    }
-                }
-
-                MenuItem {
-                    text: qsTr("Settings")
-                    onTriggered: s_openSetting()
-                    background: Rectangle {
-                        gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                    }
-                }
-
-                Menu {
-                    id: profileMenu
-                    objectName: "profileMenu"
-                    width: 210
-                    title: qsTr("Profile")
-                    signal s_profile(string name)
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
-
-                    Repeater {
-                        id: profileRepeater
-                        objectName: "profileRepeater"
-                        property string current
-                        MenuItem {
-                            text: modelData
-                            checked: modelData === profileRepeater.current
-                            autoExclusive: true
-                            checkable: true
-                            onTriggered: {
-                                profileRepeater.current = text
-                                profileMenu.s_profile(text)
-                            }
-                            font.family: AccountStyle.core.name
-                            font.pixelSize: AccountStyle.core.size
-                            background: Rectangle {
-                                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                            }
-                        }
-                    }
-
-                    MenuItem {
-                        text: qsTr("New profile")
-                        objectName: "newProfile"
-
-                        onTriggered: popProfile.open()
-                        font.family: AccountStyle.core.name
-                        font.pixelSize: AccountStyle.core.size
-
-                        background: Rectangle {
-                            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                        }
-                    }
-
-                    MenuItem {
-                        text: qsTr("Delete profile") + ": " + profileRepeater.current
-                        objectName: "deleteProfile"
-                        enabled: profileRepeater.current !== "Default"
-
-                        signal s_deleteProfile(string name)
-                        onTriggered: s_deleteProfile(profileRepeater.current)
-                        font.family: AccountStyle.core.name
-                        font.pixelSize: AccountStyle.core.size
-
-                        background: Rectangle {
-                            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                        }
-                    }
-
-                }
-
-                MenuItem {
-                    text: qsTr("&Quit")
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
-                    id: quitMenu
-
-                    indicator: AccountLabel {
-                        text: quitShort.nativeText
-                        anchors.rightMargin: 10
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                    Shortcut {
-                        id: quitShort
-                        sequence: "CTRL+Q"
-                        context: Qt.ApplicationShortcut
-                        onActivated: quitMenu.clicked()
-                    }
-
-                    background: Rectangle {
-                        gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                    }
-
+                AccountButton {
+                    height: drawer.height*0.1
+                    width: drawer.width
+                    text: "file"
+                    background: AccountBackground {invisible: true}
                     onClicked: {
-                        mainWindow.close()
+                        load.sourceComponent = filemenu
+                        load.active = true
+                    }
+                }
+                AccountButton {
+                    text: "?"
+                    background: AccountBackground {invisible: true}
+                    height: drawer.height*0.1
+                    width: drawer.width
+                    onClicked: {
+                        load.sourceComponent = aboutmenu
+                        load.active = true
                     }
                 }
             }
+
+            Loader {
+                id: load
+                active: false
+                anchors.fill: parent
+            }
+
+            Component {
+                id: filemenu
+                AccountBackground {
+                    Column {
+                        anchors.fill: parent
+                        spacing: 0
+                        AccountButton {
+                            background: AccountBackground{invisible: true}
+                            text: "<="
+                            onClicked: load.active = false
+                            height: drawer.height*0.1
+                            width: drawer.width
+                        }
+                        AccountButton {
+                            background: AccountBackground{invisible: true}
+                            text: qsTr("Settings")
+                            onClicked: {
+                                load.active = false
+                                s_openSetting()
+                            }
+                            height: drawer.height*0.1
+                            width: drawer.width
+                        }
+                        AccountButton {
+                            background: AccountBackground{invisible: true}
+                            text: qsTr("New profile")
+                            onClicked: {
+                                load.active = false
+                                popProfile.open()
+                            }
+                            height: drawer.height*0.1
+                            width: drawer.width
+                        }
+                        AccountButton {
+                            background: AccountBackground{invisible: true}
+                            text: qsTr("&Quit")
+                            indicator: AccountLabel {
+                                text: quitShort.nativeText
+                                anchors.rightMargin: 10
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+
+                            Shortcut {
+                                id: quitShort
+                                sequence: "CTRL+Q"
+                                context: Qt.ApplicationShortcut
+                                onActivated: quitMenu.clicked()
+                            }
+                            onClicked: mainWindow.close()
+                            height: drawer.height*0.1
+                            width: drawer.width
+                        }
+
+                    }
+                }
+            }
+
+            Component {
+                id: aboutmenu
+
+                AccountBackground {
+                    Column {
+                        spacing: 0
+                        anchors.fill: parent
+                        AccountButton {
+                            background: AccountBackground{invisible: true}
+                            text: "<="
+                            onClicked: load.active = false
+                            height: drawer.height*0.1
+                            width: drawer.width
+                        }
+
+                        AccountButton {
+                            background: AccountBackground{invisible: true}
+                            text: qsTr("About")
+
+                            onClicked: about.open()
+
+                            height: drawer.height*0.1
+                            width: drawer.width
+                        }
+
+                        AccountButton {
+                            background: AccountBackground {invisible: true}
+                            text: qsTr("Licence")
+
+                            onClicked: aboutQt.open()
+
+
+                            height: drawer.height*0.1
+                            width: drawer.width
+                        }
+
+                        AccountButton {
+                            background: AccountBackground{invisible: true}
+                            text: qsTr("How to")
+                            onClicked: howto.open()
+
+
+                            height: drawer.height*0.1
+                            width: drawer.width
+                        }
+                    }
+                }
+            }
+            //            Menu {
+            //                title: qsTr("&File")
+
+            //                width: drawer.width
+            //                height: drawer.height * 0.05
+
+            //                delegate: MenuItem {
+            //                    background: Rectangle {
+            //                        gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
+            //                    }
+            //                }
+
+            //                MenuItem {
+            //                    text: qsTr("Settings")
+            //                    onTriggered: s_openSetting()
+            //                    background: Rectangle {
+            //                        gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
+            //                    }
+            //                }
+
+            //                Menu {
+            //                    id: profileMenu
+            //                    objectName: "profileMenu"
+            //                    width: 210
+            //                    title: qsTr("Profile")
+            //                    signal s_profile(string name)
+            //                    font.family: AccountStyle.core.name
+            //                    font.pixelSize: AccountStyle.core.size
+
+            //                    Repeater {
+            //                        id: profileRepeater
+            //                        objectName: "profileRepeater"
+            //                        property string current
+            //                        MenuItem {
+            //                            text: modelData
+            //                            checked: modelData === profileRepeater.current
+            //                            autoExclusive: true
+            //                            checkable: true
+            //                            onTriggered: {
+            //                                profileRepeater.current = text
+            //                                profileMenu.s_profile(text)
+            //                            }
+            //                            font.family: AccountStyle.core.name
+            //                            font.pixelSize: AccountStyle.core.size
+            //                            background: Rectangle {
+            //                                gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
+            //                            }
+            //                        }
+            //                    }
+
+            //                    MenuItem {
+            //                        text: qsTr("New profile")
+            //                        objectName: "newProfile"
+
+            //                        onTriggered: popProfile.open()
+            //                        font.family: AccountStyle.core.name
+            //                        font.pixelSize: AccountStyle.core.size
+
+            //                        background: Rectangle {
+            //                            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
+            //                        }
+            //                    }
+
+            //                    MenuItem {
+            //                        text: qsTr("Delete profile") + ": " + profileRepeater.current
+            //                        objectName: "deleteProfile"
+            //                        enabled: profileRepeater.current !== "Default"
+
+            //                        signal s_deleteProfile(string name)
+            //                        onTriggered: s_deleteProfile(profileRepeater.current)
+            //                        font.family: AccountStyle.core.name
+            //                        font.pixelSize: AccountStyle.core.size
+
+            //                        background: Rectangle {
+            //                            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
+            //                        }
+            //                    }
+
+            //                }
+
+            //                MenuItem {
+            //                    text: qsTr("&Quit")
+            //                    font.family: AccountStyle.core.name
+            //                    font.pixelSize: AccountStyle.core.size
+            //                    id: quitMenu
+
+            //                    indicator: AccountLabel {
+            //                        text: quitShort.nativeText
+            //                        anchors.rightMargin: 10
+            //                        anchors.right: parent.right
+            //                        anchors.verticalCenter: parent.verticalCenter
+            //                    }
+
+            //                    Shortcut {
+            //                        id: quitShort
+            //                        sequence: "CTRL+Q"
+            //                        context: Qt.ApplicationShortcut
+            //                        onActivated: quitMenu.clicked()
+            //                    }
+
+            //                    background: Rectangle {
+            //                        gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
+            //                    }
+
+            //                    onClicked: {
+            //                        mainWindow.close()
+            //                    }
+            //                }
+            //            }
         }
 
         MouseArea {
@@ -358,8 +496,10 @@ ApplicationWindow {
             //            anchors.fill: parent
             hoverEnabled: true
             onContainsMouseChanged: {
-                if(!containsMouse)
+                if(!containsMouse) {
+                    load.active = false
                     drawer.close()
+                }
                 
             }
         }
@@ -758,9 +898,9 @@ ApplicationWindow {
 
             property bool holding: false
             property var clickPos: Qt.point(1,1)
-
+            property var old: Qt.point(0,0)
             onPressed: {
-               clickPos = Qt.point(mouse.x, mouse.y)
+                clickPos = Qt.point(mouse.x, mouse.y)
             }
 
             onPositionChanged: {
@@ -770,10 +910,17 @@ ApplicationWindow {
             }
 
             onDoubleClicked: {
-                if(!isMaximazed)
+                if(!isMaximazed) {
+                    old = Qt.point(mainWindow.x, mainWindow.y)
+                    mainWindow.x = 0
+                    mainWindow.y = 0
                     showMaximized()
-                else
+                }
+                else {
+                    mainWindow.x = old.x
+                    mainWindow.y = old.y
                     showNormal()
+                }
 
                 isMaximazed = !isMaximazed
             }
