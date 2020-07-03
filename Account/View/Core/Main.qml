@@ -116,6 +116,91 @@ ApplicationWindow {
         }
     }
     
+    Popup {
+        id: about
+        objectName: "about"
+        height: 300
+        width: 700
+
+        property string text: "Unable to about"
+        ScrollView {
+            anchors.fill: parent
+            clip: true
+
+            AccountLabel {
+                text: about.text
+                anchors.centerIn: parent
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
+            }
+        }
+
+        background: AccountBackground {}
+
+        AccountButton {
+            text: qsTr("Ok")
+            onClicked: about.close()
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+        }
+    }
+
+    Popup {
+        id: aboutQt
+        objectName: "licence"
+        height: 740
+        width: 740
+
+        property string text: "Unable to load licence"
+
+        ScrollView{
+            anchors.fill: parent
+            clip: true
+            AccountLabel {
+                anchors.centerIn: parent
+                clip: true
+                text: aboutQt.text
+                fontSizeMode: Text.Fit
+            }
+        }
+
+        background: AccountBackground {}
+
+        AccountButton {
+            text: qsTr("Ok")
+            onClicked: aboutQt.close()
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+        }
+    }
+
+    Popup {
+        id: howto
+        objectName: "howto"
+        height: 740
+        width: 740
+        property string text: "Unable to load readme"
+
+        ScrollView {
+            anchors.fill: parent
+            clip: true
+            AccountLabel {
+                clip: true
+                text: howto.text
+                anchors.centerIn: parent
+                horizontalAlignment: Qt.Left
+            }
+        }
+        background: AccountBackground {}
+
+        AccountButton {
+            text: qsTr("Ok")
+            onClicked: howto.close()
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+        }
+    }
+
     Shortcut {
         sequence: "F"
         onActivated: openTransfert()
