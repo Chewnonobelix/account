@@ -48,5 +48,6 @@
         <file>Graph/CommonGraph.qml</file>
         <file>Functionnal/ZoomCalendar.qml</file>
         <file>Functionnal/CalendarPage.qml</file>
+        <file>Style/exit.png</file>
     </qresource>
 </RCC>

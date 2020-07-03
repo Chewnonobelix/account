@@ -314,13 +314,15 @@ ApplicationWindow {
                                 anchors.right: parent.right
                                 anchors.verticalCenter: parent.verticalCenter
                             }
-
+                            id: quitMenu
                             Shortcut {
                                 id: quitShort
                                 sequence: "CTRL+Q"
                                 context: Qt.ApplicationShortcut
                                 onActivated: quitMenu.clicked()
                             }
+
+                            icon.source: "qrc:/Style/exit.png"
                             onClicked: mainWindow.close()
                             height: drawer.height*0.1
                             width: drawer.width
