@@ -544,6 +544,7 @@ ApplicationWindow {
     
     background: AccountBackground {}
     
+    property bool isMaximazed: false
     header: Rectangle {
         height: mainWindow.height * .05
         color: "transparent"
@@ -552,7 +553,24 @@ ApplicationWindow {
         property string accountName: ""
         property var total: 0
         property var selectionTotal: 0
-        
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: !pressed ?  Qt.OpenHandCursor : Qt.ClosedHandCursor
+            onPressAndHold: {
+
+            }
+
+            onDoubleClicked: {
+                console.log("double")
+                if(!isMaximazed)
+                    showMaximized()
+                else
+                    showNormal()
+
+                isMaximazed = !isMaximazed
+            }
+        }
+
         RowLayout {
             anchors.left: parent.left
             anchors.right: accountSelect.left
