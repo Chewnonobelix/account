@@ -237,6 +237,13 @@ ApplicationWindow {
         width: mainWindow.width / 4
         interactive: true
         id: drawer
+        objectName: "drawer"
+
+        property var profileModel
+        property string currentProfile
+
+
+        signal s_profile(string profile)
         AccountBackground {
             anchors.fill: parent
 
@@ -335,9 +342,9 @@ ApplicationWindow {
                         }
 
                         AccountButton {
-                            text: qsTr("Delete profile") + ": " + profileRepeater.current
+                            text: qsTr("Delete profile") + ": " + drawer.currentProfile
                             objectName: "deleteProfile"
-                            enabled: profileRepeater.current !== "Default"
+                            enabled: drawer.currentProfile !== "Default"
 
                             signal s_deleteProfile(string name)
                             onClicked: s_deleteProfile(profileRepeater.current)
@@ -390,15 +397,17 @@ ApplicationWindow {
                                 Repeater {
                                     id: profileRepeater
                                     objectName: "profileRepeater"
-                                    property string current
-                                    AbstractButton {
+                                    property string current: drawer.currentProfile
+                                    model: drawer.profileModel
+
+                                    AccountButton {
                                         text: modelData
                                         checked: modelData === profileRepeater.current
                                         autoExclusive: true
                                         checkable: true
                                         onClicked: {
-                                            profileRepeater.current = text
-                                            profileMenu.s_profile(text)
+                                            drawer.currentProfile = text
+                                            drawer.s_profile(text)
                                         }
                                         height: drawer.height*0.1
                                         width: drawer.width

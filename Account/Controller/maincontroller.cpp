@@ -185,7 +185,7 @@ int MainController::exec()
         connect(cat, SIGNAL(s_addCategory(QString)), this, SLOT(quickAddCategory(QString)));
     }
     
-    QObject* profile = root->findChild<QObject*>("profileMenu");
+    QObject* profile = root->findChild<QObject*>("drawer");
     
     if(profile)
         connect(profile, SIGNAL(s_profile(QString)), this, SLOT(changeProfile(QString)));
@@ -819,7 +819,7 @@ void MainController::addProfile()
 
 void MainController::loadProfiles()
 {
-    QObject* profile = m_engine.rootObjects().first()->findChild<QObject*>("profileRepeater");
+    QObject* profile = m_engine.rootObjects().first()->findChild<QObject*>("drawer");
     
     if(profile)
     {
@@ -827,8 +827,8 @@ void MainController::loadProfiles()
         if(!profiles.contains(m_db->currentProfile()))
             profiles<<m_db->currentProfile();
         
-        profile->setProperty("current", m_db->currentProfile());
-        profile->setProperty("model", profiles);
+        profile->setProperty("currentProfile", m_db->currentProfile());
+        profile->setProperty("profileModel", profiles);
     }
     
 }
