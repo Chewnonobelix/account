@@ -343,13 +343,13 @@ void MainController::add(bool account)
 {
     QObject* m = m_engine.rootObjects().first();
     QObject* h = m->findChild<QObject*>("head");
-    QObject* mb = m->findChild<QObject*>("menuBar");
     QPoint p = QCursor::pos();
     double pX, pY;
+
     pX = p.x() - m->property("x").toDouble();
     pX /= m->property("width").toDouble();
     
-    pY = p.y() - m->property("y").toDouble() - h->property("height").toDouble() - mb->property("height").toDouble();
+    pY = p.y() - m->property("y").toDouble() - h->property("height").toDouble();
     pY /= m->property("height").toDouble();
     QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("addingid");
     popup->setProperty("newAccount", account);
