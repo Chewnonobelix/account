@@ -49,5 +49,6 @@
         <file>Functionnal/ZoomCalendar.qml</file>
         <file>Functionnal/CalendarPage.qml</file>
         <file>Style/exit.png</file>
+        <file>Style/AccountMenuButton.qml</file>
     </qresource>
 </RCC>

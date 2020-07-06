@@ -230,7 +230,46 @@ ApplicationWindow {
         }
     }
     
-    
+    Shortcut {
+        id: accountDelShort
+        sequence: "CTRL+SHIFT+D"
+
+        onActivated: {
+            deleteAccount.open()
+        }
+    }
+
+    Shortcut {
+        id: delShort
+        sequence: "CTRL+D"
+        context: Qt.ApplicationShortcut
+        onActivated: remove(table.currentId)
+
+    }
+
+    Shortcut {
+        id: addShort
+        sequence: "CTRL+A"
+        context: Qt.ApplicationShortcut
+        onActivated: adding(false)
+    }
+
+    Shortcut {
+        id: addAccountShort
+        sequence: "CTRL+SHIFT+A"
+        context: Qt.ApplicationShortcut
+        onActivated: adding(true)
+
+    }
+
+    Shortcut {
+        id: quitShort
+        sequence: "CTRL+Q"
+        context: Qt.ApplicationShortcut
+        onActivated: mainWindow.close()
+    }
+
+
     Drawer {
         edge: Qt.LeftEdge
         height: mainWindow.height
@@ -251,31 +290,33 @@ ApplicationWindow {
                 anchors.fill: parent
                 spacing: 0
 
-                AccountButton {
+                AccountMenuButton {
                     height: drawer.height*0.1
                     width: drawer.width
                     text: qsTr("&File")
-                    background: AccountBackground {invisible: true}
+
                     onClicked: {
                         load.sourceComponent = filemenu
                         load.active = true
+                        console.log(contentItem)
                     }
                 }
 
-                AccountButton {
+                AccountMenuButton {
                     height: drawer.height*0.1
                     width: drawer.width
                     text: qsTr("&Account")
-                    background: AccountBackground {invisible: true}
+
                     onClicked: {
                         load.sourceComponent = accountmenu
                         load.active = true
                     }
+
                 }
 
-                AccountButton {
+                AccountMenuButton {
                     text: "?"
-                    background: AccountBackground {invisible: true}
+
                     height: drawer.height*0.1
                     width: drawer.width
                     onClicked: {
@@ -297,16 +338,14 @@ ApplicationWindow {
                     Column {
                         anchors.fill: parent
                         spacing: 0
-                        AccountButton {
-                            background: AccountBackground{invisible: true}
+                        AccountMenuButton {
                             text: "<="
                             onClicked: load.active = false
                             height: drawer.height*0.1
                             width: drawer.width
                         }
 
-                        AccountButton {
-                            background: AccountBackground{invisible: true}
+                        AccountMenuButton {
                             text: qsTr("Settings")
                             onClicked: {
                                 load.active = false
@@ -316,7 +355,7 @@ ApplicationWindow {
                             width: drawer.width
                         }
 
-                        AccountButton {
+                        AccountMenuButton {
                             id: profileMenu
                             objectName: "profileMenu"
                             height: drawer.height*0.1
@@ -326,12 +365,9 @@ ApplicationWindow {
                             onClicked: {
                                 profileloader.active = true
                             }
-
-                            background: AccountBackground {invisible: true}
                         }
 
-                        AccountButton {
-                            background: AccountBackground{invisible: true}
+                        AccountMenuButton {
                             text: qsTr("New profile")
                             onClicked: {
                                 load.active = false
@@ -341,7 +377,7 @@ ApplicationWindow {
                             width: drawer.width
                         }
 
-                        AccountButton {
+                        AccountMenuButton {
                             text: qsTr("Delete profile") + ": " + drawer.currentProfile
                             objectName: "deleteProfile"
                             enabled: drawer.currentProfile !== "Default"
@@ -350,14 +386,9 @@ ApplicationWindow {
                             onClicked: s_deleteProfile(profileRepeater.current)
                             height: drawer.height*0.1
                             width: drawer.width
-
-                            background: AccountBackground {
-                                invisible: true
-                            }
                         }
 
-                        AccountButton {
-                            background: AccountBackground{invisible: true}
+                        AccountMenuButton {
                             text: qsTr("&Quit")
                             indicator: AccountLabel {
                                 text: quitShort.nativeText
@@ -366,15 +397,11 @@ ApplicationWindow {
                                 anchors.verticalCenter: parent.verticalCenter
                             }
                             id: quitMenu
-                            Shortcut {
-                                id: quitShort
-                                sequence: "CTRL+Q"
-                                context: Qt.ApplicationShortcut
-                                onActivated: quitMenu.clicked()
-                            }
 
                             icon.source: "qrc:/Style/exit.png"
-                            onClicked: mainWindow.close()
+                            onClicked:  {
+                                quitShort.activated()
+                            }
                             height: drawer.height*0.1
                             width: drawer.width
                         }
@@ -386,8 +413,7 @@ ApplicationWindow {
                         id: profileloader
                         sourceComponent: AccountBackground {
                             Column {
-                                AccountButton {
-                                    background: AccountBackground{invisible: true}
+                                AccountMenuButton {
                                     text: "<="
                                     onClicked: profileloader.active = false
                                     height: drawer.height*0.1
@@ -400,7 +426,7 @@ ApplicationWindow {
                                     property string current: drawer.currentProfile
                                     model: drawer.profileModel
 
-                                    AccountButton {
+                                    AccountMenuButton {
                                         text: modelData
                                         checked: modelData === profileRepeater.current
                                         autoExclusive: true
@@ -411,9 +437,6 @@ ApplicationWindow {
                                         }
                                         height: drawer.height*0.1
                                         width: drawer.width
-                                        background: AccountBackground {
-                                            invisible: true
-                                        }
                                     }
                                 }
                             }
@@ -422,7 +445,6 @@ ApplicationWindow {
                 }
             }
 
-
             Component {
                 id: aboutmenu
 
@@ -430,16 +452,14 @@ ApplicationWindow {
                     Column {
                         spacing: 0
                         anchors.fill: parent
-                        AccountButton {
-                            background: AccountBackground{invisible: true}
+                        AccountMenuButton {
                             text: "<="
                             onClicked: load.active = false
                             height: drawer.height*0.1
                             width: drawer.width
                         }
 
-                        AccountButton {
-                            background: AccountBackground{invisible: true}
+                        AccountMenuButton {
                             text: qsTr("About")
 
                             onClicked: about.open()
@@ -448,8 +468,7 @@ ApplicationWindow {
                             width: drawer.width
                         }
 
-                        AccountButton {
-                            background: AccountBackground {invisible: true}
+                        AccountMenuButton {
                             text: qsTr("Licence")
 
                             onClicked: aboutQt.open()
@@ -459,8 +478,7 @@ ApplicationWindow {
                             width: drawer.width
                         }
 
-                        AccountButton {
-                            background: AccountBackground{invisible: true}
+                        AccountMenuButton {
                             text: qsTr("How to")
                             onClicked: howto.open()
 
@@ -477,52 +495,39 @@ ApplicationWindow {
 
                 AccountBackground {
                     Column {
-                        AccountButton {
-                            background: AccountBackground{invisible: true}
+                        AccountMenuButton {
                             text: "<="
                             onClicked: load.active = false
                             height: drawer.height*0.1
                             width: drawer.width
                         }
 
-                        AccountButton {
+                        AccountMenuButton {
                             id: nAccountMenu
-                            background: AccountBackground{invisible: true}
+
                             text: qsTr("&New account")
                             height: drawer.height*0.1
                             width: drawer.width
 
                             onClicked: {
-                                adding(true)
+                                addAccountShort.activated()
                             }
 
                             indicator: AccountLabel {
-                                text: accountAddShort.nativeText
+                                text: addAccountShort.nativeText
                                 anchors.rightMargin: 10
                                 anchors.right: parent.right
                                 anchors.verticalCenter: parent.verticalCenter
                             }
-
-                            Shortcut {
-                                id: accountAddShort
-                                sequence: "CTRL+N"
-
-                                onActivated: {
-                                    nAccountMenu.clicked()
-                                }
-                            }
                         }
 
-                        AccountButton {
+                        AccountMenuButton {
                             id: dAccountMenu
                             text: qsTr("&Delete account")
                             height: drawer.height*0.1
                             width: drawer.width
 
                             enabled: accountSelect.model && accountSelect.model.length > 0
-                            background: AccountBackground {
-                                invisible: true
-                            }
 
                             indicator: AccountLabel {
                                 text: accountDelShort.nativeText
@@ -531,33 +536,22 @@ ApplicationWindow {
                                 anchors.verticalCenter: parent.verticalCenter
                             }
 
-                            Shortcut {
-                                id: accountDelShort
-                                sequence: "CTRL+SHIFT+D"
-
-                                onActivated: {
-                                    dAccountMenu.clicked()
-                                }
-                            }
 
                             onClicked: {
-                                deleteAccount.open()
+                                accountDelShort.activated()
                             }
                         }
 
-                        AccountButton {
+                        AccountMenuButton {
                             id: addEntryMenu
                             text: qsTr("&Add transaction")
                             height: drawer.height*0.1
                             width: drawer.width
-                            background: AccountBackground {
-                                invisible: true
-                            }
 
                             enabled: dAccountMenu.enabled
                             onClicked: {
                                 if (enabled) {
-                                    adding(false)
+                                    addShort.activated()
                                 }
                             }
 
@@ -568,22 +562,13 @@ ApplicationWindow {
                                 anchors.verticalCenter: parent.verticalCenter
                             }
 
-                            Shortcut {
-                                id: addShort
-                                sequence: "CTRL+A"
-                                context: Qt.ApplicationShortcut
-                                onActivated: addEntryMenu.clicked()
-                            }
                         }
 
-                        AccountButton {
+                        AccountMenuButton {
                             id: removeEntryMenu
                             text: qsTr("&Remove transaction")
                             height: drawer.height*0.1
                             width: drawer.width
-                            background: AccountBackground {
-                                invisible: true
-                            }
 
                             enabled: table.currentId !== -1
                             indicator: AccountLabel {
@@ -594,16 +579,10 @@ ApplicationWindow {
                                 anchors.verticalCenter: parent.verticalCenter
                             }
 
-                            Shortcut {
-                                id: delShort
-                                sequence: "CTRL+D"
-                                context: Qt.ApplicationShortcut
-                                onActivated: removeEntryMenu.clicked()
-                            }
 
                             onClicked: {
                                 if (enabled) {
-                                    remove(table.currentId)
+                                    delShort.activated()
                                 }
                             }
                         }
