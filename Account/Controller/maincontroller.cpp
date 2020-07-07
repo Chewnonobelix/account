@@ -188,7 +188,10 @@ int MainController::exec()
     QObject* profile = root->findChild<QObject*>("drawer");
     
     if(profile)
+    {
+        connect(profile, SIGNAL(s_deleteProfile(QString)), this, SLOT(deleteProfile(QString)));        
         connect(profile, SIGNAL(s_profile(QString)), this, SLOT(changeProfile(QString)));
+    }
     
     QObject* profiles = m_engine.rootObjects().first()->findChild<QObject*>("popProfile");
     
@@ -197,10 +200,6 @@ int MainController::exec()
         QObject* okProfile = profiles->findChild<QObject*>("okProfile");
         connect(okProfile, SIGNAL(clicked()), this, SLOT(addProfile()));
     }
-    
-    QObject* deleteProfile = profile->findChild<QObject*>("deleteProfile");
-    if(deleteProfile)
-        connect(deleteProfile, SIGNAL(s_deleteProfile(QString)), this, SLOT(deleteProfile(QString)));
     
     loadProfiles();
     

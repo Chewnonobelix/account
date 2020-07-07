@@ -283,6 +283,8 @@ ApplicationWindow {
 
 
         signal s_profile(string profile)
+        signal s_deleteProfile(string name)
+        
         AccountBackground {
             anchors.fill: parent
 
@@ -382,8 +384,7 @@ ApplicationWindow {
                             objectName: "deleteProfile"
                             enabled: drawer.currentProfile !== "Default"
 
-                            signal s_deleteProfile(string name)
-                            onClicked: s_deleteProfile(profileRepeater.current)
+                            onClicked:  drawer.s_deleteProfile(drawer.currentProfile)
                             height: drawer.height*0.1
                             width: drawer.width*.99
                         }
