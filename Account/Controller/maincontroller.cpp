@@ -185,10 +185,13 @@ int MainController::exec()
         connect(cat, SIGNAL(s_addCategory(QString)), this, SLOT(quickAddCategory(QString)));
     }
     
-    QObject* profile = root->findChild<QObject*>("profileMenu");
+    QObject* profile = root->findChild<QObject*>("drawer");
     
     if(profile)
+    {
+        connect(profile, SIGNAL(s_deleteProfile(QString)), this, SLOT(deleteProfile(QString)));        
         connect(profile, SIGNAL(s_profile(QString)), this, SLOT(changeProfile(QString)));
+    }
     
     QObject* profiles = m_engine.rootObjects().first()->findChild<QObject*>("popProfile");
     
@@ -197,10 +200,6 @@ int MainController::exec()
         QObject* okProfile = profiles->findChild<QObject*>("okProfile");
         connect(okProfile, SIGNAL(clicked()), this, SLOT(addProfile()));
     }
-    
-    QObject* deleteProfile = profile->findChild<QObject*>("deleteProfile");
-    if(deleteProfile)
-        connect(deleteProfile, SIGNAL(s_deleteProfile(QString)), this, SLOT(deleteProfile(QString)));
     
     loadProfiles();
     
@@ -343,13 +342,13 @@ void MainController::add(bool account)
 {
     QObject* m = m_engine.rootObjects().first();
     QObject* h = m->findChild<QObject*>("head");
-    QObject* mb = m->findChild<QObject*>("menuBar");
     QPoint p = QCursor::pos();
     double pX, pY;
+
     pX = p.x() - m->property("x").toDouble();
     pX /= m->property("width").toDouble();
     
-    pY = p.y() - m->property("y").toDouble() - h->property("height").toDouble() - mb->property("height").toDouble();
+    pY = p.y() - m->property("y").toDouble() - h->property("height").toDouble();
     pY /= m->property("height").toDouble();
     QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("addingid");
     popup->setProperty("newAccount", account);
@@ -819,7 +818,7 @@ void MainController::addProfile()
 
 void MainController::loadProfiles()
 {
-    QObject* profile = m_engine.rootObjects().first()->findChild<QObject*>("profileRepeater");
+    QObject* profile = m_engine.rootObjects().first()->findChild<QObject*>("drawer");
     
     if(profile)
     {
@@ -827,8 +826,8 @@ void MainController::loadProfiles()
         if(!profiles.contains(m_db->currentProfile()))
             profiles<<m_db->currentProfile();
         
-        profile->setProperty("current", m_db->currentProfile());
-        profile->setProperty("model", profiles);
+        profile->setProperty("currentProfile", m_db->currentProfile());
+        profile->setProperty("profileModel", profiles);
     }
     
 }

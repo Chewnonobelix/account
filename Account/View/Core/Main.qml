@@ -32,36 +32,37 @@ ApplicationWindow {
     signal s_closing()
     signal s_openFrequencyManager()
     signal s_openSetting()
-
+    
     id: mainWindow
     
+    flags: Qt.FramelessWindowHint
     onClosing: s_closing()
-
+    
     Settings {
         objectName: "settings"
     }
-
+    
     onVisibilityChanged: {
         if(visibility === Window.Minimized)
             hide()
     }
-
+    
     QuickAdding {
         id: quick
         objectName: "quick"
         x: Screen.width - width
         y: Screen.desktopAvailableHeight - height
-
+        
         signal s_opening()
-
+        
         onVisibleChanged: if(visible) s_opening()
     }
-
+    
     P.SystemTrayIcon {
         id: tray
         visible: true
         icon.source: "qrc:/Style/tray.png"
-
+        
         function reopen() {
             if(mainWindow.visibility === Window.Hidden) {
                 mainWindow.requestActivate()
@@ -71,38 +72,38 @@ ApplicationWindow {
                 mainWindow.hide()
             }
         }
-
+        
         onActivated: {
             if(reason === P.SystemTrayIcon.DoubleClick) {
                 reopen()
             }
-
+            
             if(reason === P.SystemTrayIcon.Context) {
                 show()
             }
         }
-
+        
         menu: P.Menu {
             P.MenuItem {
                 text: qsTr("Quick add")
                 onTriggered: quick.show()
             }
-
+            
             P.MenuItem {
                 text: mainWindow.visibility === Window.Hidden ? qsTr("Show normal") : qsTr("Hide")
                 onTriggered: tray.reopen()
             }
-
+            
             P.MenuItem {
                 text: qsTr("Quit")
                 onTriggered: mainWindow.close()
             }
         }
     }
-
+    
     property int maximizedWidth: Screen.width
     Component.onCompleted: {
-        showMaximized()
+        //        showMaximized()
     }
     
     T.Transfert {
@@ -115,6 +116,91 @@ ApplicationWindow {
         }
     }
     
+    Popup {
+        id: about
+        objectName: "about"
+        height: 300
+        width: 700
+
+        property string text: "Unable to about"
+        ScrollView {
+            anchors.fill: parent
+            clip: true
+
+            AccountLabel {
+                text: about.text
+                anchors.centerIn: parent
+                font.family: AccountStyle.title.name
+                font.pixelSize: AccountStyle.title.size
+            }
+        }
+
+        background: AccountBackground {}
+
+        AccountButton {
+            text: qsTr("Ok")
+            onClicked: about.close()
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+        }
+    }
+
+    Popup {
+        id: aboutQt
+        objectName: "licence"
+        height: 740
+        width: 740
+
+        property string text: "Unable to load licence"
+
+        ScrollView{
+            anchors.fill: parent
+            clip: true
+            AccountLabel {
+                anchors.centerIn: parent
+                clip: true
+                text: aboutQt.text
+                fontSizeMode: Text.Fit
+            }
+        }
+
+        background: AccountBackground {}
+
+        AccountButton {
+            text: qsTr("Ok")
+            onClicked: aboutQt.close()
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+        }
+    }
+
+    Popup {
+        id: howto
+        objectName: "howto"
+        height: 740
+        width: 740
+        property string text: "Unable to load readme"
+
+        ScrollView {
+            anchors.fill: parent
+            clip: true
+            AccountLabel {
+                clip: true
+                text: howto.text
+                anchors.centerIn: parent
+                horizontalAlignment: Qt.Left
+            }
+        }
+        background: AccountBackground {}
+
+        AccountButton {
+            text: qsTr("Ok")
+            onClicked: howto.close()
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+        }
+    }
+
     Shortcut {
         sequence: "F"
         onActivated: openTransfert()
@@ -128,384 +214,403 @@ ApplicationWindow {
         anchors.centerIn: parent
     }
     
-    menuBar: MenuBar {
-        font.family: AccountStyle.core.name
-        font.pixelSize: AccountStyle.core.size
+    MouseArea {
+        height: mainWindow.height
+        width: mainWindow.width*0.01
+        anchors.left: parent.left
+        z: 10
+        acceptedButtons: Qt.NoButton
+
+        id: drawerArea
+        hoverEnabled: true
+        onContainsMouseChanged: {
+            if(containsMouse)
+                drawer.open()
+            
+        }
+    }
+    
+    Shortcut {
+        id: accountDelShort
+        sequence: "CTRL+SHIFT+D"
+
+        onActivated: {
+            deleteAccount.open()
+        }
+    }
+
+    Shortcut {
+        id: delShort
+        sequence: "CTRL+D"
+        context: Qt.ApplicationShortcut
+        onActivated: remove(table.currentId)
+
+    }
+
+    Shortcut {
+        id: addShort
+        sequence: "CTRL+A"
+        context: Qt.ApplicationShortcut
+        onActivated: adding(false)
+    }
+
+    Shortcut {
+        id: addAccountShort
+        sequence: "CTRL+SHIFT+A"
+        context: Qt.ApplicationShortcut
+        onActivated: adding(true)
+
+    }
+
+    Shortcut {
+        id: quitShort
+        sequence: "CTRL+Q"
+        context: Qt.ApplicationShortcut
+        onActivated: mainWindow.close()
+    }
+
+
+    Drawer {
+        edge: Qt.LeftEdge
+        height: mainWindow.height
+        width: mainWindow.width / 4
+        interactive: true
+        id: drawer
+        objectName: "drawer"
+
+        property var profileModel
+        property string currentProfile
+
+
+        signal s_profile(string profile)
+        signal s_deleteProfile(string name)
         
-        objectName: "menuBar"
-        Menu {
-            title: qsTr("&File")
+        AccountBackground {
+            anchors.fill: parent
 
-            width: 210
-            delegate: MenuItem {
-                background: Rectangle {
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                }
-            }
+            Column {
+                anchors.fill: parent
+                spacing: 0
 
-            MenuItem {
-                text: qsTr("Settings")
-                onTriggered: s_openSetting()
-                background: Rectangle {
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                }
-            }
+                AccountMenuButton {
+                    height: drawer.height*0.1
+                    width: drawer.width*.99
+                    text: qsTr("&File")
 
-            Menu {
-                id: profileMenu
-                objectName: "profileMenu"
-                width: 210
-                title: qsTr("Profile")
-                signal s_profile(string name)
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
-
-                Repeater {
-                    id: profileRepeater
-                    objectName: "profileRepeater"
-                    property string current
-                    MenuItem {
-                        text: modelData
-                        checked: modelData === profileRepeater.current
-                        autoExclusive: true
-                        checkable: true
-                        onTriggered: {
-                            profileRepeater.current = text
-                            profileMenu.s_profile(text)
-                        }
-                        font.family: AccountStyle.core.name
-                        font.pixelSize: AccountStyle.core.size
-                        background: Rectangle {
-                            gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                        }
+                    onClicked: {
+                        load.sourceComponent = filemenu
+                        load.active = true
+                        console.log(contentItem)
                     }
                 }
 
-                MenuItem {
-                    text: qsTr("New profile")
-                    objectName: "newProfile"
+                AccountMenuButton {
+                    height: drawer.height*0.1
+                    width: drawer.width*.99
+                    text: qsTr("&Account")
 
-                    onTriggered: popProfile.open()
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
-
-                    background: Rectangle {
-                        gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
+                    onClicked: {
+                        load.sourceComponent = accountmenu
+                        load.active = true
                     }
+
                 }
 
-                MenuItem {
-                    text: qsTr("Delete profile") + ": " + profileRepeater.current
-                    objectName: "deleteProfile"
-                    enabled: profileRepeater.current !== "Default"
+                AccountMenuButton {
+                    text: "?"
 
-                    signal s_deleteProfile(string name)
-                    onTriggered: s_deleteProfile(profileRepeater.current)
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
-
-                    background: Rectangle {
-                        gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
+                    height: drawer.height*0.1
+                    width: drawer.width*.99
+                    onClicked: {
+                        load.sourceComponent = aboutmenu
+                        load.active = true
                     }
-                }
-
-            }
-
-            MenuItem {
-                text: qsTr("&Quit")
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
-                id: quitMenu
-
-                indicator: AccountLabel {
-                    text: quitShort.nativeText
-                    anchors.rightMargin: 10
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                Shortcut {
-                    id: quitShort
-                    sequence: "CTRL+Q"
-                    context: Qt.ApplicationShortcut
-                    onActivated: quitMenu.clicked()
-                }
-
-                background: Rectangle {
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                }
-
-                onClicked: {
-                    mainWindow.close()
-                }
-            }
-        }
-
-        Menu {
-            title: qsTr("Account")
-            font.family: AccountStyle.core.name
-            font.pixelSize: AccountStyle.core.size
-            width: 210
-            MenuItem {
-                id: nAccountMenu
-                text: qsTr("&New account")
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
-
-                onClicked: {
-                    adding(true)
-                }
-
-                indicator: AccountLabel {
-                    text: accountAddShort.nativeText
-                    anchors.rightMargin: 10
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                Shortcut {
-                    id: accountAddShort
-                    sequence: "CTRL+N"
-
-                    onActivated: {
-                        nAccountMenu.clicked()
-                    }
-                }
-
-                background: Rectangle {
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                }
-            }
-            MenuItem {
-                id: dAccountMenu
-                text: qsTr("&Delete account")
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
-                enabled: accountSelect.model && accountSelect.model.length > 0
-                background: Rectangle {
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                }
-
-                indicator: AccountLabel {
-                    text: accountDelShort.nativeText
-                    anchors.rightMargin: 10
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                Shortcut {
-                    id: accountDelShort
-                    sequence: "CTRL+SHIFT+D"
-
-                    onActivated: {
-                        dAccountMenu.clicked()
-                    }
-                }
-
-                onClicked: {
-                    deleteAccount.open()
-                }
-            }
-        }
-
-        Menu {
-            title: qsTr("Current account")
-            font.family: AccountStyle.core.name
-            font.pixelSize: AccountStyle.core.size
-
-            MenuItem {
-                id: addEntryMenu
-                text: qsTr("&Add transaction")
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
-                enabled: dAccountMenu.enabled
-                onClicked: {
-                    if (enabled) {
-                        adding(false)
-                    }
-                }
-
-                indicator: AccountLabel {
-                    text: addShort.nativeText
-                    anchors.rightMargin: 10
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                Shortcut {
-                    id: addShort
-                    sequence: "CTRL+A"
-                    context: Qt.ApplicationShortcut
-                    onActivated: addEntryMenu.clicked()
-                }
-
-                background: Rectangle {
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
                 }
             }
 
-            MenuItem {
-                id: removeEntryMenu
-                text: qsTr("&Remove transaction")
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
-
-                enabled: table.currentId !== -1
-                indicator: AccountLabel {
-                    text: delShort.nativeText
-                    anchors.leftMargin: 10
-                    anchors.rightMargin: 10
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-
-                Shortcut {
-                    id: delShort
-                    sequence: "CTRL+D"
-                    context: Qt.ApplicationShortcut
-                    onActivated: removeEntryMenu.clicked()
-                }
-
-                onClicked: {
-                    if (enabled) {
-                        remove(table.currentId)
-                    }
-                }
-
-                background: Rectangle {
-                    gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                }
+            Loader {
+                id: load
+                active: false
+                anchors.fill: parent
             }
-        }
 
-        background: Rectangle {
-            gradient: AccountStyle.goldHeader
-        }
-
-        Menu {
-            title: qsTr("?")
-            font.family: AccountStyle.core.name
-            font.pixelSize: AccountStyle.core.size
-
-            MenuItem {
-                text: qsTr("About")
-                font.family: AccountStyle.core.name
-                font.pixelSize: AccountStyle.core.size
-
-                background: Rectangle {
-                    gradient: AccountStyle.goldButton
-                }
-
-                onClicked: about.open()
-
-                Popup {
-                    id: about
-                    objectName: "about"
-                    height: 300
-                    width: 700
-
-                    property string text: "Unable to about"
-                    ScrollView {
+            Component {
+                id: filemenu
+                AccountBackground {
+                    Column {
                         anchors.fill: parent
-                        clip: true
+                        spacing: 0
+                        AccountMenuButton {
+                            text: "<="
+                            onClicked: load.active = false
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
+                        }
 
-                        AccountLabel {
-                            text: about.text
-                            anchors.centerIn: parent
-                            font.family: AccountStyle.title.name
-                            font.pixelSize: AccountStyle.title.size
+                        AccountMenuButton {
+                            text: qsTr("Settings")
+                            onClicked: {
+                                load.active = false
+                                s_openSetting()
+                            }
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
+                        }
+
+                        AccountMenuButton {
+                            id: profileMenu
+                            objectName: "profileMenu"
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
+                            text: qsTr("Profile")
+                            signal s_profile(string name)
+                            onClicked: {
+                                profileloader.active = true
+                            }
+                        }
+
+                        AccountMenuButton {
+                            text: qsTr("New profile")
+                            onClicked: {
+                                load.active = false
+                                popProfile.open()
+                            }
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
+                        }
+
+                        AccountMenuButton {
+                            text: qsTr("Delete profile") + ": " + drawer.currentProfile
+                            objectName: "deleteProfile"
+                            enabled: drawer.currentProfile !== "Default"
+
+                            onClicked:  drawer.s_deleteProfile(drawer.currentProfile)
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
+                        }
+
+                        AccountMenuButton {
+                            text: qsTr("&Quit")
+                            indicator: AccountLabel {
+                                text: quitShort.nativeText
+                                anchors.rightMargin: 10
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                            id: quitMenu
+
+                            icon.source: "qrc:/Style/exit.png"
+                            onClicked:  {
+                                quitShort.activated()
+                            }
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
                         }
                     }
 
-                    background: AccountBackground {}
+                    Loader {
+                        anchors.fill: parent
+                        active: false
+                        id: profileloader
+                        sourceComponent: AccountBackground {
+                            Column {
+                                AccountMenuButton {
+                                    text: "<="
+                                    onClicked: profileloader.active = false
+                                    height: drawer.height*0.1
+                                    width: drawer.width*.99
+                                }
 
-                    AccountButton {
-                        text: qsTr("Ok")
-                        onClicked: about.close()
-                        anchors.right: parent.right
-                        anchors.bottom: parent.bottom
+                                Repeater {
+                                    id: profileRepeater
+                                    objectName: "profileRepeater"
+                                    property string current: drawer.currentProfile
+                                    model: drawer.profileModel
+
+                                    AccountMenuButton {
+                                        text: modelData
+                                        checked: modelData === profileRepeater.current
+                                        autoExclusive: true
+                                        checkable: true
+                                        onClicked: {
+                                            drawer.currentProfile = text
+                                            drawer.s_profile(text)
+                                        }
+                                        height: drawer.height*0.1
+                                        width: drawer.width*.99
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
 
-            MenuItem {
-                text: qsTr("Licence")
-                background: Rectangle {
-                    gradient: AccountStyle.goldButton
-                }
+            Component {
+                id: aboutmenu
 
-                onTriggered: aboutQt.open()
-
-                Popup {
-                    id: aboutQt
-                    objectName: "licence"
-                    height: 740
-                    width: 740
-
-                    property string text: "Unable to load licence"
-
-                    ScrollView{
+                AccountBackground {
+                    Column {
+                        spacing: 0
                         anchors.fill: parent
-                        clip: true
-                        AccountLabel {
-                            anchors.centerIn: parent
-                            clip: true
-                            text: aboutQt.text
-                            fontSizeMode: Text.Fit
+                        AccountMenuButton {
+                            text: "<="
+                            onClicked: load.active = false
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
                         }
-                    }
 
-                    background: AccountBackground {}
+                        AccountMenuButton {
+                            text: qsTr("About")
 
-                    AccountButton {
-                        text: qsTr("Ok")
-                        onClicked: aboutQt.close()
-                        anchors.right: parent.right
-                        anchors.bottom: parent.bottom
+                            onClicked: about.open()
+
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
+                        }
+
+                        AccountMenuButton {
+                            text: qsTr("Licence")
+
+                            onClicked: aboutQt.open()
+
+
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
+                        }
+
+                        AccountMenuButton {
+                            text: qsTr("How to")
+                            onClicked: howto.open()
+
+
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
+                        }
                     }
                 }
             }
 
-            MenuItem {
-                text: qsTr("How to")
-                background: Rectangle {
-                    gradient: AccountStyle.goldButton
-                }
+            Component {
+                id: accountmenu
 
-                onTriggered: howto.open()
+                AccountBackground {
+                    Column {
+                        AccountMenuButton {
+                            text: "<="
+                            onClicked: load.active = false
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
+                        }
 
-                Popup {
-                    id: howto
-                    objectName: "howto"
-                    height: 740
-                    width: 740
-                    property string text: "Unable to load readme"
+                        AccountMenuButton {
+                            id: nAccountMenu
 
-                    ScrollView {
-                        anchors.fill: parent
-                        clip: true
-                        AccountLabel {
-                            clip: true
-                            text: howto.text
-                            anchors.centerIn: parent
-                            horizontalAlignment: Qt.Left
+                            text: qsTr("&New account")
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
+
+                            onClicked: {
+                                addAccountShort.activated()
+                            }
+
+                            indicator: AccountLabel {
+                                text: addAccountShort.nativeText
+                                anchors.rightMargin: 10
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
+
+                        AccountMenuButton {
+                            id: dAccountMenu
+                            text: qsTr("&Delete account")
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
+
+                            enabled: accountSelect.model && accountSelect.model.length > 0
+
+                            indicator: AccountLabel {
+                                text: accountDelShort.nativeText
+                                anchors.rightMargin: 10
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+
+
+                            onClicked: {
+                                accountDelShort.activated()
+                            }
+                        }
+
+                        AccountMenuButton {
+                            id: addEntryMenu
+                            text: qsTr("&Add transaction")
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
+
+                            enabled: dAccountMenu.enabled
+                            onClicked: {
+                                if (enabled) {
+                                    addShort.activated()
+                                }
+                            }
+
+                            indicator: AccountLabel {
+                                text: addShort.nativeText
+                                anchors.rightMargin: 10
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+
+                        }
+
+                        AccountMenuButton {
+                            id: removeEntryMenu
+                            text: qsTr("&Remove transaction")
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
+
+                            enabled: table.currentId !== -1
+                            indicator: AccountLabel {
+                                text: delShort.nativeText
+                                anchors.leftMargin: 10
+                                anchors.rightMargin: 10
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+
+
+                            onClicked: {
+                                if (enabled) {
+                                    delShort.activated()
+                                }
+                            }
                         }
                     }
-                    background: AccountBackground {}
-
-                    AccountButton {
-                        text: qsTr("Ok")
-                        onClicked: howto.close()
-                        anchors.right: parent.right
-                        anchors.bottom: parent.bottom
-                    }
                 }
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            z: 11
+            acceptedButtons: Qt.NoButton
+
+            hoverEnabled: true
+            onContainsMouseChanged: {
+                if(!containsMouse) {
+                    load.active = false
+                    drawer.close()
+                }
+
             }
         }
     }
 
     background: AccountBackground {}
 
+    property bool isMaximazed: false
     header: Rectangle {
         height: mainWindow.height * .05
         color: "transparent"
@@ -514,6 +619,39 @@ ApplicationWindow {
         property string accountName: ""
         property var total: 0
         property var selectionTotal: 0
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: !pressed ?  Qt.OpenHandCursor : Qt.ClosedHandCursor
+
+            property bool holding: false
+            property var clickPos: Qt.point(1,1)
+            property var old: Qt.point(0,0)
+            onPressed: {
+                clickPos = Qt.point(mouse.x, mouse.y)
+            }
+
+            onPositionChanged: {
+                var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y)
+                mainWindow.x += delta.x
+                mainWindow.y += delta.y
+            }
+
+            onDoubleClicked: {
+                if(!isMaximazed) {
+                    old = Qt.point(mainWindow.x, mainWindow.y)
+                    mainWindow.x = 0
+                    mainWindow.y = 0
+                    showMaximized()
+                }
+                else {
+                    mainWindow.x = old.x
+                    mainWindow.y = old.y
+                    showNormal()
+                }
+
+                isMaximazed = !isMaximazed
+            }
+        }
 
         RowLayout {
             anchors.left: parent.left
