@@ -443,22 +443,22 @@
     <message>
         <location filename="View/Core/Main.qml" line="88"/>
         <source>Quick add</source>
-        <translation type="unfinished"></translation>
+        <translation>Quick add</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="93"/>
         <source>Show normal</source>
-        <translation type="unfinished"></translation>
+        <translation>Show normal</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="93"/>
         <source>Hide</source>
-        <translation type="unfinished"></translation>
+        <translation>Hide</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="98"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Quit</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="141"/>
@@ -466,97 +466,97 @@
         <location filename="View/Core/Main.qml" line="197"/>
         <location filename="View/Core/Main.qml" line="776"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="298"/>
         <source>&amp;File</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Files</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="310"/>
         <source>&amp;Account</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Account</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="351"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Settings</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="365"/>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Profile</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="373"/>
         <source>New profile</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;New profile</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="383"/>
         <source>Delete profile</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Delete profile</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="393"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Quit</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="464"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;About</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="473"/>
         <source>Licence</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Licence</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="483"/>
         <source>How to</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;How to</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="509"/>
         <source>&amp;New account</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;New account</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="527"/>
         <source>&amp;Delete account</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Delete account</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="548"/>
         <source>&amp;Add transaction</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Add transaction</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="570"/>
         <source>&amp;Remove transaction</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Remove transaction</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="664"/>
         <source>Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Account</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="685"/>
         <source>Select account</source>
-        <translation type="unfinished"></translation>
+        <translation>Select account</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="768"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete</translation>
     </message>
     <message>
         <location filename="View/Core/Main.qml" line="793"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
@@ -564,12 +564,12 @@
     <message>
         <location filename="View/Functionnal/MultiCalendar.qml" line="228"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation>Total</translation>
     </message>
     <message>
         <location filename="View/Functionnal/MultiCalendar.qml" line="228"/>
         <source>Day transaction</source>
-        <translation type="unfinished"></translation>
+        <translation>Day transaction</translation>
     </message>
 </context>
 <context>
@@ -577,17 +577,17 @@
     <message>
         <location filename="View/MultiProfile/NewProfile.qml" line="29"/>
         <source>Profile name</source>
-        <translation type="unfinished"></translation>
+        <translation>Profile name</translation>
     </message>
     <message>
         <location filename="View/MultiProfile/NewProfile.qml" line="79"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="View/MultiProfile/NewProfile.qml" line="87"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
@@ -595,27 +595,27 @@
     <message>
         <location filename="View/Core/Page1Form.qml" line="53"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Add</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="63"/>
         <source>Add new transaction</source>
-        <translation type="unfinished"></translation>
+        <translation>Add new transaction</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="74"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Remove</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="85"/>
         <source>Remove select transaction</source>
-        <translation type="unfinished"></translation>
+        <translation>Remove select transaction</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="110"/>
         <source>Budget quick view</source>
-        <translation type="unfinished"></translation>
+        <translation>Budget quick view</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="215"/>
@@ -625,27 +625,27 @@
     <message>
         <location filename="View/Core/Page1Form.qml" line="220"/>
         <source>estimated entry</source>
-        <translation type="unfinished"></translation>
+        <translation>Estimated transaction</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="243"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Date</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="270"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Value</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="297"/>
         <source>Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Title</translation>
     </message>
     <message>
         <location filename="View/Core/Page1Form.qml" line="325"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation>Total</translation>
     </message>
 </context>
 <context>
@@ -653,22 +653,22 @@
     <message>
         <location filename="View/Graph/Page2Form.qml" line="15"/>
         <source>month</source>
-        <translation type="unfinished"></translation>
+        <translation>Month</translation>
     </message>
     <message>
         <location filename="View/Graph/Page2Form.qml" line="48"/>
         <source>Account evolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Account evolution</translation>
     </message>
     <message>
         <location filename="View/Graph/Page2Form.qml" line="63"/>
         <source>Past</source>
-        <translation type="unfinished"></translation>
+        <translation>Past</translation>
     </message>
     <message>
         <location filename="View/Graph/Page2Form.qml" line="66"/>
         <source>Estimated</source>
-        <translation type="unfinished"></translation>
+        <translation>Estimated</translation>
     </message>
 </context>
 <context>
@@ -676,27 +676,27 @@
     <message>
         <location filename="View/Core/PageChanger.qml" line="36"/>
         <source>Previous 10 pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Previous 10 pages</translation>
     </message>
     <message>
         <location filename="View/Core/PageChanger.qml" line="51"/>
         <source>Previous page</source>
-        <translation type="unfinished"></translation>
+        <translation>Previous page</translation>
     </message>
     <message>
         <location filename="View/Core/PageChanger.qml" line="68"/>
         <source>Current page</source>
-        <translation type="unfinished"></translation>
+        <translation>Current page</translation>
     </message>
     <message>
         <location filename="View/Core/PageChanger.qml" line="83"/>
         <source>Next page</source>
-        <translation type="unfinished"></translation>
+        <translation>Next page</translation>
     </message>
     <message>
         <location filename="View/Core/PageChanger.qml" line="98"/>
         <source>Next 10 pages</source>
-        <translation type="unfinished"></translation>
+        <translation>Next 10 pages</translation>
     </message>
 </context>
 <context>
@@ -704,12 +704,12 @@
     <message>
         <location filename="View/Graph/PieCategory.qml" line="32"/>
         <source>Income categories</source>
-        <translation type="unfinished"></translation>
+        <translation>Income categories</translation>
     </message>
     <message>
         <location filename="View/Graph/PieCategory.qml" line="76"/>
         <source>Outcome categories</source>
-        <translation type="unfinished"></translation>
+        <translation>Outcome categories</translation>
     </message>
 </context>
 <context>
@@ -717,12 +717,12 @@
     <message>
         <location filename="Controller/maincontroller.cpp" line="302"/>
         <source>List</source>
-        <translation type="unfinished"></translation>
+        <translation>List</translation>
     </message>
     <message>
         <location filename="Controller/maincontroller.cpp" line="302"/>
         <source>Graph</source>
-        <translation type="unfinished"></translation>
+        <translation>Graph</translation>
     </message>
 </context>
 <context>
@@ -730,47 +730,47 @@
     <message>
         <location filename="View/Core/QuickAdding.qml" line="41"/>
         <source>Quick adding</source>
-        <translation type="unfinished"></translation>
+        <translation>Quick adding</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="51"/>
         <source>Specify income or outcome</source>
-        <translation type="unfinished"></translation>
+        <translation>Specify income or outcome</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="57"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Type</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="69"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Date</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="81"/>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Title</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="93"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Value</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="107"/>
         <source>Category</source>
-        <translation type="unfinished"></translation>
+        <translation>Category</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="113"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="View/Core/QuickAdding.qml" line="120"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Add</translation>
     </message>
 </context>
 <context>
@@ -778,17 +778,17 @@
     <message>
         <location filename="View/Budget/ReferenceView.qml" line="36"/>
         <source>From</source>
-        <translation type="unfinished"></translation>
+        <translation>From</translation>
     </message>
     <message>
         <location filename="View/Budget/ReferenceView.qml" line="61"/>
         <source>Target</source>
-        <translation type="unfinished"></translation>
+        <translation>Target</translation>
     </message>
     <message>
         <location filename="View/Budget/ReferenceView.qml" line="87"/>
         <source>Every</source>
-        <translation type="unfinished"></translation>
+        <translation>Every</translation>
     </message>
 </context>
 <context>
@@ -796,78 +796,78 @@
     <message>
         <location filename="View/Core/Settings.qml" line="10"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <location filename="View/Core/Settings.qml" line="51"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>General</translation>
     </message>
     <message>
         <location filename="View/Core/Settings.qml" line="72"/>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Language</translation>
     </message>
     <message>
         <location filename="View/Core/Settings.qml" line="88"/>
         <source>Features</source>
-        <translation type="unfinished"></translation>
+        <translation>Features</translation>
     </message>
     <message>
         <location filename="View/Core/Settings.qml" line="113"/>
         <source>Budget</source>
-        <translation type="unfinished"></translation>
+        <translation>Budget</translation>
     </message>
     <message>
         <location filename="View/Core/Settings.qml" line="120"/>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Frequency</translation>
     </message>
     <message>
         <location filename="View/Core/Settings.qml" line="127"/>
         <source>CommonExpanse</source>
-        <translation type="unfinished"></translation>
+        <translation>Common expanse</translation>
     </message>
     <message>
         <location filename="View/Core/Settings.qml" line="141"/>
         <source>Xml</source>
-        <translation type="unfinished"></translation>
+        <translation>Xml</translation>
     </message>
     <message>
         <location filename="View/Core/Settings.qml" line="146"/>
         <source>Sql</source>
-        <translation type="unfinished"></translation>
+        <translation>Sql</translation>
     </message>
     <message>
         <location filename="View/Core/Settings.qml" line="159"/>
         <source>Database</source>
-        <translation type="unfinished"></translation>
+        <translation>Database</translation>
     </message>
     <message>
         <location filename="View/Core/Settings.qml" line="181"/>
         <source>Main database</source>
-        <translation type="unfinished"></translation>
+        <translation>Main database</translation>
     </message>
     <message>
         <location filename="View/Core/Settings.qml" line="207"/>
         <source>Backup database</source>
-        <translation type="unfinished"></translation>
+        <translation>Backup database</translation>
     </message>
     <message>
         <location filename="View/Core/Settings.qml" line="228"/>
         <source>Auto backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto backup</translation>
     </message>
     <message>
         <location filename="View/Core/Settings.qml" line="243"/>
         <source>Save backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Save backup</translation>
     </message>
     <message>
         <location filename="View/Core/Settings.qml" line="249"/>
         <location filename="View/Core/Settings.qml" line="260"/>
         <source>Restore backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Restore backup</translation>
     </message>
 </context>
 <context>
@@ -875,12 +875,12 @@
     <message>
         <location filename="View/Core/Syncing.qml" line="29"/>
         <source>Backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Backup</translation>
     </message>
     <message>
         <location filename="View/Core/Syncing.qml" line="29"/>
         <source>Restoring</source>
-        <translation type="unfinished"></translation>
+        <translation>Restoring</translation>
     </message>
 </context>
 <context>
@@ -888,17 +888,17 @@
     <message>
         <location filename="Controller/graphcontroller.cpp" line="28"/>
         <source>one year</source>
-        <translation type="unfinished"></translation>
+        <translation>One year</translation>
     </message>
     <message>
         <location filename="Controller/graphcontroller.cpp" line="29"/>
         <source>one month</source>
-        <translation type="unfinished"></translation>
+        <translation>One month</translation>
     </message>
     <message>
         <location filename="Controller/graphcontroller.cpp" line="30"/>
         <source>all years</source>
-        <translation type="unfinished"></translation>
+        <translation>All years</translation>
     </message>
 </context>
 <context>
@@ -906,37 +906,37 @@
     <message>
         <location filename="View/Transfert/Transfert.qml" line="51"/>
         <source>From</source>
-        <translation type="unfinished"></translation>
+        <translation>From</translation>
     </message>
     <message>
         <location filename="View/Transfert/Transfert.qml" line="58"/>
         <source>to</source>
-        <translation type="unfinished"></translation>
+        <translation>To</translation>
     </message>
     <message>
         <location filename="View/Transfert/Transfert.qml" line="65"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Value</translation>
     </message>
     <message>
         <location filename="View/Transfert/Transfert.qml" line="72"/>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation>Income</translation>
     </message>
     <message>
         <location filename="View/Transfert/Transfert.qml" line="114"/>
         <source>Please complete the entry&apos;s title</source>
-        <translation type="unfinished"></translation>
+        <translation>Please complete the entry&apos;s title</translation>
     </message>
     <message>
         <location filename="View/Transfert/Transfert.qml" line="125"/>
         <source>Ok</source>
-        <translation type="unfinished"></translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <location filename="View/Transfert/Transfert.qml" line="140"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
 </context>
 </TS>
