@@ -110,13 +110,6 @@ Window {
             }
 
             AccountButton {
-                text: qsTr("Cancel")
-                onClicked: root.close()
-                Layout.preferredHeight: root.height * .10
-                Layout.preferredWidth: root.width * .47
-            }
-
-            AccountButton {
                 text: qsTr("Add")
                 objectName: "finish"
                 Layout.preferredHeight: root.height * .10
@@ -135,6 +128,14 @@ Window {
                     root.close()
                 }
             }
+            
+            AccountButton {
+                text: qsTr("Cancel")
+                onClicked: root.close()
+                Layout.preferredHeight: root.height * .10
+                Layout.preferredWidth: root.width * .47
+            }
+            
         }
     }
 }
