@@ -220,7 +220,7 @@ ApplicationWindow {
         anchors.left: parent.left
         z: 10
         acceptedButtons: Qt.NoButton
-        //            anchors.fill: parent
+
         id: drawerArea
         hoverEnabled: true
         onContainsMouseChanged: {
@@ -292,7 +292,7 @@ ApplicationWindow {
 
                 AccountMenuButton {
                     height: drawer.height*0.1
-                    width: drawer.width
+                    width: drawer.width*.99
                     text: qsTr("&File")
 
                     onClicked: {
@@ -304,7 +304,7 @@ ApplicationWindow {
 
                 AccountMenuButton {
                     height: drawer.height*0.1
-                    width: drawer.width
+                    width: drawer.width*.99
                     text: qsTr("&Account")
 
                     onClicked: {
@@ -318,7 +318,7 @@ ApplicationWindow {
                     text: "?"
 
                     height: drawer.height*0.1
-                    width: drawer.width
+                    width: drawer.width*.99
                     onClicked: {
                         load.sourceComponent = aboutmenu
                         load.active = true
@@ -342,7 +342,7 @@ ApplicationWindow {
                             text: "<="
                             onClicked: load.active = false
                             height: drawer.height*0.1
-                            width: drawer.width
+                            width: drawer.width*.99
                         }
 
                         AccountMenuButton {
@@ -352,14 +352,14 @@ ApplicationWindow {
                                 s_openSetting()
                             }
                             height: drawer.height*0.1
-                            width: drawer.width
+                            width: drawer.width*.99
                         }
 
                         AccountMenuButton {
                             id: profileMenu
                             objectName: "profileMenu"
                             height: drawer.height*0.1
-                            width: drawer.width
+                            width: drawer.width*.99
                             text: qsTr("Profile")
                             signal s_profile(string name)
                             onClicked: {
@@ -374,7 +374,7 @@ ApplicationWindow {
                                 popProfile.open()
                             }
                             height: drawer.height*0.1
-                            width: drawer.width
+                            width: drawer.width*.99
                         }
 
                         AccountMenuButton {
@@ -385,7 +385,7 @@ ApplicationWindow {
                             signal s_deleteProfile(string name)
                             onClicked: s_deleteProfile(profileRepeater.current)
                             height: drawer.height*0.1
-                            width: drawer.width
+                            width: drawer.width*.99
                         }
 
                         AccountMenuButton {
@@ -403,7 +403,7 @@ ApplicationWindow {
                                 quitShort.activated()
                             }
                             height: drawer.height*0.1
-                            width: drawer.width
+                            width: drawer.width*.99
                         }
                     }
 
@@ -417,7 +417,7 @@ ApplicationWindow {
                                     text: "<="
                                     onClicked: profileloader.active = false
                                     height: drawer.height*0.1
-                                    width: drawer.width
+                                    width: drawer.width*.99
                                 }
 
                                 Repeater {
@@ -436,7 +436,7 @@ ApplicationWindow {
                                             drawer.s_profile(text)
                                         }
                                         height: drawer.height*0.1
-                                        width: drawer.width
+                                        width: drawer.width*.99
                                     }
                                 }
                             }
@@ -456,7 +456,7 @@ ApplicationWindow {
                             text: "<="
                             onClicked: load.active = false
                             height: drawer.height*0.1
-                            width: drawer.width
+                            width: drawer.width*.99
                         }
 
                         AccountMenuButton {
@@ -465,7 +465,7 @@ ApplicationWindow {
                             onClicked: about.open()
 
                             height: drawer.height*0.1
-                            width: drawer.width
+                            width: drawer.width*.99
                         }
 
                         AccountMenuButton {
@@ -475,7 +475,7 @@ ApplicationWindow {
 
 
                             height: drawer.height*0.1
-                            width: drawer.width
+                            width: drawer.width*.99
                         }
 
                         AccountMenuButton {
@@ -484,7 +484,7 @@ ApplicationWindow {
 
 
                             height: drawer.height*0.1
-                            width: drawer.width
+                            width: drawer.width*.99
                         }
                     }
                 }
@@ -499,7 +499,7 @@ ApplicationWindow {
                             text: "<="
                             onClicked: load.active = false
                             height: drawer.height*0.1
-                            width: drawer.width
+                            width: drawer.width*.99
                         }
 
                         AccountMenuButton {
@@ -507,7 +507,7 @@ ApplicationWindow {
 
                             text: qsTr("&New account")
                             height: drawer.height*0.1
-                            width: drawer.width
+                            width: drawer.width*.99
 
                             onClicked: {
                                 addAccountShort.activated()
@@ -525,7 +525,7 @@ ApplicationWindow {
                             id: dAccountMenu
                             text: qsTr("&Delete account")
                             height: drawer.height*0.1
-                            width: drawer.width
+                            width: drawer.width*.99
 
                             enabled: accountSelect.model && accountSelect.model.length > 0
 
@@ -546,7 +546,7 @@ ApplicationWindow {
                             id: addEntryMenu
                             text: qsTr("&Add transaction")
                             height: drawer.height*0.1
-                            width: drawer.width
+                            width: drawer.width*.99
 
                             enabled: dAccountMenu.enabled
                             onClicked: {
@@ -568,7 +568,7 @@ ApplicationWindow {
                             id: removeEntryMenu
                             text: qsTr("&Remove transaction")
                             height: drawer.height*0.1
-                            width: drawer.width
+                            width: drawer.width*.99
 
                             enabled: table.currentId !== -1
                             indicator: AccountLabel {
