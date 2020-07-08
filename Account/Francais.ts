@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>Adding</name>
     <message>
@@ -99,11 +99,6 @@
         <location filename="View/Budget/BudgetManager.qml" line="253"/>
         <source>Date</source>
         <translation>Date</translation>
-    </message>
-    <message>
-        <location filename="View/Budget/BudgetManager.qml" line="253"/>
-        <source>€</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="View/Budget/BudgetManager.qml" line="308"/>
@@ -210,7 +205,7 @@
     <message>
         <location filename="View/CommonExpanse/CommonExpanseView.qml" line="278"/>
         <source> to </source>
-        <translation>à</translation>
+        <translation> à </translation>
     </message>
     <message>
         <location filename="View/CommonExpanse/CommonExpanseView.qml" line="295"/>
@@ -220,11 +215,6 @@
 </context>
 <context>
     <name>CommonGraph</name>
-    <message>
-        <location filename="View/Graph/CommonGraph.qml" line="30"/>
-        <source>&lt;&lt;</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="View/Graph/CommonGraph.qml" line="50"/>
         <source>Month</source>
@@ -239,11 +229,6 @@
         <location filename="View/Graph/CommonGraph.qml" line="50"/>
         <source>All time</source>
         <translation>Toujours</translation>
-    </message>
-    <message>
-        <location filename="View/Graph/CommonGraph.qml" line="64"/>
-        <source>&gt;&gt;</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -368,16 +353,6 @@
         <location filename="View/Frequency/FrequencyManager.qml" line="68"/>
         <source>Frequency list</source>
         <translation>Liste de récurrence</translation>
-    </message>
-    <message>
-        <location filename="View/Frequency/FrequencyManager.qml" line="139"/>
-        <source>+</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="View/Frequency/FrequencyManager.qml" line="155"/>
-        <source>-</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="View/Frequency/FrequencyManager.qml" line="270"/>
@@ -618,11 +593,6 @@
         <translation>Vue rapide budget</translation>
     </message>
     <message>
-        <location filename="View/Core/Page1Form.qml" line="215"/>
-        <source>[+/-]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="View/Core/Page1Form.qml" line="220"/>
         <source>estimated entry</source>
         <translation>Transaction prévisionnelle</translation>
@@ -763,12 +733,12 @@
         <translation>Catégorie</translation>
     </message>
     <message>
-        <location filename="View/Core/QuickAdding.qml" line="113"/>
+        <location filename="View/Core/QuickAdding.qml" line="133"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="View/Core/QuickAdding.qml" line="120"/>
+        <location filename="View/Core/QuickAdding.qml" line="113"/>
         <source>Add</source>
         <translation>Ajout</translation>
     </message>
