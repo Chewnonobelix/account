@@ -46,6 +46,9 @@ Page {
             Layout.columnSpan: 2
             Layout.preferredHeight: pageTable.height * 0.30
             Layout.preferredWidth: pageTable.width * 0.20
+
+            onUpdateSelected: view.unselectAll()
+
         }
         
         AccountButton {

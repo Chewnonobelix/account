@@ -6,6 +6,8 @@ MouseArea {
     id: area
     signal s_datesChanged()
     signal s_monthChanged()
+    signal updateSelected()
+
     property int currentMonth: month.currentMonth
     property int currentYear: month.currentYear
     property var selectedDates: month.selectedDates
@@ -52,7 +54,6 @@ MouseArea {
             }
         }
         
-        
         Component {
             id: decade
             
@@ -90,6 +91,10 @@ MouseArea {
             multiple: area.multiple
             onS_datesChanged: area.s_datesChanged()
             onS_monthChanged: area.s_monthChanged()
+
+            onUpdateSelected: {
+                area.updateSelected()
+            }
         }
         
         pushEnter: Transition {

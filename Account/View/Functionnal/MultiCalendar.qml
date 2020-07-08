@@ -59,6 +59,8 @@ Calendar {
     visibleYear: currentYear
     weekNumbersVisible: true
     
+    signal updateSelected()
+
     function showNextMonth() {
         currentMonth ++
         
@@ -211,8 +213,7 @@ Calendar {
             id: styleRect
             gradient: blueGradient
             onReset: {
-                if(view)
-                    view.unselectAll()
+                multiCal.updateSelected()
                 
                 for(var i in stylesData) {
                     stylesData[i][0].color = (stylesData[i][1].date.getMonth() === (visibleMonth)) ? "black" : "grey"
@@ -259,10 +260,7 @@ Calendar {
                 color:  parent.delCurrentMonth && isFind ? total > 0 ? "green" : "red" : "transparent"
             }
             
-            onUpdateSelected: {
-                if(view)
-                    view.unselectAll()
-                
+            onUpdateSelected: {                
                 if(cs.isSelected(styleData) && checkMonth(styleData)) {
                     styleRect.gradient = AccountStyle.calSelect
                 }
@@ -274,6 +272,7 @@ Calendar {
                 visibleYear = Qt.binding( function() { return currentYear})
                 
                 multiCal.s_datesChanged()
+                multiCal.updateSelected()
             }
             
             AccountLabel {
