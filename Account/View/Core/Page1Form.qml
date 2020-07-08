@@ -212,7 +212,7 @@ Page {
                 
                 TableViewColumn {
                     role: "type"
-                    title: qsTr("[+/-]")
+                    title: "[+/-]"
                     width: 45
                     movable: false
                     resizable: false

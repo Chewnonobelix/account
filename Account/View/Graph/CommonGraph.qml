@@ -27,7 +27,7 @@ MouseArea{
 
         AccountButton {
             id: prev
-            text: qsTr("<<")
+            text: "<<"
 
             Layout.preferredHeight: root.height * 0.05
             Layout.preferredWidth: root.width * 0.1
@@ -61,7 +61,7 @@ MouseArea{
             id: next
             enabled: root.okNext && root.currentGran !== Account.Over
 
-            text: qsTr(">>")
+            text: ">>"
 
             Layout.preferredHeight: root.height * 0.05
             Layout.preferredWidth: root.width * 0.1

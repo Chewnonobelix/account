@@ -136,7 +136,7 @@ Rectangle {
 
         AccountButton {
             objectName: "addFreq"
-            text: qsTr("+")
+            text: "+"
 
             Layout.preferredHeight: root.height * 0.05
             Layout.preferredWidth: root.width * 0.09
@@ -152,7 +152,7 @@ Rectangle {
 
         AccountButton {
             objectName: "removeFreq"
-            text: qsTr("-")
+            text: "-"
 
             Layout.preferredHeight: root.height * 0.05
             Layout.preferredWidth: root.width * 0.09
