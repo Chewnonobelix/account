@@ -43,6 +43,7 @@ public:
     inline bool isBackuping() const {return m_backupper.isRunning();}
     QString language() const;
     void setLanguage(QString);
+    QString languageCode() const;
 
     bool featureEnable(QString) const;
     void setFeatureEnable(QString, bool);

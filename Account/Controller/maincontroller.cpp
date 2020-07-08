@@ -267,12 +267,9 @@ void MainController::about()
 
 void MainController::readme()
 {
-    QString language = m_settings.language();
-    QDir dir;
-    auto e = dir.entryInfoList(QStringList(language+"*.qm"));
-    QString code = e.first().baseName().split("_").last().split(".").first();
+    QString language = m_settings.languageCode();
     
-    QFile f ("README_"+code+".md");
+    QFile f ("README_"+language+".md");
     if(!f.open(QIODevice::ReadOnly))
         return;
     

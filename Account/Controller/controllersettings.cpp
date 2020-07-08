@@ -89,12 +89,17 @@ QString ControllerSettings::language() const
     return m_settings.value("Language").toString();
 }
 
+QString ControllerSettings::languageCode() const
+{
+    QString ret = m_language[language()]->language();
+    return ret.split("_").first();
+}
+
 void ControllerSettings::setLanguage(QString language)
 {
     QCoreApplication::removeTranslator(m_language[this->language()]);
     m_settings.setValue("Language", language);
     QCoreApplication::installTranslator(m_language[language]);
-    
     emit s_language();
 }
 

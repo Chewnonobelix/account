@@ -300,7 +300,6 @@ ApplicationWindow {
                     onClicked: {
                         load.sourceComponent = filemenu
                         load.active = true
-                        console.log(contentItem)
                     }
                 }
 
