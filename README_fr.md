@@ -72,6 +72,10 @@ L'onglet graphique permet également de visualer la répartition des transaction
 8) Budget
 ---------
 
+La fonctionnalité de budget permet de gérer un budget sur une période de temps. Un budget est lié à une catégorie. 
+Pour un budget vous devez ajouter une ou plusieurs cible. Une cible se définit par une date de début, une valeur et une période de temps. 
+Une itération du budget se reproduit toute les péiode de temps. 
+
 9) Dépense commune
 ------------------
 
