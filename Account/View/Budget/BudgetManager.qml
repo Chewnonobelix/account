@@ -250,7 +250,7 @@ Rectangle {
                 AccountLabel {
                     id: targetText
                     anchors.fill: parent
-                    text: qsTr("Date") + ": " + Qt.formatDate(date, "dd-MM-yyyy") + "\n" + qsTr("Target") + ": " + target + qsTr("€")
+                    text: qsTr("Date") + ": " + Qt.formatDate(date, "dd-MM-yyyy") + "\n" + qsTr("Target") + ": " + target + Qt.locale().currencySymbol(Locale.CurrencySymbol)
                 }
                 
                 MouseArea {

@@ -58,7 +58,7 @@ Popup {
 
                     AccountLabel {
                         anchors.verticalCenter: rowChecked.verticalCenter
-                        text: modelData.label + " " + Qt.formatDate(modelData.date, "dd-MM-yyyy") + " " + modelData.value + "€"
+                        text: modelData.label + " " + Qt.formatDate(modelData.date, "dd-MM-yyyy") + " " + modelData.value + Qt.locale().currencySymbol(Locale.CurrencySymbol)
 
                         MouseArea {
                             acceptedButtons: Qt.LeftButton

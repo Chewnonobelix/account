@@ -239,7 +239,7 @@ Rectangle {
                     
                     AccountLabel {
                         anchors.fill: parent
-                        text: modelData.id + ": " + modelData.total.value + "€"
+                        text: modelData.id + ": " + modelData.total.value + Qt.locale().currencySymbol(Locale.CurrencySymbol)
                     }
                 }
             }
@@ -275,7 +275,7 @@ Rectangle {
                     
                     AccountLabel {
                         anchors.fill: parent
-                        text: modelData.from + qsTr(" to ") + modelData.to + ": " + modelData.value + "€"
+                        text: modelData.from + qsTr(" to ") + modelData.to + ": " + modelData.value + Qt.locale().currencySymbol(Locale.CurrencySymbol)
                     }
                 }
                 

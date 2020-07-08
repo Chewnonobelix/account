@@ -661,7 +661,7 @@ ApplicationWindow {
             AccountLabel {
                 id: accountTitle
                 objectName: "accountTitle"
-                text: qsTr("Account") + ": " + head.accountName + " = " + head.total.value + "€"
+                text: qsTr("Account") + ": " + head.accountName + " = " + head.total.value + Qt.locale().currencySymbol(Locale.CurrencySymbol)
                 font.pixelSize: AccountStyle.title.size
                 font.family: AccountStyle.title.name
                 padding: 10
