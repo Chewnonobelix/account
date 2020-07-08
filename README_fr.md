@@ -64,9 +64,24 @@ Vous pouvez sélectionné plusieurs date en maintenant la touche shift. Quand un
 
 L'onglet graphique fournit une visualisation de l'évolution du compte dans le temps. La partie bleu correspond au transaction validé, tandis que la partie verte correspond au transaction prévu.
 Par défaut la vue montre l'évolution sur un mois, vous pouvez changé cette vue avec la molette de la souris pour passé sur une vue sur 1 an, ou une vue sur toutes la durée d'existence du compte.
+L'onglet graphique permet également de visualer la répartition des transactions en fonction de leur catégorie, répartie entre dépense et revenu.
 
- 
- IV) Raccourcis
+7) Récurence
+------------
+
+8) Budget
+---------
+
+9) Dépense commune
+------------------
+
+IV) Options
+-----------
+
+V) Zone de notification
+-----------------------
+
+VI) Raccourcis
 --------------
 
 CTRL+Q: Quitter l'application
