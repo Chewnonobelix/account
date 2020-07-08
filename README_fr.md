@@ -81,6 +81,12 @@ IV) Options
 V) Zone de notification
 -----------------------
 
+L'application peut être réduite à la zone de notification. 
+Depuis la zone de notifation vous pouvez:
+-Ajouter une transaction
+-Cacher ou montrer l'application
+-Quitter l'application
+
 VI) Raccourcis
 --------------
 
