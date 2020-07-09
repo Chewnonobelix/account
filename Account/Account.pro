@@ -93,4 +93,6 @@ HEADERS += \
 
 RC_ICONS = $$PWD/View/Style/tray.ico
 
-DISTFILES +=
+DISTFILES += \
+    ../README_en.md \
+    ../README_fr.md
