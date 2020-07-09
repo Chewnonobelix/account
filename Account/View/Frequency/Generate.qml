@@ -15,6 +15,11 @@ Popup {
     
     property var pcenter
         
+    onOpened: {
+        to.extern(new Date())
+        from.extern(new Date())
+    }
+
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.NoButton

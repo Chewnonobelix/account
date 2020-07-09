@@ -36,6 +36,7 @@ Popup {
     
     onOpened: {        
         l_new.text = newAccount ? qsTr("Add new account"): qsTr("Add new entry")
+        dateLabel.extern(new Date())
     }
     
     onOpenDateChanged: dateLabel.extern(openDate)

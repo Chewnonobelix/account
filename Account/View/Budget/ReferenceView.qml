@@ -12,6 +12,10 @@ Popup {
     
     padding: 0
     
+    onOpened: {
+        cButton.extern(new Date())
+    }
+
     contentItem: Rectangle {
         id: rectWindow
         anchors.fill: parent
