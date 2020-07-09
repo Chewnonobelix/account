@@ -70,7 +70,7 @@ Popup {
             AccountLabel {
                 Layout.row: 0
                 Layout.column: 1
-                text:qsTr("To")
+                text: qsTr("To")
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 font.family: AccountStyle.title.name
                 font.pixelSize: AccountStyle.title.size2

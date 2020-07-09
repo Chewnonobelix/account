@@ -7,7 +7,7 @@ import "../Functionnal"
 
 AccountButton {
     id: button
-    text: Qt.formatDate(dateAdding.selectedDate, "dd-MM-yyyy")
+    text: Qt.formatDate(new Date(), "dd-MM-yyyy")
 
     property bool isOpen: pop.opened
     
@@ -31,7 +31,7 @@ AccountButton {
             width: 250
 
             onS_datesChanged: {
-//                button.text = Qt.formatDate(selectedDate, "dd-MM-yyyy")
+                button.text = Qt.formatDate(selectedDate, "dd-MM-yyyy")
                 pop.close()
             }
         }
