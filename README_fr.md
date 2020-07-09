@@ -66,8 +66,12 @@ L'onglet graphique fournit une visualisation de l'évolution du compte dans le t
 Par défaut la vue montre l'évolution sur un mois, vous pouvez changé cette vue avec la molette de la souris pour passé sur une vue sur 1 an, ou une vue sur toutes la durée d'existence du compte.
 L'onglet graphique permet également de visualer la répartition des transactions en fonction de leur catégorie, répartie entre dépense et revenu.
 
-7) Récurence
+7) Récurrence
 ------------
+
+Une récurrence est une transaction qui se répéte de façon réguliére. 
+Une récurrence est définie par une transaction de référence, le type de la transaction (dépense ou revenu), la périodicité de la récurrence.
+Une fois ces éléments de référence réglé, vous pouvez généré les transactions entre 2 dates, et faire une récurrences finie, ou définir une récurrence infinie, qui généreras de façon régulière les transactions.  
 
 8) Budget
 ---------
