@@ -53,6 +53,10 @@ public:
     void setSortingRole(QString);
     Qt::SortOrder sortOrder() const;
     void setSortOrdre(Qt::SortOrder);
+    QString currentProfile() const;
+    void setCurrentProfile(QString);
+    QString currentAccount() const;
+    void setCurrentAccount(QString);
 
     InterfaceDataSave* createDb(QString, bool = false) const;
 

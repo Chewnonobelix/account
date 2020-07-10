@@ -67,6 +67,8 @@ int MainController::exec()
     if (m_engine.rootObjects().size() != 1)
         return -1;
     
+    changeProfile(m_settings.currentProfile());
+
     QObject* root = m_engine.rootObjects().first();
     
     connect(root, SIGNAL(adding(bool)), this, SLOT(add(bool)));
@@ -232,7 +234,7 @@ int MainController::exec()
     connect(m_db, InterfaceDataSave::s_updateEntry, this, AbstractController::calculTotal);
     connect(this, AbstractController::s_totalChanged, this, MainController::previewCalendar);
     languageChange();
-    
+
     return 0;
 }
 
@@ -327,6 +329,7 @@ void MainController::loadFeatures()
 void MainController::changeProfile(QString name)
 {
     m_db->setProfile(name);
+    m_settings.setCurrentProfile(name);
     loadAccount();
 }
 
@@ -675,7 +678,11 @@ QList<QDate> MainController::dateList() const
 
 void MainController::accountChange(QString acc)
 {
+    if(acc.isEmpty())
+        return;
+
     AbstractController::setCurrentAccount(acc);
+    m_settings.setCurrentAccount(acc);
     calculTotal();
     QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
     
@@ -710,7 +717,10 @@ void MainController::loadAccount()
             add(true);
         }
         else
-            accountChange(t[0]);
+        {
+            accountChange(!t.contains(m_settings.currentAccount())? t[0] : m_settings.currentAccount());
+            combo->setProperty("currentIndex", std::max(0, t.indexOf(m_settings.currentAccount())));
+        }
     }
 }
 

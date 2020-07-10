@@ -202,22 +202,22 @@ void ControllerSettings::save()
 
 QString ControllerSettings::sortingRole() const
 {
-    return m_settings.value("SortingRole", "label").toString();
+    return m_settings.value("State/SortingRole", "label").toString();
 }
 
 void ControllerSettings::setSortingRole(QString role)
 {
-    m_settings.setValue("SortingRole", role);
+    m_settings.setValue("State/SortingRole", role);
 }
 
 Qt::SortOrder ControllerSettings::sortOrder() const
 {
-    return (Qt::SortOrder)(m_settings.value("SortOrder", 0).toInt());
+    return (Qt::SortOrder)(m_settings.value("State/SortOrder", 0).toInt());
 }
 
 void ControllerSettings::setSortOrdre(Qt::SortOrder order)
 {
-    m_settings.setValue("SortOrder", order);
+    m_settings.setValue("State/SortOrder", order);
 }
 
 bool ControllerSettings::autoBackup() const
@@ -354,4 +354,24 @@ void ControllerSettings::endRestore()
     }
 
     emit s_finishBackup();
+}
+
+QString ControllerSettings::currentProfile() const
+{
+    return m_settings.value("State/Profile", "Default").toString();
+}
+
+void ControllerSettings::setCurrentProfile(QString profile)
+{
+    m_settings.setValue("State/Profile", profile);
+}
+
+QString ControllerSettings::currentAccount() const
+{
+    return m_settings.value("State/Account", "").toString();
+
+}
+void ControllerSettings::setCurrentAccount(QString account)
+{
+    m_settings.setValue("State/Account", account);
 }
