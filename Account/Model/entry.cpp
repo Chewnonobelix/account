@@ -119,6 +119,8 @@ Entry::operator QVariantMap() const
     ret.insert("info", QVariant::fromValue(info()));
     ret.insert("label", label());
     ret.insert("isBlock", isBlocked());
+    ret.insert("support", QVariant::fromValue(support()));
+
     return ret;
 }
 
@@ -132,3 +134,12 @@ void Entry::setBlocked(bool b)
     setMetadata("blocked", b);
 }
 
+Account::EntryTypeEnum Entry::support() const
+{
+    return metaData<Account::EntryTypeEnum>("support");
+}
+
+void Entry::setSupport(Account::EntryTypeEnum s)
+{
+    setMetadata("support", s);
+}

@@ -9,6 +9,7 @@
 #include <QSharedPointer>
 #include "information.h"
 #include "metadata.h"
+#include "accountglobal.h"
 
 class Entry: public MetaData
 {
@@ -22,7 +23,7 @@ class Entry: public MetaData
     Q_PROPERTY(QString label READ label)
     Q_PROPERTY(int id READ id)
     Q_PROPERTY(bool isBlocked READ isBlocked)
-
+    Q_PROPERTY(Account::EntryTypeEnum support READ support)
 private:
 
     QString m_account;
@@ -55,6 +56,8 @@ public:
     QString label() const;
     bool isBlocked() const;
     void setBlocked(bool);
+    Account::EntryTypeEnum support() const;
+    void setSupport(Account::EntryTypeEnum);
 
     operator QVariantMap() const;
 };
