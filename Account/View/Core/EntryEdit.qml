@@ -31,8 +31,8 @@ AccountBackground {
 
     GridLayout {
         id: grid
-        rows: 3
-        columns: 3
+        rows: 4
+        columns: 4
         anchors.fill: parent
         rowSpacing: height * 0.03
         columnSpacing: 0
@@ -44,8 +44,8 @@ AccountBackground {
             valueLabel.enabled = true
         }
 
-        property var tWidth: flow === GridLayout.LeftToRight ? 0.33 : 1
-        property var tHeight: flow === GridLayout.LeftToRight ? 1 : 0.32
+        property var tWidth: flow === GridLayout.LeftToRight ? 0.25 : 1
+        property var tHeight: flow === GridLayout.LeftToRight ? 1 : 0.25
 
         Column {
             Layout.preferredWidth: grid.width * grid.tWidth
@@ -147,6 +147,30 @@ AccountBackground {
                     if(currentText !== "")
                         s_catChanged(currentText)
                 }
+            }
+        }
+
+        Column {
+            spacing: grid.height * 0.02
+            Layout.preferredWidth: grid.width * grid.tWidth
+            Layout.preferredHeight: grid.height * grid.tHeight
+
+            AccountHeader {
+                id: supportLabel
+                text: qsTr("Support")
+
+                height: parent.height * 0.39
+                width: parent.width
+            }
+
+            AccountComboBox {
+                id: support
+                objectName: "category"
+                enabled: !grid.opening
+                model: CoreModel.entryTypeModel
+                height: parent.height * 0.59
+                width: parent.width
+                textRole: "name"
             }
         }
     }

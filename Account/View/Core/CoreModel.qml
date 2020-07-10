@@ -43,6 +43,36 @@ QtObject {
         }
     }
     
+    property ListModel entryTypeModel: ListModel {
+        function findIndex(role) {
+            for(var i = 0; i < count; i++) {
+                if(role === get(i).role) {
+                    return i
+                }
+            }
+
+            return 0
+        }
+
+        ListElement {
+            name: qsTr("Money")
+            role: Account.Money
+        }
+
+        ListElement {
+            name: qsTr("CB")
+            role: Account.CB
+        }
+        ListElement {
+            name: qsTr("Transfert")
+            role: Account.Transfert
+        }
+        ListElement {
+            name: qsTr("Cheque")
+            role: Account.Cheque
+        }
+    }
+
     property ListModel typeModel: ListModel {
         id: typeModel
 
