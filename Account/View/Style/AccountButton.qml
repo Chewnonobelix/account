@@ -3,10 +3,11 @@ import QtQuick.Controls 2.14
 
 Button {
     id: root
-        
+
+    clip: true
     font.family: AccountStyle.core.name
     font.pixelSize: AccountStyle.core.size
-    
+
     background: Rectangle {
         gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
         border.color: "darkgoldenrod"

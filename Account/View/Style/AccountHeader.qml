@@ -5,6 +5,7 @@ Label{
     font.family: AccountStyle.title.name
     font.pixelSize: AccountStyle.title.size2
     fontSizeMode: Text.Fit
+    clip: true
     horizontalAlignment: Qt.AlignHCenter
     verticalAlignment: Qt.AlignVCenter
     background: Rectangle {

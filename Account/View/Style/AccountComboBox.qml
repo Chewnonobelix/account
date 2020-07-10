@@ -11,7 +11,7 @@ ComboBox {
     
     font.family: AccountStyle.core.name
     font.pixelSize: AccountStyle.core.size
-    
+    clip: true
 
     delegate: ItemDelegate{
         id: del

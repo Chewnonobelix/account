@@ -6,6 +6,7 @@ TextField {
 
     font.family: AccountStyle.core.name
     font.pixelSize: AccountStyle.core.size
+    clip: true
     property bool valid: true
 
     background: Rectangle {

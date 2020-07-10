@@ -6,7 +6,7 @@ CheckBox {
 
     font.family: AccountStyle.core.name    
     font.pixelSize: AccountStyle.core.size
-    
+    clip: true
     background: MouseArea {
         z: -1
         acceptedButtons: Qt.NoButton

@@ -7,4 +7,5 @@ Label{
     fontSizeMode: Text.Fit
     horizontalAlignment: Qt.AlignHCenter
     verticalAlignment: Qt.AlignVCenter
+    clip: true
 }

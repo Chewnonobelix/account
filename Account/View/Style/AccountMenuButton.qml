@@ -7,6 +7,7 @@ AccountButton {
 //        text: parent.text
 //    }
 
+    clip: true
     display: AbstractButton.TextBesideIcon
     background: AccountBackground {
         invisible: true
