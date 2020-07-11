@@ -107,6 +107,7 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     m_ids["entry"]<<ide;
     m_ids["info"]<<idi;
     Entry et = e;
+    et.setMetadata("lastUpdated", QDateTime::currentDateTime());
     Information info = et.info();
     info.setId(idi);
     info.setIdEntry(ide);
@@ -285,11 +286,14 @@ void ControllerXMLMulti::updateInfo(QDomElement &info , const Information & inf)
 bool ControllerXMLMulti::updateEntryNode(const Entry & e, QDomElement & el)
 {
     
+    Entry et = e;
+    et.setMetadata("lastUpdated", QDateTime::currentDateTime());
+
     setter(el, "date", e.date().toString("dd-MM-yyyy"));
     setter(el, "value",QString::number(e.value()));
     setter(el, "type", e.type());
         
-    for(auto it: e.metaDataList())
+    for(auto it: et.metaDataList())
         if(it != "notemit")
           el.setAttribute(it, e.metaData<QString>(it));
     
