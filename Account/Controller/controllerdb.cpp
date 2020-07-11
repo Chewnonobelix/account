@@ -402,7 +402,10 @@ bool ControllerDB::addEntry(const Entry & e)
             ret &= m_addInformation->exec();
         }
         
-        auto meta = e.metaDataList();
+        Entry et = e;
+        et.setMetadata("lastUpdated", QDateTime::currentDateTime());
+
+        auto meta = et.metaDataList();
         for(auto it: meta)
         {
             if(it == "id" || it == "notemit")
@@ -410,7 +413,7 @@ bool ControllerDB::addEntry(const Entry & e)
             
             m_insertMetadata->bindValue(":entry", id);
             m_insertMetadata->bindValue(":name", it);
-            m_insertMetadata->bindValue(":value", e.metaData<QString>(it));
+            m_insertMetadata->bindValue(":value", et.metaData<QString>(it));
             
             ret &= m_insertMetadata->exec();
         }
@@ -492,23 +495,26 @@ bool ControllerDB::updateEntry(const Entry & e)
         ret &= updateInfo(e);
         
         
-        auto meta = e.metaDataList();
+        Entry et = e;
+        et.setMetadata("lastUpdated", QDateTime::currentDateTime());
+
+        auto meta = et.metaDataList();
         for(auto it: meta)
         {
             if(it == "id" || it == "notemit")
                 continue;
             
-            m_updateMetadata->bindValue(":entry", e.id());
+            m_updateMetadata->bindValue(":entry", et.id());
             m_updateMetadata->bindValue(":name", it);
-            m_updateMetadata->bindValue(":value", e.metaData<QString>(it));
+            m_updateMetadata->bindValue(":value", et.metaData<QString>(it));
             
             bool t = m_updateMetadata->exec();
             t = m_updateMetadata->numRowsAffected() > 0;
             if(!t)
             {
-                m_insertMetadata->bindValue(":entry", e.id());
+                m_insertMetadata->bindValue(":entry", et.id());
                 m_insertMetadata->bindValue(":name", it);
-                m_insertMetadata->bindValue(":value", e.metaData<QString>(it));
+                m_insertMetadata->bindValue(":value", et.metaData<QString>(it));
                 
                 m_insertMetadata->exec();                
             }
