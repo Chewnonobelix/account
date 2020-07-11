@@ -88,7 +88,7 @@ Popup {
             }
         }
 
-        ComboBox {
+        AccountComboBox {
             id: toCombo
             objectName: "toCombo"
 
@@ -123,7 +123,7 @@ Popup {
         anchors.right: coreLayout.right
         AccountButton {
             text: qsTr("Ok")
-
+            enabled: toCombo.currentText !== ""
             onClicked: {
                 if(fieldInfo.text.length !== 0) {
                     fieldInfo.background.border.color = "transparent"
