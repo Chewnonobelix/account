@@ -202,6 +202,7 @@ ApplicationWindow {
     }
 
     Shortcut {
+        id: transfertShortcut
         sequence: "F"
         onActivated: openTransfert()
     }
@@ -584,6 +585,25 @@ ApplicationWindow {
                                 if (enabled) {
                                     delShort.activated()
                                 }
+                            }
+                        }
+
+                        AccountMenuButton {
+                            text: qsTr("&Transfert")
+                            height: drawer.height*0.1
+                            width: drawer.width*.99
+
+                            indicator: AccountLabel {
+                                text: transfertShortcut.nativeText
+                                anchors.leftMargin: 10
+                                anchors.rightMargin: 10
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+
+
+                            onClicked: {
+                                transfertShortcut.activated()
                             }
                         }
                     }
