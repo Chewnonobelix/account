@@ -83,8 +83,15 @@ Une itération du budget se reproduit toute les péiode de temps.
 9) Dépense commune
 ------------------
 
+
 IV) Options
 -----------
+
+La page d'options permet de régler un certains nombres de paramétres.
+-La langue de l'application (Français ou anglais)
+-L'activation de certaines fonctionnalitées
+-Le support de sauvegarde principale, et , si activé, d'archive
+-L'auto archivation à la sortie de l'application
 
 V) Zone de notification
 -----------------------
