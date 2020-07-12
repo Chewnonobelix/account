@@ -111,6 +111,8 @@ ApplicationWindow {
         objectName: "transfert"
         
         anchors.centerIn: parent
+        width: mainWindow.width * .75
+        height: mainWindow.height * .50
         onOpened: {
             addAccount(accountSelect.model)
         }
@@ -599,6 +601,7 @@ ApplicationWindow {
                                 anchors.rightMargin: 10
                                 anchors.right: parent.right
                                 anchors.verticalCenter: parent.verticalCenter
+                                clip: true
                             }
 
 

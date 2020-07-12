@@ -9,13 +9,9 @@ import "../Functionnal"
 
 Popup {
     id: transfertView
-//    closePolicy: Popup.NoAutoClose
+    //    closePolicy: Popup.NoAutoClose
 
     signal s_accept()
-
-    width: coreLayout.width + 20
-    height: coreLayout.height + dateField.height + layoutButton.height + 20
-
 
     function addAccount(accountList) {
         fromCombo.model = accountList
@@ -33,24 +29,30 @@ Popup {
     background: AccountBackground {
     }
 
-    C.CalendarButton {
-        id: dateField
-        objectName: "dateField"
-
-        width: 80
-        height: 25
-    }
-
     GridLayout {
         id: coreLayout
-        anchors.top: dateField.bottom
-        columns: 4
-        columnSpacing: 5
+        anchors.fill: parent
+        columnSpacing: transfertView.width * 0.01
+        rowSpacing: transfertView.height * 0.01
+
+        C.CalendarButton {
+            id: dateField
+            objectName: "dateField"
+
+            Layout.preferredHeight: transfertView.height * .23
+            Layout.preferredWidth: transfertView.width * .23
+        }
+
+
         AccountLabel {
             id:fromLabel
             text: qsTr("From")
             font.family: AccountStyle.title.name
             font.pixelSize: AccountStyle.title.size
+            Layout.column: 0
+            Layout.row: 1
+            Layout.preferredHeight: transfertView.height * .23
+            Layout.preferredWidth: transfertView.width * .23
         }
 
         AccountLabel {
@@ -58,6 +60,10 @@ Popup {
             text: qsTr("to")
             font.family: AccountStyle.title.name
             font.pixelSize: AccountStyle.title.size
+            Layout.column: 1
+            Layout.row: 1
+            Layout.preferredHeight: transfertView.height * .23
+            Layout.preferredWidth: transfertView.width * .23
         }
 
         AccountLabel {
@@ -65,6 +71,10 @@ Popup {
             text: qsTr("Value")
             font.family: AccountStyle.title.name
             font.pixelSize: AccountStyle.title.size
+            Layout.column: 2
+            Layout.row: 1
+            Layout.preferredHeight: transfertView.height * .23
+            Layout.preferredWidth: transfertView.width * .23
         }
 
         AccountLabel {
@@ -72,12 +82,20 @@ Popup {
             text: qsTr("Info")
             font.family: AccountStyle.title.name
             font.pixelSize: AccountStyle.title.size
+            Layout.column: 3
+            Layout.row: 1
+            Layout.preferredHeight: transfertView.height * .23
+            Layout.preferredWidth: transfertView.width * .23
         }
 
 
         AccountComboBox {
             id: fromCombo
             objectName: "fromCombo"
+            Layout.column: 0
+            Layout.row: 2
+            Layout.preferredHeight: transfertView.height * .23
+            Layout.preferredWidth: transfertView.width * .23
 
             onCurrentIndexChanged: {
                 if(currentIndex === 0) {
@@ -91,6 +109,10 @@ Popup {
         AccountComboBox {
             id: toCombo
             objectName: "toCombo"
+            Layout.column: 1
+            Layout.row: 2
+            Layout.preferredHeight: transfertView.height * .23
+            Layout.preferredWidth: transfertView.width * .23
 
             onCurrentIndexChanged: {
                 if(currentIndex === 0) {
@@ -104,26 +126,34 @@ Popup {
         AccountSpinbox {
             id: spinVal
             objectName: "spinVal"
+            Layout.column: 2
+            Layout.row: 2
+            Layout.preferredHeight: transfertView.height * .23
+            Layout.preferredWidth: transfertView.width * .23
+
         }
 
         AccountTextInput {
             id: fieldInfo
             objectName: "fieldInfo"
-            width: layoutButton.width
-
+            //            width: layoutButton.width
+            Layout.fillWidth: true
             ToolTip.text: qsTr("Please complete the entry's title")
             ToolTip.visible: background.border.color === "#ff0000"
+            Layout.column: 3
+            Layout.row: 2
+            Layout.preferredHeight: transfertView.height * .23
+            Layout.preferredWidth: transfertView.width * .23
         }
 
-    }
-
-    RowLayout {
-        id: layoutButton
-        anchors.top: coreLayout.bottom
-        anchors.right: coreLayout.right
         AccountButton {
             text: qsTr("Ok")
             enabled: toCombo.currentText !== ""
+            Layout.column: 2
+            Layout.row:3
+            Layout.preferredHeight: transfertView.height * .23
+            Layout.preferredWidth: transfertView.width * .23
+
             onClicked: {
                 if(fieldInfo.text.length !== 0) {
                     fieldInfo.background.border.color = "transparent"
@@ -138,6 +168,10 @@ Popup {
 
         AccountButton {
             text: qsTr("Cancel")
+            Layout.column: 3
+            Layout.row: 3
+            Layout.preferredHeight: transfertView.height * .23
+            Layout.preferredWidth: transfertView.width * .23
 
             onClicked: transfertView.close()
         }
