@@ -86,6 +86,12 @@ Une itération du budget se reproduit toute les péiode de temps.
 Une zone de dépense commune permet de définir un groupe de dépense ou de revenue commun entre plusieurs participants.
 Cela permet in fine de répartir équitablement les dépenses et revenue entre les différents particiapants, de donné la liste des différentes transactions à effectuer pour équilibré le tout.
 
+10) Transfert
+-------------
+
+Dans cette fenêtre vous pouvez faire un transfert entre deux comptes.
+Ceci créera une dépense dans le compte débiteur, et un revenue dans le comtpe recepteur.
+
 IV) Options
 -----------
 
@@ -113,3 +119,4 @@ CTRL+SHIFT+D: Supprimer le compte courant
 CTRL+A: Ajouter une nouvelle transaction
 CTRL+D: Supprimer la transaction courante
 SHIFT+ clique gauche une date du calendrier: Sélection de plusieurs dates 
+F: Ouvrir le fenêtre de transfert
