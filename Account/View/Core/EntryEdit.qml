@@ -34,8 +34,8 @@ AccountBackground {
         rows: 4
         columns: 4
         anchors.fill: parent
-        rowSpacing: height * 0.03
-        columnSpacing: 0
+        rowSpacing: height * 0.01
+        columnSpacing: width * 0.01
 
 
         onEnabledChanged: {
@@ -165,7 +165,7 @@ AccountBackground {
 
             AccountComboBox {
                 id: support
-                objectName: "category"
+                objectName: "support"
                 enabled: !grid.opening
                 model: CoreModel.entryTypeModel
                 height: parent.height * 0.59
