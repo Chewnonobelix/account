@@ -11,7 +11,7 @@ AccountBackground {
     property bool opening: false
     property var entry: null
     property var catModel: []
-
+    borderEnabled: false
     signal s_titleChanged(string title)
     signal s_estimatedChanged(bool title)
     signal s_valueChanged(real value)
