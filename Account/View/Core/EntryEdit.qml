@@ -7,7 +7,7 @@ import "../Style"
 import "../Functionnal"
 
 AccountBackground {
-
+    id: root
     invisible: true
     property bool opening: false
     property var entry: null
@@ -17,6 +17,7 @@ AccountBackground {
     signal s_estimatedChanged(bool title)
     signal s_valueChanged(real value)
     signal s_catChanged(string cat)
+    signal s_supportChanged(int supp)
 
     function changeDirection() {
         grid.flow = grid.flow === GridLayout.LeftToRight ? GridLayout.TopToBottom : GridLayout.LeftToRight
@@ -175,7 +176,12 @@ AccountBackground {
                 width: parent.width
                 textRole: "name"
                 valueRole: "role"
-                onCurrentValueChanged:if(down) s_supportChanged(currentValue)
+                onCurrentValueChanged: {
+                    if(down) {
+                        root.s_supportChanged(currentValue)
+                        s_supportChanged(currentValue)
+                    }
+                }
             }
         }
     }
