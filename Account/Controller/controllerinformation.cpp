@@ -69,6 +69,11 @@ void ControllerInformation::configure(QObject * view)
             connect(catItem, SIGNAL(s_currentTextChanged(QString)), this, SLOT(categoryChange(QString)));
             connect(catItem, SIGNAL(s_addCategory(QString)), this, SLOT(addNewCategory(QString)));
         }
+
+        QObject* support = child->findChild<QObject*>("support");
+
+        if(support)
+            connect(support, SIGNAL(s_supportChanged(int)), this, SLOT(supportChange(int)));
     }
 }
 
@@ -138,4 +143,11 @@ void ControllerInformation::addNewCategory(QString cat)
 void ControllerInformation::pageChange()
 {
     exec();
+}
+
+void ControllerInformation::supportChange(int support)
+{
+    m_entry.setSupport((Account::EntryTypeEnum)support);
+    m_db->updateEntry(m_entry);
+    emit s_exec();
 }

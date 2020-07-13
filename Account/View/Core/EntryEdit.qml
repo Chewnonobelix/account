@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.12
+import Account 1.0
 import "../Style"
 import "../Functionnal"
 
@@ -27,6 +28,7 @@ AccountBackground {
         spinbox.value = Qt.binding(function() {return entry ? entry.value * 100 : 0})
         category.model = Qt.binding(function() {return catModel})
         category.currentIndex = Qt.binding(function() {return entry ? category.setting(entry.info.category) : category.model.length - 1})
+        support.currentIndex = Qt.binding(function () {return support.model.findIndex(entry ? entry.support : Account.CB) })
     }
 
     GridLayout {
@@ -166,11 +168,14 @@ AccountBackground {
             AccountComboBox {
                 id: support
                 objectName: "support"
+                signal s_supportChanged(int support)
                 enabled: !grid.opening
                 model: CoreModel.entryTypeModel
                 height: parent.height * 0.59
                 width: parent.width
                 textRole: "name"
+                valueRole: "role"
+                onCurrentValueChanged:if(down) s_supportChanged(currentValue)
             }
         }
     }

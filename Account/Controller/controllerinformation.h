@@ -31,7 +31,8 @@ public slots:
     void categoryChange(QString);
     void addNewCategory(QString);
     void pageChange();
-    
+    void supportChange(int);
+
 signals:
     void s_update(int);
     void s_changeCat(QString, int);
