@@ -58,7 +58,6 @@ Pour chaque jour possédant au moins une transaction, un rectangle vert ou rouge
 Pour chaque jour compris entre la première et la dernière transactions, un rectangle vert ou rouge apparaitra uen bas de la case du jour. Un rectangle vert correspond à un total journalier positif, tandis qu'un rectangle rouge correpond à un total journalier négatif.
 Vous pouvez sélectionné plusieurs date en maintenant la touche shift. Quand une ou plusieurs date sont sélectionné, la liste des transactions n'affiche que les transactions pour les dates sélectionné.
 
-
 6) Graphique
 ------------
 
