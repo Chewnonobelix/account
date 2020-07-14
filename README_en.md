@@ -57,6 +57,7 @@ The calendar display preview details of the account.
 For each day with one or more transaction, a green or a red rectangle will be display on the top of the day square. The green rectangle mean the total day transaction is more than 0. The red one mean a total less than 0.
 When one or more transaction is set for an account, a green or a red rectangle will be display on the bottom of the each day square between the first date and the last day. The green rectangle mean the total of the account is more than 0. The red one mean a total of the account is less than 0.
 You can select one or more day by maintain shift key, and click on days. When you click on a day, and with no shift key, a single day will be select. The Transaction list will be update with all transactions for selected day.
+The graphic panel allow to show the repartition of transactions by categories, split in income or outcome.
 
 6) Graph
 --------
@@ -70,6 +71,13 @@ The default view is for one month, you can zoom to a year, or all year view by s
 A frequency is a transaction which repeat regulary in time.
 A frequency is set by a reference entry, a transaction typ (income or outcome), and a periodicity.
 Then those element are set, you can generate transactions between two dates, or set the endless value. Then endless, transactions will be automatically generate.
+
+8) Budget
+---------
+
+The budget feature allow to handle a budget in a time period. A budget is link to a category.
+In a budget you have to add one or many target. A target is set by a begin date, a value and a periodicity.
+A budget iteration reproduce each period of time.
 
 IV) Shortcut
 ------------
