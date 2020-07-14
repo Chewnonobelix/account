@@ -184,10 +184,12 @@ Rectangle {
             signal titleChanged(int id, string title)
             signal valueChanged(int id, real value)
             signal catChanged(int id, string cat)
+            signal supportChanged(int id, int support)
 
             onS_valueChanged: if(entry && enabled) valueChanged(frequencyList.currentModel.id, value)
             onS_titleChanged: if(entry && enabled) titleChanged(frequencyList.currentModel.id, title)
             onS_catChanged: if(entry && enabled) catChanged(frequencyList.currentModel.id, cat, "manager")
+            onS_supportChanged: if(entry && enabled) supportChanged(frequencyList.currentModel.id, supp)
 
             onEntryChanged: {
                 typeCombo.currentIndex = CoreModel.typeModel.find(entry ? entry.type: "outcome")

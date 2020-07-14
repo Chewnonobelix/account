@@ -77,7 +77,7 @@ void ControllerFrequency::setManager(QObject * manager)
         connect(ref, SIGNAL(valueChanged(int, double)), this, SLOT(updateFreqValue(int,double)));
         connect(ref, SIGNAL(titleChanged(int, QString)), this, SLOT(updateFreqName(int,QString)));
         connect(ref, SIGNAL(catChanged(int, QString)), this, SLOT(updateFreqCat(int,QString)));
-        
+        connect(ref, SIGNAL(supportChanged(int, int)), this, SLOT(updateFreqSupport(int,int)));
     }
     
     QObject* when = m_manager->findChild<QObject*>("whenCombo");
@@ -363,6 +363,14 @@ QObject* ControllerFrequency::worker(QString name) const
 void ControllerFrequency::updateFreqEndless(int id, bool e)
 {
     m_freqs[id].setEndless(e);
+    m_db->updateFrequency(m_freqs[id]);
+}
+
+void ControllerFrequency::updateFreqSupport(int id, int support)
+{
+    Entry ref = m_freqs[id].referenceEntry();
+    ref.setSupport((Account::EntryTypeEnum)support);
+    m_freqs[id].setReferenceEntry(ref);
     m_db->updateFrequency(m_freqs[id]);
 }
 

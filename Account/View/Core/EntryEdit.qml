@@ -2,20 +2,22 @@ import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.12
+import Account 1.0
 import "../Style"
 import "../Functionnal"
 
 AccountBackground {
-
+    id: root
     invisible: true
     property bool opening: false
     property var entry: null
     property var catModel: []
-
+    borderEnabled: false
     signal s_titleChanged(string title)
     signal s_estimatedChanged(bool title)
     signal s_valueChanged(real value)
     signal s_catChanged(string cat)
+    signal s_supportChanged(int supp)
 
     function changeDirection() {
         grid.flow = grid.flow === GridLayout.LeftToRight ? GridLayout.TopToBottom : GridLayout.LeftToRight
@@ -27,6 +29,7 @@ AccountBackground {
         spinbox.value = Qt.binding(function() {return entry ? entry.value * 100 : 0})
         category.model = Qt.binding(function() {return catModel})
         category.currentIndex = Qt.binding(function() {return entry ? category.setting(entry.info.category) : category.model.length - 1})
+        support.currentIndex = Qt.binding(function () {return support.model.findIndex(entry ? entry.support : Account.CB) })
     }
 
     GridLayout {
@@ -34,8 +37,8 @@ AccountBackground {
         rows: 4
         columns: 4
         anchors.fill: parent
-        rowSpacing: height * 0.03
-        columnSpacing: 0
+        rowSpacing: height * 0.01
+        columnSpacing: width * 0.01
 
 
         onEnabledChanged: {
@@ -165,12 +168,20 @@ AccountBackground {
 
             AccountComboBox {
                 id: support
-                objectName: "category"
+                objectName: "support"
+                signal s_supportChanged(int support)
                 enabled: !grid.opening
                 model: CoreModel.entryTypeModel
                 height: parent.height * 0.59
                 width: parent.width
                 textRole: "name"
+                valueRole: "role"
+                onCurrentValueChanged: {
+                    if(down) {
+                        root.s_supportChanged(currentValue)
+                        s_supportChanged(currentValue)
+                    }
+                }
             }
         }
     }
