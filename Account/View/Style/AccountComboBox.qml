@@ -4,6 +4,11 @@ import QtQuick.Controls 2.14
 ComboBox {
     id: root
     
+    ToolTip.delay: 500
+    ToolTip.timeout: 1000
+    ToolTip.visible: root.hovered
+
+
     Rectangle {
         gradient: AccountStyle.goldButton
         anchors.fill: parent

@@ -9,6 +9,12 @@ TextField {
     clip: true
     property bool valid: true
 
+    ToolTip.delay: 500
+    ToolTip.timeout: 1000
+    ToolTip.visible: root.hovered
+
+    hoverEnabled: true
+
     background: Rectangle {
         anchors.fill: parent
         color: "white"
