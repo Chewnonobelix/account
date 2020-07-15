@@ -12,6 +12,8 @@ AccountComboBox {
         s_addCategory(editText)
     }
 
+    ToolTip.text: qsTr("Select a transaction category")
+
     signal s_addCategory(string cat)
     signal s_currentTextChanged(string cat)
     property bool blocked: false
