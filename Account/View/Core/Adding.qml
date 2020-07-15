@@ -221,6 +221,7 @@ Popup {
                 Layout.column: 4
                 Layout.rowSpan: 1
                 Layout.columnSpan: 1
+
             }
 
             AccountButton {
@@ -238,6 +239,7 @@ Popup {
                 Layout.column: 5
                 Layout.rowSpan: 1
                 Layout.columnSpan: 1
+                ToolTip.timeout: 1
             }
         }
     }
