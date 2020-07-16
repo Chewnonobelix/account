@@ -85,7 +85,11 @@ A budget iteration reproduce each period of time.
 A common expanse set a group of outcome or income in common between some members.
 At the end, the feature will perform a fair distribition between all members.
 
+10) Tranfert
 ------------
+
+In this window, you can perform a transfert between two accounts.
+It will create an outcome from the original account, and an income in the target account.
 
 CTRL+Q: Quit application
 CTRL+N: Create new account
