@@ -91,6 +91,16 @@ At the end, the feature will perform a fair distribition between all members.
 In this window, you can perform a transfert between two accounts.
 It will create an outcome from the original account, and an income in the target account.
 
+IV) Options
+-----------
+
+The options panel allow to set various parameters:
+-The application language (English or French)
+-Features activation
+-The main database type
+-The backup type, and backup activation
+-The autobackup
+
 VI) Shortcut
 ------------
 
