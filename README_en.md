@@ -79,7 +79,12 @@ The budget feature allow to handle a budget in a time period. A budget is link t
 In a budget you have to add one or many target. A target is set by a begin date, a value and a periodicity.
 A budget iteration reproduce each period of time.
 
-IV) Shortcut
+9) Common expanse
+-----------------
+
+A common expanse set a group of outcome or income in common between some members.
+At the end, the feature will perform a fair distribition between all members.
+
 ------------
 
 CTRL+Q: Quit application
