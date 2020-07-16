@@ -91,9 +91,14 @@ At the end, the feature will perform a fair distribition between all members.
 In this window, you can perform a transfert between two accounts.
 It will create an outcome from the original account, and an income in the target account.
 
+VI) Shortcut
+------------
+
 CTRL+Q: Quit application
 CTRL+N: Create new account
+CTRL+SHIFT+A: Add new account
 CTRL+SHIFT+D: Delete current account
 CTRL+A: Add new transaction
 CTRL+D: Delete current transaction
 SHIFT+ left click on day calendar: Select multiple date 
+F: Open transfert window
