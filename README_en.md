@@ -101,6 +101,15 @@ The options panel allow to set various parameters:
 -The backup type, and backup activation
 -The autobackup
 
+V) System tray
+--------------
+
+The application can be reduce to systemtray.
+From the system tray, you can:
+-Add a transaction
+-Show or hide the application
+-Quit the application
+
 VI) Shortcut
 ------------
 
