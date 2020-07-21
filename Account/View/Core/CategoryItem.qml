@@ -40,6 +40,8 @@ AccountComboBox {
         horizontalAlignment: Qt.AlignHCenter
         verticalAlignment: Qt.AlignVCenter
         
+        ToolTip.text: readOnly ? qsTr("Select a transaction category") : qsTr("Add a new category")
+        
         property Item back2: AccountLabel{
             text: input.text
         }
