@@ -9,7 +9,7 @@ import QtQuick.Dialogs 1.3
 import QtQuick.Layouts 1.13
 
 import "../Style"
-import "../Transfert" as T
+import "../Transfert"
 import "../CommonExpanse"
 import "../Budget"
 import "../Frequency"
@@ -106,7 +106,7 @@ ApplicationWindow {
         //        showMaximized()
     }
     
-    T.Transfert {
+    Transfert {
         id: tranfert
         objectName: "transfert"
         

@@ -3,7 +3,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.11
 import QtQuick.Window 2.12
 import "../Style"
-import "../Frequency" as F
+import "../Frequency"
 
 Item {
     id: root
@@ -30,7 +30,7 @@ Item {
         rowSpacing: root.height * 0.02
         columnSpacing: root.width * 0.02
         
-        F.Frequency {
+        Frequency {
             enabled: visible
             objectName: "frequency"
             Layout.maximumWidth: root.width *.49
