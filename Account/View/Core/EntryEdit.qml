@@ -79,8 +79,6 @@ AccountBackground {
                 }
 
                 ToolTip.text: qsTr("Change transaction's title")
-                ToolTip.visible: hovered
-                ToolTip.delay: 500
 
                 onTextEdited: {
                     enabled = false
@@ -112,8 +110,6 @@ AccountBackground {
                 value: 0
 
                 ToolTip.text: qsTr("Change transaction's value")
-                ToolTip.visible: hovered
-                ToolTip.delay: 500
 
                 property date s_date
 
@@ -176,6 +172,9 @@ AccountBackground {
                 width: parent.width
                 textRole: "name"
                 valueRole: "role"
+                
+                ToolTip.text: qsTr("Select transaction's support type")
+                
                 onCurrentValueChanged: {
                     if(down) {
                         root.s_supportChanged(currentValue)
