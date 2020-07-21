@@ -48,9 +48,10 @@ Window {
                 valueRole: "type"
                 textRole: "name"
 
+                Layout.preferredHeight: root.height * .15
+                Layout.preferredWidth: root.width * .47
+
                 ToolTip.text: qsTr("Specify income or outcome")
-                ToolTip.visible: hovered
-                ToolTip.delay: 500
             }
 
             AccountHeader {
@@ -75,6 +76,8 @@ Window {
                 id: title
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
+                
+                ToolTip.text: qsTr("Fill a title")
             }
 
             AccountHeader {
@@ -87,6 +90,8 @@ Window {
                 id: valueSpin
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
+                
+                ToolTip.text: qsTr("Specify the transaction value")
             }
 
             AccountHeader {
@@ -115,6 +120,7 @@ Window {
                 Layout.preferredHeight: root.height * .10
                 Layout.preferredWidth: root.width * .47
 
+                ToolTip.visible: false
                 signal s_clicked()
 
                 onClicked: {
@@ -134,6 +140,7 @@ Window {
                 onClicked: root.close()
                 Layout.preferredHeight: root.height * .10
                 Layout.preferredWidth: root.width * .47
+                ToolTip.visible: false
             }
             
         }
