@@ -12,7 +12,6 @@ AccountComboBox {
         s_addCategory(editText)
     }
 
-    ToolTip.text: qsTr("Select a transaction category")
 
     signal s_addCategory(string cat)
     signal s_currentTextChanged(string cat)
@@ -37,9 +36,15 @@ AccountComboBox {
     }
         
     contentItem: AccountTextInput {
+        id: input
         horizontalAlignment: Qt.AlignHCenter
         verticalAlignment: Qt.AlignVCenter
         
+        property Item back2: AccountLabel{
+            text: input.text
+        }
+
+        background: readOnly ? back2 : back
         text: currentText
         readOnly: !editable
         onAccepted: {
