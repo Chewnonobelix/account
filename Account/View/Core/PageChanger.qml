@@ -34,8 +34,6 @@ Item {
             enabled: root.maxPage > 1 && (root.pageIndex > 1)
             
             ToolTip.text: qsTr("Previous 10 pages")
-            ToolTip.delay: 500
-            ToolTip.visible: hovered
         }
         
         AccountButton {
@@ -49,8 +47,6 @@ Item {
             enabled: root.maxPage > 1 && (root.pageIndex > 1)
             
             ToolTip.text: qsTr("Previous page")
-            ToolTip.delay: 500
-            ToolTip.visible: hovered
         }
         
         AccountTextInput {
@@ -66,8 +62,6 @@ Item {
             enabled: root.maxPage > 1
             
             ToolTip.text: qsTr("Current page")
-            ToolTip.delay: 500
-            ToolTip.visible: hovered
         }
         
         AccountButton {
@@ -81,8 +75,6 @@ Item {
             enabled: root.maxPage > 1 || (root.pageIndex < root.maxPage)
             
             ToolTip.text: qsTr("Next page")
-            ToolTip.delay: 500
-            ToolTip.visible: hovered
         }
         
         AccountButton {
@@ -96,8 +88,6 @@ Item {
             enabled: root.maxPage > 1 || (root.pageIndex < root.maxPage)
             
             ToolTip.text: qsTr("Next 10 pages")
-            ToolTip.delay: 500
-            ToolTip.visible: hovered
         }
     }
 }
