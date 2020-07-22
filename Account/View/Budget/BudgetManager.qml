@@ -179,6 +179,18 @@ Rectangle {
                 anchors.fill: parent
                 color: "transparent"
                 border.color: "darkseagreen"
+                
+                MouseArea {
+                    acceptedButtons: Qt.NoButton
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    id: catArea
+                }
+
+                ToolTip.text: qsTr("Category list")
+                ToolTip.delay: 500
+                ToolTip.timeout: 1000
+                ToolTip.visible: catArea.containsMouse 
             }
         }
         
@@ -268,9 +280,16 @@ Rectangle {
                 border.color: "darkseagreen"
                 color: "transparent"
                 
+                ToolTip.text: categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list")
+                ToolTip.delay: 500
+                ToolTip.timeout: 1000
+                ToolTip.visible: budgetArea.containsMouse
+                
                 MouseArea {
+                    id: budgetArea
                     anchors.fill: parent
                     acceptedButtons: Qt.RightButton
+                    hoverEnabled: true
                     z: -1
                     onClicked: {
                         targetView.currentIndex = targetView.indexAt(mouse.x, mouse.y)
