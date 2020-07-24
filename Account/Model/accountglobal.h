@@ -8,6 +8,7 @@
 namespace Account
 {
     Q_NAMESPACE
+    Q_NAMESPACE_EXPORT(ACCOUNT_EXPORT)
 
     enum class FrequencyEnum {Unique = 0, Day = 1, Week = 2, Month = 3, Quarter = 4, Year = 5};
     Q_ENUM_NS(FrequencyEnum)
