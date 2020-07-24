@@ -1,8 +1,8 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.13 as Control2
 import QtQuick.Window 2.13
-import QtQuick.Controls 1.4
+import QtQuick.Controls 1.4 as C1
 import QtQuick.Layouts 1.13
+import QtQuick.Controls 2.13
 
 import Account 1.0
 
@@ -109,8 +109,8 @@ Rectangle {
                 currentIndex = -1
             }
 
-            onCurrentIndexChanged: {
-            }
+//            onCurrentIndexChanged: {
+//            }
 
             delegate: Rectangle {
                 height: 40
@@ -147,6 +147,8 @@ Rectangle {
 
             signal s_addFrequency()
 
+            ToolTip.text: qsTr("Add new frequency")
+            
             onClicked: s_addFrequency()
         }
 
@@ -163,6 +165,8 @@ Rectangle {
 
             signal s_removeFrequency(int freq)
 
+            ToolTip.text: qsTr("Remove frequency")
+            
             onClicked: s_removeFrequency(frequencyList.currentModel.id)
         }
 
@@ -216,7 +220,8 @@ Rectangle {
 
             enabled: ref.enabled
 
-
+            ToolTip.text: qsTr("Select recurrence")            
+            
             model: CoreModel.freqModel
             textRole: "name"
             signal s_freq(int i, int f)
@@ -241,7 +246,8 @@ Rectangle {
 
             enabled: ref.enabled
 
-
+            ToolTip.text: qsTr("Select frequency type")
+            
             textRole: "name"
             valueRole: "type"
 
@@ -375,6 +381,18 @@ Rectangle {
 
             signal s_display(int entryId)
 
+            ToolTip.text: qsTr("Select generate transaction")
+            ToolTip.delay: 500
+            ToolTip.timeout: 1000
+            ToolTip.visible: linkedArea.containsMouse
+            
+            MouseArea {
+                id: linkedArea
+                acceptedButtons: Qt.NoButton
+                anchors.fill: parent
+                hoverEnabled: true
+            }
+
             property var enabledSection: []
             section.property: "group"
             section.criteria: ViewSection.FullString
@@ -433,7 +451,7 @@ Rectangle {
             }
 
             highlightMoveDuration: 0
-            delegate: Control2.ItemDelegate {
+            delegate: ItemDelegate {
                 objectName: "entryDel"
                 background: AccountBackground {
                     property var index: parent.index
