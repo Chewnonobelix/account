@@ -65,6 +65,7 @@ Popup {
                     parent.checkDate()
                 }
                 
+                ToolTip.text: qsTr("Select begin date")
             }
             
             AccountLabel {
@@ -84,6 +85,8 @@ Popup {
                 onTextChanged: {
                     parent.checkDate()
                 }
+                
+                ToolTip.text: qsTr("Select end date")
             }
             
             function checkDate() {
