@@ -3,10 +3,10 @@
 
 #include <QString>
 #include <QObject>
-
+#include "account_global.h"
 //#include "categories.h"
 
-class Information
+class  ACCOUNT_EXPORT Information
 {
     Q_GADGET
 
@@ -30,8 +30,8 @@ public:
 
     Information& operator = (const Information&);
 
-    friend bool operator ==(const Information&, const Information&);
-    friend bool operator <(const Information&, const Information&);
+    friend bool ACCOUNT_EXPORT operator ==(const Information&, const Information&);
+    friend bool ACCOUNT_EXPORT operator <(const Information&, const Information&);
 
     int id() const;
     void setId(int id);

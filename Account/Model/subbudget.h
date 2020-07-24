@@ -4,8 +4,9 @@
 #include <QMap>
 #include <QDate>
 #include "entry.h"
+#include "account_global.h"
 
-class SubBudget
+class ACCOUNT_EXPORT SubBudget
 {
 private:
     QDate m_reference;

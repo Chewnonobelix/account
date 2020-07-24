@@ -5,8 +5,9 @@
 #include <QString>
 #include <QMetaEnum>
 #include "entry.h"
+#include "../account_global.h"
 
-class Total
+class ACCOUNT_EXPORT Total
 {
     Q_GADGET
     

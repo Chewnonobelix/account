@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QDate>
+#include "account_global.h"
 
 namespace Account
 {
@@ -20,7 +21,7 @@ namespace Account
     enum EntryTypeEnum {Money, CB, Transfert, Cheque};
     Q_ENUM_NS(EntryTypeEnum)
 
-    int nbDay(QDate, FrequencyEnum);
+    int ACCOUNT_EXPORT nbDay(QDate, FrequencyEnum);
 }
 
 #endif // ACCOUNTGLOBAL_H

@@ -6,7 +6,7 @@
 #include "accountglobal.h"
 #include "entry.h"
 
-class Frequency
+class ACCOUNT_EXPORT Frequency
 {
     Q_GADGET
     

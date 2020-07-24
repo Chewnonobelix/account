@@ -11,7 +11,7 @@
 #include "subbudget.h"
 
 
-class Budget
+class ACCOUNT_EXPORT Budget
 {
 public:
 

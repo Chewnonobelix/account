@@ -4,7 +4,9 @@
 #include <QMap>
 #include <QString>
 #include <QVariant>
-class MetaData
+#include "account_global.h"
+
+class  ACCOUNT_EXPORT MetaData
 {
 private:
     QMap<QString, QVariant> m_metaData;

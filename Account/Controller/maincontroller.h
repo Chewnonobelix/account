@@ -9,6 +9,7 @@
 #include <QThread>
 #include <QQmlComponent>
 
+#include "../account_global.h"
 #include "abstractcontroller.h"
 #include "controllerinformation.h"
 #include "graphcontroller.h"
@@ -39,7 +40,7 @@ public:
     QMutex* m_mutex;
  };
 
-class MainController: public AbstractController
+class ACCOUNT_EXPORT MainController: public AbstractController
 {
     Q_OBJECT
 

@@ -8,7 +8,7 @@
 #include "entry.h"
 #include "total.h"
 
-class Closing
+class ACCOUNT_EXPORT Closing
 {
     Q_GADGET
     
@@ -22,7 +22,7 @@ public:
     double value;
 };
 
-class CommonExpanse
+class ACCOUNT_EXPORT CommonExpanse
 {
     Q_GADGET
 

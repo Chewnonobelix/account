@@ -11,7 +11,7 @@
 #include "metadata.h"
 #include "accountglobal.h"
 
-class Entry: public MetaData
+class ACCOUNT_EXPORT Entry: public MetaData
 {
     Q_GADGET
 
@@ -38,8 +38,8 @@ public:
     ~Entry();
 
     Entry& operator =(const Entry&);
-    friend bool operator ==(const Entry&, const Entry&);
-    friend bool operator < (const Entry&, const Entry&);
+    friend bool ACCOUNT_EXPORT operator ==(const Entry&, const Entry&);
+    friend bool ACCOUNT_EXPORT operator < (const Entry&, const Entry&);
 
     int id() const;
     void setId(int id);
