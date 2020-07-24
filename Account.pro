@@ -2,7 +2,11 @@ TEMPLATE = subdirs
 
 SUBDIRS = \
 Account \
-Test
+    AccountApp \
+    Test
 
 TRANSLATIONS += Account\Francais.ts \
                 Account\English.ts
+
+AccountApp.depends = Account
+Test.depends = Account
