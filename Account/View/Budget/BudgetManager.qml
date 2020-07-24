@@ -20,14 +20,14 @@ Rectangle {
     property bool blocked: false
     
     color: "transparent"
-        
+    
     ReferenceView {
         objectName: "reference"
         anchors.centerIn: parent
         height: width * 1.33
         width: 150 * 1.5
     }
-
+    
     function addCat(cat) {
         categoryModel.append(cat)
     }
@@ -157,7 +157,7 @@ Rectangle {
                     delegate: Control2.MenuItem {
                         font.family: AccountStyle.core.name
                         font.pixelSize: AccountStyle.core.size
-                                  
+                        
                         height: catMenu.height
                         background: Rectangle {
                             anchors.fill: parent
@@ -179,18 +179,6 @@ Rectangle {
                 anchors.fill: parent
                 color: "transparent"
                 border.color: "darkseagreen"
-                
-                MouseArea {
-                    acceptedButtons: Qt.NoButton
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    id: catArea
-                }
-
-                ToolTip.text: qsTr("Category list")
-                ToolTip.delay: 500
-                ToolTip.timeout: 1000
-                ToolTip.visible: catArea.containsMouse 
             }
         }
         
@@ -214,7 +202,7 @@ Rectangle {
                 width: targetView.width
                 height: targetView.height * .07
             }
-
+            
             onCurrentIndexChanged: {
                 var temp = currentIndex !== - 1 ? Qt.formatDate(targetModel.get(currentIndex).date, "dd-MM-yyyy") : ""
                 root.s_showTarget(categoryModel.get(catView.currentIndex).catName, temp, currentIndex === -1)
@@ -280,10 +268,12 @@ Rectangle {
                 border.color: "darkseagreen"
                 color: "transparent"
                 
-                ToolTip.text: categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list")
-                ToolTip.delay: 500
-                ToolTip.timeout: 1000
-                ToolTip.visible: budgetArea.containsMouse
+                ToolTip {
+                    text: categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list")
+                    delay: 500
+                    timeout: 1000
+                    visible: budgetArea.containsMouse                
+                }
                 
                 MouseArea {
                     id: budgetArea
@@ -291,6 +281,8 @@ Rectangle {
                     acceptedButtons: Qt.RightButton
                     hoverEnabled: true
                     z: -1
+                    
+                    
                     onClicked: {
                         targetView.currentIndex = targetView.indexAt(mouse.x, mouse.y)
                         if(targetView.currentIndex !== -1 && targetItemMenu.count === 1) {
@@ -304,10 +296,10 @@ Rectangle {
                 }
             }
         }
-         
+        
         ListView {
             id: subView
-
+            
             Layout.preferredHeight: root.height * .85
             Layout.preferredWidth: root.width * .30
             Layout.alignment: Qt.AlignTop
@@ -328,7 +320,7 @@ Rectangle {
                 width: subView.width
                 height: subView.height * .07
             }
-
+            
             
             delegate: Rectangle {
                 height: 60
