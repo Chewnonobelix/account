@@ -30,6 +30,8 @@ Item {
             Layout.preferredHeight: root.height / 16
             Layout.preferredWidth: root.width / 14
             onClicked: showPrevious()
+            
+            ToolTip.text: qsTr("Previous") + " " + decade ? qsTr("decade") : qsTr("year")
         }
         AccountHeader {
             text: root.label
@@ -45,6 +47,7 @@ Item {
             Layout.preferredHeight: root.height / 16
             Layout.preferredWidth: root.width / 14
             onClicked: showNext()
+            ToolTip.text: qsTr("Next") + " " + decade ? qsTr("decade") : qsTr("year")
         }
 
         Grid {
@@ -68,9 +71,13 @@ Item {
                     AccountLabel {
                         anchors.fill: parent
                         text: Qt.formatDate(modelData, decade ? "yyyy" : "MMM")
-
+                        ToolTip.text: Qt.formatDate(modelData, "MMMM yyyy")
+                        ToolTip.timeout: decade ? 0 : 1000
+                        ToolTip.delay: 500
+                        ToolTip.visible: repArea.containsMouse
                     }
                     MouseArea {
+                        id: repArea
                         anchors.fill: parent
                         onClicked: root.s_select(modelData)
                         cursorShape: Qt.PointingHandCursor
