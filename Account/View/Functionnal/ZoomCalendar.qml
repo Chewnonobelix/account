@@ -196,7 +196,27 @@ MouseArea {
         zoom(wheel.angleDelta.y > 1 ? 2 : 0)
     }
     
-    
+    function getToolTipText() {
+        var ret = qsTr("Select") + " "
+        
+        if(root.depth === 1) {
+            ret = ret + qsTr("one")+ " " + (multiple ? qsTr("or more") + " " : "") + qsTr("day")
+        }
+        if(root.depth === 2) {
+            ret = ret + qsTr("a month")
+        }
+        if(root.depth === 3) {
+            ret = ret + qsTr("a year")
+        }
+
+        return ret
+    }
+
+    ToolTip.text: getToolTipText()
+    ToolTip.visible: hovered
+    ToolTip.delay: 500
+    ToolTip.timeout: 1000
+    hoverEnabled: true
     acceptedButtons: Qt.NoButton
     
 }
