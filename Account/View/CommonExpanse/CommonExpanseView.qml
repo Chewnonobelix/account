@@ -294,6 +294,7 @@ Rectangle {
             Layout.alignment: Qt.AlignRight
             text: qsTr("Close")
             
+            ToolTip.text: qsTr("Close the common expanse")
             checked: model ? model.isClose : false
             
             signal s_checked(bool check)
