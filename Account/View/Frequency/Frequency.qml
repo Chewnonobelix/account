@@ -2,7 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.13
 
-import "../Core" as C
+import "../Core"
 import "../Style"
 import Account.Frequency 1.0
 
@@ -30,6 +30,18 @@ Rectangle {
             
             signal s_showFromFrequency(int id)
             
+            MouseArea {
+                id: pastArea
+                acceptedButtons: Qt.NoButton
+                hoverEnabled: true
+                anchors.fill: parent
+            }
+            
+            ToolTip.text: qsTr("Display related transaction")
+            ToolTip.timeout: 1000
+            ToolTip.delay: 500
+            ToolTip.visible: pastArea.containsMouse
+
             delegate: ItemDelegate {
                 highlighted: ListView.isCurrentItem
                 
@@ -58,7 +70,7 @@ Rectangle {
             }
         }
         
-        C.PageChanger {
+        PageChanger {
             id: pageSwipper
             objectName: "pageSwipper"
             Layout.fillWidth: true

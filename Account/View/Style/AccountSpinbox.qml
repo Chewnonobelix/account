@@ -5,6 +5,10 @@ import "../Functionnal"
 DoubleSpinBox {
     id: root
     
+    ToolTip.delay: 500
+    ToolTip.timeout: 1000
+    ToolTip.visible: root.hovered
+
     font.family: AccountStyle.core.name
     font.pixelSize: AccountStyle.core.size
     clip: true

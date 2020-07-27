@@ -1,6 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
-
+import QtQuick.Controls 2.15
 import "../Functionnal"
 import "../Style"
 import Account 1.0
@@ -40,6 +40,9 @@ MouseArea{
 
             enabled: root.okPrev && root.currentGran !== Account.Over
 
+            ToolTip.text: qsTr("Previous") + " " + root.currentGran === Account.Month ? qsTr("month") : qsTr("year")
+            ToolTip.timeout: Account.Over ? 0 : 1000
+            
             onClicked: {
                 root.s_increment(-1)
             }
@@ -71,6 +74,9 @@ MouseArea{
             Layout.column: 2
             Layout.row: 1
 
+            ToolTip.text: qsTr("Next") + " " + root.currentGran === Account.Month ? qsTr("month") : qsTr("year")
+            ToolTip.timeout: Account.Over ? 0 : 1000
+            
             onClicked: {
                 root.s_increment(1)
             }

@@ -313,6 +313,7 @@ QSharedPointer<FeatureBuilder> ControllerBudget::build(QQmlApplicationEngine * e
         
     auto budget = QSharedPointer<ControllerBudget>::create();
     QQmlComponent budgetComp(engine, QUrl("qrc:/Budget/BudgetManager.qml"));
+    qDebug()<<budgetComp.errorString();
     QObject* budgetManager = budgetComp.create();
 
     budget->setManager(budgetManager);

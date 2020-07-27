@@ -77,6 +77,7 @@ Dialog {
                     AccountComboBox {
                         objectName: "language"
                         Layout.preferredHeight: root.height * 0.07
+                        ToolTip.text: qsTr("Select language")
                     }
                 }
             }
@@ -112,20 +113,24 @@ Dialog {
                         Layout.preferredHeight: root.height * 0.07
                         text: qsTr("Budget")
                         font.family: AccountStyle.title.name
+                        
+                        ToolTip.text: (checked ? qsTr("Disable") : qsTr("Enable")) + " " + qsTr("budget")
                     }
                                         
                     AccountCheckBox {
                         objectName: "frequency"
                         Layout.preferredHeight: root.height * 0.07
                         text: qsTr("Frequency")
+                        ToolTip.text: (checked ? qsTr("Disable") : qsTr("Enable")) + " " + qsTr("frequency")
                         font.family: AccountStyle.title.name
                     }
                                         
                     AccountCheckBox {
                         objectName: "common"
                         Layout.preferredHeight: root.height * 0.07
-                        text: qsTr("CommonExpanse")
+                        text: qsTr("Common Expanse")
                         font.family: AccountStyle.title.name
+                        ToolTip.text: (checked ? qsTr("Disable") : qsTr("Enable")) + " " + qsTr("common expanse")
                     }
                 }
             }
@@ -135,6 +140,7 @@ Dialog {
                 AccountComboBox {
                     textRole: "name"
                     valueRole: "value"
+                    ToolTip.text: qsTr("Select database")
                     
                     model: ListModel {
                         ListElement {
@@ -210,6 +216,8 @@ Dialog {
                         Layout.preferredWidth:  database.width * .40
                         font.family: AccountStyle.title.name
                         LayoutMirroring.enabled: true
+                    
+                        ToolTip.text: (checked ? qsTr("Disable") : qsTr("Enable")) + " " + qsTr("backup database")
                     }
                     
                     
@@ -222,6 +230,7 @@ Dialog {
                         Layout.preferredHeight: root.height * 0.07
                         Layout.preferredWidth: root.width * 0.50
                         id: backup
+                        ToolTip.text: qsTr("Select backup database")
                     }
 
                     AccountCheckBox {
@@ -232,6 +241,7 @@ Dialog {
                         Layout.preferredHeight: root.height * 0.07
                         Layout.preferredWidth:  database.width * .40
                         font.family: AccountStyle.title.name
+                        ToolTip.text: (checked ? qsTr("Disable") : qsTr("Enable")) + " " +qsTr("automatic backup")
                     }
 
                     Row {

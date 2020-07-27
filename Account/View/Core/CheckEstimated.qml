@@ -11,13 +11,15 @@ Popup {
     signal validate()
     
     AccountLabel {
-        text: qsTr("Entry to check")
+        text: qsTr("Transaction to check")
         font.pixelSize: AccountStyle.title.size
         font.family: AccountStyle.title.name
 
         id: header
         anchors.left: parent.left
         anchors.right: parent.right
+
+        ToolTip.text: qsTr("Validation of transaction which estimation is reach")
     }
 
     background: AccountBackground{}
@@ -49,6 +51,8 @@ Popup {
                     AccountCheckBox {
                         id: rowChecked
                         checked: false
+
+                        ToolTip.timeout: 1
 
                         onCheckedChanged: {
                             tab[modelData.id] = checked;
@@ -83,6 +87,8 @@ Popup {
         text: qsTr("Save")
         anchors.bottom: parent.bottom
         height: parent.height * .05
+
+        ToolTip.timeout: 1
 
         onClicked:  {
             checker.validate()

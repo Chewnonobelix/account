@@ -43,6 +43,8 @@ Rectangle {
                 Layout.column: 1
                 Layout.fillWidth: true
                 valid: text.length > 0
+                
+                ToolTip.text: qsTr("Fill a session name")
             }
 
             AccountButton {
@@ -123,6 +125,8 @@ Rectangle {
                     height: parent.height
                     text: qsTr("Add common expanse")
                     onClicked: popAddCommon.open()
+                    
+                    ToolTip.text: qsTr("Add a new common expanse")
                 }
                 
                 AccountButton {
@@ -134,6 +138,9 @@ Rectangle {
 
                     signal s_remove(int id)
                     onClicked: s_remove(listCommon.currentModel.id)
+                    
+                    ToolTip.text: listCommon.currentModel ? qsTr("Remove") + " " + listCommon.currentModel.title : ""
+                    ToolTip.visible:  hovered && listCommon.currentModel
                 }
             }
         }

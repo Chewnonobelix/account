@@ -8,6 +8,10 @@ Button {
     font.family: AccountStyle.core.name
     font.pixelSize: AccountStyle.core.size
 
+    ToolTip.delay: 500
+    ToolTip.timeout: 1000
+    ToolTip.visible: root.hovered
+
     background: Rectangle {
         gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
         border.color: "darkgoldenrod"

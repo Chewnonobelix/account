@@ -58,7 +58,9 @@ Popup {
                 Layout.column: 1
                 Layout.row: 0
                 Layout.columnSpan: 2
-                Layout.alignment: Qt.AlignRight                
+                Layout.alignment: Qt.AlignRight       
+                
+                ToolTip.text: qsTr("Select begin date")
             }
             
             AccountLabel {
@@ -84,7 +86,9 @@ Popup {
                 Layout.column: 1
                 Layout.row: 1
                 Layout.columnSpan: 2
-                Layout.alignment: Qt.AlignRight                
+                Layout.alignment: Qt.AlignRight
+
+                ToolTip.text: qsTr("Specify target value")                
             }
             
             AccountLabel {
@@ -117,6 +121,8 @@ Popup {
                 property int currentRole: 0
                 
                 onCurrentIndexChanged: currentRole = CoreModel.freqModel.get(currentIndex).role
+                
+                ToolTip.text: qsTr("Select frequency")
             }
             
             AccountButton {

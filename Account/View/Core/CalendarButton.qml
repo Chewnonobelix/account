@@ -10,7 +10,8 @@ AccountButton {
     text: Qt.formatDate(new Date(), "dd-MM-yyyy")
 
     property bool isOpen: pop.opened
-    
+    ToolTip.text: qsTr("Select a single date")
+
     function extern(d) {
         dateAdding.set(d)
     }

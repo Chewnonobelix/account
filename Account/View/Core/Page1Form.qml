@@ -64,8 +64,6 @@ Page {
             Layout.preferredWidth: pageTable.width * 0.09
             
             ToolTip.text: qsTr("Add new transaction")
-            ToolTip.visible: hovered
-            ToolTip.delay: 500
                         
             onClicked: {
                 mainWindow.adding(false)
@@ -86,8 +84,6 @@ Page {
             Layout.preferredWidth: pageTable.width * 0.09
             
             ToolTip.text: qsTr("Remove select transaction")
-            ToolTip.visible: hovered
-            ToolTip.delay: 500
             
             onClicked: {
                 if (enabled) {
@@ -142,6 +138,18 @@ Page {
                 objectName: "entryView"
                 model: []
                 
+                ToolTip.text: qsTr("Transactions list")
+                ToolTip.visible: tableArea.containsMouse && rowAt(tableArea.mouseX, tableArea.mouseY) === -1
+                ToolTip.delay: 500
+                ToolTip.timeout: 1000
+                
+                MouseArea {
+                    id: tableArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    acceptedButtons: Qt.NoButton
+                }
+
                 Component.onCompleted: {
                     selection.clear()
                     currentEntry = Qt.binding( function(){ return selection.count !== 0 ? model[currentRow] : null } )
@@ -228,6 +236,7 @@ Page {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
                             propagateComposedEvents: true
+                            
                             onClicked: {
                                 view.setNewIndex(styleData.row)
                             }
@@ -237,6 +246,7 @@ Page {
                             
                             text: styleData.value === "income" ? "+" + est : "-" + est
                             anchors.fill: parent
+                            
                         }
                     }
                 }
@@ -396,7 +406,6 @@ Page {
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
-                        
                         onClicked: {
                             view.setNewIndex(styleData.row)
                         }
