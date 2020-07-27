@@ -25,6 +25,7 @@ SOURCES += \
     Controller/controllerfrequency.cpp \
     Controller/controllerpiegraph.cpp \
     Controller/controllersettings.cpp \
+    Controller/controllersynchronization.cpp \
     Controller/interfacedatasave.cpp \
     Model/accountglobal.cpp \
     Model/commonexpanse.cpp \
@@ -71,6 +72,7 @@ HEADERS += \
     Controller/controllerfrequency.h \
     Controller/controllerpiegraph.h \
     Controller/controllersettings.h \
+    Controller/controllersynchronization.h \
     Controller/dbrequestsinit.h \
     Controller/featurebuilder.h \
     Controller/filler.h \
