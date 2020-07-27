@@ -1,9 +1,9 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.5 as Control2
 import QtQuick.Layouts 1.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 1.4
 import QtQuick.controls.Styles 1.4
+import QtQuick.Controls 2.15
 import "../Style"
 
 Rectangle {
@@ -99,7 +99,7 @@ Rectangle {
             section.criteria: ViewSection.FullString
             section.delegate: Rectangle {
                 gradient: AccountStyle.goldHeader
-                width: parent.width
+                width: catView.width
                 height: 30
                 Text {
                     anchors.fill: parent
@@ -119,7 +119,7 @@ Rectangle {
             clip: true
             
             delegate: Rectangle {
-                width: parent.width
+                width: catView.width
                 height: 40
                 id: delItem
                 
@@ -149,12 +149,12 @@ Rectangle {
                     }
                 }
                 
-                Control2.Menu {
+                Menu {
                     id: catMenu
                     
                     height: delItem.height
                     
-                    delegate: Control2.MenuItem {
+                    delegate: MenuItem {
                         font.family: AccountStyle.core.name
                         font.pixelSize: AccountStyle.core.size
                         
@@ -165,7 +165,7 @@ Rectangle {
                         }
                     }
                     
-                    Control2.Action {
+                    Action {
                         id: addBudget
                         text:  has ? qsTr("Remove budget") : qsTr("Add budget")
                         onTriggered: root.s_budgetChanged(catName)
@@ -191,6 +191,11 @@ Rectangle {
             Layout.alignment: Qt.AlignTop
             visible: catView.currentIndex !== -1 && categoryModel.get(catView.currentIndex).has
             
+            ToolTip.text: catView.currentIndex !== -1 ? categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list") : ""
+            ToolTip.delay: 500
+            ToolTip.timeout: 1000
+            ToolTip.visible: budgetArea.containsMouse && catView.currentIndex !== -1 
+            
             
             model: targetModel
             currentIndex: -1
@@ -210,7 +215,7 @@ Rectangle {
             
             Component {
                 id: compRemoveAction
-                Control2.Action {
+                Action {
                     id: removeAction
                     text:  qsTr("Remove target")
                     
@@ -220,12 +225,12 @@ Rectangle {
                 }
             }
             
-            Control2.Menu {
+            Menu {
                 id: targetItemMenu
                 
                 height: count * 20
                 
-                delegate: Control2.MenuItem {
+                delegate: MenuItem {
                     font.family: AccountStyle.core.name
                     font.pixelSize: AccountStyle.core.size
                     height: 20
@@ -234,7 +239,7 @@ Rectangle {
                     }
                 }
                 
-                Control2.Action {
+                Action {
                     id: addSubTarget
                     text: qsTr("Add target")
                     onTriggered: root.s_addTarget(categoryModel.get(catView.currentIndex).catName)
@@ -268,12 +273,7 @@ Rectangle {
                 border.color: "darkseagreen"
                 color: "transparent"
                 
-                ToolTip {
-                    text: categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list")
-                    delay: 500
-                    timeout: 1000
-                    visible: budgetArea.containsMouse                
-                }
+                
                 
                 MouseArea {
                     id: budgetArea
