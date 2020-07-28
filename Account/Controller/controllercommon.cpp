@@ -134,6 +134,7 @@ QSharedPointer<FeatureBuilder> ControllerCommon::build(QQmlApplicationEngine * e
     if(removeCommon)
         connect(removeCommon, SIGNAL(s_remove(int)), common.data(), SLOT(removeCommon(int)));        
     
+    connect(m_db, InterfaceDataSave::s_updateCommon, common.data(), ControllerCommon::exec);
     common->view = commonManager;
     
     return common;
