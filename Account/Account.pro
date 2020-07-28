@@ -1,4 +1,4 @@
-QT += quick sql core xml widgets charts qml gui xmlpatterns
+QT += quick sql core xml widgets charts qml gui xmlpatterns network
 CONFIG += c++17 windeployqt
 
 TEMPLATE = lib
@@ -7,6 +7,8 @@ TARGET = LibAccount
 DLLDESTDIR = $$OUT_PWD/../AccountApp $$OUT_PWD/../Test
 
 ##Command de deploiement: windeployeqt --qmldir %{sourceDir}\Account\View
+##--qmldir %{sourceDir}\Account\View --dir %{buildDir}\deploy %{buildDir}\Account\release\LibAccount.dll
+
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -25,6 +27,7 @@ SOURCES += \
     Controller/controllerfrequency.cpp \
     Controller/controllerpiegraph.cpp \
     Controller/controllersettings.cpp \
+    Controller/controllersynchronization.cpp \
     Controller/interfacedatasave.cpp \
     Model/accountglobal.cpp \
     Model/commonexpanse.cpp \
@@ -71,6 +74,7 @@ HEADERS += \
     Controller/controllerfrequency.h \
     Controller/controllerpiegraph.h \
     Controller/controllersettings.h \
+    Controller/controllersynchronization.h \
     Controller/dbrequestsinit.h \
     Controller/featurebuilder.h \
     Controller/filler.h \
