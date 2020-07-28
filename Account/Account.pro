@@ -1,4 +1,4 @@
-QT += quick sql core xml widgets charts qml gui xmlpatterns
+QT += quick sql core xml widgets charts qml gui xmlpatterns network
 CONFIG += c++17 windeployqt
 
 TEMPLATE = lib

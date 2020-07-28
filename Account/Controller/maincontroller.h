@@ -23,6 +23,7 @@
 #include "controllersettings.h"
 #include "controllerpiegraph.h"
 #include "abstractgraphcontroller.h"
+#include "controllersynchronization.h"
 
 class Builder: public QThread
 {
@@ -51,7 +52,8 @@ private:
     LanguageController m_lang;
     ControllerTransfert m_transfert;
     ControllerSettings m_settings;
-
+    ControllerSynchronization m_sync;
+    
     AbstractGraphController m_graph;
     
     QList<QSharedPointer<FeatureBuilder>> m_features;
