@@ -12,6 +12,8 @@ DoubleSpinBox {
     font.family: AccountStyle.core.name
     font.pixelSize: AccountStyle.core.size
     clip: true
+
+
     up.indicator: Rectangle {
         x: root.mirrored ? 0 : parent.width - width
         height: parent.height

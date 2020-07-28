@@ -49,8 +49,8 @@ SpinBox {
         
         selectionColor: "#21be2b"
         selectedTextColor: "#ffffff"
-        horizontalAlignment: Qt.AlignHCenter
-        verticalAlignment: Qt.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
         
         readOnly: !spinbox.editable
         validator: spinbox.validator

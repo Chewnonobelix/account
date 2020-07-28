@@ -22,6 +22,9 @@ TextField {
         }
     }    
     
+    horizontalAlignment: Text.AlignHCenter
+    verticalAlignment: Text.AlignVCenter
+
     ToolTip.delay: 500
     ToolTip.timeout: 1000
     ToolTip.visible: root.hovered

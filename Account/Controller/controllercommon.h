@@ -19,7 +19,6 @@ public:
     inline ControllerCommon(const ControllerCommon & c): AbstractController(c) {}
     ~ControllerCommon() = default;
     
-    int exec();
     void init();
     
     QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *, QList<AbstractController *>);
@@ -33,7 +32,7 @@ public slots:
     void removeCommon(int);
     void addCommonEntry();
     void removeCommonEntry();
-    
+    int exec();
 };
 
 Q_DECLARE_METATYPE(ControllerCommon)

@@ -182,96 +182,106 @@ Rectangle {
             }
         }
         
-        ListView {
-            id: targetView
-            objectName: "targetView"
-            
+        Rectangle {
+            border.color: "darkseagreen"
+            color: "transparent"
             Layout.preferredHeight: root.height * .85
             Layout.preferredWidth: root.width * .30
             Layout.alignment: Qt.AlignTop
             visible: catView.currentIndex !== -1 && categoryModel.get(catView.currentIndex).has
             
-            ToolTip.text: catView.currentIndex !== -1 ? categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list") : ""
-            ToolTip.delay: 500
-            ToolTip.timeout: 1000
-            ToolTip.visible: budgetArea.containsMouse && catView.currentIndex !== -1 
-            
-            
-            model: targetModel
-            currentIndex: -1
-            clip: true            
-            spacing: height * 0.02
-            
-            header: AccountHeader {
-                text: qsTr("Target")
-                width: targetView.width
-                height: targetView.height * .07
-            }
-            
-            onCurrentIndexChanged: {
-                var temp = currentIndex !== - 1 ? Qt.formatDate(targetModel.get(currentIndex).date, "dd-MM-yyyy") : ""
-                root.s_showTarget(categoryModel.get(catView.currentIndex).catName, temp, currentIndex === -1)
-            }
-            
-            Component {
-                id: compRemoveAction
-                Action {
-                    id: removeAction
-                    text:  qsTr("Remove target")
-                    
-                    onTriggered: {
-                        s_removeTarget(categoryModel.get(catView.currentIndex).catName, Qt.formatDate(targetModel.get(targetView.currentIndex).date, "dd-MM-yyyy"))
-                    }
-                }
-            }
-            
-            Menu {
-                id: targetItemMenu
-                
-                height: count * 20
-                
-                delegate: MenuItem {
-                    font.family: AccountStyle.core.name
-                    font.pixelSize: AccountStyle.core.size
-                    height: 20
-                    background: Rectangle {
-                        gradient: parent.highlighted ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-                    }
-                }
-                
-                Action {
-                    id: addSubTarget
-                    text: qsTr("Add target")
-                    onTriggered: root.s_addTarget(categoryModel.get(catView.currentIndex).catName)
-                }
-            }
-            
-            delegate: Rectangle {
-                width: parent.width
-                height: 40
-                
-                border.color: "gray"
-                gradient: targetView.currentIndex === index ? AccountStyle.calSelect : AccountStyle.backgroundGradient
-                AccountLabel {
-                    id: targetText
-                    anchors.fill: parent
-                    text: qsTr("Date") + ": " + Qt.formatDate(date, "dd-MM-yyyy") + "\n" + qsTr("Target") + ": " + target + Qt.locale().currencySymbol(Locale.CurrencySymbol)
-                }
-                
-                MouseArea {
-                    anchors.fill: parent
-                    acceptedButtons: Qt.LeftButton
-                    z:5
-                    onClicked: {
-                        targetView.currentIndex = targetView.currentIndex === index ? -1 :  index
-                    }
-                }
-            }
-            
-            Rectangle {
+            ListView {
+                id: targetView
+                objectName: "targetView"
                 anchors.fill: parent
-                border.color: "darkseagreen"
-                color: "transparent"
+                
+                visible: catView.currentIndex !== -1 && categoryModel.get(catView.currentIndex).has
+                
+                ToolTip.text: catView.currentIndex !== -1 ? categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list") : ""
+                ToolTip.delay: 500
+                ToolTip.timeout: 1000
+                ToolTip.visible: budgetArea.containsMouse && catView.currentIndex !== -1 
+                
+                
+                model: targetModel
+                currentIndex: -1
+                clip: true            
+                spacing: height * 0.02
+                
+                header: AccountHeader {
+                    text: qsTr("Target")
+                    width: targetView.width
+                    height: targetView.height * .07
+                }
+                
+                onCurrentIndexChanged: {
+                    var temp = currentIndex !== - 1 ? Qt.formatDate(targetModel.get(currentIndex).date, "dd-MM-yyyy") : ""
+                    root.s_showTarget(categoryModel.get(catView.currentIndex).catName, temp, currentIndex === -1)
+                }
+                
+                Component {
+                    id: compRemoveAction
+                    Action {
+                        id: removeAction
+                        text:  qsTr("Remove target")
+                        
+                        onTriggered: {
+                            s_removeTarget(categoryModel.get(catView.currentIndex).catName, Qt.formatDate(targetModel.get(targetView.currentIndex).date, "dd-MM-yyyy"))
+                        }
+                    }
+                }
+                
+                Menu {
+                    id: targetItemMenu
+                    
+                    height: count * 20
+                    
+                    delegate: MenuItem {
+                        font.family: AccountStyle.core.name
+                        font.pixelSize: AccountStyle.core.size
+                        height: 20
+                        background: Rectangle {
+                            gradient: parent.highlighted ? AccountStyle.darkGoldButton : AccountStyle.goldButton
+                        }
+                    }
+                    
+                    
+                    Action {
+                        id: addSubTarget
+                        text: qsTr("Add target")
+                        onTriggered: root.s_addTarget(categoryModel.get(catView.currentIndex).catName)
+                    }
+                    
+                    
+                }
+                
+                delegate: Rectangle {
+                    width: parent.width
+                    height: 40
+                    
+                    border.color: "gray"
+                    gradient: targetView.currentIndex === index ? AccountStyle.calSelect : AccountStyle.backgroundGradient
+                    AccountLabel {
+                        MouseArea {
+                            anchors.fill: parent
+                            acceptedButtons: Qt.LeftButton | Qt.RightButton
+                            z:5
+                            onClicked: {
+                                targetView.currentIndex = targetView.currentIndex === index ? -1 :  index
+                                if(mouse.button === Qt.RightButton && targetItemMenu.count === 1) {
+                                    targetItemMenu.addAction(compRemoveAction.createObject())
+                                    targetItemMenu.popup()                                
+                                }
+                            }
+                        }
+                        
+                        id: targetText
+                        anchors.fill: parent
+                        text: qsTr("Date") + ": " + Qt.formatDate(date, "dd-MM-yyyy") + "\n" + qsTr("Target") + ": " + target + Qt.locale().currencySymbol(Locale.CurrencySymbol)
+                    }
+                    
+                }
+                
                 
                 
                 
@@ -284,10 +294,9 @@ Rectangle {
                     
                     
                     onClicked: {
+                        console.log(targetView.indexAt(mouse.x, mouse.y), mouse.x, mouse.y, targetView.count)
                         targetView.currentIndex = targetView.indexAt(mouse.x, mouse.y)
-                        if(targetView.currentIndex !== -1 && targetItemMenu.count === 1) {
-                            targetItemMenu.addAction(compRemoveAction.createObject())
-                        } else if (targetView.currentIndex === -1 && targetItemMenu.count === 2){
+                        if (targetView.currentIndex === -1 && targetItemMenu.count === 2){
                             targetItemMenu.takeAction(1)
                         }
                         
