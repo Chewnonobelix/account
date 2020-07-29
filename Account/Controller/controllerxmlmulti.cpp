@@ -107,7 +107,7 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     m_ids["entry"]<<ide;
     m_ids["info"]<<idi;
     Entry et = e;
-    et.setMetadata("lastUpdated", QDateTime::currentDateTime());
+    et.setMetadata("lastUpdate", QDateTime::currentDateTime());
     Information info = et.info();
     info.setId(idi);
     info.setIdEntry(ide);
@@ -196,6 +196,10 @@ QMultiMap<QDate, Entry> ControllerXMLMulti::selectEntry(QString account)
     for(int i = 0; i < children.size(); i ++)
     {
         QDomElement el = children.at(i).toElement();
+
+        if(el.attribute("removed", "false") == "true")
+            continue;
+        
         Entry e = selectEntryNode(el);
         ret.insert(e.date(), e);
     }
@@ -207,22 +211,13 @@ QMultiMap<QDate, Entry> ControllerXMLMulti::selectEntry(QString account)
 bool ControllerXMLMulti::removeEntry(const Entry& e)
 {
     setCurrentAccount(e.account());
-    
-    QDomElement root = m_currentAccount.firstChild().toElement();
-    
-    QDomNodeList list = root.elementsByTagName("entry");
-    
+        
     bool ret = false;
-    for(int i = 0; i < list.size(); i++)
-    {
-        QDomElement el = list.at(i).toElement();
-        if(el.attribute("id").toInt() == e.id())
-        {
-            auto rm = root.removeChild(el);
-            ret = !rm.isNull();
-        }
-    }
-
+    
+    Entry t(e);
+    t.setMetadata("removed", true);
+    ret = updateEntry(t);
+    
     emit s_updateEntry();
     
     return ret;
@@ -287,7 +282,7 @@ bool ControllerXMLMulti::updateEntryNode(const Entry & e, QDomElement & el)
 {
     
     Entry et = e;
-    et.setMetadata("lastUpdated", QDateTime::currentDateTime());
+    et.setMetadata("lastUpdate", QDateTime::currentDateTime());
 
     setter(el, "date", e.date().toString("dd-MM-yyyy"));
     setter(el, "value",QString::number(e.value()));
@@ -396,7 +391,8 @@ bool ControllerXMLMulti::addBudget(const Budget& b)
     
     m_ids["budget"]<<id;
     el.setAttribute("id", id);
-    
+    el.setAttribute("lastUpdate", QDateTime::currentDateTime().toString());
+    el.setAttribute("removed", false);
     
     adder(el, "name", b.category());
     adder(el, "reference",  b.reference().toString("dd-MM-yyyy"));
@@ -408,17 +404,11 @@ bool ControllerXMLMulti::addBudget(const Budget& b)
 
 bool ControllerXMLMulti::removeBudget(const Budget &b)
 {
-    QDomElement root = m_currentAccount.firstChild().toElement();
-    QDomNodeList list = root.elementsByTagName("budget");
-    
-    for(int i = 0; i < list.size(); i++)
-    {
-        QDomElement el = list.at(i).toElement();
-        if(el.attribute("id").toInt() == b.id())
-            return !root.removeChild(el).isNull();
-    }
+    Budget t(b);
+    t.setMetadata("removed", true);
+    bool ret = updateBudget(t);
     close();
-    return false;
+    return ret;
 }
 
 QList<Budget> ControllerXMLMulti::selectBudgets()
@@ -435,9 +425,12 @@ QList<Budget> ControllerXMLMulti::selectBudgets()
     for(int i = 0; i < list.size(); i++)
     {
         QDomElement el = list.at(i).toElement();
+        if(el.attribute("removed", "0").toInt())
+            continue;
+        
         Budget b;
         b.setId(el.attribute("id").toInt());
-                
+        b.setMetadata("lastUpdate", QDateTime::fromString(el.attribute("lastUpdate")));  
         QDomElement child = el.elementsByTagName("name").at(0).toElement();
         b.setCategory(child.text());
         child = el.elementsByTagName("reference").at(0).toElement();
@@ -510,6 +503,9 @@ bool ControllerXMLMulti::updateBudget(const Budget & b)
                 attr["frequency"] = QString::number((int)b.frequency(it));
                 adder(el, "target", QString::number(target[it]), attr);
             }
+            
+            el.setAttribute("lastUpdate", QDateTime::currentDateTime().toString());
+            el.setAttribute("removed", b.metaData<bool>("removed"));
         }
     }
     
@@ -600,6 +596,8 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
     QMap<QString, QString> attr;
     attr["id"] = QString::number(id);
     attr["freq"] = QString::number((int)f.freq());
+    attr["lastUpdate"] = QDateTime::currentDateTime().toString();
+    
     adder(root, "frequency", "", attr);
     
     auto freqs = root.elementsByTagName("frequency");
@@ -628,28 +626,11 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
 
 bool ControllerXMLMulti::removeFrequency(const Frequency& f)
 {
-    QDomElement root = m_currentAccount.firstChild().toElement();
-    QDomNodeList list = root.elementsByTagName("frequency");
-    auto freqs = m_currentAccount.elementsByTagName("frequency");
+    Frequency t (f);
+    t.setMetadata("removed", true);
+    updateFrequency(t);
     
-    for(int i = 0; i < list.size(); i++)
-        if(list.at(i).toElement().attribute("id").toInt() == f.id())
-        {
-            root.removeChild(list.at(i));
-            
-            auto entries = root.elementsByTagName("entry");
-            
-            for(auto j = 0; j < entries.size(); j++)
-            {
-                if(entries.at(i).toElement().attribute("freq").toInt() == f.id())
-                {
-                    entries.at(i).toElement().removeAttribute("freq");
-                }
-            }
-            emit s_updateFrequency();
-            
-            return true;
-        }
+    emit s_updateFrequency();
     
     return false;
 }
@@ -670,6 +651,10 @@ bool ControllerXMLMulti::updateFrequency(const Frequency& f)
             setter(child, "nbGroup", QString::number(f.nbGroup()));
             setter(child, "endless", QString::number(f.endless()));
             
+            if(f.hasMetadata("removed"))
+                child.setAttribute("removed", f.metaData<bool>("removed"));
+            
+            child.setAttribute("lastUpdate", QDateTime::currentDateTime().toString());
             emit s_updateFrequency();
             
             return true;
@@ -686,10 +671,14 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
     for(int i = 0; i < freqs.size(); i++)
     {
         auto el = freqs.at(i).toElement();
+        
+        if(el.attribute("removed", "0").toInt())
+            continue;
+        
         Frequency f;
         f.setId(el.attribute("id").toInt());
         f.setFreq((Account::FrequencyEnum)el.attribute("freq").toInt());
-        
+        f.setMetadata("lastUpdate", QDateTime::fromString(el.attribute("lastUpdate")));
         auto child = el.elementsByTagName("end").at(0).toElement();
 
         auto nb = el.elementsByTagName("nbGroup");
@@ -725,9 +714,13 @@ QMap<int, CommonExpanse> ControllerXMLMulti::selectCommon()
     {
         QDomElement el = list.at(i).toElement();
         
+        if(el.attribute("removed", "0").toInt())
+            continue;
+        
         CommonExpanse ce;
         ce.setId(el.attribute("id").toInt());
-
+        ce.setMetadata("lastUpdate", QDateTime::fromString(el.attribute("lastUpdate")));
+        
         QDomElement child = el.elementsByTagName("begin").at(0).toElement();
         ce.setBegin(QDate::fromString(child.text(), "dd-MM-yyyy"));
         
@@ -765,6 +758,7 @@ bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
     
     QMap<QString, QString> att;
     att["id"] = QString::number(id);
+    att["lastUpdate"] = QDateTime::currentDateTime().toString();
     adder(root, "common", "", att);
     
     auto cel = root.elementsByTagName("common");
@@ -789,13 +783,9 @@ bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
 bool ControllerXMLMulti::removeCommon(const CommonExpanse& ce)
 {
     bool ret = false;
-    auto root = m_currentAccount.elementsByTagName("database").at(0).toElement();
-    auto list = root.elementsByTagName("common");
-    
-    for(auto i = 0; i < list.size(); i++)
-        if(list.at(i).toElement().attribute("id").toInt() == ce.id())
-            ret = !root.removeChild(list.at(i)).isNull();
-    
+    CommonExpanse t(ce);
+    t.setMetadata("removed", true);    
+    ret = updateCommon(t);
     close();
     return ret;
 }
@@ -811,6 +801,7 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
         QDomElement el = common.at(i).toElement();
         if(el.attribute("id").toInt() != ce.id())
             continue;
+        
         
         QList<QString> tag;
         tag<<"begin"<<"titleCommon"<<"close";
@@ -860,6 +851,9 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
         setter(el, "titleCommon", ce.title());
         setter(el, "begin", ce.begin().toString("dd-MM-yyyy"));
         
+        if(ce.hasMetadata("removed"))
+            el.setAttribute("removed", true);
+        el.setAttribute("lastUpdate", QDateTime::currentDateTime().toString());
         ret = true;
     }
     m_mutex.unlock();

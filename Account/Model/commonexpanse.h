@@ -7,6 +7,7 @@
 #include <QDebug>
 #include "entry.h"
 #include "total.h"
+#include "metadata.h"
 
 class ACCOUNT_EXPORT Closing
 {
@@ -22,7 +23,7 @@ public:
     double value;
 };
 
-class ACCOUNT_EXPORT CommonExpanse
+class ACCOUNT_EXPORT CommonExpanse: public MetaData
 {
     Q_GADGET
 

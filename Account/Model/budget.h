@@ -9,9 +9,9 @@
 #include "total.h"
 #include "accountglobal.h"
 #include "subbudget.h"
+#include "metadata.h"
 
-
-class ACCOUNT_EXPORT Budget
+class ACCOUNT_EXPORT Budget: public MetaData
 {
 public:
 
