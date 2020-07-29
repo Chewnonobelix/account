@@ -46,11 +46,11 @@ const auto trigger_delete_category = QString("CREATE TRIGGER delete_category BEF
                                              "END;");
 
 const auto information_table = QString("CREATE TABLE `information` ("
-                                           "`id` INTEGER NOT NULL  PRIMARY KEY AUTOINCREMENT,"
+                                           "`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
                                            "`idEntry` INTEGER NOT NULL REFERENCES account(id),"
                                            "`info` TEXT,"
                                            "`prev` INTEGER NOT NULL DEFAULT '0',"
-                                           "`category` INTEGER DEFAULT NULL REFERENCES categories(id)"
+                                           "`category` INTEGER REFERENCES categories(id)"
                                          ")");
 
 const auto budget_table = QString("CREATE TABLE `budget` ("
@@ -58,7 +58,8 @@ const auto budget_table = QString("CREATE TABLE `budget` ("
                                       "`category` INTEGER NOT NULL REFERENCES categories(id),"
                                       "`reference` date NOT NULL,"
                                       "`profile` TEXT NOT NULL DEFAULT 'Default',"
-                                      "`account` TEXT NOT NULL)");
+                                      "`account` TEXT NOT NULL, "
+                                  "`removed`INTEGER NOT NULL DEFAULT '0')");
 
 const auto budget_trigger = QString("CREATE TRIGGER update_budget AFTER UPDATE ON budget "
                                     "BEGIN "
@@ -86,9 +87,9 @@ const auto frequency_table = QString("CREATE TABLE `frequency` ("
                                          "`freq` INTEGER NOT NULL,"
                                          "`nbGroup` INTEGER NOT NULL,"
                                          "`profile` TEXT NOT NULL DEFAULT 'Default',"
-                                         "`account` TEXT NOT NULL"
-                                         "`endless` tinyint(1) NOT NULL DEFAULT '0'"
-                                       ")");
+                                         "`account` TEXT NOT NULL, "
+                                         "`endless` tinyint(1) NOT NULL DEFAULT '0', "
+                                     "`removed` INTEGER NOT NULL DEFAULT '0')");  
 
 const auto trigger_delete_frequency = QString("CREATE TRIGGER delete_frequency BEFORE DELETE ON frequency "
                                               "BEGIN "
@@ -101,8 +102,8 @@ const auto commonExpanse_table = QString("CREATE TABLE `commonExpanse` ("
                                              "`isClose` tinyint(1) NOT NULL DEFAULT '0',"
                                              "`title` TEXT NOT NULL,"
                                              "`profile` TEXT NOT NULL DEFAULT 'Default',"
-                                             "`account` TEXT NOT NULL"
-                                           ")");
+                                             "`account` TEXT NOT NULL, "
+                                           "`removed`INTEGER NOT NULL DEFAULT '0')");
 
 
 const auto expanse_trigger = QString("CREATE TRIGGER update_expanse AFTER UPDATE ON commonExpanse "

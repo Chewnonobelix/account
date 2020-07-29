@@ -35,12 +35,12 @@ bool ControllerDB::init()
         m_db.database("backup").close();
         m_db.removeDatabase("backup");
     }
-
-
+    
+    
     m_db = QSqlDatabase::addDatabase("QSQLITE", backup ? "backup" : "default");
     qDebug()<<"Back?"<<backup<<m_db.connectionNames()<<m_db.connectionName();
     QString name = QString("account%1").arg(backup ? "_backup" : "");
-
+    
     m_db.setDatabaseName(name);
     m_db.open();
     
@@ -68,6 +68,7 @@ bool ControllerDB::init()
         qDebug()<<"Trigger delete common entry"<<m_db.exec(trigger_delete_commonEntry).lastError();
         qDebug()<<"Trigger delete account"<<m_db.exec(remove_account_trigger).lastError();
         qDebug()<<"Trigger delete profile"<<m_db.exec(remove_profile_trigger).lastError();
+        
     }
     
     if(isConnected())
@@ -81,7 +82,7 @@ bool ControllerDB::init()
         prepareFrequency();
         prepareCommon();
     }
-        
+    
     return isConnected();
 }
 
@@ -186,7 +187,7 @@ void ControllerDB::prepareBudget()
                                          "VALUES (:id, :account, :category, :reference, :profile)")<<m_addBudget->lastError();
     
     qDebug()<<"UB"<<m_updateBudget->prepare("UPDATE budget "
-                                            "SET category=:c, reference=:r "
+                                            "SET category=:c, reference=:r, removed=:rm "
                                             "WHERE (id=:id)")<<m_updateBudget->lastError();
     
     qDebug()<<"RB"<<m_removeBudget->prepare("DELETE FROM budget "
@@ -236,7 +237,7 @@ void ControllerDB::prepareFrequency()
                                                "WHERE id=:id" )<<m_removeFrequency->lastError();
     
     qDebug()<<"UF"<<m_updateFrequency->prepare("UPDATE frequency "
-                                               "SET freq=:f, nbGroup=:ng, endless=:el "
+                                               "SET freq=:f, nbGroup=:ng, endless=:el, removed=:r "
                                                "WHERE id=:id")<<m_updateFrequency->lastError();
 }
 
@@ -262,14 +263,14 @@ void ControllerDB::prepareCommon()
                                               "WHERE id=:id")<<m_removeCommon->lastError();
     
     qDebug()<<"UCEX"<<m_updateCommon->prepare("UPDATE commonExpanse "
-                                              "SET isClose=:c "
+                                              "SET isClose=:c, removed=:r "
                                               "WHERE id=:id")<<m_updateCommon->lastError();
     
     qDebug()<<"ACEN"<<m_addCommonEntry->prepare("INSERT INTO account (account, profile, value, date_eff, type) "
                                                 "VALUES (:a, :p, :v, :d, :t)")<<m_addCommonEntry->lastError();
-        
+    
     qDebug()<<"ACENI"<<m_addCommonEntryInformation->prepare("INSERT INTO information (idEntry, info) "
-                                                "VALUES (:ide, :title)")<<m_addCommonEntry->lastError();
+                                                            "VALUES (:ide, :title)")<<m_addCommonEntry->lastError();
     
     qDebug()<<"SCEN"<<m_selectCommonEntry->prepare("SELECT * FROM account "
                                                    "WHERE id=:id")<<m_selectCommonEntry->lastError();
@@ -376,7 +377,7 @@ bool ControllerDB::deleteProfile(QString name)
 bool ControllerDB::addEntry(const Entry & e)
 {        
     bool ret = false;
-
+    
     if(isConnected())
     {
         m_addEntry->bindValue(":account", e.account().isEmpty() ? m_currentAccount : e.account());
@@ -386,25 +387,26 @@ bool ControllerDB::addEntry(const Entry & e)
         m_addEntry->bindValue(":profile", m_currentProfile);
         if(e.id() > -1)
             m_addEntry->bindValue(":id", e.id());
-        ret = m_addEntry->exec();
-
-        int id = e.id() != -1 ? e.id() : m_addEntry->lastInsertId().toInt();
         
+        ret = m_addEntry->exec();
+        
+        int id = e.id() != -1 ? e.id() : m_addEntry->lastInsertId().toInt();
         if(ret && id >= 0)
         {
             
             m_addInformation->bindValue(":ide", id);
             m_addInformation->bindValue(":title", e.info().title());
             m_addInformation->bindValue(":prev",e.info().estimated());
-            if(e.info().id())
+            m_addInformation->bindValue(":cat", -1);
+            if(e.info().id() > -1)
                 m_addInformation->bindValue(":id", e.info().id());
-
+            
             ret &= m_addInformation->exec();
         }
         
         Entry et = e;
-        et.setMetadata("lastUpdated", QDateTime::currentDateTime());
-
+        et.setMetadata("lastUpdate", QDateTime::currentDateTime());
+        
         auto meta = et.metaDataList();
         for(auto it: meta)
         {
@@ -421,7 +423,7 @@ bool ControllerDB::addEntry(const Entry & e)
     
     if(!e.hasMetadata("notemit"))
         emit s_updateEntry();
-
+    
     return ret;
 }
 
@@ -439,8 +441,10 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
     {
         while(m_selectEntry->next())
         {
-            if(m_selectEntry->at() < 0)
+            if(m_selectEntry->at() < 0 || !m_selectEntry->isValid())
                 continue;
+            
+            
             Entry t;
             Information i;
             t.setId(m_selectEntry->value("id").toInt());
@@ -448,7 +452,7 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
             t.setValue(m_selectEntry->value("value").toDouble());
             t.setType(m_selectEntry->value("type").toString());
             t.setAccount(m_selectEntry->value("account").toString());
-            
+
             m_selectInformation->bindValue(":ide", t.id());
             bool inf = m_selectInformation->exec();
             if(!inf)
@@ -469,10 +473,15 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
             t.setInfo(i);
             
             m_selectMetadata->bindValue(":ide", t.id());
+            bool mt = m_selectMetadata->exec();
+            if(!mt)
+                continue;
             
-            if(m_selectMetadata->exec())
-                while(m_selectMetadata->next())
-                    t.setMetadata(m_selectMetadata->value("name").toString(), m_selectMetadata->value("value").toString());
+            while(m_selectMetadata->next())
+                t.setMetadata(m_selectMetadata->value("name").toString(), m_selectMetadata->value("value").toString());
+            
+            if(t.metaData<QString>("removed") == "true")
+                continue;
             
             res.insert(t.date(), t);
         }
@@ -496,8 +505,8 @@ bool ControllerDB::updateEntry(const Entry & e)
         
         
         Entry et = e;
-        et.setMetadata("lastUpdated", QDateTime::currentDateTime());
-
+        et.setMetadata("lastUpdate", QDateTime::currentDateTime());
+        
         auto meta = et.metaDataList();
         for(auto it: meta)
         {
@@ -552,9 +561,9 @@ bool ControllerDB::removeEntry(const Entry & e)
     
     if(isConnected())
     {
-        m_removeEntry->bindValue(":id", e.id());
-        
-        ret = m_removeEntry->exec();
+        Entry t(e);
+        t.setMetadata("removed", true);
+        ret = updateEntry(t);
     }
     
     emit s_updateEntry();
@@ -623,7 +632,7 @@ bool ControllerDB::addBudget(const Budget& b)
         m_addBudget->bindValue(":reference", b.reference());
         if(b.id() > -1)
             m_addBudget->bindValue(":id", b.id());
-
+        
         auto reqc = m_db.exec("SELECT * FROM categories WHERE profile='"+m_currentProfile+"' AND account='"+m_currentAccount+"' AND name='"+b.category()+"' ");
         
         reqc.seek(0);
@@ -642,9 +651,9 @@ bool ControllerDB::removeBudget(const Budget & b)
 {
     if(isConnected())
     {
-        m_removeBudget->bindValue(":id", b.id());
-        emit s_updateBudget();
-        return m_removeBudget->exec();
+        Budget t(b);
+        t.setMetadata("removed", true);
+        return updateBudget(t);
     }
     
     return false;
@@ -663,6 +672,9 @@ QList<Budget> ControllerDB::selectBudgets()
         
         while(m_selectBudget->next())
         {
+            if(m_selectBudget->value("removed").toBool())
+                continue;
+            
             Budget b;
             b.setId(m_selectBudget->value("id").toInt());
             b.setReference(m_selectBudget->value("reference").toDate());
@@ -689,6 +701,12 @@ bool ControllerDB::updateBudget(const Budget & b)
 {
     if(isConnected())
     {
+        bool ret = true;
+        m_updateBudget->bindValue(":c", b.category());
+        m_updateBudget->bindValue(":rm", b.metaData<bool>("removed"));
+        m_updateBudget->bindValue(":r", b.reference());
+        
+        ret &= m_updateBudget->exec();
         for(auto it: b.targets().keys())
         {
             m_addSubbudget->bindValue(":idb", b.id());
@@ -696,9 +714,10 @@ bool ControllerDB::updateBudget(const Budget & b)
             m_addSubbudget->bindValue(":frequency", (int)b.frequency(it));
             m_addSubbudget->bindValue(":target", b.targets()[it]);
             
-            m_addSubbudget->exec();
+            ret &= m_addSubbudget->exec();
         }
-        emit s_updateBudget();        
+        emit s_updateBudget();
+        return ret;        
     }
     
     return false;
@@ -715,7 +734,7 @@ bool ControllerDB::addFrequency(const Frequency & f)
         
         if(f.id() > -1)
             m_addFrequency->bindValue(":id", f.id());
-
+        
         if(m_addFrequency->exec())
         {
             int id = m_addFrequency->lastInsertId().toInt();
@@ -749,9 +768,10 @@ bool ControllerDB::removeFrequency(const Frequency& f)
 {
     if(isConnected())
     {
-        m_removeFrequency->bindValue(":id", f.id());
-        emit s_updateFrequency();
-        return m_removeFrequency->exec();
+        Frequency t(f);
+        t.setMetadata("removed", true);
+        
+        return updateFrequency(t);
     }
     
     return false;
@@ -766,6 +786,7 @@ bool ControllerDB::updateFrequency(const Frequency& f)
         m_updateFrequency->bindValue(":ng", f.nbGroup());
         m_updateFrequency->bindValue(":id", f.id());
         m_updateFrequency->bindValue(":el", f.endless());
+        m_updateFrequency->bindValue(":r", f.metaData<bool>("removed"));
         
         emit s_updateFrequency();
         return ret && m_updateFrequency->exec();
@@ -786,6 +807,9 @@ QList<Frequency> ControllerDB::selectFrequency()
         
         while(m_selectFrequency->next())
         {
+            if(m_selectFrequency->value("removed").toBool())
+                continue;
+            
             Frequency f;
             f.setId(m_selectFrequency->value("id").toInt());
             f.setFreq((Account::FrequencyEnum)m_selectFrequency->value("freq").toInt());
@@ -827,7 +851,7 @@ QList<Frequency> ControllerDB::selectFrequency()
                     ref.setMetadata(m_selectMetadata->value("name").toString(), m_selectMetadata->value("value").toString());
             
             f.setReferenceEntry(ref);
-
+            
             for(auto it: selectEntry(m_currentAccount))
                 f<<it;
             ret<<f;
@@ -850,6 +874,9 @@ QMap<int, CommonExpanse> ControllerDB::selectCommon()
         
         while(m_selectCommon->next())
         {
+            if(m_selectCommon->value("removed").toBool())
+                continue;
+            
             CommonExpanse c;
             c.setId(m_selectCommon->value("id").toInt());
             c.setBegin(m_selectCommon->value("begin").toDate());
@@ -873,7 +900,7 @@ QMap<int, CommonExpanse> ControllerDB::selectCommon()
                 e.setValue(m_selectCommonEntry->value("value").toDouble());
                 e.setDate(m_selectCommonEntry->value("date_eff").toDate());
                 e.setType(m_selectCommonEntry->value("type").toString());
-
+                
                 m_selectInformation->bindValue(":ide", e.id());
                 m_selectInformation->exec();
                 
@@ -906,7 +933,7 @@ bool ControllerDB::addCommon(const CommonExpanse& c)
         m_addCommon->bindValue(":a", m_currentAccount);
         if(c.id() > -1)
             m_addCommon->bindValue(":i", c.id());
-
+        
         emit s_updateCommon();
         return m_addCommon->exec();
     }
@@ -918,9 +945,10 @@ bool ControllerDB::removeCommon(const CommonExpanse& c)
 {
     if(isConnected())
     {
-        m_removeCommon->bindValue(":id", c.id());
-        emit s_updateCommon();
-        return m_removeCommon->exec();
+        CommonExpanse t(c);
+        t.setMetadata("removed", true);
+        
+        return updateCommon(t);
     }
     
     return false;
@@ -932,6 +960,7 @@ bool ControllerDB::updateCommon(const CommonExpanse& c)
     {
         m_updateCommon->bindValue(":id", c.id());
         m_updateCommon->bindValue(":c", c.isClose());
+        m_updateCommon->bindValue(":r", c.metaData<bool>("removed"));
         m_updateCommon->exec();
         
         auto map = c.entries();
@@ -950,7 +979,7 @@ bool ControllerDB::updateCommon(const CommonExpanse& c)
             m_addCommonEntryInformation->bindValue(":title", e.info().title());
             
             m_addCommonEntryInformation->exec();
-                        
+            
             m_addCommonTable->bindValue(":i", c.id());
             m_addCommonTable->bindValue(":e", id);
             m_addCommonTable->bindValue(":n", it.key());

@@ -5,8 +5,9 @@
 #include <QJSValue>
 #include "accountglobal.h"
 #include "entry.h"
+#include "metadata.h"
 
-class ACCOUNT_EXPORT Frequency
+class ACCOUNT_EXPORT Frequency: public MetaData
 {
     Q_GADGET
     
