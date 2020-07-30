@@ -1,8 +1,10 @@
 #ifndef INTERFACEDATASAVE_H
 #define INTERFACEDATASAVE_H
 
+#include <QDomDocument>
 #include <QString>
 #include <QList>
+#include <QFile>
 #include "Model/entry.h"
 #include "Model/budget.h"
 #include "Model/frequency.h"
@@ -13,16 +15,18 @@
 class InterfaceDataSave: public QObject
 {
     Q_OBJECT
-
+private:
+    QDomDocument m_syncs;
+    
 protected:
     bool backup = false;
     QString m_currentProfile = "Default";
     QString m_path = "data";
 
 public:
-    InterfaceDataSave() = default;
+    InterfaceDataSave();
     inline InterfaceDataSave(const InterfaceDataSave&): QObject(nullptr) {}
-    virtual ~InterfaceDataSave() {}
+    virtual ~InterfaceDataSave();
     inline void setBackup(bool back) { backup = back;}
     inline void setPath(QString path) {m_path = path;}
 
@@ -74,10 +78,10 @@ public slots:
     virtual QString currentProfile() = 0;
     virtual bool deleteProfile(QString) = 0;
 
-    virtual QList<SynchronizationProfile> selectSyncProfile() = 0;
-    virtual bool removeSyncProfile(const SynchronizationProfile&) = 0;
-    virtual bool addSyncProfile(const SynchronizationProfile&) = 0;
-    virtual bool updateSyncProfile(const SynchronizationProfile&) = 0;
+    virtual QList<SynchronizationProfile> selectSyncProfile();
+    virtual bool removeSyncProfile(const SynchronizationProfile&);
+    virtual bool addSyncProfile(const SynchronizationProfile&);
+    virtual bool updateSyncProfile(const SynchronizationProfile&);
         
     virtual bool init() = 0;
 };

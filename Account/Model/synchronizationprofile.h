@@ -23,7 +23,7 @@ private:
     QDateTime m_lastSync = QDateTime::currentDateTime();
     
 public:
-    SynchronizationProfile();
+    SynchronizationProfile() = default;
     SynchronizationProfile(const SynchronizationProfile&) = default;
     ~SynchronizationProfile() = default;
     SynchronizationProfile& operator= (const SynchronizationProfile&) = default;

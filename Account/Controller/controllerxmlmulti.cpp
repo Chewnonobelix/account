@@ -908,23 +908,3 @@ bool ControllerXMLMulti::deleteProfile(QString name)
     dir.cd(name);
     return dir.removeRecursively();
 }
-
-QList<SynchronizationProfile> ControllerXMLMulti::selectSyncProfile()
-{
-    return QList<SynchronizationProfile>();
-}
-
-bool ControllerXMLMulti::removeSyncProfile(const SynchronizationProfile &)
-{
-    return false;
-}
-
-bool ControllerXMLMulti::addSyncProfile(const SynchronizationProfile &)
-{
-    return false;
-}
-    
-bool ControllerXMLMulti::updateSyncProfile(const SynchronizationProfile &)
-{
-    return false;
-}
