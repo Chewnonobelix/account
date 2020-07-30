@@ -1,6 +1,6 @@
 #include "information.h"
 
-Information::Information(): m_estimated(false)
+Information::Information(): m_id(-1), m_estimated(false)
 {
 
 }
@@ -33,22 +33,22 @@ bool operator <(const Information& i1, const Information& i2)
     return i1.title() < i2.title();
 }
 
-QUuid Information::id() const
+int Information::id() const
 {
     return m_id;
 }
 
-void Information::setId(QUuid id)
+void Information::setId(int id)
 {
     m_id = id;
 }
 
-QUuid Information::idEntry() const
+int Information::idEntry() const
 {
     return m_idEntry;
 }
 
-void Information::setIdEntry(QUuid idEntry)
+void Information::setIdEntry(int idEntry)
 {
     m_idEntry = idEntry;
 }

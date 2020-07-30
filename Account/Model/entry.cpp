@@ -2,7 +2,7 @@
 
 Entry::Entry()
 {
-//    setMetadata("id", -1);
+    setMetadata("id", -1);
 }
 
 Entry::Entry(const Entry& e): MetaData(e),
@@ -32,12 +32,12 @@ Entry& Entry::operator = (const Entry& e)
 }
 
 
-QUuid Entry::id() const
+int Entry::id() const
 {
-    return metaData<QUuid>("id");
+    return metaData<int>("id");
 }
 
-void Entry::setId(QUuid id)
+void Entry::setId(int id)
 {
     setMetadata("id", id);
 }

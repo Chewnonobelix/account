@@ -31,7 +31,7 @@ public:
     inline void setPath(QString path) {m_path = path;}
 
 signals:
-    void s_updateEntry(QUuid = QUuid());
+    void s_updateEntry(int = -1);
     void s_updateCategory();
     void s_updateBudget();
     void s_updateFrequency();

@@ -385,19 +385,21 @@ bool ControllerDB::addEntry(const Entry & e)
         m_addEntry->bindValue(":date", QVariant(e.date()));
         m_addEntry->bindValue(":type", QVariant(e.type()));
         m_addEntry->bindValue(":profile", m_currentProfile);
-        QUuid ide = QUuid::createUuid(), idi = QUuid::createUuid();
-        m_addEntry->bindValue(":id", e.id().isNull() ? ide.toString() : e.id().toString());
+        if(e.id() > -1)
+            m_addEntry->bindValue(":id", e.id());
         
         ret = m_addEntry->exec();
         
-        if(ret)
+        int id = e.id() != -1 ? e.id() : m_addEntry->lastInsertId().toInt();
+        if(ret && id >= 0)
         {
             
-            m_addInformation->bindValue(":ide", ide.toString());
+            m_addInformation->bindValue(":ide", id);
             m_addInformation->bindValue(":title", e.info().title());
             m_addInformation->bindValue(":prev",e.info().estimated());
             m_addInformation->bindValue(":cat", -1);
-            m_addInformation->bindValue(":id", e.info().id().isNull() ? idi.toString() : e.info().id().toString());
+            if(e.info().id() > -1)
+                m_addInformation->bindValue(":id", e.info().id());
             
             ret &= m_addInformation->exec();
         }
@@ -411,7 +413,7 @@ bool ControllerDB::addEntry(const Entry & e)
             if(it == "id" || it == "notemit")
                 continue;
             
-            m_insertMetadata->bindValue(":entry", ide.toString());
+            m_insertMetadata->bindValue(":entry", id);
             m_insertMetadata->bindValue(":name", it);
             m_insertMetadata->bindValue(":value", et.metaData<QString>(it));
             
@@ -445,21 +447,21 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
             
             Entry t;
             Information i;
-            t.setId(QUuid::fromString(m_selectEntry->value("id").toString()));
+            t.setId(m_selectEntry->value("id").toInt());
             t.setDate(m_selectEntry->value("date_eff").toDate());
             t.setValue(m_selectEntry->value("value").toDouble());
             t.setType(m_selectEntry->value("type").toString());
             t.setAccount(m_selectEntry->value("account").toString());
 
-            m_selectInformation->bindValue(":ide", t.id().toString());
+            m_selectInformation->bindValue(":ide", t.id());
             bool inf = m_selectInformation->exec();
             if(!inf)
                 continue;
             
             m_selectInformation->seek(0);
             
-            i.setId(m_selectInformation->value("id").toString());
-            i.setIdEntry(m_selectInformation->value("idEntry").toString());
+            i.setId(m_selectInformation->value("id").toInt());
+            i.setIdEntry(m_selectInformation->value("idEntry").toInt());
             i.setEstimated(m_selectInformation->value("prev").toBool());
             i.setTitle(m_selectInformation->value("info").toString());
             
@@ -894,7 +896,7 @@ QMap<int, CommonExpanse> ControllerDB::selectCommon()
                 
                 
                 Entry e;
-                e.setId(m_selectCommonEntry->value("id").toString());
+                e.setId(m_selectCommonEntry->value("id").toInt());
                 e.setValue(m_selectCommonEntry->value("value").toDouble());
                 e.setDate(m_selectCommonEntry->value("date_eff").toDate());
                 e.setType(m_selectCommonEntry->value("type").toString());
