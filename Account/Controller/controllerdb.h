@@ -126,6 +126,11 @@ public slots:
     virtual QString currentProfile() override;
     virtual bool deleteProfile(QString) override;
     
+    QList<SynchronizationProfile> selectSyncProfile();
+    bool removeSyncProfile(const SynchronizationProfile &);
+    bool addSyncProfile(const SynchronizationProfile &);
+    bool updateSyncProfile(const SynchronizationProfile &);
+    
     bool init() override;
 };
 

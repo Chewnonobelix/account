@@ -993,3 +993,23 @@ bool ControllerDB::updateCommon(const CommonExpanse& c)
     
     return false;
 }
+
+QList<SynchronizationProfile> ControllerDB::selectSyncProfile()
+{
+    return QList<SynchronizationProfile>();
+}
+
+bool ControllerDB::removeSyncProfile(const SynchronizationProfile &)
+{
+    return false;
+}
+
+bool ControllerDB::addSyncProfile(const SynchronizationProfile &)
+{
+    return false;
+}
+    
+bool ControllerDB::updateSyncProfile(const SynchronizationProfile &)
+{
+    return false;
+}

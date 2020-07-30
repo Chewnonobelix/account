@@ -88,6 +88,11 @@ public slots:
     virtual QString currentProfile();
     virtual bool deleteProfile(QString);
 
+    QList<SynchronizationProfile> selectSyncProfile();
+    bool removeSyncProfile(const SynchronizationProfile &);
+    bool addSyncProfile(const SynchronizationProfile &);
+    bool updateSyncProfile(const SynchronizationProfile &);
+    
     virtual bool init();
 };
 

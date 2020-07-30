@@ -8,6 +8,7 @@
 #include "Model/frequency.h"
 #include "Model/accountglobal.h"
 #include "Model/commonexpanse.h"
+#include "Model/synchronizationprofile.h"
 
 class InterfaceDataSave: public QObject
 {
@@ -72,7 +73,12 @@ public slots:
     virtual bool addProfile(QString, QString) = 0;
     virtual QString currentProfile() = 0;
     virtual bool deleteProfile(QString) = 0;
-    
+
+    virtual QList<SynchronizationProfile> selectSyncProfile() = 0;
+    virtual bool removeSyncProfile(const SynchronizationProfile&) = 0;
+    virtual bool addSyncProfile(const SynchronizationProfile&) = 0;
+    virtual bool updateSyncProfile(const SynchronizationProfile&) = 0;
+        
     virtual bool init() = 0;
 };
 
