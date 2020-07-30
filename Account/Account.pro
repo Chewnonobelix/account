@@ -36,6 +36,7 @@ SOURCES += \
     Model/subbudget.cpp \
     Model/entry.cpp \
     Model/information.cpp \
+    Model/synchronizationprofile.cpp \
     Model/total.cpp \
     Controller/abstractcontroller.cpp \
     Controller/controllerdb.cpp \
@@ -84,6 +85,7 @@ HEADERS += \
     Model/information.h \
     Model/metadata.h \
     Model/subbudget.h \
+    Model/synchronizationprofile.h \
     Model/total.h \
     Controller/abstractcontroller.h \
     Controller/controllerdb.h \
