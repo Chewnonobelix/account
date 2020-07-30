@@ -101,18 +101,13 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     
     m_mutex.lock();
     
-    int ide = e.id() > -1 ? e.id() : maxId(m_ids["entry"]) + 1;
-    int idi = e.info().id() > -1 ? e.info().id() : maxId(m_ids["info"]) + 1;
-    
-    m_ids["entry"]<<ide;
-    m_ids["info"]<<idi;
     Entry et = e;
     et.setMetadata("lastUpdate", QDateTime::currentDateTime());
+    et.setId(QUuid::createUuid());
     Information info = et.info();
-    info.setId(idi);
-    info.setIdEntry(ide);
+    info.setId(QUuid::createUuid());
+    info.setIdEntry(et.id());
     et.setInfo(info);
-    et.setId(ide);
     if(et.hasMetadata("notemit"))
         et.removeMetaData("notemit");
 
@@ -136,8 +131,8 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
 void ControllerXMLMulti::addInfo(QDomElement& el, const Information & i)
 {
     QDomElement el2 = m_currentAccount.createElement("information");
-    el2.setAttribute("id", i.id());
-    el2.setAttribute("id_entry", i.idEntry());
+    el2.setAttribute("id", i.id().toString());
+    el2.setAttribute("id_entry", i.idEntry().toString());
     
     adder(el2, "title", i.title());
     adder(el2, "estimated", QString::number(i.estimated()));
@@ -171,9 +166,6 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
     for(int j = 0; j < attr.count(); j++)
         e.setMetadata(attr.item(j).nodeName(), attr.item(j).nodeValue());
         
-    m_ids["entry"]<<e.id();
-    m_ids["info"]<<e.info().id();
-    
     return e;
 }
 
@@ -254,7 +246,7 @@ bool ControllerXMLMulti::updateInfo(const Entry& e)
     for(int i = 0; i < list.size(); i ++)
     {
         QDomElement el = list.at(i).toElement();
-        if(el.attribute("id").toInt() == e.id())
+        if(el.attribute("id") == e.id().toString())
         {
             
             QDomElement info = el.elementsByTagName("information").at(0).toElement();
@@ -306,7 +298,7 @@ bool ControllerXMLMulti::updateEntry(const Entry & e)
     for(auto i = 0; i < list.size(); i++)
     {
         QDomElement el = list.at(i).toElement();
-        if(el.attribute("id").toInt() == e.id())
+        if(el.attribute("id") == e.id().toString())
         {
             updateEntryNode(e, el);
         }
@@ -568,10 +560,10 @@ Information ControllerXMLMulti::selectInformation(const QDomElement& el) const
 {
     Information ret;
     
-    int id = el.attribute("id").toInt();
-    ret.setId(id);
-    id = el.attribute("id_entry").toInt();
-    ret.setIdEntry(id);
+    QString id = el.attribute("id");
+    ret.setId(QUuid::fromString(id));
+    id = el.attribute("id_entry");
+    ret.setIdEntry(QUuid::fromString(id));
     
     bool est = el.elementsByTagName("estimated").at(0).toElement().text().toInt();
     
@@ -608,11 +600,11 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
         {
             auto current = freqs.at(i).toElement();
             Entry e(f.referenceEntry());
-            e.setId(id);
+            e.setId(QUuid::createUuid());
             e.setType("outcome");
             e.setAccount(m_accounts.key(m_currentAccount));
             Information in = e.info();
-            in.setId(id);
+            in.setId(e.id());
             e.setInfo(in);
             addEntryNode(e, current, "referenceEntry");
         }
@@ -827,19 +819,13 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
         for(auto it = map.begin(); it != map.end(); it++)
         {
             Entry t = it.value();
-            if(t.id() == -1)
+            if(t.id().isNull())
             {
-                int ide = maxId(m_ids["entry"]) + 1;
-                int idi = maxId(m_ids["info"]) + 1;
-                
-                m_ids["entry"]<<ide;
-                m_ids["info"]<<idi;
-
                 Information in = t.info();
-                in.setId(idi);
-                in.setIdEntry(ide);
+                in.setId(QUuid::createUuid());
+                in.setIdEntry(QUuid::createUuid());
                 t.setInfo(in);
-                t.setId(ide);
+                t.setId(in.idEntry());
             }
             
             QString tag = it.key();
