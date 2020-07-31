@@ -24,8 +24,8 @@ ApplicationWindow {
     height: 640
     
     signal adding(bool account)
-    signal remove(int index)
-    signal edit(int index)
+    signal remove(var index)
+    signal edit(var index)
     signal accountChange(int index)
     signal removeAccount(string name)
     signal openTransfert

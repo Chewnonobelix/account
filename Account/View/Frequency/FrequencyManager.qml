@@ -163,7 +163,7 @@ Rectangle {
             Layout.columnSpan: 1
             Layout.rowSpan: 1
 
-            signal s_removeFrequency(int freq)
+            signal s_removeFrequency(var freq)
 
             ToolTip.text: qsTr("Remove frequency")
             
@@ -291,9 +291,10 @@ Rectangle {
                 anchors.bottom: parent.bottom
                 enabled: ref.enabled && !endless.checked
 
-                signal s_open(int fId)
+                signal s_open(var fId)
 
-                onReleased: s_open(frequencyList.currentModel.id)
+                onReleased:  s_open(frequencyList.currentModel.id)
+
             }
 
         }
@@ -379,7 +380,7 @@ Rectangle {
             model: testModel
             clip: true
 
-            signal s_display(int entryId)
+            signal s_display(var entryId)
 
             ToolTip.text: qsTr("Select generate transaction")
             ToolTip.delay: 500

@@ -62,7 +62,7 @@ void ControllerFrequency::setManager(QObject * manager)
     if(add)
         connect(add, SIGNAL(s_addFrequency()), this, SLOT(addFrequency()));
     if(remove)
-        connect(remove, SIGNAL(s_removeFrequency(QUuid)), this, SLOT(removeFrequency(QUuid)));
+        connect(remove, SIGNAL(s_removeFrequency(QVariant)), this, SLOT(removeFrequency(QVariant)));
     
     QObject* cat = m_manager->findChild<QObject*>("category");
     
@@ -74,30 +74,30 @@ void ControllerFrequency::setManager(QObject * manager)
     
     if(ref)
     {
-        connect(ref, SIGNAL(valueChanged(QUuid, double)), this, SLOT(updateFreqValue(QUuid,double)));
-        connect(ref, SIGNAL(titleChanged(QUuid, QString)), this, SLOT(updateFreqName(QUuid,QString)));
-        connect(ref, SIGNAL(catChanged(QUuid, QString)), this, SLOT(updateFreqCat(QUuid,QString)));
-        connect(ref, SIGNAL(supportChanged(QUuid, int)), this, SLOT(updateFreqSupport(QUuid,int)));
+        connect(ref, SIGNAL(valueChanged(QVariant, double)), this, SLOT(updateFreqValue(QVariant,double)));
+        connect(ref, SIGNAL(titleChanged(QVariant, QString)), this, SLOT(updateFreqName(QVariant,QString)));
+        connect(ref, SIGNAL(catChanged(QVariant, QString)), this, SLOT(updateFreqCat(QVariant,QString)));
+        connect(ref, SIGNAL(supportChanged(QVariant, int)), this, SLOT(updateFreqSupport(QVariant,int)));
     }
     
     QObject* when = m_manager->findChild<QObject*>("whenCombo");
     
     if(when)
-        connect(when, SIGNAL(s_freq(QUuid, int)), this, SLOT(updateFreqFreq(QUuid, int)));
+        connect(when, SIGNAL(s_freq(QVariant, int)), this, SLOT(updateFreqFreq(QVariant, int)));
     
     type = m_manager->findChild<QObject*>("type");
     if(type)
-        connect(type, SIGNAL(s_updateType(QUuid, QString)), this, SLOT(updateFreqType(QUuid,QString)));
+        connect(type, SIGNAL(s_updateType(QVariant, QString)), this, SLOT(updateFreqType(QVariant,QString)));
     
     QObject* button = m_manager->findChild<QObject*>("generateOpen");
 
     if(button)
-        connect(button, SIGNAL(s_open(QUuid)), this, SLOT(openGenerate(QUuid)));
+        connect(button, SIGNAL(s_open(QVariant)), this, SLOT(openGenerate(QVariant)));
  
     QObject* el = m_manager->findChild<QObject*>("entryList");
     
     if(el)
-        connect(el, SIGNAL(s_display(QUuid)), this, SLOT(displayEntry(QUuid)));
+        connect(el, SIGNAL(s_display(QVariant)), this, SLOT(displayEntry(QVariant)));
     
     m_generate = m_manager->findChild<QObject*>("generate");
         
@@ -112,7 +112,7 @@ void ControllerFrequency::setManager(QObject * manager)
 
     QObject* freqEndless = m_manager->findChild<QObject*>("endless");
     if(freqEndless)
-        connect(freqEndless, SIGNAL(s_endless(QUuid, bool)), this, SLOT(updateFreqEndless(QUuid,bool)));
+        connect(freqEndless, SIGNAL(s_endless(QVariant, bool)), this, SLOT(updateFreqEndless(QVariant,bool)));
     
     connect(m_db, InterfaceDataSave::s_updateFrequency, this, ControllerFrequency::exec);
 }
@@ -245,10 +245,10 @@ void ControllerFrequency::generate(QString begin, QString end)
 }
 
 
-void ControllerFrequency::openGenerate(QUuid id)
+void ControllerFrequency::openGenerate(QVariant id)
 {
     m_generate->setProperty("freqId", id);
-    m_generate->setProperty("freqGroup", m_freqs[id].nbGroup() + 1);
+    m_generate->setProperty("freqGroup", m_freqs[id.toUuid()].nbGroup() + 1);
     
     QMetaObject::invokeMethod(m_generate, "open");
 }
@@ -270,9 +270,9 @@ void ControllerFrequency::addFrequency()
     openManager();
 }
 
-void ControllerFrequency::removeFrequency(QUuid id)
+void ControllerFrequency::removeFrequency(QVariant id)
 {
-    m_db->removeFrequency(m_freqs[id]);
+    m_db->removeFrequency(m_freqs[id.toUuid()]);
     openManager();
 }
 
@@ -287,61 +287,61 @@ void ControllerFrequency::addNewCategory(QString cat)
     updateFreqCat(id, cat);
 }
 
-void ControllerFrequency::updateFreqName(QUuid id, QString name)
+void ControllerFrequency::updateFreqName(QVariant id, QString name)
 {
     
-    Entry ref = m_freqs[id].referenceEntry();
+    Entry ref = m_freqs[id.toUuid()].referenceEntry();
     Information inf = ref.info();
     inf.setTitle(name);
     ref.setInfo(inf);
     
-    m_freqs[id].setReferenceEntry(ref);
+    m_freqs[id.toUuid()].setReferenceEntry(ref);
     
-    m_db->updateFrequency(m_freqs[id]);
+    m_db->updateFrequency(m_freqs[id.toUuid()]);
 }
 
-void ControllerFrequency::updateFreqValue(QUuid id, double value)
+void ControllerFrequency::updateFreqValue(QVariant id, double value)
 {
-    Entry ref = m_freqs[id].referenceEntry();
+    Entry ref = m_freqs[id.toUuid()].referenceEntry();
     ref.setValue(value);
-    m_freqs[id].setReferenceEntry(ref);
+    m_freqs[id.toUuid()].setReferenceEntry(ref);
     
-    m_db->updateFrequency(m_freqs[id]);
+    m_db->updateFrequency(m_freqs[id.toUuid()]);
 }
 
-void ControllerFrequency::updateFreqCat(QUuid id, QString cat)
+void ControllerFrequency::updateFreqCat(QVariant id, QString cat)
 {
-    Entry ref = m_freqs[id].referenceEntry();
+    Entry ref = m_freqs[id.toUuid()].referenceEntry();
     Information inf = ref.info();
     inf.setCategory(cat);
     ref.setInfo(inf);
     
-    m_freqs[id].setReferenceEntry(ref);
+    m_freqs[id.toUuid()].setReferenceEntry(ref);
     
-    m_db->updateFrequency(m_freqs[id]);
+    m_db->updateFrequency(m_freqs[id.toUuid()]);
 }
 
-void ControllerFrequency::updateFreqType(QUuid id, QString type)
+void ControllerFrequency::updateFreqType(QVariant id, QString type)
 {
-    Entry ref = m_freqs[id].referenceEntry();
+    Entry ref = m_freqs[id.toUuid()].referenceEntry();
     ref.setType(type);
     Information in = ref.info();
     in.setCategory("");
     ref.setInfo(in);
-    m_freqs[id].setReferenceEntry(ref);
+    m_freqs[id.toUuid()].setReferenceEntry(ref);
     
-    m_db->updateFrequency(m_freqs[id]);
+    m_db->updateFrequency(m_freqs[id.toUuid()]);
 }
 
-void ControllerFrequency::updateFreqFreq(QUuid id, int f)
+void ControllerFrequency::updateFreqFreq(QVariant id, int f)
 {
-    m_freqs[id].setFreq((Account::FrequencyEnum)f);
-    m_db->updateFrequency(m_freqs[id]);
+    m_freqs[id.toUuid()].setFreq((Account::FrequencyEnum)f);
+    m_db->updateFrequency(m_freqs[id.toUuid()]);
 }
 
-void ControllerFrequency::displayEntry(QUuid id)
+void ControllerFrequency::displayEntry(QVariant id)
 {
-    Entry e = entry(id);
+    Entry e = entry(id.toUuid());
     QObject* view = m_manager->findChild<QObject*>("linkedDisplayer");
     view->setProperty("entry", QVariant::fromValue(e));
 }
@@ -361,18 +361,18 @@ QObject* ControllerFrequency::worker(QString name) const
     return m_workers[name];
 }
 
-void ControllerFrequency::updateFreqEndless(QUuid id, bool e)
+void ControllerFrequency::updateFreqEndless(QVariant id, bool e)
 {
-    m_freqs[id].setEndless(e);
-    m_db->updateFrequency(m_freqs[id]);
+    m_freqs[id.toUuid()].setEndless(e);
+    m_db->updateFrequency(m_freqs[id.toUuid()]);
 }
 
-void ControllerFrequency::updateFreqSupport(QUuid id, int support)
+void ControllerFrequency::updateFreqSupport(QVariant id, int support)
 {
-    Entry ref = m_freqs[id].referenceEntry();
+    Entry ref = m_freqs[id.toUuid()].referenceEntry();
     ref.setSupport((Account::EntryTypeEnum)support);
-    m_freqs[id].setReferenceEntry(ref);
-    m_db->updateFrequency(m_freqs[id]);
+    m_freqs[id.toUuid()].setReferenceEntry(ref);
+    m_db->updateFrequency(m_freqs[id.toUuid()]);
 }
 
 void ControllerFrequency::checker()

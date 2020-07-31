@@ -84,24 +84,24 @@ public slots:
 
     void endThread(QString);
     void generate(QString, QString);
-    void openGenerate(QUuid);
+    void openGenerate(QVariant);
     
     void openManager();
     
     void addFrequency();
-    void removeFrequency(QUuid);
+    void removeFrequency(QVariant);
     
     void addNewCategory(QString);
     
-    void updateFreqName(QUuid, QString);
-    void updateFreqValue(QUuid, double);
-    void updateFreqCat(QUuid, QString);
-    void updateFreqType(QUuid, QString);
-    void updateFreqFreq(QUuid, int);
-    void updateFreqEndless(QUuid, bool);
-    void updateFreqSupport(QUuid, int);
+    void updateFreqName(QVariant, QString);
+    void updateFreqValue(QVariant, double);
+    void updateFreqCat(QVariant, QString);
+    void updateFreqType(QVariant, QString);
+    void updateFreqFreq(QVariant, int);
+    void updateFreqEndless(QVariant, bool);
+    void updateFreqSupport(QVariant, int);
 
-    void displayEntry(QUuid);
+    void displayEntry(QVariant);
     void setWorker(QString);
 
     void endFill();
