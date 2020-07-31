@@ -62,7 +62,7 @@ void ControllerFrequency::setManager(QObject * manager)
     if(add)
         connect(add, SIGNAL(s_addFrequency()), this, SLOT(addFrequency()));
     if(remove)
-        connect(remove, SIGNAL(s_removeFrequency(int)), this, SLOT(removeFrequency(int)));
+        connect(remove, SIGNAL(s_removeFrequency(QUuid)), this, SLOT(removeFrequency(QUuid)));
     
     QObject* cat = m_manager->findChild<QObject*>("category");
     
@@ -74,30 +74,30 @@ void ControllerFrequency::setManager(QObject * manager)
     
     if(ref)
     {
-        connect(ref, SIGNAL(valueChanged(int, double)), this, SLOT(updateFreqValue(int,double)));
-        connect(ref, SIGNAL(titleChanged(int, QString)), this, SLOT(updateFreqName(int,QString)));
-        connect(ref, SIGNAL(catChanged(int, QString)), this, SLOT(updateFreqCat(int,QString)));
-        connect(ref, SIGNAL(supportChanged(int, int)), this, SLOT(updateFreqSupport(int,int)));
+        connect(ref, SIGNAL(valueChanged(QUuid, double)), this, SLOT(updateFreqValue(QUuid,double)));
+        connect(ref, SIGNAL(titleChanged(QUuid, QString)), this, SLOT(updateFreqName(QUuid,QString)));
+        connect(ref, SIGNAL(catChanged(QUuid, QString)), this, SLOT(updateFreqCat(QUuid,QString)));
+        connect(ref, SIGNAL(supportChanged(QUuid, int)), this, SLOT(updateFreqSupport(QUuid,int)));
     }
     
     QObject* when = m_manager->findChild<QObject*>("whenCombo");
     
     if(when)
-        connect(when, SIGNAL(s_freq(int, int)), this, SLOT(updateFreqFreq(int, int)));
+        connect(when, SIGNAL(s_freq(QUuid, int)), this, SLOT(updateFreqFreq(QUuid, int)));
     
     type = m_manager->findChild<QObject*>("type");
     if(type)
-        connect(type, SIGNAL(s_updateType(int, QString)), this, SLOT(updateFreqType(int,QString)));
+        connect(type, SIGNAL(s_updateType(QUuid, QString)), this, SLOT(updateFreqType(QUuid,QString)));
     
     QObject* button = m_manager->findChild<QObject*>("generateOpen");
 
     if(button)
-        connect(button, SIGNAL(s_open(int)), this, SLOT(openGenerate(int)));
+        connect(button, SIGNAL(s_open(QUuid)), this, SLOT(openGenerate(QUuid)));
  
     QObject* el = m_manager->findChild<QObject*>("entryList");
     
     if(el)
-        connect(el, SIGNAL(s_display(int)), this, SLOT(displayEntry(int)));
+        connect(el, SIGNAL(s_display(QUuid)), this, SLOT(displayEntry(QUuid)));
     
     m_generate = m_manager->findChild<QObject*>("generate");
         
@@ -112,7 +112,7 @@ void ControllerFrequency::setManager(QObject * manager)
 
     QObject* freqEndless = m_manager->findChild<QObject*>("endless");
     if(freqEndless)
-        connect(freqEndless, SIGNAL(s_endless(int, bool)), this, SLOT(updateFreqEndless(int,bool)));
+        connect(freqEndless, SIGNAL(s_endless(QUuid, bool)), this, SLOT(updateFreqEndless(QUuid,bool)));
     
     connect(m_db, InterfaceDataSave::s_updateFrequency, this, ControllerFrequency::exec);
 }
@@ -361,13 +361,13 @@ QObject* ControllerFrequency::worker(QString name) const
     return m_workers[name];
 }
 
-void ControllerFrequency::updateFreqEndless(int id, bool e)
+void ControllerFrequency::updateFreqEndless(QUuid id, bool e)
 {
     m_freqs[id].setEndless(e);
     m_db->updateFrequency(m_freqs[id]);
 }
 
-void ControllerFrequency::updateFreqSupport(int id, int support)
+void ControllerFrequency::updateFreqSupport(QUuid id, int support)
 {
     Entry ref = m_freqs[id].referenceEntry();
     ref.setSupport((Account::EntryTypeEnum)support);

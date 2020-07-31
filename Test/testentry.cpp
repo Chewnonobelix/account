@@ -1,6 +1,6 @@
 #include "testentry.h"
 
-const int ide = 0;
+const QUuid ide = QUuid::createUuid();
 const QString account = "Test account";
 const QString type = "type ytewsyt";
 const double value = 2.12;

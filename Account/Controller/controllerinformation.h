@@ -23,7 +23,7 @@ public:
     int exec();
 
     void configure(QObject*);
-    void view(int);
+    void view(QUuid);
     
 public slots:
     void titleChange(QString);
@@ -34,8 +34,8 @@ public slots:
     void supportChange(int);
 
 signals:
-    void s_update(int);
-    void s_changeCat(QString, int);
+    void s_update(QUuid);
+    void s_changeCat(QString, QUuid);
     void s_exec();
 };
 

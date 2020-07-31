@@ -1,6 +1,6 @@
 #include "testfrequency.h"
 
-const int id = 0;
+const QUuid id = QUuid::createUuid();
 const Account::FrequencyEnum day = Account::FrequencyEnum::Day;
 const Account::FrequencyEnum week = Account::FrequencyEnum::Week;
 const Account::FrequencyEnum month = Account::FrequencyEnum::Month;
@@ -12,7 +12,7 @@ const int nbgroup = 2;
 
 void TestFrequency::initTestCase()
 {
-    filler.model = new QMap<int, Frequency>;
+    filler.model = new QMap<QUuid, Frequency>;
 }
 
 void TestFrequency::cleanupTestCase()
@@ -87,7 +87,7 @@ void TestFrequency::testGetGroup()
 void TestFrequency::testClone()
 {
     auto clone = model1.clone(model1.referenceEntry());
-    QCOMPARE(clone.metaData<int>("frequency"), model1.id());
+    QCOMPARE(clone.metaData<QUuid>("frequency"), model1.id());
 }
 
 void TestFrequency::testFill()

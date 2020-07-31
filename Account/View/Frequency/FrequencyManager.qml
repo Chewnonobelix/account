@@ -185,10 +185,10 @@ Rectangle {
             property var incomeList: []
             property var outcomeList: []
 
-            signal titleChanged(int id, string title)
-            signal valueChanged(int id, real value)
-            signal catChanged(int id, string cat)
-            signal supportChanged(int id, int support)
+            signal titleChanged(var id, string title)
+            signal valueChanged(var id, real value)
+            signal catChanged(var id, string cat)
+            signal supportChanged(var id, int support)
 
             onS_valueChanged: if(entry && enabled) valueChanged(frequencyList.currentModel.id, value)
             onS_titleChanged: if(entry && enabled) titleChanged(frequencyList.currentModel.id, title)
@@ -224,7 +224,7 @@ Rectangle {
             
             model: CoreModel.freqModel
             textRole: "name"
-            signal s_freq(int i, int f)
+            signal s_freq(var i, int f)
 
             onCurrentIndexChanged: {
                 if(down && ref.entry) s_freq(frequencyList.currentModel.id, model.get(currentIndex).role)
@@ -251,7 +251,7 @@ Rectangle {
             textRole: "name"
             valueRole: "type"
 
-            signal s_updateType(int id, string nType)
+            signal s_updateType(var id, string nType)
 
             onCurrentIndexChanged: {
                 if(ref.entry && down){
@@ -276,7 +276,7 @@ Rectangle {
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 text: qsTr("Endless")
-                signal s_endless(int id, bool e)
+                signal s_endless(var id, bool e)
 
                 onClicked: if(frequencyList.currentModel) s_endless(frequencyList.currentModel.id, checked)
             }
