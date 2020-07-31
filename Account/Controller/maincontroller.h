@@ -74,9 +74,10 @@ public:
 public slots:
     int exec();
 
+    void bind(QVariant);
     void add(bool = false);
-    void remove(QUuid);
-    void edit(QUuid);
+    void remove(QVariant);
+    void edit(QVariant);
 
     void adding();
 

@@ -605,6 +605,7 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
             e.setType("outcome");
             e.setAccount(m_accounts.key(m_currentAccount));
             Information in = e.info();
+            in.setIdEntry(idf);
             in.setId(idf);
             e.setInfo(in);
             addEntryNode(e, current, "referenceEntry");

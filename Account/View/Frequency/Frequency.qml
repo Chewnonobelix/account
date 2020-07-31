@@ -28,7 +28,7 @@ Rectangle {
             Layout.fillHeight: true
             Layout.fillWidth: true
             
-            signal s_showFromFrequency(int id)
+            signal s_showFromFrequency(var id)
             
             MouseArea {
                 id: pastArea

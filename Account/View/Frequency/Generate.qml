@@ -6,7 +6,7 @@ import "../Style"
 import "../Core" as C
 
 Popup {
-    property int freqId: -1
+    property var freqId: null
     property int freqGroup: -1
     
     signal s_generate(string fBegin, string fEnd)

@@ -60,6 +60,11 @@ void MainController::reload()
     buildModel();
 }
 
+void MainController::bind(QVariant id)
+{
+    pageChange(id.toUuid());
+}
+
 int MainController::exec()
 {
     m_engine.load(QUrl(QStringLiteral("qrc:/Core/Main.qml")));
@@ -72,7 +77,7 @@ int MainController::exec()
     QObject* root = m_engine.rootObjects().first();
     
     connect(root, SIGNAL(adding(bool)), this, SLOT(add(bool)));
-    connect(root, SIGNAL(remove(QUuid)), this, SLOT(remove(QUuid)));
+    connect(root, SIGNAL(remove(QVariant)), this, SLOT(remove(QVariant)));
     connect(root, SIGNAL(removeAccount(QString)), this, SLOT(deleteAccount(QString)));
     connect(root, SIGNAL(s_closing()), this, SLOT(close()));
     
@@ -103,7 +108,7 @@ int MainController::exec()
     
     if(view)
     {
-        connect(view, SIGNAL(s_view(QUuid)), this, SLOT(edit(QUuid)));
+        connect(view, SIGNAL(s_view(QVariant)), this, SLOT(edit(QVariant)));
         connect(view, SIGNAL(s_sortRole(QString)), this, SLOT(sortRole(QString)));
         connect(view, SIGNAL(s_sortOrder(int)), this, SLOT(sortOrder(int)));
     }
@@ -143,7 +148,7 @@ int MainController::exec()
         {
             QObject* past = f->findChild<QObject*>("frequencyPast");
             if(past)
-                connect(past, SIGNAL(s_showFromFrequency(QUuid)), this, SLOT(pageChange(QUuid)));
+                connect(past, SIGNAL(s_showFromFrequency(QVariant)), this, SLOT(bind(QVariant)));
         }
     }
     
@@ -470,15 +475,15 @@ void MainController::quickAddCategory(QString cat)
     }
 }
 
-void MainController::remove(QUuid id)
+void MainController::remove(QVariant id)
 {
-    Entry e = AbstractController::entry(id);
+    Entry e = AbstractController::entry(id.toUuid());
     m_db->removeEntry(e);
 }
 
-void MainController::edit(QUuid id)
+void MainController::edit(QVariant id)
 {
-    m_info.view(id);
+    m_info.view(id.toUuid());
 }
 
 void MainController::previewCalendar()

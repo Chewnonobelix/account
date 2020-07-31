@@ -169,7 +169,7 @@ Page {
                     infoView.visible = false
                 }
                 
-                signal s_view(int index)
+                signal s_view(var index)
                 
                 property var currentEntry
                 
@@ -204,7 +204,7 @@ Page {
                 function setNewIndex(index) {
                     if (selection.contains(index) || index === -1) {
                         selection.clear()
-                        s_view(-1)
+                        s_view(null)
                     } else {
                         selection.clear()
                         currentRow = index
