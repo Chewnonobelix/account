@@ -1,12 +1,11 @@
 #include "budget.h"
 
-Budget::Budget(): m_id(-1), m_reference(QDate::currentDate())
+Budget::Budget(): m_reference(QDate::currentDate())
 {
 }
 
-Budget::Budget(const Budget & b)
+Budget::Budget(const Budget & b): MetaData(b)
 {
-    m_id = b.id();
     m_category = b.category();
     m_reference = b.reference();
     m_frequency = b.m_frequency;
@@ -14,14 +13,14 @@ Budget::Budget(const Budget & b)
     m_subs = b.m_subs;
 }
 
-int Budget::id() const
+QUuid Budget::id() const
 {
-    return m_id;
+    return metaData<QUuid>("id");
 }
 
-void Budget::setId(int i)
+void Budget::setId(QUuid i)
 {
-    m_id = i;
+    setMetadata("id", i);
 }
 
 bool Budget::addEntry(Entry e)
@@ -183,7 +182,8 @@ void Budget::setCategory(QString c)
 
 Budget& Budget::operator = (const Budget& b)
 {
-    m_id = b.id();
+    MetaData& m = *this;
+    m = b;
     m_category = b.category();
     m_reference = b.reference();
     m_frequency = b.m_frequency;

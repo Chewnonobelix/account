@@ -630,8 +630,8 @@ bool ControllerDB::addBudget(const Budget& b)
         m_addBudget->bindValue(":account", m_currentAccount);
         m_addBudget->bindValue(":profile", m_currentProfile);
         m_addBudget->bindValue(":reference", b.reference());
-        if(b.id() > -1)
-            m_addBudget->bindValue(":id", b.id());
+        QUuid idb = b.id().isNull() ? QUuid::createUuid() : b.id();
+        m_addBudget->bindValue(":id", idb);
         
         auto reqc = m_db.exec("SELECT * FROM categories WHERE profile='"+m_currentProfile+"' AND account='"+m_currentAccount+"' AND name='"+b.category()+"' ");
         
@@ -676,7 +676,7 @@ QList<Budget> ControllerDB::selectBudgets()
                 continue;
             
             Budget b;
-            b.setId(m_selectBudget->value("id").toInt());
+            b.setId(m_selectBudget->value("id").toUuid());
             b.setReference(m_selectBudget->value("reference").toDate());
             auto req = m_db.exec("SELECT name FROM categories WHERE id='"+m_selectBudget->value("category").toString()+"'");
             req.seek(0);
@@ -705,6 +705,7 @@ bool ControllerDB::updateBudget(const Budget & b)
         m_updateBudget->bindValue(":c", b.category());
         m_updateBudget->bindValue(":rm", b.metaData<bool>("removed"));
         m_updateBudget->bindValue(":r", b.reference());
+        m_updateBudget->bindValue(":id", b.id());
         
         ret &= m_updateBudget->exec();
         for(auto it: b.targets().keys())

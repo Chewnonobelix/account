@@ -6,6 +6,7 @@
 #include <QMap>
 #include <QList>
 #include <QDebug>
+#include <QUuid>
 #include "total.h"
 #include "accountglobal.h"
 #include "subbudget.h"
@@ -16,8 +17,6 @@ class ACCOUNT_EXPORT Budget: public MetaData
 public:
 
 private:
-    int m_id;
-
     QString m_category;
     QDate m_reference;
 
@@ -34,8 +33,8 @@ public:
     Budget();
     Budget(const Budget&);
 
-    int id() const;
-    void setId(int);
+    QUuid id() const;
+    void setId(QUuid);
 
     bool addEntry(Entry);
     bool removeEntry(Entry);
