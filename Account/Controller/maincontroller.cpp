@@ -72,7 +72,7 @@ int MainController::exec()
     QObject* root = m_engine.rootObjects().first();
     
     connect(root, SIGNAL(adding(bool)), this, SLOT(add(bool)));
-    connect(root, SIGNAL(remove(int)), this, SLOT(remove(int)));
+    connect(root, SIGNAL(remove(QUuid)), this, SLOT(remove(QUuid)));
     connect(root, SIGNAL(removeAccount(QString)), this, SLOT(deleteAccount(QString)));
     connect(root, SIGNAL(s_closing()), this, SLOT(close()));
     
@@ -103,7 +103,7 @@ int MainController::exec()
     
     if(view)
     {
-        connect(view, SIGNAL(s_view(int)), this, SLOT(edit(int)));
+        connect(view, SIGNAL(s_view(QUuid)), this, SLOT(edit(QUuid)));
         connect(view, SIGNAL(s_sortRole(QString)), this, SLOT(sortRole(QString)));
         connect(view, SIGNAL(s_sortOrder(int)), this, SLOT(sortOrder(int)));
     }
@@ -143,7 +143,7 @@ int MainController::exec()
         {
             QObject* past = f->findChild<QObject*>("frequencyPast");
             if(past)
-                connect(past, SIGNAL(s_showFromFrequency(int)), this, SLOT(pageChange(int)));
+                connect(past, SIGNAL(s_showFromFrequency(QUuid)), this, SLOT(pageChange(QUuid)));
         }
     }
     
@@ -403,11 +403,11 @@ void MainController::adding()
     if(adding->property("newAccount").toBool())
         loadAccount();
     
-    int id = 0;
-    for(auto it: m_db->selectEntry(currentAccount()))
-        id = std::max(id, it.id());
+//    QUuid id;
+//    for(auto it: m_db->selectEntry(currentAccount()))
+//        id = std::max(id, it.id());
     
-    pageChange(id);
+//    pageChange(id);
 }
 
 void MainController::addEntryMain(Entry  e)
@@ -470,13 +470,13 @@ void MainController::quickAddCategory(QString cat)
     }
 }
 
-void MainController::remove(int id)
+void MainController::remove(QUuid id)
 {
     Entry e = AbstractController::entry(id);
     m_db->removeEntry(e);
 }
 
-void MainController::edit(int id)
+void MainController::edit(QUuid id)
 {
     m_info.view(id);
 }
@@ -564,7 +564,7 @@ void Builder::run()
     model->append(temp);
 }
 
-void MainController::buildModel(int)
+void MainController::buildModel(QUuid)
 {
     if(m_modelBuilder && m_modelBuilder->isRunning())
         return;
@@ -598,7 +598,7 @@ void MainController::buildModel(int)
     m_modelBuilder->start();
 }
 
-void MainController::pageChange(int id)
+void MainController::pageChange(QUuid id)
 {
     QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
     QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
@@ -764,7 +764,7 @@ void MainController::validateCheckEstimated()
         if(!popup->property("tab").toList()[i].isValid())
             continue;
         
-        Entry e = entry(i);
+        Entry e = entry(popup->property("tab").toList()[i].toUuid());
         
         if(popup->property("tab").toList()[i].toBool())
         {
@@ -855,13 +855,13 @@ void MainController::languageChange()
 void MainController::sortRole(QString role)
 {
     m_settings.setSortingRole(role);
-    int id = m_engine.rootObjects().first()->findChild<QObject*>("table")->property("currentId").toInt();
+    QUuid id = m_engine.rootObjects().first()->findChild<QObject*>("table")->property("currentId").toUuid();
     pageChange(id);
 }
 
 void MainController::sortOrder(int order)
 {
     m_settings.setSortOrdre((Qt::SortOrder)order);
-    int id = m_engine.rootObjects().first()->findChild<QObject*>("table")->property("currentId").toInt();
+    QUuid id = m_engine.rootObjects().first()->findChild<QObject*>("table")->property("currentId").toUuid();
     pageChange(id);
 }

@@ -1,7 +1,7 @@
 #include "testinformation.h"
 
-const int id = 1;
-const int ide = 1;
+const QUuid id = QUuid::createUuid();
+const QUuid ide = QUuid::createUuid();
 const QString category = "test category";
 const bool estimated = true;
 const QString title = "test title";

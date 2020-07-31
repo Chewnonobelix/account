@@ -75,8 +75,8 @@ public slots:
     int exec();
 
     void add(bool = false);
-    void remove(int);
-    void edit(int);
+    void remove(QUuid);
+    void edit(QUuid);
 
     void adding();
 
@@ -113,8 +113,8 @@ public slots:
     
     void updateQuickView();
 
-    void buildModel(int = -1);
-    void pageChange(int = -1);
+    void buildModel(QUuid = QUuid());
+    void pageChange(QUuid = QUuid());
 
     void sortRole(QString);
     void sortOrder(int);

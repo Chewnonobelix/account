@@ -12,7 +12,7 @@ public:
     TestFrequency() = default;
     Frequency model1, model2;
     QSharedPointer<Frequency> copy;
-    Filler<int, Frequency> filler;
+    Filler<QUuid, Frequency> filler;
     Entry reference;
 
 private slots:

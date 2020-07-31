@@ -77,7 +77,7 @@ void ControllerInformation::configure(QObject * view)
     }
 }
 
-void ControllerInformation::view(int id)
+void ControllerInformation::view(QUuid id)
 {
     m_entry = AbstractController::entry(id);
 
@@ -99,7 +99,7 @@ void ControllerInformation::view(int id)
 
     child->setProperty("entry", QVariant::fromValue(m_entry));
 
-    m_view->setProperty("visible", id != -1 && !m_entry.isBlocked());
+    m_view->setProperty("visible", !id.isNull() && !m_entry.isBlocked());
     exec();
 }
 

@@ -22,7 +22,7 @@ public slots:
     void accept();
     
 signals:
-    void s_finish(int = -1);
+    void s_finish(QUuid = QUuid());
 
 };
 
