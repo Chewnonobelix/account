@@ -54,7 +54,7 @@ const auto information_table = QString("CREATE TABLE `information` ("
                                          ")");
 
 const auto budget_table = QString("CREATE TABLE `budget` ("
-                                      "`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+                                      "`id` TEXT NOT NULL PRIMARY KEY,"
                                       "`category` INTEGER NOT NULL REFERENCES categories(id),"
                                       "`reference` date NOT NULL,"
                                       "`profile` TEXT NOT NULL DEFAULT 'Default',"
@@ -75,7 +75,7 @@ const auto budget_delete_trigger = QString("CREATE TRIGGER delete_budget BEFORE 
 
 const auto subbudget_table = QString("CREATE TABLE `subbudget` ("
                                          "`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-                                         "`idBudget` INTEGER NOT NULL REFERENCES budget(id),"
+                                         "`idBudget` TEXT NOT NULL REFERENCES budget(id),"
                                          "`frequency` INTEGER NOT NULL,"
                                          "`target` REAL NOT NULL,"
                                          "`fromDate` date NOT NULL, "

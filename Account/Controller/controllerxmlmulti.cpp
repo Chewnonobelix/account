@@ -387,10 +387,9 @@ bool ControllerXMLMulti::addBudget(const Budget& b)
     
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
     QDomElement el = m_currentAccount.createElement("budget");
-    int id = b.id() > -1 ? b.id() : maxId(m_ids["budget"]) + 1;
+    QUuid id = b.id().isNull() ? QUuid::createUuid() : b.id();
     
-    m_ids["budget"]<<id;
-    el.setAttribute("id", id);
+    el.setAttribute("id", id.toString());
     el.setAttribute("lastUpdate", QDateTime::currentDateTime().toString());
     el.setAttribute("removed", false);
     
@@ -429,7 +428,7 @@ QList<Budget> ControllerXMLMulti::selectBudgets()
             continue;
         
         Budget b;
-        b.setId(el.attribute("id").toInt());
+        b.setId(QUuid::fromString(el.attribute("id")));
         b.setMetadata("lastUpdate", QDateTime::fromString(el.attribute("lastUpdate")));  
         QDomElement child = el.elementsByTagName("name").at(0).toElement();
         b.setCategory(child.text());
@@ -482,7 +481,7 @@ bool ControllerXMLMulti::updateBudget(const Budget & b)
     {
         QDomElement el = list.at(i).toElement();
         
-        if(el.attribute("id").toInt() == b.id())
+        if(el.attribute("id") == b.id().toString())
         {
             ret = true;
             setter(el, "reference", b.reference().toString("dd-MM-yyyy"));
