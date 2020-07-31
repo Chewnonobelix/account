@@ -48,7 +48,7 @@ void ControllerBudget::openManager()
     }
 }
 
-bool ControllerBudget::removeFrom(int id)
+bool ControllerBudget::removeFrom(QUuid id)
 {
     bool ret = false;
     Entry e = entry(id);
@@ -210,7 +210,7 @@ void ControllerBudget::changeFrequency(QString, int)
 {
 }
 
-void ControllerBudget::updateEntry(int id)
+void ControllerBudget::updateEntry(QUuid id)
 {
     Entry e = entry(id);
     
@@ -223,7 +223,7 @@ void ControllerBudget::updateEntry(int id)
     reload();
 }
 
-void ControllerBudget::changeEntry(QString old, int id)
+void ControllerBudget::changeEntry(QString old, QUuid id)
 {
     Entry e = entry(id);
 

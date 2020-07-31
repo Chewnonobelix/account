@@ -1,14 +1,14 @@
 #include "frequency.h"
 #include <QDebug>
 
-int Frequency::id() const
+QUuid Frequency::id() const
 {
-    return m_id;
+    return metaData<QUuid>("id");
 }
 
-void Frequency::setId(int id)
+void Frequency::setId(QUuid id)
 {
-    m_id = id;
+    setMetadata("id", id);
 }
 
 Account::FrequencyEnum Frequency::freq() const
@@ -68,7 +68,8 @@ Frequency::Frequency()
 
 Frequency& Frequency::operator =(const Frequency& f)
 {
-    setId(f.id());
+    MetaData& m = *this;
+    m = f;
     setFreq(f.freq());
     
     m_entriesId.clear();
@@ -88,7 +89,6 @@ Entry Frequency::clone(const Entry & e) const
 {
     Entry ret(e);
     ret.setMetadata("frequency", id());
-    ret.setId(-1);
     ret.setMetadata("notemit", true);
     return ret;
 }
@@ -105,7 +105,7 @@ int Frequency::count() const
 
 Frequency& Frequency::operator<< (const Entry& e)
 {   
-    if(e.hasMetadata("frequency") && e.metaData<int>("frequency") == id())
+    if(e.hasMetadata("frequency") && e.metaData<QUuid>("frequency") == id())
     {
         if(e.date() < begin())
             setBegin(e.date());

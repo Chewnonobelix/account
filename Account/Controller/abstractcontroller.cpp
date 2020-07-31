@@ -117,7 +117,7 @@ void AbstractController::addEntry(const Entry& e)
     }
 }
 
-Entry AbstractController::entry(int id)
+Entry AbstractController::entry(QUuid id)
 {
     Entry ret;
     

@@ -385,12 +385,13 @@ bool ControllerDB::addEntry(const Entry & e)
         m_addEntry->bindValue(":date", QVariant(e.date()));
         m_addEntry->bindValue(":type", QVariant(e.type()));
         m_addEntry->bindValue(":profile", m_currentProfile);
-        if(e.id() > -1)
-            m_addEntry->bindValue(":id", e.id());
+        Entry et = e;
+        QUuid id = e.id().isNull() ? QUuid::createUuid() : e.id();
+        m_addEntry->bindValue(":id", id);
+        et.setId(id);        
         
         ret = m_addEntry->exec();
         
-        int id = e.id() != -1 ? e.id() : m_addEntry->lastInsertId().toInt();
         if(ret && id >= 0)
         {
             
@@ -398,13 +399,12 @@ bool ControllerDB::addEntry(const Entry & e)
             m_addInformation->bindValue(":title", e.info().title());
             m_addInformation->bindValue(":prev",e.info().estimated());
             m_addInformation->bindValue(":cat", -1);
-            if(e.info().id() > -1)
-                m_addInformation->bindValue(":id", e.info().id());
+            id = e.info().id().isNull() ? QUuid::createUuid() : e.info().id();
+            m_addInformation->bindValue(":id", id);
             
             ret &= m_addInformation->exec();
         }
         
-        Entry et = e;
         et.setMetadata("lastUpdate", QDateTime::currentDateTime());
         
         auto meta = et.metaDataList();
@@ -447,7 +447,7 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
             
             Entry t;
             Information i;
-            t.setId(m_selectEntry->value("id").toInt());
+            t.setId(m_selectEntry->value("id").toUuid());
             t.setDate(m_selectEntry->value("date_eff").toDate());
             t.setValue(m_selectEntry->value("value").toDouble());
             t.setType(m_selectEntry->value("type").toString());
@@ -460,8 +460,8 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
             
             m_selectInformation->seek(0);
             
-            i.setId(m_selectInformation->value("id").toInt());
-            i.setIdEntry(m_selectInformation->value("idEntry").toInt());
+            i.setId(m_selectInformation->value("id").toUuid());
+            i.setIdEntry(m_selectInformation->value("idEntry").toUuid());
             i.setEstimated(m_selectInformation->value("prev").toBool());
             i.setTitle(m_selectInformation->value("info").toString());
             
@@ -732,13 +732,11 @@ bool ControllerDB::addFrequency(const Frequency & f)
         m_addFrequency->bindValue(":nbGroup", QVariant::fromValue(f.nbGroup()));
         m_addFrequency->bindValue(":account", QVariant::fromValue(m_currentAccount));
         m_addFrequency->bindValue(":profile", QVariant::fromValue(m_currentProfile));
-        
-        if(f.id() > -1)
-            m_addFrequency->bindValue(":id", f.id());
+        QUuid id = f.id().isNull() ? QUuid::createUuid() : f.id();
+        m_addFrequency->bindValue(":id", id);
         
         if(m_addFrequency->exec())
         {
-            int id = m_addFrequency->lastInsertId().toInt();
             m_addFrequencyReference->bindValue(":a", m_currentAccount);
             m_addFrequencyReference->bindValue(":v", f.referenceEntry().value());
             m_addFrequencyReference->bindValue(":t", f.referenceEntry().type());
@@ -748,7 +746,6 @@ bool ControllerDB::addFrequency(const Frequency & f)
             
             if(m_addFrequencyReference->exec())
             {
-                id = m_addFrequencyReference->lastInsertId().toInt();
                 Information i = f.referenceEntry().info();
                 m_addInformation->bindValue(":ide", id);
                 m_addInformation->bindValue(":title", i.title());
@@ -812,7 +809,7 @@ QList<Frequency> ControllerDB::selectFrequency()
                 continue;
             
             Frequency f;
-            f.setId(m_selectFrequency->value("id").toInt());
+            f.setId(m_selectFrequency->value("id").toUuid());
             f.setFreq((Account::FrequencyEnum)m_selectFrequency->value("freq").toInt());
             f.setNbGroup(m_selectFrequency->value("nbGroup").toInt());
             f.setEndless(m_selectFrequency->value("endless").toInt());
@@ -824,7 +821,7 @@ QList<Frequency> ControllerDB::selectFrequency()
             m_selectFrequencyReference->seek(0);
             Entry ref;
             Information i;
-            ref.setId(m_selectFrequencyReference->value("id").toInt());
+            ref.setId(m_selectFrequencyReference->value("id").toUuid());
             ref.setDate(m_selectFrequencyReference->value("date_eff").toDate());
             ref.setValue(m_selectFrequencyReference->value("value").toDouble());
             ref.setType(m_selectFrequencyReference->value("type").toString());
@@ -838,8 +835,8 @@ QList<Frequency> ControllerDB::selectFrequency()
             
             m_selectInformation->seek(0);
             
-            i.setId(m_selectInformation->value("id").toInt());
-            i.setIdEntry(m_selectInformation->value("idEntry").toInt());
+            i.setId(m_selectInformation->value("id").toUuid());
+            i.setIdEntry(m_selectInformation->value("idEntry").toUuid());
             i.setEstimated(m_selectInformation->value("prev").toBool());
             i.setTitle(m_selectInformation->value("info").toString());
             
@@ -897,7 +894,7 @@ QMap<int, CommonExpanse> ControllerDB::selectCommon()
                 
                 
                 Entry e;
-                e.setId(m_selectCommonEntry->value("id").toInt());
+                e.setId(m_selectCommonEntry->value("id").toUuid());
                 e.setValue(m_selectCommonEntry->value("value").toDouble());
                 e.setDate(m_selectCommonEntry->value("date_eff").toDate());
                 e.setType(m_selectCommonEntry->value("type").toString());

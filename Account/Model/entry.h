@@ -21,7 +21,7 @@ class ACCOUNT_EXPORT Entry: public MetaData
     Q_PROPERTY(QString type READ type)
     Q_PROPERTY(Information info READ info)
     Q_PROPERTY(QString label READ label)
-    Q_PROPERTY(int id READ id)
+    Q_PROPERTY(QUuid id READ id)
     Q_PROPERTY(bool isBlocked READ isBlocked)
     Q_PROPERTY(Account::EntryTypeEnum support READ support)
 private:
@@ -41,8 +41,8 @@ public:
     friend bool ACCOUNT_EXPORT operator ==(const Entry&, const Entry&);
     friend bool ACCOUNT_EXPORT operator < (const Entry&, const Entry&);
 
-    int id() const;
-    void setId(int id);
+    QUuid id() const;
+    void setId(QUuid id);
     QString account() const;
     void setAccount(QString account);
     double value() const;

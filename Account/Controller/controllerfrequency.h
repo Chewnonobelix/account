@@ -47,7 +47,7 @@ class ControllerFrequency: public AbstractController, public FeatureBuilder
     Q_OBJECT 
     
 private:
-    QMap<int, Frequency> m_freqs;
+    QMap<QUuid, Frequency> m_freqs;
     QMap<QString, Worker*> m_workers;
 
     QObject* m_manager, *m_generate;
@@ -56,7 +56,7 @@ private:
     QList<QVariant> m_model; 
     
     void loadCat();
-    Filler<int, Frequency> m_filler;
+    Filler<QUuid, Frequency> m_filler;
     
 public:
     ControllerFrequency();
@@ -84,24 +84,24 @@ public slots:
 
     void endThread(QString);
     void generate(QString, QString);
-    void openGenerate(int);
+    void openGenerate(QUuid);
     
     void openManager();
     
     void addFrequency();
-    void removeFrequency(int);
+    void removeFrequency(QUuid);
     
     void addNewCategory(QString);
     
-    void updateFreqName(int, QString);
-    void updateFreqValue(int, double);
-    void updateFreqCat(int, QString);
-    void updateFreqType(int, QString);
-    void updateFreqFreq(int, int);
-    void updateFreqEndless(int, bool);
-    void updateFreqSupport(int, int);
+    void updateFreqName(QUuid, QString);
+    void updateFreqValue(QUuid, double);
+    void updateFreqCat(QUuid, QString);
+    void updateFreqType(QUuid, QString);
+    void updateFreqFreq(QUuid, int);
+    void updateFreqEndless(QUuid, bool);
+    void updateFreqSupport(QUuid, int);
 
-    void displayEntry(int);
+    void displayEntry(QUuid);
     void setWorker(QString);
 
     void endFill();

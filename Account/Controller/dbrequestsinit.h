@@ -4,7 +4,7 @@
 #include <QLatin1String>
 
 const auto account_table = QString("CREATE TABLE `account` ("
-                                       "`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+                                       "`id` TEXT NOT NULL PRIMARY KEY,"
                                        "`account` TEXT NOT NULL,"
                                        "`value` double NOT NULL,"
                                        "`date_eff` date DEFAULT NULL,"
@@ -22,7 +22,7 @@ const auto account_trigger_delete = QString("CREATE TRIGGER delete_entry BEFORE 
 
 const auto entrymetadata_table = QString("CREATE TABLE `entrymetadata` ("
                                              "`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
-                                             "`entry` INTEGER NOT NULL REFERENCES account(id), "
+                                             "`entry` TEXT NOT NULL REFERENCES account(id), "
                                              "`name` TEXT NOT NULL, "
                                              "`value` TEXT NOT NULL, "
                                              "CONSTRAINT meta_unique UNIQUE(entry, name)"
@@ -46,8 +46,8 @@ const auto trigger_delete_category = QString("CREATE TRIGGER delete_category BEF
                                              "END;");
 
 const auto information_table = QString("CREATE TABLE `information` ("
-                                           "`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-                                           "`idEntry` INTEGER NOT NULL REFERENCES account(id),"
+                                           "`id` TEXT NOT NULL PRIMARY KEY,"
+                                           "`idEntry` TEXT NOT NULL REFERENCES account(id),"
                                            "`info` TEXT,"
                                            "`prev` INTEGER NOT NULL DEFAULT '0',"
                                            "`category` INTEGER REFERENCES categories(id)"
@@ -83,7 +83,7 @@ const auto subbudget_table = QString("CREATE TABLE `subbudget` ("
                                        ")");
 
 const auto frequency_table = QString("CREATE TABLE `frequency` ("
-                                         "`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+                                         "`id` TEXT NOT NULL PRIMARY KEY,"
                                          "`freq` INTEGER NOT NULL,"
                                          "`nbGroup` INTEGER NOT NULL,"
                                          "`profile` TEXT NOT NULL DEFAULT 'Default',"

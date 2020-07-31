@@ -101,11 +101,9 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     
     m_mutex.lock();
     
-    int ide = e.id() > -1 ? e.id() : maxId(m_ids["entry"]) + 1;
-    int idi = e.info().id() > -1 ? e.info().id() : maxId(m_ids["info"]) + 1;
+    QUuid ide = e.id().isNull() ? QUuid::createUuid() : e.id();
+    QUuid idi = e.info().id().isNull() ? QUuid::createUuid() : e.info().id();
     
-    m_ids["entry"]<<ide;
-    m_ids["info"]<<idi;
     Entry et = e;
     et.setMetadata("lastUpdate", QDateTime::currentDateTime());
     Information info = et.info();
@@ -136,8 +134,8 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
 void ControllerXMLMulti::addInfo(QDomElement& el, const Information & i)
 {
     QDomElement el2 = m_currentAccount.createElement("information");
-    el2.setAttribute("id", i.id());
-    el2.setAttribute("id_entry", i.idEntry());
+    el2.setAttribute("id", i.id().toString());
+    el2.setAttribute("id_entry", i.idEntry().toString());
     
     adder(el2, "title", i.title());
     adder(el2, "estimated", QString::number(i.estimated()));
@@ -171,9 +169,6 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
     for(int j = 0; j < attr.count(); j++)
         e.setMetadata(attr.item(j).nodeName(), attr.item(j).nodeValue());
         
-    m_ids["entry"]<<e.id();
-    m_ids["info"]<<e.info().id();
-    
     return e;
 }
 
@@ -254,7 +249,7 @@ bool ControllerXMLMulti::updateInfo(const Entry& e)
     for(int i = 0; i < list.size(); i ++)
     {
         QDomElement el = list.at(i).toElement();
-        if(el.attribute("id").toInt() == e.id())
+        if(el.attribute("id") == e.id().toString())
         {
             
             QDomElement info = el.elementsByTagName("information").at(0).toElement();
@@ -306,7 +301,7 @@ bool ControllerXMLMulti::updateEntry(const Entry & e)
     for(auto i = 0; i < list.size(); i++)
     {
         QDomElement el = list.at(i).toElement();
-        if(el.attribute("id").toInt() == e.id())
+        if(el.attribute("id") == e.id().toString())
         {
             updateEntryNode(e, el);
         }
@@ -567,9 +562,9 @@ Information ControllerXMLMulti::selectInformation(const QDomElement& el) const
 {
     Information ret;
     
-    int id = el.attribute("id").toInt();
+    QUuid id = QUuid::fromString(el.attribute("id"));
     ret.setId(id);
-    id = el.attribute("id_entry").toInt();
+    id = QUuid::fromString(el.attribute("id_entry"));
     ret.setIdEntry(id);
     
     bool est = el.elementsByTagName("estimated").at(0).toElement().text().toInt();
@@ -589,11 +584,10 @@ Information ControllerXMLMulti::selectInformation(const QDomElement& el) const
 bool ControllerXMLMulti::addFrequency(const Frequency &f)
 {
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
-    
-    int id = f.id() > -1 ? f.id() : maxId(m_ids["frequency"]) + 1;
-    m_ids["frequency"]<<id;
+    QUuid idf = f.id().isNull() ? QUuid::createUuid() : f.id();
+
     QMap<QString, QString> attr;
-    attr["id"] = QString::number(id);
+    attr["id"] = idf.toString();
     attr["freq"] = QString::number((int)f.freq());
     attr["lastUpdate"] = QDateTime::currentDateTime().toString();
     
@@ -603,15 +597,15 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
     
     for(int i = 0; i < freqs.size(); i++)
     {
-        if(freqs.at(i).toElement().attribute("id").toInt() == id)
+        if(freqs.at(i).toElement().attribute("id") == idf.toString())
         {
             auto current = freqs.at(i).toElement();
             Entry e(f.referenceEntry());
-            e.setId(id);
+            e.setId(idf);
             e.setType("outcome");
             e.setAccount(m_accounts.key(m_currentAccount));
             Information in = e.info();
-            in.setId(id);
+            in.setId(idf);
             e.setInfo(in);
             addEntryNode(e, current, "referenceEntry");
         }
@@ -639,7 +633,7 @@ bool ControllerXMLMulti::updateFrequency(const Frequency& f)
     auto freqs = m_currentAccount.elementsByTagName("frequency");
     
     for(int i = 0; i < freqs.size(); i++)
-        if(freqs.at(i).toElement().attribute("id").toInt() == f.id())
+        if(freqs.at(i).toElement().attribute("id") == f.id().toString())
         {
             auto child = freqs.at(i).toElement();
             auto ref = child.elementsByTagName("referenceEntry").at(0).toElement();
@@ -664,7 +658,7 @@ bool ControllerXMLMulti::updateFrequency(const Frequency& f)
 
 QList<Frequency> ControllerXMLMulti::selectFrequency()
 {
-    QMap<int, Frequency> ret;
+    QMap<QUuid, Frequency> ret;
     auto freqs = m_currentAccount.elementsByTagName("frequency");
     
     for(int i = 0; i < freqs.size(); i++)
@@ -675,7 +669,7 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
             continue;
         
         Frequency f;
-        f.setId(el.attribute("id").toInt());
+        f.setId(QUuid::fromString(el.attribute("id")));
         f.setFreq((Account::FrequencyEnum)el.attribute("freq").toInt());
         f.setMetadata("lastUpdate", QDateTime::fromString(el.attribute("lastUpdate")));
         auto child = el.elementsByTagName("end").at(0).toElement();
@@ -826,14 +820,11 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
         for(auto it = map.begin(); it != map.end(); it++)
         {
             Entry t = it.value();
-            if(t.id() == -1)
+            if(t.id().isNull())
             {
-                int ide = maxId(m_ids["entry"]) + 1;
-                int idi = maxId(m_ids["info"]) + 1;
+                QUuid ide = QUuid::createUuid();
+                QUuid idi = QUuid::createUuid();
                 
-                m_ids["entry"]<<ide;
-                m_ids["info"]<<idi;
-
                 Information in = t.info();
                 in.setId(idi);
                 in.setIdEntry(ide);

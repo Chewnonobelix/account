@@ -57,7 +57,7 @@ public:
     static void addEntry(const Entry&);
     static void updateEntry(const Entry&);
     
-    static Entry entry(int);
+    static Entry entry(QUuid);
     
     static void setDb(QString);
     static void deleteDb();

@@ -17,7 +17,7 @@ int ControllerInformation::exec()
         freqItem->setProperty("visible", m_entry.hasMetadata("frequency"));
         if(m_entry.hasMetadata("frequency"))
         {
-            int f = m_entry.metaData<int>("frequency");
+            QUuid f = m_entry.metaData<QUuid>("frequency");
             int g = m_entry.metaData<int>("freqGroup");
             auto freqs = m_db->selectFrequency();
             QObject* skipper = m_view->findChild<QObject*>("pageSwipper");

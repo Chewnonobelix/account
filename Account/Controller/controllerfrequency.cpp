@@ -153,7 +153,7 @@ void ControllerFrequency::endFill()
     m_model.clear();
         
     QObject* model = m_manager->findChild<QObject*>("frequencyList");
-    int id = model->property("currentModel").isNull() ? -1 : model->property("currentModel").value<Frequency>().id();
+    QUuid id = model->property("currentModel").isNull() ? QUuid() : model->property("currentModel").value<Frequency>().id();
     int index = -1;
     for(auto it = m_freqs.begin(); it != m_freqs.end(); it++)
     {
@@ -199,9 +199,10 @@ void ControllerFrequency::generate(QString begin, QString end)
 {
     QDate it = QDate::fromString(begin, "dd-MM-yyyy");
     Account::FrequencyEnum freq = Account::FrequencyEnum::Unique;
-    int freqId, freqGroup = 0;
+    int freqGroup = 0;
+    QUuid freqId;
     
-    freqId = m_generate->property("freqId").toInt();
+    freqId = m_generate->property("freqId").toUuid();
     freqGroup = m_generate->property("freqGroup").toInt();
     freq = m_freqs[freqId].freq();
     m_freqs[freqId].setNbGroup(freqGroup);
@@ -244,7 +245,7 @@ void ControllerFrequency::generate(QString begin, QString end)
 }
 
 
-void ControllerFrequency::openGenerate(int id)
+void ControllerFrequency::openGenerate(QUuid id)
 {
     m_generate->setProperty("freqId", id);
     m_generate->setProperty("freqGroup", m_freqs[id].nbGroup() + 1);
@@ -269,7 +270,7 @@ void ControllerFrequency::addFrequency()
     openManager();
 }
 
-void ControllerFrequency::removeFrequency(int id)
+void ControllerFrequency::removeFrequency(QUuid id)
 {
     m_db->removeFrequency(m_freqs[id]);
     openManager();
@@ -282,11 +283,11 @@ void ControllerFrequency::addNewCategory(QString cat)
     
     m_db->addCategory(cat, type);
     loadCat();
-    int id = ref->property("entry").value<Entry>().id();
+    QUuid id = ref->property("entry").value<Entry>().id();
     updateFreqCat(id, cat);
 }
 
-void ControllerFrequency::updateFreqName(int id, QString name)
+void ControllerFrequency::updateFreqName(QUuid id, QString name)
 {
     
     Entry ref = m_freqs[id].referenceEntry();
@@ -299,7 +300,7 @@ void ControllerFrequency::updateFreqName(int id, QString name)
     m_db->updateFrequency(m_freqs[id]);
 }
 
-void ControllerFrequency::updateFreqValue(int id, double value)
+void ControllerFrequency::updateFreqValue(QUuid id, double value)
 {
     Entry ref = m_freqs[id].referenceEntry();
     ref.setValue(value);
@@ -308,7 +309,7 @@ void ControllerFrequency::updateFreqValue(int id, double value)
     m_db->updateFrequency(m_freqs[id]);
 }
 
-void ControllerFrequency::updateFreqCat(int id, QString cat)
+void ControllerFrequency::updateFreqCat(QUuid id, QString cat)
 {
     Entry ref = m_freqs[id].referenceEntry();
     Information inf = ref.info();
@@ -320,7 +321,7 @@ void ControllerFrequency::updateFreqCat(int id, QString cat)
     m_db->updateFrequency(m_freqs[id]);
 }
 
-void ControllerFrequency::updateFreqType(int id, QString type)
+void ControllerFrequency::updateFreqType(QUuid id, QString type)
 {
     Entry ref = m_freqs[id].referenceEntry();
     ref.setType(type);
@@ -332,13 +333,13 @@ void ControllerFrequency::updateFreqType(int id, QString type)
     m_db->updateFrequency(m_freqs[id]);
 }
 
-void ControllerFrequency::updateFreqFreq(int id, int f)
+void ControllerFrequency::updateFreqFreq(QUuid id, int f)
 {
     m_freqs[id].setFreq((Account::FrequencyEnum)f);
     m_db->updateFrequency(m_freqs[id]);
 }
 
-void ControllerFrequency::displayEntry(int id)
+void ControllerFrequency::displayEntry(QUuid id)
 {
     Entry e = entry(id);
     QObject* view = m_manager->findChild<QObject*>("linkedDisplayer");

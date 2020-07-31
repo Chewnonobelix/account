@@ -27,7 +27,7 @@ public:
     ControllerBudget(const ControllerBudget &);
     
     ~ControllerBudget() = default;
-    bool removeFrom(int);
+    bool removeFrom(QUuid);
 
     int exec();
     void openManager();
@@ -57,8 +57,8 @@ public slots:
 
     void changeFrequency(QString, int);
     
-    void updateEntry(int);
-    void changeEntry(QString, int);
+    void updateEntry(QUuid);
+    void changeEntry(QString, QUuid);
 };
 
 Q_DECLARE_METATYPE(ControllerBudget)
