@@ -14,7 +14,7 @@ private:
     double m_target;
     QDate m_begin;
     QDate m_end;
-    QMap<int, double> m_values;
+    QMap<QUuid, double> m_values;
 
     void update();
 public:

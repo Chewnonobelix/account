@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QObject>
+#include <QUuid>
 #include "account_global.h"
 //#include "categories.h"
 
@@ -10,15 +11,15 @@ class  ACCOUNT_EXPORT Information
 {
     Q_GADGET
 
-    Q_PROPERTY(int id READ id)
-    Q_PROPERTY(int idEntry READ idEntry)
+    Q_PROPERTY(QUuid id READ id)
+    Q_PROPERTY(QUuid idEntry READ idEntry)
     Q_PROPERTY(QString title READ title)
     Q_PROPERTY(bool estimated READ estimated)
     Q_PROPERTY(QString category READ category)
 
 private:
-    int m_id;
-    int m_idEntry;
+    QUuid m_id;
+    QUuid m_idEntry;
     QString m_title;
     bool m_estimated;
     QString m_category;
@@ -33,10 +34,10 @@ public:
     friend bool ACCOUNT_EXPORT operator ==(const Information&, const Information&);
     friend bool ACCOUNT_EXPORT operator <(const Information&, const Information&);
 
-    int id() const;
-    void setId(int id);
-    int idEntry() const;
-    void setIdEntry(int idEntry);
+    QUuid id() const;
+    void setId(QUuid id);
+    QUuid idEntry() const;
+    void setIdEntry(QUuid idEntry);
     QString title() const;
     void setTitle(QString title);
     bool estimated() const;

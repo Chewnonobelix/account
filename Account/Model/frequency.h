@@ -3,6 +3,7 @@
 
 #include <QSet>
 #include <QJSValue>
+#include <QUuid>
 #include "accountglobal.h"
 #include "entry.h"
 #include "metadata.h"
@@ -11,7 +12,7 @@ class ACCOUNT_EXPORT Frequency: public MetaData
 {
     Q_GADGET
     
-    Q_PROPERTY(int id READ id)
+    Q_PROPERTY(QUuid id READ id)
     Q_PROPERTY(QString name READ name)
     Q_PROPERTY(Entry reference READ referenceEntry)
     Q_PROPERTY(QDate end READ end)
@@ -24,8 +25,6 @@ class ACCOUNT_EXPORT Frequency: public MetaData
 public:
     
 private:
-    
-    int m_id = -1;
     Account::FrequencyEnum m_freq = Account::FrequencyEnum::Unique;
     QList<QVariant> m_entriesId;
     QDate m_end = QDate::currentDate();
@@ -41,8 +40,8 @@ public:
     
     Frequency& operator =(const Frequency&);
     
-    int id() const;
-    void setId(int);
+    QUuid id() const;
+    void setId(QUuid);
     
     Account::FrequencyEnum freq() const;
     void setFreq(Account::FrequencyEnum);
