@@ -29,7 +29,7 @@ public:
 public slots:
     void closeCommon(bool);
     void addCommon(QString);
-    void removeCommon(int);
+    void removeCommon(QVariant);
     void addCommonEntry();
     void removeCommonEntry();
     int exec();

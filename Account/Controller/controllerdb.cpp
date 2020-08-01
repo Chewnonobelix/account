@@ -266,11 +266,11 @@ void ControllerDB::prepareCommon()
                                               "SET isClose=:c, removed=:r "
                                               "WHERE id=:id")<<m_updateCommon->lastError();
     
-    qDebug()<<"ACEN"<<m_addCommonEntry->prepare("INSERT INTO account (account, profile, value, date_eff, type) "
-                                                "VALUES (:a, :p, :v, :d, :t)")<<m_addCommonEntry->lastError();
+    qDebug()<<"ACEN"<<m_addCommonEntry->prepare("INSERT INTO account (id, account, profile, value, date_eff, type) "
+                                                "VALUES (;id, :a, :p, :v, :d, :t)")<<m_addCommonEntry->lastError();
     
-    qDebug()<<"ACENI"<<m_addCommonEntryInformation->prepare("INSERT INTO information (idEntry, info) "
-                                                            "VALUES (:ide, :title)")<<m_addCommonEntry->lastError();
+    qDebug()<<"ACENI"<<m_addCommonEntryInformation->prepare("INSERT INTO information (id, idEntry, info) "
+                                                            "VALUES (:id, :ide, :title)")<<m_addCommonEntry->lastError();
     
     qDebug()<<"SCEN"<<m_selectCommonEntry->prepare("SELECT * FROM account "
                                                    "WHERE id=:id")<<m_selectCommonEntry->lastError();
@@ -859,9 +859,9 @@ QList<Frequency> ControllerDB::selectFrequency()
     return ret;
 }
 
-QMap<int, CommonExpanse> ControllerDB::selectCommon() 
+QMap<QUuid, CommonExpanse> ControllerDB::selectCommon()
 {
-    QMap<int, CommonExpanse> ret;
+    QMap<QUuid, CommonExpanse> ret;
     
     if(isConnected())
     {
@@ -876,7 +876,7 @@ QMap<int, CommonExpanse> ControllerDB::selectCommon()
                 continue;
             
             CommonExpanse c;
-            c.setId(m_selectCommon->value("id").toInt());
+            c.setId(m_selectCommon->value("id").toUuid());
             c.setBegin(m_selectCommon->value("begin").toDate());
             c.setIsClose(m_selectCommon->value("isClose").toBool());
             c.setTitle(m_selectCommon->value("title").toString());
@@ -929,8 +929,8 @@ bool ControllerDB::addCommon(const CommonExpanse& c)
         m_addCommon->bindValue(":t", c.title());
         m_addCommon->bindValue(":p", m_currentProfile);
         m_addCommon->bindValue(":a", m_currentAccount);
-        if(c.id() > -1)
-            m_addCommon->bindValue(":i", c.id());
+
+        m_addCommon->bindValue(":i", c.id().isNull() ? QUuid::createUuid() : c.id());
         
         emit s_updateCommon();
         return m_addCommon->exec();
@@ -965,23 +965,23 @@ bool ControllerDB::updateCommon(const CommonExpanse& c)
         for(auto it = map.begin(); it != map.end(); it++)
         {
             Entry e = *it;
+            e.setId(QUuid::createUuid());
             m_addCommonEntry->bindValue(":a", m_currentAccount);
             m_addCommonEntry->bindValue(":p", m_currentProfile);
             m_addCommonEntry->bindValue(":v", e.value());
             m_addCommonEntry->bindValue(":d",e.date());
             m_addCommonEntry->bindValue(":t", e.type());
+            m_addCommonEntry->bindValue(":id", e.id());
             m_addCommonEntry->exec();
             
-            int id = m_addCommonEntry->lastInsertId().toInt();
-            m_addCommonEntryInformation->bindValue(":ide", id);
+            m_addCommonEntryInformation->bindValue(":ide", e.id());
             m_addCommonEntryInformation->bindValue(":title", e.info().title());
-            
+            m_addCommonEntryInformation->bindValue(":id", e.id());
             m_addCommonEntryInformation->exec();
             
             m_addCommonTable->bindValue(":i", c.id());
-            m_addCommonTable->bindValue(":e", id);
+            m_addCommonTable->bindValue(":e", e.id());
             m_addCommonTable->bindValue(":n", it.key());
-            
             m_addCommonTable->exec();
         }
         

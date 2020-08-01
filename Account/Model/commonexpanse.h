@@ -5,6 +5,7 @@
 #include <QDate>
 #include <QString>
 #include <QDebug>
+#include <QUuid>
 #include "entry.h"
 #include "total.h"
 #include "metadata.h"
@@ -27,7 +28,7 @@ class ACCOUNT_EXPORT CommonExpanse: public MetaData
 {
     Q_GADGET
 
-    Q_PROPERTY(int id READ id)
+    Q_PROPERTY(QUuid id READ id)
     Q_PROPERTY(QDate begin READ begin)
     Q_PROPERTY(QString title READ title)
     Q_PROPERTY(bool isClose READ isClose)
@@ -35,7 +36,7 @@ class ACCOUNT_EXPORT CommonExpanse: public MetaData
     
 private:
     
-    int m_id;
+    QUuid m_id = QUuid();
     QDate m_begin;
     QString m_title;
     QMultiMap<QString, Entry> m_entries;
@@ -50,8 +51,8 @@ public:
     CommonExpanse& operator= (const CommonExpanse&) = default;
 
 
-    int id() const;
-    void setId(int id);
+    QUuid id() const;
+    void setId(QUuid id);
     QDate begin() const;
     void setBegin(QDate begin);
     QString title() const;

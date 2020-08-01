@@ -696,10 +696,10 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
     return ret.values();
 }
 
-QMap<int, CommonExpanse> ControllerXMLMulti::selectCommon()
+QMap<QUuid, CommonExpanse> ControllerXMLMulti::selectCommon()
 {
     m_mutex.lock();
-    QMap<int, CommonExpanse> ret;
+    QMap<QUuid, CommonExpanse> ret;
     QList<QString> tag;
     tag<<"begin"<<"titleCommon"<<"close";
     auto list = m_currentAccount.elementsByTagName("common");
@@ -712,7 +712,7 @@ QMap<int, CommonExpanse> ControllerXMLMulti::selectCommon()
             continue;
         
         CommonExpanse ce;
-        ce.setId(el.attribute("id").toInt());
+        ce.setId(QUuid::fromString(el.attribute("id")));
         ce.setMetadata("lastUpdate", QDateTime::fromString(el.attribute("lastUpdate")));
         
         QDomElement child = el.elementsByTagName("begin").at(0).toElement();
@@ -748,10 +748,10 @@ bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
 {
     m_mutex.lock();
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
-    int id = ce.id() > -1 ? ce.id() : maxId(m_ids["common"]) + 1;
+    QUuid id = ce.id().isNull() ? ce.id() : QUuid::createUuid();
     
     QMap<QString, QString> att;
-    att["id"] = QString::number(id);
+    att["id"] = id.toString();
     att["lastUpdate"] = QDateTime::currentDateTime().toString();
     adder(root, "common", "", att);
     
@@ -760,7 +760,7 @@ bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
     for(auto i = 0; i < cel.size(); i++)
     {
         QDomElement el = cel.at(i).toElement();
-        if(el.attribute("id").toInt() == id)
+        if(el.attribute("id") == id.toString())
         {
             adder(el, "begin", ce.begin().toString("dd-MM-yyyy"));
             adder(el, "titleCommon", ce.title());
@@ -793,14 +793,14 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
     for(auto i = 0; i < common.size(); i++)
     {
         QDomElement el = common.at(i).toElement();
-        if(el.attribute("id").toInt() != ce.id())
+        if(el.attribute("id") != ce.id().toString())
             continue;
         
         
         QList<QString> tag;
         tag<<"begin"<<"titleCommon"<<"close";
         
-        QStringList members = ce.members();
+//        QStringList members = ce.members();
         
         auto childs = el.childNodes();
         
