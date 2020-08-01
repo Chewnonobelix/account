@@ -1,11 +1,11 @@
 #include "commonexpanse.h"
 
-int CommonExpanse::id() const
+QUuid CommonExpanse::id() const
 {
     return m_id;
 }
 
-void CommonExpanse::setId(int id)
+void CommonExpanse::setId(QUuid id)
 {
     m_id = id;
 }

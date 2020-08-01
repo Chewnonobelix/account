@@ -71,9 +71,9 @@ void ControllerCommon::addCommon(QString name)
     exec();
 }
 
-void ControllerCommon::removeCommon(int id)
+void ControllerCommon::removeCommon(QVariant id)
 {
-    CommonExpanse ce = m_db->selectCommon()[id];
+    CommonExpanse ce = m_db->selectCommon()[id.toUuid()];
     m_db->removeCommon(ce);
     exec();
 }
@@ -132,7 +132,7 @@ QSharedPointer<FeatureBuilder> ControllerCommon::build(QQmlApplicationEngine * e
     QObject* removeCommon = commonManager->findChild<QObject*>("removeCommon");
     
     if(removeCommon)
-        connect(removeCommon, SIGNAL(s_remove(int)), common.data(), SLOT(removeCommon(int)));        
+        connect(removeCommon, SIGNAL(s_remove(QVariant)), common.data(), SLOT(removeCommon(QVariant)));
     
     connect(m_db, InterfaceDataSave::s_updateCommon, common.data(), ControllerCommon::exec);
     common->view = commonManager;

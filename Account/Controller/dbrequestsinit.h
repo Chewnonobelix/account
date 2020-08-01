@@ -97,7 +97,7 @@ const auto trigger_delete_frequency = QString("CREATE TRIGGER delete_frequency B
                                               "END;");
 
 const auto commonExpanse_table = QString("CREATE TABLE `commonExpanse` ("
-                                             "`id` INTEGER NOT NULL  PRIMARY KEY AUTOINCREMENT,"
+                                             "`id` TEXT NOT NULL  PRIMARY KEY,"
                                              "`begin` date NOT NULL,"
                                              "`isClose` tinyint(1) NOT NULL DEFAULT '0',"
                                              "`title` TEXT NOT NULL,"
@@ -118,8 +118,8 @@ const auto trigger_delete_commonExpanse = QString("CREATE TRIGGER delete_expanse
                                                   "END;");
 
 const auto commonEntry_table = QString("CREATE TABLE `commonEntry` ("
-                                       "`id` INTEGER PRIMARY KEY AUTOINCREMENT, "
-                                           "`idCommon` INTEGER NOT NULL REFERENCES commonExpanse (id),"
+                                       "`id` TEXT. PRIMARY KEY, "
+                                           "`idCommon` TEXT NOT NULL REFERENCES commonExpanse (id),"
                                            "`name` TEXT NOT NULL,"
                                            "`entry` INTEGER NOT NULL REFERENCES account(id)"
                                          ")");

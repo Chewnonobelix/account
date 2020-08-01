@@ -136,7 +136,7 @@ Rectangle {
                     height: parent.height
                     text: qsTr("Remove common expanse")
 
-                    signal s_remove(int id)
+                    signal s_remove(var id)
                     onClicked: s_remove(listCommon.currentModel.id)
                     
                     ToolTip.text: listCommon.currentModel ? qsTr("Remove") + " " + listCommon.currentModel.title : ""
