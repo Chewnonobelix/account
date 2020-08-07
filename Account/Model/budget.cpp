@@ -121,6 +121,7 @@ bool Budget::createSub(QDate d)
     auto l = m_targets.keys();
 
     double tar = m_targets.last();
+    sub.setReference(m_targets.lastKey());
     ret = !l.isEmpty();
     if(l.size() == 1 || d < l.first())
     {
