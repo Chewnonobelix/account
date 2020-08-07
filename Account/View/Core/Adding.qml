@@ -127,8 +127,6 @@ Popup {
 
                     completionLabel.text = s !== -1 ? root.completionList[s] : ""
                 }
-
-                onHoveredChanged: console.log("sjfhsdjfh")
             }
 
             AccountLabel {
