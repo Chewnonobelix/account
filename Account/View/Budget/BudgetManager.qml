@@ -294,7 +294,6 @@ Rectangle {
                     
                     
                     onClicked: {
-                        console.log(targetView.indexAt(mouse.x, mouse.y), mouse.x, mouse.y, targetView.count)
                         targetView.currentIndex = targetView.indexAt(mouse.x, mouse.y)
                         if (targetView.currentIndex === -1 && targetItemMenu.count === 2){
                             targetItemMenu.takeAction(1)
