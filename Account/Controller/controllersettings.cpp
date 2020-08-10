@@ -259,7 +259,7 @@ void ControllerSettings::restore(QString backdb)
     setDb(database());
 
     auto back = createDb(dbtype, true);
-    connect(&m_backupper, QThread::finished, this, ControllerSettings::endRestore);
+    connect(&m_backupper, &QThread::finished, this, &ControllerSettings::endRestore);
 
     m_backupper.m_db = back;
     m_backupper.m_backup = m_db;
@@ -280,7 +280,7 @@ void ControllerSettings::backup()
         m_splash->setProperty("visible", true);
         m_splash->setProperty("backup", true);
 
-        connect(&m_backupper, TransfertDatabase::finished, this, ControllerSettings::endBackup);
+        connect(&m_backupper, &TransfertDatabase::finished, this, &ControllerSettings::endBackup);
         m_backupper.m_db = m_db;
         m_backupper.m_backup = back;
 
@@ -307,7 +307,7 @@ InterfaceDataSave* ControllerSettings::createDb(QString type, bool b) const
 
 void ControllerSettings::endBackup()
 {
-    disconnect(&m_backupper, QThread::finished, this, ControllerSettings::endBackup);
+    disconnect(&m_backupper, &QThread::finished, this, &ControllerSettings::endBackup);
     delete m_backupper.m_backup;
     m_backupper.m_backup = m_backupper.m_db = nullptr;
     if(m_backupper.isSucess())
@@ -328,7 +328,7 @@ void ControllerSettings::endBackup()
 
 void ControllerSettings::endRestore()
 {
-    disconnect(&m_backupper, QThread::finished, this, ControllerSettings::endRestore);
+    disconnect(&m_backupper, &QThread::finished, this, &ControllerSettings::endRestore);
 
     qDebug()<<"Restore"<<m_backupper.isSucess();
     m_splash->setProperty("visible", false);

@@ -85,7 +85,7 @@ void AbstractController::calculTotal()
         pool<<t;
         t->start();
         CalcThread::nbRunning ++;
-        connect(t.data(), CalcThread::finished, this, AbstractController::finishTotalThread);
+        connect(t.data(), &CalcThread::finished, this, &AbstractController::finishTotalThread);
     }
 }
 
@@ -146,7 +146,7 @@ void AbstractController::setDb(QString name)
     m_db = (InterfaceDataSave*)(QMetaType::create(type));
     m_db->init();
     m_db->moveToThread(m_dbThread);
-    connect(m_dbThread, QThread::started, m_db, InterfaceDataSave::exec);
+    connect(m_dbThread, &QThread::started, m_db, &InterfaceDataSave::exec);
 }
 
 void AbstractController::deleteDb()
