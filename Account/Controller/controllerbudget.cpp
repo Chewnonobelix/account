@@ -326,8 +326,8 @@ QSharedPointer<FeatureBuilder> ControllerBudget::build(QQmlApplicationEngine * e
     QObject* cal = root->findChild<QObject*>("cal");
     connect(cal, SIGNAL(s_datesChanged()), budget.data(), SLOT(calDateChange()));
     budget->setCalendar(cal);
-    connect(m_db, InterfaceDataSave::s_updateEntry, budget.data(), ControllerBudget::updateEntry);
-    connect(m_db, InterfaceDataSave::s_updateCategory, budget.data(), ControllerBudget::exec);
+    connect(m_db, &InterfaceDataSave::s_updateEntry, budget.data(), &ControllerBudget::updateEntry);
+    connect(m_db, &InterfaceDataSave::s_updateCategory, budget.data(), &ControllerBudget::exec);
     budget.dynamicCast<ControllerBudget>()->calDateChange();
     budget->view = budgetManager;
     

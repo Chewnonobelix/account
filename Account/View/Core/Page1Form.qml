@@ -48,7 +48,7 @@ Page {
             Layout.preferredWidth: pageTable.width * 0.20
 
             onUpdateSelected: view.unselectAll()
-
+            onS_datesChanged: view.reset()
         }
         
         AccountButton {
@@ -174,12 +174,12 @@ Page {
                 property var currentEntry
                 
                 backgroundVisible: false
-                Connections {
-                    target: cal
-                    function onS_datesChanged() {
-                        view.reset()
-                    }
-                }
+//                Connections {
+//                    target: cal
+//                    function onS_datesChanged() {
+//                        view.reset()
+//                    }
+//                }
                 
                 onWidthChanged: {
                     flickableItem.contentX = 0

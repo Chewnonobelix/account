@@ -4,7 +4,7 @@ int ControllerSynchronization::exec()
 {
     m_server.listen(QHostAddress::Any, 6000);
     
-    connect(&m_server, QTcpServer::newConnection, this, ControllerSynchronization::newConnections);
+    connect(&m_server, &QTcpServer::newConnection, this, &ControllerSynchronization::newConnections);
     return 0;
 }
 
@@ -26,11 +26,11 @@ AccountSocket::~AccountSocket()
 void AccountSocket::setSocket(QTcpSocket * as)
 {
     if(m_socket)
-        disconnect(m_socket, QIODevice::readyRead, this, AccountSocket::receiveDataSocket);
+        disconnect(m_socket, &QIODevice::readyRead, this, &AccountSocket::receiveDataSocket);
     
     m_socket = as;
     
-    connect(m_socket, QIODevice::readyRead, this, AccountSocket::receiveDataSocket);
+    connect(m_socket, &QIODevice::readyRead, this, &AccountSocket::receiveDataSocket);
 }
 
 void AccountSocket::receiveDataSocket()

@@ -28,7 +28,7 @@ MainController::MainController(int storage): AbstractController()
     
     qmlRegisterModule("Account.Style", 1, 0);
     m_dbThread = new QThread;;
-    connect(m_dbThread, QThread::started, this, MainController::reload);
+    connect(m_dbThread, &QThread::started, this, &MainController::reload);
     try
     {
         setDb(m_settings.database().isEmpty() ? "ControllerDB" : m_settings.database());
@@ -134,7 +134,7 @@ int MainController::exec()
     {
         m_transfert.set(transfert);
         connect(root, SIGNAL(openTransfert()), this, SLOT(openTransfert()));
-        connect(&m_transfert, ControllerTransfert::s_finish, this, MainController::buildModel);
+        connect(&m_transfert, &ControllerTransfert::s_finish, this, &MainController::buildModel);
     }
     
     QObject* info = root->findChild<QObject*>("infoView");
@@ -210,14 +210,14 @@ int MainController::exec()
     
     loadProfiles();
     
-    connect(m_db, InterfaceDataSave::s_updateEntry, this, MainController::buildModel);
-    connect(m_db, InterfaceDataSave::s_updateEntry, this, MainController::pageChange);
+    connect(m_db, &InterfaceDataSave::s_updateEntry, this, &MainController::buildModel);
+    connect(m_db, &InterfaceDataSave::s_updateEntry, this, &MainController::pageChange);
     
     m_settings.init(m_engine);
     connect(root, SIGNAL(s_openSetting()), &m_settings, SLOT(open()));
     
-    connect(&m_settings, ControllerSettings::s_language, this, MainController::languageChange);
-    connect(&m_settings, ControllerSettings::s_finish, this, MainController::loadFeatures);
+    connect(&m_settings, &ControllerSettings::s_language, this, &MainController::languageChange);
+    connect(&m_settings, &ControllerSettings::s_finish, this, &MainController::loadFeatures);
     
     QObject* licence = root->findChild<QObject*>("licence");
     if(licence)
@@ -232,13 +232,13 @@ int MainController::exec()
         connect(about, SIGNAL(opened()), this, SLOT(about()));
     
     m_graph.set(m_engine);
-    connect(m_db, InterfaceDataSave::s_updateEntry, &m_graph, AbstractGraphController::exec);
+    connect(m_db, &InterfaceDataSave::s_updateEntry, &m_graph, &AbstractGraphController::exec);
     m_graph.exec();
     m_sync.exec();
     
-    connect(this, AbstractController::s_totalChanged, this, MainController::totalChanged);
-    connect(m_db, InterfaceDataSave::s_updateEntry, this, AbstractController::calculTotal);
-    connect(this, AbstractController::s_totalChanged, this, MainController::previewCalendar);
+    connect(this, &AbstractController::s_totalChanged, this, &MainController::totalChanged);
+    connect(m_db, &InterfaceDataSave::s_updateEntry, this, &AbstractController::calculTotal);
+    connect(this, &AbstractController::s_totalChanged, this, &MainController::previewCalendar);
     languageChange();
 
     return 0;
@@ -246,8 +246,8 @@ int MainController::exec()
 
 void MainController::close()
 {
-    connect(&m_settings, ControllerSettings::s_finishBackup, QApplication::closeAllWindows);
-    connect(&m_settings, ControllerSettings::s_finishBackup, QCoreApplication::quit);
+    connect(&m_settings, &ControllerSettings::s_finishBackup, &QApplication::closeAllWindows);
+    connect(&m_settings, &ControllerSettings::s_finishBackup, &QCoreApplication::quit);
     if(m_settings.autoBackup())
     {
         m_settings.backup();
@@ -490,8 +490,8 @@ void MainController::previewCalendar()
 {
     QMap<QDate, Total> all = allTotal();
     QObject* cal = m_engine.rootObjects().first()->findChild<QObject*>("cal");
-    int month;
-    int year;
+    int month = 0;
+    int year = 0;
     if(cal)
     {
         year = cal->property("currentYear").toInt();

@@ -114,7 +114,7 @@ void ControllerFrequency::setManager(QObject * manager)
     if(freqEndless)
         connect(freqEndless, SIGNAL(s_endless(QVariant, bool)), this, SLOT(updateFreqEndless(QVariant,bool)));
     
-    connect(m_db, InterfaceDataSave::s_updateFrequency, this, ControllerFrequency::exec);
+    connect(m_db, &InterfaceDataSave::s_updateFrequency, this, &ControllerFrequency::exec);
 }
 
 void ControllerFrequency::setWorker(QString name)
@@ -232,8 +232,8 @@ void ControllerFrequency::generate(QString begin, QString end)
     if(!m_workers[m_freqs[freqId].name()])
     {
         m_workers[m_freqs[freqId].name()]= new Worker;
-        connect(m_workers[m_freqs[freqId].name()], Worker::s_add, m_db, InterfaceDataSave::addEntry, Qt::DirectConnection);
-        connect(m_workers[m_freqs[freqId].name()], Worker::s_finish, this, ControllerFrequency::endThread);
+        connect(m_workers[m_freqs[freqId].name()], &Worker::s_add, m_db, &InterfaceDataSave::addEntry, Qt::DirectConnection);
+        connect(m_workers[m_freqs[freqId].name()], &Worker::s_finish, this, &ControllerFrequency::endThread);
         m_workers[m_freqs[freqId].name()]->name = m_freqs[freqId].name();
     }
     
