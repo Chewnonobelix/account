@@ -22,3 +22,11 @@ Account\.pro\.user\.4\.9-pre1
 Account\.pro\.user\.4\.10-pre1
 
 *.iuhmjx
+
+*.lck
+
+*.bak_000f
+
+*.bak_001d
+
+.gitignore
