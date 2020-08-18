@@ -14,6 +14,7 @@ AccountButton {
 
     function extern(d) {
         dateAdding.set(d)
+        button.text = Qt.formatDate(d, "dd-MM-yyyy")
     }
 
     onClicked: {
