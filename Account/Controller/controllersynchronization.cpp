@@ -14,7 +14,7 @@ void ControllerSynchronization::newConnections()
     m_connections.last().setSocket(m_server.nextPendingConnection());
 }
 
-AccountSocket::AccountSocket(const AccountSocket & as): QObject(nullptr),
+AccountSocket::AccountSocket(const AccountSocket & as): AbstractController(),
     m_socket(as.m_socket)
 {}
 
@@ -42,4 +42,9 @@ AccountSocket& AccountSocket::operator =(const AccountSocket& as)
 {
     setSocket(as.m_socket);
     return *this;
+}
+
+int AccountSocket::exec()
+{
+    return 0;
 }

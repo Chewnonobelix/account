@@ -125,7 +125,7 @@ public slots:
     virtual bool addProfile(QString, QString) override;
     virtual QString currentProfile() override;
     virtual bool deleteProfile(QString) override;
-    
+        
     bool init() override;
 };
 

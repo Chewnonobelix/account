@@ -1,0 +1,3 @@
+[submodule "DesignLibrary"]
+	path = DesignLibrary
+	url = git@github.com:Chewnonobelix/DesignLibrary.git
