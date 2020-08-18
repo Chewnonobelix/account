@@ -62,7 +62,7 @@ Popup {
                 id: from
                 clip: false
                 onTextChanged: {
-                    parent.checkDate()
+                    parent.checkDate(true)
                 }
                 
                 ToolTip.text: qsTr("Select begin date")
@@ -83,19 +83,19 @@ Popup {
                 id: to
                 
                 onTextChanged: {
-                    parent.checkDate()
+                    parent.checkDate(false)
                 }
                 
                 ToolTip.text: qsTr("Select end date")
             }
             
-            function checkDate() {
+            function checkDate(isFrom) {
                 var t = Date.fromLocaleDateString(Qt.locale(), to.text, "dd-MM-yyyy")
                 var f = Date.fromLocaleDateString(Qt.locale(),from.text, "dd-MM-yyyy")
                 
                 if(t < f ||  to.text === "" ) {
-                    to.extern(f)
-                } 
+                    isFrom ? to.extern(f) : from.extern(t)
+                }
             }
             
             AccountButton {
