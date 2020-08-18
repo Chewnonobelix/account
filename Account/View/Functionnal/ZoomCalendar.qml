@@ -46,7 +46,7 @@ MouseArea {
                     Date.fromLocaleString(locale, "01-12-"+month.currentYear, "dd-MM-yyyy")]
                 
                 onS_select: {
-                    month.currentMonth = Qt.formatDate(d, "MM") - 1  
+                    set(d)
                     zoom(2)
                 }
                 
@@ -76,7 +76,7 @@ MouseArea {
                     Date.fromLocaleString(locale, "01-10-"+Math.floor(month.currentYear/10)+"9", "dd-MM-yyyy")]
                 
                 onS_select: {
-                    month.currentYear = Qt.formatDate(d, "yyyy")
+                    set(d)
                     zoom(2)
                 }
                 
