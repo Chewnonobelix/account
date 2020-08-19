@@ -114,7 +114,7 @@ Frequency& Frequency::operator<< (const Entry& e)
             setEnd(e.date());
         
         QVariantMap le;
-        le["id"] = e.id();
+        le["id"] = e.id().toString();
         le["date"] = e.date();
         le["freqGroup"] = e.metaData<int>("freqGroup");
         le["isVisible"] = true;
