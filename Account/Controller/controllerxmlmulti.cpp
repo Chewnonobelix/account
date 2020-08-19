@@ -748,8 +748,8 @@ bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
 {
     m_mutex.lock();
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
-    QUuid id = ce.id().isNull() ? ce.id() : QUuid::createUuid();
-    
+    QUuid id = !ce.id().isNull() ? ce.id() : QUuid::createUuid();
+
     QMap<QString, QString> att;
     att["id"] = id.toString();
     att["lastUpdate"] = QDateTime::currentDateTime().toString();
