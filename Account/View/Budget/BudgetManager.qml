@@ -256,7 +256,7 @@ Rectangle {
                 }
                 
                 delegate: Rectangle {
-                    width: parent.width
+                    width: targetView.width
                     height: 40
                     
                     border.color: "gray"
@@ -269,6 +269,7 @@ Rectangle {
                             onClicked: {
                                 targetView.currentIndex = targetView.currentIndex === index ? -1 :  index
                                 if(mouse.button === Qt.RightButton && targetItemMenu.count === 1) {
+                                    targetView.currentIndex = index
                                     targetItemMenu.addAction(compRemoveAction.createObject())
                                     targetItemMenu.popup()                                
                                 }

@@ -47,8 +47,8 @@ void ControllerCommon::init()
     
     if(remove)
         connect(remove, SIGNAL(s_remove()), this, SLOT(removeCommonEntry()));
-    
-    
+
+    exec();
 }
 
 void ControllerCommon::closeCommon(bool isClose)

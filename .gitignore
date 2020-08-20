@@ -27,6 +27,6 @@ Account\.pro\.user\.4\.10-pre1
 
 *.bak_000f
 
-*.bak_001d
+*.bak_*
 
 .gitignore

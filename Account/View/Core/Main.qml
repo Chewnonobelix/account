@@ -664,8 +664,8 @@ ApplicationWindow {
                 if(!isMaximazed) {
                     old = Qt.point(mainWindow.x, mainWindow.y)
                     showMaximized()
-                    mainWindow.x = 0
-                    mainWindow.y = 0
+                    mainWindow.x = Screen.virtualX
+                    mainWindow.y = Screen.virtualY
                 }
                 else {
                     showNormal()

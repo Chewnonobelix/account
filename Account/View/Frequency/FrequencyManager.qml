@@ -109,8 +109,8 @@ Rectangle {
                 currentIndex = -1
             }
 
-//            onCurrentIndexChanged: {
-//            }
+            //            onCurrentIndexChanged: {
+            //            }
 
             delegate: Rectangle {
                 height: 40
@@ -220,7 +220,7 @@ Rectangle {
 
             enabled: ref.enabled
 
-            ToolTip.text: qsTr("Select recurrence")            
+            ToolTip.text: qsTr("Select recurrence")
             
             model: CoreModel.freqModel
             textRole: "name"
@@ -465,7 +465,7 @@ Rectangle {
                 visible: isVisible
 
                 function f() {
-                    entryList.s_display(id)
+                    entryList.s_display(entryList.model.get(index).id)
                     ListView.view.currentIndex = index
                 }
 
@@ -499,8 +499,11 @@ Rectangle {
                 var i = pageIndex - 1
                 if(frequencyList.currentModel) {
                     for(var j = 0 ; j < 100; j++) {
-                        if(j+100*i < frequencyList.currentModel.entries().length) testModel.append(frequencyList.currentModel.entries()[j+100*i])
+                        if(j+100*i < frequencyList.currentModel.entries().length) {
+                            testModel.append(frequencyList.currentModel.entries()[j+100*i])
+                        }
                     }
+                    entryList.s_display(entryList.model.get(0).id)
                 }
             }
         }
