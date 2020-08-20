@@ -36,15 +36,11 @@ class ACCOUNT_EXPORT CommonExpanse: public MetaData
     
 private:
     
-    QUuid m_id = QUuid();
-    QDate m_begin;
-    QString m_title;
     QMultiMap<QString, Entry> m_entries;
-    bool m_isClose;
     QList<Closing> m_closing;
 
 public:
-    CommonExpanse() = default;
+    CommonExpanse();
     CommonExpanse(const CommonExpanse&) = default;
     ~CommonExpanse() = default;
 

@@ -1,33 +1,41 @@
 #include "commonexpanse.h"
 
+CommonExpanse::CommonExpanse()
+{
+    setId(QUuid());
+    setBegin(QDate::currentDate());
+    setTitle(QString());
+    setIsClose(false);
+}
+
 QUuid CommonExpanse::id() const
 {
-    return m_id;
+    return metaData<QUuid>("id");
 }
 
 void CommonExpanse::setId(QUuid id)
 {
-    m_id = id;
+    setMetadata("id", id);
 }
 
 QDate CommonExpanse::begin() const
 {
-    return m_begin;
+    return metaData<QDate>("begin");
 }
 
 void CommonExpanse::setBegin(QDate begin)
 {
-    m_begin = begin;
+    setMetadata("begin", begin);
 }
 
 QString CommonExpanse::title() const
 {
-    return m_title;
+    return metaData<QString>("title");
 }
 
 void CommonExpanse::setTitle(QString title)
 {
-    m_title = title;
+    setMetadata("title", title);
 }
 
 QMultiMap<QString, Entry> CommonExpanse::entries() const
@@ -42,12 +50,12 @@ void CommonExpanse::setEntries(QMultiMap<QString, Entry> entries)
 
 bool CommonExpanse::isClose() const
 {
-    return m_isClose;
+    return metaData<bool>("isClose");
 }
 
 void CommonExpanse::setIsClose(bool isClose)
 {
-    m_isClose = isClose;
+    setMetadata("isClose", isClose);
 }
 
 QStringList CommonExpanse::members() const
