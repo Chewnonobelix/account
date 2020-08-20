@@ -1,13 +1,13 @@
 #ifndef INFORMATION_H
 #define INFORMATION_H
 
-#include <QString>
-#include <QObject>
-#include <QUuid>
 #include "account_global.h"
-//#include "categories.h"
+#include "metadata.h"
+#include <QObject>
+#include <QString>
+#include <QUuid>
 
-class  ACCOUNT_EXPORT Information
+class ACCOUNT_EXPORT Information : public MetaData
 {
     Q_GADGET
 
@@ -18,16 +18,10 @@ class  ACCOUNT_EXPORT Information
     Q_PROPERTY(QString category READ category)
 
 private:
-    QUuid m_id;
-    QUuid m_idEntry;
-    QString m_title;
-    bool m_estimated;
-    QString m_category;
-
 public:
     Information();
-    Information(const Information&);
-    ~Information();
+    Information(const Information &) = default;
+    ~Information() = default;
 
     Information& operator = (const Information&);
 

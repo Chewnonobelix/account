@@ -1,24 +1,17 @@
 #include "information.h"
 
-Information::Information(): m_estimated(false)
+Information::Information()
 {
-
+    setId(QUuid());
+    setIdEntry(QUuid());
+    setTitle(QString());
+    setEstimated(false);
+    setCategory(QString());
 }
-
-Information::Information(const Information & i):
-    m_id(i.id()), m_idEntry(i.idEntry()), m_title(i.title()), m_estimated(i.estimated()),
-    m_category(i.category())
-{}
-
-Information::~Information() {}
 
 Information& Information::operator =(const Information& i)
 {
-    setId(i.id());
-    setIdEntry(i.idEntry());
-    setTitle(i.title());
-    setEstimated(i.estimated());
-    setCategory(i.category());
+    MetaData::operator=(i);
 
     return *this;
 }
@@ -35,51 +28,51 @@ bool operator <(const Information& i1, const Information& i2)
 
 QUuid Information::id() const
 {
-    return m_id;
+    return metaData<QUuid>("id");
 }
 
 void Information::setId(QUuid id)
 {
-    m_id = id;
+    setMetadata("id", id);
 }
 
 QUuid Information::idEntry() const
 {
-    return m_idEntry;
+    return metaData<QUuid>("ide");
 }
 
 void Information::setIdEntry(QUuid idEntry)
 {
-    m_idEntry = idEntry;
+    setMetadata("ide", idEntry);
 }
 
 QString Information::title() const
 {
-    return m_title;
+    return metaData<QString>("title");
 }
 
 void Information::setTitle(QString title)
 {
-    m_title = title;
+    setMetadata("title", title);
 }
 
 bool Information::estimated() const
 {
-    return m_estimated;
+    return metaData<bool>("estimated");
 }
 
 void Information::setEstimated(bool estimated)
 {
-    m_estimated = estimated;
+    setMetadata("estimated", estimated);
 }
 
 QString Information::category() const
 {
-    return m_category;
+    return metaData<QString>("category");
 }
 
 void Information::setCategory(QString category)
 {
-    m_category = category;
+    setMetadata("category", category);
 }
 
