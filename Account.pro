@@ -3,6 +3,7 @@ TEMPLATE = subdirs
 SUBDIRS = \
 Account \
     AccountApp \
+    DesignLibrary \
     Test
 
 TRANSLATIONS += Account\Francais.ts \
@@ -10,3 +11,4 @@ TRANSLATIONS += Account\Francais.ts \
 
 AccountApp.depends = Account
 Test.depends = Account
+Account.depends = DesignLibrary

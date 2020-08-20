@@ -1,15 +1,15 @@
 #ifndef ENTRY_H
 #define ENTRY_H
 
-#include <QString>
-#include <QDate>
-#include <QObject>
-#include <QtMath>
-#include <QVariant>
-#include <QSharedPointer>
+#include "accountglobal.h"
 #include "information.h"
 #include "metadata.h"
-#include "accountglobal.h"
+#include <QDate>
+#include <QObject>
+#include <QSharedPointer>
+#include <QString>
+#include <QVariant>
+#include <QtMath>
 
 class ACCOUNT_EXPORT Entry: public MetaData
 {

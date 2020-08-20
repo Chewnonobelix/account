@@ -404,10 +404,10 @@ bool ControllerDB::addEntry(const Entry & e)
             
             ret &= m_addInformation->exec();
         }
-        
+
         et.setMetadata("lastUpdate", QDateTime::currentDateTime());
-        
-        auto meta = et.metaDataList();
+
+        auto meta = et.metadataList();
         for(auto it: meta)
         {
             if(it == "id" || it == "notemit")
@@ -506,8 +506,8 @@ bool ControllerDB::updateEntry(const Entry & e)
         
         Entry et = e;
         et.setMetadata("lastUpdate", QDateTime::currentDateTime());
-        
-        auto meta = et.metaDataList();
+
+        auto meta = et.metadataList();
         for(auto it: meta)
         {
             if(it == "id" || it == "notemit")

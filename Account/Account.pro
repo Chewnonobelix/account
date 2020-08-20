@@ -20,6 +20,10 @@ DEFINES += QT_DEPRECATED_WARNINGS ACCOUNT_LIBRARY
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+INCLUDEPATH += $$PWD/../DesignLibrary/DesignPattern
+DEPENDPATH += $$OUT_PWD/../DesignLibrary/DesignPattern/debug
+LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
+
 SOURCES += \
     Controller/abstractgraphcontroller.cpp \
     Controller/controllerbudget.cpp \
@@ -32,7 +36,6 @@ SOURCES += \
     Model/accountglobal.cpp \
     Model/commonexpanse.cpp \
     Model/frequency.cpp \
-    Model/metadata.cpp \
     Model/subbudget.cpp \
     Model/entry.cpp \
     Model/information.cpp \
@@ -83,7 +86,6 @@ HEADERS += \
     Model/entry.h \
     Model/frequency.h \
     Model/information.h \
-    Model/metadata.h \
     Model/subbudget.h \
     Model/synchronizationprofile.h \
     Model/total.h \
