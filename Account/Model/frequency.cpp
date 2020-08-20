@@ -13,32 +13,32 @@ void Frequency::setId(QUuid id)
 
 Account::FrequencyEnum Frequency::freq() const
 {
-    return m_freq;
+    return metaData<Account::FrequencyEnum>("freq");
 }
 
 void Frequency::setFreq(Account::FrequencyEnum freq)
 {
-    m_freq = freq;
+    setMetadata("freq", freq);
 }
 
 QDate Frequency::end() const
 {
-    return m_end;
+    return metaData<QDate>("end");
 }
 
 void Frequency::setEnd(QDate end)
 {
-    m_end = end;
+    setMetadata("end", end);
 }
 
 QDate Frequency::begin() const
 {
-    return m_begin;
+    return metaData<QDate>("begin");
 }
 
 void Frequency::setBegin(QDate end)
 {
-    m_begin = end;
+    setMetadata("begin", end);
 }
 
 Entry Frequency::referenceEntry() const
@@ -53,17 +53,23 @@ void Frequency::setReferenceEntry(Entry referenceEntry)
 
 int Frequency::nbGroup() const
 {
-    return m_nbGroup;
+    return metaData<int>("nbGroup");
 }
 
 void Frequency::setNbGroup(int nbGroup)
 {
-    m_nbGroup = nbGroup;
+    setMetadata("nbGroup", nbGroup);
 }
 
 Frequency::Frequency()
 {
     m_referenceEntry.setType("outcome");
+    setId(QUuid());
+    setFreq(Account::FrequencyEnum::Unique);
+    setBegin(QDate::currentDate());
+    setEnd(QDate::currentDate());
+    setNbGroup(0);
+    setEndless(false);
 }
 
 Frequency& Frequency::operator =(const Frequency& f)
@@ -142,10 +148,10 @@ QVariantList Frequency::listEntries(int group) const
 
 bool Frequency::endless() const
 {
-    return m_endless;
+    return metaData<bool>("endless");
 }
 
 void Frequency::setEndless(bool e)
 {
-    m_endless = e;
+    setMetadata("endless", e);
 }

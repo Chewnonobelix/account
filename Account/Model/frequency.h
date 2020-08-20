@@ -25,13 +25,8 @@ class ACCOUNT_EXPORT Frequency: public MetaData
 public:
     
 private:
-    Account::FrequencyEnum m_freq = Account::FrequencyEnum::Unique;
     QList<QVariant> m_entriesId;
-    QDate m_end = QDate::currentDate();
-    QDate m_begin = QDate::currentDate();
     Entry m_referenceEntry;
-    int m_nbGroup = 0;
-    bool m_endless = false;
 
 public:
     Frequency();
