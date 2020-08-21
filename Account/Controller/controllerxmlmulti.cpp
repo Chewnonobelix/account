@@ -78,8 +78,9 @@ bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root, QStrin
 
     auto meta = e.metadataList();
     for(auto it: meta)
-        el.setAttribute(it, e.metaData<QString>(it));
-    
+        if (!QStringList({"date", "value", "account", "type"}).contains(it))
+            el.setAttribute(it, e.metaData<QString>(it));
+
     adder(el, "date", e.date().toString("dd-MM-yyyy"));
     adder(el, "value", QString::number(e.value()));
     adder(el, "account", e.account());
@@ -284,8 +285,8 @@ bool ControllerXMLMulti::updateEntryNode(const Entry & e, QDomElement & el)
     setter(el, "type", e.type());
 
     for (auto it : et.metadataList())
-        if(it != "notemit")
-          el.setAttribute(it, e.metaData<QString>(it));
+        if (it != "notemit" && !QStringList({"date", "value", "account", "type"}).contains(it))
+            el.setAttribute(it, e.metaData<QString>(it));
     
     auto i = el.elementsByTagName("information").at(0).toElement();
     updateInfo(i, e.info());

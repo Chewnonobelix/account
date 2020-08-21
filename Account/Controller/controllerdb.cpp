@@ -410,7 +410,8 @@ bool ControllerDB::addEntry(const Entry & e)
         auto meta = et.metadataList();
         for(auto it: meta)
         {
-            if(it == "id" || it == "notemit")
+            if (!QStringList({"id", "date", "value", "account", "type"}).contains(it)
+                || it == "notemit")
                 continue;
             
             m_insertMetadata->bindValue(":entry", id);
@@ -510,7 +511,8 @@ bool ControllerDB::updateEntry(const Entry & e)
         auto meta = et.metadataList();
         for(auto it: meta)
         {
-            if(it == "id" || it == "notemit")
+            if (!QStringList({"id", "date", "value", "account", "type"}).contains(it)
+                || it == "notemit")
                 continue;
             
             m_updateMetadata->bindValue(":entry", et.id());
