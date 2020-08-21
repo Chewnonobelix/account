@@ -3,22 +3,22 @@
 
 SubBudget::SubBudget()
 {
-
+    setReference(QDate::currentDate());
+    setMetadata("current", 0);
+    setTarget(0);
+    setBegin(QDate::currentDate());
+    setEnd(QDate::currentDate());
 }
 
-SubBudget::SubBudget(const SubBudget& sb): m_reference(sb.reference()), m_target(sb.target()), m_begin(sb.begin()),
-    m_end(sb.end()), m_values(sb.m_values) 
+SubBudget::SubBudget(const SubBudget &sb) : MetaData(sb), m_values(sb.m_values)
 {
     update();
 }
 
 SubBudget& SubBudget::operator = (const SubBudget& sb)
 {
-    m_target = sb.target();
-    m_begin = sb.begin();
-    m_end = sb.end();
+    MetaData::operator=(sb);
     m_values = sb.m_values;
-    m_reference = sb.reference();
     update();
 
     return *this;
@@ -26,46 +26,47 @@ SubBudget& SubBudget::operator = (const SubBudget& sb)
 
 double SubBudget::current() const
 {
-    return m_current;
+    return metaData<double>("current");
 }
 
 double SubBudget::target() const
 {
-    return m_target;
+    return metaData<double>("target");
 }
 
 void SubBudget::setTarget(double t)
 {
-    m_target = t;
+    setMetadata("target", t);
 }
 
 void SubBudget::setReference(QDate ref)
 {
-    m_reference = ref;
+    setMetadata("reference", ref);
 }
 
 QDate SubBudget::reference() const
 {
-    return m_reference;
+    return metaData<QDate>("reference");
 }
+
 QDate SubBudget::begin() const
 {
-    return m_begin;
+    return metaData<QDate>("begin");
 }
 
 void SubBudget::setBegin(QDate d)
 {
-    m_begin = d;
+    setMetadata("begin", d);
 }
 
 QDate SubBudget::end() const
 {
-    return m_end;
+    return metaData<QDate>("end");
 }
 
 void SubBudget::setEnd(QDate d)
 {
-    m_end = d;
+    setMetadata("end", d);
 }
 
 bool SubBudget::addEntry(Entry e)
@@ -111,7 +112,7 @@ void SubBudget::update()
     for(auto it: m_values)
         temp += it;
 
-    m_current = temp;
+    setMetadata("current", temp);
 }
 
 bool SubBudget::in(QDate d) const

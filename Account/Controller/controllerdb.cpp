@@ -404,13 +404,14 @@ bool ControllerDB::addEntry(const Entry & e)
             
             ret &= m_addInformation->exec();
         }
-        
+
         et.setMetadata("lastUpdate", QDateTime::currentDateTime());
-        
-        auto meta = et.metaDataList();
+
+        auto meta = et.metadataList();
         for(auto it: meta)
         {
-            if(it == "id" || it == "notemit")
+            if (!QStringList({"id", "date", "value", "account", "type"}).contains(it)
+                || it == "notemit")
                 continue;
             
             m_insertMetadata->bindValue(":entry", id);
@@ -506,11 +507,12 @@ bool ControllerDB::updateEntry(const Entry & e)
         
         Entry et = e;
         et.setMetadata("lastUpdate", QDateTime::currentDateTime());
-        
-        auto meta = et.metaDataList();
+
+        auto meta = et.metadataList();
         for(auto it: meta)
         {
-            if(it == "id" || it == "notemit")
+            if (!QStringList({"id", "date", "value", "account", "type"}).contains(it)
+                || it == "notemit")
                 continue;
             
             m_updateMetadata->bindValue(":entry", et.id());

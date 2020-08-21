@@ -503,7 +503,8 @@ Rectangle {
                             testModel.append(frequencyList.currentModel.entries()[j+100*i])
                         }
                     }
-                    entryList.s_display(entryList.model.get(0).id)
+                    if(entryList.model.get(0))
+                       entryList.s_display(entryList.model.get(0).id)
                 }
             }
         }

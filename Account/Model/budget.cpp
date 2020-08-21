@@ -1,13 +1,14 @@
 #include "budget.h"
 
-Budget::Budget(): m_reference(QDate::currentDate())
+Budget::Budget()
 {
+    setReference(QDate::currentDate());
+    setCategory(QString());
+    setId(QUuid());
 }
 
 Budget::Budget(const Budget & b): MetaData(b)
 {
-    m_category = b.category();
-    m_reference = b.reference();
     m_frequency = b.m_frequency;
     m_targets = b.m_targets;
     m_subs = b.m_subs;
@@ -173,20 +174,17 @@ void Budget::setFrequency(QDate d, Account::FrequencyEnum f)
 
 QString Budget::category() const
 {
-    return m_category;
+    return metaData<QString>("category");
 }
 
 void Budget::setCategory(QString c)
 {
-    m_category = c;
+    setMetadata("category", c);
 }
 
 Budget& Budget::operator = (const Budget& b)
 {
-    MetaData& m = *this;
-    m = b;
-    m_category = b.category();
-    m_reference = b.reference();
+    MetaData::operator=(b);
     m_frequency = b.m_frequency;
     m_targets = b.m_targets;
     m_subs = b.m_subs;
@@ -249,12 +247,12 @@ QDate Budget::previous(QDate d) const
 
 QDate Budget::reference() const
 {
-    return m_reference;
+    return metaData<QDate>("reference");
 }
 
 void Budget::setReference(QDate d)
 {
-    m_reference = d;
+    setMetadata("reference", d);
 }
 
 QMap<QDate, double> Budget::targets() const

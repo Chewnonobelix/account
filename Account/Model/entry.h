@@ -1,15 +1,15 @@
 #ifndef ENTRY_H
 #define ENTRY_H
 
-#include <QString>
-#include <QDate>
-#include <QObject>
-#include <QtMath>
-#include <QVariant>
-#include <QSharedPointer>
+#include "accountglobal.h"
 #include "information.h"
 #include "metadata.h"
-#include "accountglobal.h"
+#include <QDate>
+#include <QObject>
+#include <QSharedPointer>
+#include <QString>
+#include <QVariant>
+#include <QtMath>
 
 class ACCOUNT_EXPORT Entry: public MetaData
 {
@@ -24,18 +24,14 @@ class ACCOUNT_EXPORT Entry: public MetaData
     Q_PROPERTY(QUuid id READ id)
     Q_PROPERTY(bool isBlocked READ isBlocked)
     Q_PROPERTY(Account::EntryTypeEnum support READ support)
-private:
 
-    QString m_account;
-    double m_value;
-    QDate m_date;
-    QString m_type;
+private:
     Information m_info;
 
 public:
     Entry();
-    Entry(const Entry&);
-    ~Entry();
+    Entry(const Entry &) = default;
+    ~Entry() = default;
 
     Entry& operator =(const Entry&);
     friend bool ACCOUNT_EXPORT operator ==(const Entry&, const Entry&);

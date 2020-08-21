@@ -1,19 +1,15 @@
 #ifndef SUBBUDGET_H
 #define SUBBUDGET_H
 
-#include <QMap>
-#include <QDate>
-#include "entry.h"
 #include "account_global.h"
+#include "entry.h"
+#include "metadata.h"
+#include <QDate>
+#include <QMap>
 
-class ACCOUNT_EXPORT SubBudget
+class ACCOUNT_EXPORT SubBudget : public MetaData
 {
 private:
-    QDate m_reference;
-    double m_current;
-    double m_target;
-    QDate m_begin;
-    QDate m_end;
     QMap<QUuid, double> m_values;
 
     void update();
