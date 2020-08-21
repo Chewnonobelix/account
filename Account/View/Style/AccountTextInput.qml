@@ -8,7 +8,7 @@ TextField {
     font.pixelSize: AccountStyle.core.size
     clip: true
     property bool valid: true
-    
+    property string compl: ""
     property Rectangle back: Rectangle {
         anchors.fill: parent
         color: "white"
@@ -16,13 +16,14 @@ TextField {
         AccountLabel {
             id: completionLabel
             anchors.fill: parent
-            
+            text: root.compl
             color: "grey"
             leftPadding: root.leftPadding
+            horizontalAlignment: Text.AlignLeft
         }
     }    
     
-    horizontalAlignment: Text.AlignHCenter
+    horizontalAlignment: Text.AlignLeft
     verticalAlignment: Text.AlignVCenter
 
     ToolTip.delay: 500

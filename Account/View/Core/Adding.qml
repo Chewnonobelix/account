@@ -125,7 +125,7 @@ Popup {
                             s = i
                     }
 
-                    completionLabel.text = s !== -1 ? root.completionList[s] : ""
+                    compl = s !== -1 ? root.completionList[s] : ""
                 }
             }
 
