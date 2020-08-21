@@ -2,51 +2,51 @@
 
 QString SynchronizationProfile::hostName() const
 {
-    return m_serverName;
+    return metaData<QString>("hostName");
 }
 
 void SynchronizationProfile::setHostName(QString s)
 {
-    m_serverName = s;
+    setMetadata("hostname", s);
 }
 
 QString SynchronizationProfile::deviceName() const
 {
-    return m_deviceName;
+    return metaData<QString>("deviceName");
 }
 
 void SynchronizationProfile::setDeviceName(QString d)
 {
-    m_deviceName =d;
+    setMetadata("deviceName", d);
 }
 
 QDate SynchronizationProfile::begin() const
 {
-    return m_begin;
+    return metaData<QDate>("begin");
 }
 
-void SynchronizationProfile::setbegin(QDate d)
+void SynchronizationProfile::setBegin(QDate d)
 {
-    m_begin = d;
+    setMetadata("begin", d);
 }
 
 QDate SynchronizationProfile::end() const
 {
-    return m_end;
+    return metaData<QDate>("end");
 }
 
 void SynchronizationProfile::setEnd(QDate e)
 {
-    m_end =e;
+    setMetadata("end", e);
 }
 
 QDateTime SynchronizationProfile::lastSync() const
 {
-    return m_lastSync;
+    return metaData<QDateTime>("lastSync");
 }
 
 void SynchronizationProfile::setLastSync(QDateTime ls)
 {
-    m_lastSync = ls;
+    setMetadata("lastSync", ls);
 }
 

@@ -1,11 +1,12 @@
 #ifndef SYNCHRONIZATIONPROFILE_H
 #define SYNCHRONIZATIONPROFILE_H
 
+#include "account_global.h"
+#include "metadata.h"
 #include <QDate>
 #include <QObject>
-#include "account_global.h"
 
-class ACCOUNT_EXPORT SynchronizationProfile
+class ACCOUNT_EXPORT SynchronizationProfile : public MetaData
 {
     Q_GADGET
     
@@ -16,11 +17,6 @@ class ACCOUNT_EXPORT SynchronizationProfile
     Q_PROPERTY(QDateTime lastSync READ lastSync)
     
 private:
-    QString m_serverName = "";
-    QString m_deviceName = "";
-    QDate m_begin = QDate::currentDate();
-    QDate m_end = QDate::currentDate();
-    QDateTime m_lastSync = QDateTime::currentDateTime();
     
 public:
     SynchronizationProfile() = default;
@@ -33,7 +29,7 @@ public:
     QString deviceName() const;
     void setDeviceName(QString);
     QDate begin() const;
-    void setbegin(QDate);
+    void setBegin(QDate);
     QDate end() const;
     void setEnd(QDate);
     QDateTime lastSync() const;

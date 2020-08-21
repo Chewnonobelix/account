@@ -38,7 +38,7 @@ QList<SynchronizationProfile> InterfaceDataSave::selectSyncProfile()
         val = el.elementsByTagName("device").at(0).toElement().text();
         sp.setDeviceName(val);
         val = el.elementsByTagName("begin").at(0).toElement().text();
-        sp.setbegin(QDate::fromString(val));
+        sp.setBegin(QDate::fromString(val));
         val = el.elementsByTagName("end").at(0).toElement().text();
         sp.setEnd(QDate::fromString(val));
         val = el.elementsByTagName("lastSync").at(0).toElement().text();
