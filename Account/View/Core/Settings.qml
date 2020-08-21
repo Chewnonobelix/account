@@ -275,6 +275,21 @@ Dialog {
                     }
                 }
             }
+
+            GroupBox {
+                id: sync
+                label: AccountHeader {
+                    text: qsTr("Syncronization")
+                    width: sync.width
+                    height: root.height * 0.10
+                }
+                width: root.width * 0.94
+                height: root.height * .90
+                Synchronization {
+                    anchors.fill: parent
+                    objectName: "syncronization"
+                }
+            }
         }
     }
 }
