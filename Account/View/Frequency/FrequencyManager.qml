@@ -395,7 +395,7 @@ Rectangle {
             }
 
             property var enabledSection: []
-            section.property: "group"
+            section.property: "freqGroup"
             section.criteria: ViewSection.FullString
             section.labelPositioning: ViewSection.InlineLabels
             section.delegate: Rectangle {
@@ -432,7 +432,7 @@ Rectangle {
                         entryList.enabledSection[section] = !entryList.enabledSection[section]
 
                         for(var j = 0; j < testModel.count; j++) {
-                            if(testModel.get(j).group == section ) testModel.setProperty(j, "isVisible", entryList.enabledSection[section]);
+                            if(testModel.get(j).freqGroup == section ) testModel.setProperty(j, "isVisible", entryList.enabledSection[section]);
                         }
 
                         arrow.rotation = arrow.rotation + 180
