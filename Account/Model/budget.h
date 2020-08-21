@@ -17,9 +17,6 @@ class ACCOUNT_EXPORT Budget: public MetaData
 public:
 
 private:
-    QString m_category;
-    QDate m_reference;
-
     QMap<QDate, Account::FrequencyEnum> m_frequency;
     QMap<QDate, double> m_targets;
     QMap<QDate, SubBudget> m_subs;
