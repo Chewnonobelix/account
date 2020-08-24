@@ -5,6 +5,9 @@ int ControllerSynchronization::exec()
     m_server.listen(QHostAddress::Any, 6000);
     
     connect(&m_server, &QTcpServer::newConnection, this, &ControllerSynchronization::newConnections);
+
+    connect(&m_broadcast, &QUdpSocket::readyRead, this, &ControllerSynchronization::receivedDatagram);
+
     return 0;
 }
 
@@ -47,4 +50,51 @@ AccountSocket& AccountSocket::operator =(const AccountSocket& as)
 int AccountSocket::exec()
 {
     return 0;
+}
+
+
+void ControllerSynchronization::lookup()
+{
+    m_broadcast.writeDatagram("account_server:test_server", QHostAddress(QHostAddress::Broadcast), 7000);
+}
+
+void ControllerSynchronization::sync()
+{
+    m_client.sync();
+    for(auto it: m_connections)
+        it.sync();
+}
+
+void AccountSocket::sync()
+{
+    qDebug()<<"Sync";
+}
+
+void ControllerSynchronization::receivedDatagram()
+{
+    QByteArray data;
+    QHostAddress addr;
+
+    while(m_broadcast.hasPendingDatagrams())
+    {
+        data.resize(m_broadcast.pendingDatagramSize());
+        m_broadcast.readDatagram(data.data(), m_broadcast.pendingDatagramSize(), &addr);
+        auto split = data.split(':');
+
+        if(split[0] != "account_server" && !m_server.isListening())
+            continue;
+
+        clientConnect(addr);
+    }
+}
+
+void ControllerSynchronization::clientConnect(QHostAddress addr)
+{
+    if(!m_server.isListening())
+        m_client.connectTo(addr);
+}
+
+void AccountSocket::connectTo(QHostAddress addr)
+{
+    m_socket->connectToHost(addr, 7000);
 }
