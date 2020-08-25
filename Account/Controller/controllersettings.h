@@ -58,6 +58,9 @@ public:
     QString currentAccount() const;
     void setCurrentAccount(QString);
 
+    bool syncServer() const;
+    void setSyncServer(bool);
+
     InterfaceDataSave* createDb(QString, bool = false) const;
 
     static void registerFeature(QSharedPointer<FeatureBuilder>);

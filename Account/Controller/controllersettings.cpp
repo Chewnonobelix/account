@@ -375,3 +375,13 @@ void ControllerSettings::setCurrentAccount(QString account)
 {
     m_settings.setValue("State/Account", account);
 }
+
+bool ControllerSettings::syncServer() const
+{
+    return m_settings.value("Sync/serverEnable", false).toBool();
+}
+
+void ControllerSettings::setSyncServer(bool s)
+{
+    m_settings.setValue("Sync/serverEnable", s);
+}
