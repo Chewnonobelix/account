@@ -5,6 +5,7 @@
 #include "metadata.h"
 #include <QDate>
 #include <QObject>
+#include <QUuid>
 
 class ACCOUNT_EXPORT SynchronizationProfile : public MetaData
 {
@@ -15,15 +16,17 @@ class ACCOUNT_EXPORT SynchronizationProfile : public MetaData
     Q_PROPERTY(QDate begin READ begin)
     Q_PROPERTY(QDate end READ end)
     Q_PROPERTY(QDateTime lastSync READ lastSync)
-    
+    Q_PROPERTY(QUuid id READ id)
+
 private:
-    
 public:
     SynchronizationProfile() = default;
     SynchronizationProfile(const SynchronizationProfile&) = default;
     ~SynchronizationProfile() = default;
-    SynchronizationProfile& operator= (const SynchronizationProfile&) = default;
+    SynchronizationProfile &operator=(const SynchronizationProfile &) = default;
 
+    QUuid id() const;
+    void setId(QUuid);
     QString hostName() const;
     void setHostName(QString);
     QString deviceName() const;

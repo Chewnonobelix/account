@@ -44,6 +44,9 @@ QList<SynchronizationProfile> InterfaceDataSave::selectSyncProfile()
         val = el.elementsByTagName("lastSync").at(0).toElement().text();
         sp.setLastSync(QDateTime::fromString(val));
         ret<<sp;
+        val = el.elementsByTagName("id").at(0).toElement().text();
+        sp.setId(QUuid::fromString(val));
+        ret << sp;
     }
     return ret;
 }
@@ -55,10 +58,9 @@ bool InterfaceDataSave::removeSyncProfile(const SynchronizationProfile& sp)
     bool ret = false;
     for(auto it = 0; it < list.size(); it++)
     {
-        if(list.at(it).toElement().elementsByTagName("host").at(0).toElement().text() == sp.hostName() &&
-                list.at(it).toElement().elementsByTagName("device").at(0).toElement().text() == sp.deviceName())
-        {
-           ret |= !root.removeChild(list.at(it).toElement()).isNull(); 
+        if (list.at(it).toElement().elementsByTagName("id").at(0).toElement().text()
+            == sp.id().toString()) {
+            ret |= !root.removeChild(list.at(it).toElement()).isNull();
         }
     }
     
@@ -92,7 +94,8 @@ bool InterfaceDataSave::addSyncProfile(const SynchronizationProfile& sp)
     func(m_syncs, "begin", sp.begin().toString());
     func(m_syncs, "end", sp.end().toString());
     func(m_syncs, "lastSync", sp.lastSync().toString());
-    
+    func(m_syncs, "id", QUuid::createUuid().toString());
+
     return true;
 }
 
@@ -103,15 +106,16 @@ bool InterfaceDataSave::updateSyncProfile(const SynchronizationProfile& sp)
     bool ret = false;
     for(auto it = 0; it < list.size(); it++)
     {
-        if(list.at(it).toElement().elementsByTagName("host").at(0).toElement().text() == sp.hostName() &&
-                list.at(it).toElement().elementsByTagName("device").at(0).toElement().text() == sp.deviceName())
-        {
-           ret = true;
-           QDomElement el = list.at(it).toElement();
-           el.elementsByTagName("begin").at(0).firstChild().setNodeValue(sp.begin().toString());
-           el.elementsByTagName("end").at(0).firstChild().setNodeValue(sp.end().toString());
-           el.elementsByTagName("lastSync").at(0).firstChild().setNodeValue(sp.lastSync().toString());
-           
+        if (list.at(it).toElement().elementsByTagName("id").at(0).toElement().text()
+            == sp.id().toString()) {
+            ret = true;
+            QDomElement el = list.at(it).toElement();
+            el.elementsByTagName("begin").at(0).firstChild().setNodeValue(sp.begin().toString());
+            el.elementsByTagName("end").at(0).firstChild().setNodeValue(sp.end().toString());
+            el.elementsByTagName("lastSync")
+                .at(0)
+                .firstChild()
+                .setNodeValue(sp.lastSync().toString());
         }
     }
     

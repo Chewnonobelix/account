@@ -50,3 +50,12 @@ void SynchronizationProfile::setLastSync(QDateTime ls)
     setMetadata("lastSync", ls);
 }
 
+QUuid SynchronizationProfile::id() const
+{
+    return metaData<QUuid>("id");
+}
+
+void SynchronizationProfile::setId(QUuid id)
+{
+    setMetadata("id", id);
+}
