@@ -57,6 +57,7 @@ private:
     QList<AccountSocket> m_connections;
     QUdpSocket m_broadcast;
     AccountSocket m_client;
+    QObject *m_view = nullptr;
 
 protected:
     void timerEvent(QTimerEvent *);
@@ -65,7 +66,7 @@ public:
     ControllerSynchronization() = default;
     
     int exec();
-
+    void setView(QObject *);
     void lookup();
 
     void openServer(bool);

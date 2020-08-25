@@ -11,8 +11,14 @@ int ControllerSynchronization::exec()
 
     startTimer(5000);
 
-    openServer(true);
     return 0;
+}
+
+void ControllerSynchronization::setView(QObject *v)
+{
+    m_view = v;
+
+    connect(m_view)
 }
 
 void ControllerSynchronization::newConnections()
