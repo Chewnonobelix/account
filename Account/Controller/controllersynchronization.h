@@ -11,9 +11,12 @@
 class AccountSocket: public AbstractController
 {
     Q_OBJECT
+
+    Q_PROPERTY(QString remoteName READ remoteName)
+
 private:
     QTcpSocket* m_socket = nullptr;
-    QString remoteName = QString();
+    QString m_remoteName = QString();
     SynchronizationProfile remoteProfile;
 
 public:
@@ -38,6 +41,8 @@ public:
     void getProfileid();
     void postProfile();
     void getProfile();
+
+    QString remoteName() const;
 
 public slots:
     void receiveDataSocket();
@@ -77,5 +82,7 @@ public slots:
     void sync();
     void clientConnect(QHostAddress);
 };
+
+Q_DECLARE_METATYPE(AccountSocket)
 
 #endif // CONTROLLERSYNCHRONIZATION_H

@@ -81,6 +81,11 @@ void ControllerSynchronization::openServer(bool isOpen)
     }
 }
 
+QString AccountSocket::remoteName() const
+{
+    return m_remoteName;
+}
+
 AccountSocket::AccountSocket(const AccountSocket &as) : AbstractController(), m_socket(as.m_socket)
 {}
 
@@ -98,12 +103,10 @@ void AccountSocket::setSocket(QTcpSocket *as)
 
     connect(m_socket, &QIODevice::readyRead, this, &AccountSocket::receiveDataSocket);
 
-    if (m_socket->peerName().isEmpty())
-        remoteName = m_socket->peerAddress().toString();
-    else
-        remoteName = m_socket->peerName();
+    getProfileid();
+    getRemotename();
 
-    qDebug() << "New connection from remote name" << remoteName << m_socket->peerAddress();
+    qDebug() << "New connection from remote name" << remoteName() << m_socket->peerAddress();
 }
 
 void AccountSocket::receiveDataSocket()
@@ -150,13 +153,13 @@ bool AccountSocket::isConnected() const
 void AccountSocket::parser(QString data)
 {
     auto split = data.split(":");
-
+    qDebug() << "Parse" << data;
     if (split[0] != "account_api")
         return;
 
     if (split[1] == "post") {
         if (split[2] == "localName")
-            remoteName = split[3];
+            m_remoteName = split[3];
         if (split[2] == "syncId")
             remoteProfile.setId(QUuid::fromString(split[3]));
     }
@@ -191,12 +194,12 @@ void AccountSocket::postLocalname()
 void AccountSocket::getRemotename()
 {
     if (isConnected())
-        m_socket->write("account_api:get:localName");
+        qDebug() << "Write" << m_socket->write("account_api:get:localName");
 }
 
 void AccountSocket::postProfileid()
 {
-    auto id = profile(remoteName).id();
+    auto id = profile(remoteName()).id();
 
     if (isConnected())
         m_socket->write("account_api:post:syncId:" + id.toByteArray());
