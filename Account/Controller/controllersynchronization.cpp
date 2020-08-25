@@ -73,7 +73,6 @@ void ControllerSynchronization::clientConnect(QHostAddress addr)
 
 void ControllerSynchronization::openServer(bool isOpen)
 {
-    qDebug() << "Open server" << isOpen << !m_server.isListening();
     if (isOpen && !m_server.isListening()) {
         m_client.close();
         m_server.listen(QHostAddress(QHostAddress::AnyIPv4), 9000);

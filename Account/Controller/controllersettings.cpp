@@ -50,6 +50,8 @@ void ControllerSettings::init(QQmlEngine & engine)
 
     m_synchro.exec();
     m_synchro.openServer(syncServer());
+    QObject *syncs = m_view->findChild<QObject *>("syncronization");
+    m_synchro.setView(syncs);
 }
 
 void ControllerSettings::registerFeature(QSharedPointer<FeatureBuilder> f)
