@@ -8,7 +8,7 @@ import "../Style"
 Dialog {    
     id: root
     title: qsTr("Settings")
-    standardButtons: Dialog.Save | Dialog.Cancel
+    standardButtons: Dialog.Save | Dialog.Cancel | DialogButtonBox.Apply
     
     width: 600
     height: 400
@@ -284,7 +284,7 @@ Dialog {
                     height: root.height * 0.10
                 }
                 width: root.width * 0.94
-                height: root.height * .90
+                height: root.height
                 Synchronization {
                     anchors.fill: parent
                     objectName: "syncronization"

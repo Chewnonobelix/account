@@ -24,6 +24,7 @@ void ControllerSettings::init(QQmlEngine & engine)
     m_view = root->findChild<QObject*>("settings");
 
     connect(m_view, SIGNAL(accepted()), this, SLOT(save()));
+    connect(m_view, SIGNAL(applied()), this, SLOT(save()));
 
     QDir dir;
     auto list = dir.entryInfoList(QStringList("*.qm"));
