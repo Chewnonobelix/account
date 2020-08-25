@@ -2,12 +2,16 @@
 
 int ControllerSynchronization::exec()
 {
-    m_server.listen(QHostAddress::Any, 6000);
-    
+    //    m_server.listen(QHostAddress::Any, 6000);
+
     connect(&m_server, &QTcpServer::newConnection, this, &ControllerSynchronization::newConnections);
 
-    connect(&m_broadcast, &QUdpSocket::readyRead, this, &ControllerSynchronization::receivedDatagram);
+    connect(&m_broadcast,
+            &QUdpSocket::readyRead,
+            this,
+            &ControllerSynchronization::receivedDatagram);
 
+    startTimer(60000);
     return 0;
 }
 
@@ -52,6 +56,11 @@ int AccountSocket::exec()
     return 0;
 }
 
+void ControllerSynchronization::timerEvent(QTimerEvent *)
+{
+    if (m_server.isListening())
+        lookup();
+}
 
 void ControllerSynchronization::lookup()
 {
@@ -96,5 +105,23 @@ void ControllerSynchronization::clientConnect(QHostAddress addr)
 
 void AccountSocket::connectTo(QHostAddress addr)
 {
+    if (!m_socket)
+        m_socket = new QTcpSocket;
+
     m_socket->connectToHost(addr, 7000);
+}
+
+void ControllerSynchronization::openServer(bool isOpen)
+{
+    if (isOpen && !m_server.isListening()) {
+        m_client.close();
+        m_server.listen(QHostAddress::Any, 9000);
+    } else if (!isOpen) {
+        m_server.close();
+    }
+}
+
+void AccountSocket::close()
+{
+    m_socket->close();
 }

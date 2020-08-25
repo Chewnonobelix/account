@@ -29,6 +29,7 @@ public slots:
     void receiveDataSocket();
     void sync();
     void connectTo(QHostAddress);
+    void close();
 };
 
 class ControllerSynchronization: public AbstractController
@@ -43,12 +44,17 @@ private:
     QUdpSocket m_broadcast;
     AccountSocket m_client;
 
+protected:
+    void timerEvent(QTimerEvent *);
+
 public:
     ControllerSynchronization() = default;
     
     int exec();
 
-    Q_INVOKABLE void lookup();
+    void lookup();
+
+    void openServer(bool);
 
 public slots:
     void newConnections();
