@@ -47,6 +47,9 @@ void ControllerSettings::init(QQmlEngine & engine)
     QObject* restorer = m_view->findChild<QObject*>("restoreDialog");
     if(restorer)
         connect(restorer, SIGNAL(s_restore(QString)), this, SLOT(restore(QString)));
+
+    m_synchro.exec();
+    m_synchro.openServer(syncServer());
 }
 
 void ControllerSettings::registerFeature(QSharedPointer<FeatureBuilder> f)
@@ -156,6 +159,10 @@ void ControllerSettings::open()
         obj->setProperty("checked", autoBackup());
     }
 
+    auto syncs = m_view->findChild<QObject *>("syncronization");
+    obj = syncs->findChild<QObject *>("enableSync");
+    obj->setProperty("checked", syncServer());
+
     QMetaObject::invokeMethod(m_view, "open");
 }
 
@@ -196,6 +203,10 @@ void ControllerSettings::save()
     {
         setAutobackup(false);
     }
+
+    auto syncs = m_view->findChild<QObject *>("syncronization");
+    obj = syncs->findChild<QObject *>("enableSync");
+    setSyncServer(obj->property("checked").toBool());
 
     AbstractController::setDb(database());
 }
@@ -384,4 +395,5 @@ bool ControllerSettings::syncServer() const
 void ControllerSettings::setSyncServer(bool s)
 {
     m_settings.setValue("Sync/serverEnable", s);
+    m_synchro.openServer(s);
 }

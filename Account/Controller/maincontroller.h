@@ -52,7 +52,6 @@ private:
     LanguageController m_lang;
     ControllerTransfert m_transfert;
     ControllerSettings m_settings;
-    ControllerSynchronization m_sync;
     
     AbstractGraphController m_graph;
     

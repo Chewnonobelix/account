@@ -1,17 +1,18 @@
 #ifndef CONTROLLERSETTINGS_H
 #define CONTROLLERSETTINGS_H
 
-#include <QSettings>
-#include <QTranslator>
-#include <QCoreApplication>
-#include <QQmlComponent>
-#include <QQuickItem>
-#include <QQmlContext>
-#include <QDir>
-#include <QFileInfo>
 #include "abstractcontroller.h"
+#include "controllersynchronization.h"
 #include "featurebuilder.h"
 #include "xmltosql.h"
+#include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
+#include <QQmlComponent>
+#include <QQmlContext>
+#include <QQuickItem>
+#include <QSettings>
+#include <QTranslator>
 
 class ControllerSettings: public AbstractController
 {
@@ -26,6 +27,7 @@ private:
     QObject* m_view = nullptr, *m_splash = nullptr;
     InterfaceDataSave* back = nullptr;
     TransfertDatabase m_backupper;
+    ControllerSynchronization m_synchro;
 
 public:
     ControllerSettings();

@@ -234,7 +234,6 @@ int MainController::exec()
     m_graph.set(m_engine);
     connect(m_db, &InterfaceDataSave::s_updateEntry, &m_graph, &AbstractGraphController::exec);
     m_graph.exec();
-    m_sync.exec();
     
     connect(this, &AbstractController::s_totalChanged, this, &MainController::totalChanged);
     connect(m_db, &InterfaceDataSave::s_updateEntry, this, &AbstractController::calculTotal);
