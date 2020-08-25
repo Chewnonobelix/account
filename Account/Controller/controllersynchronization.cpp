@@ -17,8 +17,6 @@ int ControllerSynchronization::exec()
 void ControllerSynchronization::setView(QObject *v)
 {
     m_view = v;
-
-    connect(m_view)
 }
 
 void ControllerSynchronization::newConnections()
@@ -75,9 +73,10 @@ void ControllerSynchronization::clientConnect(QHostAddress addr)
 
 void ControllerSynchronization::openServer(bool isOpen)
 {
+    qDebug() << "Open server" << isOpen << !m_server.isListening();
     if (isOpen && !m_server.isListening()) {
         m_client.close();
-        m_server.listen(QHostAddress::Any, 9000);
+        m_server.listen(QHostAddress(QHostAddress::AnyIPv4), 9000);
     } else if (!isOpen) {
         m_server.close();
     }
