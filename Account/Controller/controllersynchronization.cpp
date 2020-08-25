@@ -23,6 +23,14 @@ void ControllerSynchronization::newConnections()
 {
     m_connections<<AccountSocket();
     m_connections.last().setSocket(m_server.nextPendingConnection());
+
+    auto *list = m_view->findChild<QObject *>("syncProfiles");
+    QVariantList vl;
+
+    for (auto it : m_connections)
+        vl << QVariant::fromValue(&it);
+
+    list->setProperty("model", vl);
 }
 
 void ControllerSynchronization::timerEvent(QTimerEvent *)

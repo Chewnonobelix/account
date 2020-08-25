@@ -54,6 +54,22 @@ Item {
             Layout.columnSpan: 1
             Layout.preferredHeight: root.height * 0.1
             Layout.preferredWidth: root.width * 0.1
+
+            onCurrentIndexChanged: currentIndex > -1 ? model[currentIndex] : null
+
+            onModelChanged: {
+                console.log(model.length, model)
+
+                for(var it in model[0]) {
+                    console.log(model[0][it], it)
+                }
+            }
+
+//            delegate: Rectangle {
+//                AccountLabel {
+//                    text: modelData.remoteName
+//                }
+//            }
         }
 
         //        CalendarButton {
