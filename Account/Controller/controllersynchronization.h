@@ -13,18 +13,32 @@ class AccountSocket: public AbstractController
     Q_OBJECT
 private:
     QTcpSocket* m_socket = nullptr;
-    
-    
+    QString remoteName = QString();
+    SynchronizationProfile remoteProfile;
+
 public:
     AccountSocket() = default;
     AccountSocket(const AccountSocket&);
     ~AccountSocket();
-    AccountSocket& operator =(const AccountSocket&);
-    
-    void setSocket(QTcpSocket*);
-    
+    AccountSocket &operator=(const AccountSocket &);
+
+    void setSocket(QTcpSocket *);
+
     int exec();
-    
+
+    void parser(QString);
+    bool isConnected() const;
+
+    SynchronizationProfile profile(QString) const;
+
+public:
+    void postLocalname();
+    void getRemotename();
+    void postProfileid();
+    void getProfileid();
+    void postProfile();
+    void getProfile();
+
 public slots:
     void receiveDataSocket();
     void sync();
