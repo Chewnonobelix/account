@@ -18,8 +18,10 @@ Item {
             Layout.rowSpan: 1
             Layout.columnSpan: 1
             Layout.preferredHeight: root.height * 0.1
-            Layout.preferredWidth: root.width * 0.1
+            Layout.preferredWidth: root.width * 0.3
+
         }
+
 
         AccountTextInput {
             objectName: "hostname"
@@ -28,18 +30,18 @@ Item {
             Layout.rowSpan: 1
             Layout.columnSpan: 1
             Layout.preferredHeight: root.height * 0.1
-            Layout.preferredWidth: root.width * 0.1
+            Layout.preferredWidth: root.width * 0.3
         }
 
         AccountCheckBox {
-            text: qsTr("Enable syncronization")
+            text: qsTr("Syncronization server")
             objectName: "enableSync"
             Layout.column: 2
             Layout.row: 0
             Layout.rowSpan: 1
             Layout.columnSpan: 1
             Layout.preferredHeight: root.height * 0.1
-            Layout.preferredWidth: root.width * 0.1
+            Layout.preferredWidth: root.width * 0.3
         }
 
         ListView {
@@ -54,37 +56,37 @@ Item {
             Layout.preferredWidth: root.width * 0.1
         }
 
-//        CalendarButton {
-//            objectName: "begin"
-//            Layout.column: 1
-//            Layout.row: 1
-//            Layout.rowSpan: 1
-//            Layout.columnSpan: 1
-//            Layout.preferredHeight: root.height * 0.1
-//            Layout.preferredWidth: root.width * 0.1
-//            visible: syncProfiles.currentModel
-//        }
+        //        CalendarButton {
+        //            objectName: "begin"
+        //            Layout.column: 1
+        //            Layout.row: 1
+        //            Layout.rowSpan: 1
+        //            Layout.columnSpan: 1
+        //            Layout.preferredHeight: root.height * 0.1
+        //            Layout.preferredWidth: root.width * 0.1
+        //            visible: syncProfiles.currentModel
+        //        }
 
-//        CalendarButton {
-//            objectName: "end"
-//            Layout.column: 2
-//            Layout.row: 1
-//            Layout.rowSpan: 1
-//            Layout.columnSpan: 1
-//            Layout.preferredHeight: root.height * 0.1
-//            Layout.preferredWidth: root.width * 0.1
-//            visible: syncProfiles.currentModel
-//        }
+        //        CalendarButton {
+        //            objectName: "end"
+        //            Layout.column: 2
+        //            Layout.row: 1
+        //            Layout.rowSpan: 1
+        //            Layout.columnSpan: 1
+        //            Layout.preferredHeight: root.height * 0.1
+        //            Layout.preferredWidth: root.width * 0.1
+        //            visible: syncProfiles.currentModel
+        //        }
 
-//        AccountLabel {
-//            text: qsTr("Last sync") + " " + Qt.formatDate(syncProfiles.currentModel.lastSync, "dd-MM-yyyy")
-//            Layout.column: 1
-//            Layout.row: 2
-//            Layout.rowSpan: 1
-//            Layout.columnSpan: 2
-//            Layout.preferredHeight: root.height * 0.1
-//            Layout.preferredWidth: root.width * 0.1
-//            visible: syncProfiles.currentModel
-//        }
+        //        AccountLabel {
+        //            text: qsTr("Last sync") + " " + Qt.formatDate(syncProfiles.currentModel.lastSync, "dd-MM-yyyy")
+        //            Layout.column: 1
+        //            Layout.row: 2
+        //            Layout.rowSpan: 1
+        //            Layout.columnSpan: 2
+        //            Layout.preferredHeight: root.height * 0.1
+        //            Layout.preferredWidth: root.width * 0.1
+        //            visible: syncProfiles.currentModel
+        //        }
     }
 }
