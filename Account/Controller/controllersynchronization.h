@@ -12,7 +12,7 @@ class AccountSocket: public AbstractController
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString remoteName READ remoteName)
+    Q_PROPERTY(QString remoteName READ remoteName NOTIFY remoteNameChanged)
 
 private:
     QTcpSocket* m_socket = nullptr;
@@ -49,6 +49,9 @@ public slots:
     void sync();
     void connectTo(QHostAddress);
     void close();
+
+signals:
+    void remoteNameChanged(QString);
 };
 
 class ControllerSynchronization: public AbstractController

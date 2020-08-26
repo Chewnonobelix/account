@@ -52,24 +52,24 @@ Item {
             Layout.row: 1
             Layout.rowSpan: 2
             Layout.columnSpan: 1
-            Layout.preferredHeight: root.height * 0.1
-            Layout.preferredWidth: root.width * 0.1
+            Layout.preferredHeight: root.height * 0.3
+            Layout.preferredWidth: root.width * 0.3
 
             onCurrentIndexChanged: currentIndex > -1 ? model[currentIndex] : null
-
-            onModelChanged: {
-                console.log(model.length, model)
-
-                for(var it in model[0]) {
-                    console.log(model[0][it], it)
-                }
+            header: AccountHeader {
+                text: qsTr("Device name")
+                height: syncProfiles.height * .4
+                width: syncProfiles.width
             }
 
-//            delegate: Rectangle {
-//                AccountLabel {
-//                    text: modelData.remoteName
-//                }
-//            }
+            delegate: Rectangle {
+                height: syncProfiles.height * .2
+                width: syncProfiles.width
+                AccountLabel {
+                    anchors.fill: parent
+                    text: modelData.remoteName
+                }
+            }
         }
 
         //        CalendarButton {

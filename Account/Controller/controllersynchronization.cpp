@@ -27,7 +27,7 @@ void ControllerSynchronization::newConnections()
     auto *list = m_view->findChild<QObject *>("syncProfiles");
     QVariantList vl;
 
-    for (auto it : m_connections)
+    for (auto &it : m_connections)
         vl << QVariant::fromValue(&it);
 
     list->setProperty("model", vl);
@@ -99,7 +99,8 @@ AccountSocket::AccountSocket(const AccountSocket &as) : AbstractController(), m_
 
 AccountSocket::~AccountSocket()
 {
-    delete m_socket;
+    if (m_socket)
+        delete m_socket;
 }
 
 void AccountSocket::setSocket(QTcpSocket *as)
@@ -114,11 +115,15 @@ void AccountSocket::setSocket(QTcpSocket *as)
     getProfileid();
     getRemotename();
 
-    qDebug() << "New connection from remote name" << remoteName() << m_socket->peerAddress();
+    qDebug() << "New connection from remote name" << m_socket->peerName() << remoteName()
+             << m_socket->peerAddress();
 }
 
 void AccountSocket::receiveDataSocket()
 {
+    if (!m_socket)
+        return;
+
     auto d = m_socket->readAll();
     parser(d);
 }
@@ -166,10 +171,13 @@ void AccountSocket::parser(QString data)
         return;
 
     if (split[1] == "post") {
-        if (split[2] == "localName")
+        if (split[2] == "localName") {
             m_remoteName = split[3];
-        if (split[2] == "syncId")
+            emit remoteNameChanged(m_remoteName);
+        }
+        if (split[2] == "syncId") {
             remoteProfile.setId(QUuid::fromString(split[3]));
+        }
     }
 
     if (split[1] == "get") {
@@ -191,6 +199,8 @@ SynchronizationProfile AccountSocket::profile(QString remote) const
             ret = it;
         }
     }
+
+    return ret;
 }
 
 void AccountSocket::postLocalname()
