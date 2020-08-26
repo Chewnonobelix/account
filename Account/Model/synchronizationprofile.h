@@ -40,4 +40,5 @@ public:
     
 };
 
+Q_DECLARE_METATYPE(SynchronizationProfile)
 #endif // SYNCHRONIZATIONPROFILE_H

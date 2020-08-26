@@ -13,11 +13,12 @@ class AccountSocket: public AbstractController
     Q_OBJECT
 
     Q_PROPERTY(QString remoteName READ remoteName NOTIFY remoteNameChanged)
+    Q_PROPERTY(SynchronizationProfile localProfile READ profile NOTIFY profileChanged)
 
 private:
     QTcpSocket* m_socket = nullptr;
     QString m_remoteName = QString();
-    SynchronizationProfile remoteProfile;
+    SynchronizationProfile m_remoteProfile, m_localProfile;
 
 public:
     AccountSocket() = default;
@@ -33,6 +34,7 @@ public:
     bool isConnected() const;
 
     SynchronizationProfile profile(QString) const;
+    SynchronizationProfile profile() const;
 
 public:
     void postLocalname();
@@ -52,6 +54,7 @@ public slots:
 
 signals:
     void remoteNameChanged(QString);
+    void profileChanged();
 };
 
 class ControllerSynchronization: public AbstractController

@@ -173,10 +173,12 @@ void AccountSocket::parser(QString data)
     if (split[1] == "post") {
         if (split[2] == "localName") {
             m_remoteName = split[3];
+            m_localProfile = profile(m_remoteName);
+
             emit remoteNameChanged(m_remoteName);
         }
         if (split[2] == "syncId") {
-            remoteProfile.setId(QUuid::fromString(split[3]));
+            m_remoteProfile.setId(QUuid::fromString(split[3]));
         }
     }
 
@@ -201,6 +203,11 @@ SynchronizationProfile AccountSocket::profile(QString remote) const
     }
 
     return ret;
+}
+
+SynchronizationProfile AccountSocket::profile() const
+{
+    return m_localProfile;
 }
 
 void AccountSocket::postLocalname()

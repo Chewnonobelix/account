@@ -65,9 +65,13 @@ Item {
             delegate: Rectangle {
                 height: syncProfiles.height * .2
                 width: syncProfiles.width
+
                 AccountLabel {
+                    readonly property string nullid: "{00000000-0000-0000-0000-000000000000}"
+
                     anchors.fill: parent
                     text: modelData.remoteName
+                    color: modelData.localProfile.id == nullid ? "red" : "black"
                 }
             }
         }
