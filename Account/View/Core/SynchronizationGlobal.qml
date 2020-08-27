@@ -37,6 +37,7 @@ Item {
 
         AccountCheckBox {
             text: qsTr("Syncronization server")
+            id: enableSync
             objectName: "enableSync"
             Layout.column: 2
             Layout.row: 0
@@ -47,6 +48,7 @@ Item {
         }
 
         ListView {
+            visible: enableSync.checked
             property var currentModel: null
             id: syncProfiles
             objectName: "syncProfiles"
@@ -100,9 +102,9 @@ Item {
 
         GroupBox {
             id: groupSync
-            visible: syncProfiles.currentModel
+            visible: syncProfiles.currentModel && enableSync.checked
             label: AccountCheckBox {
-                id: enableSync
+                id: enableSyncProf
                 checked: syncProfiles.currentModel ? syncProfiles.currentModel.localProfile.id != "{00000000-0000-0000-0000-000000000000}" : false
                 text: syncProfiles.currentModel ? syncProfiles.currentModel.remoteName : ""
             }
@@ -115,7 +117,7 @@ Item {
             Layout.preferredWidth: root.width * 0.7
 
             Syncronization {
-                enabled: enableSync.checked
+                enabled: enableSyncProf.checked
                 id: currentSync
                 anchors.fill: parent
             }
