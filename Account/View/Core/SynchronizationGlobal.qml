@@ -11,6 +11,8 @@ Item {
     GridLayout {
         anchors.fill: parent
 
+        rowSpacing: root.height * 0.02
+        columnSpacing: root.width * 0.02
         AccountLabel {
             text: qsTr("Hostname")
             Layout.column: 0
@@ -52,13 +54,20 @@ Item {
             Layout.row: 1
             Layout.rowSpan: 2
             Layout.columnSpan: 1
-            Layout.preferredHeight: root.height * 0.3
+            Layout.preferredHeight: root.height * 0.9
             Layout.preferredWidth: root.width * 0.3
 
-            onCurrentIndexChanged: currentIndex > -1 ? model[currentIndex] : null
+
+            onCurrentIndexChanged: {
+                currentModel = currentIndex > -1 ? model[currentIndex] : null
+
+                if(currentModel)
+                    currentSync.currentModel = currentModel.localProfil
+            }
+
             header: AccountHeader {
                 text: qsTr("Device name")
-                height: syncProfiles.height * .4
+                height: syncProfiles.height * .1
                 width: syncProfiles.width
             }
 
@@ -66,6 +75,7 @@ Item {
                 height: syncProfiles.height * .2
                 width: syncProfiles.width
 
+                gradient: index == syncProfiles.currentIndex ? AccountStyle.calSelect : AccountStyle.unselectView
                 AccountLabel {
                     readonly property string nullid: "{00000000-0000-0000-0000-000000000000}"
 
@@ -73,40 +83,44 @@ Item {
                     text: modelData.remoteName
                     color: modelData.localProfile.id == nullid ? "red" : "black"
                 }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked:  {
+                        if(syncProfiles.currentIndex !== index) {
+                            syncProfiles.currentIndex = index
+                        }
+                        else {
+                            syncProfiles.currentIndex = -1
+                        }
+                    }
+                }
             }
         }
 
-        //        CalendarButton {
-        //            objectName: "begin"
-        //            Layout.column: 1
-        //            Layout.row: 1
-        //            Layout.rowSpan: 1
-        //            Layout.columnSpan: 1
-        //            Layout.preferredHeight: root.height * 0.1
-        //            Layout.preferredWidth: root.width * 0.1
-        //            visible: syncProfiles.currentModel
-        //        }
+        GroupBox {
+            id: groupSync
+            visible: syncProfiles.currentModel
+            label: AccountCheckBox {
+                id: enableSync
+                checked: syncProfiles.currentModel ? syncProfiles.currentModel.localProfile.id != "{00000000-0000-0000-0000-000000000000}" : false
+                text: syncProfiles.currentModel ? syncProfiles.currentModel.remoteName : ""
+            }
 
-        //        CalendarButton {
-        //            objectName: "end"
-        //            Layout.column: 2
-        //            Layout.row: 1
-        //            Layout.rowSpan: 1
-        //            Layout.columnSpan: 1
-        //            Layout.preferredHeight: root.height * 0.1
-        //            Layout.preferredWidth: root.width * 0.1
-        //            visible: syncProfiles.currentModel
-        //        }
+            Layout.column: 1
+            Layout.row: 1
+            Layout.rowSpan: 2
+            Layout.columnSpan: 2
+            Layout.preferredHeight: root.height * 0.9
+            Layout.preferredWidth: root.width * 0.7
 
-        //        AccountLabel {
-        //            text: qsTr("Last sync") + " " + Qt.formatDate(syncProfiles.currentModel.lastSync, "dd-MM-yyyy")
-        //            Layout.column: 1
-        //            Layout.row: 2
-        //            Layout.rowSpan: 1
-        //            Layout.columnSpan: 2
-        //            Layout.preferredHeight: root.height * 0.1
-        //            Layout.preferredWidth: root.width * 0.1
-        //            visible: syncProfiles.currentModel
-        //        }
+            Syncronization {
+                enabled: enableSync.checked
+                id: currentSync
+                anchors.fill: parent
+            }
+
+
+        }
     }
 }

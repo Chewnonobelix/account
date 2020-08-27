@@ -285,7 +285,7 @@ Dialog {
                 }
                 width: root.width * 0.94
                 height: root.height
-                Synchronization {
+                SynchronizationGlobal {
                     anchors.fill: parent
                     objectName: "syncronization"
                 }
