@@ -19,6 +19,7 @@ private:
     QTcpSocket* m_socket = nullptr;
     QString m_remoteName = QString();
     SynchronizationProfile m_remoteProfile, m_localProfile;
+    bool m_client = false;
 
 public:
     AccountSocket() = default;
@@ -36,6 +37,8 @@ public:
     SynchronizationProfile profile(QString) const;
     SynchronizationProfile profile() const;
 
+    friend bool operator==(const AccountSocket &, const AccountSocket &);
+
 public:
     void postLocalname();
     void getRemotename();
@@ -43,6 +46,7 @@ public:
     void getProfileid();
     void postProfile();
     void getProfile();
+    void onDisconnected();
 
     QString remoteName() const;
 
@@ -55,6 +59,9 @@ public slots:
 signals:
     void remoteNameChanged(QString);
     void profileChanged();
+
+signals:
+    void disconnected();
 };
 
 class ControllerSynchronization: public AbstractController
@@ -69,6 +76,8 @@ private:
     QUdpSocket m_broadcast;
     AccountSocket m_client;
     QObject *m_view = nullptr;
+
+    void updateViewList();
 
 protected:
     void timerEvent(QTimerEvent *);
@@ -87,6 +96,7 @@ public slots:
     void receivedDatagram();
     void sync();
     void clientConnect(QHostAddress);
+    void onDisconnected();
 };
 
 Q_DECLARE_METATYPE(AccountSocket)

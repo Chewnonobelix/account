@@ -24,6 +24,16 @@ void ControllerSynchronization::newConnections()
     m_connections<<AccountSocket();
     m_connections.last().setSocket(m_server.nextPendingConnection());
 
+    connect(&m_connections.last(),
+            &AccountSocket::disconnected,
+            this,
+            &ControllerSynchronization::onDisconnected);
+
+    updateViewList();
+}
+
+void ControllerSynchronization::updateViewList()
+{
     auto *list = m_view->findChild<QObject *>("syncProfiles");
     QVariantList vl;
 
@@ -89,6 +99,14 @@ void ControllerSynchronization::openServer(bool isOpen)
     }
 }
 
+void ControllerSynchronization::onDisconnected()
+{
+    auto *send = dynamic_cast<AccountSocket *>(sender());
+    m_connections.removeAll(*send);
+
+    updateViewList();
+}
+
 QString AccountSocket::remoteName() const
 {
     return m_remoteName;
@@ -99,8 +117,7 @@ AccountSocket::AccountSocket(const AccountSocket &as) : AbstractController(), m_
 
 AccountSocket::~AccountSocket()
 {
-    if (m_socket)
-        delete m_socket;
+    close();
 }
 
 void AccountSocket::setSocket(QTcpSocket *as)
@@ -108,9 +125,12 @@ void AccountSocket::setSocket(QTcpSocket *as)
     if (m_socket)
         disconnect(m_socket, &QIODevice::readyRead, this, &AccountSocket::receiveDataSocket);
 
+    close();
+    m_client = false;
     m_socket = as;
 
     connect(m_socket, &QIODevice::readyRead, this, &AccountSocket::receiveDataSocket);
+    connect(m_socket, &QTcpSocket::disconnected, this, &AccountSocket::disconnected);
 
     getProfileid();
     getRemotename();
@@ -141,8 +161,11 @@ int AccountSocket::exec()
 
 void AccountSocket::close()
 {
-    if (m_socket)
+    if (m_socket && m_client) {
         m_socket->close();
+        delete m_socket;
+        m_socket = nullptr;
+    }
 }
 
 void AccountSocket::sync()
@@ -155,6 +178,7 @@ void AccountSocket::connectTo(QHostAddress addr)
     if (!m_socket)
         m_socket = new QTcpSocket;
 
+    m_client = true;
     m_socket->connectToHost(addr, 7000);
 }
 
@@ -241,4 +265,9 @@ void AccountSocket::getProfile()
 {
     if (isConnected())
         m_socket->write("account_api:get:syncProfile");
+}
+
+bool operator==(const AccountSocket &as1, const AccountSocket &as2)
+{
+    return as1.m_socket == as2.m_socket;
 }
