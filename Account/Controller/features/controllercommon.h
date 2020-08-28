@@ -1,10 +1,10 @@
 #ifndef CONTROLLERCOMMON_H
 #define CONTROLLERCOMMON_H
 
+#include "../core/abstractcontroller.h"
+#include "featurebuilder.h"
 #include <QQmlApplicationEngine>
 #include <QQuickItem>
-#include "abstractcontroller.h"
-#include "featurebuilder.h"
 
 class ControllerCommon: public AbstractController, public FeatureBuilder
 {

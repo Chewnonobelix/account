@@ -1,18 +1,18 @@
 #ifndef CONTROLLERFREQUENCY_H
 #define CONTROLLERFREQUENCY_H
 
-#include <QQmlApplicationEngine>
-#include <QQmlComponent>
-#include <QQuickItem>
-#include <QQmlPropertyMap>
+#include "../core/abstractcontroller.h"
+#include "Model/entry.h"
+#include "Model/frequency.h"
+#include "featurebuilder.h"
+#include "filler.h"
 #include <QMetaMethod>
 #include <QMetaObject>
+#include <QQmlApplicationEngine>
+#include <QQmlComponent>
+#include <QQmlPropertyMap>
+#include <QQuickItem>
 #include <QThread>
-#include "abstractcontroller.h"
-#include "featurebuilder.h"
-#include "Model/frequency.h"
-#include "Model/entry.h"
-#include "filler.h"
 
 class Worker: public QThread
 {

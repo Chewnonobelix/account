@@ -1,7 +1,7 @@
 #ifndef TCPSERVER_HPP
 #define TCPSERVER_HPP
 
-#include "../abstractcontroller.h"
+#include "../core/abstractcontroller.h"
 #include "AccountSocket.h"
 #include <QTcpServer>
 #include <QtCore/qglobal.h>

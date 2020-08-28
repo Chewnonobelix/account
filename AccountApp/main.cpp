@@ -1,8 +1,6 @@
-#include <QGuiApplication>
+#include "Controller/core/maincontroller.h"
 #include <QDebug>
-#include "Controller/maincontroller.h"
-
-
+#include <QGuiApplication>
 
 int main(int argc, char *argv[])
 {

@@ -1,8 +1,8 @@
 #ifndef ACCOUNTSOCKET_HPP
 #define ACCOUNTSOCKET_HPP
 
-#include "../abstractcontroller.h"
-#include "../interfacedatasave.h"
+#include "../core/abstractcontroller.h"
+#include "../data/interfacedatasave.h"
 #include <QHostInfo>
 #include <QTcpSocket>
 #include <QtCore/qglobal.h>

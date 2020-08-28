@@ -10,8 +10,6 @@ int ControllerSynchronization::exec()
             this,
             &ControllerSynchronization::receivedDatagram);
 
-    startTimer(5000);
-
     return 0;
 }
 
@@ -47,12 +45,6 @@ void ControllerSynchronization::updateViewList()
         vl << QVariant::fromValue(it);
 
     list->setProperty("model", vl);
-}
-
-void ControllerSynchronization::timerEvent(QTimerEvent *)
-{
-    //    if (m_server.isListening())
-    //        lookup();
 }
 
 void ControllerSynchronization::lookup()

@@ -1,10 +1,10 @@
 #ifndef TimeGraphController_H
 #define TimeGraphController_H
 
-#include <QThread>
-#include "abstractcontroller.h"
-#include "Model/accountglobal.h"
+#include "../core/abstractcontroller.h"
 #include "InterfaceGraph.h"
+#include "Model/accountglobal.h"
+#include <QThread>
 
 class TimeGraphController: public AbstractController, public InterfaceGraph
 {

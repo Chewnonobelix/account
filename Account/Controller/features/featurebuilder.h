@@ -1,9 +1,9 @@
 #ifndef FEATUREBUILDER_H
 #define FEATUREBUILDER_H
 
-#include <QSharedPointer>
+#include "../core/abstractcontroller.h"
 #include <QQmlApplicationEngine>
-#include "abstractcontroller.h"
+#include <QSharedPointer>
 
 struct FeatureBuilder
 {

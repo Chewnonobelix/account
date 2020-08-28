@@ -4,7 +4,9 @@ QMap<QString, QSharedPointer<FeatureBuilder>> ControllerSettings::registredFeatu
 
 ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSettings::UserScope, "Chewnonobelix Inc", "Account")
 {
-
+    qDebug() << "ControllerBudget" << qRegisterMetaType<ControllerBudget>("BudgetFeature");
+    qDebug() << "ControllerFrequency" << qRegisterMetaType<ControllerFrequency>("FrequencyFeature");
+    qDebug() << "ControllerCommon" << qRegisterMetaType<ControllerCommon>("CommonExpanseFeature");
 }
 
 ControllerSettings::~ControllerSettings()

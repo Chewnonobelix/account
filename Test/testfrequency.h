@@ -1,9 +1,9 @@
 #ifndef TESTFREQUENCY_H
 #define TESTFREQUENCY_H
 
-#include <QTest>
+#include "Controller/features/filler.h"
 #include "Model/frequency.h"
-#include "Controller/filler.h"
+#include <QTest>
 
 class TestFrequency: public QObject
 {

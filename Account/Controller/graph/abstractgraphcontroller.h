@@ -1,11 +1,11 @@
 #ifndef ABSTRACTGRAPHCONTROLLER_H
 #define ABSTRACTGRAPHCONTROLLER_H
 
-#include <QQmlApplicationEngine>
-#include "abstractcontroller.h"
+#include "../core/abstractcontroller.h"
 #include "InterfaceGraph.h"
-#include "graphcontroller.h"
 #include "controllerpiegraph.h"
+#include "graphcontroller.h"
+#include <QQmlApplicationEngine>
 
 class AbstractGraphController : public AbstractController
 {

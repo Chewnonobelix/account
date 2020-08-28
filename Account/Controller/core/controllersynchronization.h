@@ -1,9 +1,9 @@
 #ifndef CONTROLLERSYNCHRONIZATION_H
 #define CONTROLLERSYNCHRONIZATION_H
 
+#include "../network/AccountSocket.h"
+#include "../network/TcpServer.h"
 #include "abstractcontroller.h"
-#include "network/AccountSocket.h"
-#include "network/TcpServer.h"
 #include <QHostAddress>
 #include <QHostInfo>
 #include <QTcpServer>
@@ -25,8 +25,6 @@ private:
     void updateViewList();
 
 protected:
-    void timerEvent(QTimerEvent *);
-
 public:
     ControllerSynchronization() = default;
     

@@ -1,10 +1,13 @@
 #ifndef CONTROLLERSETTINGS_H
 #define CONTROLLERSETTINGS_H
 
+#include "../data/xmltosql.h"
+#include "../features/controllerbudget.h"
+#include "../features/controllercommon.h"
+#include "../features/controllerfrequency.h"
+#include "../features/featurebuilder.h"
 #include "abstractcontroller.h"
 #include "controllersynchronization.h"
-#include "featurebuilder.h"
-#include "xmltosql.h"
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>

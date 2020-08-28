@@ -1,15 +1,15 @@
 #ifndef CONTROLLERDB_H
 #define CONTROLLERDB_H
 
+#include "../../Model/entry.h"
+#include "interfacedatasave.h"
+#include <QSharedPointer>
 #include <QSqlDatabase>
+#include <QSqlError>
 #include <QSqlQuery>
-#include <QVariant>
 #include <QSqlRecord>
 #include <QSqlResult>
-#include <QSharedPointer>
-#include <QSqlError>
-#include "../Model/entry.h"
-#include "interfacedatasave.h"
+#include <QVariant>
 
 class ControllerDB: public InterfaceDataSave
 {
