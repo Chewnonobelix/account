@@ -18,6 +18,11 @@ int ControllerSynchronization::exec()
 void ControllerSynchronization::setView(QObject *v)
 {
     m_view = v;
+
+    if (m_view) {
+        auto *child = m_view->findChild<QObject *>("enableSync");
+        connect(child, SIGNAL(checkChanged(bool)), this, SLOT(openServer(bool)));
+    }
 }
 
 void ControllerSynchronization::newConnections()

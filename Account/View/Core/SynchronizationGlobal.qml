@@ -45,6 +45,10 @@ Item {
             Layout.columnSpan: 1
             Layout.preferredHeight: root.height * 0.1
             Layout.preferredWidth: root.width * 0.3
+
+            signal checkChanged(bool state)
+
+            onCheckStateChanged: checkChanged(checked)
         }
 
         ListView {
