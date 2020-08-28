@@ -33,6 +33,16 @@ Dialog {
         delegate: AccountButton {}
     }
 
+    onApplied: onOpened()
+
+    onOpened: {
+        var i = language.indexOfValue(_settings.language())
+        language.currentIndex = i
+
+        budget.checked = _settings.featureEnable("BudgetFeature")
+        common.checked = _settings.featureEnable("CommonExpanseFeature")
+        frequency.checked = _settings.featureEnable("FrequencyFeature")
+    }
 
     ScrollView {
         anchors.fill: parent
@@ -75,6 +85,7 @@ Dialog {
                     }
                     
                     AccountComboBox {
+                        id: language
                         objectName: "language"
                         Layout.preferredHeight: root.height * 0.07
                         ToolTip.text: qsTr("Select language")
@@ -109,6 +120,7 @@ Dialog {
 
                     
                     AccountCheckBox {
+                        id: budget
                         objectName: "budget"
                         Layout.preferredHeight: root.height * 0.07
                         text: qsTr("Budget")
@@ -118,6 +130,7 @@ Dialog {
                     }
                                         
                     AccountCheckBox {
+                        id: frequency
                         objectName: "frequency"
                         Layout.preferredHeight: root.height * 0.07
                         text: qsTr("Frequency")
@@ -126,6 +139,7 @@ Dialog {
                     }
                                         
                     AccountCheckBox {
+                        id: common
                         objectName: "common"
                         Layout.preferredHeight: root.height * 0.07
                         text: qsTr("Common Expanse")

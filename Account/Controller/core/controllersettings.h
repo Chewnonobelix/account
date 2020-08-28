@@ -36,35 +36,36 @@ public:
     ControllerSettings();
     virtual ~ControllerSettings();
 
-    void init(QQmlEngine&);
-    QString database() const;
-    void setDatabase(QString);
-    QString backupType() const;
-    void setBackup(QString);
-    bool backupEnable() const;
-    void setBackupEnable(bool);
-    bool autoBackup() const;
-    void setAutobackup(bool);
-    inline bool isBackuping() const {return m_backupper.isRunning();}
-    QString language() const;
-    void setLanguage(QString);
-    QString languageCode() const;
+    void init(QQmlEngine &);
 
-    bool featureEnable(QString) const;
-    void setFeatureEnable(QString, bool);
-    QStringList featuresList() const;
+    Q_INVOKABLE QString database() const;
+    Q_INVOKABLE void setDatabase(QString);
+    Q_INVOKABLE QString backupType() const;
+    Q_INVOKABLE void setBackup(QString);
+    Q_INVOKABLE bool backupEnable() const;
+    Q_INVOKABLE void setBackupEnable(bool);
+    Q_INVOKABLE bool autoBackup() const;
+    Q_INVOKABLE void setAutobackup(bool);
+    Q_INVOKABLE inline bool isBackuping() const { return m_backupper.isRunning(); }
+    Q_INVOKABLE QString language() const;
+    Q_INVOKABLE void setLanguage(QString);
+    Q_INVOKABLE QString languageCode() const;
 
-    QString sortingRole() const;
-    void setSortingRole(QString);
-    Qt::SortOrder sortOrder() const;
-    void setSortOrdre(Qt::SortOrder);
-    QString currentProfile() const;
-    void setCurrentProfile(QString);
-    QString currentAccount() const;
-    void setCurrentAccount(QString);
+    Q_INVOKABLE bool featureEnable(QString) const;
+    Q_INVOKABLE void setFeatureEnable(QString, bool);
+    Q_INVOKABLE QStringList featuresList() const;
 
-    bool syncServer() const;
-    void setSyncServer(bool);
+    Q_INVOKABLE QString sortingRole() const;
+    Q_INVOKABLE void setSortingRole(QString);
+    Q_INVOKABLE Qt::SortOrder sortOrder() const;
+    Q_INVOKABLE void setSortOrdre(Qt::SortOrder);
+    Q_INVOKABLE QString currentProfile() const;
+    Q_INVOKABLE void setCurrentProfile(QString);
+    Q_INVOKABLE QString currentAccount() const;
+    Q_INVOKABLE void setCurrentAccount(QString);
+
+    Q_INVOKABLE bool syncServer() const;
+    Q_INVOKABLE void setSyncServer(bool);
 
     InterfaceDataSave* createDb(QString, bool = false) const;
 
