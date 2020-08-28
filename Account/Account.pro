@@ -33,6 +33,8 @@ SOURCES += \
     Controller/controllersettings.cpp \
     Controller/controllersynchronization.cpp \
     Controller/interfacedatasave.cpp \
+    Controller/network/AccountSocket.cpp \
+    Controller/network/TcpServer.cpp \
     Model/accountglobal.cpp \
     Model/commonexpanse.cpp \
     Model/frequency.cpp \
@@ -82,6 +84,8 @@ HEADERS += \
     Controller/dbrequestsinit.h \
     Controller/featurebuilder.h \
     Controller/filler.h \
+    Controller/network/AccountSocket.h \
+    Controller/network/TcpServer.h \
     Model/commonexpanse.h \
     Model/entry.h \
     Model/frequency.h \

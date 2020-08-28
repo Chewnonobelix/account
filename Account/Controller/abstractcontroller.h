@@ -58,7 +58,8 @@ public:
     static void updateEntry(const Entry&);
     
     static Entry entry(QUuid);
-    
+
+    static InterfaceDataSave *db();
     static void setDb(QString);
     static void deleteDb();
     

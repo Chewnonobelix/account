@@ -170,3 +170,8 @@ QMap<QDate, Total> AbstractController::allTotal()
 {
     return m_accountTotal;
 }
+
+InterfaceDataSave *AbstractController::db()
+{
+    return m_db;
+}
