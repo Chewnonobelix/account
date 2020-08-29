@@ -33,15 +33,24 @@ Dialog {
         delegate: AccountButton {}
     }
 
-    onApplied: onOpened()
-
+    onApplied:{
+//        console.log("aaa")
+//        onOpened()
+    }
     onOpened: {
-        var i = language.indexOfValue(_settings.language())
-        language.currentIndex = i
+        language.currentIndex = language.indexOfValue(_settings.language())
 
         budget.checked = _settings.featureEnable("BudgetFeature")
         common.checked = _settings.featureEnable("CommonExpanseFeature")
         frequency.checked = _settings.featureEnable("FrequencyFeature")
+
+        primary.item.currentIndex =  primary.item.indexOfValue(_settings.database())
+        secondadyEnable.checked = _settings.backupEnable()
+
+        if(_settings.backupEnable())
+            backup.item.currentIndex =  backup.item.indexOfValue(_settings.backup())
+
+
     }
 
     ScrollView {
@@ -209,6 +218,7 @@ Dialog {
                     Loader {
                         Layout.column: 1
                         Layout.row: 0
+                        id: primary
                         objectName: "primary"
                         active: true
                         sourceComponent: db
@@ -238,12 +248,12 @@ Dialog {
                     Loader {
                         Layout.column: 1
                         Layout.row: 1
+                        id: backup
                         objectName: "backup"
                         sourceComponent: db
                         active: secondadyEnable.checked
                         Layout.preferredHeight: root.height * 0.07
                         Layout.preferredWidth: root.width * 0.50
-                        id: backup
                         ToolTip.text: qsTr("Select backup database")
                     }
 

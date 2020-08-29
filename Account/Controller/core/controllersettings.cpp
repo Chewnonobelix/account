@@ -55,8 +55,6 @@ void ControllerSettings::init(QQmlEngine & engine)
     m_synchro.openServer(syncServer());
     QObject *syncs = m_view->findChild<QObject *>("syncronization");
     m_synchro.setView(syncs);
-    auto *context = engine.contextForObject(m_view);
-    context->setContextProperty("_settings", this);
 }
 
 void ControllerSettings::registerFeature(QSharedPointer<FeatureBuilder> f)
@@ -135,36 +133,6 @@ QStringList ControllerSettings::featuresList() const
 
 void ControllerSettings::open()
 {
-    //    QObject* obj = m_view->findChild<QObject*>("language");
-    //    int index;
-    //    QMetaObject::invokeMethod(obj, "indexOfValue", Q_RETURN_ARG(int, index), Q_ARG(QVariant, language()));
-    //    obj->setProperty("currentIndex", index);
-
-    //    obj = m_view->findChild<QObject*>("budget");
-    //    obj->setProperty("checked", featureEnable("BudgetFeature"));
-
-    //    obj = m_view->findChild<QObject*>("frequency");
-    //    obj->setProperty("checked", featureEnable("FrequencyFeature"));
-
-    //    obj = m_view->findChild<QObject*>("common");
-    //    obj->setProperty("checked", featureEnable("CommonExpanseFeature"));
-
-    //    obj = m_view->findChild<QObject*>("primary")->property("item").value<QObject*>();
-    //    QMetaObject::invokeMethod(obj, "indexOfValue", Q_RETURN_ARG(int, index), Q_ARG(QVariant, database()));
-    //    obj->setProperty("currentIndex", index);
-
-    //    obj = m_view->findChild<QObject*>("useBackup");
-    //    obj->setProperty("checked", backupEnable());
-
-    //    if(backupEnable())
-    //    {
-    //        obj = m_view->findChild<QObject*>("backup")->property("item").value<QObject*>();
-    //        QMetaObject::invokeMethod(obj, "indexOfValue", Q_RETURN_ARG(int, index), Q_ARG(QVariant, backupType()));
-    //        obj->setProperty("currentIndex", index);
-    //        obj = m_view->findChild<QObject*>("autoconsolidate");
-    //        obj->setProperty("checked", autoBackup());
-    //    }
-
     //    auto syncs = m_view->findChild<QObject *>("syncronization");
     //    obj = syncs->findChild<QObject *>("enableSync");
     //    obj->setProperty("checked", syncServer());

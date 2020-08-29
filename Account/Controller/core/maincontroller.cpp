@@ -39,6 +39,9 @@ MainController::MainController(int storage): AbstractController()
     
     //    connect(&m_graph, TimeGraphController::s_sum, this, receiveSum);
     
+    auto *context = m_engine.rootContext();
+    context->setContextProperty("_settings", &m_settings);
+
 }
 
 MainController::~MainController()
