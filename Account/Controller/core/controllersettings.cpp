@@ -25,9 +25,6 @@ void ControllerSettings::init(QQmlEngine & engine)
 
     m_view = root->findChild<QObject*>("settings");
 
-    connect(m_view, SIGNAL(accepted()), this, SLOT(save()));
-    connect(m_view, SIGNAL(applied()), this, SLOT(save()));
-
     QDir dir;
     auto list = dir.entryInfoList(QStringList("*.qm"));
     QStringList availableLanguage;
@@ -147,39 +144,8 @@ int ControllerSettings::exec()
 
 void ControllerSettings::save()
 {
-    QObject* obj = m_view->findChild<QObject*>("language");
-
-    setLanguage(obj->property("currentText").toString());
-
-    obj = m_view->findChild<QObject*>("budget");
-    setFeatureEnable("BudgetFeature", obj->property("checked").toBool());
-
-    obj = m_view->findChild<QObject*>("frequency");
-    setFeatureEnable("FrequencyFeature", obj->property("checked").toBool());
-
-    obj = m_view->findChild<QObject*>("common");
-    setFeatureEnable("CommonExpanseFeature", obj->property("checked").toBool());
-
-    obj = m_view->findChild<QObject*>("primary")->property("item").value<QObject*>();
-    setDatabase(obj->property("currentValue").toString());
-
-    obj = m_view->findChild<QObject*>("useBackup");
-    setBackupEnable(obj->property("checked").toBool());
-
-    if(backupEnable())
-    {
-        obj = m_view->findChild<QObject*>("backup")->property("item").value<QObject*>();
-        setBackup(obj->property("currentValue").toString());
-        obj = m_view->findChild<QObject*>("autoconsolidate");
-        setAutobackup(obj->property("checked").toBool());
-    }
-    else
-    {
-        setAutobackup(false);
-    }
-
     auto syncs = m_view->findChild<QObject *>("syncronization");
-    obj = syncs->findChild<QObject *>("enableSync");
+    auto * obj = syncs->findChild<QObject *>("enableSync");
     setSyncServer(obj->property("checked").toBool());
 
     AbstractController::setDb(database());

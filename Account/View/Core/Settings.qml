@@ -33,10 +33,6 @@ Dialog {
         delegate: AccountButton {}
     }
 
-    onApplied:{
-//        console.log("aaa")
-//        onOpened()
-    }
     onOpened: {
         language.currentIndex = language.indexOfValue(_settings.language())
 
@@ -47,10 +43,33 @@ Dialog {
         primary.item.currentIndex =  primary.item.indexOfValue(_settings.database())
         secondadyEnable.checked = _settings.backupEnable()
 
-        if(_settings.backupEnable())
+        if(_settings.backupEnable()) {
             backup.item.currentIndex =  backup.item.indexOfValue(_settings.backup())
+            autobackup.checked = _settings.autoBackup()
+        }
+    }
 
+    onAccepted: {
+        onApplied()
+        close()
+    }
 
+    onApplied: {
+        _settings.setLanguage(language.currentText)
+
+        _settings.setFeatureEnable("BudgetFeature", budget.checked)
+        _settings.setFeatureEnable("CommonExpanseFeature", common.checked)
+        _settings.setFeatureEnable("FrequencyFeature", frequency.checked)
+
+        _settings.setDatabase(primary.item.currentValue)
+        _settings.setBackupEnable(secondadyEnable.checked)
+        if(secondadyEnable.checked) {
+            _settings.setBackup(backup.item.currentValue)
+            _settings.setAutobackup(autobackup.checked)
+        }
+        else {
+            _settings.setAutobackup(false)
+        }
     }
 
     ScrollView {
@@ -258,6 +277,7 @@ Dialog {
                     }
 
                     AccountCheckBox {
+                        id: autobackup
                         text: qsTr("Auto backup")
                         objectName: "autoconsolidate"
                         visible: secondadyEnable.checked
