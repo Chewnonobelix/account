@@ -26,19 +26,19 @@ public:
     void setSocket(QTcpSocket *);
 
     void parser(QString);
-    bool isConnected() const;
+    Q_INVOKABLE bool isConnected() const;
 
     SynchronizationProfile profile(QString) const;
     SynchronizationProfile profile() const;
 
 public:
-    void postLocalname();
-    void getRemotename();
-    void postProfileid();
-    void getProfileid();
-    void postProfile();
-    void getProfile();
-    void onDisconnected();
+    Q_INVOKABLE void postLocalname();
+    Q_INVOKABLE void getRemotename();
+    Q_INVOKABLE void postProfileid();
+    Q_INVOKABLE void getProfileid();
+    Q_INVOKABLE void postProfile();
+    Q_INVOKABLE void getProfile();
+    Q_INVOKABLE void onDisconnected();
 
     QString remoteName() const;
 

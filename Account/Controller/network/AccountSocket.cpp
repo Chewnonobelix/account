@@ -117,7 +117,12 @@ void AccountSocket::getProfileid()
         write("account_api:get:syncId");
 }
 
-void AccountSocket::postProfile() {}
+void AccountSocket::postProfile()
+{
+    if (isConnected()) {
+        write("account_api:post:syncProfile" + m_remoteProfile.toString());
+    }
+}
 void AccountSocket::getProfile()
 {
     if (isConnected())
