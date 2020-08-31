@@ -43,6 +43,7 @@ ApplicationWindow {
     }
     
     onVisibilityChanged: {
+
         if(visibility === Window.Minimized)
             hide()
     }

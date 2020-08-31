@@ -40,8 +40,6 @@ QSharedPointer<FeatureBuilder> ControllerFrequency::build(QQmlApplicationEngine 
     auto* context = engine->rootContext();
     context->setContextProperty("_frequency", freqs.data());
     QObject* frequency = frequencyComp.create();
-    
-        
 
     freqs->setManager(frequency);
 

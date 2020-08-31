@@ -30,7 +30,6 @@ private:
     QObject* m_view = nullptr, *m_splash = nullptr;
     InterfaceDataSave* back = nullptr;
     TransfertDatabase m_backupper;
-    ControllerSynchronization m_synchro;
 
 public:
     ControllerSettings();

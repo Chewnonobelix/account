@@ -48,10 +48,10 @@ void ControllerSettings::init(QQmlEngine & engine)
     if(restorer)
         connect(restorer, SIGNAL(s_restore(QString)), this, SLOT(restore(QString)));
 
-    m_synchro.exec();
-    m_synchro.openServer(syncServer());
-    QObject *syncs = m_view->findChild<QObject *>("syncronization");
-    m_synchro.setView(syncs);
+    //    m_synchro.exec();
+    //    m_synchro.openServer(syncServer());
+    //    QObject *syncs = m_view->findChild<QObject *>("syncronization");
+    //    m_synchro.setView(syncs);
 }
 
 void ControllerSettings::registerFeature(QSharedPointer<FeatureBuilder> f)
@@ -335,5 +335,5 @@ bool ControllerSettings::syncServer() const
 void ControllerSettings::setSyncServer(bool s)
 {
     m_settings.setValue("Sync/serverEnable", s);
-    m_synchro.openServer(s);
+    //    m_synchro.openServer(s);
 }

@@ -1,6 +1,5 @@
 #include "maincontroller.h"
 
-
 MainController::MainController(int storage): AbstractController()
 {
     Q_UNUSED(storage)
@@ -64,9 +63,9 @@ int MainController::exec()
     auto *context = m_engine.rootContext();
     context->setContextProperty("_settings", &m_settings);
     context->setContextProperty("_db", db());
-
+    context->setContextProperty("_sync", &m_synchro);
     m_engine.load(QUrl(QStringLiteral("qrc:/Core/Main.qml")));
-    
+
     if (m_engine.rootObjects().size() != 1)
         return -1;
     
@@ -149,27 +148,23 @@ int MainController::exec()
                 connect(past, SIGNAL(s_showFromFrequency(QVariant)), this, SLOT(bind(QVariant)));
         }
     }
-    
-        for(auto it: m_settings.featuresList())
-    {
-        
-        
-        if(QMetaType::type(it.toLatin1()) == 0)
-        {
-            qDebug()<<"Unknow Feature"<<it;
+
+    for (auto it : m_settings.featuresList()) {
+        if (QMetaType::type(it.toLatin1()) == 0) {
+            qDebug() << "Unknow Feature" << it;
             continue;
         }
-        
+
         QMetaType mt(QMetaType::type(it.toLatin1()));
-        AbstractController* p = (AbstractController*)mt.create();
-        auto sp = dynamic_cast<FeatureBuilder*>(p)->build(&m_engine, root);
-        if(sp.dynamicCast<QObject>())
+        AbstractController *p = (AbstractController *) mt.create();
+        auto sp = dynamic_cast<FeatureBuilder *>(p)->build(&m_engine, root);
+        if (sp.dynamicCast<QObject>())
             sp.dynamicCast<QObject>()->setParent(this);
-        
+
         ControllerSettings::registerFeature(sp);
         mt.destroy(p);
     }
-    
+
     loadFeatures();
     qDebug()<<ControllerSettings::registredFeature();
     

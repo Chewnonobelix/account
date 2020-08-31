@@ -34,7 +34,7 @@ Dialog {
     }
 
     onOpened: {
-         console.log(_settings, _budget, _frequency, _commonExpanse, _db)
+        console.log(_settings, _budget, _frequency, _commonExpanse, _db, _sync)
         language.currentIndex = language.indexOfValue(_settings.language())
 
         budget.checked = _settings.featureEnable("BudgetFeature")
@@ -71,6 +71,8 @@ Dialog {
         else {
             _settings.setAutobackup(false)
         }
+
+        syncronization.applied()
     }
 
     ScrollView {
@@ -332,7 +334,7 @@ Dialog {
                 height: root.height
                 SynchronizationGlobal {
                     anchors.fill: parent
-                    objectName: "syncronization"
+                    id: syncronization
                 }
             }
         }

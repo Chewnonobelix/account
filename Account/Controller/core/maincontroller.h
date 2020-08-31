@@ -46,7 +46,8 @@ private:
     LanguageController m_lang;
     ControllerTransfert m_transfert;
     ControllerSettings m_settings;
-    
+    ControllerSynchronization m_synchro;
+
     AbstractGraphController m_graph;
     
     QList<QSharedPointer<FeatureBuilder>> m_features;

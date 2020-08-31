@@ -8,6 +8,15 @@ import "../Style"
 Item {
     id: root
 
+    onVisibleChanged: {
+        enableSync.checked = _settings.syncServer()
+    }
+
+    function applied() {
+        _settings.setSyncServer(enableSync.checked)
+        _sync.openServer(enableSync.checked)
+    }
+
     GridLayout {
         anchors.fill: parent
 
