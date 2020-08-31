@@ -30,7 +30,8 @@ Item {
             Layout.columnSpan: 1
             Layout.preferredHeight: root.height * 0.1
             Layout.preferredWidth: root.width * 0.3
-
+            Layout.alignment: Qt.AlignTop
+            Layout.topMargin: root.height * 0.02
         }
 
 
@@ -42,6 +43,8 @@ Item {
             Layout.columnSpan: 1
             Layout.preferredHeight: root.height * 0.1
             Layout.preferredWidth: root.width * 0.3
+            Layout.alignment: Qt.AlignTop
+            Layout.topMargin: root.height * 0.02
         }
 
         AccountCheckBox {
@@ -54,10 +57,8 @@ Item {
             Layout.columnSpan: 1
             Layout.preferredHeight: root.height * 0.1
             Layout.preferredWidth: root.width * 0.3
-
-            signal checkChanged(bool state)
-
-            onCheckStateChanged: checkChanged(checked)
+            Layout.alignment: Qt.AlignTop
+            Layout.topMargin: root.height * 0.02
         }
 
         ListView {
