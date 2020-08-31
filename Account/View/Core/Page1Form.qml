@@ -48,7 +48,15 @@ Page {
             Layout.preferredWidth: pageTable.width * 0.20
 
             onUpdateSelected: view.unselectAll()
-            onS_datesChanged: view.reset()
+            onS_datesChanged:  {
+                view.reset()
+                _main.updateQuickView()
+                _main.pageChange()
+            }
+
+            onS_monthChanged: {
+                _main.previewCalendar()
+            }
         }
         
         AccountButton {
@@ -66,7 +74,7 @@ Page {
             ToolTip.text: qsTr("Add new transaction")
                         
             onClicked: {
-                mainWindow.adding(false)
+                _main.add(false)
             }
         }
         
@@ -87,7 +95,7 @@ Page {
             
             onClicked: {
                 if (enabled) {
-                    mainWindow.remove(pageTable.currentId)
+                    _main.remove(pageTable.currentId)
                 }
             }
         }
@@ -174,12 +182,6 @@ Page {
                 property var currentEntry
                 
                 backgroundVisible: false
-//                Connections {
-//                    target: cal
-//                    function onS_datesChanged() {
-//                        view.reset()
-//                    }
-//                }
                 
                 onWidthChanged: {
                     flickableItem.contentX = 0
@@ -204,12 +206,12 @@ Page {
                 function setNewIndex(index) {
                     if (selection.contains(index) || index === -1) {
                         selection.clear()
-                        s_view(null)
+                        _main.edit(null)
                     } else {
                         selection.clear()
                         currentRow = index
                         selection.select(index)
-                        s_view(currentEntry.id)
+                        _main.edit(currentEntry.id)
                     }
                 }
                 
@@ -387,11 +389,11 @@ Page {
                 signal s_sortOrder(int order)
 
                 onSortIndicatorColumnChanged: {
-                    s_sortRole(getColumn(sortIndicatorColumn).role)
+                   _main.sortRole(getColumn(sortIndicatorColumn).role)
                 }
                 
                 onSortIndicatorOrderChanged: {
-                    s_sortOrder(sortIndicatorOrder)
+                    _main.sortOrder(sortIndicatorOrder)
                 }
                 
                 function getToolTip(index) {
@@ -455,6 +457,8 @@ Page {
                 objectName: "pageSkip"
                 height: parent.height * 0.05
                 width: parent.width
+
+                onS_pageChange: _main.pageChange()
             }
         }
         

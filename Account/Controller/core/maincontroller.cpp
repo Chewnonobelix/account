@@ -64,30 +64,31 @@ int MainController::exec()
     context->setContextProperty("_settings", &m_settings);
     context->setContextProperty("_db", db());
     context->setContextProperty("_sync", &m_synchro);
+    context->setContextProperty("_main", this);
+    context->setContextProperty("_info", &m_info);
+    context->setContextProperty("_transfert", &m_transfert);
+    context->setContextProperty("_graph", &m_graph);
+
     m_engine.load(QUrl(QStringLiteral("qrc:/Core/Main.qml")));
 
     if (m_engine.rootObjects().size() != 1)
         return -1;
-    
-    changeProfile(m_settings.currentProfile());
 
-    QObject* root = m_engine.rootObjects().first();
-    
-    connect(root, SIGNAL(adding(bool)), this, SLOT(add(bool)));
-    connect(root, SIGNAL(remove(QVariant)), this, SLOT(remove(QVariant)));
-    connect(root, SIGNAL(removeAccount(QString)), this, SLOT(deleteAccount(QString)));
-    connect(root, SIGNAL(s_closing()), this, SLOT(close()));
-    
-    
-    QObject* calendar = root->findChild<QObject*>("cal");
-    
-    if(calendar)
-    {
-        connect(calendar, SIGNAL(s_monthChanged()), this, SLOT(previewCalendar()));
-        connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(updateQuickView()));
-        connect(calendar, SIGNAL(s_datesChanged()), this, SLOT(pageChange()));
+    QObject *root = m_engine.rootObjects().first();
+
+    QObject *info = root->findChild<QObject *>("infoView");
+
+    if (info) {
+        m_info.configure(info);
+
+        QObject *f = info->findChild<QObject *>("frequency");
+        if (f) {
+            QObject *past = f->findChild<QObject *>("frequencyPast");
+            if (past)
+                connect(past, SIGNAL(s_showFromFrequency(QVariant)), this, SLOT(bind(QVariant)));
+        }
     }
-    
+
     QObject* combo = root->findChild<QObject*>("accountSelect");
     
     if(combo)
@@ -99,31 +100,13 @@ int MainController::exec()
     QObject* adding = root->findChild<QObject*>("addingid");
     
     if(adding)
-        connect(adding, SIGNAL(accept()), this, SLOT(adding()));
-    
-    QObject* view = root->findChild<QObject*>("entryView");
-    
-    if(view)
-    {
-        connect(view, SIGNAL(s_view(QVariant)), this, SLOT(edit(QVariant)));
-        connect(view, SIGNAL(s_sortRole(QString)), this, SLOT(sortRole(QString)));
-        connect(view, SIGNAL(s_sortOrder(int)), this, SLOT(sortOrder(int)));
-    }
-    
-    QObject* xml = root->findChild<QObject*>("xmlMenu");
-    if(xml)
-        connect(xml, SIGNAL(s_xml()), this, SLOT(toXml()));
-    
+        connect(adding, SIGNAL(accept()), this, SLOT(adding()));    
     
     QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
     
     if(popup)
         connect(popup, SIGNAL(validate()), this, SLOT(validateCheckEstimated()));
     
-    QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
-    
-    if(skipper)
-        connect(skipper, SIGNAL(s_pageChange()), this, SLOT(pageChange()));
     
     QObject* transfert = root->findChild<QObject*>("transfert");
     
@@ -134,20 +117,6 @@ int MainController::exec()
         connect(&m_transfert, &ControllerTransfert::s_finish, this, &MainController::buildModel);
     }
     
-    QObject* info = root->findChild<QObject*>("infoView");
-    
-    if(info)
-    {
-        m_info.configure(info);
-        
-        QObject* f = info->findChild<QObject*>("frequency");
-        if(f)
-        {
-            QObject* past = f->findChild<QObject*>("frequencyPast");
-            if(past)
-                connect(past, SIGNAL(s_showFromFrequency(QVariant)), this, SLOT(bind(QVariant)));
-        }
-    }
 
     for (auto it : m_settings.featuresList()) {
         if (QMetaType::type(it.toLatin1()) == 0) {
@@ -179,15 +148,7 @@ int MainController::exec()
         QObject* cat = quick->findChild<QObject*>("cat");
         connect(cat, SIGNAL(s_addCategory(QString)), this, SLOT(quickAddCategory(QString)));
     }
-    
-    QObject* profile = root->findChild<QObject*>("drawer");
-    
-    if(profile)
-    {
-        connect(profile, SIGNAL(s_deleteProfile(QString)), this, SLOT(deleteProfile(QString)));        
-        connect(profile, SIGNAL(s_profile(QString)), this, SLOT(changeProfile(QString)));
-    }
-    
+        
     QObject* profiles = m_engine.rootObjects().first()->findChild<QObject*>("popProfile");
     
     if(profiles)
@@ -228,6 +189,9 @@ int MainController::exec()
     connect(this, &AbstractController::s_totalChanged, this, &MainController::previewCalendar);
     languageChange();
     m_synchro.exec();
+
+    changeProfile(m_settings.currentProfile());
+
     return 0;
 }
 
@@ -470,7 +434,8 @@ void MainController::remove(QVariant id)
 
 void MainController::edit(QVariant id)
 {
-    m_info.view(id.toUuid());
+    if (!id.isNull())
+        m_info.view(id.toUuid());
 }
 
 void MainController::previewCalendar()

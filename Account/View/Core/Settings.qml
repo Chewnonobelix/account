@@ -35,6 +35,7 @@ Dialog {
 
     onOpened: {
         console.log(_settings, _budget, _frequency, _commonExpanse, _db, _sync)
+        console.log(_main, _info, _transfert, _graph)
         language.currentIndex = language.indexOfValue(_settings.language())
 
         budget.checked = _settings.featureEnable("BudgetFeature")
