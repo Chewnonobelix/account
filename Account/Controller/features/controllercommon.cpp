@@ -118,7 +118,8 @@ QSharedPointer<FeatureBuilder> ControllerCommon::build(QQmlApplicationEngine * e
     Q_UNUSED(root)
 
     auto common = QSharedPointer<ControllerCommon>::create();
-    
+    auto* context = engine->rootContext();
+    context->setContextProperty("_commonExpanse", common.data());
     QQmlComponent commonComp(engine, QUrl("qrc:/CommonExpanse/CommonExpanseManager.qml"));
     QObject* commonManager = commonComp.create();
     

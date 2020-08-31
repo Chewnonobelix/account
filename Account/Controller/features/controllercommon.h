@@ -5,7 +5,7 @@
 #include "featurebuilder.h"
 #include <QQmlApplicationEngine>
 #include <QQuickItem>
-
+#include <QQmlContext>
 class ControllerCommon: public AbstractController, public FeatureBuilder
 {
     Q_OBJECT

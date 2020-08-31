@@ -4,7 +4,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
 #include <QQuickItem>
-
+#include <QQmlContext>
 #include "../core/abstractcontroller.h"
 #include "Model/budget.h"
 #include "featurebuilder.h"

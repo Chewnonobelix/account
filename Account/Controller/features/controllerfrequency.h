@@ -13,6 +13,7 @@
 #include <QQmlPropertyMap>
 #include <QQuickItem>
 #include <QThread>
+#include <QQmlContext>
 
 class Worker: public QThread
 {
