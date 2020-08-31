@@ -35,13 +35,6 @@ MainController::MainController(int storage): AbstractController()
     {
         qDebug()<<except;
     }
-    
-    
-    //    connect(&m_graph, TimeGraphController::s_sum, this, receiveSum);
-    
-    auto *context = m_engine.rootContext();
-    context->setContextProperty("_settings", &m_settings);
-
 }
 
 MainController::~MainController()
@@ -68,6 +61,10 @@ void MainController::bind(QVariant id)
 
 int MainController::exec()
 {
+    auto *context = m_engine.rootContext();
+    context->setContextProperty("_settings", &m_settings);
+    context->setContextProperty("_db", db());
+
     m_engine.load(QUrl(QStringLiteral("qrc:/Core/Main.qml")));
     
     if (m_engine.rootObjects().size() != 1)
