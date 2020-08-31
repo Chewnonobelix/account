@@ -35,7 +35,7 @@ ApplicationWindow {
     
     id: mainWindow
     
-    flags: Qt.FramelessWindowHint
+    flags: Qt.Window | Qt.FramelessWindowHint
     onClosing: s_closing()
     
     Settings {
