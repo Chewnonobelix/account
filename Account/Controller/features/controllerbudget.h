@@ -36,7 +36,7 @@ public:
     void setManager(QObject*);
     void setCalendar(QObject*);
     
-    QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *, QList<AbstractController *>);
+    QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *);
     QString displayText() const;
     QString baseText() const;
     void checker() {}

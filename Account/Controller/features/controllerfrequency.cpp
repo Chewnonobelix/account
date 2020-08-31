@@ -29,17 +29,16 @@ ControllerFrequency::ControllerFrequency()
     
 }
 
-QSharedPointer<FeatureBuilder> ControllerFrequency::build(QQmlApplicationEngine * engine, QObject * root, QList<AbstractController *> contollers)
+QSharedPointer<FeatureBuilder> ControllerFrequency::build(QQmlApplicationEngine * engine, QObject * root)
 {    
-    Q_UNUSED(contollers)
     Q_UNUSED(root)
 
+    auto freqs = QSharedPointer<ControllerFrequency>::create();
     QQmlComponent frequencyComp(engine, QUrl("qrc:/Frequency/FrequencyManager.qml"));
     auto* context = engine->rootContext();
-    context->setContextProperty("_frequency", frequencyComp.data());
+    context->setContextProperty("_frequency", freqs.data());
     QObject* frequency = frequencyComp.create();
     
-    auto freqs = QSharedPointer<ControllerFrequency>::create();
     
     connect(frequency, SIGNAL(s_open()), freqs.data(), SLOT(openManager()));
     

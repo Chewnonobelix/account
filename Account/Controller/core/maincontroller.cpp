@@ -153,12 +153,7 @@ int MainController::exec()
         }
     }
     
-    
-    QList<AbstractController*> baseAbstract;
-    
-    baseAbstract<<&m_info;
-    
-    for(auto it: m_settings.featuresList())
+        for(auto it: m_settings.featuresList())
     {
         
         
@@ -170,7 +165,7 @@ int MainController::exec()
         
         QMetaType mt(QMetaType::type(it.toLatin1()));
         AbstractController* p = (AbstractController*)mt.create();
-        auto sp = dynamic_cast<FeatureBuilder*>(p)->build(&m_engine, root, baseAbstract);
+        auto sp = dynamic_cast<FeatureBuilder*>(p)->build(&m_engine, root);
         if(sp.dynamicCast<QObject>())
             sp.dynamicCast<QObject>()->setParent(this);
         
