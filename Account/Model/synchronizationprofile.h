@@ -37,7 +37,8 @@ public:
     void setEnd(QDate);
     QDateTime lastSync() const;
     void setLastSync(QDateTime);
-    
+
+    QString toString() const;
 };
 
 Q_DECLARE_METATYPE(SynchronizationProfile)

@@ -59,3 +59,8 @@ void SynchronizationProfile::setId(QUuid id)
 {
     setMetadata("id", id);
 }
+
+QString SynchronizationProfile::toString() const
+{
+    return QString();
+}
