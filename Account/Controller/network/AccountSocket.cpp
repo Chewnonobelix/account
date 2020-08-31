@@ -120,11 +120,24 @@ void AccountSocket::getProfileid()
 void AccountSocket::postProfile()
 {
     if (isConnected()) {
-        write("account_api:post:syncProfile" + m_remoteProfile.toString());
+        write("account_api:post:syncProfile" + m_remoteProfile.toString().toLatin1());
     }
 }
 void AccountSocket::getProfile()
 {
     if (isConnected())
         write("account_api:get:syncProfile");
+}
+
+void AccountSocket::addLocalProfile()
+{
+    m_localProfile.setHostName(QHostInfo::localHostName());
+    m_localProfile.setDeviceName(remoteName());
+
+    auto id = m_db->addSyncProfile(m_localProfile);
+    qDebug() << "Id" << id;
+    m_localProfile.setId(id);
+    m_remoteProfile = m_localProfile;
+
+    postProfile();
 }

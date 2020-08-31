@@ -129,6 +129,8 @@ Item {
                 id: enableSyncProf
                 checked: syncProfiles.currentModel ? syncProfiles.currentModel.localProfile.id != "{00000000-0000-0000-0000-000000000000}" : false
                 text: syncProfiles.currentModel ? syncProfiles.currentModel.remoteName : ""
+
+                onCheckedChanged: currentSync.currentModel.addLocalProfile()
             }
 
             Layout.column: 1

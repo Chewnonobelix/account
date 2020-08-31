@@ -38,7 +38,6 @@ public:
     Q_INVOKABLE void getProfileid();
     Q_INVOKABLE void postProfile();
     Q_INVOKABLE void getProfile();
-    Q_INVOKABLE void onDisconnected();
 
     QString remoteName() const;
 
@@ -48,6 +47,7 @@ public:
 public slots:
     void receiveDataSocket();
     void sync();
+    void addLocalProfile();
 
 signals:
     void remoteNameChanged(QString);

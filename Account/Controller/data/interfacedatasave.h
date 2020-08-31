@@ -80,7 +80,7 @@ public slots:
 
     virtual QList<SynchronizationProfile> selectSyncProfile();
     virtual bool removeSyncProfile(const SynchronizationProfile&);
-    virtual bool addSyncProfile(const SynchronizationProfile&);
+    virtual QUuid addSyncProfile(const SynchronizationProfile &);
     virtual bool updateSyncProfile(const SynchronizationProfile&);
         
     virtual bool init() = 0;

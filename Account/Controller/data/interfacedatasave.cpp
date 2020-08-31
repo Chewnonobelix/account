@@ -67,7 +67,7 @@ bool InterfaceDataSave::removeSyncProfile(const SynchronizationProfile& sp)
     return ret;
 }
 
-bool InterfaceDataSave::addSyncProfile(const SynchronizationProfile& sp)
+QUuid InterfaceDataSave::addSyncProfile(const SynchronizationProfile &sp)
 {
     QDomElement root = m_syncs.documentElement();
     auto list = root.elementsByTagName("profile");
@@ -76,27 +76,29 @@ bool InterfaceDataSave::addSyncProfile(const SynchronizationProfile& sp)
     {
         if(list.at(it).toElement().elementsByTagName("host").at(0).toElement().text() == sp.hostName() &&
                 list.at(it).toElement().elementsByTagName("device").at(0).toElement().text() == sp.deviceName())
-            return false;
+            return QUuid();
     }
     
     auto el = m_syncs.createElement("profile");
     root.appendChild(el);
-    
+
     auto func = [&root, &el](QDomDocument doc, QString tag, QString val) {
         auto el1 = doc.createElement(tag);
         auto text = doc.createTextNode(val);
         el1.appendChild(text);
-        el.appendChild(el1);        
+        el.appendChild(el1);
     };
-    
+
+    auto id = QUuid::createUuid();
+
     func(m_syncs, "host", sp.hostName());
     func(m_syncs, "device", sp.deviceName());
     func(m_syncs, "begin", sp.begin().toString());
     func(m_syncs, "end", sp.end().toString());
     func(m_syncs, "lastSync", sp.lastSync().toString());
-    func(m_syncs, "id", QUuid::createUuid().toString());
+    func(m_syncs, "id", id.toString());
 
-    return true;
+    return id;
 }
 
 bool InterfaceDataSave::updateSyncProfile(const SynchronizationProfile& sp)
