@@ -106,7 +106,7 @@ Popup {
                 
                 text: qsTr("Generate")
                 onClicked: {
-                    s_generate(from.text, to.text)
+                    _frequency.generate(from.text, to.text)
                     close();
                 }
             }

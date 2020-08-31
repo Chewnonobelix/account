@@ -74,10 +74,9 @@ Rectangle {
 
             property var currentModel: currentIndex !== -1 ? model[currentIndex] : null
 
-            signal s_modelChanged(string name)
             onCurrentModelChanged: {
                 if(currentModel) {
-                    s_modelChanged(currentModel.name)
+                    _frequency.setWorker(currentModel.name)
                     pageChanger.pageIndex = 1
                     pageChanger.s_pageChange()
                 }
@@ -110,9 +109,6 @@ Rectangle {
             onModelChanged: {
                 currentIndex = -1
             }
-
-            //            onCurrentIndexChanged: {
-            //            }
 
             delegate: Rectangle {
                 height: 40
@@ -187,15 +183,10 @@ Rectangle {
             property var incomeList: []
             property var outcomeList: []
 
-            signal titleChanged(var id, string title)
-            signal valueChanged(var id, real value)
-            signal catChanged(var id, string cat)
-            signal supportChanged(var id, int support)
-
-            onS_valueChanged: if(entry && enabled) valueChanged(frequencyList.currentModel.id, value)
-            onS_titleChanged: if(entry && enabled) titleChanged(frequencyList.currentModel.id, title)
-            onS_catChanged: if(entry && enabled) catChanged(frequencyList.currentModel.id, cat, "manager")
-            onS_supportChanged: if(entry && enabled) supportChanged(frequencyList.currentModel.id, supp)
+            onS_valueChanged: if(entry && enabled) _frequency.updateFreqValue(frequencyList.currentModel.id, value)
+            onS_titleChanged: if(entry && enabled) _frequency.updateFreqName(frequencyList.currentModel.id, title)
+            onS_catChanged: if(entry && enabled) _frequency.updateFreqCat(frequencyList.currentModel.id, cat, "manager")
+            onS_supportChanged: if(entry && enabled) _frequency.updateFreqSupport(frequencyList.currentModel.id, supp)
 
             onEntryChanged: {
                 typeCombo.currentIndex = CoreModel.typeModel.find(entry ? entry.type: "outcome")
@@ -207,6 +198,7 @@ Rectangle {
                 catModel = Qt.binding(function(){return (entry && entry.type === "income") ? incomeList : outcomeList})
                 linked.catModel = Qt.binding(function() { return catModel})
             }
+
         }
 
         AccountComboBox {
@@ -226,10 +218,9 @@ Rectangle {
             
             model: CoreModel.freqModel
             textRole: "name"
-            signal s_freq(var i, int f)
 
             onCurrentIndexChanged: {
-                if(down && ref.entry) s_freq(frequencyList.currentModel.id, model.get(currentIndex).role)
+                if(down && ref.entry) _frequency.updateFreqFreq(frequencyList.currentModel.id, model.get(currentIndex).role)
             }
         }
 
@@ -253,11 +244,9 @@ Rectangle {
             textRole: "name"
             valueRole: "type"
 
-            signal s_updateType(var id, string nType)
-
             onCurrentIndexChanged: {
                 if(ref.entry && down){
-                    s_updateType(frequencyList.currentModel.id, model.get(currentIndex).type)
+                    _frequency.updateFreqType(frequencyList.currentModel.id, model.get(currentIndex).type)
                 }
             }
         }
@@ -280,7 +269,7 @@ Rectangle {
                 text: qsTr("Endless")
                 signal s_endless(var id, bool e)
 
-                onClicked: if(frequencyList.currentModel) s_endless(frequencyList.currentModel.id, checked)
+                onClicked: if(frequencyList.currentModel) _frequency.updateFreqEndless(frequencyList.currentModel.id, checked)
             }
 
             AccountButton {
@@ -293,10 +282,7 @@ Rectangle {
                 anchors.bottom: parent.bottom
                 enabled: ref.enabled && !endless.checked
 
-                signal s_open(var fId)
-
-                onReleased:  s_open(frequencyList.currentModel.id)
-
+                onReleased:  _frequency.openGenerate(frequencyList.currentModel.id)
             }
 
         }
@@ -467,7 +453,7 @@ Rectangle {
                 visible: isVisible
 
                 function f() {
-                    entryList.s_display(entryList.model.get(index).id)
+                    _frequency.displayEntry(entryList.model.get(index).id)
                     ListView.view.currentIndex = index
                 }
 
