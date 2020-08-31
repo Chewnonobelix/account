@@ -28,6 +28,8 @@ Rectangle {
         anchors.centerIn: root
     }
 
+    onS_open: _frequency.openManager()
+
     GridLayout {
         anchors.fill: parent
         id: layout
@@ -149,7 +151,7 @@ Rectangle {
 
             ToolTip.text: qsTr("Add new frequency")
             
-            onClicked: s_addFrequency()
+            onClicked: _frequency.addFrequency()
         }
 
         AccountButton {
@@ -167,7 +169,7 @@ Rectangle {
 
             ToolTip.text: qsTr("Remove frequency")
             
-            onClicked: s_removeFrequency(frequencyList.currentModel.id)
+            onClicked: _frequency.removeFrequency(frequencyList.currentModel.id)
         }
 
         EntryEdit {

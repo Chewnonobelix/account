@@ -39,9 +39,7 @@ QSharedPointer<FeatureBuilder> ControllerFrequency::build(QQmlApplicationEngine 
     context->setContextProperty("_frequency", freqs.data());
     QObject* frequency = frequencyComp.create();
     
-    
-    connect(frequency, SIGNAL(s_open()), freqs.data(), SLOT(openManager()));
-    
+        
 
     freqs->setManager(frequency);
 
@@ -55,16 +53,8 @@ void ControllerFrequency::setManager(QObject * manager)
 {
     m_manager = manager;
     
-    QObject* add, *remove, *ref, *type;
-    
-    add = m_manager->findChild<QObject*>("addFreq");
-    remove = m_manager->findChild<QObject*>("removeFreq");
-    
-    if(add)
-        connect(add, SIGNAL(s_addFrequency()), this, SLOT(addFrequency()));
-    if(remove)
-        connect(remove, SIGNAL(s_removeFrequency(QVariant)), this, SLOT(removeFrequency(QVariant)));
-    
+    QObject *ref, *type;
+        
     QObject* cat = m_manager->findChild<QObject*>("category");
     
     if(cat)
