@@ -227,7 +227,7 @@ int MainController::exec()
     connect(m_db, &InterfaceDataSave::s_updateEntry, this, &AbstractController::calculTotal);
     connect(this, &AbstractController::s_totalChanged, this, &MainController::previewCalendar);
     languageChange();
-
+    m_synchro.exec();
     return 0;
 }
 

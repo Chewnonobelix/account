@@ -17,6 +17,13 @@ Item {
         _sync.openServer(enableSync.checked)
     }
 
+    Connections {
+        target: _sync
+        function onConnectionListChanged(connectionsList) {
+            syncProfiles.model = connectionsList
+        }
+    }
+
     GridLayout {
         anchors.fill: parent
 
@@ -73,6 +80,7 @@ Item {
             Layout.preferredHeight: root.height * 0.9
             Layout.preferredWidth: root.width * 0.3
 
+            onModelChanged: currentIndex = -1
 
             onCurrentIndexChanged: {
                 currentModel = currentIndex > -1 ? model[currentIndex] : null

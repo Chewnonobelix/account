@@ -32,6 +32,8 @@ public:
     void setView(QObject *);
     void lookup();
 
+signals:
+    void connectionListChanged(QVariantList);
 
 public slots:
     void newConnections();
