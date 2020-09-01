@@ -99,13 +99,15 @@ Item {
                 height: syncProfiles.height * .2
                 width: syncProfiles.width
 
-                gradient: index == syncProfiles.currentIndex ? AccountStyle.calSelect : AccountStyle.unselectView
+                gradient: index === syncProfiles.currentIndex ? AccountStyle.calSelect : AccountStyle.unselectView
+                readonly property string nullid: "{00000000-0000-0000-0000-000000000000}"
+
                 AccountLabel {
-                    readonly property string nullid: "{00000000-0000-0000-0000-000000000000}"
+                    Rectangle {
 
                     anchors.fill: parent
                     text: modelData.remoteName
-                    color: modelData.localProfile.id == nullid ? "red" : "black"
+                    color: modelData.localProfile.id === nullid ? "red" : "black"
                 }
 
                 MouseArea {
@@ -113,6 +115,8 @@ Item {
                     onClicked:  {
                         if(syncProfiles.currentIndex !== index) {
                             syncProfiles.currentIndex = index
+                            syncProfiles.currentModel = modelData
+                            enableSyncProf.checked = modelData.localProfile.id !== nullid
                         }
                         else {
                             syncProfiles.currentIndex = -1
@@ -130,7 +134,10 @@ Item {
                 checked: syncProfiles.currentModel ? syncProfiles.currentModel.localProfile.id != "{00000000-0000-0000-0000-000000000000}" : false
                 text: syncProfiles.currentModel ? syncProfiles.currentModel.remoteName : ""
 
-                onCheckedChanged: currentSync.currentModel.addLocalProfile()
+                onCheckedChanged: {
+                    if(checked) syncProfiles.currentModel.addLocalProfile()
+                    else syncProfiles.currentModel.removeLocalProfile();
+                }
             }
 
             Layout.column: 1
@@ -144,6 +151,7 @@ Item {
                 enabled: enableSyncProf.checked
                 id: currentSync
                 anchors.fill: parent
+                currentModel: syncProfiles.currentModel
             }
 
 

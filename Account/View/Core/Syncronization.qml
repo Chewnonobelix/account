@@ -15,7 +15,6 @@ Item {
             begin.extern(currentModel.begin)
             end.extern(currentModel.end)
         }
-        console.log(currentModel)
     }
 
     GridLayout {

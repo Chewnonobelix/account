@@ -7,7 +7,7 @@ QString SynchronizationProfile::hostName() const
 
 void SynchronizationProfile::setHostName(QString s)
 {
-    setMetadata("hostname", s);
+    setMetadata("hostName", s);
 }
 
 QString SynchronizationProfile::deviceName() const
@@ -58,6 +58,11 @@ QUuid SynchronizationProfile::id() const
 void SynchronizationProfile::setId(QUuid id)
 {
     setMetadata("id", id);
+}
+
+QString SynchronizationProfile::idString() const
+{
+    return id().toString();
 }
 
 QString SynchronizationProfile::toString() const

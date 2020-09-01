@@ -48,6 +48,7 @@ public slots:
     void receiveDataSocket();
     void sync();
     void addLocalProfile();
+    void removeLocalProfile();
 
 signals:
     void remoteNameChanged(QString);

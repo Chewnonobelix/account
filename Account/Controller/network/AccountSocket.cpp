@@ -55,7 +55,7 @@ void AccountSocket::parser(QString data)
         if (split[2] == "localName") {
             m_remoteName = split[3];
             m_localProfile = profile(m_remoteName);
-
+            emit profileChanged();
             emit remoteNameChanged(m_remoteName);
         }
         if (split[2] == "syncId") {
@@ -135,9 +135,21 @@ void AccountSocket::addLocalProfile()
     m_localProfile.setDeviceName(remoteName());
 
     auto id = m_db->addSyncProfile(m_localProfile);
+
+    if (id.isNull())
+        return;
     qDebug() << "Id" << id;
+
     m_localProfile.setId(id);
     m_remoteProfile = m_localProfile;
 
+    postProfile();
+}
+
+void AccountSocket::removeLocalProfile()
+{
+    m_db->removeSyncProfile(m_localProfile);
+    m_localProfile = m_remoteProfile = SynchronizationProfile();
+    emit profileChanged();
     postProfile();
 }
