@@ -80,13 +80,6 @@ int MainController::exec()
 
     if (info) {
         m_info.configure(info);
-
-        QObject *f = info->findChild<QObject *>("frequency");
-        if (f) {
-            QObject *past = f->findChild<QObject *>("frequencyPast");
-            if (past)
-                connect(past, SIGNAL(s_showFromFrequency(QVariant)), this, SLOT(bind(QVariant)));
-        }
     }
 
     QObject* combo = root->findChild<QObject*>("accountSelect");
@@ -94,29 +87,14 @@ int MainController::exec()
     if(combo)
     {
         loadAccount();
-        connect(combo, SIGNAL(s_currentTextChange(QString)), this, SLOT(accountChange(QString)));
     }
-    
-    QObject* adding = root->findChild<QObject*>("addingid");
-    
-    if(adding)
-        connect(adding, SIGNAL(accept()), this, SLOT(adding()));    
-    
-    QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
-    
-    if(popup)
-        connect(popup, SIGNAL(validate()), this, SLOT(validateCheckEstimated()));
-    
-    
-    QObject* transfert = root->findChild<QObject*>("transfert");
-    
-    if(transfert)
-    {
+
+    QObject *transfert = root->findChild<QObject *>("transfert");
+
+    if (transfert) {
         m_transfert.set(transfert);
-        connect(root, SIGNAL(openTransfert()), this, SLOT(openTransfert()));
         connect(&m_transfert, &ControllerTransfert::s_finish, this, &MainController::buildModel);
     }
-    
 
     for (auto it : m_settings.featuresList()) {
         if (QMetaType::type(it.toLatin1()) == 0) {
@@ -148,23 +126,14 @@ int MainController::exec()
         QObject* cat = quick->findChild<QObject*>("cat");
         connect(cat, SIGNAL(s_addCategory(QString)), this, SLOT(quickAddCategory(QString)));
     }
-        
-    QObject* profiles = m_engine.rootObjects().first()->findChild<QObject*>("popProfile");
-    
-    if(profiles)
-    {
-        QObject* okProfile = profiles->findChild<QObject*>("okProfile");
-        connect(okProfile, SIGNAL(clicked()), this, SLOT(addProfile()));
-    }
-    
+
     loadProfiles();
-    
+
     connect(m_db, &InterfaceDataSave::s_updateEntry, this, &MainController::buildModel);
     connect(m_db, &InterfaceDataSave::s_updateEntry, this, &MainController::pageChange);
-    
+
     m_settings.init(m_engine);
-    connect(root, SIGNAL(s_openSetting()), &m_settings, SLOT(open()));
-    
+
     connect(&m_settings, &ControllerSettings::s_language, this, &MainController::languageChange);
     connect(&m_settings, &ControllerSettings::s_finish, this, &MainController::loadFeatures);
     

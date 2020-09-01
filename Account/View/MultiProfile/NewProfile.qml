@@ -81,6 +81,8 @@ Popup {
             Layout.column: 1
             Layout.preferredHeight: root.height * 0.22
             Layout.preferredWidth: root.width * 0.23
+
+            onClicked: _main.addProfile()
         }
 
         AccountButton {

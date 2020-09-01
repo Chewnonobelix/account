@@ -91,7 +91,7 @@ Popup {
         ToolTip.timeout: 1
 
         onClicked:  {
-            checker.validate()
+            _main.validateCheckEstimated()
         }
     }
 

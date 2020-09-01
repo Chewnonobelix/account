@@ -207,7 +207,7 @@ ApplicationWindow {
     Shortcut {
         id: transfertShortcut
         sequence: "F"
-        onActivated: openTransfert()
+        onActivated: _main.openTransfert()
     }
     
     NewProfile {
@@ -255,14 +255,17 @@ ApplicationWindow {
         id: addShort
         sequence: "CTRL+A"
         context: Qt.ApplicationShortcut
-        onActivated: adding(false)
+        onActivated: _main.add(false)
     }
     
     Shortcut {
         id: addAccountShort
         sequence: "CTRL+SHIFT+A"
         context: Qt.ApplicationShortcut
-        onActivated: adding(true)
+        onActivated:  {
+            _main.add(true)
+            console.log("add account")
+        }
         
     }
     
@@ -354,7 +357,7 @@ ApplicationWindow {
                             text: qsTr("Settings")
                             onClicked: {
                                 load.active = false
-                                s_openSetting()
+                                _settings.open()
                             }
                             height: drawer.height*0.1
                             width: drawer.width*.99
@@ -743,7 +746,7 @@ ApplicationWindow {
             }
             
             onCurrentTextChanged: {
-                s_currentTextChange(currentText)
+                _main.accountChange(currentText)
             }
         }
     }

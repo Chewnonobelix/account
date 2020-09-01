@@ -55,7 +55,7 @@ Rectangle {
                     anchors.fill: parent
                     onClicked:  {
                         pastView.currentIndex = index
-                        pastView.s_showFromFrequency(modelData.id)
+                        _main.bind(modelData.id)
                     }
                 }
                 contentItem: AccountLabel {
