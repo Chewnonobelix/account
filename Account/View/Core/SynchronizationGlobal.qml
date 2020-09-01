@@ -104,6 +104,12 @@ Item {
 
                 AccountLabel {
                     Rectangle {
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        height: parent.height
+                        width: parent.width * 0.02
+                        color: modelData.isConnected() ? "green" : "red"
+                    }
 
                     anchors.fill: parent
                     text: modelData.remoteName
