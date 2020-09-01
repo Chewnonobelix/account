@@ -53,27 +53,14 @@ void ControllerInformation::configure(QObject * view)
     if(m_view)
     {
         QObject* child = m_view->findChild<QObject*>("entryEdit");
-        
-        connect(child, SIGNAL(s_titleChanged(QString)), this, SLOT(titleChange(QString)));
-        connect(child, SIGNAL(s_valueChanged(double)), this, SLOT(valueChange(double)));
-        
-        QObject* skip = m_view->findChild<QObject*>("pageSwipper");
-        
-        connect(skip, SIGNAL(s_pageChange()), this , SLOT(pageChange()));    
-        
+                        
         QObject  *catItem;
     
         catItem = child->findChild<QObject*>("category");
         if(catItem)
         {
-            connect(catItem, SIGNAL(s_currentTextChanged(QString)), this, SLOT(categoryChange(QString)));
             connect(catItem, SIGNAL(s_addCategory(QString)), this, SLOT(addNewCategory(QString)));
         }
-
-        QObject* support = child->findChild<QObject*>("support");
-
-        if(support)
-            connect(support, SIGNAL(s_supportChanged(int)), this, SLOT(supportChange(int)));
     }
 }
 

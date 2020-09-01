@@ -4,7 +4,6 @@ import QtQuick.Layouts 1.13
 
 import "../Core"
 import "../Style"
-import Account.Frequency 1.0
 
 Rectangle {    
     color: "transparent"
@@ -75,7 +74,7 @@ Rectangle {
             objectName: "pageSwipper"
             Layout.fillWidth: true
             Layout.preferredHeight: parent.height * 0.05
-            
+            onS_pageChange: _info.pageChange()
         }
     }
 }
