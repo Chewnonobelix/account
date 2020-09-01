@@ -1,10 +1,10 @@
 #ifndef CONTROLLERPIEGRAPH_H
 #define CONTROLLERPIEGRAPH_H
 
+#include "../core/abstractcontroller.h"
+#include "InterfaceGraph.h"
 #include <QDebug>
 #include <QQmlApplicationEngine>
-#include "abstractcontroller.h"
-#include "InterfaceGraph.h"
 
 class ControllerPieGraph: public AbstractController, public InterfaceGraph
 {

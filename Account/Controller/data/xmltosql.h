@@ -1,10 +1,10 @@
 #ifndef XMLTOSQL_H
 #define XMLTOSQL_H
 
-#include <QProcess>
-#include "abstractcontroller.h"
+#include "../core/abstractcontroller.h"
 #include "controllerdb.h"
 #include "controllerxmlmulti.h"
+#include <QProcess>
 
 class TransfertDatabase: public QThread
 {

@@ -112,13 +112,13 @@ void ControllerCommon::removeCommonEntry()
     exec();
 }
 
-QSharedPointer<FeatureBuilder> ControllerCommon::build(QQmlApplicationEngine * engine, QObject * root, QList<AbstractController *> controllers)
+QSharedPointer<FeatureBuilder> ControllerCommon::build(QQmlApplicationEngine * engine, QObject * root)
 {
-    Q_UNUSED(controllers)
     Q_UNUSED(root)
 
     auto common = QSharedPointer<ControllerCommon>::create();
-    
+    auto* context = engine->rootContext();
+    context->setContextProperty("_commonExpanse", common.data());
     QQmlComponent commonComp(engine, QUrl("qrc:/CommonExpanse/CommonExpanseManager.qml"));
     QObject* commonManager = commonComp.create();
     

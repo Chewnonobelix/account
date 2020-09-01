@@ -4,7 +4,9 @@ QMap<QString, QSharedPointer<FeatureBuilder>> ControllerSettings::registredFeatu
 
 ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSettings::UserScope, "Chewnonobelix Inc", "Account")
 {
-
+    qDebug() << "ControllerBudget" << qRegisterMetaType<ControllerBudget>("BudgetFeature");
+    qDebug() << "ControllerFrequency" << qRegisterMetaType<ControllerFrequency>("FrequencyFeature");
+    qDebug() << "ControllerCommon" << qRegisterMetaType<ControllerCommon>("CommonExpanseFeature");
 }
 
 ControllerSettings::~ControllerSettings()
@@ -22,8 +24,6 @@ void ControllerSettings::init(QQmlEngine & engine)
     m_splash = syncomp.create();
 
     m_view = root->findChild<QObject*>("settings");
-
-    connect(m_view, SIGNAL(accepted()), this, SLOT(save()));
 
     QDir dir;
     auto list = dir.entryInfoList(QStringList("*.qm"));
@@ -47,6 +47,11 @@ void ControllerSettings::init(QQmlEngine & engine)
     QObject* restorer = m_view->findChild<QObject*>("restoreDialog");
     if(restorer)
         connect(restorer, SIGNAL(s_restore(QString)), this, SLOT(restore(QString)));
+
+    //    m_synchro.exec();
+    //    m_synchro.openServer(syncServer());
+    //    QObject *syncs = m_view->findChild<QObject *>("syncronization");
+    //    m_synchro.setView(syncs);
 }
 
 void ControllerSettings::registerFeature(QSharedPointer<FeatureBuilder> f)
@@ -125,36 +130,9 @@ QStringList ControllerSettings::featuresList() const
 
 void ControllerSettings::open()
 {
-    QObject* obj = m_view->findChild<QObject*>("language");
-    int index;
-    QMetaObject::invokeMethod(obj, "indexOfValue", Q_RETURN_ARG(int, index), Q_ARG(QVariant, language()));
-    obj->setProperty("currentIndex", index);
-
-
-    obj = m_view->findChild<QObject*>("budget");
-    obj->setProperty("checked", featureEnable("BudgetFeature"));
-
-    obj = m_view->findChild<QObject*>("frequency");
-    obj->setProperty("checked", featureEnable("FrequencyFeature"));
-
-    obj = m_view->findChild<QObject*>("common");
-    obj->setProperty("checked", featureEnable("CommonExpanseFeature"));
-
-    obj = m_view->findChild<QObject*>("primary")->property("item").value<QObject*>();
-    QMetaObject::invokeMethod(obj, "indexOfValue", Q_RETURN_ARG(int, index), Q_ARG(QVariant, database()));
-    obj->setProperty("currentIndex", index);
-
-    obj = m_view->findChild<QObject*>("useBackup");
-    obj->setProperty("checked", backupEnable());
-
-    if(backupEnable())
-    {
-        obj = m_view->findChild<QObject*>("backup")->property("item").value<QObject*>();
-        QMetaObject::invokeMethod(obj, "indexOfValue", Q_RETURN_ARG(int, index), Q_ARG(QVariant, backupType()));
-        obj->setProperty("currentIndex", index);
-        obj = m_view->findChild<QObject*>("autoconsolidate");
-        obj->setProperty("checked", autoBackup());
-    }
+    //    auto syncs = m_view->findChild<QObject *>("syncronization");
+    //    obj = syncs->findChild<QObject *>("enableSync");
+    //    obj->setProperty("checked", syncServer());
 
     QMetaObject::invokeMethod(m_view, "open");
 }
@@ -166,36 +144,9 @@ int ControllerSettings::exec()
 
 void ControllerSettings::save()
 {
-    QObject* obj = m_view->findChild<QObject*>("language");
-
-    setLanguage(obj->property("currentText").toString());
-
-    obj = m_view->findChild<QObject*>("budget");
-    setFeatureEnable("BudgetFeature", obj->property("checked").toBool());
-
-    obj = m_view->findChild<QObject*>("frequency");
-    setFeatureEnable("FrequencyFeature", obj->property("checked").toBool());
-
-    obj = m_view->findChild<QObject*>("common");
-    setFeatureEnable("CommonExpanseFeature", obj->property("checked").toBool());
-
-    obj = m_view->findChild<QObject*>("primary")->property("item").value<QObject*>();
-    setDatabase(obj->property("currentValue").toString());
-
-    obj = m_view->findChild<QObject*>("useBackup");
-    setBackupEnable(obj->property("checked").toBool());
-
-    if(backupEnable())
-    {
-        obj = m_view->findChild<QObject*>("backup")->property("item").value<QObject*>();
-        setBackup(obj->property("currentValue").toString());
-        obj = m_view->findChild<QObject*>("autoconsolidate");
-        setAutobackup(obj->property("checked").toBool());
-    }
-    else
-    {
-        setAutobackup(false);
-    }
+    auto syncs = m_view->findChild<QObject *>("syncronization");
+    auto * obj = syncs->findChild<QObject *>("enableSync");
+    setSyncServer(obj->property("checked").toBool());
 
     AbstractController::setDb(database());
 }
@@ -374,4 +325,15 @@ QString ControllerSettings::currentAccount() const
 void ControllerSettings::setCurrentAccount(QString account)
 {
     m_settings.setValue("State/Account", account);
+}
+
+bool ControllerSettings::syncServer() const
+{
+    return m_settings.value("Sync/serverEnable", false).toBool();
+}
+
+void ControllerSettings::setSyncServer(bool s)
+{
+    m_settings.setValue("Sync/serverEnable", s);
+    //    m_synchro.openServer(s);
 }

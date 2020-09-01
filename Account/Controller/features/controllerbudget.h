@@ -4,9 +4,9 @@
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
 #include <QQuickItem>
-
+#include <QQmlContext>
+#include "../core/abstractcontroller.h"
 #include "Model/budget.h"
-#include "abstractcontroller.h"
 #include "featurebuilder.h"
 #include "filler.h"
 
@@ -36,7 +36,7 @@ public:
     void setManager(QObject*);
     void setCalendar(QObject*);
     
-    QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *, QList<AbstractController *>);
+    QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *);
     QString displayText() const;
     QString baseText() const;
     void checker() {}

@@ -307,11 +307,11 @@ void ControllerBudget::setCalendar(QObject * cal)
     m_cal = cal;
 }
 
-QSharedPointer<FeatureBuilder> ControllerBudget::build(QQmlApplicationEngine * engine, QObject * root, QList<AbstractController *> controllers)
-{
-    Q_UNUSED(controllers)
-        
+QSharedPointer<FeatureBuilder> ControllerBudget::build(QQmlApplicationEngine * engine, QObject * root)
+{        
     auto budget = QSharedPointer<ControllerBudget>::create();
+    auto* context = engine->rootContext();
+    context->setContextProperty("_budget", budget.data());
     QQmlComponent budgetComp(engine, QUrl("qrc:/Budget/BudgetManager.qml"));
     qDebug()<<budgetComp.errorString();
     QObject* budgetManager = budgetComp.create();

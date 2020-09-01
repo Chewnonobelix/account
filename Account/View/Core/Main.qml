@@ -35,14 +35,15 @@ ApplicationWindow {
     
     id: mainWindow
     
-    flags: Qt.FramelessWindowHint
-    onClosing: s_closing()
+    flags: Qt.Window | Qt.FramelessWindowHint
+    onClosing: _main.close()
     
     Settings {
         objectName: "settings"
     }
     
     onVisibilityChanged: {
+
         if(visibility === Window.Minimized)
             hide()
     }
@@ -386,7 +387,7 @@ ApplicationWindow {
                             objectName: "deleteProfile"
                             enabled: drawer.currentProfile !== "Default"
                             
-                            onClicked:  drawer.s_deleteProfile(drawer.currentProfile)
+                            onClicked:  _main.deleteProfile(drawer.currentProfile)
                             height: drawer.height*0.1
                             width: drawer.width*.99
                         }
@@ -436,7 +437,7 @@ ApplicationWindow {
                                         checkable: true
                                         onClicked: {
                                             drawer.currentProfile = text
-                                            drawer.s_profile(text)
+                                            _main.changeProfile(text)
                                         }
                                         height: drawer.height*0.1
                                         width: drawer.width*.99
@@ -802,7 +803,7 @@ ApplicationWindow {
                 anchors.topMargin: padding
                 
                 onClicked: {
-                    mainWindow.removeAccount(labelDelete.account)
+                    _main.deleteAccount(labelDelete.account)
                     deleteAccount.close()
                 }
             }

@@ -50,5 +50,7 @@
         <file>Functionnal/CalendarPage.qml</file>
         <file>Style/exit.png</file>
         <file>Style/AccountMenuButton.qml</file>
+        <file>Core/SynchronizationGlobal.qml</file>
+        <file>Core/Syncronization.qml</file>
     </qresource>
 </RCC>

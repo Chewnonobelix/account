@@ -26,6 +26,13 @@ Item {
             Layout.rowSpan: 1
             Layout.columnSpan: 2
             Layout.alignment: Qt.AlignTop
+
+            onAddNewCategory: _info.addNewCategory(cat)
+
+            onS_catChanged: _info.categoryChange(cat)
+            onS_titleChanged: _info.titleChange(title)
+            onS_valueChanged: _info.valueChange(value)
+            onS_supportChanged: _info.supportChange(supp)
         }
         rowSpacing: root.height * 0.02
         columnSpacing: root.width * 0.02

@@ -25,14 +25,25 @@ DEPENDPATH += $$OUT_PWD/../DesignLibrary/DesignPattern/debug
 LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
 
 SOURCES += \
-    Controller/abstractgraphcontroller.cpp \
-    Controller/controllerbudget.cpp \
-    Controller/controllercommon.cpp \
-    Controller/controllerfrequency.cpp \
-    Controller/controllerpiegraph.cpp \
-    Controller/controllersettings.cpp \
-    Controller/controllersynchronization.cpp \
-    Controller/interfacedatasave.cpp \
+    Controller/core/abstractcontroller.cpp \
+    Controller/core/controllerinformation.cpp \
+    Controller/core/controllersettings.cpp \
+    Controller/core/controllersynchronization.cpp \
+    Controller/core/controllertransfert.cpp \
+    Controller/core/languagecontroller.cpp \
+    Controller/core/maincontroller.cpp \
+    Controller/data/controllerdb.cpp \
+    Controller/data/controllerxmlmulti.cpp \
+    Controller/data/interfacedatasave.cpp \
+    Controller/data/xmltosql.cpp \
+    Controller/features/controllerbudget.cpp \
+    Controller/features/controllercommon.cpp \
+    Controller/features/controllerfrequency.cpp \
+    Controller/graph/abstractgraphcontroller.cpp \
+    Controller/graph/controllerpiegraph.cpp \
+    Controller/graph/graphcontroller.cpp \
+    Controller/network/AccountSocket.cpp \
+    Controller/network/TcpServer.cpp \
     Model/accountglobal.cpp \
     Model/commonexpanse.cpp \
     Model/frequency.cpp \
@@ -41,16 +52,7 @@ SOURCES += \
     Model/information.cpp \
     Model/synchronizationprofile.cpp \
     Model/total.cpp \
-    Controller/abstractcontroller.cpp \
-    Controller/controllerdb.cpp \
-    Controller/maincontroller.cpp \
-    Controller/controllerinformation.cpp \
-    Controller/graphcontroller.cpp \
-    Controller/xmltosql.cpp \
     Model/budget.cpp \
-    Controller/controllerxmlmulti.cpp \
-    Controller/languagecontroller.cpp \
-    Controller/controllertransfert.cpp
 
 RESOURCES += \
     View/Account.qrc
@@ -71,17 +73,29 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 #                account_en.ts \
 
 HEADERS += \
-    Controller/InterfaceGraph.h \
-    Controller/abstractgraphcontroller.h \
-    Controller/controllerbudget.h \
-    Controller/controllercommon.h \
-    Controller/controllerfrequency.h \
-    Controller/controllerpiegraph.h \
-    Controller/controllersettings.h \
-    Controller/controllersynchronization.h \
-    Controller/dbrequestsinit.h \
-    Controller/featurebuilder.h \
-    Controller/filler.h \
+    Controller/core/abstractcontroller.h \
+    Controller/core/controllerinformation.h \
+    Controller/core/controllersettings.h \
+    Controller/core/controllersynchronization.h \
+    Controller/core/controllertransfert.h \
+    Controller/core/languagecontroller.h \
+    Controller/core/maincontroller.h \
+    Controller/data/controllerdb.h \
+    Controller/data/controllerxmlmulti.h \
+    Controller/data/dbrequestsinit.h \
+    Controller/data/interfacedatasave.h \
+    Controller/data/xmltosql.h \
+    Controller/features/controllerbudget.h \
+    Controller/features/controllercommon.h \
+    Controller/features/controllerfrequency.h \
+    Controller/features/featurebuilder.h \
+    Controller/features/filler.h \
+    Controller/graph/InterfaceGraph.h \
+    Controller/graph/abstractgraphcontroller.h \
+    Controller/graph/controllerpiegraph.h \
+    Controller/graph/graphcontroller.h \
+    Controller/network/AccountSocket.h \
+    Controller/network/TcpServer.h \
     Model/commonexpanse.h \
     Model/entry.h \
     Model/frequency.h \
@@ -89,18 +103,8 @@ HEADERS += \
     Model/subbudget.h \
     Model/synchronizationprofile.h \
     Model/total.h \
-    Controller/abstractcontroller.h \
-    Controller/controllerdb.h \
-    Controller/maincontroller.h \
-    Controller/controllerinformation.h \
-    Controller/interfacedatasave.h \
-    Controller/graphcontroller.h \
-    Controller/xmltosql.h \
     Model/budget.h \
-    Controller/controllerxmlmulti.h \
     Model/accountglobal.h \
-    Controller/controllertransfert.h \
-    Controller/languagecontroller.h \
     account_global.h
     Model/frequency.h
 

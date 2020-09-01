@@ -1,11 +1,11 @@
 #ifndef CONTROLLERCOMMON_H
 #define CONTROLLERCOMMON_H
 
+#include "../core/abstractcontroller.h"
+#include "featurebuilder.h"
 #include <QQmlApplicationEngine>
 #include <QQuickItem>
-#include "abstractcontroller.h"
-#include "featurebuilder.h"
-
+#include <QQmlContext>
 class ControllerCommon: public AbstractController, public FeatureBuilder
 {
     Q_OBJECT
@@ -21,7 +21,7 @@ public:
     
     void init();
     
-    QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *, QList<AbstractController *>);
+    QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *);
     QString displayText() const;
     QString baseText() const;
     void checker() {}

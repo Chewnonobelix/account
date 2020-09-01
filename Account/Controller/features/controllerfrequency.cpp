@@ -26,21 +26,20 @@ Worker& Worker::operator =(const Worker&)
 
 ControllerFrequency::ControllerFrequency()
 {
-    
+    connect((QThread *) &m_filler, SIGNAL(finished()), this, SLOT(endFill()));
+
+    connect(m_db, &InterfaceDataSave::s_updateFrequency, this, &ControllerFrequency::exec);
 }
 
-QSharedPointer<FeatureBuilder> ControllerFrequency::build(QQmlApplicationEngine * engine, QObject * root, QList<AbstractController *> contollers)
+QSharedPointer<FeatureBuilder> ControllerFrequency::build(QQmlApplicationEngine * engine, QObject * root)
 {    
-    Q_UNUSED(contollers)
     Q_UNUSED(root)
 
-    QQmlComponent frequencyComp(engine, QUrl("qrc:/Frequency/FrequencyManager.qml"));
-    QObject* frequency = frequencyComp.create();
-    
     auto freqs = QSharedPointer<ControllerFrequency>::create();
-    
-    connect(frequency, SIGNAL(s_open()), freqs.data(), SLOT(openManager()));
-    
+    QQmlComponent frequencyComp(engine, QUrl("qrc:/Frequency/FrequencyManager.qml"));
+    auto* context = engine->rootContext();
+    context->setContextProperty("_frequency", freqs.data());
+    QObject* frequency = frequencyComp.create();
 
     freqs->setManager(frequency);
 
@@ -53,68 +52,8 @@ QSharedPointer<FeatureBuilder> ControllerFrequency::build(QQmlApplicationEngine 
 void ControllerFrequency::setManager(QObject * manager)
 {
     m_manager = manager;
-    
-    QObject* add, *remove, *ref, *type;
-    
-    add = m_manager->findChild<QObject*>("addFreq");
-    remove = m_manager->findChild<QObject*>("removeFreq");
-    
-    if(add)
-        connect(add, SIGNAL(s_addFrequency()), this, SLOT(addFrequency()));
-    if(remove)
-        connect(remove, SIGNAL(s_removeFrequency(QVariant)), this, SLOT(removeFrequency(QVariant)));
-    
-    QObject* cat = m_manager->findChild<QObject*>("category");
-    
-    if(cat)
-        connect(cat, SIGNAL(s_addCategory(QString)), this, SLOT(addNewCategory(QString)));
-    
-    
-    ref = m_manager->findChild<QObject*>("ref");
-    
-    if(ref)
-    {
-        connect(ref, SIGNAL(valueChanged(QVariant, double)), this, SLOT(updateFreqValue(QVariant,double)));
-        connect(ref, SIGNAL(titleChanged(QVariant, QString)), this, SLOT(updateFreqName(QVariant,QString)));
-        connect(ref, SIGNAL(catChanged(QVariant, QString)), this, SLOT(updateFreqCat(QVariant,QString)));
-        connect(ref, SIGNAL(supportChanged(QVariant, int)), this, SLOT(updateFreqSupport(QVariant,int)));
-    }
-    
-    QObject* when = m_manager->findChild<QObject*>("whenCombo");
-    
-    if(when)
-        connect(when, SIGNAL(s_freq(QVariant, int)), this, SLOT(updateFreqFreq(QVariant, int)));
-    
-    type = m_manager->findChild<QObject*>("type");
-    if(type)
-        connect(type, SIGNAL(s_updateType(QVariant, QString)), this, SLOT(updateFreqType(QVariant,QString)));
-    
-    QObject* button = m_manager->findChild<QObject*>("generateOpen");
 
-    if(button)
-        connect(button, SIGNAL(s_open(QVariant)), this, SLOT(openGenerate(QVariant)));
- 
-    QObject* el = m_manager->findChild<QObject*>("entryList");
-    
-    if(el)
-        connect(el, SIGNAL(s_display(QVariant)), this, SLOT(displayEntry(QVariant)));
-    
     m_generate = m_manager->findChild<QObject*>("generate");
-        
-    connect(m_generate, SIGNAL(s_generate(QString, QString)), this, SLOT(generate(QString, QString)));
-    
-    QObject* freqList = m_manager->findChild<QObject*>("frequencyList");
-    
-    if(freqList)
-        connect(freqList, SIGNAL(s_modelChanged(QString)), this, SLOT(setWorker(QString)));
-
-    connect((QThread*)&m_filler, SIGNAL(finished()), this, SLOT(endFill()));
-
-    QObject* freqEndless = m_manager->findChild<QObject*>("endless");
-    if(freqEndless)
-        connect(freqEndless, SIGNAL(s_endless(QVariant, bool)), this, SLOT(updateFreqEndless(QVariant,bool)));
-    
-    connect(m_db, &InterfaceDataSave::s_updateFrequency, this, &ControllerFrequency::exec);
 }
 
 void ControllerFrequency::setWorker(QString name)

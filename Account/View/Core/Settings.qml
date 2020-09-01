@@ -8,7 +8,7 @@ import "../Style"
 Dialog {    
     id: root
     title: qsTr("Settings")
-    standardButtons: Dialog.Save | Dialog.Cancel
+    standardButtons: Dialog.Save | Dialog.Cancel | DialogButtonBox.Apply
     
     width: 600
     height: 400
@@ -33,6 +33,48 @@ Dialog {
         delegate: AccountButton {}
     }
 
+    onOpened: {
+        console.log(_settings, _budget, _frequency, _commonExpanse, _db, _sync)
+        console.log(_main, _info, _transfert, _graph)
+        language.currentIndex = language.indexOfValue(_settings.language())
+
+        budget.checked = _settings.featureEnable("BudgetFeature")
+        common.checked = _settings.featureEnable("CommonExpanseFeature")
+        frequency.checked = _settings.featureEnable("FrequencyFeature")
+
+        primary.item.currentIndex =  primary.item.indexOfValue(_settings.database())
+        secondadyEnable.checked = _settings.backupEnable()
+
+        if(_settings.backupEnable()) {
+            backup.item.currentIndex =  backup.item.indexOfValue(_settings.backup())
+            autobackup.checked = _settings.autoBackup()
+        }
+    }
+
+    onAccepted: {
+        onApplied()
+        close()
+    }
+
+    onApplied: {
+        _settings.setLanguage(language.currentText)
+
+        _settings.setFeatureEnable("BudgetFeature", budget.checked)
+        _settings.setFeatureEnable("CommonExpanseFeature", common.checked)
+        _settings.setFeatureEnable("FrequencyFeature", frequency.checked)
+
+        _settings.setDatabase(primary.item.currentValue)
+        _settings.setBackupEnable(secondadyEnable.checked)
+        if(secondadyEnable.checked) {
+            _settings.setBackup(backup.item.currentValue)
+            _settings.setAutobackup(autobackup.checked)
+        }
+        else {
+            _settings.setAutobackup(false)
+        }
+
+        syncronization.applied()
+    }
 
     ScrollView {
         anchors.fill: parent
@@ -75,6 +117,7 @@ Dialog {
                     }
                     
                     AccountComboBox {
+                        id: language
                         objectName: "language"
                         Layout.preferredHeight: root.height * 0.07
                         ToolTip.text: qsTr("Select language")
@@ -109,6 +152,7 @@ Dialog {
 
                     
                     AccountCheckBox {
+                        id: budget
                         objectName: "budget"
                         Layout.preferredHeight: root.height * 0.07
                         text: qsTr("Budget")
@@ -118,6 +162,7 @@ Dialog {
                     }
                                         
                     AccountCheckBox {
+                        id: frequency
                         objectName: "frequency"
                         Layout.preferredHeight: root.height * 0.07
                         text: qsTr("Frequency")
@@ -126,6 +171,7 @@ Dialog {
                     }
                                         
                     AccountCheckBox {
+                        id: common
                         objectName: "common"
                         Layout.preferredHeight: root.height * 0.07
                         text: qsTr("Common Expanse")
@@ -195,6 +241,7 @@ Dialog {
                     Loader {
                         Layout.column: 1
                         Layout.row: 0
+                        id: primary
                         objectName: "primary"
                         active: true
                         sourceComponent: db
@@ -224,16 +271,17 @@ Dialog {
                     Loader {
                         Layout.column: 1
                         Layout.row: 1
+                        id: backup
                         objectName: "backup"
                         sourceComponent: db
                         active: secondadyEnable.checked
                         Layout.preferredHeight: root.height * 0.07
                         Layout.preferredWidth: root.width * 0.50
-                        id: backup
                         ToolTip.text: qsTr("Select backup database")
                     }
 
                     AccountCheckBox {
+                        id: autobackup
                         text: qsTr("Auto backup")
                         objectName: "autoconsolidate"
                         visible: secondadyEnable.checked
@@ -273,6 +321,21 @@ Dialog {
                             }
                         }
                     }
+                }
+            }
+
+            GroupBox {
+                id: sync
+                label: AccountHeader {
+                    text: qsTr("Syncronization")
+                    width: sync.width
+                    height: root.height * 0.10
+                }
+                width: root.width * 0.94
+                height: root.height
+                SynchronizationGlobal {
+                    anchors.fill: parent
+                    id: syncronization
                 }
             }
         }

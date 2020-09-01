@@ -13,11 +13,13 @@ AccountBackground {
     property var entry: null
     property var catModel: []
     borderEnabled: false
+
     signal s_titleChanged(string title)
     signal s_estimatedChanged(bool title)
     signal s_valueChanged(real value)
     signal s_catChanged(string cat)
     signal s_supportChanged(int supp)
+    signal addNewCategory(string cat)
 
     function changeDirection() {
         grid.flow = grid.flow === GridLayout.LeftToRight ? GridLayout.TopToBottom : GridLayout.LeftToRight
@@ -141,6 +143,8 @@ AccountBackground {
                 width: parent.width
 
                 editable: currentText === ""
+
+                onS_addCategory: root.addNewCategory(cat)
 
                 onS_currentTextChanged: {
                     if(currentText !== "")

@@ -38,12 +38,15 @@ QList<SynchronizationProfile> InterfaceDataSave::selectSyncProfile()
         val = el.elementsByTagName("device").at(0).toElement().text();
         sp.setDeviceName(val);
         val = el.elementsByTagName("begin").at(0).toElement().text();
-        sp.setbegin(QDate::fromString(val));
+        sp.setBegin(QDate::fromString(val));
         val = el.elementsByTagName("end").at(0).toElement().text();
         sp.setEnd(QDate::fromString(val));
         val = el.elementsByTagName("lastSync").at(0).toElement().text();
         sp.setLastSync(QDateTime::fromString(val));
         ret<<sp;
+        val = el.elementsByTagName("id").at(0).toElement().text();
+        sp.setId(QUuid::fromString(val));
+        ret << sp;
     }
     return ret;
 }
@@ -55,17 +58,16 @@ bool InterfaceDataSave::removeSyncProfile(const SynchronizationProfile& sp)
     bool ret = false;
     for(auto it = 0; it < list.size(); it++)
     {
-        if(list.at(it).toElement().elementsByTagName("host").at(0).toElement().text() == sp.hostName() &&
-                list.at(it).toElement().elementsByTagName("device").at(0).toElement().text() == sp.deviceName())
-        {
-           ret |= !root.removeChild(list.at(it).toElement()).isNull(); 
+        if (list.at(it).toElement().elementsByTagName("id").at(0).toElement().text()
+            == sp.id().toString()) {
+            ret |= !root.removeChild(list.at(it).toElement()).isNull();
         }
     }
     
     return ret;
 }
 
-bool InterfaceDataSave::addSyncProfile(const SynchronizationProfile& sp)
+QUuid InterfaceDataSave::addSyncProfile(const SynchronizationProfile &sp)
 {
     QDomElement root = m_syncs.documentElement();
     auto list = root.elementsByTagName("profile");
@@ -74,26 +76,29 @@ bool InterfaceDataSave::addSyncProfile(const SynchronizationProfile& sp)
     {
         if(list.at(it).toElement().elementsByTagName("host").at(0).toElement().text() == sp.hostName() &&
                 list.at(it).toElement().elementsByTagName("device").at(0).toElement().text() == sp.deviceName())
-            return false;
+            return QUuid();
     }
     
     auto el = m_syncs.createElement("profile");
     root.appendChild(el);
-    
+
     auto func = [&root, &el](QDomDocument doc, QString tag, QString val) {
         auto el1 = doc.createElement(tag);
         auto text = doc.createTextNode(val);
         el1.appendChild(text);
-        el.appendChild(el1);        
+        el.appendChild(el1);
     };
-    
+
+    auto id = QUuid::createUuid();
+
     func(m_syncs, "host", sp.hostName());
     func(m_syncs, "device", sp.deviceName());
     func(m_syncs, "begin", sp.begin().toString());
     func(m_syncs, "end", sp.end().toString());
     func(m_syncs, "lastSync", sp.lastSync().toString());
-    
-    return true;
+    func(m_syncs, "id", id.toString());
+
+    return id;
 }
 
 bool InterfaceDataSave::updateSyncProfile(const SynchronizationProfile& sp)
@@ -103,15 +108,16 @@ bool InterfaceDataSave::updateSyncProfile(const SynchronizationProfile& sp)
     bool ret = false;
     for(auto it = 0; it < list.size(); it++)
     {
-        if(list.at(it).toElement().elementsByTagName("host").at(0).toElement().text() == sp.hostName() &&
-                list.at(it).toElement().elementsByTagName("device").at(0).toElement().text() == sp.deviceName())
-        {
-           ret = true;
-           QDomElement el = list.at(it).toElement();
-           el.elementsByTagName("begin").at(0).firstChild().setNodeValue(sp.begin().toString());
-           el.elementsByTagName("end").at(0).firstChild().setNodeValue(sp.end().toString());
-           el.elementsByTagName("lastSync").at(0).firstChild().setNodeValue(sp.lastSync().toString());
-           
+        if (list.at(it).toElement().elementsByTagName("id").at(0).toElement().text()
+            == sp.id().toString()) {
+            ret = true;
+            QDomElement el = list.at(it).toElement();
+            el.elementsByTagName("begin").at(0).firstChild().setNodeValue(sp.begin().toString());
+            el.elementsByTagName("end").at(0).firstChild().setNodeValue(sp.end().toString());
+            el.elementsByTagName("lastSync")
+                .at(0)
+                .firstChild()
+                .setNodeValue(sp.lastSync().toString());
         }
     }
     

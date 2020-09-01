@@ -1,0 +1,132 @@
+#include "controllersynchronization.h"
+
+
+int ControllerSynchronization::exec()
+{
+    connect(&m_server, &QTcpServer::newConnection, this, &ControllerSynchronization::newConnections);
+
+    connect(&m_broadcast,
+            &QUdpSocket::readyRead,
+            this,
+            &ControllerSynchronization::receivedDatagram);
+
+    updateViewList();
+    return 0;
+}
+
+void ControllerSynchronization::setView(QObject *v)
+{
+    m_view = v;
+
+    if (m_view) {
+        auto *child = m_view->findChild<QObject *>("enableSync");
+        connect(child, SIGNAL(checkChanged(bool)), this, SLOT(openServer(bool)));
+    }
+}
+
+void ControllerSynchronization::newConnections()
+{
+    qDebug() << "New connection";
+    m_connections << dynamic_cast<AccountSocket *>(m_server.nextPendingConnection());
+
+    connect(m_connections.last(),
+            &AccountSocket::disconnected,
+            this,
+            &ControllerSynchronization::onDisconnected);
+
+    connect(m_connections.last(),
+            &AccountSocket::profileChanged,
+            this,
+            &ControllerSynchronization::updateViewList);
+
+    updateViewList();
+}
+
+void ControllerSynchronization::updateViewList()
+{
+    QVariantList vl;
+    QStringList remoteList;
+    m_disconnected.clear();
+    for (auto *it : m_connections) {
+        vl << QVariant::fromValue(it);
+        remoteList << it->profile().deviceName();
+    }
+
+    for (auto it : db()->selectSyncProfile()) {
+        if (!remoteList.contains(it.deviceName()) && !it.id().isNull()) {
+            m_disconnected << QSharedPointer<AccountSocket>::create();
+            auto s = m_disconnected.last();
+            s->setLocalProfile(it);
+            s->setRemoteName(it.deviceName());
+            vl << QVariant::fromValue(s.data());
+        }
+    }
+
+    emit connectionListChanged(vl);
+}
+
+void ControllerSynchronization::lookup()
+{
+    qDebug() << "Lookup" << m_server.isListening();
+    if (m_server.isListening())
+        qDebug() << "Broadcast"
+                 << m_broadcast.writeDatagram("account_server_connect:test_server",
+                                              QHostAddress(QHostAddress::Broadcast),
+                                              7000);
+}
+
+void ControllerSynchronization::sync()
+{
+    m_client.sync();
+    for (auto *it : m_connections)
+        it->sync();
+}
+
+void ControllerSynchronization::receivedDatagram()
+{
+    QByteArray data;
+    QHostAddress addr;
+
+    while(m_broadcast.hasPendingDatagrams())
+    {
+        data.resize(m_broadcast.pendingDatagramSize());
+        m_broadcast.readDatagram(data.data(), m_broadcast.pendingDatagramSize(), &addr);
+        auto split = data.split(':');
+
+        if(split[0] != "account_server" && !m_server.isListening())
+            continue;
+
+        clientConnect(addr);
+    }
+}
+
+void ControllerSynchronization::clientConnect(QHostAddress addr)
+{
+    if(!m_server.isListening())
+        m_client.connectToHost(addr, 9000);
+}
+
+void ControllerSynchronization::openServer(bool isOpen)
+{
+    if (isOpen && !m_server.isListening()) {
+        m_client.close();
+        m_server.listen(QHostAddress(QHostAddress::AnyIPv4), 9000);
+        lookup();
+    } else if (!isOpen) {
+        for (auto *it : m_connections)
+            it->close();
+        m_connections.clear();
+        m_server.close();
+    }
+
+    qDebug() << m_connections.size();
+}
+
+void ControllerSynchronization::onDisconnected()
+{
+    auto *send = dynamic_cast<AccountSocket *>(sender());
+    m_connections.removeAll(send);
+
+    updateViewList();
+}
+

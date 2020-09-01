@@ -1,12 +1,12 @@
 #ifndef CONTROLLERINFORMATION_H
 #define CONTROLLERINFORMATION_H
 
-#include <QObject>
-#include <QDebug>
+#include "../features/controllerfrequency.h"
 #include "Model/entry.h"
 #include "Model/information.h"
 #include "abstractcontroller.h"
-#include "controllerfrequency.h"
+#include <QDebug>
+#include <QObject>
 
 class ControllerInformation: public AbstractController
 {
