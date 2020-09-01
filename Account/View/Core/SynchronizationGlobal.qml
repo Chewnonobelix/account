@@ -141,8 +141,8 @@ Item {
                 text: syncProfiles.currentModel ? syncProfiles.currentModel.remoteName : ""
 
                 onCheckedChanged: {
-                    if(checked) syncProfiles.currentModel.addLocalProfile()
-                    else syncProfiles.currentModel.removeLocalProfile();
+                    if(checked && syncProfiles.currentModel.isConnected()) syncProfiles.currentModel.addLocalProfile()
+                    else if(!checked) syncProfiles.currentModel.removeLocalProfile();
                 }
             }
 

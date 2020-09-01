@@ -30,6 +30,8 @@ public:
 
     SynchronizationProfile profile(QString) const;
     SynchronizationProfile profile() const;
+    void setLocalProfile(SynchronizationProfile);
+    void setRemoteName(QString);
 
 public:
     Q_INVOKABLE void postLocalname();

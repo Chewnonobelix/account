@@ -153,3 +153,13 @@ void AccountSocket::removeLocalProfile()
     emit profileChanged();
     postProfile();
 }
+
+void AccountSocket::setLocalProfile(SynchronizationProfile p)
+{
+    m_localProfile = p;
+}
+
+void AccountSocket::setRemoteName(QString r)
+{
+    m_remoteName = r;
+}

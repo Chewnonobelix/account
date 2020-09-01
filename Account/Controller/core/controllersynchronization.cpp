@@ -10,6 +10,7 @@ int ControllerSynchronization::exec()
             this,
             &ControllerSynchronization::receivedDatagram);
 
+    updateViewList();
     return 0;
 }
 
@@ -33,15 +34,33 @@ void ControllerSynchronization::newConnections()
             this,
             &ControllerSynchronization::onDisconnected);
 
+    connect(m_connections.last(),
+            &AccountSocket::profileChanged,
+            this,
+            &ControllerSynchronization::updateViewList);
+
     updateViewList();
 }
 
 void ControllerSynchronization::updateViewList()
 {
     QVariantList vl;
-
-    for (auto *it : m_connections)
+    QStringList remoteList;
+    m_disconnected.clear();
+    for (auto *it : m_connections) {
         vl << QVariant::fromValue(it);
+        remoteList << it->profile().deviceName();
+    }
+
+    for (auto it : db()->selectSyncProfile()) {
+        if (!remoteList.contains(it.deviceName()) && !it.id().isNull()) {
+            m_disconnected << QSharedPointer<AccountSocket>::create();
+            auto s = m_disconnected.last();
+            s->setLocalProfile(it);
+            s->setRemoteName(it.deviceName());
+            vl << QVariant::fromValue(s.data());
+        }
+    }
 
     emit connectionListChanged(vl);
 }

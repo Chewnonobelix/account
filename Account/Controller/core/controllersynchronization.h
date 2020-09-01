@@ -18,10 +18,12 @@ class ControllerSynchronization : public AbstractController
 private:
     TcpServer m_server;
     QList<AccountSocket *> m_connections;
+    QList<QSharedPointer<AccountSocket>> m_disconnected;
     QUdpSocket m_broadcast;
     AccountSocket m_client;
     QObject *m_view = nullptr;
 
+private slots:
     void updateViewList();
 
 protected:
