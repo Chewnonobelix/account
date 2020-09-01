@@ -10,6 +10,7 @@ int ControllerSynchronization::exec()
             this,
             &ControllerSynchronization::receivedDatagram);
 
+    m_broadcast.bind(9000);
     updateViewList();
     return 0;
 }
@@ -68,7 +69,6 @@ void ControllerSynchronization::updateViewList()
 void ControllerSynchronization::lookup()
 {
     qDebug() << "Lookup" << m_server.isListening();
-    if (m_server.isListening())
         qDebug() << "Broadcast"
                  << m_broadcast.writeDatagram("account_server_connect:test_server",
                                               QHostAddress(QHostAddress::Broadcast),
@@ -111,14 +111,14 @@ void ControllerSynchronization::openServer(bool isOpen)
     if (isOpen && !m_server.isListening()) {
         m_client.close();
         m_server.listen(QHostAddress(QHostAddress::AnyIPv4), 9000);
-        lookup();
     } else if (!isOpen) {
         for (auto *it : m_connections)
             it->close();
         m_connections.clear();
         m_server.close();
-        lookup();
     }
+
+    lookup();
 
     qDebug() << m_connections.size();
 }
