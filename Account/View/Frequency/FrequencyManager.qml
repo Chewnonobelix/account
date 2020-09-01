@@ -187,6 +187,7 @@ Rectangle {
             onS_titleChanged: if(entry && enabled) _frequency.updateFreqName(frequencyList.currentModel.id, title)
             onS_catChanged: if(entry && enabled) _frequency.updateFreqCat(frequencyList.currentModel.id, cat, "manager")
             onS_supportChanged: if(entry && enabled) _frequency.updateFreqSupport(frequencyList.currentModel.id, supp)
+            onAddNewCategory: if(entry && enabled) _frequency.addNewCategory(cat)
 
             onEntryChanged: {
                 typeCombo.currentIndex = CoreModel.typeModel.find(entry ? entry.type: "outcome")

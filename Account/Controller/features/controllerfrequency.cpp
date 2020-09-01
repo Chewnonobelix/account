@@ -53,10 +53,6 @@ void ControllerFrequency::setManager(QObject * manager)
 {
     m_manager = manager;
 
-    QObject *cat = m_manager->findChild<QObject *>("category");
-
-    if (cat)
-        connect(cat, SIGNAL(s_addCategory(QString)), this, SLOT(addNewCategory(QString)));
     m_generate = m_manager->findChild<QObject*>("generate");
 }
 

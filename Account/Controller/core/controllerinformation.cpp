@@ -49,19 +49,6 @@ int ControllerInformation::exec()
 void ControllerInformation::configure(QObject * view)
 {
     m_view = view;
-
-    if(m_view)
-    {
-        QObject* child = m_view->findChild<QObject*>("entryEdit");
-                        
-        QObject  *catItem;
-    
-        catItem = child->findChild<QObject*>("category");
-        if(catItem)
-        {
-            connect(catItem, SIGNAL(s_addCategory(QString)), this, SLOT(addNewCategory(QString)));
-        }
-    }
 }
 
 void ControllerInformation::view(QUuid id)

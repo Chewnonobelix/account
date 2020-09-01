@@ -27,6 +27,8 @@ Item {
             Layout.columnSpan: 2
             Layout.alignment: Qt.AlignTop
 
+            onAddNewCategory: _info.addNewCategory(cat)
+
             onS_catChanged: _info.categoryChange(cat)
             onS_titleChanged: _info.titleChange(title)
             onS_valueChanged: _info.valueChange(value)
