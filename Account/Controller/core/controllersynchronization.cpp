@@ -117,6 +117,7 @@ void ControllerSynchronization::openServer(bool isOpen)
             it->close();
         m_connections.clear();
         m_server.close();
+        lookup();
     }
 
     qDebug() << m_connections.size();
