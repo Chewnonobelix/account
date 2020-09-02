@@ -129,8 +129,9 @@ int MainController::exec()
     m_graph.set(m_engine);
     connect(m_db, &InterfaceDataSave::s_updateEntry, &m_graph, &AbstractGraphController::exec);
     m_graph.exec();
-    
-    connect(this, &AbstractController::s_totalChanged, this, &MainController::totalChanged);
+
+    connect(this, SIGNAL(s_totalChanged()), this, SLOT(totalChanged()));
+
     connect(m_db, &InterfaceDataSave::s_updateEntry, this, &AbstractController::calculTotal);
     connect(this, &AbstractController::s_totalChanged, this, &MainController::previewCalendar);
     languageChange();
@@ -570,19 +571,9 @@ void MainController::accountChange(QString acc)
     AbstractController::setCurrentAccount(acc);
     m_settings.setCurrentAccount(acc);
     calculTotal();
-    QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
-    
-    if(head)
-    {
-        head->setProperty("accountName", acc);
-        head->setProperty("total", QVariant::fromValue(accountTotal()));
-    }
-    
-    QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
-    
-    if(tab)
-        tab->setProperty("model", QVariantList());
-    
+
+    emit totalChanged(QVariant::fromValue(accountTotal()));
+
     buildModel();
     pageChange();
     checkEstimated();

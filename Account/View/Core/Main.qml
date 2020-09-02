@@ -273,9 +273,18 @@ ApplicationWindow {
         color: "transparent"
         id: head
         objectName: "head"
-        property string accountName: ""
+        property string accountName: accountSelect.currentText
         property var total: 0
         property var selectionTotal: 0
+
+        Connections {
+            target: _main
+
+            function onTotalChanged(total) {
+                head.total = total.value
+            }
+        }
+
         MouseArea {
             anchors.fill: parent
             cursorShape: !pressed ?  Qt.OpenHandCursor : Qt.ClosedHandCursor
