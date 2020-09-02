@@ -11,17 +11,6 @@ MainController::MainController(int storage): AbstractController()
 
     qDebug() << "Worker Qml"
              << qmlRegisterUncreatableType<Worker>("Account.Frequency", 1, 0, "Worker", message);
-    //    qDebug()<<"Frequency Qml"<<qmlRegisterUncreatableType<Frequency>("Account.Frequency",1,0, "Frequency", message);
-    
-    //    qDebug()<<"Budget Qml"<<qmlRegisterUncreatableType<Budget>("Account.Budget",1,0, "Budget", message);
-    //    qDebug()<<"Subbudget Qml"<<qmlRegisterUncreatableType<SubBudget>("Account.Budget",1,0, "Subbudget", message);
-    
-    //    qDebug()<<"Common expanse Qml"<<qmlRegisterUncreatableType<CommonExpanse>("Account.CommonExpanse",1,0, "CommonExpanse", message);
-    //    qDebug()<<"Closing Qml"<<qmlRegisterUncreatableType<Closing>("Account.CommonExpanse",1,0, "Closing", message);
-    
-    //    qDebug()<<"Entry Qml"<<qmlRegisterUncreatableType<Entry>("Account.Core",1,0, "Entry", message);
-    //    qDebug()<<"Information Qml"<<qmlRegisterUncreatableType<Information>("Account.Core",1,0, "Information", message);
-    //    qDebug()<<"Total Qml"<<qmlRegisterUncreatableType<Total>("Account.Core",1,0, "Total", message);
     
     qmlRegisterModule("Account.Style", 1, 0);
     m_dbThread = new QThread;;
