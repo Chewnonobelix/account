@@ -202,31 +202,19 @@ void MainController::loadFeatures()
 {
     QStringList features;
     features<<QObject::tr("List")<<QObject::tr("Graph");
-    QList<QObject*> featureItem;
+    QList<QVariant> featureItem;
     for(auto it: m_settings.featuresList())
     {
         if(m_settings.featureEnable(it))
         {
             m_features<<ControllerSettings::features(it);
             features<<ControllerSettings::features(it)->displayText();
-            featureItem<<ControllerSettings::features(it)->view;
+            featureItem << QVariant::fromValue(ControllerSettings::features(it)->view);
         }
     }
-    
-    
-    QObject* swipe = m_engine.rootObjects().first()->findChild<QObject*>("swipe");
-    if(swipe)
-    {
-        while(swipe->property("count").toInt() > 2)
-            QMetaObject::invokeMethod(swipe, "takeItem", Q_ARG(int, swipe->property("count").toInt() - 1));
-        
-        for(auto it: featureItem)
-            QMetaObject::invokeMethod(swipe, "addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(it)));
-    }
-    
-    QObject* featuresRepetear = m_engine.rootObjects().first()->findChild<QObject*>("features");
-    if(featuresRepetear)
-        featuresRepetear->setProperty("model", features);
+
+    emit featuresChanged(featureItem);
+    emit featuresListChanged(features);
 }
 
 void MainController::changeProfile(QString name)

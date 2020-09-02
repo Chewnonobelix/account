@@ -64,6 +64,9 @@ public:
     MainController(int = 0);
     ~MainController();
 
+signals:
+    void featuresListChanged(QStringList);
+    void featuresChanged(QVariantList);
 
 public slots:
     int exec();

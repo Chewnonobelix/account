@@ -398,6 +398,19 @@ ApplicationWindow {
         
         enabled: accountSelect.model.length > 0
         
+        Connections {
+            target: _main
+            function onFeaturesChanged(list) {
+                for(var i = 2; i < swipeView.count; i++) {
+                    swipeView.takeItem(i)
+                }
+
+                for(var it in list) {
+                    swipeView.addItem(list[it])
+                }
+            }
+        }
+
         background: Rectangle {
             color: "transparent"
         }
@@ -462,8 +475,16 @@ ApplicationWindow {
         id: tabBar
         currentIndex: swipeView.currentIndex
         
+        Connections {
+            target: _main
+
+            function onFeaturesListChanged(list) {
+                features.model = list
+            }
+        }
+
         Repeater {
-            objectName: "features"
+            id: features
             
             TabButton {
                 id: listTabButton
