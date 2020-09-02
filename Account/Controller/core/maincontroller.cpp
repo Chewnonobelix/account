@@ -719,9 +719,13 @@ void MainController::languageChange()
 void MainController::sortRole(QString role)
 {
     m_settings.setSortingRole(role);
+    QUuid id = m_engine.rootObjects().first()->findChild<QObject*>("table")->property("currentId").toUuid();
+    pageChange(id);
 }
 
 void MainController::sortOrder(int order)
 {
-    m_settings.setSortOrdre((Qt::SortOrder) order);
+    m_settings.setSortOrdre((Qt::SortOrder)order);
+    QUuid id = m_engine.rootObjects().first()->findChild<QObject*>("table")->property("currentId").toUuid();
+    pageChange(id);
 }
