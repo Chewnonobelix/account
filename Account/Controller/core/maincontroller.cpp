@@ -102,19 +102,7 @@ int MainController::exec()
     }
 
     loadFeatures();
-    qDebug()<<ControllerSettings::registredFeature();
-    
-    QObject* quick = root->findChild<QObject*>("quick");
-    if(quick)
-    {
-        connect(quick, SIGNAL(s_opening()), this, SLOT(quickOpen()));
-        
-        QObject* finish = quick->findChild<QObject*>("finish");
-        connect(finish, SIGNAL(s_clicked()), this, SLOT(quickAdding()));
-        
-        QObject* cat = quick->findChild<QObject*>("cat");
-        connect(cat, SIGNAL(s_addCategory(QString)), this, SLOT(quickAddCategory(QString)));
-    }
+    qDebug() << ControllerSettings::registredFeature();
 
     loadProfiles();
 
@@ -316,12 +304,6 @@ void MainController::adding()
     
     if(adding->property("newAccount").toBool())
         loadAccount();
-    
-//    QUuid id;
-//    for(auto it: m_db->selectEntry(currentAccount()))
-//        id = std::max(id, it.id());
-    
-//    pageChange(id);
 }
 
 void MainController::addEntryMain(Entry  e)

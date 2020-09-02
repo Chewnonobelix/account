@@ -22,17 +22,7 @@ ApplicationWindow {
     
     width: 800
     height: 640
-    
-    signal adding(bool account)
-    signal remove(var index)
-    signal edit(var index)
-    signal accountChange(int index)
-    signal removeAccount(string name)
-    signal openTransfert
-    signal s_closing()
-    signal s_openFrequencyManager()
-    signal s_openSetting()
-    
+        
     id: mainWindow
     
     flags: Qt.Window | Qt.FramelessWindowHint
@@ -60,10 +50,8 @@ ApplicationWindow {
         objectName: "quick"
         x: Screen.width - width
         y: Screen.desktopAvailableHeight - height
-        
-        signal s_opening()
-        
-        onVisibleChanged: if(visible) s_opening()
+                
+        onVisibleChanged: if(visible) _main.quickOpen()()
     }
     
     P.SystemTrayIcon {
@@ -246,7 +234,7 @@ ApplicationWindow {
         id: delShort
         sequence: "CTRL+D"
         context: Qt.ApplicationShortcut
-        onActivated: remove(table.currentId)
+        onActivated: _main.remove(table.currentId)
         
     }
     
