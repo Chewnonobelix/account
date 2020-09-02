@@ -389,11 +389,15 @@ Page {
                 signal s_sortOrder(int order)
 
                 onSortIndicatorColumnChanged: {
+                    var i = currentId
                    _main.sortRole(getColumn(sortIndicatorColumn).role)
+                   _main.pageChange(i)
                 }
                 
                 onSortIndicatorOrderChanged: {
+                    var i = currentId
                     _main.sortOrder(sortIndicatorOrder)
+                    _main.pageChange(i)
                 }
                 
                 function getToolTip(index) {
