@@ -571,7 +571,7 @@ void MainController::accountChange(QString acc)
     m_settings.setCurrentAccount(acc);
     calculTotal();
 
-    emit totalChanged(QVariant::fromValue(accountTotal()));
+    emit totaleChanged(QVariant::fromValue(accountTotal()));
 
     buildModel();
     pageChange();
@@ -676,12 +676,7 @@ void MainController::openTransfert()
 
 void MainController::totalChanged()
 {
-    QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
-
-    if(head)
-    {
-        head->setProperty("total", QVariant::fromValue(accountTotal()));
-    }
+    emit totaleChanged(QVariant::fromValue(accountTotal()));
 }
 
 void MainController::addProfile()

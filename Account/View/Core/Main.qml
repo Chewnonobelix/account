@@ -280,8 +280,8 @@ ApplicationWindow {
         Connections {
             target: _main
 
-            function onTotalChanged(total) {
-                head.total = total.value
+            function onTotaleChanged(total) {
+                head.total = total
             }
         }
 

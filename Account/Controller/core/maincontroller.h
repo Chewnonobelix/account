@@ -67,7 +67,7 @@ public:
 signals:
     void featuresListChanged(QStringList);
     void featuresChanged(QVariantList);
-    void totalChanged(QVariant);
+    void totaleChanged(QVariant);
     void profilesListChanged(QStringList);
     void currentProfileChanged(QString);
 
