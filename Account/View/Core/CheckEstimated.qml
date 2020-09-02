@@ -26,6 +26,15 @@ Popup {
 
     property var tab: []
     
+    Connections {
+        target: _main
+
+        function onCheckListChanged (list) {
+            repeater.model = list
+        }
+    }
+
+
     ScrollView {
         id: listChecker
         width: parent.width
@@ -39,8 +48,11 @@ Popup {
         Column {
             clip: true
             Repeater {
+                id: repeater
                 objectName: "repeater"
                 model: []
+
+                onModelChanged: if(model.length === 0) close()
                 clip: true
                 delegate: Row {
                     id: row
@@ -91,7 +103,9 @@ Popup {
         ToolTip.timeout: 1
 
         onClicked:  {
-            _main.validateCheckEstimated()
+            _main.validateCheckEstimated(tab)
+
+            close()
         }
     }
 

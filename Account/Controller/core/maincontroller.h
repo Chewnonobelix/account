@@ -70,6 +70,7 @@ signals:
     void totaleChanged(QVariant);
     void profilesListChanged(QStringList);
     void currentProfileChanged(QString);
+    void checkListChanged(QVariantList);
 
 public slots:
     int exec();
@@ -88,7 +89,7 @@ public slots:
 
     void loadAccount();
 
-    void validateCheckEstimated();
+    void validateCheckEstimated(QVariantList);
     void deleteAccount(QString);
 
     void previewCalendar();

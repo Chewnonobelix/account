@@ -615,46 +615,32 @@ void MainController::checkEstimated()
             break;
     }
     
-    QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
     QVariantList vl;
     
     for(auto it: list)
-        vl<<QVariant::fromValue(it);
-    
-    QObject* v = popup->findChild<QObject*>("repeater");
-    
-    if(v)
-        v->setProperty("model", vl);
-    
-    if(!vl.isEmpty())
-        QMetaObject::invokeMethod(popup, "open");
+        vl << QVariant::fromValue(it);
+
+    emit checkListChanged(vl);
 }
 
-void MainController::validateCheckEstimated()
+void MainController::validateCheckEstimated(QVariantList tab)
 {
-    QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
-    
-    for(int i = 0; i < popup->property("tab").toList().size(); i++)
-    {
-        if(!popup->property("tab").toList()[i].isValid())
+    for (int i = 0; i < tab.size(); i++) {
+        if (!tab[i].isValid())
             continue;
-        
-        Entry e = entry(popup->property("tab").toList()[i].toUuid());
-        
-        if(popup->property("tab").toList()[i].toBool())
-        {
+
+        Entry e = entry(tab[i].toUuid());
+
+        if (tab[i].toBool()) {
             Information inf = e.info();
             inf.setEstimated(false);
             e.setInfo(inf);
             updateEntry(e);
-        }
-        else
-        {
+        } else {
             m_db->removeEntry(e);
         }
     }
 
-    QMetaObject::invokeMethod(popup, "close");
     buildModel();
 }
 
