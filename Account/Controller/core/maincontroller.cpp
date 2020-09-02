@@ -104,8 +104,6 @@ int MainController::exec()
     loadFeatures();
     qDebug() << ControllerSettings::registredFeature();
 
-    loadProfiles();
-
     connect(m_db, &InterfaceDataSave::s_updateEntry, this, &MainController::buildModel);
     connect(m_db, &InterfaceDataSave::s_updateEntry, this, &MainController::pageChange);
 
@@ -138,6 +136,7 @@ int MainController::exec()
     m_synchro.exec();
 
     changeProfile(m_settings.currentProfile());
+    loadProfiles();
 
     return 0;
 }
@@ -702,18 +701,12 @@ void MainController::addProfile()
 
 void MainController::loadProfiles()
 {
-    QObject* profile = m_engine.rootObjects().first()->findChild<QObject*>("drawer");
-    
-    if(profile)
-    {
-        QStringList profiles = m_db->selectProfile();
-        if(!profiles.contains(m_db->currentProfile()))
-            profiles<<m_db->currentProfile();
-        
-        profile->setProperty("currentProfile", m_db->currentProfile());
-        profile->setProperty("profileModel", profiles);
-    }
-    
+    QStringList profiles = m_db->selectProfile();
+    if (!profiles.contains(m_db->currentProfile()))
+        profiles << m_db->currentProfile();
+
+    emit profilesListChanged(profiles);
+    emit currentProfileChanged(m_db->currentProfile());
 }
 
 void MainController::deleteProfile(QString name)

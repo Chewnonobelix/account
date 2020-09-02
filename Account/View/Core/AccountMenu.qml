@@ -18,6 +18,18 @@ Drawer {
     }
 
 
+    Connections {
+        target: _main
+
+        function onProfilesListChanged(list) {
+            profileModel = list
+        }
+
+        function onCurrentProfileChanged(profile) {
+            drawer.currentProfile = profile
+        }
+    }
+
     property var profileModel
     property string currentProfile
 
@@ -165,6 +177,7 @@ Drawer {
                                 objectName: "profileRepeater"
                                 property string current: drawer.currentProfile
                                 model: drawer.profileModel
+
 
                                 AccountMenuButton {
                                     text: modelData

@@ -68,6 +68,8 @@ signals:
     void featuresListChanged(QStringList);
     void featuresChanged(QVariantList);
     void totalChanged(QVariant);
+    void profilesListChanged(QStringList);
+    void currentProfileChanged(QString);
 
 public slots:
     int exec();
