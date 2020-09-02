@@ -104,7 +104,7 @@ public slots:
     void quickOpen();
 
     void changeProfile(QString);
-    void addProfile();
+    void addProfile(QString);
     void loadProfiles();
     void deleteProfile(QString);
     

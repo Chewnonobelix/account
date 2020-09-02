@@ -679,14 +679,8 @@ void MainController::totalChanged()
     emit totaleChanged(QVariant::fromValue(accountTotal()));
 }
 
-void MainController::addProfile()
+void MainController::addProfile(QString nProfile)
 {
-    QObject* profiles = m_engine.rootObjects().first()->findChild<QObject*>("popProfile");
-    
-    QString nProfile = profiles->findChild<QObject*>("profileName")->property("text").toString();
-    //    QString password = profiles->findChild<QObject*>("password")->property("text").toString();
-    
-    QMetaObject::invokeMethod(profiles, "close");
     if(m_db->addProfile(nProfile, ""))
     {
         changeProfile(nProfile);
