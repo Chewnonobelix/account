@@ -20,10 +20,11 @@ public:
 
 public slots:
     void accept();
-    
+
 signals:
     void s_finish(QUuid = QUuid());
-
+    void accountListChanged(QStringList);
+    void openChanged();
 };
 
 #endif // CONTROLLERTRANSFERT_H

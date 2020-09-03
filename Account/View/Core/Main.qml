@@ -251,9 +251,7 @@ ApplicationWindow {
         context: Qt.ApplicationShortcut
         onActivated:  {
             _main.add(true)
-            console.log("add account")
-        }
-        
+        }        
     }
     
     Shortcut {

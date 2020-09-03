@@ -10,21 +10,15 @@ ControllerTransfert::~ControllerTransfert()
 
 int ControllerTransfert::exec()
 {
-    if(m_view)
-    {
-        auto accounts = m_db->selectAccount();
-        QMetaObject::invokeMethod(m_view, "addAccount", Q_ARG(QVariant, accounts));
-        QMetaObject::invokeMethod(m_view, "open");
-    }
+    emit accountListChanged(m_db->selectAccount());
+    emit openChanged();
+
     return 0;
 }
 
 void ControllerTransfert::set(QObject * view)
 {
     m_view = view;
-
-    if(m_view)
-        connect(m_view, SIGNAL(s_accept()), this, SLOT(accept()));
 }
 
 

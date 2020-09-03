@@ -25,6 +25,17 @@ Popup {
         }
     }
 
+    Connections {
+        target: _transfert
+
+        function onOpenChanged() {
+            open()
+        }
+
+        function onAccountListChanged(list) {
+            addAccount(list)
+        }
+    }
 
     background: AccountBackground {
     }
@@ -157,7 +168,7 @@ Popup {
             onClicked: {
                 if(fieldInfo.text.length !== 0) {
                     fieldInfo.background.border.color = "transparent"
-                    transfertView.s_accept()
+                    _transfert.accept()
                     transfertView.close()
                 } else {
                     fieldInfo.background.border.color = "red"
