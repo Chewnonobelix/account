@@ -144,9 +144,9 @@ AccountBackground {
 
                 editable: currentText === ""
 
-                onS_addCategory: root.addNewCategory(cat)
+                onAddCategory: root.addNewCategory(cat)
 
-                onS_currentTextChanged: {
+                onCurrentTextChanged: {
                     if(currentText !== "")
                         catChanged(currentText)
                 }

@@ -107,7 +107,7 @@ Window {
                 Layout.preferredWidth: root.width * .47
                 Component.onCompleted: model = Qt.binding(function() {return typeComboQuick.currentValue === "income" ? root.incomeCats : root.outcomeCats})
 
-                onS_addCategory: _main.quickAddCategory(cat)
+                onAddCategory: _main.quickAddCategory(cat)
             }
 
             AccountHeader {

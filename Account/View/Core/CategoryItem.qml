@@ -9,23 +9,23 @@ AccountComboBox {
     id: root
     
     onAccepted: {
-        s_addCategory(editText)
+        addCategory(editText)
     }
 
 
-    signal s_addCategory(string cat)
-    signal s_currentTextChanged(string cat)
+    signal addCategory(string cat)
+    signal currentTextChanged(string cat)
     property bool blocked: false
         
     function close() {
-        s_currentTextChanged(currentText)
+        currentTextChanged(currentText)
     }
 
     Connections {
         target: popup
         
         function onClosed() {
-            s_currentTextChanged(currentText)
+            currentTextChanged(currentText)
         }
     }
     
@@ -50,7 +50,7 @@ AccountComboBox {
         text: currentText
         readOnly: !editable
         onAccepted: {
-            s_addCategory(text)
+            addCategory(text)
         }
         MouseArea {
             anchors.fill: parent
