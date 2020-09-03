@@ -29,10 +29,10 @@ Item {
 
             onAddNewCategory: _info.addNewCategory(cat)
 
-            onS_catChanged: _info.categoryChange(cat)
-            onS_titleChanged: _info.titleChange(title)
-            onS_valueChanged: _info.valueChange(value)
-            onS_supportChanged: _info.supportChange(supp)
+            onCatChanged: _info.categoryChange(cat)
+            onTitleChanged: _info.titleChange(title)
+            onValueChanged: _info.valueChange(value)
+            onSupportChanged: _info.supportChange(supp)
         }
         rowSpacing: root.height * 0.02
         columnSpacing: root.width * 0.02
