@@ -4,8 +4,8 @@ import QtQuick.Controls 2.15
 
 MouseArea {
     id: area
-    signal s_datesChanged()
-    signal s_monthChanged()
+    signal datesChanged()
+    signal monthChanged()
     signal updateSelected()
 
     property int currentMonth: month.currentMonth
@@ -91,8 +91,8 @@ MouseArea {
             id: month
             weekNumbersVisible: true
             multiple: area.multiple
-            onS_datesChanged: area.s_datesChanged()
-            onS_monthChanged: area.s_monthChanged()
+            onDatesChanged: area.datesChanged()
+            onMonthChanged: area.monthChanged()
 
             onUpdateSelected: {
                 area.updateSelected()

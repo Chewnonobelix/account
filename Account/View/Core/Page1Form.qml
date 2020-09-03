@@ -48,13 +48,13 @@ Page {
             Layout.preferredWidth: pageTable.width * 0.20
 
             onUpdateSelected: view.unselectAll()
-            onS_datesChanged:  {
+            onDatesChanged:  {
                 view.reset()
                 _main.updateQuickView()
                 _main.pageChange()
             }
 
-            onS_monthChanged: {
+            onMonthChanged: {
                 _main.previewCalendar()
             }
         }
