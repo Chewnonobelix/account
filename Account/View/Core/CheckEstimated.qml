@@ -7,8 +7,6 @@ Popup {
 
     anchors.centerIn: parent
     id: checker
-
-    signal validate()
     
     AccountLabel {
         text: qsTr("Transaction to check")
@@ -41,8 +39,6 @@ Popup {
         height: parent.height * .90
         anchors.top: header.bottom
         anchors.topMargin: 10
-        //        flickableDirection: Flickable.AutoFlickDirection
-        //        vertical.policy: Qt.ScrollBarAsNeeded
 
         clip: true
         Column {
