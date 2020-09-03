@@ -74,7 +74,7 @@ Rectangle {
             objectName: "pageSwipper"
             Layout.fillWidth: true
             Layout.preferredHeight: parent.height * 0.05
-            onS_pageChange: _info.pageChange()
+            onPageChange: _info.pageChange()
         }
     }
 }

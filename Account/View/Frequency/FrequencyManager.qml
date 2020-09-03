@@ -78,7 +78,7 @@ Rectangle {
                 if(currentModel) {
                     _frequency.setWorker(currentModel.name)
                     pageChanger.pageIndex = 1
-                    pageChanger.s_pageChange()
+                    pageChanger.pageChange()
                 }
                 else
                 {
@@ -482,7 +482,7 @@ Rectangle {
             Layout.columnSpan: 3
             Layout.rowSpan: 1
 
-            onS_pageChange: {
+            onPageChange: {
                 testModel.clear()
 
                 var i = pageIndex - 1

@@ -458,7 +458,7 @@ Page {
                 height: parent.height * 0.05
                 width: parent.width
 
-                onS_pageChange: _main.pageChange()
+                onPageChange: _main.pageChange()
             }
         }
         
