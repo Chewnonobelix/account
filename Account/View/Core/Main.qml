@@ -109,9 +109,6 @@ ApplicationWindow {
         anchors.centerIn: parent
         width: mainWindow.width * .75
         height: mainWindow.height * .50
-        onOpened: {
-            addAccount(accountSelect.model)
-        }
     }
     
     Popup {
