@@ -45,7 +45,7 @@ MouseArea {
                     Date.fromLocaleString(locale, "01-11-"+month.currentYear, "dd-MM-yyyy"),
                     Date.fromLocaleString(locale, "01-12-"+month.currentYear, "dd-MM-yyyy")]
                 
-                onS_select: {
+                onSelect: {
                     set(d)
                     zoom(2)
                 }
@@ -75,7 +75,7 @@ MouseArea {
                     Date.fromLocaleString(locale, "01-09-"+Math.floor(month.currentYear/10)+"8", "dd-MM-yyyy"),
                     Date.fromLocaleString(locale, "01-10-"+Math.floor(month.currentYear/10)+"9", "dd-MM-yyyy")]
                 
-                onS_select: {
+                onSelect: {
                     set(d)
                     zoom(2)
                 }
