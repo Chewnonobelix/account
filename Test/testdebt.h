@@ -9,7 +9,7 @@ class TestDebt : public QObject
 {
     Q_OBJECT
 private:
-    Debt model1, model2;
+    Debt model, model2;
     QSharedPointer<Debt> copy = nullptr;
 
     const double rate = 0.3;
