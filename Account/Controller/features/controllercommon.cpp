@@ -105,7 +105,7 @@ void ControllerCommon::removeCommonEntry()
     {
         e = m_view->findChild<QObject*>("common")->findChild<QObject*>("remove")->property("currentModel").value<Entry>();
         member = m_view->findChild<QObject*>("common")->findChild<QObject*>("remove")->property("currentMember").toString();
-        
+        ce.removeEntry(member, e);
         m_db->updateCommon(ce);
     }
     
