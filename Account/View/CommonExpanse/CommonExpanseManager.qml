@@ -19,7 +19,6 @@ Rectangle {
         id: popAddCommon
         objectName: "popAddCommon"
         onOpened: commonTitle.clear()
-        signal s_accepted(string name)
 
         anchors.centerIn: parent
         background: AccountBackground{}
@@ -55,7 +54,7 @@ Rectangle {
 
                 onClicked: {
                     popAddCommon.close()
-                    popAddCommon.s_accepted(commonTitle.text)
+                    _commonExpanse.addCommon(commonTitle.text)
                 }
             }
             
@@ -82,6 +81,18 @@ Rectangle {
                 width: parent.width
                 height: parent.height * 0.93
                 clip: true
+
+                Connections {
+                    target: _commonExpanse
+
+                    function onCurrentIndexChanged(index) {
+                        listCommon.currentIndex = index
+                    }
+
+                    function onCommonModelChanged(model) {
+                        listCommon.model = model
+                    }
+                }
 
                 Component.onCompleted: {
                     currentModel = Qt.binding(function() {return currentIndex > -1 ? model[currentIndex] : null })
@@ -136,8 +147,7 @@ Rectangle {
                     height: parent.height
                     text: qsTr("Remove common expanse")
 
-                    signal s_remove(var id)
-                    onClicked: s_remove(listCommon.currentModel.id)
+                    onClicked: _commonExpanse.removeCommon(listCommon.currentModel.id)
                     
                     ToolTip.text: listCommon.currentModel ? qsTr("Remove") + " " + listCommon.currentModel.title : ""
                     ToolTip.visible:  hovered && listCommon.currentModel

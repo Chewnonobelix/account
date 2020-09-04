@@ -9,10 +9,6 @@ import "../Core"
 Rectangle {
     id: root
     
-    signal s_add(int id)
-    signal s_remove(int id)
-    signal s_close(int id)
-    
     property var model
     
     onModelChanged: close.checked = model ? model.isClose : false
@@ -47,6 +43,7 @@ Rectangle {
         implicitHeight: parent.height * .12
         
         onOpened: completionList = model.members
+        onAccept: _commonExpanse.addCommonEntry()
     }
     
     GridLayout {
@@ -185,7 +182,6 @@ Rectangle {
             Layout.columnSpan: 1 
             text: qsTr("Remove")
             
-            signal s_remove()
             property var  currentModel: null
             property string currentMember: ""
             
@@ -196,7 +192,7 @@ Rectangle {
             }
             
             onClicked: {
-                s_remove()
+                _commonExpanse.removeCommonEntry(root.model.id, currentMember, currentModel.id)
             }
         }
         
@@ -299,9 +295,8 @@ Rectangle {
             ToolTip.text: qsTr("Close the common expanse")
             checked: model ? model.isClose : false
             
-            signal s_checked(bool check)
             onCheckedChanged: { 
-                s_checked(checked)
+                _commonExpanse.closeCommon(model.id, checked)
             }
         }
         

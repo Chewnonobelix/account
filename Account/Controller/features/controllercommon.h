@@ -27,12 +27,16 @@ public:
     void checker() {}
 
 public slots:
-    void closeCommon(bool);
+    void closeCommon(QString, bool);
     void addCommon(QString);
     void removeCommon(QVariant);
     void addCommonEntry();
-    void removeCommonEntry();
+    void removeCommonEntry(QString, QString, QString);
     int exec();
+
+signals:
+    void commonModelChanged(QVariantList);
+    void currentIndexChanged(int);
 };
 
 Q_DECLARE_METATYPE(ControllerCommon)
