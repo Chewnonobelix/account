@@ -29,6 +29,8 @@ public:
     void setNb(int);
     Entry last() const;
     void setLast(Entry);
+
+    bool generate();
 };
 
 #endif // DEBT_H
