@@ -31,6 +31,13 @@ private slots:
     void test_rate();
     void test_scheduler();
     void test_last();
+    void test_generate();
+
+    void testEquality();
+    void testInferior();
+
+    void testCopyContructor();
+    void testCopy();
 };
 
 #endif // TESTDEBT_HPP
