@@ -31,6 +31,9 @@ public:
     void setLast(Entry);
 
     bool generate();
+
+    friend bool ACCOUNT_EXPORT operator<(const Debt &, const Debt &);
+    friend bool ACCOUNT_EXPORT operator==(const Debt &, const Debt &);
 };
 
 #endif // DEBT_H
