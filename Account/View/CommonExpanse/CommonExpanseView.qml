@@ -31,6 +31,8 @@ Rectangle {
         closing.model = Qt.binding(function() {return model ? model.closing() : []})
         
         add.enabled = Qt.binding(function() {return model ? !model.isClose : false})
+
+        close.checked = model.isClose
     }
     
     color: "transparent"
