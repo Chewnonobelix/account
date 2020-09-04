@@ -26,9 +26,7 @@ Rectangle {
             clip: true
             Layout.fillHeight: true
             Layout.fillWidth: true
-            
-            signal s_showFromFrequency(var id)
-            
+                        
             MouseArea {
                 id: pastArea
                 acceptedButtons: Qt.NoButton

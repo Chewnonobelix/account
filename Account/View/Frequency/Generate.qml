@@ -8,9 +8,7 @@ import "../Core" as C
 Popup {
     property var freqId: null
     property int freqGroup: -1
-    
-    signal s_generate(string fBegin, string fEnd)
-    
+        
     id: generateWin
     
     property var pcenter
@@ -94,7 +92,10 @@ Popup {
                 var f = Date.fromLocaleDateString(Qt.locale(),from.text, "dd-MM-yyyy")
                 
                 if(t < f ||  to.text === "" ) {
-                    isFrom ? to.extern(f) : from.extern(t)
+                     if(isFrom)
+                         to.extern(f)
+                     else
+                         from.extern(t)
                 }
             }
             

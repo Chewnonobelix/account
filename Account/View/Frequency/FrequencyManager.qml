@@ -18,17 +18,14 @@ Rectangle {
         id: testModel
     }
 
-    onFocusChanged: s_open()
+    onFocusChanged: _frequency.openManager()
 
-    signal s_open()
     gradient: AccountStyle.unselectView
 
     Generate {
         objectName: "generate"
         anchors.centerIn: root
     }
-
-    onS_open: _frequency.openManager()
 
     GridLayout {
         anchors.fill: parent
