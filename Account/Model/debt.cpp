@@ -46,3 +46,13 @@ bool Debt::generate()
 {
     return false;
 }
+
+bool operator<(const Debt &, const Debt &)
+{
+    return false;
+}
+
+bool operator==(const Debt &, const Debt &)
+{
+    return false;
+}
