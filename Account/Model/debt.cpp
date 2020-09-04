@@ -41,3 +41,8 @@ Entry Debt::last() const
 }
 
 void Debt::setLast(Entry) {}
+
+bool Debt::generate()
+{
+    return false;
+}
