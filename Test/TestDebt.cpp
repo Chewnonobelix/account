@@ -1,6 +1,12 @@
 #include "testdebt.h"
 
-void TestDebt::initTestCase() {}
+void TestDebt::initTestCase() {
+    init.setValue(2000);
+    init.setType("income");
+    init.setId(QUuid::createUuid());
+    init.setDate(QDate::currentDate());
+}
+
 void TestDebt::cleanupTestCase() {}
 
 void TestDebt::test_id()
@@ -34,15 +40,15 @@ void TestDebt::test_scheduler()
     QCOMPARE(model.scheduler(), scheduler);
 }
 
-void TestDebt::test_last()
-{
-    model.setLast(last);
-    QCOMPARE(model.last(), last);
-}
-
 void TestDebt::test_generate()
 {
     QVERIFY(model.generate());
+
+}
+
+void TestDebt::test_entries()
+{
+    QCOMPARE(model.entries().size(), nb);
 }
 
 void TestDebt::testEquality()
@@ -52,7 +58,7 @@ void TestDebt::testEquality()
 
 void TestDebt::testInferior()
 {
-    model2.setDate(date.addDays(3));
+    model2.setName(name+"1");
     QVERIFY(model < model2);
 }
 

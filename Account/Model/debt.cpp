@@ -35,13 +35,6 @@ int Debt::nb() const
 
 void Debt::setNb(int) {}
 
-Entry Debt::last() const
-{
-    return Entry();
-}
-
-void Debt::setLast(Entry) {}
-
 bool Debt::generate()
 {
     return false;
@@ -55,4 +48,14 @@ bool operator<(const Debt &, const Debt &)
 bool operator==(const Debt &, const Debt &)
 {
     return false;
+}
+
+QList<Entry> Debt::entries() const
+{
+    return QList<Entry>();
+}
+
+void Debt::setEntries(QList<Entry>)
+{
+
 }
