@@ -66,10 +66,6 @@ int ControllerBudget::exec()
     return 0;
 }
 
-void ControllerBudget::open(QString)
-{
-    //TODO0
-}
 
 void ControllerBudget::show(QDate date)
 {
@@ -161,12 +157,9 @@ void ControllerBudget::editBudget(QString cat)
     if(!m_referenceView)
     {
         m_referenceView = m_view->findChild<QObject*>("reference");
-        QObject* ok = m_referenceView->findChild<QObject*>("okButton");
-        connect(ok, SIGNAL(clicked()), this , SLOT(editReference()));
     }
-    m_referenceView->setProperty("budgetName", cat);
 
-    QMetaObject::invokeMethod(m_referenceView, "open");
+    emit catChanged(cat);
 }
 
 void ControllerBudget::editReference()
@@ -179,7 +172,7 @@ void ControllerBudget::editReference()
     val = obj->property("realValue").toDouble();
     obj = m_referenceView->findChild<QObject*>("freqCombo");
     int role = obj->property("currentRole").toInt();
-    m_budgets[cat].setFrequency(d, (Account::FrequencyEnum)role);
+    m_budgets[cat].setFrequency(d, (Account::FrequencyEnum) role);
 
     QMetaObject::invokeMethod(m_referenceView, "close");
     m_budgets[cat].addTarget(d, val);

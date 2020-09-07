@@ -11,7 +11,8 @@ Popup {
     id: root
     
     padding: 0
-    
+    property string budgetName
+
     onOpened: {
         cButton.extern(new Date())
     }
@@ -21,9 +22,17 @@ Popup {
         anchors.fill: parent
         gradient: AccountStyle.backgroundGradient
         
-        property string budgetName
         border.color: "gold"
         
+        Connections {
+            target: _budget
+
+            function onCatChanged(cat: string) {
+                budgetName = cat
+                root.open()
+            }
+        }
+
         GridLayout {
             id: gridId
             anchors.fill: parent
@@ -135,7 +144,9 @@ Popup {
                 Layout.column: 1
                 Layout.row: 3
                 Layout.columnSpan: 1
-                Layout.alignment: Qt.AlignLeft                
+                Layout.alignment: Qt.AlignLeft
+
+                onClicked: _budget.editReference()
             }
             
             AccountButton {

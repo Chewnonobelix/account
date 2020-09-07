@@ -43,7 +43,6 @@ public:
 
 public slots:
     void calDateChange();
-    void open(QString);
     void show(QDate);
     void closeManager();
     void addTarget(QString);
@@ -59,6 +58,9 @@ public slots:
     
     void updateEntry(QUuid);
     void changeEntry(QString, QUuid);
+
+signals:
+    void catChanged(QString);
 };
 
 Q_DECLARE_METATYPE(ControllerBudget)
