@@ -132,6 +132,8 @@ void ControllerBudget::removeTarget(QString cat, QString date)
 
             showTarget(cat, "", true);
         }
+
+      editBudget(cat);
 }
 
 void ControllerBudget::addBudget(QString name)
@@ -274,17 +276,6 @@ void ControllerBudget::setManager(QObject * manager)
 {
     m_view = manager;
     m_filler.model = &m_budgets;
-    
-    if(m_view)
-    {
-        connect(m_view, SIGNAL(s_loadTarget(QString)), this, SLOT(getTarget(QString)));
-        connect(m_view, SIGNAL(s_budgetChanged(QString)), this, SLOT(addBudget(QString)));
-        connect(m_view, SIGNAL(s_budgetReference(QString)), this, SLOT(editBudget(QString)));
-        connect(m_view, SIGNAL(s_budgetRoleChange(QString, int)), this, SLOT(changeFrequency(QString, int)));
-        connect(m_view, SIGNAL(s_addTarget(QString)), this, SLOT(addTarget(QString)));
-        connect(m_view, SIGNAL(s_showTarget(QString, QString, bool)), this, SLOT(showTarget(QString,QString,bool)));
-        connect(m_view, SIGNAL(s_removeTarget(QString, QString)), this, SLOT(removeTarget(QString,QString)));
-    }        
 }
 
 void ControllerBudget::setQuickView(QObject *qv)

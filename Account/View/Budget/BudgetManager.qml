@@ -8,15 +8,7 @@ import "../Style"
 
 Rectangle {
     id: root
-    
-    signal s_budgetChanged(string name)
-    signal s_budgetReference(string name)
-    signal s_loadTarget(string cat)
-    signal s_budgetRoleChange(string name, int role)
-    signal s_addTarget(string cat)
-    signal s_showTarget(string cat, string d, bool all)
-    signal s_removeTarget(string cat, string d)
-    
+        
     property bool blocked: false
     
     color: "transparent"
@@ -141,7 +133,7 @@ Rectangle {
                             catView.currentIndex = index
                             
                             if(categoryModel.get(catView.currentIndex).has)
-                                root.s_loadTarget(catName)
+                                _budget.getTarget(catName)
                         }
                         else {
                             catMenu.popup()
@@ -168,7 +160,7 @@ Rectangle {
                     Action {
                         id: addBudget
                         text:  has ? qsTr("Remove budget") : qsTr("Add budget")
-                        onTriggered: root.s_budgetChanged(catName)
+                        onTriggered: _budget.addBudget(catName)
                     }
                     
                 }
@@ -216,7 +208,7 @@ Rectangle {
                 
                 onCurrentIndexChanged: {
                     var temp = currentIndex !== - 1 ? Qt.formatDate(targetModel.get(currentIndex).date, "dd-MM-yyyy") : ""
-                    root.s_showTarget(categoryModel.get(catView.currentIndex).catName, temp, currentIndex === -1)
+                    _budget.showTarget(categoryModel.get(catView.currentIndex).catName, temp, currentIndex === -1)
                 }
                 
                 Component {
@@ -226,7 +218,7 @@ Rectangle {
                         text:  qsTr("Remove target")
                         
                         onTriggered: {
-                            s_removeTarget(categoryModel.get(catView.currentIndex).catName, Qt.formatDate(targetModel.get(targetView.currentIndex).date, "dd-MM-yyyy"))
+                            _budget.removeTarget(categoryModel.get(catView.currentIndex).catName, Qt.formatDate(targetModel.get(targetView.currentIndex).date, "dd-MM-yyyy"))
                         }
                     }
                 }
@@ -249,7 +241,7 @@ Rectangle {
                     Action {
                         id: addSubTarget
                         text: qsTr("Add target")
-                        onTriggered: root.s_addTarget(categoryModel.get(catView.currentIndex).catName)
+                        onTriggered: _budget.addTarget(categoryModel.get(catView.currentIndex).catName)
                     }
                     
                     
