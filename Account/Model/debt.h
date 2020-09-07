@@ -27,10 +27,11 @@ public:
     void setRate(double);
     int nb() const;
     void setNb(int);
-    Entry last() const;
-    void setLast(Entry);
 
     bool generate();
+
+    QList<Entry> entries() const;
+    void setEntries(QList<Entry>);
 
     friend bool ACCOUNT_EXPORT operator<(const Debt &, const Debt &);
     friend bool ACCOUNT_EXPORT operator==(const Debt &, const Debt &);

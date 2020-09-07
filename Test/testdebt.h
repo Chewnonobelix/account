@@ -12,10 +12,11 @@ private:
     Debt model, model2;
     QSharedPointer<Debt> copy = nullptr;
 
+    const QString name = "name1";
     const double rate = 0.3;
     const int nb = 12;
     const QUuid id = QUuid::createUuid();
-    Entry init, last;
+    Entry init;
     Frequency scheduler;
 
 public:
@@ -30,8 +31,8 @@ private slots:
     void test_nb();
     void test_rate();
     void test_scheduler();
-    void test_last();
     void test_generate();
+    void test_entries();
 
     void testEquality();
     void testInferior();
