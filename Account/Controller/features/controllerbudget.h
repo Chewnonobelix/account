@@ -65,6 +65,7 @@ signals:
     void clearTarget();
     void addSub(QVariant);
     void clearSub();
+    void close();
 };
 
 Q_DECLARE_METATYPE(ControllerBudget)

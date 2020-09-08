@@ -17,6 +17,7 @@ Popup {
         cButton.extern(new Date())
     }
 
+
     contentItem: Rectangle {
         id: rectWindow
         anchors.fill: parent
@@ -30,6 +31,10 @@ Popup {
             function onCatChanged(cat: string) {
                 budgetName = cat
                 root.open()
+            }
+
+            function onClose() {
+                root.close()
             }
         }
 

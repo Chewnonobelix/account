@@ -11,9 +11,8 @@ ControllerBudget::ControllerBudget(const ControllerBudget & b): AbstractControll
 {}
 
 void ControllerBudget::closeManager()
-{    
-    if(m_referenceView)
-        QMetaObject::invokeMethod(m_referenceView, "close");
+{
+    emit close();
 }
 
 void ControllerBudget::openManager()
@@ -24,7 +23,7 @@ void ControllerBudget::openManager()
         m_view->setProperty("blocked", true);
         auto incomes = m_db->selectCategory().values("income");
         auto outcomes = m_db->selectCategory().values("outcome");
-                
+
         auto func = [&](QString type, QStringList list) {
             for(auto it: list)
             {
@@ -36,7 +35,7 @@ void ControllerBudget::openManager()
                 emit addCat(QVariant::fromValue(map));
             }
         };
-        
+
         func("income", incomes);
         func("outcome", outcomes);
         
@@ -53,7 +52,7 @@ bool ControllerBudget::removeFrom(QUuid id)
     bool ret = false;
     Entry e = entry(id);
 
-    if(m_budgets.contains(e.info().category()))
+    if (m_budgets.contains(e.info().category()))
         ret = m_budgets[e.info().category()].removeEntry(e);
 
     return ret;
@@ -77,8 +76,7 @@ void ControllerBudget::show(QDate date)
     for(auto it: m_budgets)
         for(auto it2: it.subs())
             if(it2.in(date))
-                list<<qMakePair(it.category(), it2);
-
+                list << qMakePair(it.category(), it2);
 
     QMetaObject::invokeMethod(m_quickView, "clear");
     for(int i = 0; i < list.size(); i++)
@@ -88,7 +86,7 @@ void ControllerBudget::show(QDate date)
         map.insert("currentValue", list[i].second.current());
         map.insert("name", list[i].first);
 
-        QMetaObject::invokeMethod(m_quickView, "add", Q_ARG(QVariant, map), Q_ARG(QVariant, i%2));
+        QMetaObject::invokeMethod(m_quickView, "add", Q_ARG(QVariant, map), Q_ARG(QVariant, i % 2));
     }
 }
 
@@ -96,18 +94,19 @@ void ControllerBudget::reload()
 {
     if(m_filler.isRunning())
         return;
-    
-    m_budgets.clear();;
+
+    m_budgets.clear();
+    ;
 
     auto l = m_db->selectBudgets();
 
-    for(auto b: l)
+    for (auto b : l)
         m_budgets[b.category()] = b;
 
     m_filler.entries = m_db->selectEntry(currentAccount()).values();
 
     m_filler.start();
-    
+
     show(m_currentDate);
 }
 
@@ -118,7 +117,7 @@ void ControllerBudget::addTarget(QString cat)
 
 void ControllerBudget::removeTarget(QString cat, QString date)
 {
-      if(m_budgets.contains(cat))
+    if (m_budgets.contains(cat))
         if(m_budgets[cat].removeTarget(QDate::fromString(date, "dd-MM-yyyy")))
         {
             m_db->updateBudget(m_budgets[cat]);
@@ -129,7 +128,7 @@ void ControllerBudget::removeTarget(QString cat, QString date)
             showTarget(cat, "", true);
         }
 
-      editBudget(cat);
+    editBudget(cat);
 }
 
 void ControllerBudget::addBudget(QString name)
@@ -166,7 +165,8 @@ void ControllerBudget::editReference()
 {
     QString cat = m_referenceView->property("budgetName").toString();
 
-    QDate d; double val;
+    QDate d;
+    double val;
     QObject* obj = m_referenceView->findChild<QObject*>("cButton");
     d = QDate::fromString(obj->property("text").toString(), "dd-MM-yyyy");
     obj = m_referenceView->findChild<QObject*>("targetValue");
@@ -188,8 +188,7 @@ void ControllerBudget::getTarget(QString catName)
 
     emit clearTarget();
 
-    for(auto it = list.begin(); it != list.end(); it++)
-    {
+    for (auto it = list.begin(); it != list.end(); it++) {
         QVariantMap map;
         map.insert("date", it.key());
         map.insert("target", it.value());
@@ -218,11 +217,11 @@ void ControllerBudget::changeEntry(QString old, QUuid id)
 {
     Entry e = entry(id);
 
-    if(m_budgets.contains(old))
+    if (m_budgets.contains(old))
         m_budgets[old]>>e;
     
     if(m_budgets.contains(e.info().category()))
-        m_budgets[e.info().category()]<<e;
+        m_budgets[e.info().category()] << e;
 
     reload();
 }
@@ -233,24 +232,15 @@ void ControllerBudget::showTarget(QString catName, QString date, bool all)
     emit clearSub();
 
     auto list = m_budgets[catName].subs();
-    
-    if(!all)
-    {
-        QDate d = QDate::fromString(date, "dd-MM-yyyy");
 
-        for(auto it: list)
-        {
-            if(it.reference() == d)
-                list2<<it;
-        }
-    }
-    else
-    {
-        list2 = list.values();
+    QDate d = QDate::fromString(date, "dd-MM-yyyy");
+
+    for (auto it : list) {
+        if (it.reference() == d || all)
+            list2 << it;
     }
 
-    for(auto it: list2)
-    {
+    for (auto it : list2) {
         QVariantMap map;
         map["begin"] = it.begin();
         map["end"] = it.end();
@@ -294,10 +284,10 @@ QSharedPointer<FeatureBuilder> ControllerBudget::build(QQmlApplicationEngine * e
     context->setContextProperty("_budget", budget.data());
     QQmlComponent budgetComp(engine, QUrl("qrc:/Budget/BudgetManager.qml"));
     qDebug()<<budgetComp.errorString();
-    QObject* budgetManager = budgetComp.create();
+    QObject *budgetManager = budgetComp.create();
 
     budget->setManager(budgetManager);
-    
+
     QObject* rectQuickView = root->findChild<QObject*>("budgetQuick");
     budget->setQuickView(rectQuickView);
     budget->show(QDate::currentDate());
