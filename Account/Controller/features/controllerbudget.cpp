@@ -20,7 +20,7 @@ void ControllerBudget::openManager()
 {
     if(m_view)
     {
-        QMetaObject::invokeMethod(m_view, "clearCat");
+        emit clearCat();
         m_view->setProperty("blocked", true);
         auto incomes = m_db->selectCategory().values("income");
         auto outcomes = m_db->selectCategory().values("outcome");
@@ -32,8 +32,8 @@ void ControllerBudget::openManager()
                 map.insert("type", type);
                 map.insert("catName", it);
                 map.insert("has", m_budgets.contains(it));
-                
-                QMetaObject::invokeMethod(m_view, "addCat", Q_ARG(QVariant, map));
+
+                emit addCat(QVariant::fromValue(map));
             }
         };
         
@@ -165,6 +165,7 @@ void ControllerBudget::editBudget(QString cat)
 void ControllerBudget::editReference()
 {
     QString cat = m_referenceView->property("budgetName").toString();
+
     QDate d; double val;
     QObject* obj = m_referenceView->findChild<QObject*>("cButton");
     d = QDate::fromString(obj->property("text").toString(), "dd-MM-yyyy");
@@ -185,24 +186,19 @@ void ControllerBudget::getTarget(QString catName)
 {
     auto list = m_budgets[catName].targets();
 
-
-    QMetaObject::invokeMethod(m_view, "clearTarget");
+    emit clearTarget();
 
     for(auto it = list.begin(); it != list.end(); it++)
     {
         QVariantMap map;
         map.insert("date", it.key());
         map.insert("target", it.value());
-        map.insert("frequency", (int)m_budgets[catName].frequency(it.key()));
+        map.insert("frequency", (int) m_budgets[catName].frequency(it.key()));
 
-        QMetaObject::invokeMethod(m_view, "addTarget", Q_ARG(QVariant, map));
+        emit addTarget2(map);
     }
 
     showTarget(catName, "", true);
-}
-
-void ControllerBudget::changeFrequency(QString, int)
-{
 }
 
 void ControllerBudget::updateEntry(QUuid id)
@@ -234,7 +230,7 @@ void ControllerBudget::changeEntry(QString old, QUuid id)
 void ControllerBudget::showTarget(QString catName, QString date, bool all)
 {
     QList<SubBudget> list2 ;
-    QMetaObject::invokeMethod(m_view, "clearSub");
+    emit clearSub();
 
     auto list = m_budgets[catName].subs();
     
@@ -261,7 +257,7 @@ void ControllerBudget::showTarget(QString catName, QString date, bool all)
         map["current"] = it.current();
         map["target"] = it.target();
         map["cat"] = catName;
-        QMetaObject::invokeMethod(m_view, "addSub", Q_ARG(QVariant, map));
+        emit addSub(map);
     }
 }
 

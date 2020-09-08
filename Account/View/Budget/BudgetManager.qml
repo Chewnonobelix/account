@@ -19,32 +19,7 @@ Rectangle {
         height: width * 1.33
         width: 150 * 1.5
     }
-    
-    function addCat(cat) {
-        categoryModel.append(cat)
-    }
-    
-    function addTarget(targ) {
-        targetModel.append(targ)
-    }
-    
-    function addSub(sub) {
-        subModel.append(sub)
-    }
-    
-    function clearCat() {
-        categoryModel.clear()
-    }
-    
-    function clearTarget() {
-        targetModel.clear()
-        targetView.currentIndex = -1
-    }
-    
-    function clearSub() {
-        subModel.clear()
-    }
-    
+                
     function selectCat(name) {
         catView.currentIndex = categoryModel.getIndex(name)
     }
@@ -63,9 +38,38 @@ Rectangle {
             return ret
         }
         
+
         onCountChanged: catView.currentIndex = -1
     }
     
+    Connections {
+        target: _budget
+
+        function onAddCat(cat) {
+            categoryModel.append(cat)
+        }
+
+        function onClearCat() {
+            categoryModel.clear()
+        }
+
+        function onAddTarget2(target2) {
+            targetModel.append(target2)
+        }
+
+        function onClearTarget() {
+            targetModel.clear()
+        }
+
+        function onAddSub(sub) {
+            subModel.append(sub)
+        }
+
+        function onClearSub() {
+            subModel.clear()
+        }
+    }
+
     ListModel {
         id: targetModel
     }
@@ -270,6 +274,7 @@ Rectangle {
                         
                         id: targetText
                         anchors.fill: parent
+
                         text: qsTr("Date") + ": " + Qt.formatDate(date, "dd-MM-yyyy") + "\n" + qsTr("Target") + ": " + target + Qt.locale().currencySymbol(Locale.CurrencySymbol)
                     }
                     
@@ -329,6 +334,7 @@ Rectangle {
                 gradient: AccountStyle.backgroundGradient
                 border.color: "gray"
                 
+
                 Column {
                     anchors.fill: parent
                     AccountLabel {

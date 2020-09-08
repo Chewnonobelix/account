@@ -53,14 +53,18 @@ public slots:
     void addBudget(QString);
     void editBudget(QString);
     void getTarget(QString);
-
-    void changeFrequency(QString, int);
     
     void updateEntry(QUuid);
     void changeEntry(QString, QUuid);
 
 signals:
     void catChanged(QString);
+    void addCat(QVariant);
+    void clearCat();
+    void addTarget2(QVariant);
+    void clearTarget();
+    void addSub(QVariant);
+    void clearSub();
 };
 
 Q_DECLARE_METATYPE(ControllerBudget)
