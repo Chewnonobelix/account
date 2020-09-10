@@ -12,6 +12,7 @@ import "../Functionnal"
 import "../Budget"
 
 Page {
+
     
     implicitWidth: parent.width
     implicitHeight: parent.height
@@ -23,7 +24,7 @@ Page {
         
     background: AccountBackground {
         invisible: true
-    }
+   }
     
     GridLayout {
         id: grid
@@ -61,7 +62,8 @@ Page {
         
         AccountButton {
             id: add
-            text: qsTr("Add")
+            text: qsTr("Add1")
+
 
             enabled: accountSelect.model.length > 0
             Layout.column: 0
@@ -512,6 +514,7 @@ Page {
     
     
     Component.onCompleted: {
+        _main.exec()
         currentId = Qt.binding(function() {return view.currentEntry && !view.currentEntry.isBlocked ? view.currentEntry.id : -1})
     }
     

@@ -1,6 +1,7 @@
 #include "maincontroller.h"
 
-MainController::MainController(int storage): AbstractController()
+MainController::MainController(int storage)
+    : AbstractController(), m_engine(this, QStringLiteral(QML_SOURCE) + "/View")
 {
     Q_UNUSED(storage)
     QString message = "Generate from backend";
@@ -23,6 +24,21 @@ MainController::MainController(int storage): AbstractController()
     {
         qDebug()<<except;
     }
+
+    auto *context = engine().rootContext();
+    context->setContextProperty("_settings", &m_settings);
+    context->setContextProperty("_db", db());
+    context->setContextProperty("_sync", &m_synchro);
+    context->setContextProperty("_main", this);
+    context->setContextProperty("_info", &m_info);
+    context->setContextProperty("_transfert", &m_transfert);
+    context->setContextProperty("_graph", &m_graph);
+
+    m_engine.createWindow(QUrl("/Core/Main.qml"));
+
+#ifdef ENABLE_HOTRELOADING
+//    temp.setQmlSourceDir(QML_SOURCE);
+#endif
 }
 
 MainController::~MainController()
@@ -49,25 +65,17 @@ void MainController::bind(QVariant id)
 
 int MainController::exec()
 {
-    auto *context = m_engine.rootContext();
-    context->setContextProperty("_settings", &m_settings);
-    context->setContextProperty("_db", db());
-    context->setContextProperty("_sync", &m_synchro);
-    context->setContextProperty("_main", this);
-    context->setContextProperty("_info", &m_info);
-    context->setContextProperty("_transfert", &m_transfert);
-    context->setContextProperty("_graph", &m_graph);
+    //    engine().load(QUrl(QStringLiteral("qrc:/Core/Main.qml")));
 
-    m_engine.load(QUrl(QStringLiteral("qrc:/Core/Main.qml")));
-
-    if (m_engine.rootObjects().size() != 1)
+    if (engine().rootObjects().size() < 1)
         return -1;
 
-    QObject *root = m_engine.rootObjects().first();
+    QObject *root = engine().rootObjects().last();
 
     QObject *info = root->findChild<QObject *>("infoView");
 
     if (info) {
+        qDebug() << "Cong";
         m_info.configure(info);
     }
 
@@ -93,7 +101,7 @@ int MainController::exec()
 
         QMetaType mt(QMetaType::type(it.toLatin1()));
         AbstractController *p = (AbstractController *) mt.create();
-        auto sp = dynamic_cast<FeatureBuilder *>(p)->build(&m_engine, root);
+        auto sp = dynamic_cast<FeatureBuilder *>(p)->build(&engine(), root);
         if (sp.dynamicCast<QObject>())
             sp.dynamicCast<QObject>()->setParent(this);
 
@@ -107,7 +115,7 @@ int MainController::exec()
     connect(m_db, &InterfaceDataSave::s_updateEntry, this, &MainController::buildModel);
     connect(m_db, &InterfaceDataSave::s_updateEntry, this, &MainController::pageChange);
 
-    m_settings.init(m_engine);
+    m_settings.init(engine());
 
     connect(&m_settings, &ControllerSettings::s_language, this, &MainController::languageChange);
     connect(&m_settings, &ControllerSettings::s_finish, this, &MainController::loadFeatures);
@@ -124,7 +132,7 @@ int MainController::exec()
     if(about)
         connect(about, SIGNAL(opened()), this, SLOT(about()));
     
-    m_graph.set(m_engine);
+    m_graph.set(engine());
     connect(m_db, &InterfaceDataSave::s_updateEntry, &m_graph, &AbstractGraphController::exec);
     m_graph.exec();
 
@@ -158,7 +166,7 @@ void MainController::close()
 
 void MainController::about()
 {
-    QObject* licence = m_engine.rootObjects().first()->findChild<QObject*>("about");
+    QObject* licence = engine().rootObjects().first()->findChild<QObject*>("about");
     if(licence)
     {
         QFile f("ABOUT.md");
@@ -178,7 +186,7 @@ void MainController::readme()
     if(!f.open(QIODevice::ReadOnly))
         return;
     
-    QObject* readme = m_engine.rootObjects().first()->findChild<QObject*>("howto");
+    QObject* readme = engine().rootObjects().first()->findChild<QObject*>("howto");
     
     readme->setProperty("text", f.readAll());
     f.close();
@@ -186,7 +194,7 @@ void MainController::readme()
 
 void MainController::licence()
 {
-    QObject* licence = m_engine.rootObjects().first()->findChild<QObject*>("licence");
+    QObject* licence = engine().rootObjects().first()->findChild<QObject*>("licence");
     if(licence)
     {
         QFile f("LICENSE.md");
@@ -231,7 +239,7 @@ void MainController::update(Entry e)
 
 void MainController::add(bool account)
 {
-    QObject* m = m_engine.rootObjects().first();
+    QObject* m = engine().rootObjects().first();
     QObject* h = m->findChild<QObject*>("head");
     QPoint p = QCursor::pos();
     double pX, pY;
@@ -241,7 +249,7 @@ void MainController::add(bool account)
     
     pY = p.y() - m->property("y").toDouble() - h->property("height").toDouble();
     pY /= m->property("height").toDouble();
-    QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("addingid");
+    QObject* popup = engine().rootObjects().first()->findChild<QObject*>("addingid");
     popup->setProperty("newAccount", account);
     popup->setProperty("pY", pY); popup->setProperty("pX", pX);
     QMetaObject::invokeMethod(popup, "open");
@@ -249,7 +257,7 @@ void MainController::add(bool account)
 
 void MainController::adding()
 {
-    QObject* adding = m_engine.rootObjects().first()->findChild<QObject*>("addingid");
+    QObject* adding = engine().rootObjects().first()->findChild<QObject*>("addingid");
     Entry e;
     
     if(adding->property("newAccount").toBool())
@@ -309,7 +317,7 @@ void MainController::addEntryMain(Entry  e)
 
 void MainController::quickOpen()
 {
-    QObject* quick = m_engine.rootObjects().first()->findChild<QObject*>("quick");
+    QObject* quick = engine().rootObjects().first()->findChild<QObject*>("quick");
     auto cats = m_db->selectCategory();
     QStringList modi = cats.values("income"), modo = cats.values("outcome");
     modi<<""; modo<<"";
@@ -319,7 +327,7 @@ void MainController::quickOpen()
 
 void MainController::quickAdding()
 {
-    QObject* quick = m_engine.rootObjects().first()->findChild<QObject*>("quick");
+    QObject* quick = engine().rootObjects().first()->findChild<QObject*>("quick");
     if(quick)
     {
         auto et = quick->property("entry").value<QJSValue>();
@@ -340,7 +348,7 @@ void MainController::quickAdding()
 
 void MainController::quickAddCategory(QString cat)
 {
-    QObject* quick = m_engine.rootObjects().first()->findChild<QObject*>("quick");
+    QObject* quick = engine().rootObjects().first()->findChild<QObject*>("quick");
     QObject* typecombo = quick->findChild<QObject*>("type");
     QObject* combo = quick->findChild<QObject*>("cat");
     if(typecombo)
@@ -369,7 +377,7 @@ void MainController::edit(QVariant id)
 void MainController::previewCalendar()
 {
     QMap<QDate, Total> all = allTotal();
-    QObject* cal = m_engine.rootObjects().first()->findChild<QObject*>("cal");
+    QObject* cal = engine().rootObjects().first()->findChild<QObject*>("cal");
     int month = 0;
     int year = 0;
     if(cal)
@@ -485,8 +493,8 @@ void MainController::buildModel(QUuid)
 
 void MainController::pageChange(QUuid id)
 {
-    QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
-    QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
+    QObject* skipper = engine().rootObjects().first()->findChild<QObject*>("pageSkip");
+    QObject* tab = engine().rootObjects().first()->findChild<QObject*>("entryView");
     
     if(tab && skipper)
     {
@@ -539,7 +547,7 @@ void MainController::pageChange(QUuid id)
 void MainController::updateQuickView()
 {
     auto ld = dateList();
-    QObject* quickView = m_engine.rootObjects().first()->findChild<QObject*>("quickViewDate");
+    QObject* quickView = engine().rootObjects().first()->findChild<QObject*>("quickViewDate");
     
     if(quickView)
         quickView->setProperty("currentDate", ld.isEmpty() ? QDate::currentDate(): ld.first());
@@ -547,7 +555,7 @@ void MainController::updateQuickView()
 
 QList<QDate> MainController::dateList() const
 {
-    QObject* calendar = m_engine.rootObjects().first()->findChild<QObject*>("cal");
+    QObject* calendar = engine().rootObjects().first()->findChild<QObject*>("cal");
     QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));
     QJSValue array = mp.read(calendar).value<QJSValue>();
     QList<QDate> ld;
@@ -580,7 +588,7 @@ void MainController::accountChange(QString acc)
 
 void MainController::loadAccount()
 {
-    QObject* combo = m_engine.rootObjects().first()->findChild<QObject*>("accountSelect");
+    QObject* combo = engine().rootObjects().first()->findChild<QObject*>("accountSelect");
     
     if(combo)
     {
@@ -693,19 +701,19 @@ void MainController::deleteProfile(QString name)
 
 void MainController::languageChange()
 {
-    m_engine.retranslate();
+    engine().retranslate();
 }
 
 void MainController::sortRole(QString role)
 {
     m_settings.setSortingRole(role);
-    QUuid id = m_engine.rootObjects().first()->findChild<QObject*>("table")->property("currentId").toUuid();
+    QUuid id = engine().rootObjects().first()->findChild<QObject*>("table")->property("currentId").toUuid();
     pageChange(id);
 }
 
 void MainController::sortOrder(int order)
 {
     m_settings.setSortOrdre((Qt::SortOrder)order);
-    QUuid id = m_engine.rootObjects().first()->findChild<QObject*>("table")->property("currentId").toUuid();
+    QUuid id = engine().rootObjects().first()->findChild<QObject*>("table")->property("currentId").toUuid();
     pageChange(id);
 }

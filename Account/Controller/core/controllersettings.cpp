@@ -40,12 +40,12 @@ void ControllerSettings::init(QQmlEngine & engine)
     QObject* obj = m_view->findChild<QObject*>("language");
     obj->setProperty("model", QVariant::fromValue(availableLanguage));
 
-    QObject* back = m_view->findChild<QObject*>("saveBackup");
-    if(back)
+    QObject *back = m_view->findChild<QObject *>("saveBackup");
+    if (back)
         connect(back, SIGNAL(clicked()), this, SLOT(backup()));
 
-    QObject* restorer = m_view->findChild<QObject*>("restoreDialog");
-    if(restorer)
+    QObject *restorer = m_view->findChild<QObject *>("restoreDialog");
+    if (restorer)
         connect(restorer, SIGNAL(s_restore(QString)), this, SLOT(restore(QString)));
 
     //    m_synchro.exec();
