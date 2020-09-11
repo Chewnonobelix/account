@@ -84,7 +84,7 @@ public slots:
     void remove(QVariant);
     void edit(QVariant);
 
-    void adding();
+    void adding(QVariant);
 
     void accountChange(QString);
     void addEntryMain(Entry);

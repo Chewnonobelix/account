@@ -255,18 +255,18 @@ void MainController::add(bool account)
     QMetaObject::invokeMethod(popup, "open");
 }
 
-void MainController::adding()
+void MainController::adding(QVariant ref)
 {
-    QObject* adding = engine().rootObjects().first()->findChild<QObject*>("addingid");
     Entry e;
-    
-    if(adding->property("newAccount").toBool())
-    {
+
+    QVariantMap map = ref.toMap();
+
+    if (map["newAccount"].toBool()) {
         QVariant val, date, account;
-        
-        val = adding->property("v_val");
-        date = adding->property("v_date");
-        account = adding->property("v_title");
+
+        val = map["value"];
+        date = map["date"];
+        account = map["title"];
         e.setAccount(account.toString());
         e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
         e.setValue(val.toDouble());
@@ -276,16 +276,14 @@ void MainController::adding()
         i.setTitle("Initial");
         e.setInfo(i);
         e.setBlocked(true);
-    }
-    else
-    {
+    } else {
         QVariant val, date, label, type;
-        
-        val = adding->property("v_val");
-        date = adding->property("v_date");
-        label = adding->property("v_title");
-        type = adding->property("v_type");
-        
+
+        val = map["value"];
+        date = map["date"];
+        label = map["title"];
+        type = map["type"];
+
         e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
         e.setValue(val.toDouble());
         e.setType(type.toString());
@@ -297,8 +295,8 @@ void MainController::adding()
         e.setAccount(currentAccount());
     }
     AbstractController::addEntry(e);
-    
-    if(adding->property("newAccount").toBool())
+
+    if (map["newAccount"].toBool())
         loadAccount();
 }
 

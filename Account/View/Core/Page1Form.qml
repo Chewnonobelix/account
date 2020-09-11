@@ -65,7 +65,7 @@ Page {
         
         AccountButton {
             id: add
-            text: qsTr("Add1")
+            text: qsTr("Add")
 
 
             enabled: accountSelect.model.length > 0

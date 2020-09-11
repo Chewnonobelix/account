@@ -214,8 +214,9 @@ Popup {
                 property bool ttVisible: false
                 onClicked: {
                     if(valueLabel.valid && member.valid) {
+                        root.entry["newAccount"] = root.newAccount
                         if(!common)
-                            _main.adding()
+                            _main.adding(root.entry)
                         else
                             accept()
 
