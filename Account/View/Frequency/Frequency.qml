@@ -9,6 +9,14 @@ Rectangle {
     color: "transparent"
     border.color: "gold"
     
+    property var model
+    property int maxPage: 1
+    property int currentPage: 1
+
+    onModelChanged: pastView.model = model
+    onMaxPageChanged: pageSwipper.maxPage = maxPage
+    onCurrentPageChanged: pageSwipper.pageIndex = currentPage
+
     ColumnLayout {
         anchors.fill: parent
         spacing: height * 0.02

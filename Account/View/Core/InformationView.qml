@@ -13,6 +13,31 @@ Item {
     
     GridLayout {
         anchors.fill: parent
+
+        Connections {
+            target: _info
+
+            function onPageModel(list) {
+                frequency.model = list
+            }
+
+            function onMaxPageChanged(max) {
+                frequency.maxPage = max
+            }
+
+            function onCurrentPageChanged(index) {
+                frequency.currentPage = index
+            }
+
+            function onCatList(list) {
+                ee.catModel = list
+            }
+
+            function onView(e) {
+                ee.entry = e
+            }
+        }
+
         EntryEdit {
             id: ee
             objectName: "entryEdit"
@@ -39,7 +64,7 @@ Item {
         
         Frequency {
             enabled: visible
-            objectName: "frequency"
+            id: frequency
             Layout.maximumWidth: root.width *.49
             Layout.maximumHeight: root.height * .83
             Layout.preferredWidth: root.width * 49

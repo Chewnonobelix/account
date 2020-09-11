@@ -72,12 +72,6 @@ int MainController::exec()
 
     QObject *root = engine().rootObjects().last();
 
-    QObject *info = root->findChild<QObject *>("infoView");
-
-    if (info) {
-        m_info.configure(info);
-    }
-
     QObject* combo = root->findChild<QObject*>("accountSelect");
     
     if(combo)
