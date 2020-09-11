@@ -2,19 +2,18 @@
 
 int ControllerCommon::exec()
 {
-    CommonExpanse t; 
-    if(!m_view->findChild<QObject*>("common")->property("model").isNull())
-        t = m_view->findChild<QObject*>("common")->property("model").value<CommonExpanse>();
-    
+    CommonExpanse t;
+    if (!m_currentId.isNull())
+        t = db()->selectCommon()[m_currentId];
+
     QVariantList model;
-    
+
     int index = -1;
     for(auto it: m_db->selectCommon())
     {
         if(t.id() == it.id())
         {
             index = model.size();
-            m_view->findChild<QObject*>("common")->setProperty("model", QVariant::fromValue(it));
         }
         
         model<<QVariant::fromValue(it);
@@ -58,19 +57,21 @@ void ControllerCommon::removeCommon(QVariant id)
     exec();
 }
 
-void ControllerCommon::addCommonEntry()
+void ControllerCommon::addCommonEntry(QVariant ref)
 {
-    CommonExpanse ce = m_view->findChild<QObject*>("common")->property("model").value<CommonExpanse>();
-    QObject* pop = m_view->findChild<QObject*>("commonAdding");
-    
-    Entry e; Information i;
-    i.setTitle(pop->property("v_title").toString());
-    e.setDate(QDate::fromString(pop->property("v_date").toString(), "dd-MM-yyyy"));
-    e.setValue(pop->property("v_val").toDouble());
-    e.setType(pop->property("v_type").toString());
+    CommonExpanse ce = db()->selectCommon()[m_currentId];
+
+    Entry e;
+    Information i;
+    QVariantMap map = ref.toMap();
+
+    i.setTitle(map["title"].toString());
+    e.setDate(QDate::fromString(map["date"].toString(), "dd-MM-yyyy"));
+    e.setValue(map["value"].toDouble());
+    e.setType(map["type"].toString());
     e.setInfo(i);
-    
-    ce.addEntries(pop->property("v_member").toString().toLower(), e);
+
+    ce.addEntries(map["member"].toString(), e);
     m_db->updateCommon(ce);
     exec();
 }
@@ -100,7 +101,6 @@ QSharedPointer<FeatureBuilder> ControllerCommon::build(QQmlApplicationEngine * e
     QQmlComponent commonComp(engine, QUrl("qrc:/CommonExpanse/CommonExpanseManager.qml"));
     QObject* commonManager = commonComp.create();
     
-    common->m_view = commonManager;
     common->init();
         
     connect(m_db, &InterfaceDataSave::s_updateCommon, common.data(), &ControllerCommon::exec);

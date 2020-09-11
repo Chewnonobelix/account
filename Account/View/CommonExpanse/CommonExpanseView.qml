@@ -43,7 +43,7 @@ Rectangle {
         implicitHeight: parent.height * .12
         
         onOpened: completionList = model.members
-        onAccept: _commonExpanse.addCommonEntry()
+        onAccept: _commonExpanse.addCommonEntry(entry)
     }
     
     GridLayout {

@@ -122,7 +122,10 @@ Rectangle {
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
-                        onClicked: listCommon.currentIndex = listCommon.currentIndex === index ? -1 : index
+                        onClicked: {
+                            _commonExpanse.currentId = modelData.id
+                            listCommon.currentIndex = listCommon.currentIndex === index ? -1 : index
+                        }
                     }
                 }
             }
