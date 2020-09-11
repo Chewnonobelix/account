@@ -35,6 +35,21 @@ Popup {
     background: AccountBackground {
     }
 
+    Connections {
+        target: _frequency
+
+        function onClose() {
+            generateWin.close()
+        }
+
+        function onSetGenerate(idf, count) {
+            generateWin.freqId = idf
+            generateWin.freqGroup = count
+
+            generateWin.open()
+        }
+    }
+
     contentItem: Rectangle {
         id: visbleRect
         gradient: AccountStyle.unselectView
@@ -107,7 +122,7 @@ Popup {
                 
                 text: qsTr("Generate")
                 onClicked: {
-                    _frequency.generate(from.text, to.text)
+                    _frequency.generate(from.text, to.text, generateWin.freqId, generateWin.freqGroup)
                     close();
                 }
             }

@@ -52,6 +52,15 @@ Rectangle {
         }
 
         ListView {
+            Connections {
+                target: _frequency
+
+                function onSetModel(model, index) {
+                    frequencyList.model = model
+                    frequencyList.currentIndex = index
+                }
+            }
+
             id: frequencyList
             objectName: "frequencyList"
             model: []
@@ -117,6 +126,7 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         frequencyList.currentIndex = index
+                        _frequency.currentId = modelData.id
                     }
 
                     cursorShape: Qt.PointingHandCursor
@@ -176,6 +186,14 @@ Rectangle {
             Layout.columnSpan: 6
             Layout.rowSpan: 1
 
+            Connections {
+                target: _frequency
+
+                function onCatList(inc, out) {
+                    ref.incomeList = inc
+                    ref.outcomeList = out
+                }
+            }
 
             property var incomeList: []
             property var outcomeList: []
@@ -184,8 +202,8 @@ Rectangle {
             onTitleChanged: if(entry && enabled) _frequency.updateFreqName(frequencyList.currentModel.id, title)
             onCatChanged: if(entry && enabled) _frequency.updateFreqCat(frequencyList.currentModel.id, cat, "manager")
             onSupportChanged: if(entry && enabled) _frequency.updateFreqSupport(frequencyList.currentModel.id, supp)
-            onAddNewCategory: if(entry && enabled) _frequency.addNewCategory(cat)
-
+            onAddNewCategory: { if(entry && enabled) _frequency.addNewCategory(frequencyList.currentModel.id, cat, entry.type)
+            }
             onEntryChanged: {
                 typeCombo.currentIndex = CoreModel.typeModel.find(entry ? entry.type: "outcome")
             }
@@ -326,10 +344,19 @@ Rectangle {
             }
 
             AccountLabel {
+                id: worker
                 objectName: "worker"
                 anchors.top: dateText.bottom
                 width: parent.width
                 height: parent.height / parent.children.length
+
+                Connections {
+                    target: _frequency
+
+                    function onDisplayWorker(work) {
+                        worker.worker = work
+                    }
+                }
 
                 property Worker worker: null;
                 text: qsTr("Progress") + ": "  + (worker ? worker.progress + "%" : "N/A")
@@ -339,6 +366,14 @@ Rectangle {
         EntryEdit {
             id: linked
             objectName: "linkedDisplayer"
+
+            Connections {
+                target: _frequency
+
+                function onDisplayLink(entry) {
+                    linked.entry = entry
+                }
+            }
 
             Component.onCompleted: changeDirection()
             opening: true
