@@ -13,9 +13,8 @@
 class ControllerBudget: public AbstractController, public FeatureBuilder
 {
     Q_OBJECT
-    
-private:    
-    QObject* m_view, *m_referenceView, *m_quickView, *m_cal;
+
+private:
     QMap<QString, QObject*> m_views;
     QMap<QString, Budget> m_budgets;
     QDate m_currentDate;
@@ -23,18 +22,15 @@ private:
     Filler<QString, Budget> m_filler;
         
 public:
-    ControllerBudget();
+    ControllerBudget() = default;
     ControllerBudget(const ControllerBudget &);
-    
-    ~ControllerBudget() = default;
+
+    ~ControllerBudget();
     bool removeFrom(QUuid);
 
     int exec();
     void openManager();
     void reload();
-    void setQuickView(QObject* );
-    void setManager(QObject*);
-    void setCalendar(QObject*);
     
     QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *);
     QString displayText() const;
@@ -42,12 +38,12 @@ public:
     void checker() {}
 
 public slots:
-    void calDateChange();
+    void calDateChange(QVariantList);
     void show(QDate);
     void closeManager();
     void addTarget(QString);
     void removeTarget(QString, QString);
-    void editReference();
+    void editReference(QVariant);
     void showTarget(QString, QString, bool);
 
     void addBudget(QString);
@@ -58,6 +54,10 @@ public slots:
     void changeEntry(QString, QUuid);
 
 signals:
+    void selectCat(QString);
+    void blocked(bool);
+    void dateChanged(QVariant);
+    void clearDate();
     void catChanged(QString);
     void addCat(QVariant);
     void clearCat();

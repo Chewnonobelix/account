@@ -19,11 +19,7 @@ Rectangle {
         height: width * 1.33
         width: 150 * 1.5
     }
-                
-    function selectCat(name) {
-        catView.currentIndex = categoryModel.getIndex(name)
-    }
-    
+                    
     ListModel {
         id: categoryModel
         
@@ -68,6 +64,13 @@ Rectangle {
         function onClearSub() {
             subModel.clear()
         }
+
+        function onBlocked(block) {
+            root.blocked = block
+        }
+
+        function onSelectCat(select) {
+            catView.currentIndex = categoryModel.getIndex(select)        }
     }
 
     ListModel {

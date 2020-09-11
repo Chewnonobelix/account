@@ -53,6 +53,9 @@ Page {
                 view.reset()
                 _main.updateQuickView()
                 _main.pageChange()
+
+                if(_budget)
+                    _budget.calDateChange(selectedDates)
             }
 
             onMonthChanged: {
@@ -122,12 +125,25 @@ Page {
                 clip: true
             }
             
-            BudgetView {
-                id: budgetQuick
-                objectName: "budgetQuick"
-                
+            Loader {
+                id: loadQuick
+                Connections {
+                    target: _main
+
+                    function onEnableQuickView(enable) {
+                        loadQuick.active = true
+                    }
+                }
+
+                active: false
                 width: parent.width
                 height: parent.height - parent.spacing - quickViewDate.height
+
+                onActiveChanged: {
+                    item.width = width
+                    item.height = height
+                }
+                source: "../Budget/BudgetView.qml"
             }
         }
         

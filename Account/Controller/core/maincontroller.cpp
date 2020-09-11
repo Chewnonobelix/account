@@ -75,7 +75,6 @@ int MainController::exec()
     QObject *info = root->findChild<QObject *>("infoView");
 
     if (info) {
-        qDebug() << "Cong";
         m_info.configure(info);
     }
 
@@ -221,6 +220,7 @@ void MainController::loadFeatures()
         }
     }
 
+    emit enableQuickView(true);
     emit featuresChanged(featureItem);
     emit featuresListChanged(features);
 }

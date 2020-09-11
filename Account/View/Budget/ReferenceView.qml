@@ -17,6 +17,9 @@ Popup {
         cButton.extern(new Date())
     }
 
+    onBudgetNameChanged: reference["cat"] = budgetName
+
+    property var reference: Object()
 
     contentItem: Rectangle {
         id: rectWindow
@@ -74,6 +77,7 @@ Popup {
                 Layout.columnSpan: 2
                 Layout.alignment: Qt.AlignRight       
                 
+                onTextChanged: root.reference["date"] = text
                 ToolTip.text: qsTr("Select begin date")
             }
             
@@ -102,7 +106,9 @@ Popup {
                 Layout.columnSpan: 2
                 Layout.alignment: Qt.AlignRight
 
-                ToolTip.text: qsTr("Specify target value")                
+                ToolTip.text: qsTr("Specify target value")
+
+                onS_realVCalueChange: root.reference["value"] = realValue
             }
             
             AccountLabel {
@@ -133,7 +139,7 @@ Popup {
                 textRole: "name"
                 
                 property int currentRole: 0
-                
+                onCurrentRoleChanged: root.reference["role"] = currentRole
                 onCurrentIndexChanged: currentRole = CoreModel.freqModel.get(currentIndex).role
                 
                 ToolTip.text: qsTr("Select frequency")
@@ -151,7 +157,11 @@ Popup {
                 Layout.columnSpan: 1
                 Layout.alignment: Qt.AlignLeft
 
-                onClicked: _budget.editReference()
+                onClicked: {
+                    _budget.editReference(reference)
+                    root.close()
+                }
+
             }
             
             AccountButton {

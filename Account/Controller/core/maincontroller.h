@@ -74,6 +74,7 @@ signals:
     void profilesListChanged(QStringList);
     void currentProfileChanged(QString);
     void checkListChanged(QVariantList);
+    void enableQuickView(bool);
 
 public slots:
     int exec();

@@ -4,16 +4,24 @@ import QtQml.Models 2.12
 
 Item {
 
-    function add(map, col) {
-        if (col === 0)
-            budgetModel1.append(map)
-        else
-            budgetModel2.append(map)
-    }
+    Component.onCompleted: _budget.show(new Date())
 
-    function clear() {
-        budgetModel1.clear()
-        budgetModel2.clear()
+    Connections {
+        target: _budget
+
+        function onClearDate() {
+            budgetModel1.clear()
+            budgetModel2.clear()
+        }
+
+        function onDateChanged(list) {
+            for(var i = 0; i < list.length; i++) {
+                if (i%2 === 0)
+                    budgetModel1.append(list[i])
+                else
+                    budgetModel2.append(list[i])
+            }
+        }
     }
 
     ListModel {
