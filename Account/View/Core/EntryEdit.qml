@@ -115,7 +115,7 @@ AccountBackground {
 
                 property date s_date
 
-                onS_realVCalueChange: valueChanged(realValue)
+                onS_realVCalueChange: root.valueChanged(realValue)
 
             }
 
