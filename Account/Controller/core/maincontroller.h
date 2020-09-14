@@ -18,6 +18,7 @@
 #include "controllersettings.h"
 #include "controllertransfert.h"
 #include "languagecontroller.h"
+#include "liveqmlengine.h"
 
 class Builder: public QThread
 {
@@ -41,7 +42,7 @@ class ACCOUNT_EXPORT MainController: public AbstractController
 
     
 private:
-    QQmlApplicationEngine m_engine;
+    LiveQmlEngine m_engine;
     ControllerInformation m_info;
     LanguageController m_lang;
     ControllerTransfert m_transfert;
@@ -59,11 +60,22 @@ private:
     QVariantList m_model;
     QSharedPointer<Builder> m_modelBuilder = nullptr;
     QMutex m_modelMutex;
-    
+
+    inline QQmlApplicationEngine &engine() { return m_engine.qmlEngine(); }
+    inline QQmlApplicationEngine const &engine() const { return m_engine.qmlEngine(); }
+
 public:
     MainController(int = 0);
     ~MainController();
 
+signals:
+    void featuresListChanged(QStringList);
+    void featuresChanged(QVariantList);
+    void totaleChanged(QVariant);
+    void profilesListChanged(QStringList);
+    void currentProfileChanged(QString);
+    void checkListChanged(QVariantList);
+    void enableQuickView(bool);
 
 public slots:
     int exec();
@@ -73,7 +85,7 @@ public slots:
     void remove(QVariant);
     void edit(QVariant);
 
-    void adding();
+    void adding(QVariant);
 
     void accountChange(QString);
     void addEntryMain(Entry);
@@ -82,7 +94,7 @@ public slots:
 
     void loadAccount();
 
-    void validateCheckEstimated();
+    void validateCheckEstimated(QVariantList);
     void deleteAccount(QString);
 
     void previewCalendar();
@@ -98,7 +110,7 @@ public slots:
     void quickOpen();
 
     void changeProfile(QString);
-    void addProfile();
+    void addProfile(QString);
     void loadProfiles();
     void deleteProfile(QString);
     

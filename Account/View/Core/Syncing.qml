@@ -8,6 +8,18 @@ Window {
     objectName: "syncingpop"
     id: root
 
+    Connections {
+        target: _settings
+
+        function onVisibleChanged(visible) {
+            root.visible = visible
+        }
+
+        function onBackupChanged(back) {
+            root.backup = back
+        }
+    }
+
     property bool backup: true
     flags: Qt.SplashScreen
     modality: Qt.ApplicationModal

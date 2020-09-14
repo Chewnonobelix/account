@@ -9,14 +9,14 @@ Item {
     property int pageIndex: 1
     property int maxPage: 5
     
-    signal s_pageChange()
+    signal pageChange()
     
     onPageIndexChanged: {
         if(pageIndex < 1) pageIndex = 1
         if(pageIndex > maxPage) pageIndex = maxPage
         
         pageSkip.pagesIndex = pageIndex
-        s_pageChange()
+        pageChange()
     }
     
     RowLayout

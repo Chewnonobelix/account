@@ -45,17 +45,20 @@ signals:
 
 class ControllerFrequency: public AbstractController, public FeatureBuilder
 {
-    Q_OBJECT 
-    
+    Q_OBJECT
+    Q_PROPERTY(QUuid currentId MEMBER m_currentId)
+
 private:
+    QUuid m_currentId;
+
     QMap<QUuid, Frequency> m_freqs;
     QMap<QString, Worker*> m_workers;
 
-    QObject* m_manager, *m_generate;
+    QObject *m_manager;
     QQmlApplicationEngine m_eng;
-    
-    QList<QVariant> m_model; 
-    
+
+    QList<QVariant> m_model;
+
     void loadCat();
     Filler<QUuid, Frequency> m_filler;
     
@@ -66,8 +69,6 @@ public:
         
     void closeManager();
     
-    void setManager(QObject*);
-
     QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *);
     QString displayText() const;
     QString baseText() const;
@@ -80,20 +81,27 @@ signals:
     void s_select(int = -1);
     void s_show();
 
+    void displayLink(QVariant);
+    void close();
+    void catList(QStringList, QStringList);
+    void setGenerate(QVariant, int);
+    void displayWorker(QVariant);
+    void setModel(QVariant, int);
+
 public slots:
     int exec();
 
     void endThread(QString);
-    void generate(QString, QString);
+    void generate(QString, QString, QVariant, int);
     void openGenerate(QVariant);
     
     void openManager();
     
     void addFrequency();
     void removeFrequency(QVariant);
-    
-    void addNewCategory(QString);
-    
+
+    void addNewCategory(QVariant, QString, QString);
+
     void updateFreqName(QVariant, QString);
     void updateFreqValue(QVariant, double);
     void updateFreqCat(QVariant, QString);

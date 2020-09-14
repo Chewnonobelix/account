@@ -7,8 +7,6 @@ Popup {
 
     anchors.centerIn: parent
     id: checker
-
-    signal validate()
     
     AccountLabel {
         text: qsTr("Transaction to check")
@@ -26,21 +24,31 @@ Popup {
 
     property var tab: []
     
+    Connections {
+        target: _main
+
+        function onCheckListChanged (list) {
+            repeater.model = list
+        }
+    }
+
+
     ScrollView {
         id: listChecker
         width: parent.width
         height: parent.height * .90
         anchors.top: header.bottom
         anchors.topMargin: 10
-        //        flickableDirection: Flickable.AutoFlickDirection
-        //        vertical.policy: Qt.ScrollBarAsNeeded
 
         clip: true
         Column {
             clip: true
             Repeater {
+                id: repeater
                 objectName: "repeater"
                 model: []
+
+                onModelChanged: if(model.length === 0) close()
                 clip: true
                 delegate: Row {
                     id: row
@@ -91,7 +99,9 @@ Popup {
         ToolTip.timeout: 1
 
         onClicked:  {
-            _main.validateCheckEstimated()
+            _main.validateCheckEstimated(tab)
+
+            close()
         }
     }
 

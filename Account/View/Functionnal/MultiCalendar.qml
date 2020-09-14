@@ -49,8 +49,8 @@ Calendar {
     
     readonly property string format: "dd-MM-yyyy"
     
-    signal s_datesChanged()
-    signal s_monthChanged()
+    signal datesChanged()
+    signal monthChanged()
     property int currentMonth
     property int currentYear
     property bool multiple: true
@@ -70,7 +70,7 @@ Calendar {
         }
         visibleMonth = Qt.binding( function() { return currentMonth})
         
-        s_monthChanged()
+        monthChanged()
     }
     
     
@@ -82,7 +82,7 @@ Calendar {
             currentMonth = 11
         }
         visibleMonth = Qt.binding( function() { return currentMonth})
-        s_monthChanged()
+        monthChanged()
     }
     
     function showNextYear() {
@@ -271,7 +271,7 @@ Calendar {
                 visibleMonth = Qt.binding( function() { return currentMonth})
                 visibleYear = Qt.binding( function() { return currentYear})
                 
-                multiCal.s_datesChanged()
+                multiCal.datesChanged()
                 multiCal.updateSelected()
             }
             

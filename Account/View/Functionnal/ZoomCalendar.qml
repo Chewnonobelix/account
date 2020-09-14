@@ -4,8 +4,8 @@ import QtQuick.Controls 2.15
 
 MouseArea {
     id: area
-    signal s_datesChanged()
-    signal s_monthChanged()
+    signal datesChanged()
+    signal monthChanged()
     signal updateSelected()
 
     property int currentMonth: month.currentMonth
@@ -45,7 +45,7 @@ MouseArea {
                     Date.fromLocaleString(locale, "01-11-"+month.currentYear, "dd-MM-yyyy"),
                     Date.fromLocaleString(locale, "01-12-"+month.currentYear, "dd-MM-yyyy")]
                 
-                onS_select: {
+                onSelect: {
                     set(d)
                     zoom(2)
                 }
@@ -75,7 +75,7 @@ MouseArea {
                     Date.fromLocaleString(locale, "01-09-"+Math.floor(month.currentYear/10)+"8", "dd-MM-yyyy"),
                     Date.fromLocaleString(locale, "01-10-"+Math.floor(month.currentYear/10)+"9", "dd-MM-yyyy")]
                 
-                onS_select: {
+                onSelect: {
                     set(d)
                     zoom(2)
                 }
@@ -91,8 +91,8 @@ MouseArea {
             id: month
             weekNumbersVisible: true
             multiple: area.multiple
-            onS_datesChanged: area.s_datesChanged()
-            onS_monthChanged: area.s_monthChanged()
+            onDatesChanged: area.datesChanged()
+            onMonthChanged: area.monthChanged()
 
             onUpdateSelected: {
                 area.updateSelected()

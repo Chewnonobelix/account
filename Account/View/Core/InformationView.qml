@@ -13,6 +13,31 @@ Item {
     
     GridLayout {
         anchors.fill: parent
+
+        Connections {
+            target: _info
+
+            function onPageModel(list) {
+                frequency.model = list
+            }
+
+            function onMaxPageChanged(max) {
+                frequency.maxPage = max
+            }
+
+            function onCurrentPageChanged(index) {
+                frequency.currentPage = index
+            }
+
+            function onCatList(list) {
+                ee.catModel = list
+            }
+
+            function onView(e) {
+                ee.entry = e
+            }
+        }
+
         EntryEdit {
             id: ee
             objectName: "entryEdit"
@@ -29,17 +54,17 @@ Item {
 
             onAddNewCategory: _info.addNewCategory(cat)
 
-            onS_catChanged: _info.categoryChange(cat)
-            onS_titleChanged: _info.titleChange(title)
-            onS_valueChanged: _info.valueChange(value)
-            onS_supportChanged: _info.supportChange(supp)
+            onCatChanged: _info.categoryChange(cat)
+            onTitleChanged: _info.titleChange(title)
+            onValueChanged: _info.valueChange(value)
+            onSupportChanged: _info.supportChange(supp)
         }
         rowSpacing: root.height * 0.02
         columnSpacing: root.width * 0.02
         
         Frequency {
             enabled: visible
-            objectName: "frequency"
+            id: frequency
             Layout.maximumWidth: root.width *.49
             Layout.maximumHeight: root.height * .83
             Layout.preferredWidth: root.width * 49

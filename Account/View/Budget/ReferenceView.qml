@@ -11,19 +11,36 @@ Popup {
     id: root
     
     padding: 0
-    
+    property string budgetName
+
     onOpened: {
         cButton.extern(new Date())
     }
+
+    onBudgetNameChanged: reference["cat"] = budgetName
+
+    property var reference: Object()
 
     contentItem: Rectangle {
         id: rectWindow
         anchors.fill: parent
         gradient: AccountStyle.backgroundGradient
         
-        property string budgetName
         border.color: "gold"
         
+        Connections {
+            target: _budget
+
+            function onCatChanged(cat: string) {
+                budgetName = cat
+                root.open()
+            }
+
+            function onClose() {
+                root.close()
+            }
+        }
+
         GridLayout {
             id: gridId
             anchors.fill: parent
@@ -60,6 +77,7 @@ Popup {
                 Layout.columnSpan: 2
                 Layout.alignment: Qt.AlignRight       
                 
+                onTextChanged: root.reference["date"] = text
                 ToolTip.text: qsTr("Select begin date")
             }
             
@@ -88,7 +106,9 @@ Popup {
                 Layout.columnSpan: 2
                 Layout.alignment: Qt.AlignRight
 
-                ToolTip.text: qsTr("Specify target value")                
+                ToolTip.text: qsTr("Specify target value")
+
+                onS_realVCalueChange: root.reference["value"] = realValue
             }
             
             AccountLabel {
@@ -119,7 +139,7 @@ Popup {
                 textRole: "name"
                 
                 property int currentRole: 0
-                
+                onCurrentRoleChanged: root.reference["role"] = currentRole
                 onCurrentIndexChanged: currentRole = CoreModel.freqModel.get(currentIndex).role
                 
                 ToolTip.text: qsTr("Select frequency")
@@ -135,7 +155,13 @@ Popup {
                 Layout.column: 1
                 Layout.row: 3
                 Layout.columnSpan: 1
-                Layout.alignment: Qt.AlignLeft                
+                Layout.alignment: Qt.AlignLeft
+
+                onClicked: {
+                    _budget.editReference(reference)
+                    root.close()
+                }
+
             }
             
             AccountButton {

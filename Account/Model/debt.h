@@ -19,6 +19,8 @@ public:
 
     QUuid id() const;
     void setId(QUuid);
+    QString name() const;
+    void setName(QString);
     Entry initial() const;
     void setInitial(Entry);
     Frequency scheduler() const;

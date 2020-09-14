@@ -52,5 +52,6 @@
         <file>Style/AccountMenuButton.qml</file>
         <file>Core/SynchronizationGlobal.qml</file>
         <file>Core/Syncronization.qml</file>
+        <file>Core/AccountMenu.qml</file>
     </qresource>
 </RCC>

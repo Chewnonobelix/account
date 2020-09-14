@@ -17,11 +17,6 @@ void ControllerPieGraph::clear()
     m_entries["outcome"][""] = Total();
 }
 
-void ControllerPieGraph::setDate(QDate d)
-{
-    m_view->setProperty("currentDate", d);
-}
-
 void ControllerPieGraph::add(const Entry & e)
 {
     Total t = m_entries[e.type()][e.info().category()];
@@ -29,34 +24,23 @@ void ControllerPieGraph::add(const Entry & e)
     m_entries[e.type()][e.info().category()] = t;
 }
 
+void ControllerPieGraph::setGran(Account::Granularity) {}
 
 void ControllerPieGraph::update()
 {
-    QMetaObject::invokeMethod(m_income, "clear");
-    QMetaObject::invokeMethod(m_outcome, "clear");
-
-    auto setter = [](QMap<QString, Total> s, QObject* pie) {
-        for(auto it = s.begin(); it != s.end(); it++)
-        {
-            QMetaObject::invokeMethod(pie, "append", Q_ARG(QVariant, it.key().isEmpty() ? tr("Unknow") : it.key()), Q_ARG(QVariant, it.value().value()));
+    emit clearView();
+    auto setter = [this](QMap<QString, Total> s, QString pie) {
+        for (auto it = s.begin(); it != s.end(); it++) {
+            emit append(pie, it.key().isEmpty() ? tr("Unknow") : it.key(), it.value().value());
         }
     };
 
-
-    setter(m_entries["income"], m_income);
-    setter(m_entries["outcome"], m_outcome);
-}
-
-void ControllerPieGraph::setGran(Account::Granularity g)
-{
-    m_view->setProperty("gran", QVariant::fromValue(g));
+    setter(m_entries["income"], "income");
+    setter(m_entries["outcome"], "outcome");
 }
 
 void ControllerPieGraph::setView(const QQmlApplicationEngine & eng)
 {
-    m_income = eng.rootObjects().first()->findChild<QObject*>("incomingPie");
-    m_outcome = eng.rootObjects().first()->findChild<QObject*>("outcomePie");
-    m_view = eng.rootObjects().first()->findChild<QObject*>("pieCategory");
+    auto *context = eng.rootContext();
+    context->setContextProperty("_pie", this);
 }
-
-

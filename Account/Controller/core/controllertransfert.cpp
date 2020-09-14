@@ -10,59 +10,51 @@ ControllerTransfert::~ControllerTransfert()
 
 int ControllerTransfert::exec()
 {
-    if(m_view)
-    {
-        auto accounts = m_db->selectAccount();
-        QMetaObject::invokeMethod(m_view, "addAccount", Q_ARG(QVariant, accounts));
-        QMetaObject::invokeMethod(m_view, "open");
-    }
+    emit accountListChanged(m_db->selectAccount());
+    emit openChanged();
+
     return 0;
 }
 
 void ControllerTransfert::set(QObject * view)
 {
     m_view = view;
-
-    if(m_view)
-        connect(m_view, SIGNAL(s_accept()), this, SLOT(accept()));
 }
 
 
 void ControllerTransfert::accept()
 {
-    QObject *to, *from, *val, *info, *dateField;
-    QString accountOut, accountIn, title; QDate date;
-    double transfertVal;
-    to = m_view->findChild<QObject*>("toCombo");
-    from = m_view->findChild<QObject*>("fromCombo");
-    val = m_view->findChild<QObject*>("spinVal");
-    info = m_view->findChild<QObject*>("fieldInfo");
-    dateField = m_view->findChild<QObject*>("dateField");
+    Entry in(m_entry), out(m_entry);
 
-    accountOut = from->property("currentText").toString();
-    accountIn = to->property("currentText").toString();
-    title = info->property("text").toString();
-    transfertVal = val->property("value").toInt() / 100.0;
-    date = dateField->property("selectedDate").toDate();
-
-    Entry in, out;
-
-    out.setAccount(accountOut);
-    out.setDate(date);
-    out.setValue(transfertVal);
+    out.setAccount(m_outcomeAccount);
     out.setType("outcome");
-    Information inf;
-    inf.setTitle(title);
-    inf.setEstimated(out.date() > QDate::currentDate());
-    out.setInfo(inf);
-
-    in = out;
-    in.setType("income");
-    in.setAccount(accountIn);
-    setCurrentAccount(in.account());
-    addEntry(in);
     setCurrentAccount(out.account());
     addEntry(out);
 
+    in.setType("income");
+    in.setAccount(m_incomeAccount);
+    setCurrentAccount(in.account());
+    addEntry(in);
+
     emit s_finish();
+}
+
+void ControllerTransfert::onDateChanged(QDate d)
+{
+    m_entry.setDate(d);
+    auto i = m_entry.info();
+    i.setEstimated(d > QDate::currentDate());
+    m_entry.setInfo(i);
+}
+
+void ControllerTransfert::onTitleChanged(QString t)
+{
+    auto i = m_entry.info();
+    i.setTitle(t);
+    m_entry.setInfo(i);
+}
+
+void ControllerTransfert::onValueChanged(double v)
+{
+    m_entry.setValue(v);
 }

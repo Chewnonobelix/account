@@ -15,28 +15,33 @@ Rectangle {
     property string granularity: qsTr("month")
     property int estimatedCount: chart.series("Estimated") ? chart.series("Estimated").count : 0
 
-    function addDataMain(td, t) {
-        chart.series("Past").append(td, t)
+    Connections {
+        target: _timeGraph
+
+        function onAppendMain(td, t) {
+            chart.series("Past").append(td, t)
+        }
+
+        function onAppendEstimated(td, t) {
+            chart.series("Estimated").append(td, t)
+        }
+
+        function onDateChanged(min, max) {
+            dta.max = max
+            dta.min = min
+        }
+
+        function onBornValueChanged(min, max) {
+            va.max = max
+            va.min = min
+        }
+
+        function onClearView (){
+            chart.series("Past").clear()
+            chart.series("Estimated").clear()
+        }
     }
 
-    function addDataEstimated(td, t) {
-        chart.series("Estimated").append(td, t)
-    }
-
-    function setMinMaxDate(min, max) {
-        dta.max = max
-        dta.min = min
-    }
-
-    function setMinMaxValue(min, max) {
-        va.max = max
-        va.min = min
-    }
-
-    function clear (){
-        chart.series("Past").clear()
-        chart.series("Estimated").clear()
-    }
 
     AccountBackground {
         anchors.fill: parent

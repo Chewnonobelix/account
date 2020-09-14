@@ -9,22 +9,26 @@ import "../Functionnal"
 
 Popup {
     id: transfertView
-    //    closePolicy: Popup.NoAutoClose
 
-    signal s_accept()
+    Connections {
+        target: _transfert
 
-    function addAccount(accountList) {
-        fromCombo.model = accountList
-        toCombo.model = accountList
-        spinVal.value = 0
-        fieldInfo.clear()
+        function onOpenChanged() {
+            open()
+        }
 
-        if(accountList.length > 0) {
-            fromCombo.currentIndex = 0
-            toCombo.currentIndex = 1
+        function onAccountListChanged(accountList) {
+            fromCombo.model = accountList
+            toCombo.model = accountList
+            spinVal.value = 0
+            fieldInfo.clear()
+
+            if(accountList.length > 0) {
+                fromCombo.currentIndex = 0
+                toCombo.currentIndex = 1
+            }
         }
     }
-
 
     background: AccountBackground {
     }
@@ -41,6 +45,8 @@ Popup {
 
             Layout.preferredHeight: transfertView.height * .23
             Layout.preferredWidth: transfertView.width * .23
+
+            onTextChanged: _transfert.onDateChanged(Date.fromLocaleDateString(Qt.locale(), text, "dd-MM-yyyy"))
         }
 
 
@@ -103,6 +109,8 @@ Popup {
                 } else if(currentIndex === toCombo.currentIndex) {
                     toCombo.currentIndex = 0
                 }
+
+                _transfert.outcomeAccount = currentText
             }
         }
 
@@ -120,6 +128,8 @@ Popup {
                 } else if(currentIndex === fromCombo.currentIndex) {
                     fromCombo.currentIndex = 0
                 }
+
+                _transfert.incomeAccount = currentText
             }
         }
 
@@ -131,6 +141,7 @@ Popup {
             Layout.preferredHeight: transfertView.height * .23
             Layout.preferredWidth: transfertView.width * .23
 
+            onRealValueChanged: _transfert.onValueChanged(realValue)
         }
 
         AccountTextInput {
@@ -144,6 +155,8 @@ Popup {
             Layout.row: 2
             Layout.preferredHeight: transfertView.height * .23
             Layout.preferredWidth: transfertView.width * .23
+
+            onTextChanged: _transfert.onTitleChanged(text)
         }
 
         AccountButton {
@@ -157,7 +170,7 @@ Popup {
             onClicked: {
                 if(fieldInfo.text.length !== 0) {
                     fieldInfo.background.border.color = "transparent"
-                    transfertView.s_accept()
+                    _transfert.accept()
                     transfertView.close()
                 } else {
                     fieldInfo.background.border.color = "red"

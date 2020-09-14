@@ -20,8 +20,37 @@ Rectangle {
 
     }
 
-    signal s_increment(int i)
-    signal s_zoom(int dir)
+    Connections {
+        target: _pie
+
+        function onAppend(graphName, catName, total) {
+            if(graphName === "income") {
+                incoming.append(catName, total)
+            }
+            if(graphName === "outcome") {
+                outcome.append(catName, total)
+            }
+        }
+
+        function onClearView() {
+            incoming.clear()
+            outcome.clear()
+        }
+
+    }
+
+    Connections {
+        target: _graph
+
+
+        function onGranChanged(gran) {
+            root.gran = gran
+        }
+
+        function onDateChanged(d) {
+            root.currentDate = d
+        }
+    }
 
     GridLayout {
         anchors.fill: parent
@@ -39,14 +68,6 @@ Rectangle {
             Layout.fillWidth: true
             legend.font.family: AccountStyle.core.name
             legend.font.pixelSize: AccountStyle.core.size
-
-            function clear() {
-                incoming.clear()
-            }
-
-            function append(name, value) {
-                incoming.append(name, value)
-            }
 
             ToolTip {
                 id: tooli
@@ -78,13 +99,6 @@ Rectangle {
             titleFont.pixelSize: AccountStyle.title.size
             legend.font.family: AccountStyle.core.name
             legend.font.pixelSize: AccountStyle.core.size
-            function clear() {
-                outcome.clear()
-            }
-
-            function append(name, value) {
-                outcome.append(name, value)
-            }
 
             ToolTip {
                 id: toolo

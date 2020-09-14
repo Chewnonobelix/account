@@ -7,8 +7,13 @@ class ControllerTransfert: public AbstractController
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString incomeAccount MEMBER m_incomeAccount)
+    Q_PROPERTY(QString outcomeAccount MEMBER m_outcomeAccount)
+
 private:
     QObject* m_view;
+    Entry m_entry;
+    QString m_incomeAccount, m_outcomeAccount;
 
 public:
     ControllerTransfert();
@@ -20,10 +25,15 @@ public:
 
 public slots:
     void accept();
-    
+
+    void onDateChanged(QDate);
+    void onTitleChanged(QString);
+    void onValueChanged(double);
+
 signals:
     void s_finish(QUuid = QUuid());
-
+    void accountListChanged(QStringList);
+    void openChanged();
 };
 
 #endif // CONTROLLERTRANSFERT_H

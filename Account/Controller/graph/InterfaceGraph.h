@@ -9,11 +9,10 @@ class InterfaceGraph
 {
 public:
     virtual void add(const Entry&) = 0;
-    virtual void clear() = 0;
-    virtual void setDate(QDate) = 0;
-    virtual void setGran(Account::Granularity) = 0;
     virtual void setView(const QQmlApplicationEngine&) = 0;
     virtual void update() = 0;
+    virtual void clear() = 0;
+    virtual void setGran(Account::Granularity) = 0;
 };
 
 #endif // INTERFACEGRAPH_H

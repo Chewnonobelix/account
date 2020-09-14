@@ -2,63 +2,42 @@
 
 int ControllerCommon::exec()
 {
-    CommonExpanse t; 
-    if(!m_view->findChild<QObject*>("common")->property("model").isNull())
-        t = m_view->findChild<QObject*>("common")->property("model").value<CommonExpanse>();
-    
+    CommonExpanse t;
+    if (!m_currentId.isNull())
+        t = db()->selectCommon()[m_currentId];
+
     QVariantList model;
-    
+
     int index = -1;
     for(auto it: m_db->selectCommon())
     {
         if(t.id() == it.id())
         {
             index = model.size();
-            m_view->findChild<QObject*>("common")->setProperty("model", QVariant::fromValue(it));
         }
         
         model<<QVariant::fromValue(it);
     }
-    
-    QObject* list = m_view->findChild<QObject*>("listCommon");
-    
-    if(list)
-    {
-        list->setProperty("model", model);
-        list->setProperty("currentIndex", index);
-    }
-    
-    
+
+    emit commonModelChanged(model);
+    emit currentIndexChanged(index);
+
     return 0;
 }
 
 void ControllerCommon::init()
 {
-    QObject* checker = m_view->findChild<QObject*>("close");
-    if(checker)
-        connect(checker, SIGNAL(s_checked(bool)), this, SLOT(closeCommon(bool)));
-    
-    QObject* popup = m_view->findChild<QObject*>("commonAdding");
-    
-    if(popup)
-        connect(popup, SIGNAL(accept()), this, SLOT(addCommonEntry()));
-    
-    QObject* remove = m_view->findChild<QObject*>("common")->findChild<QObject*>("remove");
-    
-    if(remove)
-        connect(remove, SIGNAL(s_remove()), this, SLOT(removeCommonEntry()));
-
     exec();
 }
 
-void ControllerCommon::closeCommon(bool isClose)
+void ControllerCommon::closeCommon(QString id, bool isClose)
 {
-    CommonExpanse ce = m_view->findChild<QObject*>("common")->property("model").value<CommonExpanse>();
+    CommonExpanse ce = db()->selectCommon()[id];
     ce.setIsClose(isClose);
     m_db->updateCommon(ce);
     ce.equilibrate();
-    
-    m_view->findChild<QObject*>("common")->setProperty("model", QVariant::fromValue(ce));
+
+    exec();
 }
 
 void ControllerCommon::addCommon(QString name)
@@ -78,37 +57,37 @@ void ControllerCommon::removeCommon(QVariant id)
     exec();
 }
 
-void ControllerCommon::addCommonEntry()
+void ControllerCommon::addCommonEntry(QVariant ref)
 {
-    CommonExpanse ce = m_view->findChild<QObject*>("common")->property("model").value<CommonExpanse>();
-    QObject* pop = m_view->findChild<QObject*>("commonAdding");
-    
-    Entry e; Information i;
-    i.setTitle(pop->property("v_title").toString());
-    e.setDate(QDate::fromString(pop->property("v_date").toString(), "dd-MM-yyyy"));
-    e.setValue(pop->property("v_val").toDouble());
-    e.setType(pop->property("v_type").toString());
+    CommonExpanse ce = db()->selectCommon()[m_currentId];
+
+    Entry e;
+    Information i;
+    QVariantMap map = ref.toMap();
+
+    i.setTitle(map["title"].toString());
+    e.setDate(QDate::fromString(map["date"].toString(), "dd-MM-yyyy"));
+    e.setValue(map["value"].toDouble());
+    e.setType(map["type"].toString());
     e.setInfo(i);
-    
-    ce.addEntries(pop->property("v_member").toString().toLower(), e);
+
+    ce.addEntries(map["member"].toString(), e);
     m_db->updateCommon(ce);
     exec();
 }
 
-void ControllerCommon::removeCommonEntry()
+void ControllerCommon::removeCommonEntry(QString idc, QString member, QString ide)
 {
-    CommonExpanse ce = m_view->findChild<QObject*>("common")->property("model").value<CommonExpanse>();
-    
+    CommonExpanse ce = db()->selectCommon()[idc];
+    auto l = ce.entries().values(member);
     Entry e;
-    QString member;
-    if(!m_view->findChild<QObject*>("common")->findChild<QObject*>("remove")->property("currentModel").isNull())
-    {
-        e = m_view->findChild<QObject*>("common")->findChild<QObject*>("remove")->property("currentModel").value<Entry>();
-        member = m_view->findChild<QObject*>("common")->findChild<QObject*>("remove")->property("currentMember").toString();
-        
-        m_db->updateCommon(ce);
-    }
-    
+    for (auto it : l)
+        if (it.id() == ide)
+            e = it;
+
+    ce.removeEntry(member, e);
+    m_db->updateCommon(ce);
+
     exec();
 }
 
@@ -122,18 +101,8 @@ QSharedPointer<FeatureBuilder> ControllerCommon::build(QQmlApplicationEngine * e
     QQmlComponent commonComp(engine, QUrl("qrc:/CommonExpanse/CommonExpanseManager.qml"));
     QObject* commonManager = commonComp.create();
     
-    common->m_view = commonManager;
     common->init();
-    
-    QObject* commonpop = commonManager->findChild<QObject*>("popAddCommon");
-    if(commonpop)
-        connect(commonpop, SIGNAL(s_accepted(QString)), common.data(), SLOT(addCommon(QString)));
-    
-    QObject* removeCommon = commonManager->findChild<QObject*>("removeCommon");
-    
-    if(removeCommon)
-        connect(removeCommon, SIGNAL(s_remove(QVariant)), common.data(), SLOT(removeCommon(QVariant)));
-    
+        
     connect(m_db, &InterfaceDataSave::s_updateCommon, common.data(), &ControllerCommon::exec);
     common->view = commonManager;
     

@@ -1,6 +1,7 @@
 #include "maincontroller.h"
 
-MainController::MainController(int storage): AbstractController()
+MainController::MainController(int storage)
+    : AbstractController(), m_engine(this, QStringLiteral(QML_SOURCE) + "/View")
 {
     Q_UNUSED(storage)
     QString message = "Generate from backend";
@@ -11,17 +12,6 @@ MainController::MainController(int storage): AbstractController()
 
     qDebug() << "Worker Qml"
              << qmlRegisterUncreatableType<Worker>("Account.Frequency", 1, 0, "Worker", message);
-    //    qDebug()<<"Frequency Qml"<<qmlRegisterUncreatableType<Frequency>("Account.Frequency",1,0, "Frequency", message);
-    
-    //    qDebug()<<"Budget Qml"<<qmlRegisterUncreatableType<Budget>("Account.Budget",1,0, "Budget", message);
-    //    qDebug()<<"Subbudget Qml"<<qmlRegisterUncreatableType<SubBudget>("Account.Budget",1,0, "Subbudget", message);
-    
-    //    qDebug()<<"Common expanse Qml"<<qmlRegisterUncreatableType<CommonExpanse>("Account.CommonExpanse",1,0, "CommonExpanse", message);
-    //    qDebug()<<"Closing Qml"<<qmlRegisterUncreatableType<Closing>("Account.CommonExpanse",1,0, "Closing", message);
-    
-    //    qDebug()<<"Entry Qml"<<qmlRegisterUncreatableType<Entry>("Account.Core",1,0, "Entry", message);
-    //    qDebug()<<"Information Qml"<<qmlRegisterUncreatableType<Information>("Account.Core",1,0, "Information", message);
-    //    qDebug()<<"Total Qml"<<qmlRegisterUncreatableType<Total>("Account.Core",1,0, "Total", message);
     
     qmlRegisterModule("Account.Style", 1, 0);
     m_dbThread = new QThread;;
@@ -34,6 +24,22 @@ MainController::MainController(int storage): AbstractController()
     {
         qDebug()<<except;
     }
+
+    auto *context = engine().rootContext();
+    context->setContextProperty("_settings", &m_settings);
+    context->setContextProperty("_db", db());
+    context->setContextProperty("_sync", &m_synchro);
+    context->setContextProperty("_main", this);
+    context->setContextProperty("_info", &m_info);
+    context->setContextProperty("_transfert", &m_transfert);
+    context->setContextProperty("_graph", &m_graph);
+    m_graph.set(engine());
+
+    m_engine.createWindow(QUrl("/Core/Main.qml"));
+
+#ifdef ENABLE_HOTRELOADING
+//    temp.setQmlSourceDir(QML_SOURCE);
+#endif
 }
 
 MainController::~MainController()
@@ -60,27 +66,12 @@ void MainController::bind(QVariant id)
 
 int MainController::exec()
 {
-    auto *context = m_engine.rootContext();
-    context->setContextProperty("_settings", &m_settings);
-    context->setContextProperty("_db", db());
-    context->setContextProperty("_sync", &m_synchro);
-    context->setContextProperty("_main", this);
-    context->setContextProperty("_info", &m_info);
-    context->setContextProperty("_transfert", &m_transfert);
-    context->setContextProperty("_graph", &m_graph);
+    //    engine().load(QUrl(QStringLiteral("qrc:/Core/Main.qml")));
 
-    m_engine.load(QUrl(QStringLiteral("qrc:/Core/Main.qml")));
-
-    if (m_engine.rootObjects().size() != 1)
+    if (engine().rootObjects().size() < 1)
         return -1;
 
-    QObject *root = m_engine.rootObjects().first();
-
-    QObject *info = root->findChild<QObject *>("infoView");
-
-    if (info) {
-        m_info.configure(info);
-    }
+    QObject *root = engine().rootObjects().last();
 
     QObject* combo = root->findChild<QObject*>("accountSelect");
     
@@ -104,7 +95,7 @@ int MainController::exec()
 
         QMetaType mt(QMetaType::type(it.toLatin1()));
         AbstractController *p = (AbstractController *) mt.create();
-        auto sp = dynamic_cast<FeatureBuilder *>(p)->build(&m_engine, root);
+        auto sp = dynamic_cast<FeatureBuilder *>(p)->build(&engine(), root);
         if (sp.dynamicCast<QObject>())
             sp.dynamicCast<QObject>()->setParent(this);
 
@@ -113,26 +104,12 @@ int MainController::exec()
     }
 
     loadFeatures();
-    qDebug()<<ControllerSettings::registredFeature();
-    
-    QObject* quick = root->findChild<QObject*>("quick");
-    if(quick)
-    {
-        connect(quick, SIGNAL(s_opening()), this, SLOT(quickOpen()));
-        
-        QObject* finish = quick->findChild<QObject*>("finish");
-        connect(finish, SIGNAL(s_clicked()), this, SLOT(quickAdding()));
-        
-        QObject* cat = quick->findChild<QObject*>("cat");
-        connect(cat, SIGNAL(s_addCategory(QString)), this, SLOT(quickAddCategory(QString)));
-    }
-
-    loadProfiles();
+    qDebug() << ControllerSettings::registredFeature();
 
     connect(m_db, &InterfaceDataSave::s_updateEntry, this, &MainController::buildModel);
     connect(m_db, &InterfaceDataSave::s_updateEntry, this, &MainController::pageChange);
 
-    m_settings.init(m_engine);
+    m_settings.init(engine());
 
     connect(&m_settings, &ControllerSettings::s_language, this, &MainController::languageChange);
     connect(&m_settings, &ControllerSettings::s_finish, this, &MainController::loadFeatures);
@@ -149,17 +126,18 @@ int MainController::exec()
     if(about)
         connect(about, SIGNAL(opened()), this, SLOT(about()));
     
-    m_graph.set(m_engine);
     connect(m_db, &InterfaceDataSave::s_updateEntry, &m_graph, &AbstractGraphController::exec);
     m_graph.exec();
-    
-    connect(this, &AbstractController::s_totalChanged, this, &MainController::totalChanged);
+
+    connect(this, SIGNAL(s_totalChanged()), this, SLOT(totalChanged()));
+
     connect(m_db, &InterfaceDataSave::s_updateEntry, this, &AbstractController::calculTotal);
     connect(this, &AbstractController::s_totalChanged, this, &MainController::previewCalendar);
     languageChange();
     m_synchro.exec();
 
     changeProfile(m_settings.currentProfile());
+    loadProfiles();
 
     return 0;
 }
@@ -181,7 +159,7 @@ void MainController::close()
 
 void MainController::about()
 {
-    QObject* licence = m_engine.rootObjects().first()->findChild<QObject*>("about");
+    QObject* licence = engine().rootObjects().first()->findChild<QObject*>("about");
     if(licence)
     {
         QFile f("ABOUT.md");
@@ -201,7 +179,7 @@ void MainController::readme()
     if(!f.open(QIODevice::ReadOnly))
         return;
     
-    QObject* readme = m_engine.rootObjects().first()->findChild<QObject*>("howto");
+    QObject* readme = engine().rootObjects().first()->findChild<QObject*>("howto");
     
     readme->setProperty("text", f.readAll());
     f.close();
@@ -209,7 +187,7 @@ void MainController::readme()
 
 void MainController::licence()
 {
-    QObject* licence = m_engine.rootObjects().first()->findChild<QObject*>("licence");
+    QObject* licence = engine().rootObjects().first()->findChild<QObject*>("licence");
     if(licence)
     {
         QFile f("LICENSE.md");
@@ -225,31 +203,20 @@ void MainController::loadFeatures()
 {
     QStringList features;
     features<<QObject::tr("List")<<QObject::tr("Graph");
-    QList<QObject*> featureItem;
+    QList<QVariant> featureItem;
     for(auto it: m_settings.featuresList())
     {
         if(m_settings.featureEnable(it))
         {
             m_features<<ControllerSettings::features(it);
             features<<ControllerSettings::features(it)->displayText();
-            featureItem<<ControllerSettings::features(it)->view;
+            featureItem << QVariant::fromValue(ControllerSettings::features(it)->view);
         }
     }
-    
-    
-    QObject* swipe = m_engine.rootObjects().first()->findChild<QObject*>("swipe");
-    if(swipe)
-    {
-        while(swipe->property("count").toInt() > 2)
-            QMetaObject::invokeMethod(swipe, "takeItem", Q_ARG(int, swipe->property("count").toInt() - 1));
-        
-        for(auto it: featureItem)
-            QMetaObject::invokeMethod(swipe, "addItem", Q_ARG(QQuickItem*, dynamic_cast<QQuickItem*>(it)));
-    }
-    
-    QObject* featuresRepetear = m_engine.rootObjects().first()->findChild<QObject*>("features");
-    if(featuresRepetear)
-        featuresRepetear->setProperty("model", features);
+
+    emit enableQuickView(true);
+    emit featuresChanged(featureItem);
+    emit featuresListChanged(features);
 }
 
 void MainController::changeProfile(QString name)
@@ -266,7 +233,7 @@ void MainController::update(Entry e)
 
 void MainController::add(bool account)
 {
-    QObject* m = m_engine.rootObjects().first();
+    QObject* m = engine().rootObjects().first();
     QObject* h = m->findChild<QObject*>("head");
     QPoint p = QCursor::pos();
     double pX, pY;
@@ -276,24 +243,24 @@ void MainController::add(bool account)
     
     pY = p.y() - m->property("y").toDouble() - h->property("height").toDouble();
     pY /= m->property("height").toDouble();
-    QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("addingid");
+    QObject* popup = engine().rootObjects().first()->findChild<QObject*>("addingid");
     popup->setProperty("newAccount", account);
     popup->setProperty("pY", pY); popup->setProperty("pX", pX);
     QMetaObject::invokeMethod(popup, "open");
 }
 
-void MainController::adding()
+void MainController::adding(QVariant ref)
 {
-    QObject* adding = m_engine.rootObjects().first()->findChild<QObject*>("addingid");
     Entry e;
-    
-    if(adding->property("newAccount").toBool())
-    {
+
+    QVariantMap map = ref.toMap();
+
+    if (map["newAccount"].toBool()) {
         QVariant val, date, account;
-        
-        val = adding->property("v_val");
-        date = adding->property("v_date");
-        account = adding->property("v_title");
+
+        val = map["value"];
+        date = map["date"];
+        account = map["title"];
         e.setAccount(account.toString());
         e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
         e.setValue(val.toDouble());
@@ -303,16 +270,14 @@ void MainController::adding()
         i.setTitle("Initial");
         e.setInfo(i);
         e.setBlocked(true);
-    }
-    else
-    {
+    } else {
         QVariant val, date, label, type;
-        
-        val = adding->property("v_val");
-        date = adding->property("v_date");
-        label = adding->property("v_title");
-        type = adding->property("v_type");
-        
+
+        val = map["value"];
+        date = map["date"];
+        label = map["title"];
+        type = map["type"];
+
         e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
         e.setValue(val.toDouble());
         e.setType(type.toString());
@@ -324,15 +289,9 @@ void MainController::adding()
         e.setAccount(currentAccount());
     }
     AbstractController::addEntry(e);
-    
-    if(adding->property("newAccount").toBool())
+
+    if (map["newAccount"].toBool())
         loadAccount();
-    
-//    QUuid id;
-//    for(auto it: m_db->selectEntry(currentAccount()))
-//        id = std::max(id, it.id());
-    
-//    pageChange(id);
 }
 
 void MainController::addEntryMain(Entry  e)
@@ -350,7 +309,7 @@ void MainController::addEntryMain(Entry  e)
 
 void MainController::quickOpen()
 {
-    QObject* quick = m_engine.rootObjects().first()->findChild<QObject*>("quick");
+    QObject* quick = engine().rootObjects().first()->findChild<QObject*>("quick");
     auto cats = m_db->selectCategory();
     QStringList modi = cats.values("income"), modo = cats.values("outcome");
     modi<<""; modo<<"";
@@ -360,7 +319,7 @@ void MainController::quickOpen()
 
 void MainController::quickAdding()
 {
-    QObject* quick = m_engine.rootObjects().first()->findChild<QObject*>("quick");
+    QObject* quick = engine().rootObjects().first()->findChild<QObject*>("quick");
     if(quick)
     {
         auto et = quick->property("entry").value<QJSValue>();
@@ -381,7 +340,7 @@ void MainController::quickAdding()
 
 void MainController::quickAddCategory(QString cat)
 {
-    QObject* quick = m_engine.rootObjects().first()->findChild<QObject*>("quick");
+    QObject* quick = engine().rootObjects().first()->findChild<QObject*>("quick");
     QObject* typecombo = quick->findChild<QObject*>("type");
     QObject* combo = quick->findChild<QObject*>("cat");
     if(typecombo)
@@ -410,7 +369,7 @@ void MainController::edit(QVariant id)
 void MainController::previewCalendar()
 {
     QMap<QDate, Total> all = allTotal();
-    QObject* cal = m_engine.rootObjects().first()->findChild<QObject*>("cal");
+    QObject* cal = engine().rootObjects().first()->findChild<QObject*>("cal");
     int month = 0;
     int year = 0;
     if(cal)
@@ -526,8 +485,8 @@ void MainController::buildModel(QUuid)
 
 void MainController::pageChange(QUuid id)
 {
-    QObject* skipper = m_engine.rootObjects().first()->findChild<QObject*>("pageSkip");
-    QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
+    QObject* skipper = engine().rootObjects().first()->findChild<QObject*>("pageSkip");
+    QObject* tab = engine().rootObjects().first()->findChild<QObject*>("entryView");
     
     if(tab && skipper)
     {
@@ -580,7 +539,7 @@ void MainController::pageChange(QUuid id)
 void MainController::updateQuickView()
 {
     auto ld = dateList();
-    QObject* quickView = m_engine.rootObjects().first()->findChild<QObject*>("quickViewDate");
+    QObject* quickView = engine().rootObjects().first()->findChild<QObject*>("quickViewDate");
     
     if(quickView)
         quickView->setProperty("currentDate", ld.isEmpty() ? QDate::currentDate(): ld.first());
@@ -588,7 +547,7 @@ void MainController::updateQuickView()
 
 QList<QDate> MainController::dateList() const
 {
-    QObject* calendar = m_engine.rootObjects().first()->findChild<QObject*>("cal");
+    QObject* calendar = engine().rootObjects().first()->findChild<QObject*>("cal");
     QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));
     QJSValue array = mp.read(calendar).value<QJSValue>();
     QList<QDate> ld;
@@ -611,19 +570,9 @@ void MainController::accountChange(QString acc)
     AbstractController::setCurrentAccount(acc);
     m_settings.setCurrentAccount(acc);
     calculTotal();
-    QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
-    
-    if(head)
-    {
-        head->setProperty("accountName", acc);
-        head->setProperty("total", QVariant::fromValue(accountTotal()));
-    }
-    
-    QObject* tab = m_engine.rootObjects().first()->findChild<QObject*>("entryView");
-    
-    if(tab)
-        tab->setProperty("model", QVariantList());
-    
+
+    emit totaleChanged(QVariant::fromValue(accountTotal()));
+
     buildModel();
     pageChange();
     checkEstimated();
@@ -631,7 +580,7 @@ void MainController::accountChange(QString acc)
 
 void MainController::loadAccount()
 {
-    QObject* combo = m_engine.rootObjects().first()->findChild<QObject*>("accountSelect");
+    QObject* combo = engine().rootObjects().first()->findChild<QObject*>("accountSelect");
     
     if(combo)
     {
@@ -666,46 +615,32 @@ void MainController::checkEstimated()
             break;
     }
     
-    QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
     QVariantList vl;
     
     for(auto it: list)
-        vl<<QVariant::fromValue(it);
-    
-    QObject* v = popup->findChild<QObject*>("repeater");
-    
-    if(v)
-        v->setProperty("model", vl);
-    
-    if(!vl.isEmpty())
-        QMetaObject::invokeMethod(popup, "open");
+        vl << QVariant::fromValue(it);
+
+    emit checkListChanged(vl);
 }
 
-void MainController::validateCheckEstimated()
+void MainController::validateCheckEstimated(QVariantList tab)
 {
-    QObject* popup = m_engine.rootObjects().first()->findChild<QObject*>("cEstimated");
-    
-    for(int i = 0; i < popup->property("tab").toList().size(); i++)
-    {
-        if(!popup->property("tab").toList()[i].isValid())
+    for (int i = 0; i < tab.size(); i++) {
+        if (!tab[i].isValid())
             continue;
-        
-        Entry e = entry(popup->property("tab").toList()[i].toUuid());
-        
-        if(popup->property("tab").toList()[i].toBool())
-        {
+
+        Entry e = entry(tab[i].toUuid());
+
+        if (tab[i].toBool()) {
             Information inf = e.info();
             inf.setEstimated(false);
             e.setInfo(inf);
             updateEntry(e);
-        }
-        else
-        {
+        } else {
             m_db->removeEntry(e);
         }
     }
 
-    QMetaObject::invokeMethod(popup, "close");
     buildModel();
 }
 
@@ -727,22 +662,11 @@ void MainController::openTransfert()
 
 void MainController::totalChanged()
 {
-    QObject* head = m_engine.rootObjects().first()->findChild<QObject*>("head");
-
-    if(head)
-    {
-        head->setProperty("total", QVariant::fromValue(accountTotal()));
-    }
+    emit totaleChanged(QVariant::fromValue(accountTotal()));
 }
 
-void MainController::addProfile()
+void MainController::addProfile(QString nProfile)
 {
-    QObject* profiles = m_engine.rootObjects().first()->findChild<QObject*>("popProfile");
-    
-    QString nProfile = profiles->findChild<QObject*>("profileName")->property("text").toString();
-    //    QString password = profiles->findChild<QObject*>("password")->property("text").toString();
-    
-    QMetaObject::invokeMethod(profiles, "close");
     if(m_db->addProfile(nProfile, ""))
     {
         changeProfile(nProfile);
@@ -752,18 +676,12 @@ void MainController::addProfile()
 
 void MainController::loadProfiles()
 {
-    QObject* profile = m_engine.rootObjects().first()->findChild<QObject*>("drawer");
-    
-    if(profile)
-    {
-        QStringList profiles = m_db->selectProfile();
-        if(!profiles.contains(m_db->currentProfile()))
-            profiles<<m_db->currentProfile();
-        
-        profile->setProperty("currentProfile", m_db->currentProfile());
-        profile->setProperty("profileModel", profiles);
-    }
-    
+    QStringList profiles = m_db->selectProfile();
+    if (!profiles.contains(m_db->currentProfile()))
+        profiles << m_db->currentProfile();
+
+    emit profilesListChanged(profiles);
+    emit currentProfileChanged(m_db->currentProfile());
 }
 
 void MainController::deleteProfile(QString name)
@@ -775,19 +693,19 @@ void MainController::deleteProfile(QString name)
 
 void MainController::languageChange()
 {
-    m_engine.retranslate();
+    engine().retranslate();
 }
 
 void MainController::sortRole(QString role)
 {
     m_settings.setSortingRole(role);
-    QUuid id = m_engine.rootObjects().first()->findChild<QObject*>("table")->property("currentId").toUuid();
+    QUuid id = engine().rootObjects().first()->findChild<QObject*>("table")->property("currentId").toUuid();
     pageChange(id);
 }
 
 void MainController::sortOrder(int order)
 {
     m_settings.setSortOrdre((Qt::SortOrder)order);
-    QUuid id = m_engine.rootObjects().first()->findChild<QObject*>("table")->property("currentId").toUuid();
+    QUuid id = engine().rootObjects().first()->findChild<QObject*>("table")->property("currentId").toUuid();
     pageChange(id);
 }

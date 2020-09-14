@@ -34,16 +34,24 @@ void TestDebt::test_rate()
     QCOMPARE(model.rate(), rate);
 }
 
-void TestDebt::test_scheduler()
+void TestDebt::test_name()
 {
-    model.setScheduler(scheduler);
-    QCOMPARE(model.scheduler(), scheduler);
+    model.setName(name);
+    QCOMPARE(model.name(), name);
 }
 
 void TestDebt::test_generate()
 {
     QVERIFY(model.generate());
 
+    Total t;
+    auto list = model.entries();
+
+    for (auto it : list) {
+        t = t + it;
+    }
+
+    QCOMPARE(t.value(), init.value() + init.value() * rate);
 }
 
 void TestDebt::test_entries()
@@ -53,12 +61,13 @@ void TestDebt::test_entries()
 
 void TestDebt::testEquality()
 {
+    model2 = model;
     QCOMPARE(model, model2);
 }
 
 void TestDebt::testInferior()
 {
-    model2.setName(name+"1");
+    model2.setName(name + "1");
     QVERIFY(model < model2);
 }
 

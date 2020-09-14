@@ -30,6 +30,8 @@ Popup {
     property var completionList: []
     property var openDate
 
+    property var entry: Object()
+
     onClosed: {
         valueLabel.background.border.color = "#bdbdbd"
     }
@@ -87,6 +89,8 @@ Popup {
                 Layout.column: 1
                 Layout.rowSpan: 1
                 Layout.columnSpan: 1
+
+                onTextChanged: root.entry["date"] = text
             }
 
             AccountLabel{
@@ -119,6 +123,7 @@ Popup {
                 ToolTip.text: qsTr("Fill a member name")
 
                 onTextEdited: {
+                    root.entry["member"] = text
                     var s = -1
                     for(var i in root.completionList) {
                         if(root.completionList[i].indexOf(text) === 0)
@@ -160,6 +165,8 @@ Popup {
                 Layout.column: 1
                 Layout.rowSpan: 1
                 Layout.columnSpan: 1
+
+                onTextEdited: root.entry["title"] = text
             }
 
             AccountSpinbox {
@@ -173,6 +180,8 @@ Popup {
                 Layout.column: 2
                 Layout.rowSpan: 1
                 Layout.columnSpan: 2
+
+                onS_realVCalueChange: root.entry["value"] = realValue
             }
 
             AccountComboBox {
@@ -191,6 +200,8 @@ Popup {
                 enabled: !root.newAccount
 
                 ToolTip.text: qsTr("Specify income or outcome")
+
+                onCurrentTextChanged: root.entry["type"] = currentText
             }
 
             AccountButton {
@@ -203,7 +214,12 @@ Popup {
                 property bool ttVisible: false
                 onClicked: {
                     if(valueLabel.valid && member.valid) {
-                        _main.adding()
+                        root.entry["newAccount"] = root.newAccount
+                        if(!common)
+                            _main.adding(root.entry)
+                        else
+                            accept()
+
                         reset()
                         close()
                     }

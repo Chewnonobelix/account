@@ -12,7 +12,7 @@ Item {
     property var model:[]
     property bool decade: false
     
-    signal s_select(date d)
+    signal select(date d)
     signal showPrevious()
     signal showNext()
     
@@ -79,7 +79,7 @@ Item {
                     MouseArea {
                         id: repArea
                         anchors.fill: parent
-                        onClicked: root.s_select(modelData)
+                        onClicked: root.select(modelData)
                         cursorShape: Qt.PointingHandCursor
                     }
                 }

@@ -25,6 +25,13 @@ public slots:
     void change(int);
     void increment(int = 0);
     int exec() override;
+
+signals:
+    void granChanged(Account::Granularity);
+    void dateChanged(QDate);
+    void clear();
+    void okPrevChanged(bool);
+    void okNextChanged(bool);
 };
 
 #endif // ABSTRACTGRAPHCONTROLLER_H

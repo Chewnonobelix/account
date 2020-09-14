@@ -12,6 +12,7 @@ import "../Functionnal"
 import "../Budget"
 
 Page {
+
     
     implicitWidth: parent.width
     implicitHeight: parent.height
@@ -23,7 +24,7 @@ Page {
         
     background: AccountBackground {
         invisible: true
-    }
+   }
     
     GridLayout {
         id: grid
@@ -48,13 +49,16 @@ Page {
             Layout.preferredWidth: pageTable.width * 0.20
 
             onUpdateSelected: view.unselectAll()
-            onS_datesChanged:  {
+            onDatesChanged:  {
                 view.reset()
                 _main.updateQuickView()
                 _main.pageChange()
+
+                if(_budget)
+                    _budget.calDateChange(selectedDates)
             }
 
-            onS_monthChanged: {
+            onMonthChanged: {
                 _main.previewCalendar()
             }
         }
@@ -62,6 +66,7 @@ Page {
         AccountButton {
             id: add
             text: qsTr("Add")
+
 
             enabled: accountSelect.model.length > 0
             Layout.column: 0
@@ -120,12 +125,25 @@ Page {
                 clip: true
             }
             
-            BudgetView {
-                id: budgetQuick
-                objectName: "budgetQuick"
-                
+            Loader {
+                id: loadQuick
+                Connections {
+                    target: _main
+
+                    function onEnableQuickView(enable) {
+                        loadQuick.active = true
+                    }
+                }
+
+                active: false
                 width: parent.width
                 height: parent.height - parent.spacing - quickViewDate.height
+
+                onActiveChanged: {
+                    item.width = width
+                    item.height = height
+                }
+                source: "../Budget/BudgetView.qml"
             }
         }
         
@@ -458,7 +476,7 @@ Page {
                 height: parent.height * 0.05
                 width: parent.width
 
-                onS_pageChange: _main.pageChange()
+                onPageChange: _main.pageChange()
             }
         }
         
@@ -512,6 +530,7 @@ Page {
     
     
     Component.onCompleted: {
+        _main.exec()
         currentId = Qt.binding(function() {return view.currentEntry && !view.currentEntry.isBlocked ? view.currentEntry.id : -1})
     }
     

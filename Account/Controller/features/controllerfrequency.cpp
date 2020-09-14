@@ -23,7 +23,6 @@ Worker& Worker::operator =(const Worker&)
     return *this;
 }
 
-
 ControllerFrequency::ControllerFrequency()
 {
     connect((QThread *) &m_filler, SIGNAL(finished()), this, SLOT(endFill()));
@@ -41,26 +40,15 @@ QSharedPointer<FeatureBuilder> ControllerFrequency::build(QQmlApplicationEngine 
     context->setContextProperty("_frequency", freqs.data());
     QObject* frequency = frequencyComp.create();
 
-    freqs->setManager(frequency);
-
     freqs->exec();
     
     freqs->view = frequency;
     return freqs;
 }
 
-void ControllerFrequency::setManager(QObject * manager)
-{
-    m_manager = manager;
-
-    m_generate = m_manager->findChild<QObject*>("generate");
-}
-
 void ControllerFrequency::setWorker(QString name)
 {
-    QObject* w = m_manager->findChild<QObject*>("worker");
-    
-    w->setProperty("worker", QVariant::fromValue(m_workers[name]));
+    emit displayWorker(QVariant::fromValue(m_workers[name]));
 }
 
 void ControllerFrequency::endThread(QString)
@@ -80,29 +68,24 @@ void ControllerFrequency::loadCat()
     QStringList income = cat.values("income");
     income<<"";
     QStringList outcome = cat.values("outcome");
-    outcome<<"";
-    
-    auto ee = m_manager->findChild<QObject*>("ref");
-    ee->setProperty("incomeList", income);
-    ee->setProperty("outcomeList", outcome);    
+    outcome << "";
+
+    emit catList(income, outcome);
 }
 
 void ControllerFrequency::endFill()
 {
     m_model.clear();
         
-    QObject* model = m_manager->findChild<QObject*>("frequencyList");
-    QUuid id = model->property("currentModel").isNull() ? QUuid() : model->property("currentModel").value<Frequency>().id();
     int index = -1;
     for(auto it = m_freqs.begin(); it != m_freqs.end(); it++)
     {
         m_model<<QVariant::fromValue(*it);
-        if(it->id() == id)
+        if (it->id() == m_currentId)
             index = m_model.count() - 1;
     }
 
-    model->setProperty("model", m_model);
-    model->setProperty("currentIndex", index);
+    emit setModel(m_model, index);
 }
 
 int ControllerFrequency::exec()
@@ -115,10 +98,11 @@ int ControllerFrequency::exec()
         m_freqs[it.id()] = it;
         if(it.endless() && ((it.end() < QDate::currentDate()) || it.nbGroup() == 0))
         {
-            m_generate->setProperty("freqId", it.id());
-            m_generate->setProperty("freqGroup", it.nbGroup()+1);
             auto date = it.end().addDays( Account::nbDay(it.end(), it.freq()));
-            generate(date.toString("dd-MM-yyyy"), date.addYears(1).toString("dd-MM-yyyy"));
+            generate(date.toString("dd-MM-yyyy"),
+                     date.addYears(1).toString("dd-MM-yyyy"),
+                     QVariant::fromValue(it.id()),
+                     it.nbGroup() + 1);
         }
     }
 
@@ -134,15 +118,12 @@ int ControllerFrequency::exec()
     return 0;
 }
 
-void ControllerFrequency::generate(QString begin, QString end)
+void ControllerFrequency::generate(QString begin, QString end, QVariant id, int freqGroup)
 {
     QDate it = QDate::fromString(begin, "dd-MM-yyyy");
     Account::FrequencyEnum freq = Account::FrequencyEnum::Unique;
-    int freqGroup = 0;
-    QUuid freqId;
-    
-    freqId = m_generate->property("freqId").toUuid();
-    freqGroup = m_generate->property("freqGroup").toInt();
+    QUuid freqId = QUuid::fromString(id.toString());
+
     freq = m_freqs[freqId].freq();
     m_freqs[freqId].setNbGroup(freqGroup);
     m_db->updateFrequency(m_freqs[freqId]);
@@ -180,16 +161,12 @@ void ControllerFrequency::generate(QString begin, QString end)
     setWorker(m_freqs[freqId].name());
 
     m_workers[m_freqs[freqId].name()]->start();
-    QMetaObject::invokeMethod(m_generate, "close");
+    emit close();
 }
-
 
 void ControllerFrequency::openGenerate(QVariant id)
 {
-    m_generate->setProperty("freqId", id);
-    m_generate->setProperty("freqGroup", m_freqs[id.toUuid()].nbGroup() + 1);
-    
-    QMetaObject::invokeMethod(m_generate, "open");
+    emit setGenerate(id, m_freqs[id.toUuid()].nbGroup() + 1);
 }
 
 void ControllerFrequency::openManager()
@@ -199,7 +176,7 @@ void ControllerFrequency::openManager()
 
 void ControllerFrequency::closeManager()
 {
-    QMetaObject::invokeMethod(m_generate, "close");
+    emit close();
 }
 
 void ControllerFrequency::addFrequency()
@@ -215,14 +192,10 @@ void ControllerFrequency::removeFrequency(QVariant id)
     openManager();
 }
 
-void ControllerFrequency::addNewCategory(QString cat)
+void ControllerFrequency::addNewCategory(QVariant id, QString cat, QString type)
 {
-    QObject* ref = m_manager->findChild<QObject*>("ref");
-    QString type = ref->property("entry").value<Entry>().type();
-    
     m_db->addCategory(cat, type);
     loadCat();
-    QUuid id = ref->property("entry").value<Entry>().id();
     updateFreqCat(id, cat);
 }
 
@@ -281,8 +254,8 @@ void ControllerFrequency::updateFreqFreq(QVariant id, int f)
 void ControllerFrequency::displayEntry(QVariant id)
 {
     Entry e = entry(id.toUuid());
-    QObject* view = m_manager->findChild<QObject*>("linkedDisplayer");
-    view->setProperty("entry", QVariant::fromValue(e));
+
+    emit displayLink(QVariant::fromValue(e));
 }
 
 QString ControllerFrequency::displayText() const
@@ -321,10 +294,11 @@ void ControllerFrequency::checker()
     {
         while(it.endless() && it.end() < QDate::currentDate())
         {
-            m_generate->setProperty("freqId", it.id());
-            m_generate->setProperty("freqGroup", it.nbGroup()+1);
             auto date = it.end().addDays( Account::nbDay(it.end(), it.freq()));
-            generate(date.toString("dd-MM-yyyy"), date.addYears(1).toString("dd-MM-yyyy"));
+            generate(date.toString("dd-MM-yyyy"),
+                     date.addYears(1).toString("dd-MM-yyyy"),
+                     it.id(),
+                     it.nbGroup() + 1);
         }
     }
 }

@@ -1,27 +1,15 @@
 #include "controllerinformation.h"
 
-ControllerInformation::ControllerInformation(): AbstractController()
-{
-}
-
-ControllerInformation::~ControllerInformation()
-{
-}
-
 int ControllerInformation::exec()
 {
-    QObject* freqItem = m_view->findChild<QObject*>("frequency");
-    
-    if(freqItem)
-    {
-        freqItem->setProperty("visible", m_entry.hasMetadata("frequency"));
-        if(m_entry.hasMetadata("frequency"))
-        {
+    if (m_entry.hasMetadata("frequency")) {
+        emit frequencyVisible(m_entry.hasMetadata("frequency"));
+
+        if (m_entry.hasMetadata("frequency")) {
             QUuid f = m_entry.metaData<QUuid>("frequency");
             int g = m_entry.metaData<int>("freqGroup");
             auto freqs = m_db->selectFrequency();
-            QObject* skipper = m_view->findChild<QObject*>("pageSwipper");
-            int page = skipper->property("pageIndex").toInt();
+            int page = m_currentPage;
             page--;
             for(auto it: freqs)
             {
@@ -29,51 +17,30 @@ int ControllerInformation::exec()
                 {
                     auto le = it.listEntries(g);
                     QVariantList model;
+                    emit maxPageChanged(le.size() / 100 + 1);
+                    emit currentPageChanged(1);
+                    for (int i = (page * 100); i < le.size() && i < (page + 1) * 100; i++)
+                        model << le[i];
 
-                    skipper->setProperty("maxPage", le.size() / 100 + 1);
-                    
-                    for(int i = (page*100); i < le.size() && i < (page+1)*100; i++)
-                        model<<le[i];
-                    
-                    QObject* lf = freqItem->findChild<QObject*>("frequencyPast");
-                    if(lf)
-                        lf->setProperty("model", QVariant::fromValue(model));
+                    emit pageModel(QVariant::fromValue(model));
                 }
             }
         }
     }
-    
-    return 0;
-}
 
-void ControllerInformation::configure(QObject * view)
-{
-    m_view = view;
+    return 0;
 }
 
 void ControllerInformation::view(QUuid id)
 {
     m_entry = AbstractController::entry(id);
 
-    auto child = m_view->findChild<QObject*>("entryEdit");
-
     QStringList catList = m_db->selectCategory().values(m_entry.type());
-    catList<<"";
+    catList << "";
+    emit this->catList(catList);
 
-    QObject  *catItem;
+    emit view(QVariant::fromValue(m_entry));
 
-    catItem = child->findChild<QObject*>("category");
-    
-    if(catItem)
-    {
-        catItem->setProperty("blocked", true);
-        child->setProperty("catModel", catList);
-        catItem->setProperty("blocked", false);
-    }
-
-    child->setProperty("entry", QVariant::fromValue(m_entry));
-
-    m_view->setProperty("visible", !id.isNull() && !m_entry.isBlocked());
     exec();
 }
 
