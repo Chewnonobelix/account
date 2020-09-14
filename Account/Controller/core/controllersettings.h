@@ -26,9 +26,9 @@ private:
     QMap<QString, QTranslator*> m_language;
     
     static QMap<QString, QSharedPointer<FeatureBuilder>> registredFeatures;
-    
-    QObject* m_view = nullptr, *m_splash = nullptr;
-    InterfaceDataSave* back = nullptr;
+
+    QObject *m_splash = nullptr;
+    InterfaceDataSave *back = nullptr;
     TransfertDatabase m_backupper;
 
 public:
@@ -78,6 +78,11 @@ signals:
     void s_language();
     void s_closedb();
     void s_finishBackup();
+
+    void languageChanged(QStringList);
+    void openSettings();
+    void visibleChanged(bool);
+    void backupChanged(bool);
 
 public slots:
     void open();

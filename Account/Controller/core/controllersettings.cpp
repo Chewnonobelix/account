@@ -19,11 +19,8 @@ ControllerSettings::~ControllerSettings()
 
 void ControllerSettings::init(QQmlEngine & engine)
 {
-    QObject* root = ((QQmlApplicationEngine&)engine).rootObjects().first();
     QQmlComponent syncomp(&engine, "qrc:/Core/Syncing.qml");
     m_splash = syncomp.create();
-
-    m_view = root->findChild<QObject*>("settings");
 
     QDir dir;
     auto list = dir.entryInfoList(QStringList("*.qm"));
@@ -37,21 +34,7 @@ void ControllerSettings::init(QQmlEngine & engine)
 
     setLanguage(language());
 
-    QObject* obj = m_view->findChild<QObject*>("language");
-    obj->setProperty("model", QVariant::fromValue(availableLanguage));
-
-    QObject *back = m_view->findChild<QObject *>("saveBackup");
-    if (back)
-        connect(back, SIGNAL(clicked()), this, SLOT(backup()));
-
-    QObject *restorer = m_view->findChild<QObject *>("restoreDialog");
-    if (restorer)
-        connect(restorer, SIGNAL(s_restore(QString)), this, SLOT(restore(QString)));
-
-    //    m_synchro.exec();
-    //    m_synchro.openServer(syncServer());
-    //    QObject *syncs = m_view->findChild<QObject *>("syncronization");
-    //    m_synchro.setView(syncs);
+    emit languageChanged(availableLanguage);
 }
 
 void ControllerSettings::registerFeature(QSharedPointer<FeatureBuilder> f)
@@ -130,11 +113,7 @@ QStringList ControllerSettings::featuresList() const
 
 void ControllerSettings::open()
 {
-    //    auto syncs = m_view->findChild<QObject *>("syncronization");
-    //    obj = syncs->findChild<QObject *>("enableSync");
-    //    obj->setProperty("checked", syncServer());
-
-    QMetaObject::invokeMethod(m_view, "open");
+    emit openSettings();
 }
 
 int ControllerSettings::exec()
@@ -144,10 +123,6 @@ int ControllerSettings::exec()
 
 void ControllerSettings::save()
 {
-    auto syncs = m_view->findChild<QObject *>("syncronization");
-    auto * obj = syncs->findChild<QObject *>("enableSync");
-    setSyncServer(obj->property("checked").toBool());
-
     AbstractController::setDb(database());
 }
 
@@ -183,9 +158,10 @@ void ControllerSettings::setAutobackup(bool autobackup)
 
 void ControllerSettings::restore(QString backdb)
 {
-    qDebug()<<"Restore Backup"<<backdb<<backdb[backdb.size()-1];
-    m_splash->setProperty("visible", true);
-    m_splash->setProperty("backup", false);
+    qDebug() << "Restore Backup" << backdb << backdb[backdb.size() - 1];
+
+    emit visibleChanged(true);
+    emit backupChanged(false);
     QString dbtype; QChar c = (backdb[backdb.size()-1]);
 
     switch (c.toLatin1())
@@ -228,8 +204,8 @@ void ControllerSettings::backup()
     auto back = createDb(backupType(), true);
     if(back && backupEnable())
     {
-        m_splash->setProperty("visible", true);
-        m_splash->setProperty("backup", true);
+        emit visibleChanged(true);
+        emit backupChanged(true);
 
         connect(&m_backupper, &TransfertDatabase::finished, this, &ControllerSettings::endBackup);
         m_backupper.m_db = m_db;
@@ -271,8 +247,9 @@ void ControllerSettings::endBackup()
         zipper.waitForFinished();
         qDebug()<<zipper.readAllStandardOutput();
     }
-    qDebug()<<"Backup sucess"<<m_backupper.isSucess();
-    m_splash->setProperty("visible", false);
+    qDebug() << "Backup sucess" << m_backupper.isSucess();
+
+    emit visibleChanged(false);
 
     emit s_finishBackup();
 }
@@ -282,7 +259,8 @@ void ControllerSettings::endRestore()
     disconnect(&m_backupper, &QThread::finished, this, &ControllerSettings::endRestore);
 
     qDebug()<<"Restore"<<m_backupper.isSucess();
-    m_splash->setProperty("visible", false);
+    emit visibleChanged(false);
+
     delete m_backupper.m_db;
     m_backupper.m_backup = m_backupper.m_db = nullptr;
     QDir dir;

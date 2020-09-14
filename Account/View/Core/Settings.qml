@@ -35,7 +35,8 @@ Dialog {
 
     onOpened: {
         console.log(_settings, _budget, _frequency, _commonExpanse, _db, _sync)
-        console.log(_main, _info, _transfert, _graph)
+        console.log(_main, _info, _transfert, _graph, _pie, _timeGraph)
+
         language.currentIndex = language.indexOfValue(_settings.language())
 
         budget.checked = _settings.featureEnable("BudgetFeature")
@@ -74,6 +75,18 @@ Dialog {
         }
 
         syncronization.applied()
+    }
+
+    Connections {
+        target: _settings
+
+        function onOpenSettings() {
+            root.open()
+        }
+
+        function onLanguageChanged(languages) {
+            language.model = languages
+        }
     }
 
     ScrollView {
@@ -301,6 +314,8 @@ Dialog {
                             text: qsTr("Save backup")
                             enabled: secondadyEnable.checked
                             Layout.preferredHeight: root.height * 0.07
+
+                            onClicked: _settings.backup()
                         }
 
                         AccountButton {
@@ -317,7 +332,7 @@ Dialog {
                                 nameFilters: ["Account backup (*.bckx *.bcks)"]
                                 title: qsTr("Restore backup")
                                 signal s_restore(string file)
-                                onAccepted: s_restore(fileUrl)
+                                onAccepted: _settings.restore(fileUrl)
                             }
                         }
                     }
