@@ -4,6 +4,7 @@
 #include "../core/abstractcontroller.h"
 #include "InterfaceGraph.h"
 #include "Model/accountglobal.h"
+#include <QQmlContext>
 #include <QThread>
 
 class TimeGraphController: public AbstractController, public InterfaceGraph
@@ -12,8 +13,6 @@ class TimeGraphController: public AbstractController, public InterfaceGraph
 public:
 
 private:
-    QObject* m_view;
-
     QMap<QDate, Total> m_sum;
 
     QThread m_thread;
@@ -28,10 +27,17 @@ public:
 
     void add(const Entry &) override;
     void clear() override;
-    void setDate(QDate) override;
-    void setGran(Account::Granularity) override;
     void setView(const QQmlApplicationEngine &) override;
     void update() override;
+    void setGran(Account::Granularity) override;
+
+signals:
+    void clearView();
+    void granChanged(QString);
+    void dateChanged(QDate, QDate);
+    void bornValueChanged(double, double);
+    void appendMain(QDate, double);
+    void appendEstimated(QDate, double);
 };
 
 #endif // TimeGraphController_H

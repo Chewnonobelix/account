@@ -33,6 +33,7 @@ MainController::MainController(int storage)
     context->setContextProperty("_info", &m_info);
     context->setContextProperty("_transfert", &m_transfert);
     context->setContextProperty("_graph", &m_graph);
+    m_graph.set(engine());
 
     m_engine.createWindow(QUrl("/Core/Main.qml"));
 
@@ -125,7 +126,6 @@ int MainController::exec()
     if(about)
         connect(about, SIGNAL(opened()), this, SLOT(about()));
     
-    m_graph.set(engine());
     connect(m_db, &InterfaceDataSave::s_updateEntry, &m_graph, &AbstractGraphController::exec);
     m_graph.exec();
 
