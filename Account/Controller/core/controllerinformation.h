@@ -40,7 +40,7 @@ signals:
     void frequencyVisible(bool);
 
     void maxPageChanged(int);
-    void currenPageChanged(int);
+    void currentPageChanged(int);
     void pageModel(QVariant);
 
     void view(QVariant);

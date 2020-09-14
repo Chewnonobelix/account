@@ -18,7 +18,7 @@ int ControllerInformation::exec()
                     auto le = it.listEntries(g);
                     QVariantList model;
                     emit maxPageChanged(le.size() / 100 + 1);
-                    emit currenPageChanged(1);
+                    emit currentPageChanged(1);
                     for (int i = (page * 100); i < le.size() && i < (page + 1) * 100; i++)
                         model << le[i];
 
