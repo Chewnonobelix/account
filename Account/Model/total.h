@@ -25,13 +25,13 @@ public:
 
     Total& operator = (const Total&);
 
-    friend Total operator -(const Total&, const Total&);
-    friend Total operator+(const Entry&, const Entry&);
-    friend Total operator + (const Total&, const Total&);
-    friend Total operator + (const Total&, const Entry&);
-    friend Total operator + (const Entry&, const Total&);
-    friend bool operator < (const Total&, const Total&);
-    friend bool operator ==(const Total&, const Total&);
+    friend Total ACCOUNT_EXPORT operator-(const Total &, const Total &);
+    friend Total ACCOUNT_EXPORT operator+(const Entry &, const Entry &);
+    friend Total ACCOUNT_EXPORT operator+(const Total &, const Total &);
+    friend Total ACCOUNT_EXPORT operator+(const Total &, const Entry &);
+    friend Total ACCOUNT_EXPORT operator+(const Entry &, const Total &);
+    friend bool ACCOUNT_EXPORT operator<(const Total &, const Total &);
+    friend bool ACCOUNT_EXPORT operator==(const Total &, const Total &);
 
     QDate date() const;
     void setDate(QDate date);

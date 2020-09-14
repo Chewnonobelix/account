@@ -2,60 +2,85 @@
 
 QUuid Debt::id() const
 {
-    return QUuid();
+    return metaData<QUuid>("id");
 }
 
-void Debt::setId(QUuid) {}
+void Debt::setId(QUuid id)
+{
+    setMetadata("id", id);
+}
+
+QString Debt::name() const
+{
+    return metaData<QString>("name");
+}
+
+void Debt::setName(QString n)
+{
+    setMetadata("name", n);
+}
 
 Entry Debt::initial() const
 {
-    return Entry();
+    return metaData<Entry>("initial");
 }
 
-void Debt::setInitial(Entry) {}
+void Debt::setInitial(Entry i)
+{
+    setMetadata("initial", i);
+}
 
 Frequency Debt::scheduler() const
 {
-    return Frequency();
+    return metaData<Frequency>("scheduler");
 }
 
-void Debt::setScheduler(Frequency) {}
+void Debt::setScheduler(Frequency s)
+{
+    setMetadata("scheduler", s);
+}
 
 double Debt::rate() const
 {
-    return 0.0;
+    return metaData<double>("rate");
 }
 
-void Debt::setRate(double) {}
+void Debt::setRate(double rate)
+{
+    setMetadata("rate", rate);
+}
 
 int Debt::nb() const
 {
-    return 0;
+    return metaData<int>("nb");
 }
 
-void Debt::setNb(int) {}
+void Debt::setNb(int n)
+{
+    setMetadata("nb", n);
+}
 
 bool Debt::generate()
 {
     return false;
 }
 
-bool operator<(const Debt &, const Debt &)
+bool operator<(const Debt &d1, const Debt &d2)
 {
-    return false;
+    return (d1.name() < d2.name()) || (d1.id() < d2.id());
 }
 
-bool operator==(const Debt &, const Debt &)
+bool operator==(const Debt &d1, const Debt &d2)
 {
-    return false;
+    return d1.id() == d2.id();
 }
 
 QList<Entry> Debt::entries() const
 {
-    return QList<Entry>();
+    return metaData<QList<Entry>>("entries");
 }
 
-void Debt::setEntries(QList<Entry>)
+void Debt::setEntries(QList<Entry> e)
 {
-
+    setMetadata("entries", e);
 }
