@@ -267,7 +267,7 @@ void ControllerDB::prepareCommon()
                                               "WHERE id=:id")<<m_updateCommon->lastError();
     
     qDebug()<<"ACEN"<<m_addCommonEntry->prepare("INSERT INTO account (id, account, profile, value, date_eff, type) "
-                                                "VALUES (;id, :a, :p, :v, :d, :t)")<<m_addCommonEntry->lastError();
+                                                "VALUES (:id, :a, :p, :v, :d, :t)")<<m_addCommonEntry->lastError();
     
     qDebug()<<"ACENI"<<m_addCommonEntryInformation->prepare("INSERT INTO information (id, idEntry, info) "
                                                             "VALUES (:id, :ide, :title)")<<m_addCommonEntry->lastError();

@@ -118,7 +118,7 @@ const auto trigger_delete_commonExpanse = QString("CREATE TRIGGER delete_expanse
                                                   "END;");
 
 const auto commonEntry_table = QString("CREATE TABLE `commonEntry` ("
-                                       "`id` TEXT. PRIMARY KEY, "
+                                       "`id` TEXT PRIMARY KEY, "
                                            "`idCommon` TEXT NOT NULL REFERENCES commonExpanse (id),"
                                            "`name` TEXT NOT NULL,"
                                            "`entry` INTEGER NOT NULL REFERENCES account(id)"
