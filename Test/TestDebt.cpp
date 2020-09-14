@@ -44,6 +44,14 @@ void TestDebt::test_generate()
 {
     QVERIFY(model.generate());
 
+    Total t;
+    auto list = model.entries();
+
+    for (auto it : list) {
+        t = t + it;
+    }
+
+    QCOMPARE(t.value(), init.value() + init.value() * rate);
 }
 
 void TestDebt::test_entries()

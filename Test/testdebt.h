@@ -2,6 +2,7 @@
 #define TESTDEBT_HPP
 
 #include "Model/debt.h"
+#include "Model/total.h"
 #include <QTest>
 #include <QtCore/qglobal.h>
 
