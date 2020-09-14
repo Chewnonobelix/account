@@ -14,11 +14,11 @@ AccountBackground {
     property var catModel: []
     borderEnabled: false
 
-    signal s_titleChanged(string title)
-    signal s_estimatedChanged(bool title)
-    signal s_valueChanged(real value)
-    signal s_catChanged(string cat)
-    signal s_supportChanged(int supp)
+    signal titleChanged(string title)
+    signal estimatedChanged(bool title)
+    signal valueChanged(real value)
+    signal catChanged(string cat)
+    signal supportChanged(int supp)
     signal addNewCategory(string cat)
 
     function changeDirection() {
@@ -27,11 +27,11 @@ AccountBackground {
     }
 
     onEntryChanged: {
-        title.text = Qt.binding(function() {return entry ? entry.info.title : ""})
-        spinbox.value = Qt.binding(function() {return entry ? entry.value * 100 : 0})
-        category.model = Qt.binding(function() {return catModel})
-        category.currentIndex = Qt.binding(function() {return entry ? category.setting(entry.info.category) : category.model.length - 1})
-        support.currentIndex = Qt.binding(function () {return support.model.findIndex(entry ? entry.support : Account.CB) })
+        title.text = entry ? entry.info.title : ""
+        spinbox.value = entry ? entry.value * 100 : 0
+        category.model = catModel
+        category.currentIndex = entry ? category.setting(entry.info.category) : category.model.length - 1
+        support.currentIndex = support.model.findIndex(entry ? entry.support : Account.CB)
     }
 
     GridLayout {
@@ -75,7 +75,7 @@ AccountBackground {
                 horizontalAlignment: Qt.AlignHCenter
                 verticalAlignment: Qt.AlignVCenter
                 onEditingFinished: {
-                    s_titleChanged(text)
+                    titleChanged(text)
                     opening = false
                     enabled = true
                 }
@@ -115,7 +115,7 @@ AccountBackground {
 
                 property date s_date
 
-                onS_realVCalueChange: s_valueChanged(realValue)
+                onS_realVCalueChange: root.valueChanged(realValue)
 
             }
 
@@ -144,11 +144,11 @@ AccountBackground {
 
                 editable: currentText === ""
 
-                onS_addCategory: root.addNewCategory(cat)
+                onAddCategory: root.addNewCategory(cat)
 
-                onS_currentTextChanged: {
+                onCurrentTextChanged: {
                     if(currentText !== "")
-                        s_catChanged(currentText)
+                        catChanged(currentText)
                 }
             }
         }
@@ -169,7 +169,7 @@ AccountBackground {
             AccountComboBox {
                 id: support
                 objectName: "support"
-                signal s_supportChanged(int support)
+                signal supportChanged(int support)
                 enabled: !grid.opening
                 model: CoreModel.entryTypeModel
                 height: parent.height * 0.59
@@ -181,8 +181,8 @@ AccountBackground {
                 
                 onCurrentValueChanged: {
                     if(down) {
-                        root.s_supportChanged(currentValue)
-                        s_supportChanged(currentValue)
+                        root.supportChanged(currentValue)
+                        supportChanged(currentValue)
                     }
                 }
             }

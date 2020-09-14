@@ -32,7 +32,7 @@ AccountButton {
             height: 250
             width: 250
 
-            onS_datesChanged: {
+            onDatesChanged: {
                 button.text = Qt.formatDate(selectedDate, "dd-MM-yyyy")
                 pop.close()
             }

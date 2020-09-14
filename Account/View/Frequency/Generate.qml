@@ -8,9 +8,7 @@ import "../Core" as C
 Popup {
     property var freqId: null
     property int freqGroup: -1
-    
-    signal s_generate(string fBegin, string fEnd)
-    
+        
     id: generateWin
     
     property var pcenter
@@ -35,6 +33,21 @@ Popup {
     bottomPadding: l.height * 0.05
     
     background: AccountBackground {
+    }
+
+    Connections {
+        target: _frequency
+
+        function onClose() {
+            generateWin.close()
+        }
+
+        function onSetGenerate(idf, count) {
+            generateWin.freqId = idf
+            generateWin.freqGroup = count
+
+            generateWin.open()
+        }
     }
 
     contentItem: Rectangle {
@@ -94,7 +107,10 @@ Popup {
                 var f = Date.fromLocaleDateString(Qt.locale(),from.text, "dd-MM-yyyy")
                 
                 if(t < f ||  to.text === "" ) {
-                    isFrom ? to.extern(f) : from.extern(t)
+                     if(isFrom)
+                         to.extern(f)
+                     else
+                         from.extern(t)
                 }
             }
             
@@ -106,7 +122,7 @@ Popup {
                 
                 text: qsTr("Generate")
                 onClicked: {
-                    _frequency.generate(from.text, to.text)
+                    _frequency.generate(from.text, to.text, generateWin.freqId, generateWin.freqGroup)
                     close();
                 }
             }

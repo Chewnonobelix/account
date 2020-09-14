@@ -8,7 +8,27 @@ import Account 1.0
 MouseArea{
     acceptedButtons: Qt.NoButton
     onWheel: {
-        root.s_zoom(wheel.angleDelta.y > 0 ? -1 : 1)
+        _graph.change(wheel.angleDelta.y > 0 ? -1 : 1)
+    }
+
+    Connections {
+        target: _graph
+
+        function onGranChanged(gran) {
+            root.currentGran = gran
+        }
+
+        function onDateChanged(d) {
+            root.currentDate = d
+        }
+
+        function onOkNextChanged(next) {
+            root.okNext = next
+        }
+
+        function onOkPrevChanged(prev) {
+            root.okPrev = prev
+        }
     }
 
     GridLayout {
@@ -22,8 +42,6 @@ MouseArea{
         property var currentGran: Account.Month
         property bool okNext: true
         property bool okPrev: true
-        signal s_increment(int i)
-        signal s_zoom(int dir)
 
         AccountButton {
             id: prev
@@ -44,7 +62,7 @@ MouseArea{
             ToolTip.timeout: Account.Over ? 0 : 1000
             
             onClicked: {
-                root.s_increment(-1)
+                _graph.increment(-1)
             }
         }
 
@@ -78,7 +96,7 @@ MouseArea{
             ToolTip.timeout: Account.Over ? 0 : 1000
             
             onClicked: {
-                root.s_increment(1)
+                _graph.increment(1)
             }
         }
 

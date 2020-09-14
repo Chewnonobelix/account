@@ -18,17 +18,14 @@ Rectangle {
         id: testModel
     }
 
-    onFocusChanged: s_open()
+    onFocusChanged: _frequency.openManager()
 
-    signal s_open()
     gradient: AccountStyle.unselectView
 
     Generate {
         objectName: "generate"
         anchors.centerIn: root
     }
-
-    onS_open: _frequency.openManager()
 
     GridLayout {
         anchors.fill: parent
@@ -55,6 +52,15 @@ Rectangle {
         }
 
         ListView {
+            Connections {
+                target: _frequency
+
+                function onSetModel(model, index) {
+                    frequencyList.model = model
+                    frequencyList.currentIndex = index
+                }
+            }
+
             id: frequencyList
             objectName: "frequencyList"
             model: []
@@ -78,7 +84,7 @@ Rectangle {
                 if(currentModel) {
                     _frequency.setWorker(currentModel.name)
                     pageChanger.pageIndex = 1
-                    pageChanger.s_pageChange()
+                    pageChanger.pageChange()
                 }
                 else
                 {
@@ -120,6 +126,7 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         frequencyList.currentIndex = index
+                        _frequency.currentId = modelData.id
                     }
 
                     cursorShape: Qt.PointingHandCursor
@@ -179,16 +186,24 @@ Rectangle {
             Layout.columnSpan: 6
             Layout.rowSpan: 1
 
+            Connections {
+                target: _frequency
+
+                function onCatList(inc, out) {
+                    ref.incomeList = inc
+                    ref.outcomeList = out
+                }
+            }
 
             property var incomeList: []
             property var outcomeList: []
 
-            onS_valueChanged: if(entry && enabled) _frequency.updateFreqValue(frequencyList.currentModel.id, value)
-            onS_titleChanged: if(entry && enabled) _frequency.updateFreqName(frequencyList.currentModel.id, title)
-            onS_catChanged: if(entry && enabled) _frequency.updateFreqCat(frequencyList.currentModel.id, cat, "manager")
-            onS_supportChanged: if(entry && enabled) _frequency.updateFreqSupport(frequencyList.currentModel.id, supp)
-            onAddNewCategory: if(entry && enabled) _frequency.addNewCategory(cat)
-
+            onValueChanged: if(entry && enabled) _frequency.updateFreqValue(frequencyList.currentModel.id, value)
+            onTitleChanged: if(entry && enabled) _frequency.updateFreqName(frequencyList.currentModel.id, title)
+            onCatChanged: if(entry && enabled) _frequency.updateFreqCat(frequencyList.currentModel.id, cat, "manager")
+            onSupportChanged: if(entry && enabled) _frequency.updateFreqSupport(frequencyList.currentModel.id, supp)
+            onAddNewCategory: { if(entry && enabled) _frequency.addNewCategory(frequencyList.currentModel.id, cat, entry.type)
+            }
             onEntryChanged: {
                 typeCombo.currentIndex = CoreModel.typeModel.find(entry ? entry.type: "outcome")
             }
@@ -329,10 +344,19 @@ Rectangle {
             }
 
             AccountLabel {
+                id: worker
                 objectName: "worker"
                 anchors.top: dateText.bottom
                 width: parent.width
                 height: parent.height / parent.children.length
+
+                Connections {
+                    target: _frequency
+
+                    function onDisplayWorker(work) {
+                        worker.worker = work
+                    }
+                }
 
                 property Worker worker: null;
                 text: qsTr("Progress") + ": "  + (worker ? worker.progress + "%" : "N/A")
@@ -342,6 +366,14 @@ Rectangle {
         EntryEdit {
             id: linked
             objectName: "linkedDisplayer"
+
+            Connections {
+                target: _frequency
+
+                function onDisplayLink(entry) {
+                    linked.entry = entry
+                }
+            }
 
             Component.onCompleted: changeDirection()
             opening: true
@@ -482,7 +514,7 @@ Rectangle {
             Layout.columnSpan: 3
             Layout.rowSpan: 1
 
-            onS_pageChange: {
+            onPageChange: {
                 testModel.clear()
 
                 var i = pageIndex - 1

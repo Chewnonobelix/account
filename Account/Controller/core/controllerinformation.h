@@ -14,17 +14,16 @@ class ControllerInformation: public AbstractController
 
 private:
     Entry m_entry;
-    QObject* m_view;
-    
+    int m_currentPage = 1, m_maxPage = 1;
+
 public:
-    ControllerInformation();
-    ~ControllerInformation();
+    ControllerInformation() = default;
+    ~ControllerInformation() = default;
 
     int exec();
 
-    void configure(QObject*);
     void view(QUuid);
-    
+
 public slots:
     void titleChange(QString);
     void valueChange(double);
@@ -37,6 +36,15 @@ signals:
     void s_update(QUuid);
     void s_changeCat(QString, QUuid);
     void s_exec();
+
+    void frequencyVisible(bool);
+
+    void maxPageChanged(int);
+    void currentPageChanged(int);
+    void pageModel(QVariant);
+
+    void view(QVariant);
+    void catList(QVariant);
 };
 
 #endif // CONTROLLERINFORMATION_H

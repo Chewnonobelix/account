@@ -9,12 +9,13 @@
 class ControllerCommon: public AbstractController, public FeatureBuilder
 {
     Q_OBJECT
-    
+
+    Q_PROPERTY(QUuid currentId MEMBER m_currentId)
+
 private:
-    
+    QUuid m_currentId;
+
 public:
-    QObject* m_view = nullptr;
-    
     ControllerCommon() = default;
     inline ControllerCommon(const ControllerCommon & c): AbstractController(c) {}
     ~ControllerCommon() = default;
@@ -27,12 +28,16 @@ public:
     void checker() {}
 
 public slots:
-    void closeCommon(bool);
+    void closeCommon(QString, bool);
     void addCommon(QString);
     void removeCommon(QVariant);
-    void addCommonEntry();
-    void removeCommonEntry();
+    void addCommonEntry(QVariant);
+    void removeCommonEntry(QString, QString, QString);
     int exec();
+
+signals:
+    void commonModelChanged(QVariantList);
+    void currentIndexChanged(int);
 };
 
 Q_DECLARE_METATYPE(ControllerCommon)
