@@ -30,7 +30,7 @@ private slots:
     void test_initial();
     void test_nb();
     void test_rate();
-    void test_scheduler();
+    //    void test_scheduler();
     void test_generate();
     void test_entries();
 

@@ -34,11 +34,11 @@ void TestDebt::test_rate()
     QCOMPARE(model.rate(), rate);
 }
 
-void TestDebt::test_scheduler()
-{
-    model.setScheduler(scheduler);
-    QCOMPARE(model.scheduler(), scheduler);
-}
+//void TestDebt::test_scheduler()
+//{
+//    model.setScheduler(scheduler);
+//    QCOMPARE(model.scheduler(), scheduler);
+//}
 
 void TestDebt::test_generate()
 {
@@ -58,7 +58,7 @@ void TestDebt::testEquality()
 
 void TestDebt::testInferior()
 {
-    model2.setName(name+"1");
+    model2.setRate(rate + 0.1);
     QVERIFY(model < model2);
 }
 

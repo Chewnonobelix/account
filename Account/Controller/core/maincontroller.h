@@ -19,6 +19,7 @@
 #include "controllertransfert.h"
 #include "languagecontroller.h"
 #include "liveqmlengine.h"
+
 class Builder: public QThread
 {
     Q_OBJECT
