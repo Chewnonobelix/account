@@ -40,6 +40,12 @@ void TestDebt::test_name()
     QCOMPARE(model.name(), name);
 }
 
+void TestDebt::test_freq()
+{
+    model.setFreq(freq);
+    QCOMPARE(model.freq(), freq);
+}
+
 void TestDebt::test_generate()
 {
     QVERIFY(model.generate());
@@ -51,12 +57,12 @@ void TestDebt::test_generate()
         t = t + it;
     }
 
-    QCOMPARE(t.value(), init.value() + init.value() * rate);
+    QCOMPARE(t.value(), -init.value() * (rate + 1));
 }
 
 void TestDebt::test_entries()
 {
-    QCOMPARE(model.entries().size(), nb);
+    QCOMPARE(model.entries().size(), nb + 1);
 }
 
 void TestDebt::testEquality()

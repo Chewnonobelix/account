@@ -15,8 +15,9 @@ private:
 
     const QString name = "name1";
     const double rate = 0.3;
-    const int nb = 12;
+    const int nb = 24;
     const QUuid id = QUuid::createUuid();
+    const Account::FrequencyEnum freq = Account::FrequencyEnum::Month;
     Entry init;
     Frequency scheduler;
 
@@ -32,6 +33,7 @@ private slots:
     void test_nb();
     void test_rate();
     void test_name();
+    void test_freq();
     void test_generate();
     void test_entries();
 

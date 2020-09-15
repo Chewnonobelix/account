@@ -6,6 +6,7 @@
 #include "entry.h"
 #include "frequency.h"
 #include "metadata.h"
+#include <QDebug>
 #include <QtCore/qglobal.h>
 
 class ACCOUNT_EXPORT Debt : public MetaData
@@ -23,12 +24,12 @@ public:
     void setName(QString);
     Entry initial() const;
     void setInitial(Entry);
-    Frequency scheduler() const;
-    void setScheduler(Frequency);
     double rate() const;
     void setRate(double);
     int nb() const;
     void setNb(int);
+    Account::FrequencyEnum freq() const;
+    void setFreq(Account::FrequencyEnum);
 
     bool generate();
 

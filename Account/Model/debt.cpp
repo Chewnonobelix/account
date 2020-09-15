@@ -30,16 +30,6 @@ void Debt::setInitial(Entry i)
     setMetadata("initial", i);
 }
 
-Frequency Debt::scheduler() const
-{
-    return metaData<Frequency>("scheduler");
-}
-
-void Debt::setScheduler(Frequency s)
-{
-    setMetadata("scheduler", s);
-}
-
 double Debt::rate() const
 {
     return metaData<double>("rate");
@@ -60,9 +50,45 @@ void Debt::setNb(int n)
     setMetadata("nb", n);
 }
 
+Account::FrequencyEnum Debt::freq() const
+{
+    return metaData<Account::FrequencyEnum>("freq");
+}
+
+void Debt::setFreq(Account::FrequencyEnum n)
+{
+    setMetadata("freq", n);
+}
+
 bool Debt::generate()
 {
-    return false;
+    double multrate = rate() + 1;
+    double vt = initial().value();
+
+    int value = std::floor(vt / nb() * multrate * 100);
+    int lastvalue = ((int) (vt * multrate * 100)) - nb() * value;
+
+    Entry ref;
+    ref.setValue(value / 100.0);
+    ref.setType(initial().type() == "income" ? "outcome" : "income");
+    QDate first = initial().date();
+    QDate last = first.addDays((nb() + 1) * Account::nbDay(first, freq()));
+
+    Frequency scheduler;
+    scheduler.setFreq(freq());
+    scheduler.setReferenceEntry(ref);
+
+    QList<Entry> list;
+    for (first; first < last; first = first.addDays(Account::nbDay(first, freq()))) {
+        list << scheduler.clone(ref);
+        list.last().setDate(first);
+    }
+
+    list.last().setValue(lastvalue / 100.0);
+
+    setEntries(list);
+
+    return true;
 }
 
 bool operator<(const Debt &d1, const Debt &d2)
