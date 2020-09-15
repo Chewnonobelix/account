@@ -994,3 +994,22 @@ bool ControllerDB::updateCommon(const CommonExpanse& c)
     return false;
 }
 
+QMap<QUuid, Debt> ControllerDB::selectDebt()
+{
+    return QMap<QUuid, Debt>();
+}
+
+bool ControllerDB::addDebt(const Debt &)
+{
+    return false;
+}
+
+bool ControllerDB::removeDebt(const Debt &)
+{
+    return false;
+}
+
+bool ControllerDB::updateDebt(const Debt &)
+{
+    return false;
+}

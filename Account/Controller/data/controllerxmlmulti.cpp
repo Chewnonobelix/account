@@ -900,3 +900,23 @@ bool ControllerXMLMulti::deleteProfile(QString name)
     dir.cd(name);
     return dir.removeRecursively();
 }
+
+QMap<QUuid, Debt> ControllerXMLMulti::selectDebt()
+{
+    return QMap<QUuid, Debt>();
+}
+
+bool ControllerXMLMulti::addDebt(const Debt &)
+{
+    return false;
+}
+
+bool ControllerXMLMulti::removeDebt(const Debt &)
+{
+    return false;
+}
+
+bool ControllerXMLMulti::updateDebt(const Debt &)
+{
+    return false;
+}

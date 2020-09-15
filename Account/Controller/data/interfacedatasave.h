@@ -1,16 +1,17 @@
 #ifndef INTERFACEDATASAVE_H
 #define INTERFACEDATASAVE_H
 
-#include <QDomDocument>
-#include <QString>
-#include <QList>
-#include <QFile>
-#include "Model/entry.h"
-#include "Model/budget.h"
-#include "Model/frequency.h"
 #include "Model/accountglobal.h"
+#include "Model/budget.h"
 #include "Model/commonexpanse.h"
+#include "Model/debt.h"
+#include "Model/entry.h"
+#include "Model/frequency.h"
 #include "Model/synchronizationprofile.h"
+#include <QDomDocument>
+#include <QFile>
+#include <QList>
+#include <QString>
 
 class InterfaceDataSave: public QObject
 {
@@ -70,8 +71,13 @@ public slots:
     virtual QMap<QUuid, CommonExpanse> selectCommon() = 0;
     virtual bool addCommon(const CommonExpanse&) = 0;
     virtual bool removeCommon(const CommonExpanse&) = 0;
-    virtual bool updateCommon(const CommonExpanse&) = 0;
-    
+    virtual bool updateCommon(const CommonExpanse &) = 0;
+
+    virtual QMap<QUuid, Debt> selectDebt() = 0;
+    virtual bool addDebt(const Debt &) = 0;
+    virtual bool removeDebt(const Debt &) = 0;
+    virtual bool updateDebt(const Debt &) = 0;
+
     virtual QStringList selectProfile() = 0;
     virtual void setProfile(QString) = 0;
     virtual bool addProfile(QString, QString) = 0;
