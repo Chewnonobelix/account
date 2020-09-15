@@ -53,5 +53,6 @@
         <file>Core/SynchronizationGlobal.qml</file>
         <file>Core/Syncronization.qml</file>
         <file>Core/AccountMenu.qml</file>
+        <file>Debt/Debt.qml</file>
     </qresource>
 </RCC>

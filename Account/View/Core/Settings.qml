@@ -35,13 +35,14 @@ Dialog {
 
     onOpened: {
         console.log(_settings, _budget, _frequency, _commonExpanse, _db, _sync)
-        console.log(_main, _info, _transfert, _graph, _pie, _timeGraph)
+        console.log(_main, _info, _transfert, _graph, _pie, _timeGraph, _debt)
 
         language.currentIndex = language.indexOfValue(_settings.language())
 
         budget.checked = _settings.featureEnable("BudgetFeature")
         common.checked = _settings.featureEnable("CommonExpanseFeature")
         frequency.checked = _settings.featureEnable("FrequencyFeature")
+        debt.checked = _settings.featureEnable("DebtFeature")
 
         primary.item.currentIndex =  primary.item.indexOfValue(_settings.database())
         secondadyEnable.checked = _settings.backupEnable()
@@ -63,6 +64,7 @@ Dialog {
         _settings.setFeatureEnable("BudgetFeature", budget.checked)
         _settings.setFeatureEnable("CommonExpanseFeature", common.checked)
         _settings.setFeatureEnable("FrequencyFeature", frequency.checked)
+        _settings.setFeatureEnable("DebtFeature", debt.checked)
 
         _settings.setDatabase(primary.item.currentValue)
         _settings.setBackupEnable(secondadyEnable.checked)
@@ -190,6 +192,15 @@ Dialog {
                         text: qsTr("Common Expanse")
                         font.family: AccountStyle.title.name
                         ToolTip.text: (checked ? qsTr("Disable") : qsTr("Enable")) + " " + qsTr("common expanse")
+                    }
+
+                    AccountCheckBox {
+                        id: debt
+                        objectName: "debt"
+                        Layout.preferredHeight: root.height * 0.07
+                        text: qsTr("Debt")
+                        font.family: AccountStyle.title.name
+                        ToolTip.text: (checked ? qsTr("Disable") : qsTr("Enable")) + " " + qsTr("debt")
                     }
                 }
             }

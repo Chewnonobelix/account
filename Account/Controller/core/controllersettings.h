@@ -4,6 +4,7 @@
 #include "../data/xmltosql.h"
 #include "../features/controllerbudget.h"
 #include "../features/controllercommon.h"
+#include "../features/controllerdebt.h"
 #include "../features/controllerfrequency.h"
 #include "../features/featurebuilder.h"
 #include "abstractcontroller.h"
