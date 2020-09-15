@@ -57,8 +57,9 @@ bool ControllerDB::init()
         qDebug()<<"IT"<<m_db.exec(information_table).lastError();
         qDebug()<<"PRT"<<m_db.exec(profile_remove_table).lastError();
         qDebug()<<"ART"<<m_db.exec(account_remove_table).lastError();
-        
-        qDebug()<<"Trigger delete entry"<<m_db.exec(account_trigger_delete).lastError();
+        qDebug() << "DT" << m_db.exec(debt_table).lastError();
+
+        qDebug() << "Trigger delete entry" << m_db.exec(account_trigger_delete).lastError();
         qDebug()<<"Trigger delete frequency"<<m_db.exec(trigger_delete_frequency).lastError();
         qDebug()<<"Trigger update budget"<<m_db.exec(budget_trigger).lastError();
         qDebug()<<"Trigger delete budget"<<m_db.exec(budget_delete_trigger).lastError();
@@ -81,6 +82,7 @@ bool ControllerDB::init()
         prepareBudget();
         prepareFrequency();
         prepareCommon();
+        prepareDebt();
     }
     
     return isConnected();
@@ -290,6 +292,14 @@ void ControllerDB::prepareProfile()
     qDebug()<<"SP"<< m_selectProfiles->prepare("SELECT DISTINCT profile FROM account")<<m_selectProfiles->lastError();
     
     qDebug()<<"RP"<<m_removeProfile->prepare("INSERT INTO temp_profile VALUES (:n)")<<m_removeProfile->lastError();
+}
+
+void ControllerDB::prepareDebt()
+{
+    m_selectDebt = SqlQuery::create(m_db);
+    m_addDebt = SqlQuery::create(m_db);
+    m_removeDebt = SqlQuery::create(m_db);
+    m_updateDebt = SqlQuery::create(m_db);
 }
 
 bool ControllerDB::isConnected() const

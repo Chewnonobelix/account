@@ -70,9 +70,14 @@ private:
     SqlQuery m_selectCommonEntry;
     SqlQuery m_selectCommonTable;
     SqlQuery m_addCommonEntryInformation;
-    
+
+    SqlQuery m_addDebt;
+    SqlQuery m_updateDebt;
+    SqlQuery m_selectDebt;
+    SqlQuery m_removeDebt;
+
     QString m_currentAccount;
-    
+
     void prepareEntry();
     void prepareInformation();
     void prepareAccount();
@@ -81,7 +86,8 @@ private:
     void prepareFrequency();
     void prepareCommon();
     void prepareProfile();
-    
+    void prepareDebt();
+
 public:
     ControllerDB(bool = false);
     ControllerDB(const ControllerDB&d);
