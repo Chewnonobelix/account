@@ -28,5 +28,14 @@ void ControllerDebt::checker() {}
 
 int ControllerDebt::exec()
 {
+    m_debts = db()->selectDebt();
+
+    if (!m_filler.model)
+        m_filler.model = &m_debts;
+
+    m_filler.entries = db()->selectEntry(currentAccount()).values();
+
+    m_filler.start();
+
     return 0;
 }

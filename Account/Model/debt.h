@@ -36,6 +36,7 @@ public:
     QList<Entry> entries() const;
     void setEntries(QList<Entry>);
 
+    Debt &operator<<(Entry);
     friend bool ACCOUNT_EXPORT operator<(const Debt &, const Debt &);
     friend bool ACCOUNT_EXPORT operator==(const Debt &, const Debt &);
 };

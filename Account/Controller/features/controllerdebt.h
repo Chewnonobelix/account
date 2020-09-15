@@ -4,11 +4,16 @@
 #include "../core/abstractcontroller.h"
 #include "Model/debt.h"
 #include "featurebuilder.h"
+#include "filler.h"
 #include <QtCore/qglobal.h>
 
 class ControllerDebt : public AbstractController, public FeatureBuilder
 {
     Q_OBJECT
+
+private:
+    Filler<QUuid, Debt> m_filler;
+    QMap<QUuid, Debt> m_debts;
 
 public:
     ControllerDebt() = default;

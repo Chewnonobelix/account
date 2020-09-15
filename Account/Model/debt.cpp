@@ -110,3 +110,8 @@ void Debt::setEntries(QList<Entry> e)
 {
     setMetadata("entries", e);
 }
+
+Debt &Debt::operator<<(Entry)
+{
+    return *this;
+}
