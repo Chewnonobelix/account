@@ -21,6 +21,19 @@ MouseArea {
         month.currentYear = Qt.formatDate(date, "yyyy")
     }
     
+    function addCalendar(item) {
+        month.addCalendar(item)
+    }
+
+
+    function addMonth(item) {
+        month.addMonth(item)
+    }
+
+    function clear() {
+        month.clear()
+    }
+
     StackView {
         id: root
         anchors.fill: parent

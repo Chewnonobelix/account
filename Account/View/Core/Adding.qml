@@ -41,6 +41,15 @@ Popup {
         dateLabel.extern(new Date())
     }
 
+    Connections {
+        target: _main
+
+        function onOpenAdd(account) {
+            root.newAccount = account
+            root.open()
+        }
+    }
+
     onOpenDateChanged: dateLabel.extern(openDate)
 
     leftPadding: width * 0.02

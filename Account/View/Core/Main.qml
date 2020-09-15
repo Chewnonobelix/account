@@ -99,6 +99,8 @@ ApplicationWindow {
     
     property int maximizedWidth: Screen.width
     Component.onCompleted: {
+        _main.loadAccount()
+//        _main.buildModel()
         //        showMaximized()
     }
     
@@ -117,6 +119,7 @@ ApplicationWindow {
         height: 300
         width: 700
         
+        onOpened: text = _main.about()
         property string text: "Unable to about"
         ScrollView {
             anchors.fill: parent
@@ -148,6 +151,8 @@ ApplicationWindow {
         
         property string text: "Unable to load licence"
         
+        onOpened: text = _main.licence()
+
         ScrollView{
             anchors.fill: parent
             clip: true
@@ -175,7 +180,8 @@ ApplicationWindow {
         height: 740
         width: 740
         property string text: "Unable to load readme"
-        
+        onOpened: text = _main.readme()
+
         ScrollView {
             anchors.fill: parent
             clip: true
@@ -335,6 +341,22 @@ ApplicationWindow {
         }
         
         ComboBox {
+            Connections {
+                target: _main
+
+                function onCurrentAccountChanged(account) {
+                    for(var i = 0; i < accountSelect.model.length; i++) {
+                        if(accountSelect.model[i] === account) {
+                            accountSelect.currentIndex = i
+                        }
+                    }
+                }
+
+                function onAccountChanged(list) {
+                    accountSelect.model = list
+                }
+            }
+
             id: accountSelect
             objectName: "accountSelect"
             anchors.right: parent.right
