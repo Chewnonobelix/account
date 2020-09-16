@@ -212,7 +212,6 @@ Rectangle {
                 enabled = Qt.binding(function() {return frequencyList.count !== 0})
 
                 catModel = Qt.binding(function(){return (entry && entry.type === "income") ? incomeList : outcomeList})
-                linked.catModel = Qt.binding(function() { return catModel})
             }
 
         }
@@ -363,20 +362,17 @@ Rectangle {
             }
         }
 
-        EntryEdit {
+        EntryText {
             id: linked
-            objectName: "linkedDisplayer"
 
             Connections {
                 target: _frequency
 
                 function onDisplayLink(entry) {
-                    linked.entry = entry
+                    linked.model = entry
                 }
             }
 
-            Component.onCompleted: changeDirection()
-            opening: true
             visible: entryList.currentIndex !== -1 && frequencyList.currentIndex !== -1
 
             Layout.preferredHeight: root.height * 0.45
