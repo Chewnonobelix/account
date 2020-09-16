@@ -84,8 +84,8 @@ bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root, QStrin
     adder(el, "date", e.date().toString("dd-MM-yyyy"));
     adder(el, "value", QString::number(e.value()));
     adder(el, "account", e.account());
-    adder(el, "type", e.type());
-    
+    adder(el, "type", e.type().toLower());
+
     addInfo(el, e.info());
     root.appendChild(el);
     
@@ -158,10 +158,10 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
     child = el.elementsByTagName("value").at(0).toElement();
     e.setValue(child.text().toDouble());
     child = el.elementsByTagName("type").at(0).toElement();
-    e.setType(child.text());
-    
+    e.setType(child.text().toLower());
+
     child = el.elementsByTagName("information").at(0).toElement();
-    
+
     Information inf = selectInformation(child);
     inf.setIdEntry(e.id());
     e.setInfo(inf);

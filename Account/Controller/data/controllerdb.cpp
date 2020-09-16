@@ -393,7 +393,7 @@ bool ControllerDB::addEntry(const Entry & e)
         m_addEntry->bindValue(":account", e.account().isEmpty() ? m_currentAccount : e.account());
         m_addEntry->bindValue(":value", QVariant(e.value()));
         m_addEntry->bindValue(":date", QVariant(e.date()));
-        m_addEntry->bindValue(":type", QVariant(e.type()));
+        m_addEntry->bindValue(":type", QVariant(e.type().toLower()));
         m_addEntry->bindValue(":profile", m_currentProfile);
         Entry et = e;
         QUuid id = e.id().isNull() ? QUuid::createUuid() : e.id();
@@ -461,7 +461,7 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
             t.setId(m_selectEntry->value("id").toUuid());
             t.setDate(m_selectEntry->value("date_eff").toDate());
             t.setValue(m_selectEntry->value("value").toDouble());
-            t.setType(m_selectEntry->value("type").toString());
+            t.setType(m_selectEntry->value("type").toString().toLower());
             t.setAccount(m_selectEntry->value("account").toString());
 
             m_selectInformation->bindValue(":ide", t.id());

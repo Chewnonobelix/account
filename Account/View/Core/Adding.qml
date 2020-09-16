@@ -197,7 +197,9 @@ Popup {
                 id: accountSelect
                 objectName: "type"
                 textRole: "name"
+                valueRole: "type"
                 model: CoreModel.typeModel
+
 
                 Layout.preferredHeight: parent.secondRow
                 Layout.preferredWidth: root.width * 0.25
@@ -210,7 +212,9 @@ Popup {
 
                 ToolTip.text: qsTr("Specify income or outcome")
 
-                onCurrentTextChanged: root.entry["type"] = currentText
+                onCurrentValueChanged: {
+                    root.entry["type"] = currentValue
+                }
             }
 
             AccountButton {

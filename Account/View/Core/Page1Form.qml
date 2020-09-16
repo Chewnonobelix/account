@@ -480,7 +480,7 @@ Page {
                     width: view.width
                     height: view.height * .03
                     
-                    gradient: view.model[styleData.row] && styleData.selected ? view.model[styleData.row].type === "Outcome" ? AccountStyle.selectViewOut : AccountStyle.selectViewIn : AccountStyle.unselectView
+                    gradient: view.model[styleData.row] && styleData.selected ? view.model[styleData.row].type === "outcome" ? AccountStyle.selectViewOut : AccountStyle.selectViewIn : AccountStyle.unselectView
                     
                 }
                 
