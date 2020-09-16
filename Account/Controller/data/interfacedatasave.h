@@ -39,7 +39,8 @@ signals:
     void s_updateCommon();
     void s_updateProfile();
     void s_updateAccount();
-    
+    void s_updateDebt();
+
 public slots:
     void exec();
     virtual bool addEntry(const Entry&) = 0;

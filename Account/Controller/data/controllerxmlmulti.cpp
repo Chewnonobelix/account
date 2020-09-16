@@ -771,6 +771,7 @@ bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
     
     m_mutex.unlock();
     close();
+    emit s_updateCommon();
 
     return true;
 }
@@ -850,6 +851,7 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
     }
     m_mutex.unlock();
     close();
+    emit s_updateCommon();
     return ret;
 }
 
@@ -903,20 +905,76 @@ bool ControllerXMLMulti::deleteProfile(QString name)
 
 QMap<QUuid, Debt> ControllerXMLMulti::selectDebt()
 {
-    return QMap<QUuid, Debt>();
+    auto ret = QMap<QUuid, Debt>();
+
+    auto root = m_currentAccount.documentElement();
+    auto list = root.elementsByTagName("debt");
+
+    for (auto i = 0; i < list.size(); i++) {
+        auto el = list.at(i).toElement();
+
+        if (el.attribute("removed", "false").toInt())
+            continue;
+
+        Debt d;
+        d.setId(QUuid::fromString(el.attribute("id")));
+        d.setNb(el.attribute("time").toInt());
+        d.setRate(el.attribute("rate").toDouble());
+        d.setFreq((Account::FrequencyEnum) el.attribute("freq").toInt());
+
+        ret[d.id()] = d;
+    }
+
+    return ret;
 }
 
-bool ControllerXMLMulti::addDebt(const Debt &)
+bool ControllerXMLMulti::addDebt(const Debt &d)
 {
+    m_mutex.lock();
+    auto root = m_currentAccount.documentElement();
+    auto id = !d.id().isNull() ? d.id() : QUuid::createUuid();
+
+    QMap<QString, QString> att;
+    att["id"] = id.toString();
+    att["lastUpdate"] = QDateTime::currentDateTime().toString();
+    adder(root, "debt", "", att);
+    Debt dt(d);
+    dt.setId(id);
+    updateDebt(dt);
+    m_mutex.unlock();
+    return true;
+}
+
+bool ControllerXMLMulti::removeDebt(const Debt &d)
+{
+    auto dt(d);
+    dt.setMetadata("removed", true);
+    updateDebt(dt);
+
     return false;
 }
 
-bool ControllerXMLMulti::removeDebt(const Debt &)
+bool ControllerXMLMulti::updateDebt(const Debt &d)
 {
-    return false;
-}
+    auto root = m_currentAccount.documentElement();
+    auto list = root.elementsByTagName("debt");
+    bool ret = false;
+    for (auto i = 0; i < list.size(); i++) {
+        if (list.at(i).toElement().attribute("id") == d.id().toString()) {
+            ret = true;
+            auto el = list.at(i).toElement();
+            setter(el, "name", d.name());
+            //            setter(el, "date", d.dat());
+            setter(el, "time", QString::number(d.nb()));
+            setter(el, "freq", QString::number((int) d.freq()));
+            setter(el, "rate", QString::number(d.rate()));
+            if (d.hasMetadata("removed"))
+                el.setAttribute("removed", true);
+            el.setAttribute("lastUpdate", QDateTime::currentDateTime().toString());
 
-bool ControllerXMLMulti::updateDebt(const Debt &)
-{
-    return false;
+            emit s_updateDebt();
+        }
+    }
+    close();
+    return ret;
 }
