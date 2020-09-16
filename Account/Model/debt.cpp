@@ -82,6 +82,7 @@ bool Debt::generate()
     for (first; first < last; first = first.addDays(Account::nbDay(first, freq()))) {
         list << scheduler.clone(ref);
         list.last().setDate(first);
+        list.last().setMetadata("debt", id());
     }
 
     list.last().setValue(lastvalue / 100.0);
