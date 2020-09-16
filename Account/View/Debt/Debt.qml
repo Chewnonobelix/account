@@ -20,12 +20,26 @@ Item {
         rowSpacing: root.height * 0.02
 
         ListView {
+            id: debtView
+            clip: true
+            AccountBackground {
+                anchors.fill: parent
+                invisible: true
+            }
+
             Layout.column: 0
             Layout.row: 0
             Layout.columnSpan: 2
             Layout.rowSpan: 9
             Layout.preferredHeight: root.height *0.88
             Layout.preferredWidth: root.width *0.20
+
+            header: AccountHeader {
+                height: debtView.height * .10
+                width: debtView.width
+
+                text: qsTr("Debt and loan")
+            }
         }
 
         AccountButton {
@@ -48,6 +62,8 @@ Item {
             Layout.preferredWidth: root.width *0.09
 
             text: qsTr("Remove")
+
+            enabled: debtView.currentIndex != -1
         }
 
         AccountHeader {
@@ -59,6 +75,7 @@ Item {
             Layout.preferredWidth: root.width *0.74
 
             text: qsTr("Name")
+            enabled: debtView.currentIndex != -1
         }
 
         AccountTextInput {
@@ -69,6 +86,7 @@ Item {
             Layout.preferredHeight: root.height *0.05
             Layout.preferredWidth: root.width *0.74
 
+            enabled: debtView.currentIndex != -1
         }
 
         AccountHeader {
@@ -80,6 +98,7 @@ Item {
             Layout.preferredWidth: root.width *0.74
 
             text: qsTr("Reference")
+            enabled: debtView.currentIndex != -1
         }
 
         EntryEdit {
@@ -90,6 +109,7 @@ Item {
             Layout.preferredHeight: root.height *0.22
             Layout.preferredWidth: root.width *0.74
 
+            enabled: debtView.currentIndex != -1
         }
 
         AccountHeader {
@@ -101,6 +121,7 @@ Item {
             Layout.preferredWidth: root.width *0.08
 
             text: qsTr("Date")
+            enabled: debtView.currentIndex != -1
         }
 
         CalendarButton {
@@ -111,6 +132,7 @@ Item {
             Layout.preferredHeight: root.height *0.07
             Layout.preferredWidth: root.width *0.10
 
+            enabled: debtView.currentIndex != -1
         }
 
         AccountHeader {
@@ -122,6 +144,7 @@ Item {
             Layout.preferredWidth: root.width *0.08
 
             text: qsTr("Type")
+            enabled: debtView.currentIndex != -1
         }
 
         AccountComboBox {
@@ -132,6 +155,7 @@ Item {
             Layout.preferredHeight: root.height *0.07
             Layout.preferredWidth: root.width *0.10
 
+            enabled: debtView.currentIndex != -1
         }
 
         AccountHeader {
@@ -143,6 +167,7 @@ Item {
             Layout.preferredWidth: root.width *0.08
 
             text: qsTr("Rate")
+            enabled: debtView.currentIndex != -1
         }
 
         AccountSpinbox {
@@ -153,6 +178,7 @@ Item {
             Layout.preferredHeight: root.height *0.07
             Layout.preferredWidth: root.width *0.10
 
+            enabled: debtView.currentIndex != -1
         }
 
         AccountHeader {
@@ -164,6 +190,7 @@ Item {
             Layout.preferredWidth: root.width *0.08
 
             text: qsTr("Time")
+            enabled: debtView.currentIndex != -1
         }
 
         AccountSpinbox {
@@ -174,6 +201,7 @@ Item {
             Layout.preferredHeight: root.height *0.07
             Layout.preferredWidth: root.width *0.10
 
+            enabled: debtView.currentIndex != -1
         }
 
         AccountHeader {
@@ -185,6 +213,7 @@ Item {
             Layout.preferredWidth: root.width *0.08
 
             text: qsTr("Frequency")
+            enabled: debtView.currentIndex != -1
         }
 
         AccountComboBox {
@@ -195,6 +224,7 @@ Item {
             Layout.preferredHeight: root.height *0.07
             Layout.preferredWidth: root.width *0.10
 
+            enabled: debtView.currentIndex != -1
         }
 
         AccountButton {
@@ -206,6 +236,7 @@ Item {
             Layout.preferredWidth: root.width *0.20
 
             text: qsTr("Generate")
+            enabled: debtView.currentIndex != -1
         }
 
         ListView {
@@ -216,6 +247,7 @@ Item {
             Layout.preferredHeight: root.height *0.53
             Layout.preferredWidth: root.width *0.25
 
+            enabled: debtView.currentIndex != -1
         }
 
         EntryText {
@@ -226,6 +258,7 @@ Item {
             Layout.preferredHeight: root.height *0.53
             Layout.preferredWidth: root.width *0.25
 
+            enabled: debtView.currentIndex != -1
         }
     }
 }
