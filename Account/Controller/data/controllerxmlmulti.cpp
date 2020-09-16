@@ -918,9 +918,9 @@ QMap<QUuid, Debt> ControllerXMLMulti::selectDebt()
 
         Debt d;
         d.setId(QUuid::fromString(el.attribute("id")));
-        d.setNb(el.attribute("time").toInt());
-        d.setRate(el.attribute("rate").toDouble());
-        d.setFreq((Account::FrequencyEnum) el.attribute("freq").toInt());
+
+        auto child = el.elementsByTagName("name").at(0).toElement();
+        d.setName(child.text());
 
         ret[d.id()] = d;
     }

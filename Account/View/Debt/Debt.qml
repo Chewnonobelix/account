@@ -7,6 +7,15 @@ import "../Core"
 Item {
     id: root
 
+    Connections {
+        target: _debt
+
+        function onModelChanged(list) {
+            debtView.model = list
+        }
+    }
+
+    Component.onCompleted: _debt.exec()
     GridLayout {
         anchors {
             fill: parent
@@ -34,11 +43,45 @@ Item {
             Layout.preferredHeight: root.height *0.88
             Layout.preferredWidth: root.width *0.20
 
+            property var currentModel: null
+
+            onCurrentIndexChanged: {
+                currentModel = model[currentIndex]
+            }
+
+            onCurrentModelChanged: {
+                name.text = currentModel.name
+            }
+
             header: AccountHeader {
                 height: debtView.height * .10
                 width: debtView.width
 
                 text: qsTr("Debt and loan")
+            }
+
+            delegate: Rectangle {
+                Component.onCompleted: {
+                }
+                property var model: modelData
+                height: debtView.height * .05
+                width: debtView.width
+
+                gradient: debtView.currentIndex === index ? AccountStyle.calSelect : AccountStyle.unselectView
+
+
+                AccountLabel {
+                    anchors.fill: parent
+                    text: modelData.name === "" ? modelData.id : modelData.name
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    onClicked:{
+                        debtView.currentIndex = index
+                    }
+                }
             }
         }
 
@@ -51,6 +94,8 @@ Item {
             Layout.preferredWidth: root.width *0.09
 
             text: qsTr("Add")
+
+            onClicked: _debt.addDebt()
         }
 
         AccountButton {
@@ -79,6 +124,7 @@ Item {
         }
 
         AccountTextInput {
+            id: name
             Layout.column: 2
             Layout.row: 1
             Layout.columnSpan: 4
@@ -87,6 +133,8 @@ Item {
             Layout.preferredWidth: root.width *0.74
 
             enabled: debtView.currentIndex != -1
+
+            onTextEdited: _debt.onNameChanged(debtView.currentModel.id, text)
         }
 
         AccountHeader {

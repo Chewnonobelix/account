@@ -15,9 +15,10 @@ class ACCOUNT_EXPORT Debt : public MetaData
 
     Q_PROPERTY(QUuid id READ id CONSTANT)
     Q_PROPERTY(int time READ nb CONSTANT)
-    Q_PROPERTY(int freq READ freq CONSTANT)
+    Q_PROPERTY(Account::FrequencyEnum freq READ freq CONSTANT)
     Q_PROPERTY(double rate READ rate CONSTANT)
-
+    Q_PROPERTY(Entry initial READ initial CONSTANT)
+    Q_PROPERTY(QString name READ name CONSTANT)
 public:
     Debt() = default;
     Debt(const Debt &) = default;

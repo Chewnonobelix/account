@@ -25,7 +25,14 @@ public:
     virtual QString baseText() const;
     virtual void checker();
 
-    int exec();
+    Q_INVOKABLE int exec();
+
+signals:
+    void modelChanged(QVariantList);
+
+public slots:
+    void addDebt();
+    void onNameChanged(QString, QString);
 };
 
 #endif // CONTROLLERDEBT_H
