@@ -45,7 +45,7 @@ int ControllerDebt::exec()
     for (auto it : m_debts)
         list << QVariant::fromValue(it);
 
-    emit modelChanged(list);
+    emit modelChanged(list, -1);
     return 0;
 }
 

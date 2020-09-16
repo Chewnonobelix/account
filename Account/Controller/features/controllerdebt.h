@@ -28,7 +28,7 @@ public:
     Q_INVOKABLE int exec();
 
 signals:
-    void modelChanged(QVariantList);
+    void modelChanged(QVariantList, int);
 
 public slots:
     void addDebt();
