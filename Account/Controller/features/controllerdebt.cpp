@@ -41,12 +41,25 @@ int ControllerDebt::exec()
     }
 
     QVariantList list;
-
-    for (auto it : m_debts)
+    int index = -1;
+    for (auto it : m_debts) {
         list << QVariant::fromValue(it);
+        if (it.id() == m_currentId)
+            index = list.count() - 1;
+    }
 
-    emit modelChanged(list, -1);
+    emit modelChanged(list, index);
     return 0;
+}
+
+void ControllerDebt::setId(QString id)
+{
+    m_currentId = QUuid::fromString(id);
+}
+
+QString ControllerDebt::id() const
+{
+    return m_currentId.toString();
 }
 
 void ControllerDebt::addDebt()

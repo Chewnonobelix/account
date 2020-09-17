@@ -11,9 +11,15 @@ class ControllerDebt : public AbstractController, public FeatureBuilder
 {
     Q_OBJECT
 
+    Q_PROPERTY(QString currentId READ id WRITE setId)
+
 private:
     Filler<QUuid, Debt> m_filler;
     QMap<QUuid, Debt> m_debts;
+    QUuid m_currentId;
+
+    void setId(QString);
+    QString id() const;
 
 public:
     ControllerDebt() = default;

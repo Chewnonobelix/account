@@ -52,6 +52,8 @@ Item {
 
             onCurrentModelChanged: {
                 name.text = currentModel.name
+                _debt.currentId = currentModel.id
+
             }
 
             header: AccountHeader {
