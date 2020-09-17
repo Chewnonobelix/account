@@ -24,7 +24,7 @@ public:
     Debt(const Debt &) = default;
     ~Debt() = default;
 
-    Debt &operator=(const Debt &) = default;
+    Debt &operator=(const Debt &);
 
     QUuid id() const;
     void setId(QUuid);

@@ -112,7 +112,23 @@ void Debt::setEntries(QList<Entry> e)
     setMetadata("entries", e);
 }
 
-Debt &Debt::operator<<(Entry)
+Debt &Debt::operator<<(Entry e)
 {
+    if (e.hasMetadata("debt") && e.metaData<QUuid>("debt") == id()) {
+        auto list = entries();
+        if (e.id() == id()) {
+            setInitial(e);
+        } else {
+            list << e;
+            setEntries(list);
+        }
+    }
+
+    return *this;
+}
+
+Debt &Debt::operator=(const Debt &d)
+{
+    MetaData::operator=(d);
     return *this;
 }

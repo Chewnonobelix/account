@@ -43,6 +43,15 @@ public slots:
     void onTimeChanged(QString, int);
     void onFreqChanged(QString, Account::FrequencyEnum);
     void onRateChanged(QString, double);
+
+    void onInitialDateChanged(QString, QDate);
+    void onInitialTypeChanged(QString, QString);
+    void onInitialValueChanged(QString, double);
+    void onInitialCategoryChanged(QString, QString);
+    void onInitialSupportChanged(QString, int);
+    void onNewCategory(QString, QString);
+
+    void endFill();
 };
 
 #endif // CONTROLLERDEBT_H

@@ -77,10 +77,10 @@ bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root, QStrin
     //el.setAttribute("id", e.id());
 
     auto meta = e.metadataList();
-    for(auto it: meta)
+    for (auto it : meta) {
         if (!QStringList({"date", "value", "account", "type"}).contains(it))
             el.setAttribute(it, e.metaData<QString>(it));
-
+    }
     adder(el, "date", e.date().toString("dd-MM-yyyy"));
     adder(el, "value", QString::number(e.value()));
     adder(el, "account", e.account());
@@ -112,17 +112,19 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     info.setIdEntry(ide);
     et.setInfo(info);
     et.setId(ide);
-    if(et.hasMetadata("notemit"))
+
+    if (et.hasMetadata("notemit"))
         et.removeMetadata("notemit");
 
     if(!m_accounts.contains(et.account()))
         createAccount(et.account());
-    
+
     setCurrentAccount(et.account());
+
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
-    
+
     addEntryNode(et, root);
-    
+
     close();
     m_mutex.unlock();
     
@@ -935,18 +937,23 @@ QMap<QUuid, Debt> ControllerXMLMulti::selectDebt()
 
 bool ControllerXMLMulti::addDebt(const Debt &d)
 {
-    m_mutex.lock();
     auto root = m_currentAccount.documentElement();
     auto id = !d.id().isNull() ? d.id() : QUuid::createUuid();
 
     QMap<QString, QString> att;
     att["id"] = id.toString();
     att["lastUpdate"] = QDateTime::currentDateTime().toString();
+    Entry e;
+    e.setAccount(m_accounts.key(m_currentAccount));
+    e.setMetadata("debt", id);
+    e.setId(id);
+    addEntry(e);
     adder(root, "debt", "", att);
     Debt dt(d);
+    dt.setInitial(e);
     dt.setId(id);
     updateDebt(dt);
-    m_mutex.unlock();
+
     return true;
 }
 
@@ -967,12 +974,16 @@ bool ControllerXMLMulti::updateDebt(const Debt &d)
     for (auto i = 0; i < list.size(); i++) {
         if (list.at(i).toElement().attribute("id") == d.id().toString()) {
             ret = true;
+            Entry e(d.initial());
+            e.setAccount(m_accounts.key(m_currentAccount));
+            updateEntry(e);
             auto el = list.at(i).toElement();
             setter(el, "name", d.name());
             //            setter(el, "date", d.dat());
             setter(el, "time", QString::number(d.nb()));
             setter(el, "freq", QString::number((int) d.freq()));
             setter(el, "rate", QString::number(d.rate()));
+
             if (d.hasMetadata("removed"))
                 el.setAttribute("removed", true);
             el.setAttribute("lastUpdate", QDateTime::currentDateTime().toString());

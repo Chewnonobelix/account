@@ -53,6 +53,9 @@ Item {
             onCurrentModelChanged: {
                 if(currentModel) {
                     name.text = currentModel.name
+                    initial.entry = currentModel.initial
+                    date.extern(currentModel.initial.date)
+                    type.currentIndex = CoreModel.typeModel.find(currentModel.initial.type)
                     rate.value = currentModel.rate * 100
                     time.value = currentModel.time * 100
                     frequencydebt.currentIndex = CoreModel.freqModel.findIndex(currentModel.freq)
@@ -159,6 +162,7 @@ Item {
         }
 
         EntryEdit {
+            id: initial
             Layout.column: 2
             Layout.row: 3
             Layout.columnSpan: 4
@@ -166,7 +170,15 @@ Item {
             Layout.preferredHeight: root.height *0.22
             Layout.preferredWidth: root.width *0.74
 
+            onEntryChanged: {
+            }
             visible: debtView.currentIndex != -1
+            onValueChanged: {
+                _debt.onInitialValueChanged(debtView.currentModel.id, value)
+            }
+            onCatChanged: _debt.onInitialValueChanged(debtView.currentModel.id, cat)
+            onSupportChanged: _debt.onInitialSupportChanged(debtView.currentModel.id, supp)
+            onAddNewCategory: _debt.onNewCategory(type.currentValue, cat)
         }
 
         AccountHeader {
@@ -182,6 +194,7 @@ Item {
         }
 
         CalendarButton {
+            id: date
             Layout.column: 3
             Layout.row: 4
             Layout.columnSpan: 1
@@ -190,6 +203,8 @@ Item {
             Layout.preferredWidth: root.width *0.10
 
             visible: debtView.currentIndex != -1
+
+            onTextChanged: _debt.onInitialDateChanged(debtView.currentModel.id, Date.fromLocaleDateString(Qt.locale(),text, "dd-MM-yyyy"))
         }
 
         AccountHeader {
@@ -205,6 +220,7 @@ Item {
         }
 
         AccountComboBox {
+            id: type
             Layout.column: 3
             Layout.row: 5
             Layout.columnSpan: 1
@@ -213,6 +229,12 @@ Item {
             Layout.preferredWidth: root.width *0.10
 
             visible: debtView.currentIndex != -1
+
+            model: CoreModel.typeModel
+            textRole: "name"
+            valueRole: "type"
+
+            onCurrentValueChanged: _debt.onInitialTypeChanged(debtView.currentModel.id, currentValue)
         }
 
         AccountHeader {
@@ -294,7 +316,7 @@ Item {
             textRole: "name"
             valueRole: "role"
 
-            onCurrentValueChanged: _debt.onFreqChanged(debtView.currentModel.id, currentValue)
+            onCurrentValueChanged: if(debtView.currentModel) _debt.onFreqChanged(debtView.currentModel.id, currentValue)
         }
 
         AccountButton {

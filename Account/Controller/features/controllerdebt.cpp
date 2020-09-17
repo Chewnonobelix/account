@@ -12,6 +12,8 @@ QSharedPointer<FeatureBuilder> ControllerDebt::build(QQmlApplicationEngine *engi
     debt->view = comp.create();
 
     connect(db(), &InterfaceDataSave::s_updateDebt, debt.data(), &ControllerDebt::exec);
+    connect((QThread *) &debt->m_filler, SIGNAL(finished()), debt.data(), SLOT(endFill()));
+    debt->exec();
     return debt;
 }
 
@@ -36,19 +38,9 @@ int ControllerDebt::exec()
 
     if (!m_filler.isRunning()) {
         m_filler.entries = db()->selectEntry(currentAccount()).values();
-
         m_filler.start();
     }
 
-    QVariantList list;
-    int index = -1;
-    for (auto it : m_debts) {
-        list << QVariant::fromValue(it);
-        if (it.id() == m_currentId)
-            index = list.count() - 1;
-    }
-
-    emit modelChanged(list, index);
     return 0;
 }
 
@@ -62,6 +54,20 @@ QString ControllerDebt::id() const
     return m_currentId.toString();
 }
 
+void ControllerDebt::endFill()
+{
+    qDebug() << "End fill";
+    QVariantList list;
+    int index = -1;
+    for (auto it : m_debts) {
+        list << QVariant::fromValue(it);
+        if (it.id() == m_currentId)
+            index = list.count() - 1;
+    }
+
+    emit modelChanged(list, index);
+}
+
 void ControllerDebt::addDebt()
 {
     Debt d;
@@ -72,6 +78,18 @@ void ControllerDebt::onNameChanged(QString id, QString name)
 {
     Debt d = db()->selectDebt()[QUuid::fromString(id)];
     d.setName(name);
+    auto el = db()->selectEntry(currentAccount());
+
+    Entry e;
+    for (auto it : el) {
+        if (it.id().toString() == id)
+            e = it;
+    }
+
+    Information i = e.info();
+    i.setTitle(name);
+    e.setInfo(i);
+    d.setInitial(e);
     db()->updateDebt(d);
 }
 
@@ -100,4 +118,94 @@ void ControllerDebt::onRemoved(QString id)
 {
     Debt d = db()->selectDebt()[QUuid::fromString(id)];
     db()->removeDebt(d);
+}
+
+void ControllerDebt::onInitialDateChanged(QString id, QDate d)
+{
+    Debt b = db()->selectDebt()[QUuid::fromString(id)];
+    auto el = db()->selectEntry(currentAccount());
+
+    Entry e;
+    for (auto it : el) {
+        if (it.id().toString() == id)
+            e = it;
+    }
+
+    e.setDate(d);
+    b.setInitial(e);
+    db()->updateDebt(b);
+}
+
+void ControllerDebt::onInitialTypeChanged(QString id, QString t)
+{
+    qDebug() << id << t << m_currentId;
+    Debt b = db()->selectDebt()[QUuid::fromString(id)];
+    auto el = db()->selectEntry(currentAccount());
+
+    Entry e;
+    for (auto it : el) {
+        if (it.id().toString() == id)
+            e = it;
+    }
+
+    e.setType(t);
+    b.setInitial(e);
+    db()->updateDebt(b);
+}
+
+void ControllerDebt::onInitialValueChanged(QString id, double v)
+{
+    auto el = db()->selectEntry(currentAccount());
+
+    Entry e;
+    for (auto it : el) {
+        if (it.id().toString() == id)
+            e = it;
+    }
+
+    Debt b = db()->selectDebt()[QUuid::fromString(id)];
+
+    e.setValue(v);
+    b.setInitial(e);
+
+    db()->updateDebt(b);
+}
+
+void ControllerDebt::onInitialCategoryChanged(QString id, QString c)
+{
+    Debt b = db()->selectDebt()[QUuid::fromString(id)];
+    auto el = db()->selectEntry(currentAccount());
+
+    Entry e;
+    for (auto it : el) {
+        if (it.id().toString() == id)
+            e = it;
+    }
+
+    Information i = e.info();
+    i.setCategory(c);
+    e.setInfo(i);
+    b.setInitial(e);
+    db()->updateDebt(b);
+}
+
+void ControllerDebt::onInitialSupportChanged(QString id, int s)
+{
+    Debt b = db()->selectDebt()[QUuid::fromString(id)];
+    auto el = db()->selectEntry(currentAccount());
+
+    Entry e;
+    for (auto it : el) {
+        if (it.id().toString() == id)
+            e = it;
+    }
+
+    e.setSupport((Account::EntryTypeEnum) s);
+    b.setInitial(e);
+    db()->updateDebt(b);
+}
+
+void ControllerDebt::onNewCategory(QString type, QString cat)
+{
+    db()->addCategory(cat, type);
 }
