@@ -146,7 +146,7 @@ Item {
 
             visible: debtView.currentIndex != -1
 
-            onTextEdited: _debt.onNameChanged(debtView.currentModel.id, text)
+            onTextEdited:_debt.onNameChanged(debtView.currentModel.id, text)
         }
 
         AccountHeader {
@@ -204,7 +204,7 @@ Item {
 
             visible: debtView.currentIndex != -1
 
-            onTextChanged: _debt.onInitialDateChanged(debtView.currentModel.id, Date.fromLocaleDateString(Qt.locale(),text, "dd-MM-yyyy"))
+            onTextChanged: if(down)  _debt.onInitialDateChanged(debtView.currentModel.id, Date.fromLocaleDateString(Qt.locale(),text, "dd-MM-yyyy"))
         }
 
         AccountHeader {
@@ -234,7 +234,7 @@ Item {
             textRole: "name"
             valueRole: "type"
 
-            onCurrentValueChanged: _debt.onInitialTypeChanged(debtView.currentModel.id, currentValue)
+            onCurrentValueChanged: if(down) _debt.onInitialTypeChanged(debtView.currentModel.id, currentValue)
         }
 
         AccountHeader {
@@ -316,7 +316,7 @@ Item {
             textRole: "name"
             valueRole: "role"
 
-            onCurrentValueChanged: if(debtView.currentModel) _debt.onFreqChanged(debtView.currentModel.id, currentValue)
+            onCurrentValueChanged: if(debtView.currentModel && down) _debt.onFreqChanged(debtView.currentModel.id, currentValue)
         }
 
         AccountButton {

@@ -56,7 +56,6 @@ QString ControllerDebt::id() const
 
 void ControllerDebt::endFill()
 {
-    qDebug() << "End fill";
     QVariantList list;
     int index = -1;
     for (auto it : m_debts) {
@@ -138,7 +137,6 @@ void ControllerDebt::onInitialDateChanged(QString id, QDate d)
 
 void ControllerDebt::onInitialTypeChanged(QString id, QString t)
 {
-    qDebug() << id << t << m_currentId;
     Debt b = db()->selectDebt()[QUuid::fromString(id)];
     auto el = db()->selectEntry(currentAccount());
 
