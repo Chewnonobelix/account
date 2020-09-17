@@ -921,7 +921,12 @@ QMap<QUuid, Debt> ControllerXMLMulti::selectDebt()
 
         auto child = el.elementsByTagName("name").at(0).toElement();
         d.setName(child.text());
-
+        child = el.elementsByTagName("rate").at(0).toElement();
+        d.setRate(child.text().toDouble());
+        child = el.elementsByTagName("time").at(0).toElement();
+        d.setNb(child.text().toInt());
+        child = el.elementsByTagName("freq").at(0).toElement();
+        d.setFreq((Account::FrequencyEnum) child.text().toInt());
         ret[d.id()] = d;
     }
 

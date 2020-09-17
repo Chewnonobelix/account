@@ -38,7 +38,11 @@ signals:
 
 public slots:
     void addDebt();
+    void onRemoved(QString);
     void onNameChanged(QString, QString);
+    void onTimeChanged(QString, int);
+    void onFreqChanged(QString, Account::FrequencyEnum);
+    void onRateChanged(QString, double);
 };
 
 #endif // CONTROLLERDEBT_H

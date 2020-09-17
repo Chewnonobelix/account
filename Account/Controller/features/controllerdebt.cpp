@@ -74,3 +74,30 @@ void ControllerDebt::onNameChanged(QString id, QString name)
     d.setName(name);
     db()->updateDebt(d);
 }
+
+void ControllerDebt::onTimeChanged(QString id, int time)
+{
+    Debt d = db()->selectDebt()[QUuid::fromString(id)];
+    d.setNb(time);
+    db()->updateDebt(d);
+}
+
+void ControllerDebt::onFreqChanged(QString id, Account::FrequencyEnum freq)
+{
+    Debt d = db()->selectDebt()[QUuid::fromString(id)];
+    d.setFreq(freq);
+    db()->updateDebt(d);
+}
+
+void ControllerDebt::onRateChanged(QString id, double rate)
+{
+    Debt d = db()->selectDebt()[QUuid::fromString(id)];
+    d.setRate(rate);
+    db()->updateDebt(d);
+}
+
+void ControllerDebt::onRemoved(QString id)
+{
+    Debt d = db()->selectDebt()[QUuid::fromString(id)];
+    db()->removeDebt(d);
+}

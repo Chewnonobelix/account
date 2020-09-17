@@ -51,9 +51,13 @@ Item {
             }
 
             onCurrentModelChanged: {
-                name.text = currentModel.name
-                _debt.currentId = currentModel.id
-
+                if(currentModel) {
+                    name.text = currentModel.name
+                    rate.value = currentModel.rate * 100
+                    time.value = currentModel.time * 100
+                    frequencydebt.currentIndex = CoreModel.freqModel.findIndex(currentModel.freq)
+                    _debt.currentId = currentModel.id
+                }
             }
 
             header: AccountHeader {
@@ -112,6 +116,8 @@ Item {
             text: qsTr("Remove")
 
             enabled: debtView.currentIndex != -1
+
+            onClicked: _debt.onRemoved(debtView.currentModel.id)
         }
 
         AccountHeader {
@@ -222,6 +228,7 @@ Item {
         }
 
         AccountSpinbox {
+            id: rate
             Layout.column: 3
             Layout.row: 6
             Layout.columnSpan: 1
@@ -230,6 +237,8 @@ Item {
             Layout.preferredWidth: root.width *0.10
 
             visible: debtView.currentIndex != -1
+
+            onS_realVCalueChange: _debt.onRateChanged(debtView.currentModel.id, value)
         }
 
         AccountHeader {
@@ -245,14 +254,18 @@ Item {
         }
 
         AccountSpinbox {
+            id: time
             Layout.column: 3
             Layout.row: 7
             Layout.columnSpan: 1
             Layout.rowSpan: 1
             Layout.preferredHeight: root.height *0.07
             Layout.preferredWidth: root.width *0.10
-
+            stepSize: 100
+            editable: false
             visible: debtView.currentIndex != -1
+
+            onS_realVCalueChange: _debt.onTimeChanged(debtView.currentModel.id, value)
         }
 
         AccountHeader {
@@ -268,6 +281,7 @@ Item {
         }
 
         AccountComboBox {
+            id: frequencydebt
             Layout.column: 3
             Layout.row: 8
             Layout.columnSpan: 1
@@ -276,6 +290,11 @@ Item {
             Layout.preferredWidth: root.width *0.10
 
             visible: debtView.currentIndex != -1
+            model: CoreModel.freqModel
+            textRole: "name"
+            valueRole: "role"
+
+            onCurrentValueChanged: _debt.onFreqChanged(debtView.currentModel.id, currentValue)
         }
 
         AccountButton {
