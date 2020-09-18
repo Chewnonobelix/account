@@ -56,9 +56,10 @@ Item {
                     initial.entry = currentModel.initial
                     date.extern(currentModel.initial.date)
                     type.currentIndex = CoreModel.typeModel.find(currentModel.initial.type)
-                    rate.value = currentModel.rate * 100
+                    rate.value = currentModel.rate * 10000
                     time.value = currentModel.time * 100
                     frequencydebt.currentIndex = CoreModel.freqModel.findIndex(currentModel.freq)
+                    entryList.model = currentModel.entries()
                     _debt.currentId = currentModel.id
                 }
             }
@@ -89,7 +90,7 @@ Item {
                     anchors.fill: parent
 
                     onClicked:{
-                        debtView.currentIndex = index
+                        debtView.currentIndex = debtView.currentIndex !== index ? index : -1
                     }
                 }
             }
@@ -329,9 +330,13 @@ Item {
 
             text: qsTr("Generate")
             visible: debtView.currentIndex != -1
+            enabled: if(debtView.currentModel) debtView.currentModel.entries().length === 0
+
+            onClicked: _debt.generate(debtView.currentModel.id)
         }
 
         ListView {
+            id: entryList
             Layout.column: 4
             Layout.row: 4
             Layout.columnSpan: 1
@@ -340,9 +345,25 @@ Item {
             Layout.preferredWidth: root.width *0.25
 
             visible: debtView.currentIndex != -1
+
+            onCurrentIndexChanged: text.model = model[currentIndex]
+            delegate: AccountLabel {
+                height: entryList.height * 0.05
+                width: entryList.width
+                text: modelData.label
+                background: Rectangle {
+                    gradient: entryList.currentIndex === index ? AccountStyle.calSelect : AccountStyle.unselectView
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: entryList.currentIndex = index
+                }
+            }
         }
 
         EntryText {
+            id: text
             Layout.column: 5
             Layout.row: 4
             Layout.columnSpan: 1
