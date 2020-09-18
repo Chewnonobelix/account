@@ -13,6 +13,7 @@ protected:
     {
         for(auto it: entries)
             for (auto &it2 : *model) {
+                //                qDebug() << it.label() << it.metaData<QUuid>("debt") << it2.id() << it.id();
                 it2 << it;
             }
     }

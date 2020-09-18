@@ -149,6 +149,7 @@ const auto remove_account_trigger = QStringLiteral(
     "DELETE FROM account WHERE account=NEW.name; "
     "DELETE FROM categories WHERE account=NEW.name; "
     "DELETE FROM frequency WHERE account=NEW.name; "
+    "DELETE FROM debt WHERE account=NEW.name; "
     "DELETE FROM temp_account WHERE name=NEW.name; "
     "END;");
 
@@ -162,6 +163,7 @@ const auto remove_profile_trigger = QStringLiteral(
     "DELETE FROM account WHERE profile=NEW.name; "
     "DELETE FROM categories WHERE profile=NEW.name; "
     "DELETE FROM frequency WHERE profile=NEW.name; "
+    "DELETE FROM debt WHERE profile=NEW.name; "
     "DELETE FROM temp_profile WHERE name=NEW.name; "
     "END;");
 

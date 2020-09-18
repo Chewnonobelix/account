@@ -414,8 +414,9 @@ bool ControllerDB::addEntry(const Entry & e)
         Entry et = e;
         QUuid id = e.id().isNull() ? QUuid::createUuid() : e.id();
         m_addEntry->bindValue(":id", id);
-        et.setId(id);        
-        
+        et.setId(id);
+
+        qDebug() << et.label() << et.metadataList();
         ret = m_addEntry->exec();
         
         if(ret && id >= 0)
@@ -436,14 +437,17 @@ bool ControllerDB::addEntry(const Entry & e)
         auto meta = et.metadataList();
         for(auto it: meta)
         {
-            if (!QStringList({"id", "date", "value", "account", "type"}).contains(it)
-                || it == "notemit")
+            if (QStringList({"id", "date", "value", "account", "type", "notemit"}).contains(it))
                 continue;
-            
+
+            qDebug() << it
+                     << QStringList({"id", "date", "value", "account", "type", "notemit"})
+                            .contains(it)
+                     << et.metaData<QString>(it);
             m_insertMetadata->bindValue(":entry", id);
             m_insertMetadata->bindValue(":name", it);
             m_insertMetadata->bindValue(":value", et.metaData<QString>(it));
-            
+
             ret &= m_insertMetadata->exec();
         }
     }
@@ -503,11 +507,16 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
             bool mt = m_selectMetadata->exec();
             if(!mt)
                 continue;
-            
-            while(m_selectMetadata->next())
-                t.setMetadata(m_selectMetadata->value("name").toString(), m_selectMetadata->value("value").toString());
-            
-            if(t.metaData<QString>("removed") == "true")
+
+            //            qDebug() << "sdqsdqsdqsd--------";
+            while (m_selectMetadata->next()) {
+                qDebug() << "pouet" << m_selectMetadata->value("name").toString()
+                         << m_selectMetadata->value("value").toString();
+                t.setMetadata(m_selectMetadata->value("name").toString(),
+                              m_selectMetadata->value("value").toString());
+            }
+
+            if (t.metaData<QString>("removed") == "true")
                 continue;
             
             res.insert(t.date(), t);
@@ -1050,7 +1059,8 @@ bool ControllerDB::addDebt(const Debt &d)
 {
     bool ret;
     if (ret = isConnected()) {
-        m_addDebt->bindValue(":id", d.id().isNull() ? QUuid::createUuid() : d.id());
+        QUuid id = d.id().isNull() ? QUuid::createUuid() : d.id();
+        m_addDebt->bindValue(":id", id);
         m_addDebt->bindValue(":freq", (int) d.freq());
         m_addDebt->bindValue(":nb", d.nb());
         m_addDebt->bindValue(":rate", d.rate());
@@ -1059,6 +1069,12 @@ bool ControllerDB::addDebt(const Debt &d)
         m_addDebt->bindValue(":profile", m_currentProfile);
 
         ret = m_addDebt->exec();
+
+        Entry e;
+        e.setAccount(m_currentAccount);
+        e.setMetadata("debt", id);
+        e.setId(id);
+        addEntry(e);
 
         if (ret)
             emit s_updateDebt();
@@ -1089,6 +1105,7 @@ bool ControllerDB::updateDebt(const Debt &d)
         m_updateDebt->bindValue(":profile", m_currentProfile);
 
         ret = m_updateDebt->exec();
+        ret &= updateEntry(d.initial());
 
         qDebug() << ret << m_updateDebt->lastError();
         if (ret)

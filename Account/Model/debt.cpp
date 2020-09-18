@@ -107,6 +107,16 @@ QList<Entry> Debt::entries() const
     return metaData<QList<Entry>>("entries");
 }
 
+QVariantList Debt::variantEntries() const
+{
+    QVariantList ret;
+
+    for (auto it : entries())
+        ret << QVariant::fromValue(it);
+
+    return ret;
+}
+
 void Debt::setEntries(QList<Entry> e)
 {
     setMetadata("entries", e);
@@ -114,9 +124,12 @@ void Debt::setEntries(QList<Entry> e)
 
 Debt &Debt::operator<<(Entry e)
 {
+    qDebug() << e.metadataList() << e.label();
     if (e.hasMetadata("debt") && e.metaData<QUuid>("debt") == id()) {
         auto list = entries();
+
         if (e.id() == id()) {
+            qDebug() << "Set init";
             setInitial(e);
         } else {
             list << e;

@@ -19,7 +19,7 @@ class ACCOUNT_EXPORT Debt : public MetaData
     Q_PROPERTY(double rate READ rate CONSTANT)
     Q_PROPERTY(Entry initial READ initial CONSTANT)
     Q_PROPERTY(QString name READ name CONSTANT)
-
+    Q_PROPERTY(QVariantList entries READ variantEntries CONSTANT)
 public:
     Debt() = default;
     Debt(const Debt &) = default;
@@ -42,7 +42,8 @@ public:
 
     bool generate();
 
-    Q_INVOKABLE QList<Entry> entries() const;
+    QList<Entry> entries() const;
+    QVariantList variantEntries() const;
     void setEntries(QList<Entry>);
 
     Debt &operator<<(Entry);

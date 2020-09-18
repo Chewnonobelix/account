@@ -60,7 +60,7 @@ Item {
                     rate.value = currentModel.rate * 10000
                     time.value = currentModel.time * 100
                     frequencydebt.currentIndex = CoreModel.freqModel.findIndex(currentModel.freq)
-                    entryList.model = currentModel.entries()
+                    entryList.model = currentModel.entries
                 }
             }
 
@@ -330,7 +330,7 @@ Item {
 
             text: qsTr("Generate")
             visible: debtView.currentIndex != -1
-            enabled: debtView.currentModel ? debtView.currentModel.entries().length === 0 : true
+            enabled: debtView.currentModel ? debtView.currentModel.entries.length === 0 : true
 
             onClicked: _debt.generate(debtView.currentModel.id)
         }

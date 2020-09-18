@@ -1,6 +1,5 @@
 #include "controllerxmlmulti.h"
 
-
 ControllerXMLMulti::ControllerXMLMulti(bool backup): InterfaceDataSave(), m_currentProfile("Default")
 {
     this->backup = backup;
@@ -946,6 +945,7 @@ bool ControllerXMLMulti::addDebt(const Debt &d)
     Entry e;
     e.setAccount(m_accounts.key(m_currentAccount));
     e.setMetadata("debt", id);
+
     e.setId(id);
     addEntry(e);
     adder(root, "debt", "", att);
