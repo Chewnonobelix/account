@@ -52,6 +52,7 @@ Item {
 
             onCurrentModelChanged: {
                 if(currentModel) {
+                    _debt.currentId = currentModel.id
                     name.text = currentModel.name
                     initial.entry = currentModel.initial
                     date.extern(currentModel.initial.date)
@@ -60,7 +61,6 @@ Item {
                     time.value = currentModel.time * 100
                     frequencydebt.currentIndex = CoreModel.freqModel.findIndex(currentModel.freq)
                     entryList.model = currentModel.entries()
-                    _debt.currentId = currentModel.id
                 }
             }
 
@@ -330,7 +330,7 @@ Item {
 
             text: qsTr("Generate")
             visible: debtView.currentIndex != -1
-            enabled: if(debtView.currentModel) debtView.currentModel.entries().length === 0
+            enabled: debtView.currentModel ? debtView.currentModel.entries().length === 0 : true
 
             onClicked: _debt.generate(debtView.currentModel.id)
         }
@@ -346,7 +346,7 @@ Item {
 
             visible: debtView.currentIndex != -1
 
-            onCurrentIndexChanged: text.model = model[currentIndex]
+            onCurrentIndexChanged: textEntry.model = model[currentIndex]
             delegate: AccountLabel {
                 height: entryList.height * 0.05
                 width: entryList.width
@@ -363,7 +363,7 @@ Item {
         }
 
         EntryText {
-            id: text
+            id: textEntry
             Layout.column: 5
             Layout.row: 4
             Layout.columnSpan: 1

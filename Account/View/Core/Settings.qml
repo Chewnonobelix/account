@@ -75,7 +75,7 @@ Dialog {
         else {
             _settings.setAutobackup(false)
         }
-
+        _settings.save()
         syncronization.applied()
     }
 
