@@ -32,6 +32,7 @@ public:
     virtual void checker();
 
     Q_INVOKABLE int exec();
+    Q_INVOKABLE void generate(QString);
 
 signals:
     void modelChanged(QVariantList, int);

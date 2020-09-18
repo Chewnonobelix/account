@@ -109,7 +109,7 @@ void ControllerDebt::onFreqChanged(QString id, Account::FrequencyEnum freq)
 void ControllerDebt::onRateChanged(QString id, double rate)
 {
     Debt d = db()->selectDebt()[QUuid::fromString(id)];
-    d.setRate(rate);
+    d.setRate(rate / 100.0);
     db()->updateDebt(d);
 }
 
@@ -206,4 +206,25 @@ void ControllerDebt::onInitialSupportChanged(QString id, int s)
 void ControllerDebt::onNewCategory(QString type, QString cat)
 {
     db()->addCategory(cat, type);
+}
+
+void ControllerDebt::generate(QString id)
+{
+    auto debt = m_debts[QUuid::fromString(id)];
+
+    auto ret = debt.generate();
+
+    if (ret) {
+        auto list = debt.entries();
+        for (auto it : list) {
+            Information i = it.info();
+            i.setTitle(debt.name() + "_" + it.date().toString("dd-MM-yyyy"));
+            it.setInfo(i);
+            it.setAccount(currentAccount());
+            db()->addEntry(it);
+        }
+
+        db()->updateDebt(debt);
+        emit db()->s_updateEntry();
+    }
 }
