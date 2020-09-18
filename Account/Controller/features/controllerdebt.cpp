@@ -58,6 +58,7 @@ void ControllerDebt::endFill()
 {
     QVariantList list;
     int index = -1;
+
     for (auto it : m_debts) {
         list << QVariant::fromValue(it);
         if (it.id() == m_currentId)
@@ -154,7 +155,7 @@ void ControllerDebt::onInitialTypeChanged(QString id, QString t)
 void ControllerDebt::onInitialValueChanged(QString id, double v)
 {
     auto el = db()->selectEntry(currentAccount());
-
+    qDebug() << id << v;
     Entry e;
     for (auto it : el) {
         if (it.id().toString() == id)

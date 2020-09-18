@@ -167,9 +167,12 @@ const auto remove_profile_trigger = QStringLiteral(
 
 const auto debt_table = QStringLiteral("CREATE TABLE `debt` ("
                                        "`id` TEXT PRIMARY KEY, "
-                                       "`idref`TEXT REFERENCE account(id) "
                                        "`freq` INTEGER NOT NULL, "
                                        "`nb` INTEGER NOT NULL, "
-                                       "`rate` double NOT NULL "
+                                       "`rate` double NOT NULL, "
+                                       "`name` TEXT, "
+                                       "`removed` integer DEFAULT 0, "
+                                       "`account` TEXT NOT NULL, "
+                                       "`profile` TEXT NOT NULL"
                                        ")");
 #endif // DBREQUESTSINIT_H

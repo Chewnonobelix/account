@@ -300,6 +300,22 @@ void ControllerDB::prepareDebt()
     m_addDebt = SqlQuery::create(m_db);
     m_removeDebt = SqlQuery::create(m_db);
     m_updateDebt = SqlQuery::create(m_db);
+
+    qDebug() << "SD"
+             << m_selectDebt->prepare(QStringLiteral(
+                    "SELECT * FROM debt WHERE account=:account AND profile=:profile"))
+             << m_selectDebt->lastError();
+    qDebug() << "AD"
+             << m_addDebt->prepare(
+                    QStringLiteral("INSERT INTO debt (id, freq, nb, rate, name, account, profile) "
+                                   "VALUES (:id, :freq, :nb, :rate, :name, :account, :profile)"))
+             << m_addDebt->lastError();
+    qDebug() << "UD"
+             << m_updateDebt->prepare(QStringLiteral(
+                    "UPDATE debt "
+                    "SET freq=:freq, nb=:nb, rate=:rate, name=:name, removed=:removed "
+                    "WHERE account=:account AND profile=:profile "))
+             << m_updateDebt->lastError();
 }
 
 bool ControllerDB::isConnected() const
@@ -1006,20 +1022,78 @@ bool ControllerDB::updateCommon(const CommonExpanse& c)
 
 QMap<QUuid, Debt> ControllerDB::selectDebt()
 {
-    return QMap<QUuid, Debt>();
+    QMap<QUuid, Debt> ret;
+    if (isConnected()) {
+        m_selectDebt->bindValue(":account", m_currentAccount);
+        m_selectDebt->bindValue(":profile", m_currentProfile);
+
+        m_selectDebt->exec();
+
+        while (m_selectDebt->next()) {
+            if (m_selectDebt->value("removed").toBool())
+                continue;
+
+            Debt d;
+            d.setId(m_selectDebt->value("id").toUuid());
+            d.setNb(m_selectDebt->value("nb").toInt());
+            d.setRate(m_selectDebt->value("rate").toDouble());
+            d.setName(m_selectDebt->value("name").toString());
+            d.setFreq((Account::FrequencyEnum) m_selectDebt->value("freq").toInt());
+            ret[d.id()] = d;
+        }
+    }
+
+    return ret;
 }
 
-bool ControllerDB::addDebt(const Debt &)
+bool ControllerDB::addDebt(const Debt &d)
 {
-    return false;
+    bool ret;
+    if (ret = isConnected()) {
+        m_addDebt->bindValue(":id", d.id().isNull() ? QUuid::createUuid() : d.id());
+        m_addDebt->bindValue(":freq", (int) d.freq());
+        m_addDebt->bindValue(":nb", d.nb());
+        m_addDebt->bindValue(":rate", d.rate());
+        m_addDebt->bindValue(":name", d.name());
+        m_addDebt->bindValue(":account", m_currentAccount);
+        m_addDebt->bindValue(":profile", m_currentProfile);
+
+        ret = m_addDebt->exec();
+
+        if (ret)
+            emit s_updateDebt();
+    }
+
+    return ret;
 }
 
-bool ControllerDB::removeDebt(const Debt &)
+bool ControllerDB::removeDebt(const Debt &d)
 {
-    return false;
+    Debt dt = d;
+    dt.setMetadata("removed", true);
+
+    return updateDebt(dt);
 }
 
-bool ControllerDB::updateDebt(const Debt &)
+bool ControllerDB::updateDebt(const Debt &d)
 {
+    bool ret;
+
+    if (ret = isConnected()) {
+        m_updateDebt->bindValue(":freq", (int) d.freq());
+        m_updateDebt->bindValue(":nb", d.nb());
+        m_updateDebt->bindValue(":rate", d.rate());
+        m_updateDebt->bindValue(":name", d.name());
+        m_updateDebt->bindValue(":removed", d.metaData<bool>("removed"));
+        m_updateDebt->bindValue(":account", m_currentAccount);
+        m_updateDebt->bindValue(":profile", m_currentProfile);
+
+        ret = m_updateDebt->exec();
+
+        qDebug() << ret << m_updateDebt->lastError();
+        if (ret)
+            emit s_updateDebt();
+    }
+
     return false;
 }
