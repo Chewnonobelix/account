@@ -37,6 +37,7 @@ SOURCES += \
     Controller/data/xmltosql.cpp \
     Controller/features/controllerbudget.cpp \
     Controller/features/controllercommon.cpp \
+    Controller/features/controllerdebt.cpp \
     Controller/features/controllerfrequency.cpp \
     Controller/graph/abstractgraphcontroller.cpp \
     Controller/graph/controllerpiegraph.cpp \
@@ -45,6 +46,7 @@ SOURCES += \
     Controller/network/TcpServer.cpp \
     Model/accountglobal.cpp \
     Model/commonexpanse.cpp \
+    Model/debt.cpp \
     Model/frequency.cpp \
     Model/subbudget.cpp \
     Model/entry.cpp \
@@ -87,6 +89,7 @@ HEADERS += \
     Controller/data/xmltosql.h \
     Controller/features/controllerbudget.h \
     Controller/features/controllercommon.h \
+    Controller/features/controllerdebt.h \
     Controller/features/controllerfrequency.h \
     Controller/features/featurebuilder.h \
     Controller/features/filler.h \
@@ -97,6 +100,7 @@ HEADERS += \
     Controller/network/AccountSocket.h \
     Controller/network/TcpServer.h \
     Model/commonexpanse.h \
+    Model/debt.h \
     Model/entry.h \
     Model/frequency.h \
     Model/information.h \

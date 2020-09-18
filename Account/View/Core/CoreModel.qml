@@ -54,6 +54,11 @@ QtObject {
             return 0
         }
 
+        function findText(role) {
+            var index = findIndex(role)
+            return get(index).name
+        }
+
         ListElement {
             name: qsTr("Money")
             role: Account.Money

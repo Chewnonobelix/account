@@ -57,8 +57,9 @@ bool ControllerDB::init()
         qDebug()<<"IT"<<m_db.exec(information_table).lastError();
         qDebug()<<"PRT"<<m_db.exec(profile_remove_table).lastError();
         qDebug()<<"ART"<<m_db.exec(account_remove_table).lastError();
-        
-        qDebug()<<"Trigger delete entry"<<m_db.exec(account_trigger_delete).lastError();
+        qDebug() << "DT" << m_db.exec(debt_table).lastError();
+
+        qDebug() << "Trigger delete entry" << m_db.exec(account_trigger_delete).lastError();
         qDebug()<<"Trigger delete frequency"<<m_db.exec(trigger_delete_frequency).lastError();
         qDebug()<<"Trigger update budget"<<m_db.exec(budget_trigger).lastError();
         qDebug()<<"Trigger delete budget"<<m_db.exec(budget_delete_trigger).lastError();
@@ -81,6 +82,7 @@ bool ControllerDB::init()
         prepareBudget();
         prepareFrequency();
         prepareCommon();
+        prepareDebt();
     }
     
     return isConnected();
@@ -267,7 +269,7 @@ void ControllerDB::prepareCommon()
                                               "WHERE id=:id")<<m_updateCommon->lastError();
     
     qDebug()<<"ACEN"<<m_addCommonEntry->prepare("INSERT INTO account (id, account, profile, value, date_eff, type) "
-                                                "VALUES (;id, :a, :p, :v, :d, :t)")<<m_addCommonEntry->lastError();
+                                                "VALUES (:id, :a, :p, :v, :d, :t)")<<m_addCommonEntry->lastError();
     
     qDebug()<<"ACENI"<<m_addCommonEntryInformation->prepare("INSERT INTO information (id, idEntry, info) "
                                                             "VALUES (:id, :ide, :title)")<<m_addCommonEntry->lastError();
@@ -290,6 +292,14 @@ void ControllerDB::prepareProfile()
     qDebug()<<"SP"<< m_selectProfiles->prepare("SELECT DISTINCT profile FROM account")<<m_selectProfiles->lastError();
     
     qDebug()<<"RP"<<m_removeProfile->prepare("INSERT INTO temp_profile VALUES (:n)")<<m_removeProfile->lastError();
+}
+
+void ControllerDB::prepareDebt()
+{
+    m_selectDebt = SqlQuery::create(m_db);
+    m_addDebt = SqlQuery::create(m_db);
+    m_removeDebt = SqlQuery::create(m_db);
+    m_updateDebt = SqlQuery::create(m_db);
 }
 
 bool ControllerDB::isConnected() const
@@ -383,7 +393,7 @@ bool ControllerDB::addEntry(const Entry & e)
         m_addEntry->bindValue(":account", e.account().isEmpty() ? m_currentAccount : e.account());
         m_addEntry->bindValue(":value", QVariant(e.value()));
         m_addEntry->bindValue(":date", QVariant(e.date()));
-        m_addEntry->bindValue(":type", QVariant(e.type()));
+        m_addEntry->bindValue(":type", QVariant(e.type().toLower()));
         m_addEntry->bindValue(":profile", m_currentProfile);
         Entry et = e;
         QUuid id = e.id().isNull() ? QUuid::createUuid() : e.id();
@@ -451,7 +461,7 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
             t.setId(m_selectEntry->value("id").toUuid());
             t.setDate(m_selectEntry->value("date_eff").toDate());
             t.setValue(m_selectEntry->value("value").toDouble());
-            t.setType(m_selectEntry->value("type").toString());
+            t.setType(m_selectEntry->value("type").toString().toLower());
             t.setAccount(m_selectEntry->value("account").toString());
 
             m_selectInformation->bindValue(":ide", t.id());
@@ -994,3 +1004,22 @@ bool ControllerDB::updateCommon(const CommonExpanse& c)
     return false;
 }
 
+QMap<QUuid, Debt> ControllerDB::selectDebt()
+{
+    return QMap<QUuid, Debt>();
+}
+
+bool ControllerDB::addDebt(const Debt &)
+{
+    return false;
+}
+
+bool ControllerDB::removeDebt(const Debt &)
+{
+    return false;
+}
+
+bool ControllerDB::updateDebt(const Debt &)
+{
+    return false;
+}

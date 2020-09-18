@@ -41,6 +41,15 @@ Popup {
         dateLabel.extern(new Date())
     }
 
+    Connections {
+        target: _main
+
+        function onOpenAdd(account) {
+            root.newAccount = account
+            root.open()
+        }
+    }
+
     onOpenDateChanged: dateLabel.extern(openDate)
 
     leftPadding: width * 0.02
@@ -188,7 +197,9 @@ Popup {
                 id: accountSelect
                 objectName: "type"
                 textRole: "name"
+                valueRole: "type"
                 model: CoreModel.typeModel
+
 
                 Layout.preferredHeight: parent.secondRow
                 Layout.preferredWidth: root.width * 0.25
@@ -201,7 +212,9 @@ Popup {
 
                 ToolTip.text: qsTr("Specify income or outcome")
 
-                onCurrentTextChanged: root.entry["type"] = currentText
+                onCurrentValueChanged: {
+                    root.entry["type"] = currentValue
+                }
             }
 
             AccountButton {

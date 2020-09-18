@@ -41,7 +41,7 @@ public:
     Account::FrequencyEnum freq() const;
     void setFreq(Account::FrequencyEnum);
     
-    Q_INVOKABLE QVariantList  entries() const;
+    Q_INVOKABLE QVariantList entries() const;
     Q_INVOKABLE QVariantList listEntries(int) const;
     
     Frequency& operator<< (const Entry&);

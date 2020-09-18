@@ -5,6 +5,7 @@
 #include "testinformation.h"
 #include "testentry.h"
 #include "testfrequency.h"
+#include "testdebt.h"
 
 int main(int argc, char** argv)
 {
@@ -21,6 +22,9 @@ int main(int argc, char** argv)
 
     TestFrequency tf;
     status |= QTest::qExec(&tf, argc, argv);
+
+    TestDebt td;
+    status |= QTest::qExec(&td, argc, argv);
 
     return status;
 }

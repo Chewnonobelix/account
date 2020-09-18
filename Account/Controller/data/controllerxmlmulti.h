@@ -87,7 +87,12 @@ public slots:
     virtual bool addProfile(QString, QString);
     virtual QString currentProfile();
     virtual bool deleteProfile(QString);
-    
+
+    virtual QMap<QUuid, Debt> selectDebt();
+    virtual bool addDebt(const Debt &);
+    virtual bool removeDebt(const Debt &);
+    virtual bool updateDebt(const Debt &);
+
     virtual bool init();
 };
 

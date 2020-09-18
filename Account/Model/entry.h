@@ -56,6 +56,7 @@ public:
     void setSupport(Account::EntryTypeEnum);
 
     operator QVariantMap() const;
+    inline operator QVariant() const { return QVariant::fromValue(*this); }
 };
 
 Q_DECLARE_METATYPE(Entry)

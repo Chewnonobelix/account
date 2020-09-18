@@ -3,6 +3,8 @@
 
 #include "../core/abstractcontroller.h"
 #include <QQmlApplicationEngine>
+#include <QQmlComponent>
+#include <QQmlContext>
 #include <QSharedPointer>
 
 struct FeatureBuilder

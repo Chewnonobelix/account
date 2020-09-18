@@ -26,6 +26,14 @@ Page {
         invisible: true
    }
     
+    MouseArea {
+        acceptedButtons: Qt.NoButton
+        hoverEnabled: true
+
+        onMouseXChanged: addingid.pX = (mouseX - pageTable.x) / pageTable.width
+        onMouseYChanged: addingid.pY = (mouseY - pageTable.y) / pageTable.height
+    }
+
     GridLayout {
         id: grid
         anchors.fill: parent
@@ -48,7 +56,11 @@ Page {
             Layout.preferredHeight: pageTable.height * 0.30
             Layout.preferredWidth: pageTable.width * 0.20
 
-            onUpdateSelected: view.unselectAll()
+            onUpdateSelected:  {
+                _main = selectedDates
+                view.unselectAll()
+            }
+
             onDatesChanged:  {
                 view.reset()
                 _main.updateQuickView()
@@ -59,7 +71,23 @@ Page {
             }
 
             onMonthChanged: {
-                _main.previewCalendar()
+                _main.previewCalendar(currentMonth, currentYear)
+            }
+
+            Connections {
+                target: _main
+
+                function onClearCalendar() {
+                    cal.clear()
+                }
+
+                function onAppendMonthPreview(val) {
+                    cal.addMonth(val)
+                }
+
+                function onAppendCalendarPreview(val) {
+                    cal.addCalendar(val)
+                }
             }
         }
         
@@ -157,6 +185,19 @@ Page {
             Layout.preferredHeight: pageTable.height * 0.96
             Layout.preferredWidth: pageTable.width * 0.20
             spacing: 0
+
+            Connections {
+                target: _main
+
+                function onCurrentModelChanged(list) {
+                    view.model = list
+                }
+
+                function onCurrentRowChanged(index) {
+                    view.currentRow = index
+                }
+            }
+
             TableView {
                 height: parent.height * 0.95
                 width: parent.width
@@ -224,12 +265,13 @@ Page {
                 function setNewIndex(index) {
                     if (selection.contains(index) || index === -1) {
                         selection.clear()
-                        _main.edit(null)
+                        _main.edit((currentId))
                     } else {
                         selection.clear()
                         currentRow = index
                         selection.select(index)
-                        _main.edit(currentEntry.id)
+                        currentEntry = model[index]
+                        _main.edit(currentId)
                     }
                 }
                 
@@ -476,7 +518,19 @@ Page {
                 height: parent.height * 0.05
                 width: parent.width
 
-                onPageChange: _main.pageChange()
+                Connections {
+                    target: _main
+
+                    function onMaxPageChanged(max) {
+                        changer.maxPage = max
+                    }
+                }
+
+                onPageChange:  {
+                    view.unselectAll()
+                    _main.currentPage = pageIndex
+                    _main.pageChange()
+                }
             }
         }
         
@@ -530,6 +584,7 @@ Page {
     
     
     Component.onCompleted: {
+        view.setNewIndex(-1)
         _main.exec()
         currentId = Qt.binding(function() {return view.currentEntry && !view.currentEntry.isBlocked ? view.currentEntry.id : -1})
     }

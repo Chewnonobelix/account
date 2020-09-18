@@ -12,7 +12,7 @@ MainController::MainController(int storage)
 
     qDebug() << "Worker Qml"
              << qmlRegisterUncreatableType<Worker>("Account.Frequency", 1, 0, "Worker", message);
-    
+
     qmlRegisterModule("Account.Style", 1, 0);
     m_dbThread = new QThread;;
     connect(m_dbThread, &QThread::started, this, &MainController::reload);
@@ -66,19 +66,12 @@ void MainController::bind(QVariant id)
 
 int MainController::exec()
 {
-    //    engine().load(QUrl(QStringLiteral("qrc:/Core/Main.qml")));
-
     if (engine().rootObjects().size() < 1)
         return -1;
 
     QObject *root = engine().rootObjects().last();
 
-    QObject* combo = root->findChild<QObject*>("accountSelect");
-    
-    if(combo)
-    {
-        loadAccount();
-    }
+    loadAccount();
 
     QObject *transfert = root->findChild<QObject *>("transfert");
 
@@ -114,22 +107,10 @@ int MainController::exec()
     connect(&m_settings, &ControllerSettings::s_language, this, &MainController::languageChange);
     connect(&m_settings, &ControllerSettings::s_finish, this, &MainController::loadFeatures);
     
-    QObject* licence = root->findChild<QObject*>("licence");
-    if(licence)
-        connect(licence, SIGNAL(opened()), this, SLOT(licence()));
-    
-    QObject* howto = root->findChild<QObject*>("howto");
-    if(howto)
-        connect(howto, SIGNAL(opened()), this, SLOT(readme()));
-    
-    QObject* about = root->findChild<QObject*>("about");
-    if(about)
-        connect(about, SIGNAL(opened()), this, SLOT(about()));
-    
     connect(m_db, &InterfaceDataSave::s_updateEntry, &m_graph, &AbstractGraphController::exec);
     m_graph.exec();
 
-    connect(this, SIGNAL(s_totalChanged()), this, SLOT(totalChanged()));
+    connect(this, SIGNAL(s_totalChanged(int, int)), this, SLOT(totalChanged(int, int)));
 
     connect(m_db, &InterfaceDataSave::s_updateEntry, this, &AbstractController::calculTotal);
     connect(this, &AbstractController::s_totalChanged, this, &MainController::previewCalendar);
@@ -157,46 +138,39 @@ void MainController::close()
     }
 }
 
-void MainController::about()
+QString MainController::about()
 {
-    QObject* licence = engine().rootObjects().first()->findChild<QObject*>("about");
-    if(licence)
-    {
-        QFile f("ABOUT.md");
-        if(!f.open(QIODevice::ReadOnly))
-            return;
-        QString l = f.readAll();
-        f.close();
-        licence->setProperty("text", l);
-    }
+    QFile f("ABOUT.md");
+    if (!f.open(QIODevice::ReadOnly))
+        return tr("Unable to open about");
+    QString l = f.readAll();
+    f.close();
+
+    return l;
 }
 
-void MainController::readme()
+QString MainController::readme()
 {
     QString language = m_settings.languageCode();
     
     QFile f ("README_"+language+".md");
     if(!f.open(QIODevice::ReadOnly))
-        return;
-    
-    QObject* readme = engine().rootObjects().first()->findChild<QObject*>("howto");
-    
-    readme->setProperty("text", f.readAll());
+        return tr("Unable to open readme") + " " + language;
+
+    QString ret = f.readAll();
     f.close();
+
+    return ret;
 }
 
-void MainController::licence()
+QString MainController::licence()
 {
-    QObject* licence = engine().rootObjects().first()->findChild<QObject*>("licence");
-    if(licence)
-    {
         QFile f("LICENSE.md");
         if(!f.open(QIODevice::ReadOnly))
-            return;
+            return tr("Unbale to open licence");
         QString l = f.readAll();
         f.close();
-        licence->setProperty("text", l);
-    }
+        return l;
 }
 
 void MainController::loadFeatures()
@@ -233,20 +207,7 @@ void MainController::update(Entry e)
 
 void MainController::add(bool account)
 {
-    QObject* m = engine().rootObjects().first();
-    QObject* h = m->findChild<QObject*>("head");
-    QPoint p = QCursor::pos();
-    double pX, pY;
-
-    pX = p.x() - m->property("x").toDouble();
-    pX /= m->property("width").toDouble();
-    
-    pY = p.y() - m->property("y").toDouble() - h->property("height").toDouble();
-    pY /= m->property("height").toDouble();
-    QObject* popup = engine().rootObjects().first()->findChild<QObject*>("addingid");
-    popup->setProperty("newAccount", account);
-    popup->setProperty("pY", pY); popup->setProperty("pX", pX);
-    QMetaObject::invokeMethod(popup, "open");
+    emit openAdd(account);
 }
 
 void MainController::adding(QVariant ref)
@@ -366,18 +327,11 @@ void MainController::edit(QVariant id)
         m_info.view(id.toUuid());
 }
 
-void MainController::previewCalendar()
+void MainController::previewCalendar(int month, int year)
 {
     QMap<QDate, Total> all = allTotal();
-    QObject* cal = engine().rootObjects().first()->findChild<QObject*>("cal");
-    int month = 0;
-    int year = 0;
-    if(cal)
-    {
-        year = cal->property("currentYear").toInt();
-        month = cal->property("currentMonth").toInt() + 1;
-    }
-    
+    month--;
+
     QVector<Total> monthPreview, dayPreview;
     QDate itDate;
     itDate.setDate(year, month, 1);
@@ -405,9 +359,8 @@ void MainController::previewCalendar()
         
         itDate = itDate.addDays(1);
     }
-    
-    QObject* model = cal->findChild<QObject*>("calendarPreview");
-    QMetaObject::invokeMethod(model, "clear");
+
+    emit clearCalendar();
     QDate first;
     first.setDate(year, month, 1);
     for(auto i = 0; i < dayPreview.size(); i++)
@@ -415,22 +368,18 @@ void MainController::previewCalendar()
         QVariantMap map;
         map.insert("day", dayPreview[i].date().day());
         map.insert("value", dayPreview[i].value());
-        
-        QMetaObject::invokeMethod(model, "add", Q_ARG(QVariant, map));
+
+        emit appendCalendarPreview(map);
     }
-    
-    model = cal->findChild<QObject*>("totalPreview");
-    QMetaObject::invokeMethod(model, "clear");
-    
-    for(auto i = 0; i < monthPreview.size() ; i++)
-    {
+
+    for (auto i = 0; i < monthPreview.size(); i++) {
         QVariantMap map;
         map.insert("day", monthPreview[i].date().day());
         map.insert("value", monthPreview[i].value());
         
         if(monthPreview[i].date() >= first && monthPreview[i].date().isValid())
         {
-            QMetaObject::invokeMethod(model, "add", Q_ARG(QVariant, map));
+            emit appendMonthPreview(map);
         }
     }
 }
@@ -485,31 +434,22 @@ void MainController::buildModel(QUuid)
 
 void MainController::pageChange(QUuid id)
 {
-    QObject* skipper = engine().rootObjects().first()->findChild<QObject*>("pageSkip");
-    QObject* tab = engine().rootObjects().first()->findChild<QObject*>("entryView");
-    
-    if(tab && skipper)
-    {
         auto ld = dateList();
         int index = -1;
         int first = 0;
-        
-        QMetaObject::invokeMethod(tab, "unselectAll");
-        
+
         QList<QVariant> currentModel;
-        
-        std::for_each(m_model.begin(), m_model.end(), [ld, &currentModel](const QVariant& e){
+
+        std::for_each(m_model.begin(), m_model.end(), [ld, &currentModel](const QVariant &e) {
             if(ld.isEmpty() || ld.contains(e.toMap()["date"].toDate()))
-                currentModel<<e;
-            
+                currentModel << e;
         });
-        
+
         int maxPage = currentModel.size() < 100 ? 1 : (currentModel.size() / 100 + 1);
-        skipper->setProperty("maxPage", maxPage);
-        
-        
-        first = index != -1 ? (index / 100)+1 : ((skipper->property("pageIndex").toInt()));
-        
+        emit maxPageChanged(maxPage);
+
+        first = index != -1 ? (index / 100) + 1 : m_currentPage;
+
         first -= 1;
         first *= 100;
         
@@ -530,10 +470,9 @@ void MainController::pageChange(QUuid id)
         for(auto i = 0; i < modelList.size(); i++)
             if(modelList[i].toMap()["id"] == id)
                 index = i;
-        
-        tab->setProperty("model", modelList);
-        tab->setProperty("currentRow", index);
-    }
+
+        emit currentModelChanged(modelList);
+        emit currentRowChanged(index);
 }
 
 void MainController::updateQuickView()
@@ -547,14 +486,11 @@ void MainController::updateQuickView()
 
 QList<QDate> MainController::dateList() const
 {
-    QObject* calendar = engine().rootObjects().first()->findChild<QObject*>("cal");
-    QMetaProperty mp = calendar->metaObject()->property(calendar->metaObject()->indexOfProperty("selectedDates"));
-    QJSValue array = mp.read(calendar).value<QJSValue>();
     QList<QDate> ld;
-    for(int i = 0; i < array.property("length").toInt(); i++)
-        ld<<QDate::fromString(array.property(i).toString(), "dd-MM-yyyy");
-    
-    for(int i = 0; i < ld.size(); i++)
+    for (int i = 0; i < m_dateList.size(); i++)
+        ld << QDate::fromString(m_dateList[i].toString(), "dd-MM-yyyy");
+
+    for (int i = 0; i < ld.size(); i++)
         for(int j = i; j < ld.size(); j++)
             if(ld[j] < ld[i])
                 ld.swapItemsAt(i,j);
@@ -580,23 +516,17 @@ void MainController::accountChange(QString acc)
 
 void MainController::loadAccount()
 {
-    QObject* combo = engine().rootObjects().first()->findChild<QObject*>("accountSelect");
-    
-    if(combo)
-    {
-        QStringList t = m_db->selectAccount();
-        combo->setProperty("model", t);
-        
-        if(t.isEmpty())
-        {
-            accountChange("");
-            add(true);
-        }
-        else
-        {
-            accountChange(!t.contains(m_settings.currentAccount())? t[0] : m_settings.currentAccount());
-            combo->setProperty("currentIndex", std::max(0, t.indexOf(m_settings.currentAccount())));
-        }
+    QString currentAccount = m_settings.currentAccount();
+
+    QStringList t = m_db->selectAccount();
+
+    emit accountChanged(t);
+    if (t.isEmpty()) {
+        accountChange("");
+        add(true);
+    } else {
+        accountChange(!t.contains(currentAccount) ? t[0] : currentAccount);
+        emit currentAccountChanged(currentAccount);
     }
 }
 
@@ -606,18 +536,17 @@ void MainController::checkEstimated()
         it->checker();
 
     QList<Entry> list;
-    
-    for(auto it: m_db->selectEntry(currentAccount()))
-    {
+
+    for (auto it : m_db->selectEntry(currentAccount())) {
         if(it.info().estimated() && it.date() <= QDate::currentDate())
             list<<it;
         else if(it.date() > QDate::currentDate())
             break;
     }
-    
+
     QVariantList vl;
-    
-    for(auto it: list)
+
+    for (auto it : list)
         vl << QVariant::fromValue(it);
 
     emit checkListChanged(vl);
@@ -660,7 +589,7 @@ void MainController::openTransfert()
     m_transfert.exec();
 }
 
-void MainController::totalChanged()
+void MainController::totalChanged(int, int)
 {
     emit totaleChanged(QVariant::fromValue(accountTotal()));
 }

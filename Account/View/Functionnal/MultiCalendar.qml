@@ -11,15 +11,26 @@ Calendar {
     property var selectedDates: []
     property var stylesData: []
     
+    function addCalendar(item) {
+        if(item.value !== 0) {
+            calendarPreview.append(item)
+        }
+    }
+
+
+    function addMonth(item) {
+        totalPreview.append(item)
+    }
+
+    function clear() {
+        calendarPreview.clear()
+        totalPreview.clear()
+    }
+
     ListModel {
         id: calendarPreview
         objectName: "calendarPreview"
         
-        function add(item) {
-            if(item.value !== 0) {
-                append(item)
-            }
-        }
         
         function find(day) {
             for(var i = 0; i < count; i++) {
@@ -33,10 +44,6 @@ Calendar {
     ListModel {
         id: totalPreview
         objectName: "totalPreview"
-        
-        function add(item) {
-            append(item)
-        }
         
         function find(day) {
             for(var i = 0; i < count; i++) {

@@ -35,6 +35,7 @@ Item {
 
             function onView(e) {
                 ee.entry = e
+                root.visible = !e.isBlocked
             }
         }
 

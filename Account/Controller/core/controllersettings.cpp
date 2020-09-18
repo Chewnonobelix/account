@@ -7,6 +7,11 @@ ControllerSettings::ControllerSettings(): m_settings(QSettings::IniFormat, QSett
     qDebug() << "ControllerBudget" << qRegisterMetaType<ControllerBudget>("BudgetFeature");
     qDebug() << "ControllerFrequency" << qRegisterMetaType<ControllerFrequency>("FrequencyFeature");
     qDebug() << "ControllerCommon" << qRegisterMetaType<ControllerCommon>("CommonExpanseFeature");
+    qDebug() << "ControllerDebt" << qRegisterMetaType<ControllerDebt>("DebtFeature");
+
+    for (auto it : {"BudgetFeature", "FrequencyFeature", "CommonExpanseFeature", "DebtFeature"})
+        if (!featuresList().contains(it))
+            setFeatureEnable(it, false);
 }
 
 ControllerSettings::~ControllerSettings()

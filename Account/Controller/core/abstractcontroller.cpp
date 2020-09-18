@@ -65,8 +65,8 @@ void AbstractController::finishTotalThread()
             *it = *it + *(it-1);
         }
     }
-        
-    emit s_totalChanged();
+
+    emit s_totalChanged(0, 0);
 }
 
 void AbstractController::calculTotal()

@@ -71,8 +71,7 @@ public slots:
     void finishTotalThread();
 
 signals:
-    void s_totalChanged();
-
+    void s_totalChanged(int, int);
 };
 
 #endif // ABSTRACTCONTROLLER_H

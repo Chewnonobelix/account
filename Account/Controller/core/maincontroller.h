@@ -19,6 +19,7 @@
 #include "controllertransfert.h"
 #include "languagecontroller.h"
 #include "liveqmlengine.h"
+
 class Builder: public QThread
 {
     Q_OBJECT
@@ -39,8 +40,13 @@ class ACCOUNT_EXPORT MainController: public AbstractController
 {
     Q_OBJECT
 
-    
+    Q_PROPERTY(int currentPage MEMBER m_currentPage)
+    Q_PROPERTY(QVariantList dateList MEMBER m_dateList)
+
 private:
+    int m_currentPage = 1;
+    QVariantList m_dateList;
+
     LiveQmlEngine m_engine;
     ControllerInformation m_info;
     LanguageController m_lang;
@@ -75,6 +81,15 @@ signals:
     void currentProfileChanged(QString);
     void checkListChanged(QVariantList);
     void enableQuickView(bool);
+    void accountChanged(QStringList);
+    void currentAccountChanged(QString);
+    void currentModelChanged(QVariantList);
+    void maxPageChanged(int);
+    void currentRowChanged(int);
+    void clearCalendar();
+    void appendCalendarPreview(QVariant);
+    void appendMonthPreview(QVariant);
+    void openAdd(bool);
 
 public slots:
     int exec();
@@ -96,7 +111,7 @@ public slots:
     void validateCheckEstimated(QVariantList);
     void deleteAccount(QString);
 
-    void previewCalendar();
+    void previewCalendar(int = 0, int = 0);
 
     void receiveSum();
 
@@ -125,13 +140,13 @@ public slots:
     void sortRole(QString);
     void sortOrder(int);
 
-    void licence();
-    void readme();
-    void about();
+    QString licence();
+    QString readme();
+    QString about();
 
     void reload();
 
-    void totalChanged();
+    void totalChanged(int, int);
 };
 
 

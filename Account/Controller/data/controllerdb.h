@@ -70,9 +70,14 @@ private:
     SqlQuery m_selectCommonEntry;
     SqlQuery m_selectCommonTable;
     SqlQuery m_addCommonEntryInformation;
-    
+
+    SqlQuery m_addDebt;
+    SqlQuery m_updateDebt;
+    SqlQuery m_selectDebt;
+    SqlQuery m_removeDebt;
+
     QString m_currentAccount;
-    
+
     void prepareEntry();
     void prepareInformation();
     void prepareAccount();
@@ -81,7 +86,8 @@ private:
     void prepareFrequency();
     void prepareCommon();
     void prepareProfile();
-    
+    void prepareDebt();
+
 public:
     ControllerDB(bool = false);
     ControllerDB(const ControllerDB&d);
@@ -125,7 +131,12 @@ public slots:
     virtual bool addProfile(QString, QString) override;
     virtual QString currentProfile() override;
     virtual bool deleteProfile(QString) override;
-        
+
+    virtual QMap<QUuid, Debt> selectDebt();
+    virtual bool addDebt(const Debt &);
+    virtual bool removeDebt(const Debt &);
+    virtual bool updateDebt(const Debt &);
+
     bool init() override;
 };
 
