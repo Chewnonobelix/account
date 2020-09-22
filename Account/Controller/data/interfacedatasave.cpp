@@ -37,10 +37,14 @@ QList<SynchronizationProfile> InterfaceDataSave::selectSyncProfile()
         sp.setHostName(val);
         val = el.elementsByTagName("device").at(0).toElement().text();
         sp.setDeviceName(val);
-        val = el.elementsByTagName("begin").at(0).toElement().text();
+        val = el.elementsByTagName("start").at(0).toElement().text();
         sp.setBegin(QDate::fromString(val));
+        if (!sp.begin().isValid())
+            sp.setBegin(QDate::currentDate());
         val = el.elementsByTagName("end").at(0).toElement().text();
         sp.setEnd(QDate::fromString(val));
+        if (!sp.end().isValid())
+            sp.setEnd(QDate::currentDate());
         val = el.elementsByTagName("lastSync").at(0).toElement().text();
         sp.setLastSync(QDateTime::fromString(val));
         ret<<sp;
@@ -94,9 +98,9 @@ QUuid InterfaceDataSave::addSyncProfile(const SynchronizationProfile &sp)
 
     func(m_syncs, "host", sp.hostName());
     func(m_syncs, "device", sp.deviceName());
-    func(m_syncs, "begin", sp.begin().toString());
-    func(m_syncs, "end", sp.end().toString());
-    func(m_syncs, "lastSync", sp.lastSync().toString());
+    func(m_syncs, "start", QDate::currentDate().toString());
+    func(m_syncs, "end", QDate::currentDate().toString());
+    func(m_syncs, "lastSync", QDateTime::currentDateTime().toString());
     func(m_syncs, "id", id.toString());
 
     emit s_updateSync();
@@ -114,7 +118,8 @@ bool InterfaceDataSave::updateSyncProfile(const SynchronizationProfile& sp)
             == sp.id().toString()) {
             ret = true;
             QDomElement el = list.at(it).toElement();
-            el.elementsByTagName("begin").at(0).firstChild().setNodeValue(sp.begin().toString());
+
+            el.elementsByTagName("start").at(0).firstChild().setNodeValue(sp.begin().toString());
             el.elementsByTagName("end").at(0).firstChild().setNodeValue(sp.end().toString());
             el.elementsByTagName("lastSync")
                 .at(0)

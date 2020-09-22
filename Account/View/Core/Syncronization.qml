@@ -12,9 +12,15 @@ Item {
 
     onCurrentModelChanged: {
         if(currentModel) {
-            begin.extern(currentModel.begin)
-            end.extern(currentModel.end)
+            begin.extern(currentModel.begin ? currentModel.begin : new Date())
+            end.extern(currentModel.end ? currentModel.end : new Date())
+            syncLabel.lastSync = currentModel.lastSync
         }
+    }
+
+    Component.onCompleted: {
+        begin.extern(new Date())
+        end.extern(new Date())
     }
 
     GridLayout {
@@ -46,7 +52,11 @@ Item {
             Layout.preferredWidth: root.width * 0.22
 
             id: begin
-            objectName: "begin"
+
+            onTextChanged: {
+                if(currentModel)
+                    _sync.onBeginChanged(currentModel.id, text)
+            }
         }
 
         AccountLabel {
@@ -69,10 +79,15 @@ Item {
             Layout.preferredWidth: root.width * 0.22
 
             id: end
-            objectName: "end"
+
+            onTextChanged: {
+                if(currentModel)
+                    _sync.onEndChanged(currentModel.id, text)
+            }
         }
 
         AccountLabel{
+            id: syncLabel
             Layout.row: 1
             Layout.column: 0
             Layout.rowSpan: 1
@@ -80,7 +95,7 @@ Item {
             Layout.preferredHeight: root.height * 0.10
             Layout.preferredWidth: root.width * 0.96
 
-            property date lastSync: root.currentModel ? root.currentModel.lastSync : new Date()
+            property date lastSync: new Date()
             text: qsTr("Last syncronization") + ": " + Qt.formatDateTime(lastSync, "hh:mm:ss dd-MM-yyyy")
         }
 

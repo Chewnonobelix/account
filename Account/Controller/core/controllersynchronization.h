@@ -44,6 +44,9 @@ public slots:
     void clientConnect(QHostAddress);
     void onDisconnected();
     void openServer(bool);
+
+    void onBeginChanged(QString, QString);
+    void onEndChanged(QString, QString);
 };
 
 

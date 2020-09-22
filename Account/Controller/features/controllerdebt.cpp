@@ -59,8 +59,6 @@ void ControllerDebt::endFill()
     QVariantList list;
     int index = -1;
 
-    qDebug() << "end fill";
-
     for (auto it : m_debts) {
         list << QVariant::fromValue(it);
         if (it.id() == m_currentId)

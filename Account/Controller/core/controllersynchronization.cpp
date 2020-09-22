@@ -10,7 +10,7 @@ int ControllerSynchronization::exec()
             this,
             &ControllerSynchronization::receivedDatagram);
 
-    m_broadcast.bind(9000);
+    m_broadcast.bind(QHostAddress::AnyIPv4, 9000);
     updateViewList();
     return 0;
 }
@@ -135,3 +135,27 @@ void ControllerSynchronization::onDisconnected()
     updateViewList();
 }
 
+void ControllerSynchronization::onBeginChanged(QString id, QString begin)
+{
+    auto profiles = db()->selectSyncProfile();
+    SynchronizationProfile profile;
+    std::for_each(profiles.begin(), profiles.end(), [&profile, id](SynchronizationProfile p) {
+        if (QUuid::fromString(id) == p.id())
+            profile = p;
+    });
+
+    profile.setBegin(QDate::fromString(begin, "dd-MM-yyyy"));
+    db()->updateSyncProfile(profile);
+}
+void ControllerSynchronization::onEndChanged(QString id, QString end)
+{
+    auto profiles = db()->selectSyncProfile();
+    SynchronizationProfile profile;
+    std::for_each(profiles.begin(), profiles.end(), [&profile, id](SynchronizationProfile p) {
+        if (QUuid::fromString(id) == p.id())
+            profile = p;
+    });
+
+    profile.setEnd(QDate::fromString(end, "dd-MM-yyyy"));
+    db()->updateSyncProfile(profile);
+}

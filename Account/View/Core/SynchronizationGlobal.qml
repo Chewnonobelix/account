@@ -86,7 +86,7 @@ Item {
                 currentModel = currentIndex > -1 ? model[currentIndex] : null
 
                 if(currentModel)
-                    currentSync.currentModel = currentModel.localProfil
+                    currentSync.currentModel = currentModel.localProfile
             }
 
             header: AccountHeader {
@@ -113,7 +113,7 @@ Item {
 
                     anchors.fill: parent
                     text: modelData.remoteName
-                    color: modelData.localProfile.id === nullid ? "red" : "black"
+                    color: modelData.localProfile.id == nullid ? "red" : "black"
                 }
 
                 MouseArea {
@@ -122,7 +122,8 @@ Item {
                         if(syncProfiles.currentIndex !== index) {
                             syncProfiles.currentIndex = index
                             syncProfiles.currentModel = modelData
-                            enableSyncProf.checked = modelData.localProfile.id !== nullid
+
+                            enableSyncProf.checked = modelData.localProfile.id != nullid
                         }
                         else {
                             syncProfiles.currentIndex = -1
@@ -141,9 +142,10 @@ Item {
                 text: syncProfiles.currentModel ? syncProfiles.currentModel.remoteName : ""
 
                 onCheckedChanged: {
-                    console.log(syncProfiles.currentModel.id)
-                    if(checked && syncProfiles.currentModel.isConnected()) syncProfiles.currentModel.addLocalProfile()
-                    else if(!checked) syncProfiles.currentModel.removeLocalProfile();
+                    if(syncProfiles.currentModel) {
+                        if(checked && syncProfiles.currentModel.isConnected()) syncProfiles.currentModel.addLocalProfile()
+                        else if(!checked) syncProfiles.currentModel.removeLocalProfile();
+                    }
                 }
             }
 
@@ -158,7 +160,6 @@ Item {
                 enabled: enableSyncProf.checked
                 id: currentSync
                 anchors.fill: parent
-                currentModel: syncProfiles.currentModel
             }
 
 

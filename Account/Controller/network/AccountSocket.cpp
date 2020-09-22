@@ -137,6 +137,7 @@ void AccountSocket::removeLocalProfile()
 {
     AbstractController::db()->removeSyncProfile(m_localProfile);
     m_localProfile = m_remoteProfile = SynchronizationProfile();
+
     emit profileChanged();
     postProfile();
 }
