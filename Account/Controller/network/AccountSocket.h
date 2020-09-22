@@ -15,15 +15,12 @@ class AccountSocket : public QTcpSocket
     Q_PROPERTY(SynchronizationProfile localProfile READ profile NOTIFY profileChanged)
 
 private:
-    static InterfaceDataSave *m_db;
     QString m_remoteName = QString();
     SynchronizationProfile m_remoteProfile, m_localProfile;
 
 public:
     AccountSocket();
     ~AccountSocket();
-
-    void setSocket(QTcpSocket *);
 
     void parser(QString);
     Q_INVOKABLE bool isConnected() const;
@@ -42,9 +39,6 @@ public:
     Q_INVOKABLE void getProfile();
 
     QString remoteName() const;
-
-    static InterfaceDataSave *db();
-    static void setDb(InterfaceDataSave *db);
 
 public slots:
     void receiveDataSocket();

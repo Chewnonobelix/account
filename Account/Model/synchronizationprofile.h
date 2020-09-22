@@ -16,14 +16,14 @@ class ACCOUNT_EXPORT SynchronizationProfile : public MetaData
     Q_PROPERTY(QDate begin READ begin)
     Q_PROPERTY(QDate end READ end)
     Q_PROPERTY(QDateTime lastSync READ lastSync)
-    Q_PROPERTY(QString id READ idString)
+    Q_PROPERTY(QUuid id READ id)
 
 private:
 public:
     SynchronizationProfile() = default;
     SynchronizationProfile(const SynchronizationProfile&) = default;
     ~SynchronizationProfile() = default;
-    SynchronizationProfile &operator=(const SynchronizationProfile &) = default;
+    SynchronizationProfile &operator=(const SynchronizationProfile &);
 
     QUuid id() const;
     QString idString() const;

@@ -14,7 +14,7 @@ InterfaceDataSave::InterfaceDataSave()
 InterfaceDataSave::~InterfaceDataSave()
 {
     QFile f("synchronization.xml");
-    f.open(QIODevice::ReadWrite);    
+    f.open(QIODevice::WriteOnly);
     f.write(m_syncs.toByteArray());
     f.close();
 }
@@ -61,6 +61,7 @@ bool InterfaceDataSave::removeSyncProfile(const SynchronizationProfile& sp)
         if (list.at(it).toElement().elementsByTagName("id").at(0).toElement().text()
             == sp.id().toString()) {
             ret |= !root.removeChild(list.at(it).toElement()).isNull();
+            emit s_updateSync();
         }
     }
     
@@ -98,6 +99,7 @@ QUuid InterfaceDataSave::addSyncProfile(const SynchronizationProfile &sp)
     func(m_syncs, "lastSync", sp.lastSync().toString());
     func(m_syncs, "id", id.toString());
 
+    emit s_updateSync();
     return id;
 }
 
@@ -118,6 +120,8 @@ bool InterfaceDataSave::updateSyncProfile(const SynchronizationProfile& sp)
                 .at(0)
                 .firstChild()
                 .setNodeValue(sp.lastSync().toString());
+
+            emit s_updateSync();
         }
     }
     

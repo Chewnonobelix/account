@@ -141,6 +141,7 @@ Item {
                 text: syncProfiles.currentModel ? syncProfiles.currentModel.remoteName : ""
 
                 onCheckedChanged: {
+                    console.log(syncProfiles.currentModel.id)
                     if(checked && syncProfiles.currentModel.isConnected()) syncProfiles.currentModel.addLocalProfile()
                     else if(!checked) syncProfiles.currentModel.removeLocalProfile();
                 }

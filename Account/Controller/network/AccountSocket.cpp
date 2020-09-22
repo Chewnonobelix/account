@@ -1,17 +1,5 @@
 #include "AccountSocket.h"
 
-InterfaceDataSave *AccountSocket::m_db = AbstractController::db();
-
-InterfaceDataSave *AccountSocket::db()
-{
-    return m_db;
-}
-
-void AccountSocket::setDb(InterfaceDataSave *db)
-{
-    m_db = db;
-}
-
 AccountSocket::AccountSocket() : QTcpSocket()
 {
     connect(this, &QIODevice::readyRead, this, &AccountSocket::receiveDataSocket);
@@ -73,7 +61,7 @@ void AccountSocket::parser(QString data)
 
 SynchronizationProfile AccountSocket::profile(QString remote) const
 {
-    auto list = m_db->selectSyncProfile();
+    auto list = AbstractController::db()->selectSyncProfile();
     SynchronizationProfile ret;
 
     for (auto it : list) {
@@ -134,11 +122,10 @@ void AccountSocket::addLocalProfile()
     m_localProfile.setHostName(QHostInfo::localHostName());
     m_localProfile.setDeviceName(remoteName());
 
-    auto id = m_db->addSyncProfile(m_localProfile);
+    auto id = AbstractController::db()->addSyncProfile(m_localProfile);
 
     if (id.isNull())
         return;
-    qDebug() << "Id" << id;
 
     m_localProfile.setId(id);
     m_remoteProfile = m_localProfile;
@@ -148,7 +135,7 @@ void AccountSocket::addLocalProfile()
 
 void AccountSocket::removeLocalProfile()
 {
-    m_db->removeSyncProfile(m_localProfile);
+    AbstractController::db()->removeSyncProfile(m_localProfile);
     m_localProfile = m_remoteProfile = SynchronizationProfile();
     emit profileChanged();
     postProfile();

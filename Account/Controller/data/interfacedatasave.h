@@ -40,6 +40,7 @@ signals:
     void s_updateProfile();
     void s_updateAccount();
     void s_updateDebt();
+    void s_updateSync();
 
 public slots:
     void exec();

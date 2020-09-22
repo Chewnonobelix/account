@@ -1,5 +1,11 @@
 #include "synchronizationprofile.h"
 
+SynchronizationProfile &SynchronizationProfile::operator=(const SynchronizationProfile &s)
+{
+    MetaData::operator=(s);
+    return *this;
+}
+
 QString SynchronizationProfile::hostName() const
 {
     return metaData<QString>("hostName");

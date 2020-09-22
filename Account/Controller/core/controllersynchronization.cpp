@@ -57,6 +57,10 @@ void ControllerSynchronization::updateViewList()
         if (!remoteList.contains(it.deviceName()) && !it.id().isNull()) {
             m_disconnected << QSharedPointer<AccountSocket>::create();
             auto s = m_disconnected.last();
+            connect(s.data(),
+                    &AccountSocket::profileChanged,
+                    this,
+                    &ControllerSynchronization::updateViewList);
             s->setLocalProfile(it);
             s->setRemoteName(it.deviceName());
             vl << QVariant::fromValue(s.data());
