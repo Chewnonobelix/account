@@ -1023,7 +1023,7 @@ QMap<QUuid, Debt> ControllerDB::selectDebt()
 bool ControllerDB::addDebt(const Debt &d)
 {
     bool ret;
-    if (ret = isConnected()) {
+    if ((ret = isConnected())) {
         QUuid id = d.id().isNull() ? QUuid::createUuid() : d.id();
         m_addDebt->bindValue(":id", id);
         m_addDebt->bindValue(":freq", (int) d.freq());
@@ -1060,7 +1060,7 @@ bool ControllerDB::updateDebt(const Debt &d)
 {
     bool ret;
 
-    if (ret = isConnected()) {
+    if ((ret = isConnected())) {
         m_updateDebt->bindValue(":freq", (int) d.freq());
         m_updateDebt->bindValue(":nb", d.nb());
         m_updateDebt->bindValue(":rate", d.rate());

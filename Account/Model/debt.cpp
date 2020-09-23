@@ -79,7 +79,7 @@ bool Debt::generate()
     scheduler.setReferenceEntry(ref);
 
     QList<Entry> list;
-    for (first; first < last; first = first.addDays(Account::nbDay(first, freq()))) {
+    for (; first < last; first = first.addDays(Account::nbDay(first, freq()))) {
         list << scheduler.clone(ref);
         list.last().setDate(first);
         list.last().setMetadata("debt", id());
