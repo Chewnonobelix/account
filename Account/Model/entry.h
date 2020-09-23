@@ -2,12 +2,12 @@
 #define ENTRY_H
 
 #include "accountglobal.h"
-#include "information.h"
 #include "metadata.h"
 #include <QDate>
 #include <QObject>
 #include <QSharedPointer>
 #include <QString>
+#include <QUuid>
 #include <QVariant>
 #include <QtMath>
 
@@ -19,14 +19,14 @@ class ACCOUNT_EXPORT Entry: public MetaData
     Q_PROPERTY(double value READ value)
     Q_PROPERTY(QDate date READ date)
     Q_PROPERTY(QString type READ type)
-    Q_PROPERTY(Information info READ info)
-    Q_PROPERTY(QString label READ label)
     Q_PROPERTY(QUuid id READ id)
     Q_PROPERTY(bool isBlocked READ isBlocked)
     Q_PROPERTY(Account::EntryTypeEnum support READ support)
+    Q_PROPERTY(QString title READ title)
+    Q_PROPERTY(bool estimated READ estimated)
+    Q_PROPERTY(QString category READ category)
 
 private:
-    Information m_info;
 
 public:
     Entry();
@@ -47,9 +47,12 @@ public:
     void setDate(QDate date);
     QString type() const;
     void setType(QString type);
-    Information info() const;
-    void setInfo(Information info);
-    QString label() const;
+    QString title() const;
+    void setTitle(QString title);
+    bool estimated() const;
+    void setEstimated(bool estimated);
+    QString category() const;
+    void setCategory(QString category);
     bool isBlocked() const;
     void setBlocked(bool);
     Account::EntryTypeEnum support() const;

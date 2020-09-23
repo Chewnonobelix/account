@@ -104,7 +104,6 @@ public slots:
     bool removeAccount(QString) override;
     void setCurrentAccount(QString) override;
 
-    bool updateInfo(const Entry&) override;
     bool updateEntry(const Entry &) override;
     
     bool addCategory(QString, QString) override;

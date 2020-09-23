@@ -52,7 +52,6 @@ public slots:
     virtual bool removeAccount(QString) = 0;
     virtual void setCurrentAccount(QString) = 0;
 
-    virtual bool updateInfo(const Entry&) = 0;
     virtual bool updateEntry(const Entry&) = 0;
     
     virtual bool addCategory(QString, QString) = 0;

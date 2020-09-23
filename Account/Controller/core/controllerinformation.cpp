@@ -46,9 +46,7 @@ void ControllerInformation::view(QUuid id)
 
 void ControllerInformation::titleChange(QString title)
 {
-    Information info = m_entry.info();
-    info.setTitle(title);
-    m_entry.setInfo(info);
+    m_entry.setTitle(title);
 
     updateEntry(m_entry);
 }
@@ -63,10 +61,8 @@ void ControllerInformation::valueChange(double value)
 
 void ControllerInformation::categoryChange(QString cat)
 {
-    Information info = m_entry.info();
-    QString old = info.category();   
-    info.setCategory(cat);
-    m_entry.setInfo(info);
+    QString old = m_entry.category();
+    m_entry.setCategory(cat);
 
     updateEntry(m_entry);
     emit s_changeCat(old, m_entry.id());

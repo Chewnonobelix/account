@@ -3,7 +3,6 @@
 
 #include "../features/controllerfrequency.h"
 #include "Model/entry.h"
-#include "Model/information.h"
 #include "abstractcontroller.h"
 #include <QDebug>
 #include <QObject>

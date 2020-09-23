@@ -11,11 +11,11 @@ Item {
     onModelChanged: {
         if(model) {
             date.data = Qt.formatDate(model.date)
-            label.data = model.label
+            label.data = model.title
             value.data = model.value
             type.data = model.type
             support.data = CoreModel.entryTypeModel.findText(model.support)
-            category.data = model.info.category
+            category.data = model.category
         }
     }
 

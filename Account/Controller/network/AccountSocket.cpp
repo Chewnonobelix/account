@@ -25,6 +25,19 @@ void AccountSocket::receiveDataSocket()
 void AccountSocket::sync()
 {
     qDebug() << "Sync";
+    if (isConnected()) {
+        auto create = [](QString title) -> Entry {
+            Entry init;
+            init.setId(QUuid::createUuid());
+            init.setBlocked(true);
+            init.setTitle(title);
+
+            return init;
+        };
+
+        QMap<QString, QMap<QUuid, Entry>> entries;
+        QSet<QUuid> ids;
+    }
 }
 
 bool AccountSocket::isConnected() const

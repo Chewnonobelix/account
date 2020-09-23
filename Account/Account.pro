@@ -50,7 +50,6 @@ SOURCES += \
     Model/frequency.cpp \
     Model/subbudget.cpp \
     Model/entry.cpp \
-    Model/information.cpp \
     Model/synchronizationprofile.cpp \
     Model/total.cpp \
     Model/budget.cpp \
@@ -103,7 +102,6 @@ HEADERS += \
     Model/debt.h \
     Model/entry.h \
     Model/frequency.h \
-    Model/information.h \
     Model/subbudget.h \
     Model/synchronizationprofile.h \
     Model/total.h \

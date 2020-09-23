@@ -73,21 +73,23 @@ void ControllerXMLMulti::setCurrentAccount(QString a)
 bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root, QString name )
 {
     QDomElement el = m_currentAccount.createElement(name);
-    //el.setAttribute("id", e.id());
 
     auto meta = e.metadataList();
     for (auto it : meta) {
-        if (!QStringList({"date", "value", "account", "type"}).contains(it))
+        if (!QStringList({"date", "value", "account", "type", "category", "title", "estimated"})
+                 .contains(it))
             el.setAttribute(it, e.metaData<QString>(it));
     }
     adder(el, "date", e.date().toString("dd-MM-yyyy"));
     adder(el, "value", QString::number(e.value()));
     adder(el, "account", e.account());
     adder(el, "type", e.type().toLower());
+    adder(el, "category", e.category());
+    adder(el, "estimated", QString::number(e.estimated()));
+    adder(el, "title", e.title());
 
-    addInfo(el, e.info());
     root.appendChild(el);
-    
+
     return true;
 }
 
@@ -102,14 +104,10 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     m_mutex.lock();
     
     QUuid ide = e.id().isNull() ? QUuid::createUuid() : e.id();
-    QUuid idi = e.info().id().isNull() ? QUuid::createUuid() : e.info().id();
     
     Entry et = e;
     et.setMetadata("lastUpdate", QDateTime::currentDateTime());
-    Information info = et.info();
-    info.setId(idi);
-    info.setIdEntry(ide);
-    et.setInfo(info);
+
     et.setId(ide);
 
     if (et.hasMetadata("notemit"))
@@ -133,24 +131,10 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     return true;
 }
 
-void ControllerXMLMulti::addInfo(QDomElement& el, const Information & i)
-{
-    QDomElement el2 = m_currentAccount.createElement("information");
-    el2.setAttribute("id", i.id().toString());
-    el2.setAttribute("id_entry", i.idEntry().toString());
-    
-    adder(el2, "title", i.title());
-    adder(el2, "estimated", QString::number(i.estimated()));
-    adder(el2, "categoryName", i.category());
-    
-    el.appendChild(el2);
-}
-
 Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
 {
     Entry e;
     
-    //    e.setId(el.attribute("id").toInt());
     QDomElement child = el.elementsByTagName("date").at(0).toElement();
     
     e.setDate(QDate::fromString(child.text(), "dd-MM-yyyy"));
@@ -160,13 +144,13 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
     e.setValue(child.text().toDouble());
     child = el.elementsByTagName("type").at(0).toElement();
     e.setType(child.text().toLower());
+    child = el.elementsByTagName("title").at(0).toElement();
+    e.setTitle(child.text().toLower());
+    child = el.elementsByTagName("estimated").at(0).toElement();
+    e.setEstimated(child.text().toInt());
+    child = el.elementsByTagName("category").at(0).toElement();
+    e.setCategory(child.text());
 
-    child = el.elementsByTagName("information").at(0).toElement();
-
-    Information inf = selectInformation(child);
-    inf.setIdEntry(e.id());
-    e.setInfo(inf);
-        
     auto attr = el.attributes();
     for(int j = 0; j < attr.count(); j++)
         e.setMetadata(attr.item(j).nodeName(), attr.item(j).nodeValue());
@@ -242,39 +226,6 @@ bool ControllerXMLMulti::removeAccount(QString account)
     return ret;
 }
 
-bool ControllerXMLMulti::updateInfo(const Entry& e)
-{
-    QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
-    
-    auto list = root.elementsByTagName("entry");
-    
-    for(int i = 0; i < list.size(); i ++)
-    {
-        QDomElement el = list.at(i).toElement();
-        if(el.attribute("id") == e.id().toString())
-        {
-            
-            QDomElement info = el.elementsByTagName("information").at(0).toElement();
-            
-            Information inf = e.info();
-            updateInfo(info, inf);
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-void ControllerXMLMulti::updateInfo(QDomElement &info , const Information & inf)
-{
-    setter(info, "estimated", QString::number(inf.estimated()));
-    setter(info, "categoryName", inf.category());
-    setter(info, "title", inf.title());
-    
-    close();  
-}
-
-
 bool ControllerXMLMulti::updateEntryNode(const Entry & e, QDomElement & el)
 {
     
@@ -284,13 +235,16 @@ bool ControllerXMLMulti::updateEntryNode(const Entry & e, QDomElement & el)
     setter(el, "date", e.date().toString("dd-MM-yyyy"));
     setter(el, "value",QString::number(e.value()));
     setter(el, "type", e.type());
+    setter(el, "category", e.category());
+    setter(el, "estimated", QString::number(e.estimated()));
+    setter(el, "title", e.title());
 
     for (auto it : et.metadataList())
-        if (it != "notemit" && !QStringList({"date", "value", "account", "type"}).contains(it))
+        if (it != "notemit"
+            && !QStringList({"date", "value", "account", "type", "title", "estimated", "category"})
+                    .contains(it))
             el.setAttribute(it, e.metaData<QString>(it));
-    
-    auto i = el.elementsByTagName("information").at(0).toElement();
-    updateInfo(i, e.info());
+
     close();
     return true;
 }
@@ -560,29 +514,6 @@ int ControllerXMLMulti::maxId(const QSet<int> & l) const
     return list.isEmpty() ? -1 : list.last();
 }
 
-Information ControllerXMLMulti::selectInformation(const QDomElement& el) const
-{
-    Information ret;
-    
-    QUuid id = QUuid::fromString(el.attribute("id"));
-    ret.setId(id);
-    id = QUuid::fromString(el.attribute("id_entry"));
-    ret.setIdEntry(id);
-    
-    bool est = el.elementsByTagName("estimated").at(0).toElement().text().toInt();
-    
-    QString cat;
-    if(el.elementsByTagName("categoryName").size() > 0)
-        cat = el.elementsByTagName("categoryName").at(0).toElement().text();
-    QString title = el.elementsByTagName("title").at(0).toElement().text();
-    
-    ret.setEstimated(est);
-    ret.setCategory(cat);
-    ret.setTitle(title);
-    
-    return ret;
-}
-
 bool ControllerXMLMulti::addFrequency(const Frequency &f)
 {
     QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
@@ -606,10 +537,6 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
             e.setId(idf);
             e.setType("outcome");
             e.setAccount(m_accounts.key(m_currentAccount));
-            Information in = e.info();
-            in.setIdEntry(idf);
-            in.setId(idf);
-            e.setInfo(in);
             addEntryNode(e, current, "referenceEntry");
         }
     }
@@ -827,12 +754,7 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
             if(t.id().isNull())
             {
                 QUuid ide = QUuid::createUuid();
-                QUuid idi = QUuid::createUuid();
-                
-                Information in = t.info();
-                in.setId(idi);
-                in.setIdEntry(ide);
-                t.setInfo(in);
+
                 t.setId(ide);
             }
             

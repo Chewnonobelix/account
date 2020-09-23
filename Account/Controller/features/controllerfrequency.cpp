@@ -137,15 +137,15 @@ void ControllerFrequency::generate(QString begin, QString end, QVariant id, int 
         auto n = m_freqs[freqId].clone(ref);
         n.setMetadata("freqGroup", freqGroup);
         int t = Account::nbDay(it, m_freqs[freqId].freq());
-        
-        QString lab = n.info().title();
-        Information inf = n.info();
-        inf.setEstimated(it > QDate::currentDate());
-        inf.setTitle(lab+"_"+it.toString("dd-MM-yyyy"));
-        n.setInfo(inf);
+
+        QString lab = n.title();
+
+        n.setEstimated(it > QDate::currentDate());
+        n.setTitle(lab + "_" + it.toString("dd-MM-yyyy"));
+
         it = n.date().addDays(t);
-        
-        lr<<n;
+
+        lr << n;
     }
     while(freq != Account::FrequencyEnum::Unique && it <= QDate::fromString(end, "dd-MM-yyyy"));
     
@@ -201,14 +201,12 @@ void ControllerFrequency::addNewCategory(QVariant id, QString cat, QString type)
 
 void ControllerFrequency::updateFreqName(QVariant id, QString name)
 {
-    
     Entry ref = m_freqs[id.toUuid()].referenceEntry();
-    Information inf = ref.info();
-    inf.setTitle(name);
-    ref.setInfo(inf);
-    
+
+    ref.setTitle(name);
+
     m_freqs[id.toUuid()].setReferenceEntry(ref);
-    
+
     m_db->updateFrequency(m_freqs[id.toUuid()]);
 }
 
@@ -224,12 +222,11 @@ void ControllerFrequency::updateFreqValue(QVariant id, double value)
 void ControllerFrequency::updateFreqCat(QVariant id, QString cat)
 {
     Entry ref = m_freqs[id.toUuid()].referenceEntry();
-    Information inf = ref.info();
-    inf.setCategory(cat);
-    ref.setInfo(inf);
-    
+
+    ref.setCategory(cat);
+
     m_freqs[id.toUuid()].setReferenceEntry(ref);
-    
+
     m_db->updateFrequency(m_freqs[id.toUuid()]);
 }
 
@@ -237,9 +234,7 @@ void ControllerFrequency::updateFreqType(QVariant id, QString type)
 {
     Entry ref = m_freqs[id.toUuid()].referenceEntry();
     ref.setType(type);
-    Information in = ref.info();
-    in.setCategory("");
-    ref.setInfo(in);
+    ref.setCategory("");
     m_freqs[id.toUuid()].setReferenceEntry(ref);
     
     m_db->updateFrequency(m_freqs[id.toUuid()]);

@@ -25,9 +25,6 @@ private:
     QMutex m_mutex;
     
     int maxId(const QSet<int> &) const;
-    Information selectInformation(const QDomElement&) const;
-    void addInfo(QDomElement&, const Information&);
-    void updateInfo(QDomElement&, const Information&);
 
     void createAccount(QString);
 
@@ -60,7 +57,6 @@ public slots:
     virtual bool removeAccount(QString);
     virtual void setCurrentAccount(QString);
 
-    virtual bool updateInfo(const Entry&);
     virtual bool updateEntry(const Entry &);
 
     virtual bool addCategory(QString, QString);

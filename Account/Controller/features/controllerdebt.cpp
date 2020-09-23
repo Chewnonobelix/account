@@ -86,9 +86,7 @@ void ControllerDebt::onNameChanged(QString id, QString name)
             e = it;
     }
 
-    Information i = e.info();
-    i.setTitle(name);
-    e.setInfo(i);
+    e.setTitle(name);
     d.setInitial(e);
     db()->updateDebt(d);
 }
@@ -181,9 +179,7 @@ void ControllerDebt::onInitialCategoryChanged(QString id, QString c)
             e = it;
     }
 
-    Information i = e.info();
-    i.setCategory(c);
-    e.setInfo(i);
+    e.setCategory(c);
     b.setInitial(e);
     db()->updateDebt(b);
 }
@@ -218,9 +214,8 @@ void ControllerDebt::generate(QString id)
     if (ret) {
         auto list = debt.entries();
         for (auto it : list) {
-            Information i = it.info();
-            i.setTitle(debt.name() + "_" + it.date().toString("dd-MM-yyyy"));
-            it.setInfo(i);
+            it.setTitle(debt.name() + "_" + it.date().toString("dd-MM-yyyy"));
+
             it.setAccount(currentAccount());
             db()->addEntry(it);
         }

@@ -304,7 +304,7 @@ Page {
                             }
                         }
                         AccountLabel {
-                            property string est: view.model[styleData.row] && view.model[styleData.row].info.estimated ? "*" : ""
+                            property string est: view.model[styleData.row] && view.model[styleData.row].estimated ? "*" : ""
                             
                             text: styleData.value === "income" ? "+" + est : "-" + est
                             anchors.fill: parent

@@ -8,18 +8,17 @@ Entry::Entry()
     setSupport(Account::CB);
     setDate(QDate::currentDate());
     setType("outcome");
+    setTitle(QString());
+    setEstimated(false);
+    setCategory(QString());
 }
 
 Entry& Entry::operator = (const Entry& e)
 {
-    MetaData& md = *this;
-
-    md = e;
-    setInfo(e.info());
+    MetaData::operator=(e);
 
     return *this;
 }
-
 
 QUuid Entry::id() const
 {
@@ -71,16 +70,6 @@ void Entry::setType(QString type)
     setMetadata("type", type);
 }
 
-Information Entry::info() const
-{
-    return m_info;
-}
-
-void Entry::setInfo(Information info)
-{
-    m_info = info;
-}
-
 bool operator == (const Entry& e1, const Entry& e2)
 {
     return e1.id() == e2.id();
@@ -88,13 +77,7 @@ bool operator == (const Entry& e1, const Entry& e2)
 
 bool operator < (const Entry& e1, const Entry& e2)
 {
-    return (e1.date() < e2.date()) ||
-            (e1.info() < e2.info());
-}
-
-QString Entry::label() const
-{
-    return info().title();
+    return (e1.date() < e2.date());
 }
 
 Entry::operator QVariantMap() const
@@ -105,10 +88,10 @@ Entry::operator QVariantMap() const
     ret.insert("value", value());
     ret.insert("date", date());
     ret.insert("type", type());
-    ret.insert("info", QVariant::fromValue(info()));
-    ret.insert("label", label());
+    ret.insert("label", title());
     ret.insert("isBlock", isBlocked());
     ret.insert("support", QVariant::fromValue(support()));
+    ret.insert("category", category());
 
     return ret;
 }
@@ -131,4 +114,34 @@ Account::EntryTypeEnum Entry::support() const
 void Entry::setSupport(Account::EntryTypeEnum s)
 {
     setMetadata("support", s);
+}
+
+QString Entry::title() const
+{
+    return metaData<QString>("title");
+}
+
+void Entry::setTitle(QString title)
+{
+    setMetadata("title", title);
+}
+
+bool Entry::estimated() const
+{
+    return metaData<bool>("estimated");
+}
+
+void Entry::setEstimated(bool estimated)
+{
+    setMetadata("estimated", estimated);
+}
+
+QString Entry::category() const
+{
+    return metaData<QString>("category");
+}
+
+void Entry::setCategory(QString category)
+{
+    setMetadata("category", category);
 }

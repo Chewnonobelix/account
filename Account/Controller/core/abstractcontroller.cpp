@@ -92,14 +92,13 @@ void AbstractController::calculTotal()
 void AbstractController::addEntry(const Entry& e)
 {
     Entry et = e;
-    Information i = et.info();
-    i.setEstimated(et.date() > QDate::currentDate());
-    et.setInfo(i);
-    if(m_db->addEntry(et))
-    {
+
+    et.setEstimated(et.date() > QDate::currentDate());
+
+    if (m_db->addEntry(et)) {
         Entry init;
         for(auto it: m_db->selectEntry(currentAccount()))
-            if(it.label() == "Initial")
+            if (it.title() == "Initial")
                 init = it;
         
         if(et.date() < init.date())
@@ -158,7 +157,6 @@ void AbstractController::deleteDb()
 void AbstractController::updateEntry(const Entry & e)
 {
     m_db->updateEntry(e);
-    m_db->updateInfo(e);
 }
 
 Total AbstractController::accountTotal()

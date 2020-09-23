@@ -416,17 +416,17 @@ bool ControllerDB::addEntry(const Entry & e)
         m_addEntry->bindValue(":id", id);
         et.setId(id);
 
-        qDebug() << et.label() << et.metadataList();
+        qDebug() << et.title() << et.metadataList();
         ret = m_addEntry->exec();
         
         if(ret && id >= 0)
         {
             
             m_addInformation->bindValue(":ide", id);
-            m_addInformation->bindValue(":title", e.info().title());
-            m_addInformation->bindValue(":prev",e.info().estimated());
+            m_addInformation->bindValue(":title", e.title());
+            m_addInformation->bindValue(":prev", e.estimated());
             m_addInformation->bindValue(":cat", -1);
-            id = e.info().id().isNull() ? QUuid::createUuid() : e.info().id();
+            id = e.id().isNull() ? QUuid::createUuid() : e.id();
             m_addInformation->bindValue(":id", id);
             
             ret &= m_addInformation->exec();
@@ -477,7 +477,6 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
             
             
             Entry t;
-            Information i;
             t.setId(m_selectEntry->value("id").toUuid());
             t.setDate(m_selectEntry->value("date_eff").toDate());
             t.setValue(m_selectEntry->value("value").toDouble());
@@ -488,21 +487,19 @@ QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
             bool inf = m_selectInformation->exec();
             if(!inf)
                 continue;
-            
+
             m_selectInformation->seek(0);
-            
-            i.setId(m_selectInformation->value("id").toUuid());
-            i.setIdEntry(m_selectInformation->value("idEntry").toUuid());
-            i.setEstimated(m_selectInformation->value("prev").toBool());
-            i.setTitle(m_selectInformation->value("info").toString());
-            
-            auto reqc = m_db.exec("SELECT name FROM categories WHERE id='"+QString::number(m_selectInformation->value("category").toInt())+"'");
-            
-            if(reqc.seek(0))
-                i.setCategory(reqc.value("name").toString());
-            
-            t.setInfo(i);
-            
+
+            t.setEstimated(m_selectInformation->value("prev").toBool());
+            t.setTitle(m_selectInformation->value("info").toString());
+
+            auto reqc = m_db.exec("SELECT name FROM categories WHERE id='"
+                                  + QString::number(m_selectInformation->value("category").toInt())
+                                  + "'");
+
+            if (reqc.seek(0))
+                t.setCategory(reqc.value("name").toString());
+
             m_selectMetadata->bindValue(":ide", t.id());
             bool mt = m_selectMetadata->exec();
             if(!mt)
@@ -536,9 +533,7 @@ bool ControllerDB::updateEntry(const Entry & e)
         m_updateEntry->bindValue(":t", e.type());
         
         ret = m_updateEntry->exec();
-        
-        ret &= updateInfo(e);
-        
+                
         
         Entry et = e;
         et.setMetadata("lastUpdate", QDateTime::currentDateTime());
@@ -568,27 +563,6 @@ bool ControllerDB::updateEntry(const Entry & e)
     }
     
     emit s_updateEntry(e.id());    
-    return ret;
-}
-
-bool ControllerDB::updateInfo(const Entry & e)
-{
-    bool ret = false;
-    if(isConnected() && e.id() >= 0)
-    {
-        m_updateInfo->bindValue(":ide", e.id());
-        m_updateInfo->bindValue(":id", e.info().id());
-        m_updateInfo->bindValue(":title", e.info().title());
-        m_updateInfo->bindValue(":estimated", e.info().estimated());
-        
-        auto reqc = m_db.exec("SELECT id FROM categories WHERE account='"+m_currentAccount+"' AND profile='"+m_currentProfile+"' AND name='"+e.info().category()+"'");
-        
-        if(reqc.seek(0))
-            m_updateInfo->bindValue(":cat", reqc.value("id").toInt());
-        
-        ret = m_updateInfo->exec();
-    }
-    
     return ret;
 }
 
@@ -783,13 +757,12 @@ bool ControllerDB::addFrequency(const Frequency & f)
             
             if(m_addFrequencyReference->exec())
             {
-                Information i = f.referenceEntry().info();
                 m_addInformation->bindValue(":ide", id);
-                m_addInformation->bindValue(":title", i.title());
-                m_addInformation->bindValue(":prev",i.estimated());
-                
+                m_addInformation->bindValue(":title", f.referenceEntry().title());
+                m_addInformation->bindValue(":prev", f.referenceEntry().estimated());
+
                 bool ret = m_addInformation->exec();
-                
+
                 emit s_updateFrequency();
                 return ret;
             }
@@ -857,7 +830,7 @@ QList<Frequency> ControllerDB::selectFrequency()
             
             m_selectFrequencyReference->seek(0);
             Entry ref;
-            Information i;
+
             ref.setId(m_selectFrequencyReference->value("id").toUuid());
             ref.setDate(m_selectFrequencyReference->value("date_eff").toDate());
             ref.setValue(m_selectFrequencyReference->value("value").toDouble());
@@ -868,20 +841,15 @@ QList<Frequency> ControllerDB::selectFrequency()
             bool inf = m_selectInformation->exec();
             if(!inf)
                 continue;
-            
-            
+
             m_selectInformation->seek(0);
-            
-            i.setId(m_selectInformation->value("id").toUuid());
-            i.setIdEntry(m_selectInformation->value("idEntry").toUuid());
-            i.setEstimated(m_selectInformation->value("prev").toBool());
-            i.setTitle(m_selectInformation->value("info").toString());
-            
-            ref.setInfo(i);
-            
+
+            ref.setEstimated(m_selectInformation->value("prev").toBool());
+            ref.setTitle(m_selectInformation->value("info").toString());
+
             m_selectMetadata->bindValue(":ide", ref.id());
-            
-            if(m_selectMetadata->exec())
+
+            if (m_selectMetadata->exec())
                 while(m_selectMetadata->next())
                     ref.setMetadata(m_selectMetadata->value("name").toString(), m_selectMetadata->value("value").toString());
             
@@ -941,12 +909,9 @@ QMap<QUuid, CommonExpanse> ControllerDB::selectCommon()
                 
                 if(!m_selectInformation->seek(0))
                     continue;
-                
-                Information i;
-                i.setIdEntry(e.id());
-                i.setTitle(m_selectInformation->value("info").toString());
-                e.setInfo(i);
-                
+
+                e.setTitle(m_selectInformation->value("info").toString());
+
                 c.addEntries(m_selectCommonTable->value("name").toString(), e);
             }
             
@@ -1012,7 +977,7 @@ bool ControllerDB::updateCommon(const CommonExpanse& c)
             m_addCommonEntry->exec();
             
             m_addCommonEntryInformation->bindValue(":ide", e.id());
-            m_addCommonEntryInformation->bindValue(":title", e.info().title());
+            m_addCommonEntryInformation->bindValue(":title", e.title());
             m_addCommonEntryInformation->bindValue(":id", e.id());
             m_addCommonEntryInformation->exec();
             

@@ -3,6 +3,7 @@
 
 #include "../core/abstractcontroller.h"
 #include "../data/interfacedatasave.h"
+#include <QDir>
 #include <QHostInfo>
 #include <QTcpSocket>
 #include <QtCore/qglobal.h>

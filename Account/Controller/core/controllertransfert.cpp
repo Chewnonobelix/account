@@ -42,16 +42,13 @@ void ControllerTransfert::accept()
 void ControllerTransfert::onDateChanged(QDate d)
 {
     m_entry.setDate(d);
-    auto i = m_entry.info();
-    i.setEstimated(d > QDate::currentDate());
-    m_entry.setInfo(i);
+
+    m_entry.setEstimated(d > QDate::currentDate());
 }
 
 void ControllerTransfert::onTitleChanged(QString t)
 {
-    auto i = m_entry.info();
-    i.setTitle(t);
-    m_entry.setInfo(i);
+    m_entry.setTitle(t);
 }
 
 void ControllerTransfert::onValueChanged(double v)

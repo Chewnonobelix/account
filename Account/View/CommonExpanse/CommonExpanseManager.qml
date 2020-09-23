@@ -94,9 +94,12 @@ Rectangle {
                     }
                 }
 
+                onCurrentIndexChanged:  {
+                    currentModel = currentIndex > -1 ? model[currentIndex] : null
+                    commonExpanse.model = currentModel
+                }
+
                 Component.onCompleted: {
-                    currentModel = Qt.binding(function() {return currentIndex > -1 ? model[currentIndex] : null })
-                    commonExpanse.model = Qt.binding(function() {return currentModel})
                     commonExpanse.enabled = Qt.binding(function() {return currentIndex > -1})
                     removeCommon.enabled = Qt.binding(function() {return currentIndex > -1})
                 }

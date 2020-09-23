@@ -350,7 +350,7 @@ Item {
             delegate: AccountLabel {
                 height: entryList.height * 0.05
                 width: entryList.width
-                text: modelData.label
+                text: modelData.title
                 background: Rectangle {
                     gradient: entryList.currentIndex === index ? AccountStyle.calSelect : AccountStyle.unselectView
                 }

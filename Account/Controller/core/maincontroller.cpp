@@ -226,10 +226,9 @@ void MainController::adding(QVariant ref)
         e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
         e.setValue(val.toDouble());
         e.setType("income");
-        
-        Information i;
-        i.setTitle("Initial");
-        e.setInfo(i);
+
+        e.setTitle("Initial");
+
         e.setBlocked(true);
     } else {
         QVariant val, date, label, type;
@@ -242,11 +241,11 @@ void MainController::adding(QVariant ref)
         e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
         e.setValue(val.toDouble());
         e.setType(type.toString());
-        Information i;
-        i.setTitle(label.toString());
-        e.setInfo(i);
-        if(date.toDate() > QDate::currentDate())
-            i.setEstimated(true);
+
+        e.setTitle(label.toString());
+
+        if (date.toDate() > QDate::currentDate())
+            e.setEstimated(true);
         e.setAccount(currentAccount());
     }
     AbstractController::addEntry(e);
@@ -256,15 +255,11 @@ void MainController::adding(QVariant ref)
 }
 
 void MainController::addEntryMain(Entry  e)
-{
-    Information i = e.info();
-    
+{    
     if(e.date() > QDate::currentDate())
-        i.setEstimated(true);
+        e.setEstimated(true);
     e.setAccount(currentAccount());
-    
-    e.setInfo(i);
-    
+        
     AbstractController::addEntry(e);
 }
 
@@ -285,16 +280,16 @@ void MainController::quickAdding()
     {
         auto et = quick->property("entry").value<QJSValue>();
         Entry e;
-        Information i;
-        i.setCategory(et.property("category").toString());
+
+        e.setCategory(et.property("category").toString());
         e.setDate(QDate::fromString(et.property("date").toString(), "dd-MM-yyyy"));
         e.setValue(et.property("value").toNumber());
         e.setType(et.property("type").toString());
-        i.setEstimated(e.date() > QDate::currentDate());
-        i.setTitle(et.property("title").toString());
-        e.setInfo(i);
+        e.setEstimated(e.date() > QDate::currentDate());
+        e.setTitle(et.property("title").toString());
+
         e.setAccount(currentAccount());
-        
+
         m_db->addEntry(e);
     }
 }
@@ -538,7 +533,7 @@ void MainController::checkEstimated()
     QList<Entry> list;
 
     for (auto it : m_db->selectEntry(currentAccount())) {
-        if(it.info().estimated() && it.date() <= QDate::currentDate())
+        if (it.estimated() && it.date() <= QDate::currentDate())
             list<<it;
         else if(it.date() > QDate::currentDate())
             break;
@@ -561,9 +556,8 @@ void MainController::validateCheckEstimated(QVariantList tab)
         Entry e = entry(tab[i].toUuid());
 
         if (tab[i].toBool()) {
-            Information inf = e.info();
-            inf.setEstimated(false);
-            e.setInfo(inf);
+            e.setEstimated(false);
+
             updateEntry(e);
         } else {
             m_db->removeEntry(e);

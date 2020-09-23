@@ -2,8 +2,13 @@
 #define SYNCHRONIZATIONPROFILE_H
 
 #include "account_global.h"
+#include "entry.h"
 #include "metadata.h"
 #include <QDate>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
 #include <QObject>
 #include <QUuid>
 
@@ -26,8 +31,6 @@ public:
     SynchronizationProfile &operator=(const SynchronizationProfile &);
 
     QUuid id() const;
-    QString idString() const;
-
     void setId(QUuid);
     QString hostName() const;
     void setHostName(QString);
@@ -39,6 +42,8 @@ public:
     void setEnd(QDate);
     QDateTime lastSync() const;
     void setLastSync(QDateTime);
+    QMap<QUuid, Entry> document() const;
+    void setDocument(QJsonDocument);
 
     QString toString() const;
 };
