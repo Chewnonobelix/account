@@ -4,6 +4,7 @@
 #include "accountglobal.h"
 #include "metadata.h"
 #include <QDate>
+#include <QJsonObject>
 #include <QObject>
 #include <QSharedPointer>
 #include <QString>
@@ -31,6 +32,7 @@ private:
 public:
     Entry();
     Entry(const Entry &) = default;
+    Entry(const QJsonObject &);
     ~Entry() = default;
 
     Entry& operator =(const Entry&);
@@ -59,6 +61,9 @@ public:
     void setSupport(Account::EntryTypeEnum);
 
     operator QVariantMap() const;
+    operator QJsonObject() const;
+    Entry &operator=(const QJsonObject &);
+
     inline operator QVariant() const { return QVariant::fromValue(*this); }
 };
 

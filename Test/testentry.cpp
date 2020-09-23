@@ -119,3 +119,18 @@ void TestEntry::testCopy()
     *copy = model2;
     QCOMPARE(model2, *copy);
 }
+
+void TestEntry::test_jsonCast()
+{
+    QJsonObject obj = model;
+    QCOMPARE(obj.keys(), model.metadataList());
+}
+
+void TestEntry::test_EntryCast()
+{
+    QJsonObject obj = model;
+    QVERIFY(obj.keys() == model.metadataList());
+    Entry e;
+    e = obj;
+    QCOMPARE(model, e);
+}
