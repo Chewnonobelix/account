@@ -134,7 +134,10 @@ void AccountSocket::addLocalProfile()
 {
     m_localProfile.setHostName(QHostInfo::localHostName());
     m_localProfile.setDeviceName(remoteName());
-
+    m_localProfile.setBegin(
+        AbstractController::db()->selectEntry(AbstractController::currentAccount()).keys().first());
+    m_localProfile.setEnd(
+        AbstractController::db()->selectEntry(AbstractController::currentAccount()).keys().last());
     auto id = AbstractController::db()->addSyncProfile(m_localProfile);
 
     if (id.isNull())

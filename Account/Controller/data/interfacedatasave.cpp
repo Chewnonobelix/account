@@ -98,8 +98,8 @@ QUuid InterfaceDataSave::addSyncProfile(const SynchronizationProfile &sp)
 
     func(m_syncs, "host", sp.hostName());
     func(m_syncs, "device", sp.deviceName());
-    func(m_syncs, "start", QDate::currentDate().toString());
-    func(m_syncs, "end", QDate::currentDate().toString());
+    func(m_syncs, "start", sp.begin().toString());
+    func(m_syncs, "end", sp.end().toString());
     func(m_syncs, "lastSync", QDateTime::currentDateTime().toString());
     func(m_syncs, "id", id.toString());
 
