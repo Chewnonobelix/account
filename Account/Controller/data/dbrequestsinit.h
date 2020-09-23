@@ -16,8 +16,6 @@ const auto account_table = QStringLiteral(
 const auto account_trigger_delete = QStringLiteral(
     "CREATE TRIGGER delete_entry BEFORE DELETE ON account "
     "BEGIN "
-    "DELETE FROM information "
-    "WHERE idEntry=OLD.id; "
     "DELETE FROM entrymetadata "
     "WHERE entry=OLD.id; "
     "END;");
@@ -49,13 +47,6 @@ const auto trigger_delete_category = QStringLiteral(
     "WHERE category=OLD.id;"
     "END;");
 
-const auto information_table = QStringLiteral("CREATE TABLE `information` ("
-                                              "`id` TEXT NOT NULL PRIMARY KEY,"
-                                              "`idEntry` TEXT NOT NULL REFERENCES account(id),"
-                                              "`info` TEXT,"
-                                              "`prev` INTEGER NOT NULL DEFAULT '0',"
-                                              "`category` INTEGER REFERENCES categories(id)"
-                                              ")");
 
 const auto budget_table = QStringLiteral("CREATE TABLE `budget` ("
                                          "`id` TEXT NOT NULL PRIMARY KEY,"

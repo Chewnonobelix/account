@@ -33,12 +33,7 @@ private:
     SqlQuery m_updateMetadata;
     SqlQuery m_selectMetadata;
     SqlQuery m_removeMetadata;
-    
-    SqlQuery m_updateInfo;
-    SqlQuery m_addInformation;
-    SqlQuery m_removeInformation;
-    SqlQuery m_selectInformation;
-    
+        
     SqlQuery m_addCategory;
     SqlQuery m_removeCategory;
     SqlQuery m_selectCategory;
@@ -79,7 +74,6 @@ private:
     QString m_currentAccount;
 
     void prepareEntry();
-    void prepareInformation();
     void prepareAccount();
     void prepareCategory();
     void prepareBudget();
