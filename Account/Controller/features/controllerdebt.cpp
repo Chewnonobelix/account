@@ -37,7 +37,7 @@ int ControllerDebt::exec()
         m_filler.model = &m_debts;
 
     if (!m_filler.isRunning()) {
-        m_filler.entries = db()->selectEntry(currentAccount()).values();
+        m_filler.entries = db()->selectEntry().values();
         m_filler.start();
     }
 
@@ -78,7 +78,7 @@ void ControllerDebt::onNameChanged(QString id, QString name)
 {
     Debt d = db()->selectDebt()[QUuid::fromString(id)];
     d.setName(name);
-    auto el = db()->selectEntry(currentAccount());
+    auto el = db()->selectEntry();
 
     Entry e;
     for (auto it : el) {
@@ -121,7 +121,7 @@ void ControllerDebt::onRemoved(QString id)
 void ControllerDebt::onInitialDateChanged(QString id, QDate d)
 {
     Debt b = db()->selectDebt()[QUuid::fromString(id)];
-    auto el = db()->selectEntry(currentAccount());
+    auto el = db()->selectEntry();
 
     Entry e;
     for (auto it : el) {
@@ -137,7 +137,7 @@ void ControllerDebt::onInitialDateChanged(QString id, QDate d)
 void ControllerDebt::onInitialTypeChanged(QString id, QString t)
 {
     Debt b = db()->selectDebt()[QUuid::fromString(id)];
-    auto el = db()->selectEntry(currentAccount());
+    auto el = db()->selectEntry();
 
     Entry e;
     for (auto it : el) {
@@ -152,7 +152,7 @@ void ControllerDebt::onInitialTypeChanged(QString id, QString t)
 
 void ControllerDebt::onInitialValueChanged(QString id, double v)
 {
-    auto el = db()->selectEntry(currentAccount());
+    auto el = db()->selectEntry();
 
     Entry e;
     for (auto it : el) {
@@ -171,7 +171,7 @@ void ControllerDebt::onInitialValueChanged(QString id, double v)
 void ControllerDebt::onInitialCategoryChanged(QString id, QString c)
 {
     Debt b = db()->selectDebt()[QUuid::fromString(id)];
-    auto el = db()->selectEntry(currentAccount());
+    auto el = db()->selectEntry();
 
     Entry e;
     for (auto it : el) {
@@ -187,7 +187,7 @@ void ControllerDebt::onInitialCategoryChanged(QString id, QString c)
 void ControllerDebt::onInitialSupportChanged(QString id, int s)
 {
     Debt b = db()->selectDebt()[QUuid::fromString(id)];
-    auto el = db()->selectEntry(currentAccount());
+    auto el = db()->selectEntry();
 
     Entry e;
     for (auto it : el) {

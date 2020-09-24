@@ -109,7 +109,7 @@ int ControllerFrequency::exec()
     if(!m_filler.model)
         m_filler.model = &m_freqs;
 
-    m_filler.entries = m_db->selectEntry(currentAccount()).values();
+    m_filler.entries = m_db->selectEntry().values();
 
     m_filler.start();
 

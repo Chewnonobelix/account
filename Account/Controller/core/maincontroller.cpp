@@ -400,9 +400,9 @@ void MainController::buildModel(QUuid)
     
     m_model.clear();
     QList<Entry> ret;
-    
-    ret = m_db->selectEntry(currentAccount()).values();
-    
+
+    ret = m_db->selectEntry().values();
+
     Total t;
     for(auto i = 0; i < qMin(ret.count(), 100); i++)
     {
@@ -532,7 +532,7 @@ void MainController::checkEstimated()
 
     QList<Entry> list;
 
-    for (auto it : m_db->selectEntry(currentAccount())) {
+    for (auto it : m_db->selectEntry()) {
         if (it.estimated() && it.date() <= QDate::currentDate())
             list<<it;
         else if(it.date() > QDate::currentDate())

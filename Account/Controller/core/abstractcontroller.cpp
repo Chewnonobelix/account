@@ -25,12 +25,12 @@ AbstractController::CalcThread::CalcThread(int index, QList<Entry> l, QMap<QDate
 
 void AbstractController::setCurrentAccount(QString a)
 {
-    m_account = a;
+    db()->setCurrentAccount(a);
 }
 
 QString AbstractController::currentAccount()
 {
-    return m_account;
+    return db()->currentAccount();
 }
 
 void AbstractController::CalcThread::run()
@@ -77,10 +77,9 @@ void AbstractController::calculTotal()
     pool.clear();
     CalcThread::indexes.clear();
     m_accountTotal.clear();
-    auto l = m_db->selectEntry(currentAccount()).values();
-    
-    for(auto i = 0; i < 5; i++)
-    {
+    auto l = m_db->selectEntry().values();
+
+    for (auto i = 0; i < 5; i++) {
         auto t = QSharedPointer<CalcThread>::create(i, l, &m_accountTotal);
         pool<<t;
         t->start();
@@ -97,7 +96,7 @@ void AbstractController::addEntry(const Entry& e)
 
     if (m_db->addEntry(et)) {
         Entry init;
-        for(auto it: m_db->selectEntry(currentAccount()))
+        for (auto it : m_db->selectEntry())
             if (it.title() == "Initial")
                 init = it;
         
@@ -119,8 +118,8 @@ void AbstractController::addEntry(const Entry& e)
 Entry AbstractController::entry(QUuid id)
 {
     Entry ret;
-    
-    for(auto it: m_db->selectEntry(currentAccount()))
+
+    for (auto it : m_db->selectEntry())
         if(it.id() == id)
             ret = it;
     

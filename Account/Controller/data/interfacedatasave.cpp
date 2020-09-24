@@ -132,3 +132,23 @@ bool InterfaceDataSave::updateSyncProfile(const SynchronizationProfile& sp)
     
     return ret;
 }
+
+void InterfaceDataSave::setProfile(QString profile)
+{
+    m_currentProfile = profile;
+}
+
+QString InterfaceDataSave::currentProfile() const
+{
+    return m_currentProfile;
+}
+
+void InterfaceDataSave::setCurrentAccount(QString account)
+{
+    m_currentAccount = account;
+}
+
+QString InterfaceDataSave::currentAccount() const
+{
+    return m_currentAccount;
+}

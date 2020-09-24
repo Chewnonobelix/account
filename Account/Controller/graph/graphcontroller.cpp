@@ -23,7 +23,7 @@ void TimeGraphController::setGran(Account::Granularity g)
 void TimeGraphController::add(const Entry &e)
 {
     if (m_sum.isEmpty()) {
-        auto ent = m_db->selectEntry(currentAccount());
+        auto ent = m_db->selectEntry();
         Total t;
         t.setDate(ent.begin().key().addDays(-1));
 

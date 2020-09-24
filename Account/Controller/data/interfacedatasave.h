@@ -22,6 +22,7 @@ private:
 protected:
     bool backup = false;
     QString m_currentProfile = "Default";
+    QString m_currentAccount;
     QString m_path = "data";
 
 public:
@@ -29,7 +30,12 @@ public:
     inline InterfaceDataSave(const InterfaceDataSave&): QObject(nullptr) {}
     virtual ~InterfaceDataSave();
     inline void setBackup(bool back) { backup = back;}
-    inline void setPath(QString path) {m_path = path;}
+    inline void setPath(QString path) { m_path = path; }
+
+    void setProfile(QString);
+    QString currentProfile() const;
+    void setCurrentAccount(QString);
+    QString currentAccount() const;
 
 signals:
     void s_updateEntry(QUuid = QUuid());
@@ -45,12 +51,11 @@ signals:
 public slots:
     void exec();
     virtual bool addEntry(const Entry&) = 0;
-    virtual QMultiMap<QDate, Entry> selectEntry(QString) = 0;
+    virtual QMultiMap<QDate, Entry> selectEntry() = 0;
     virtual bool removeEntry(const Entry&) = 0;
     
     virtual QStringList selectAccount() = 0;
     virtual bool removeAccount(QString) = 0;
-    virtual void setCurrentAccount(QString) = 0;
 
     virtual bool updateEntry(const Entry&) = 0;
     
@@ -80,9 +85,7 @@ public slots:
     virtual bool updateDebt(const Debt &) = 0;
 
     virtual QStringList selectProfile() = 0;
-    virtual void setProfile(QString) = 0;
     virtual bool addProfile(QString, QString) = 0;
-    virtual QString currentProfile() = 0;
     virtual bool deleteProfile(QString) = 0;
 
     virtual QList<SynchronizationProfile> selectSyncProfile();

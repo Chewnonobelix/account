@@ -16,11 +16,11 @@ class ControllerXMLMulti: public InterfaceDataSave
     Q_OBJECT
 private:
     QMap<QString, QDomDocument> m_accounts;
-    
-    QMap<QString, QSet<int>> m_ids;
 
-    QDomDocument m_currentAccount;
-    QString m_currentProfile;
+    //    QMap<QString, QSet<int>> m_ids;
+
+    //    QDomDocument m_currentAccount;
+    //    QString m_currentProfile;
 
     QMutex m_mutex;
     
@@ -48,14 +48,12 @@ public:
 
 public slots:
 
-    virtual bool addEntry(QSharedPointer<Entry>);
     virtual bool addEntry(const Entry&);
-    virtual QMultiMap<QDate, Entry> selectEntry(QString = "");
+    virtual QMultiMap<QDate, Entry> selectEntry();
     virtual bool removeEntry(const Entry&);
 
     virtual QStringList selectAccount();
     virtual bool removeAccount(QString);
-    virtual void setCurrentAccount(QString);
 
     virtual bool updateEntry(const Entry &);
 
@@ -79,9 +77,7 @@ public slots:
     virtual bool updateCommon(const CommonExpanse&);
     
     virtual QStringList selectProfile();
-    virtual void setProfile(QString);
     virtual bool addProfile(QString, QString);
-    virtual QString currentProfile();
     virtual bool deleteProfile(QString);
 
     virtual QMap<QUuid, Debt> selectDebt();

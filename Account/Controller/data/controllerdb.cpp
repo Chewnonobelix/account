@@ -314,31 +314,16 @@ bool ControllerDB::removeAccount(QString name)
     return ret;
 }
 
-void ControllerDB::setCurrentAccount(QString account)
-{
-    m_currentAccount = account;
-}
-
 QStringList ControllerDB::selectProfile() 
 {
     QStringList ret;    
     return ret;
 }
 
-void ControllerDB::setProfile(QString p)
-{
-    m_currentProfile = p;
-}
-
 bool ControllerDB::addProfile(QString name, QString) 
 {
     bool ret = false;
     return ret;
-}
-
-QString ControllerDB::currentProfile()
-{
-    return m_currentProfile;
 }
 
 bool ControllerDB::deleteProfile(QString name) 
@@ -353,7 +338,7 @@ bool ControllerDB::addEntry(const Entry & e)
     return ret;
 }
 
-QMultiMap<QDate, Entry> ControllerDB::selectEntry(QString account)
+QMultiMap<QDate, Entry> ControllerDB::selectEntry()
 {
     QMultiMap<QDate, Entry> res;
         

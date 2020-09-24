@@ -89,14 +89,12 @@ public:
     
     bool isConnected() const;
 public slots:
-    bool addEntry(QSharedPointer<Entry>) {return false;}
     bool addEntry(const Entry&)  override;
-    QMultiMap<QDate, Entry> selectEntry(QString) override;
+    QMultiMap<QDate, Entry> selectEntry() override;
     bool removeEntry(const Entry&) override;
     
     QStringList selectAccount() override;
     bool removeAccount(QString) override;
-    void setCurrentAccount(QString) override;
 
     bool updateEntry(const Entry &) override;
     
@@ -120,9 +118,7 @@ public slots:
     virtual bool updateCommon(const CommonExpanse&) override;
     
     virtual QStringList selectProfile() override;
-    virtual void setProfile(QString) override;
     virtual bool addProfile(QString, QString) override;
-    virtual QString currentProfile() override;
     virtual bool deleteProfile(QString) override;
 
     virtual QMap<QUuid, Debt> selectDebt();

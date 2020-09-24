@@ -9,13 +9,13 @@ bool TransfertDatabase::transfertEntries()
 {
     bool ret = true;
 
-    for(auto it: accounts)
-        for(auto it2: m_db->selectEntry(it))
-        {
+    for (auto it : accounts) {
+        m_db->setCurrentAccount(it);
+        for (auto it2 : m_db->selectEntry()) {
             ret &= m_backup->addEntry(it2);
             ret &= m_backup->updateEntry(it2);
         }
-
+    }
     return ret;
 }
 

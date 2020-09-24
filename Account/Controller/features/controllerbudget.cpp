@@ -98,7 +98,7 @@ void ControllerBudget::reload()
     for (auto b : l)
         m_budgets[b.category()] = b;
 
-    m_filler.entries = m_db->selectEntry(currentAccount()).values();
+    m_filler.entries = m_db->selectEntry().values();
     m_filler.start();
 
     show(QDate::currentDate());
