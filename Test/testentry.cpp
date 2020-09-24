@@ -130,7 +130,6 @@ void TestEntry::test_EntryCast()
 {
     QJsonObject obj = model;
     QVERIFY(obj.keys() == model.metadataList());
-    Entry e;
-    e = obj;
+    Entry e(obj);
     QCOMPARE(model, e);
 }

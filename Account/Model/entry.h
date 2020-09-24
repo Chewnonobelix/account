@@ -61,7 +61,6 @@ public:
     void setSupport(Account::EntryTypeEnum);
 
     operator QVariantMap() const;
-    operator QJsonObject() const;
     Entry &operator=(const QJsonObject &);
 
     inline operator QVariant() const { return QVariant::fromValue(*this); }

@@ -13,13 +13,7 @@ Entry::Entry()
     setCategory(QString());
 }
 
-Entry::Entry(const QJsonObject &obj)
-{
-    auto map = obj.toVariantMap();
-
-    for (auto it : map.keys())
-        setMetadata(it, map[it]);
-}
+Entry::Entry(const QJsonObject &obj) : MetaData(obj) {}
 
 Entry& Entry::operator = (const Entry& e)
 {
@@ -154,21 +148,3 @@ void Entry::setCategory(QString category)
     setMetadata("category", category);
 }
 
-Entry::operator QJsonObject() const
-{
-    QJsonObject obj;
-    for (auto it : metadataList())
-        obj.insert(it, metaData<QString>(it));
-
-    return obj;
-}
-
-Entry &Entry::operator=(const QJsonObject &obj)
-{
-    auto map = obj.toVariantMap();
-
-    for (auto it : map.keys())
-        setMetadata(it, map[it]);
-
-    return *this;
-}
