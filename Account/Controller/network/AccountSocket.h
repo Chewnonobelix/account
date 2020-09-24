@@ -3,6 +3,7 @@
 
 #include "../core/abstractcontroller.h"
 #include "../data/interfacedatasave.h"
+#include "Model/synchronizationprofile.h"
 #include <QDir>
 #include <QHostInfo>
 #include <QTcpSocket>
@@ -47,6 +48,7 @@ public slots:
     void addLocalProfile();
     void removeLocalProfile();
 
+    void updateLocalProfile();
 signals:
     void remoteNameChanged(QString);
     void profileChanged();

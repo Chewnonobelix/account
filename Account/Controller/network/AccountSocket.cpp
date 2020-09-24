@@ -4,6 +4,10 @@ AccountSocket::AccountSocket() : QTcpSocket()
 {
     connect(this, &QIODevice::readyRead, this, &AccountSocket::receiveDataSocket);
     connect(this, &QTcpSocket::disconnected, this, &AccountSocket::disconnected);
+    connect(AbstractController::db(),
+            &InterfaceDataSave::s_updateSync,
+            this,
+            &AccountSocket::updateLocalProfile);
 }
 
 QString AccountSocket::remoteName() const
@@ -54,8 +58,8 @@ void AccountSocket::parser(QString data)
 
     if (split[1] == "post") {
         if (split[2] == "localName") {
-            m_remoteName = split[3];
-            m_localProfile = profile(m_remoteName);
+            setRemoteName(split[3]);
+
             emit profileChanged();
             emit remoteNameChanged(m_remoteName);
         }
@@ -132,19 +136,57 @@ void AccountSocket::getProfile()
 
 void AccountSocket::addLocalProfile()
 {
-    m_localProfile.setHostName(QHostInfo::localHostName());
-    m_localProfile.setDeviceName(remoteName());
-    m_localProfile.setBegin(AbstractController::db()->selectEntry().keys().first());
-    m_localProfile.setEnd(AbstractController::db()->selectEntry().keys().last());
-    auto id = AbstractController::db()->addSyncProfile(m_localProfile);
+    SynchronizationProfile sp;
+    sp.setBegin(AbstractController::db()->selectEntry().firstKey());
+    sp.setEnd(AbstractController::db()->selectEntry().lastKey());
+    sp.setDeviceName(remoteName());
+    sp.setHostName(QHostInfo::localHostName());
+    auto id = AbstractController::db()->addSyncProfile(sp);
+    sp.setId(id);
+    m_localProfile = sp;
+    emit profileChanged();
 
-    if (id.isNull())
-        return;
-
-    m_localProfile.setId(id);
-    m_remoteProfile = m_localProfile;
+    updateLocalProfile();
 
     postProfile();
+}
+
+void AccountSocket::updateLocalProfile()
+{
+    if (m_localProfile.id().isNull())
+        return;
+
+    QStringList profiles = AbstractController::db()->selectProfile();
+
+    QJsonArray localjson;
+    for (auto profile : profiles) {
+        AbstractController::db()->setProfile(profile);
+        QStringList accounts = AbstractController::db()->selectAccount();
+        for (auto account : accounts) {
+            QJsonObject obj;
+            QJsonArray array;
+            for (auto e : AbstractController::db()->selectEntry()) {
+                if (e.date() < m_localProfile.begin())
+                    continue;
+                if (e.date() > m_localProfile.end())
+                    continue;
+
+                array.append((QJsonObject) e);
+            }
+            obj.insert("entries", array);
+            obj.insert("profile", profile);
+            obj.insert("account", account);
+
+            localjson.append(obj);
+        }
+    }
+
+    m_localProfile.setDocument(QJsonDocument(localjson));
+
+    QFile f(m_localProfile.id().toString() + ".json");
+    f.open(QIODevice::WriteOnly);
+    f.write(QJsonDocument(localjson).toJson());
+    f.close();
 }
 
 void AccountSocket::removeLocalProfile()
@@ -164,4 +206,7 @@ void AccountSocket::setLocalProfile(SynchronizationProfile p)
 void AccountSocket::setRemoteName(QString r)
 {
     m_remoteName = r;
+
+    m_localProfile = profile(remoteName());
+    updateLocalProfile();
 }
