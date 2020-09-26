@@ -76,7 +76,7 @@ void ControllerSynchronization::lookup()
         qDebug() << "Broadcast"
                  << m_broadcast.writeDatagram("account_server_connect:test_server",
                                               QHostAddress(QHostAddress::Broadcast),
-                                              7000);
+                                              9000);
 }
 
 void ControllerSynchronization::sync()
@@ -97,7 +97,7 @@ void ControllerSynchronization::receivedDatagram()
         m_broadcast.readDatagram(data.data(), m_broadcast.pendingDatagramSize(), &addr);
         auto split = data.split(':');
 
-        if(split[0] != "account_server" && !m_server.isListening())
+        if(split[0] != "account_server_connect" && !m_server.isListening())
             continue;
 
         clientConnect(addr);
