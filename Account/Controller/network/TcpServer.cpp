@@ -5,7 +5,7 @@ void TcpServer::incomingConnection(qintptr socket)
     AccountSocket *s = new AccountSocket;
     s->setSocketDescriptor(socket);
 
-    s->getRemotename();
-    s->getProfileid();
+    s->getRemoteName();
+    //    s->getProfileid();
     addPendingConnection(s);
 }

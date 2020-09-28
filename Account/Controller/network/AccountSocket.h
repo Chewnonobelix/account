@@ -20,6 +20,8 @@ private:
     QString m_remoteName = QString();
     SynchronizationProfile m_remoteProfile, m_localProfile;
 
+    QMap<QString, QMap<QString, QString>> restapi;
+
 public:
     AccountSocket();
     ~AccountSocket();
@@ -33,14 +35,12 @@ public:
     void setRemoteName(QString);
 
 public:
-    Q_INVOKABLE void postLocalname();
-    Q_INVOKABLE void getRemotename();
-    Q_INVOKABLE void postProfileid();
-    Q_INVOKABLE void getProfileid();
-    Q_INVOKABLE void postProfile();
-    Q_INVOKABLE void getProfile();
-
     QString remoteName() const;
+
+    void getRemoteName();
+    void postRemoteName();
+    Q_INVOKABLE void onPostRemoteName(QString);
+    Q_INVOKABLE void onGetRemoteName();
 
 public slots:
     void receiveDataSocket();
