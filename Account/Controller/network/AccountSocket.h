@@ -49,8 +49,10 @@ public:
 
     void getSyncProfile();
     void postSyncProfile();
+    void updateSyncProfile();
     Q_INVOKABLE void onGetSyncProfile(QString);
     Q_INVOKABLE void onPostSyncProfile(QString);
+    Q_INVOKABLE void onUpdateSyncProfile(QString);
 
 public slots:
     void receiveDataSocket();

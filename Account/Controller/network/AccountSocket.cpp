@@ -8,6 +8,7 @@ AccountSocket::AccountSocket() : QTcpSocket()
     restapi["get"]["syncIds"] = "onGetSyncIds";
     restapi["post"]["syncProfile"] = "onPostSyncProfile";
     restapi["get"]["syncProfile"] = "onGetSyncProfile";
+    restapi["update"]["syncProfile"] = "onUpdateSyncProfile";
 
     connect(this, &QIODevice::readyRead, this, &AccountSocket::receiveDataSocket);
     connect(this, &QTcpSocket::disconnected, this, &AccountSocket::disconnected);
@@ -259,6 +260,13 @@ void AccountSocket::postSyncProfile()
     }
 }
 
+void AccountSocket::updateSyncProfile()
+{
+    if (isConnected()) {
+        write("account_api:update:syncProfile:" + m_localProfile.document().toJson());
+    }
+}
+
 void AccountSocket::onPostSyncProfile(QString data)
 {
     m_remoteProfile.setDocument(QJsonDocument::fromJson(data.toLatin1()));
@@ -267,4 +275,18 @@ void AccountSocket::onPostSyncProfile(QString data)
 void AccountSocket::onGetSyncProfile(QString)
 {
     postSyncProfile();
+}
+
+void AccountSocket::onUpdateSyncProfile(QString data)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(data.toLatin1());
+    m_localProfile.setDocument(doc);
+    m_localRemote.setDocument(doc);
+    AbstractController::db()->updateSyncProfile(m_localProfile);
+    auto array = doc.array();
+    for (auto it : array) {
+        Entry e(it);
+        if (!AbstractController::db()->updateEntry(e))
+            AbstractController::db()->addEntry(e);
+    }
 }
