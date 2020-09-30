@@ -42,6 +42,16 @@ public:
     Q_INVOKABLE void onPostRemoteName(QString);
     Q_INVOKABLE void onGetRemoteName(QString);
 
+    void getSyncIds();
+    void postSyncIds();
+    Q_INVOKABLE void onGetSyncIds(QString);
+    Q_INVOKABLE void onPostSyncIds(QString);
+
+    void getSyncProfile();
+    void postSyncProfile();
+    Q_INVOKABLE void onGetSyncProfile(QString);
+    Q_INVOKABLE void onPostSyncProfile(QString);
+
 public slots:
     void receiveDataSocket();
     void sync();

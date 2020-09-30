@@ -71,13 +71,9 @@ QString SynchronizationProfile::toString() const
     return QString();
 }
 
-QMap<QUuid, Entry> SynchronizationProfile::document() const
+QJsonDocument SynchronizationProfile::document() const
 {
-    QMap<QUuid, Entry> ret;
-    auto doc = metaData<QJsonDocument>("document");
-    if (doc.isArray()) {
-    }
-    return ret;
+    return metaData<QJsonDocument>("document");
 }
 
 void SynchronizationProfile::setDocument(QJsonDocument json)

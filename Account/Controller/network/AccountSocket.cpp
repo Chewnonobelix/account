@@ -4,6 +4,10 @@ AccountSocket::AccountSocket() : QTcpSocket()
 {
     restapi["post"]["remoteName"] = "onPostRemoteName";
     restapi["get"]["remoteName"] = "onGetRemoteName";
+    restapi["post"]["syncIds"] = "onPostSyncIds";
+    restapi["get"]["syncIds"] = "onGetSyncIds";
+    restapi["post"]["syncProfile"] = "onPostSyncProfile";
+    restapi["get"]["syncProfile"] = "onGetSyncProfile";
 
     connect(this, &QIODevice::readyRead, this, &AccountSocket::receiveDataSocket);
     connect(this, &QTcpSocket::disconnected, this, &AccountSocket::disconnected);
@@ -208,4 +212,59 @@ void AccountSocket::onPostRemoteName(QString data)
 void AccountSocket::onGetRemoteName(QString)
 {
     postRemoteName();
+}
+
+void AccountSocket::getSyncIds()
+{
+    if (isConnected()) {
+        write("account_api:get:syncIds");
+    }
+}
+void AccountSocket::postSyncIds()
+{
+    if (isConnected()) {
+        QJsonArray list;
+        for (auto it : AbstractController::db()->selectSyncProfile().keys())
+            list << it.toString();
+
+        write("account_api:post:syncIds:" + QJsonDocument(list).toJson());
+    }
+}
+
+void AccountSocket::onPostSyncIds(QString data)
+{
+    QJsonArray list = QJsonDocument::fromJson(data.toLatin1()).array();
+    auto profiles = AbstractController::db()->selectSyncProfile();
+    for (auto it : list) {
+        if (profiles.contains(QUuid::fromString(it.toString())))
+            m_localProfile = profiles[QUuid::fromString(it.toString())];
+    }
+}
+
+void AccountSocket::onGetSyncIds(QString)
+{
+    postSyncIds();
+}
+
+void AccountSocket::getSyncProfile()
+{
+    if (isConnected()) {
+        write("account_api:get:syncProfile");
+    }
+}
+void AccountSocket::postSyncProfile()
+{
+    if (isConnected()) {
+        write("account_api:post:syncProfile:" + m_localProfile.document().toJson());
+    }
+}
+
+void AccountSocket::onPostSyncProfile(QString data)
+{
+    m_remoteProfile.setDocument(QJsonDocument::fromJson(data.toLatin1()));
+}
+
+void AccountSocket::onGetSyncProfile(QString)
+{
+    postSyncProfile();
 }
