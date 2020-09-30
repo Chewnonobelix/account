@@ -23,11 +23,11 @@ void InterfaceDataSave::exec()
 {
 }
 
-QList<SynchronizationProfile> InterfaceDataSave::selectSyncProfile()
+QMap<QUuid, SynchronizationProfile> InterfaceDataSave::selectSyncProfile()
 {
     QDomElement root = m_syncs.documentElement();
 
-    QList<SynchronizationProfile> ret;
+    QMap<QUuid, SynchronizationProfile> ret;
     auto list = root.elementsByTagName("profile");
     for(auto i = 0; i < list.count(); i++)
     {
@@ -47,10 +47,10 @@ QList<SynchronizationProfile> InterfaceDataSave::selectSyncProfile()
             sp.setEnd(QDate::currentDate());
         val = el.elementsByTagName("lastSync").at(0).toElement().text();
         sp.setLastSync(QDateTime::fromString(val));
-        ret<<sp;
+
         val = el.elementsByTagName("id").at(0).toElement().text();
         sp.setId(QUuid::fromString(val));
-        ret << sp;
+        ret[sp.id()] = sp;
     }
     return ret;
 }
