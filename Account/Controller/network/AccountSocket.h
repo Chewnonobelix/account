@@ -40,7 +40,7 @@ public:
     void getRemoteName();
     void postRemoteName();
     Q_INVOKABLE void onPostRemoteName(QString);
-    Q_INVOKABLE void onGetRemoteName();
+    Q_INVOKABLE void onGetRemoteName(QString);
 
 public slots:
     void receiveDataSocket();

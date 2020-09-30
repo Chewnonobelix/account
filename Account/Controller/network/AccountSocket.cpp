@@ -3,6 +3,7 @@
 AccountSocket::AccountSocket() : QTcpSocket()
 {
     restapi["post"]["remoteName"] = "onPostRemoteName";
+    restapi["get"]["remoteName"] = "onGetRemoteName";
 
     connect(this, &QIODevice::readyRead, this, &AccountSocket::receiveDataSocket);
     connect(this, &QTcpSocket::disconnected, this, &AccountSocket::disconnected);
@@ -204,7 +205,7 @@ void AccountSocket::onPostRemoteName(QString data)
     emit remoteNameChanged(m_remoteName);
 }
 
-void AccountSocket::onGetRemoteName()
+void AccountSocket::onGetRemoteName(QString)
 {
     postRemoteName();
 }
