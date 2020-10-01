@@ -42,7 +42,7 @@ public:
     void setEnd(QDate);
     QDateTime lastSync() const;
     void setLastSync(QDateTime);
-    QMap<QUuid, Entry> document() const;
+    QJsonDocument document() const;
     void setDocument(QJsonDocument);
 
     QString toString() const;

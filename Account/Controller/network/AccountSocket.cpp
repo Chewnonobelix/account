@@ -281,11 +281,11 @@ void AccountSocket::onUpdateSyncProfile(QString data)
 {
     QJsonDocument doc = QJsonDocument::fromJson(data.toLatin1());
     m_localProfile.setDocument(doc);
-    m_localRemote.setDocument(doc);
+    m_remoteProfile.setDocument(doc);
     AbstractController::db()->updateSyncProfile(m_localProfile);
     auto array = doc.array();
     for (auto it : array) {
-        Entry e(it);
+        Entry e(it.toObject());
         if (!AbstractController::db()->updateEntry(e))
             AbstractController::db()->addEntry(e);
     }
