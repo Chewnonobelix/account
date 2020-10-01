@@ -92,8 +92,8 @@ public slots:
     bool addEntry(const Entry&)  override;
     QMultiMap<QDate, Entry> selectEntry() override;
     bool removeEntry(const Entry&) override;
-    
-    QStringList selectAccount() override;
+
+    QStringList selectAccount(QString) override;
     bool removeAccount(QString) override;
 
     bool updateEntry(const Entry &) override;

@@ -52,7 +52,7 @@ public slots:
     virtual QMultiMap<QDate, Entry> selectEntry();
     virtual bool removeEntry(const Entry&);
 
-    virtual QStringList selectAccount();
+    virtual QStringList selectAccount(QString);
     virtual bool removeAccount(QString);
 
     virtual bool updateEntry(const Entry &);

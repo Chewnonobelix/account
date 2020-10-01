@@ -34,12 +34,12 @@ void ControllerXMLMulti::close()
     {
         if(!it.key().isEmpty())
         {
-            QFile file(basename + "\\" + m_currentProfile + "\\" + it.key() + ".xml");
+            QFile file(basename + "\\" + m_currentProfile + "\\" + it.key() + ".account");
             file.open(QIODevice::WriteOnly);
             auto write64 = it.value().toByteArray().toBase64();
             file.write(write64);
             file.close();
-            QFile file2(basename + "\\" + m_currentProfile + "\\" + it.key() + "_clear.xml");
+            QFile file2(basename + "\\" + m_currentProfile + "\\" + it.key() + ".xml");
             file2.open(QIODevice::WriteOnly);
             auto write642 = it.value().toByteArray();
             file2.write(write642);
@@ -182,9 +182,20 @@ bool ControllerXMLMulti::removeEntry(const Entry& e)
     return ret;
 }
 
-QStringList ControllerXMLMulti::selectAccount()
+QStringList ControllerXMLMulti::selectAccount(QString profile)
 {
-    return m_accounts.keys();
+    if (profile.isEmpty())
+        return m_accounts.keys();
+
+    QStringList ret;
+    QDir dir("data/" + profile);
+    auto list = dir.entryInfoList(QStringList("*.account"));
+
+    for (auto it : list) {
+        ret << it.baseName();
+    }
+
+    return ret;
 }
 
 bool ControllerXMLMulti::removeAccount(QString account)
@@ -192,10 +203,10 @@ bool ControllerXMLMulti::removeAccount(QString account)
     QDir dir;
     dir.cd("data");
     QFile file;
-    file.setFileName("data\\" + currentProfile() + "\\" + account + ".xml");
-    
+    file.setFileName("data\\" + currentProfile() + "\\" + account + ".account");
+
     bool ret = (m_accounts.remove(account) > 0 && file.remove());
-        
+
     return ret;
 }
 
@@ -449,13 +460,10 @@ bool ControllerXMLMulti::init()
     
     dir.cd(m_currentProfile);
 
-    auto infoList = dir.entryList(QStringList("*.xml"), QDir::Files);
+    auto infoList = dir.entryList(QStringList("*.account"), QDir::Files);
     m_accounts.clear();
     for(auto filename: infoList)
     {
-        if(filename.contains("_clear"))
-            continue;
-        
         QDomDocument doc;
         QFile file;
         file.setFileName(basename+"\\"+m_currentProfile+"\\"+filename);

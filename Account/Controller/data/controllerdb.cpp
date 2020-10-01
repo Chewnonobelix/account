@@ -300,7 +300,7 @@ bool ControllerDB::isConnected() const
     return m_db.isOpen();
 }
 
-QStringList ControllerDB::selectAccount()
+QStringList ControllerDB::selectAccount(QString)
 {
     QStringList res;
     
