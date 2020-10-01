@@ -6,6 +6,6 @@ void TcpServer::incomingConnection(qintptr socket)
     s->setSocketDescriptor(socket);
 
     s->getRemoteName();
-    //    s->getProfileid();
+    s->getSyncIds();
     addPendingConnection(s);
 }
