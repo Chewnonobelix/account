@@ -121,12 +121,13 @@ public slots:
     virtual bool addProfile(QString, QString) override;
     virtual bool deleteProfile(QString) override;
 
-    virtual QMap<QUuid, Debt> selectDebt();
-    virtual bool addDebt(const Debt &);
-    virtual bool removeDebt(const Debt &);
-    virtual bool updateDebt(const Debt &);
+    virtual QMap<QUuid, Debt> selectDebt() override;
+    virtual bool addDebt(const Debt &) override;
+    virtual bool removeDebt(const Debt &) override;
+    virtual bool updateDebt(const Debt &) override;
 
     bool init() override;
+    QSharedPointer<InterfaceDataSave> clone() const override;
 };
 
 Q_DECLARE_METATYPE(ControllerDB)

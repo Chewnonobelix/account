@@ -48,44 +48,45 @@ public:
 
 public slots:
 
-    virtual bool addEntry(const Entry&);
-    virtual QMultiMap<QDate, Entry> selectEntry();
-    virtual bool removeEntry(const Entry&);
+    virtual bool addEntry(const Entry &) override;
+    virtual QMultiMap<QDate, Entry> selectEntry() override;
+    virtual bool removeEntry(const Entry &) override;
 
-    virtual QStringList selectAccount(QString);
-    virtual bool removeAccount(QString);
+    virtual QStringList selectAccount(QString) override;
+    virtual bool removeAccount(QString) override;
 
-    virtual bool updateEntry(const Entry &);
+    virtual bool updateEntry(const Entry &) override;
 
-    virtual bool addCategory(QString, QString);
-    virtual bool removeCategory(QString);
-    virtual QMultiMap<QString, QString> selectCategory();
+    virtual bool addCategory(QString, QString) override;
+    virtual bool removeCategory(QString) override;
+    virtual QMultiMap<QString, QString> selectCategory() override;
 
-    virtual bool addBudget(const Budget &);
-    virtual bool removeBudget(const Budget&);
-    virtual QList<Budget> selectBudgets();
-    virtual bool updateBudget(const Budget &);
-    
-    virtual bool addFrequency(const Frequency&);
-    virtual bool removeFrequency(const Frequency&);
-    virtual bool updateFrequency(const Frequency&);
-    virtual QList<Frequency> selectFrequency();
-    
-    virtual QMap<QUuid, CommonExpanse> selectCommon();
-    virtual bool addCommon(const CommonExpanse&);
-    virtual bool removeCommon(const CommonExpanse&);
-    virtual bool updateCommon(const CommonExpanse&);
-    
-    virtual QStringList selectProfile();
-    virtual bool addProfile(QString, QString);
-    virtual bool deleteProfile(QString);
+    virtual bool addBudget(const Budget &) override;
+    virtual bool removeBudget(const Budget &) override;
+    virtual QList<Budget> selectBudgets() override;
+    virtual bool updateBudget(const Budget &) override;
 
-    virtual QMap<QUuid, Debt> selectDebt();
-    virtual bool addDebt(const Debt &);
-    virtual bool removeDebt(const Debt &);
-    virtual bool updateDebt(const Debt &);
+    virtual bool addFrequency(const Frequency &) override;
+    virtual bool removeFrequency(const Frequency &) override;
+    virtual bool updateFrequency(const Frequency &) override;
+    virtual QList<Frequency> selectFrequency() override;
 
-    virtual bool init();
+    virtual QMap<QUuid, CommonExpanse> selectCommon() override;
+    virtual bool addCommon(const CommonExpanse &) override;
+    virtual bool removeCommon(const CommonExpanse &) override;
+    virtual bool updateCommon(const CommonExpanse &) override;
+
+    virtual QStringList selectProfile() override;
+    virtual bool addProfile(QString, QString) override;
+    virtual bool deleteProfile(QString) override;
+
+    virtual QMap<QUuid, Debt> selectDebt() override;
+    virtual bool addDebt(const Debt &) override;
+    virtual bool removeDebt(const Debt &) override;
+    virtual bool updateDebt(const Debt &) override;
+
+    virtual bool init() override;
+    virtual QSharedPointer<InterfaceDataSave> clone() const override;
 };
 
 Q_DECLARE_METATYPE(ControllerXMLMulti)

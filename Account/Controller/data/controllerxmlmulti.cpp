@@ -15,6 +15,11 @@ ControllerXMLMulti::~ControllerXMLMulti()
     close();
 }
 
+QSharedPointer<InterfaceDataSave> ControllerXMLMulti::clone() const
+{
+    return DesignPattern::factory<ControllerXMLMulti>(*this);
+}
+
 void ControllerXMLMulti::close()
 {
     QDir dir;

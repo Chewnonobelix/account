@@ -11,6 +11,19 @@ InterfaceDataSave::InterfaceDataSave()
         m_syncs.setContent(QString("<sync_profile />"));
 }
 
+InterfaceDataSave::InterfaceDataSave(const InterfaceDataSave &i)
+    : QObject(nullptr), backup(i.backup), m_currentProfile(i.currentProfile()),
+      m_currentAccount(i.currentAccount()), m_path(i.m_path)
+{
+    QFile f("synchronization.xml");
+    f.open(QIODevice::ReadWrite);
+    m_syncs.setContent(&f);
+    f.close();
+
+    if (m_syncs.toByteArray().isEmpty())
+        m_syncs.setContent(QString("<sync_profile />"));
+}
+
 InterfaceDataSave::~InterfaceDataSave()
 {
     QFile f("synchronization.xml");

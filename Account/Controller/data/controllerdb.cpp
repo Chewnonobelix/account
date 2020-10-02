@@ -22,6 +22,11 @@ ControllerDB::~ControllerDB()
     }
 }
 
+QSharedPointer<InterfaceDataSave> ControllerDB::clone() const
+{
+    return DesignPattern::factory<ControllerDB>(*this);
+}
+
 bool ControllerDB::init()
 {
     if(!backup && m_db.connectionNames().contains("default"))

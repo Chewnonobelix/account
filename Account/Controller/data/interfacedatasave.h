@@ -8,6 +8,7 @@
 #include "Model/entry.h"
 #include "Model/frequency.h"
 #include "Model/synchronizationprofile.h"
+#include "designpattern.h"
 #include <QDomDocument>
 #include <QFile>
 #include <QList>
@@ -27,7 +28,7 @@ protected:
 
 public:
     InterfaceDataSave();
-    inline InterfaceDataSave(const InterfaceDataSave&): QObject(nullptr) {}
+    InterfaceDataSave(const InterfaceDataSave &);
     virtual ~InterfaceDataSave();
     inline void setBackup(bool back) { backup = back;}
     inline void setPath(QString path) { m_path = path; }
@@ -94,6 +95,7 @@ public slots:
     virtual bool updateSyncProfile(const SynchronizationProfile&);
         
     virtual bool init() = 0;
+    virtual QSharedPointer<InterfaceDataSave> clone() const = 0;
 };
 
 #endif // INTERFACEDATASAVE_H
