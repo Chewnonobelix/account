@@ -162,7 +162,7 @@ QMultiMap<QDate, Entry> ControllerXMLMulti::selectEntry()
     {
         QDomElement el = children.at(i).toElement();
 
-        if (el.attribute("removed", "false") == "true")
+        if (el.attribute("removed", "false").toInt())
             continue;
         
         Entry e = selectEntryNode(el);
@@ -194,6 +194,7 @@ QStringList ControllerXMLMulti::selectAccount(QString profile)
     if (profile.isEmpty()) {
         for (auto it : m_accounts.keys()) {
             auto split = it.split('/');
+
             if (split.first() == currentProfile())
                 ret << split.last();
         }
@@ -486,7 +487,7 @@ bool ControllerXMLMulti::init()
     auto profileList = dir.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot);
 
     for (auto it : profileList) {
-        dir.cd(it.absolutePath());
+        dir.cd(it.baseName());
         auto infoList = dir.entryList(QStringList("*.account"), QDir::Files);
 
         for (auto filename : infoList) {
@@ -507,6 +508,7 @@ bool ControllerXMLMulti::init()
 
             file.close();
         }
+        dir.cdUp();
     }
 
     return true;
