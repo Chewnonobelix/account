@@ -84,7 +84,7 @@ void ControllerInformation::pageChange()
 
 void ControllerInformation::supportChange(int support)
 {
-    m_entry.setSupport((Account::EntryTypeEnum)support);
+    m_entry.setSupport((Account::SupportEnum)support);
     m_db->updateEntry(m_entry);
     emit s_exec();
 }

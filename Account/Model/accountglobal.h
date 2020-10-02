@@ -18,9 +18,9 @@ namespace Account
     
     enum Granularity {Month = 3, Year = 5, Over};
     Q_ENUM_NS(Granularity)
-    
-    enum EntryTypeEnum {Money, CB, Transfert, Cheque};
-    Q_ENUM_NS(EntryTypeEnum)
+
+    enum SupportEnum { Money, CB, Transfert, Cheque };
+    Q_ENUM_NS(SupportEnum)
 
     int ACCOUNT_EXPORT nbDay(QDate, FrequencyEnum);
 }

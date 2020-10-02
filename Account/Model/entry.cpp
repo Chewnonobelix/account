@@ -106,12 +106,12 @@ void Entry::setBlocked(bool b)
     setMetadata("blocked", b);
 }
 
-Account::EntryTypeEnum Entry::support() const
+Account::SupportEnum Entry::support() const
 {
-    return hasMetadata("support") ? metaData<Account::EntryTypeEnum>("support") : Account::CB;
+    return hasMetadata("support") ? metaData<Account::SupportEnum>("support") : Account::CB;
 }
 
-void Entry::setSupport(Account::EntryTypeEnum s)
+void Entry::setSupport(Account::SupportEnum s)
 {
     setMetadata("support", s);
 }

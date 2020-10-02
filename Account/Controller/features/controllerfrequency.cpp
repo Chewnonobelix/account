@@ -277,7 +277,7 @@ void ControllerFrequency::updateFreqEndless(QVariant id, bool e)
 void ControllerFrequency::updateFreqSupport(QVariant id, int support)
 {
     Entry ref = m_freqs[id.toUuid()].referenceEntry();
-    ref.setSupport((Account::EntryTypeEnum)support);
+    ref.setSupport((Account::SupportEnum)support);
     m_freqs[id.toUuid()].setReferenceEntry(ref);
     m_db->updateFrequency(m_freqs[id.toUuid()]);
 }

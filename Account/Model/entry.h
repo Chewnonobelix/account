@@ -22,7 +22,7 @@ class ACCOUNT_EXPORT Entry: public MetaData
     Q_PROPERTY(QString type READ type)
     Q_PROPERTY(QUuid id READ id)
     Q_PROPERTY(bool isBlocked READ isBlocked)
-    Q_PROPERTY(Account::EntryTypeEnum support READ support)
+    Q_PROPERTY(Account::SupportEnum support READ support)
     Q_PROPERTY(QString title READ title)
     Q_PROPERTY(bool estimated READ estimated)
     Q_PROPERTY(QString category READ category)
@@ -57,8 +57,8 @@ public:
     void setCategory(QString category);
     bool isBlocked() const;
     void setBlocked(bool);
-    Account::EntryTypeEnum support() const;
-    void setSupport(Account::EntryTypeEnum);
+    Account::SupportEnum support() const;
+    void setSupport(Account::SupportEnum);
 
     operator QVariantMap() const;
     Entry &operator=(const QJsonObject &);

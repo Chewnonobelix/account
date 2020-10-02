@@ -195,7 +195,7 @@ void ControllerDebt::onInitialSupportChanged(QString id, int s)
             e = it;
     }
 
-    e.setSupport((Account::EntryTypeEnum) s);
+    e.setSupport((Account::SupportEnum) s);
     b.setInitial(e);
     db()->updateDebt(b);
 }
