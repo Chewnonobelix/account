@@ -42,6 +42,7 @@ private:
 public:
     CommonExpanse();
     CommonExpanse(const CommonExpanse&) = default;
+    using MetaData::MetaData;
     ~CommonExpanse() = default;
 
     CommonExpanse& operator= (const CommonExpanse&) = default;

@@ -13,8 +13,6 @@ Entry::Entry()
     setCategory(QString());
 }
 
-Entry::Entry(const QJsonObject &obj) : MetaData(obj) {}
-
 Entry& Entry::operator = (const Entry& e)
 {
     MetaData::operator=(e);

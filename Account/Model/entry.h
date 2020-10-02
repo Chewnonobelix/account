@@ -32,7 +32,7 @@ private:
 public:
     Entry();
     Entry(const Entry &) = default;
-    Entry(const QJsonObject &);
+    using MetaData::MetaData;
     ~Entry() = default;
 
     Entry& operator =(const Entry&);

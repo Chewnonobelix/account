@@ -26,6 +26,7 @@ public:
     ~Debt() = default;
 
     Debt &operator=(const Debt &);
+    using MetaData::MetaData;
 
     QUuid id() const;
     void setId(QUuid);

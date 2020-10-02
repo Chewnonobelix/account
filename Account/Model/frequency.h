@@ -32,7 +32,8 @@ public:
     Frequency();
     Frequency(const Frequency&) = default;
     ~Frequency() = default;
-    
+    using MetaData::MetaData;
+
     Frequency& operator =(const Frequency&);
     
     QUuid id() const;

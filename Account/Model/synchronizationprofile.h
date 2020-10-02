@@ -29,6 +29,7 @@ public:
     SynchronizationProfile(const SynchronizationProfile&) = default;
     ~SynchronizationProfile() = default;
     SynchronizationProfile &operator=(const SynchronizationProfile &);
+    using MetaData::MetaData;
 
     QUuid id() const;
     void setId(QUuid);
