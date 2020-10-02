@@ -23,7 +23,7 @@ private:
     QMap<QString, QMap<QString, QString>> restapi;
 
 public:
-    AccountSocket();
+    AccountSocket(QObject * = nullptr);
     ~AccountSocket();
 
     void parser(QString);

@@ -1,5 +1,6 @@
 #include "controllersynchronization.h"
 
+ControllerSynchronization::ControllerSynchronization() : AbstractController(), m_server(this) {}
 
 int ControllerSynchronization::exec()
 {
@@ -73,10 +74,10 @@ void ControllerSynchronization::updateViewList()
 void ControllerSynchronization::lookup()
 {
     qDebug() << "Lookup" << m_server.isListening();
-        qDebug() << "Broadcast"
-                 << m_broadcast.writeDatagram("account_server_connect:test_server",
-                                              QHostAddress(QHostAddress::Broadcast),
-                                              9000);
+    qDebug() << "Broadcast"
+             << m_broadcast.writeDatagram("account_server_connect:test_server",
+                                          QHostAddress(QHostAddress::Broadcast),
+                                          9000);
 }
 
 void ControllerSynchronization::sync()

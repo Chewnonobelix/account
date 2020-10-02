@@ -1,6 +1,6 @@
 #include "AccountSocket.h"
 
-AccountSocket::AccountSocket() : QTcpSocket()
+AccountSocket::AccountSocket(QObject *parent) : QTcpSocket(parent)
 {
     restapi["post"]["remoteName"] = "onPostRemoteName";
     restapi["get"]["remoteName"] = "onGetRemoteName";

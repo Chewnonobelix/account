@@ -28,8 +28,8 @@ private slots:
 
 protected:
 public:
-    ControllerSynchronization() = default;
-    
+    ControllerSynchronization();
+
     int exec();
     void setView(QObject *);
     void lookup();
