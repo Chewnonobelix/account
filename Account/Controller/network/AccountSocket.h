@@ -44,8 +44,10 @@ public:
 
     void getSyncIds();
     void postSyncIds();
+    void removeSyncIds();
     Q_INVOKABLE void onGetSyncIds(QString);
     Q_INVOKABLE void onPostSyncIds(QString);
+    Q_INVOKABLE void onRemoveSyncIds(QString);
 
     void getSyncProfile();
     void postSyncProfile();

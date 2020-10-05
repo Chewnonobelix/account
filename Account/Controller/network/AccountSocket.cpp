@@ -6,6 +6,7 @@ AccountSocket::AccountSocket(QObject *parent) : QTcpSocket(parent)
     restapi["get"]["remoteName"] = "onGetRemoteName";
     restapi["post"]["syncIds"] = "onPostSyncIds";
     restapi["get"]["syncIds"] = "onGetSyncIds";
+    restapi["remove"]["syncIds"] = "onRemoveSyncIds";
     restapi["post"]["syncProfile"] = "onPostSyncProfile";
     restapi["get"]["syncProfile"] = "onGetSyncProfile";
     restapi["update"]["syncProfile"] = "onUpdateSyncProfile";
@@ -246,6 +247,9 @@ void AccountSocket::onGetSyncIds(QString)
 {
     postSyncIds();
 }
+
+void AccountSocket::removeSyncIds() {}
+void AccountSocket::onRemoveSyncIds(QString) {}
 
 void AccountSocket::getSyncProfile()
 {
