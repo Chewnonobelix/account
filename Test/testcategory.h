@@ -21,9 +21,11 @@ private slots:
     void cleanupTestCase();
 
     void testSetId();
+    void testSetName();
     void testSetType();
     void testSetBoth();
     void testGetId();
+    void testGetName();
     void testGetType();
     void testGetBoth();
 

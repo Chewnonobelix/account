@@ -3,6 +3,7 @@
 const QUuid ide = QUuid::createUuid();
 const bool both = true;
 const Account::TypeEnum type = Account::income;
+const QString name = "name1";
 
 void TestCategory::initTestCase()
 {
@@ -15,6 +16,12 @@ void TestCategory::cleanupTestCase() {}
 void TestCategory::testSetId()
 {
     model.setId(ide);
+    QVERIFY(true);
+}
+
+void TestCategory::testSetName()
+{
+    model.setName(name);
     QVERIFY(true);
 }
 
@@ -33,6 +40,11 @@ void TestCategory::testSetBoth()
 void TestCategory::testGetId()
 {
     QCOMPARE(model.id(), ide);
+}
+
+void TestCategory::testGetName()
+{
+    QCOMPARE(model.name(), name);
 }
 
 void TestCategory::testGetType()

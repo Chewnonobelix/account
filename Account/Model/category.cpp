@@ -10,6 +10,16 @@ void Category::setId(QUuid id)
     setMetadata("id", id);
 }
 
+QString Category::name() const
+{
+    return metaData<QString>("name");
+}
+
+void Category::setName(QString name)
+{
+    setMetadata("name", name);
+}
+
 Account::TypeEnum Category::type() const
 {
     return metaData<Account::TypeEnum>("type");
@@ -28,4 +38,9 @@ bool Category::both() const
 void Category::setBoth(bool both)
 {
     setMetadata("both", both);
+}
+
+bool operator==(const Category &c1, const Category &c2)
+{
+    return c1.id() == c2.id();
 }
