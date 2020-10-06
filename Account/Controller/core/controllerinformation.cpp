@@ -35,7 +35,7 @@ void ControllerInformation::view(QUuid id)
 {
     m_entry = AbstractController::entry(id);
 
-    QStringList catList = m_db->selectCategory().values(m_entry.type());
+    QStringList catList /*= m_db->selectCategory().values(m_entry.type())*/;
     catList << "";
     emit this->catList(catList);
 
@@ -70,7 +70,7 @@ void ControllerInformation::categoryChange(QString cat)
 
 void ControllerInformation::addNewCategory(QString cat)
 {
-    m_db->addCategory(cat, m_entry.type());
+    //    m_db->addCategory(cat, m_entry.type());
     categoryChange(cat);
     view(m_entry.id());
     emit s_exec();

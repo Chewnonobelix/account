@@ -3,6 +3,7 @@
 
 #include "Model/accountglobal.h"
 #include "Model/budget.h"
+#include "Model/category.h"
 #include "Model/commonexpanse.h"
 #include "Model/debt.h"
 #include "Model/entry.h"
@@ -58,13 +59,14 @@ public slots:
     virtual QStringList selectAccount(QString = "") = 0;
     virtual bool removeAccount(QString) = 0;
 
-    virtual bool updateEntry(const Entry&) = 0;
-    
-    virtual bool addCategory(QString, QString) = 0;
+    virtual bool updateEntry(const Entry &) = 0;
+
+    virtual bool addCategory(const Category &) = 0;
     virtual bool removeCategory(QString) = 0;
-    virtual QMultiMap<QString, QString> selectCategory() = 0;
-    
-    virtual bool addBudget(const Budget&) = 0;
+    virtual QMultiMap<Account::TypeEnum, Category> selectCategory() = 0;
+    virtual bool updateCategory(const Category &) = 0;
+
+    virtual bool addBudget(const Budget &) = 0;
     virtual bool removeBudget(const Budget&) = 0;
     virtual QList<Budget> selectBudgets() = 0;
     virtual bool updateBudget(const Budget&) = 0;

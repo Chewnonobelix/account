@@ -17,8 +17,8 @@ void ControllerBudget::openManager()
     emit clearCat();
     emit blocked(true);
 
-    auto incomes = m_db->selectCategory().values("income");
-    auto outcomes = m_db->selectCategory().values("outcome");
+    //    auto incomes = m_db->selectCategory().values("income");
+    //    auto outcomes = m_db->selectCategory().values("outcome");
 
     auto func = [&](QString type, QStringList list) {
         for (auto it : list) {
@@ -31,8 +31,8 @@ void ControllerBudget::openManager()
         }
     };
 
-    func("income", incomes);
-    func("outcome", outcomes);
+    //    func("income", incomes);
+    //    func("outcome", outcomes);
 
     if (!m_selected.isEmpty())
         emit selectCat(m_selected);

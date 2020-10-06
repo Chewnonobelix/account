@@ -273,65 +273,94 @@ bool ControllerXMLMulti::updateEntry(const Entry & e)
     return true;
 }
 
-bool ControllerXMLMulti::addCategory(QString name, QString type)
+bool ControllerXMLMulti::addCategory(const Category &c)
 {
     auto root = m_accounts[currentProfile() + "/" + currentAccount()]
                     .elementsByTagName("database")
                     .at(0)
                     .toElement();
-    auto list = root.elementsByTagName("category");
-    
-    for(int i = 0; i < list.size(); i++)
-        if(list.at(i).toElement().text() == name)
-            return false;
-
-    QDomElement el = m_accounts[currentProfile() + "/" + currentAccount()].createElement(
-        "category");
-    el.setAttribute("type", type);
-    QDomText txt = m_accounts[currentProfile() + "/" + currentAccount()].createTextNode(name);
-    el.appendChild(txt);
-    root.appendChild(el);
+    auto cat = selectCategory();
+    bool ret = false;
+    for (auto it : cat) {
+        if (it.name() == c.name() && it.type() != c.type()) {
+            it.setBoth(true);
+            updateCategory(it);
+            ret = true;
+        } else if (it.name() != c.name()) {
+            QMap<QString, QString> attr;
+            attr["id"] = QUuid::createUuid().toString();
+            attr["type"] = QString::number((int) c.type());
+            adder(root, "category", "", attr);
+            Category ct(c);
+            ct.setId(QUuid::fromString(attr["id"]));
+            ret = updateCategory(ct);
+        }
+    }
 
     emit s_updateCategory();
 
-    return true;
+    return ret;
 }
 
-bool ControllerXMLMulti::removeCategory(QString name)
+bool ControllerXMLMulti::removeCategory(QString id)
 {
     auto root = m_accounts[currentProfile() + "/" + currentAccount()]
                     .elementsByTagName("database")
                     .at(0)
                     .toElement();
     auto list = root.elementsByTagName("category");
-    
+    bool ret = false;
     for(int i = 0; i < list.size(); i++)
     {
-        QDomElement el = list.at(i).toElement();
-        if(el.text() == name)
-        {
-            auto ret = root.removeChild(el);
-            
-            emit s_updateCategory();
-            
-            return !ret.isNull();
+        auto el = list.at(i).toElement();
+        if (el.attribute("id") == id) {
+            ret = root.removeChild(el).isNull();
         }
     }
-    return false;
+
+    return ret;
 }
 
-QMultiMap<QString, QString> ControllerXMLMulti::selectCategory()
+QMultiMap<Account::TypeEnum, Category> ControllerXMLMulti::selectCategory()
 {
     auto categories = m_accounts[currentProfile() + "/" + currentAccount()]
                           .documentElement()
                           .elementsByTagName("category");
-    QMultiMap<QString, QString> ret;
+    QMultiMap<Account::TypeEnum, Category> ret;
     for(int i = 0; i < categories.size(); i++)
     {
         QDomElement el = categories.at(i).toElement();
-        ret.insert(el.attribute("type"), el.text());
+        Category c;
+
+        c.setId(QUuid::fromString(el.attribute("id")));
+        auto name = el.elementsByTagName("name").at(0).toElement().text();
+        c.setName(name);
+        c.setBoth(el.attribute("both").toInt());
+        c.setType((Account::TypeEnum) el.attribute("type").toInt());
+        ret.insert(c.type(), c);
+        if (c.both())
+            ret.insert(c.type() == Account::income ? Account::outcome : Account::income, c);
     }
     
+    return ret;
+}
+
+bool ControllerXMLMulti::updateCategory(const Category &c)
+{
+    auto categories = m_accounts[currentProfile() + "/" + currentAccount()]
+                          .documentElement()
+                          .elementsByTagName("category");
+
+    bool ret = false;
+    for (int i = 0; i < categories.size(); i++) {
+        QDomElement el = categories.at(i).toElement();
+        if (el.attribute("id") == c.id().toString()) {
+            setter(el, "name", c.name());
+            el.setAttribute("both", c.both());
+            ret = true;
+        }
+    }
+
     return ret;
 }
 

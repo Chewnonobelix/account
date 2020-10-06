@@ -202,7 +202,7 @@ void ControllerDebt::onInitialSupportChanged(QString id, int s)
 
 void ControllerDebt::onNewCategory(QString type, QString cat)
 {
-    db()->addCategory(cat, type);
+    //    db()->addCategory(cat, type);
 }
 
 void ControllerDebt::generate(QString id)

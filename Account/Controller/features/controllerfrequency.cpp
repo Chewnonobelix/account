@@ -65,9 +65,9 @@ void ControllerFrequency::endThread(QString)
 void ControllerFrequency::loadCat()
 {
     auto cat = m_db->selectCategory();
-    QStringList income = cat.values("income");
+    QStringList income /*= cat.values("income")*/;
     income<<"";
-    QStringList outcome = cat.values("outcome");
+    QStringList outcome /*= cat.values("outcome")*/;
     outcome << "";
 
     emit catList(income, outcome);
@@ -194,7 +194,7 @@ void ControllerFrequency::removeFrequency(QVariant id)
 
 void ControllerFrequency::addNewCategory(QVariant id, QString cat, QString type)
 {
-    m_db->addCategory(cat, type);
+    //    m_db->addCategory(cat, type);
     loadCat();
     updateFreqCat(id, cat);
 }

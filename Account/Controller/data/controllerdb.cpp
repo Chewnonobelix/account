@@ -363,7 +363,7 @@ bool ControllerDB::removeEntry(const Entry & e)
     return ret;
 }
 
-bool ControllerDB::addCategory(QString n, QString t)
+bool ControllerDB::addCategory(const Category &n)
 {    
     return false;
 }
@@ -373,10 +373,10 @@ bool ControllerDB::removeCategory(QString name)
     return false;
 }
 
-QMultiMap<QString, QString> ControllerDB::selectCategory()
+QMultiMap<Account::TypeEnum, Category> ControllerDB::selectCategory()
 {
-    QMultiMap<QString, QString> ret;
-    
+    QMultiMap<Account::TypeEnum, Category> ret;
+
     return ret;
 }
 

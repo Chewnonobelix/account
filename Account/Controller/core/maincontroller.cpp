@@ -267,7 +267,7 @@ void MainController::quickOpen()
 {
     QObject* quick = engine().rootObjects().first()->findChild<QObject*>("quick");
     auto cats = m_db->selectCategory();
-    QStringList modi = cats.values("income"), modo = cats.values("outcome");
+    QStringList modi /*= cats.values("income")*/, modo /* = cats.values("outcome")*/;
     modi<<""; modo<<"";
     quick->setProperty("outcomeCats", modo);
     quick->setProperty("incomeCats", modi);
@@ -302,8 +302,8 @@ void MainController::quickAddCategory(QString cat)
     if(typecombo)
     {
         QString type = typecombo->property("currentValue").toString();
-        m_db->addCategory(cat, type);
-        QStringList list = m_db->selectCategory().values(type);
+        //        m_db->addCategory(cat, type);
+        QStringList list /*= m_db->selectCategory().values(type)*/;
         list<<"";
         quick->setProperty(type == "income" ? "incomeCats" : "outcomeCats", list);
         QMetaObject::invokeMethod(combo, "setting", Q_ARG(QVariant, cat));

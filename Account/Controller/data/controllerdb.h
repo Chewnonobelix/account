@@ -97,11 +97,12 @@ public slots:
     bool removeAccount(QString) override;
 
     bool updateEntry(const Entry &) override;
-    
-    bool addCategory(QString, QString) override;
+
+    bool addCategory(const Category &) override;
     bool removeCategory(QString) override;
-    QMultiMap<QString, QString> selectCategory() override;
-    
+    QMultiMap<Account::TypeEnum, Category> selectCategory() override;
+    virtual bool updateCategory(const Category &) override { return false; }
+
     virtual bool addBudget(const Budget&) override;
     virtual bool removeBudget(const Budget&) override;
     virtual QList<Budget> selectBudgets() override;

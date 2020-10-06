@@ -31,7 +31,7 @@ bool TransfertDatabase::transfertCategories()
         auto cats = m_db->selectCategory();
         for(auto it2 = cats.begin(); it2 != cats.end(); it2++)
         {
-            m_backup->addCategory(it2.value(), it2.key());
+            //            m_backup->addCategory(it2.value(), it2.key());
         }
     }
     return ret;
