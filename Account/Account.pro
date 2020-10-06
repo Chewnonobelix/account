@@ -45,6 +45,7 @@ SOURCES += \
     Controller/network/AccountSocket.cpp \
     Controller/network/TcpServer.cpp \
     Model/accountglobal.cpp \
+    Model/category.cpp \
     Model/commonexpanse.cpp \
     Model/debt.cpp \
     Model/frequency.cpp \
@@ -98,6 +99,7 @@ HEADERS += \
     Controller/graph/graphcontroller.h \
     Controller/network/AccountSocket.h \
     Controller/network/TcpServer.h \
+    Model/category.h \
     Model/commonexpanse.h \
     Model/debt.h \
     Model/entry.h \
