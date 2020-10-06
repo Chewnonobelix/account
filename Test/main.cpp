@@ -2,18 +2,21 @@
 #include <QTest>
 #include <QDebug>
 
-#include "testinformation.h"
+#include "testcategory.h"
+#include "testdebt.h"
 #include "testentry.h"
 #include "testfrequency.h"
-#include "testdebt.h"
+#include "testinformation.h"
 
 int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
     int status = 0;
 
-    TestInformation ti;
+    TestCategory tc;
+    status |= QTest::qExec(&tc, argc, argv);
 
+    TestInformation ti;
     status |= QTest::qExec(&ti, argc, argv);
 
     TestEntry te;

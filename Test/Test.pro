@@ -7,12 +7,14 @@ TEMPLATE = app
 
 SOURCES +=  \
     main.cpp \
+    testcategory.cpp \
     testdebt.cpp \
     testentry.cpp \
     testfrequency.cpp \
     testinformation.cpp
 
 HEADERS +=  \
+    testcategory.h \
     testdebt.h \
     testentry.h \
     testfrequency.h \
