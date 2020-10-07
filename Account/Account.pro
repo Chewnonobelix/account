@@ -24,6 +24,7 @@ DEPENDPATH += $$OUT_PWD/../DesignLibrary/DesignPattern/debug
 LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
 
 SOURCES += \
+    Controller/ItemModel/categorylistmodel.cpp \
     Controller/core/abstractcontroller.cpp \
     Controller/core/controllerinformation.cpp \
     Controller/core/controllersettings.cpp \
@@ -75,6 +76,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 #                account_en.ts \
 
 HEADERS += \
+    Controller/ItemModel/categorylistmodel.h \
     Controller/core/abstractcontroller.h \
     Controller/core/controllerinformation.h \
     Controller/core/controllersettings.h \
