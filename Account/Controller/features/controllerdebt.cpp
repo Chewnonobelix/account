@@ -134,7 +134,7 @@ void ControllerDebt::onInitialDateChanged(QString id, QDate d)
     db()->updateDebt(b);
 }
 
-void ControllerDebt::onInitialTypeChanged(QString id, QString t)
+void ControllerDebt::onInitialTypeChanged(QString id, int t)
 {
     Debt b = db()->selectDebt()[QUuid::fromString(id)];
     auto el = db()->selectEntry();
@@ -145,7 +145,7 @@ void ControllerDebt::onInitialTypeChanged(QString id, QString t)
             e = it;
     }
 
-    e.setType(t);
+    e.setType(Account::TypeEnum(t));
     b.setInitial(e);
     db()->updateDebt(b);
 }

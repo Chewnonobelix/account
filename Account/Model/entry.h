@@ -47,8 +47,8 @@ public:
     void setValue(double value);
     QDate date() const;
     void setDate(QDate date);
-    QString type() const;
-    void setType(QString type);
+    Account::TypeEnum type() const;
+    void setType(Account::TypeEnum type);
     QString title() const;
     void setTitle(QString title);
     bool estimated() const;

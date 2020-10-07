@@ -102,13 +102,12 @@ void AbstractController::addEntry(const Entry& e)
         
         if(et.date() < init.date())
         {
-            QMetaEnum qme = QMetaEnum::fromType<Account::TypeEnum>();
             QDate nd = et.date().addDays(-1);
             
             
             init.setDate(nd);
             double val = init.value();
-            val -= (et.value()*qme.keysToValue(et.type().toLower().toLatin1()));
+            val -= (et.value() * int(et.type()));
             init.setValue(val);
             updateEntry(init);
         }

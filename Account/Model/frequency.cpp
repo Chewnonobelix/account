@@ -63,7 +63,7 @@ void Frequency::setNbGroup(int nbGroup)
 
 Frequency::Frequency()
 {
-    m_referenceEntry.setType("outcome");
+    m_referenceEntry.setType(Account::Outcome);
     setId(QUuid());
     setFreq(Account::FrequencyEnum::Unique);
     setBegin(QDate::currentDate());

@@ -7,7 +7,7 @@ Entry::Entry()
     setValue(0);
     setSupport(Account::CB);
     setDate(QDate::currentDate());
-    setType("outcome");
+    setType(Account::Outcome);
     setTitle(QString());
     setEstimated(false);
     setCategory(QString());
@@ -60,12 +60,12 @@ void Entry::setDate(QDate date)
     setMetadata("date", date);
 }
 
-QString Entry::type() const
+Account::TypeEnum Entry::type() const
 {
-    return metaData<QString>("type");
+    return metaData<Account::TypeEnum>("type");
 }
 
-void Entry::setType(QString type)
+void Entry::setType(Account::TypeEnum type)
 {
     setMetadata("type", type);
 }

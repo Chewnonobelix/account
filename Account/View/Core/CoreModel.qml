@@ -82,10 +82,10 @@ QtObject {
         id: typeModel
 
         function find (role) {
-             return role === "income" ? 0 : 1
+             return role === Account.Income ? 0 : 1
         }
 
-        ListElement {name: qsTr("Income"); type: "income"}
-        ListElement {name: qsTr("Outcome"); type: "outcome"}
+        ListElement {name: qsTr("Income"); type: Account.Income}
+        ListElement {name: qsTr("Outcome"); type: Account.Outcome}
     }
 }

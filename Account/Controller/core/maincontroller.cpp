@@ -218,14 +218,14 @@ void MainController::adding(QVariant ref)
 
     if (map["newAccount"].toBool()) {
         QVariant val, date, account;
-
         val = map["value"];
         date = map["date"];
         account = map["title"];
+        db()->setCurrentAccount(account.toString());
         e.setAccount(account.toString());
         e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
         e.setValue(val.toDouble());
-        e.setType("income");
+        e.setType(Account::Income);
 
         e.setTitle("Initial");
 
@@ -240,7 +240,7 @@ void MainController::adding(QVariant ref)
 
         e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
         e.setValue(val.toDouble());
-        e.setType(type.toString());
+        e.setType(type.value<Account::TypeEnum>());
 
         e.setTitle(label.toString());
 
@@ -284,7 +284,7 @@ void MainController::quickAdding()
         e.setCategory(et.property("category").toString());
         e.setDate(QDate::fromString(et.property("date").toString(), "dd-MM-yyyy"));
         e.setValue(et.property("value").toNumber());
-        e.setType(et.property("type").toString());
+        e.setType(Account::TypeEnum(et.property("type").toInt()));
         e.setEstimated(e.date() > QDate::currentDate());
         e.setTitle(et.property("title").toString());
 

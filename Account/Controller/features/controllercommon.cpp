@@ -67,7 +67,7 @@ void ControllerCommon::addCommonEntry(QVariant ref)
     e.setTitle(map["title"].toString());
     e.setDate(QDate::fromString(map["date"].toString(), "dd-MM-yyyy"));
     e.setValue(map["value"].toDouble());
-    e.setType(map["type"].toString());
+    e.setType(map["type"].value<Account::TypeEnum>());
 
     ce.addEntries(map["member"].toString(), e);
     m_db->updateCommon(ce);

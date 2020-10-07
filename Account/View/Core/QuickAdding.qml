@@ -6,6 +6,8 @@ import QtQuick.Layouts 1.14
 import "../Style"
 import "../Functionnal"
 
+import Account 1.0
+
 Window {
     height: 500
     width: height * 9 / 16
@@ -105,7 +107,7 @@ Window {
                 objectName: "cat"
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
-                Component.onCompleted: model = Qt.binding(function() {return typeComboQuick.currentValue === "income" ? root.incomeCats : root.outcomeCats})
+                Component.onCompleted: model = Qt.binding(function() {return typeComboQuick.currentValue === Account.Income ? root.incomeCats : root.outcomeCats})
 
                 onAddCategory: _main.quickAddCategory(cat)
             }

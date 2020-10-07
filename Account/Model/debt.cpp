@@ -70,7 +70,7 @@ bool Debt::generate()
 
     Entry ref;
     ref.setValue(value / 100.0);
-    ref.setType(initial().type() == "income" ? "outcome" : "income");
+    ref.setType(initial().type() == Account::Outcome ? Account::Outcome : Account::Income);
     QDate first = initial().date();
     QDate last = first.addDays((nb() + 1) * Account::nbDay(first, freq()));
 

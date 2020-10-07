@@ -105,7 +105,7 @@ public slots:
     void updateFreqName(QVariant, QString);
     void updateFreqValue(QVariant, double);
     void updateFreqCat(QVariant, QString);
-    void updateFreqType(QVariant, QString);
+    void updateFreqType(QVariant, int);
     void updateFreqFreq(QVariant, int);
     void updateFreqEndless(QVariant, bool);
     void updateFreqSupport(QVariant, int);

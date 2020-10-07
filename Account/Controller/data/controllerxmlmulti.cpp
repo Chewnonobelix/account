@@ -63,7 +63,7 @@ void ControllerXMLMulti::createAccount(QString a)
 
 bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root, QString name )
 {
-    QDomElement el = m_accounts[currentProfile() + "/" + m_currentAccount].createElement(name);
+    QDomElement el = m_accounts[currentProfile() + "/" + currentAccount()].createElement(name);
 
     auto meta = e.metadataList();
     for (auto it : meta) {
@@ -74,7 +74,7 @@ bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root, QStrin
     adder(el, "date", e.date().toString("dd-MM-yyyy"));
     adder(el, "value", QString::number(e.value()));
     adder(el, "account", e.account());
-    adder(el, "type", e.type().toLower());
+    adder(el, "type", QString::number(int(e.type())));
     adder(el, "category", e.category());
     adder(el, "estimated", QString::number(e.estimated()));
     adder(el, "title", e.title());
@@ -99,15 +99,12 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     if (et.hasMetadata("notemit"))
         et.removeMetadata("notemit");
 
-    if (!m_accounts.contains(et.account()))
+    if (!m_accounts.contains(currentProfile() + "/" + et.account()))
         createAccount(et.account());
 
     setCurrentAccount(et.account());
 
-    QDomElement root = m_accounts[currentProfile() + "/" + currentAccount()]
-                           .elementsByTagName("database")
-                           .at(0)
-                           .toElement();
+    QDomElement root = m_accounts[currentProfile() + "/" + currentAccount()].documentElement();
 
     addEntryNode(et, root);
 
@@ -132,7 +129,7 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
     child = el.elementsByTagName("value").at(0).toElement();
     e.setValue(child.text().toDouble());
     child = el.elementsByTagName("type").at(0).toElement();
-    e.setType(child.text().toLower());
+    e.setType(Account::TypeEnum(child.text().toInt()));
     child = el.elementsByTagName("title").at(0).toElement();
     e.setTitle(child.text().toLower());
     child = el.elementsByTagName("estimated").at(0).toElement();
@@ -229,13 +226,13 @@ bool ControllerXMLMulti::removeAccount(QString account)
 
 bool ControllerXMLMulti::updateEntryNode(const Entry & e, QDomElement & el)
 {
-    
+    qDebug() << "Update" << e.id();
     Entry et = e;
     et.setMetadata("lastUpdate", QDateTime::currentDateTime());
 
     setter(el, "date", e.date().toString("dd-MM-yyyy"));
     setter(el, "value",QString::number(e.value()));
-    setter(el, "type", e.type());
+    setter(el, "type", QString::number(e.type()));
     setter(el, "category", e.category());
     setter(el, "estimated", QString::number(e.estimated()));
     setter(el, "title", e.title());
@@ -342,7 +339,7 @@ QMap<Account::TypeEnum, QMap<QUuid, Category>> ControllerXMLMulti::selectCategor
         c.setType((Account::TypeEnum) el.attribute("type").toInt());
         ret[c.type()][c.id()] = c;
         if (c.both())
-            ret[c.type() == Account::income ? Account::outcome : Account::income][c.id()] = c;
+            ret[c.type() == Account::Income ? Account::Outcome : Account::Income][c.id()] = c;
     }
     
     return ret;
@@ -582,7 +579,7 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
             auto current = freqs.at(i).toElement();
             Entry e(f.referenceEntry());
             e.setId(idf);
-            e.setType("outcome");
+            e.setType(Account::Outcome);
             e.setAccount(m_currentAccount);
             addEntryNode(e, current, "referenceEntry");
         }
