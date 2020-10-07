@@ -63,7 +63,7 @@ public slots:
 
     virtual bool addCategory(const Category &) = 0;
     virtual bool removeCategory(QString) = 0;
-    virtual QMultiMap<Account::TypeEnum, Category> selectCategory() = 0;
+    virtual QMap<Account::TypeEnum, QMap<QUuid, Category>> selectCategory() = 0;
     virtual bool updateCategory(const Category &) = 0;
 
     virtual bool addBudget(const Budget &) = 0;

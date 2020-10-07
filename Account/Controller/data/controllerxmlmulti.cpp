@@ -281,19 +281,22 @@ bool ControllerXMLMulti::addCategory(const Category &c)
                     .toElement();
     auto cat = selectCategory();
     bool ret = false;
-    for (auto it : cat) {
-        if (it.name() == c.name() && it.type() != c.type()) {
-            it.setBoth(true);
-            updateCategory(it);
-            ret = true;
-        } else if (it.name() != c.name()) {
-            QMap<QString, QString> attr;
-            attr["id"] = QUuid::createUuid().toString();
-            attr["type"] = QString::number((int) c.type());
-            adder(root, "category", "", attr);
-            Category ct(c);
-            ct.setId(QUuid::fromString(attr["id"]));
-            ret = updateCategory(ct);
+
+    for (auto it2 : cat) {
+        for (auto it : it2) {
+            if (it.name() == c.name() && it.type() != c.type()) {
+                it.setBoth(true);
+                updateCategory(it);
+                ret = true;
+            } else if (it.name() != c.name()) {
+                QMap<QString, QString> attr;
+                attr["id"] = QUuid::createUuid().toString();
+                attr["type"] = QString::number((int) c.type());
+                adder(root, "category", "", attr);
+                Category ct(c);
+                ct.setId(QUuid::fromString(attr["id"]));
+                ret = updateCategory(ct);
+            }
         }
     }
 
@@ -321,12 +324,12 @@ bool ControllerXMLMulti::removeCategory(QString id)
     return ret;
 }
 
-QMultiMap<Account::TypeEnum, Category> ControllerXMLMulti::selectCategory()
+QMap<Account::TypeEnum, QMap<QUuid, Category>> ControllerXMLMulti::selectCategory()
 {
     auto categories = m_accounts[currentProfile() + "/" + currentAccount()]
                           .documentElement()
                           .elementsByTagName("category");
-    QMultiMap<Account::TypeEnum, Category> ret;
+    QMap<Account::TypeEnum, QMap<QUuid, Category>> ret;
     for(int i = 0; i < categories.size(); i++)
     {
         QDomElement el = categories.at(i).toElement();
@@ -337,9 +340,9 @@ QMultiMap<Account::TypeEnum, Category> ControllerXMLMulti::selectCategory()
         c.setName(name);
         c.setBoth(el.attribute("both").toInt());
         c.setType((Account::TypeEnum) el.attribute("type").toInt());
-        ret.insert(c.type(), c);
+        ret[c.type()][c.id()] = c;
         if (c.both())
-            ret.insert(c.type() == Account::income ? Account::outcome : Account::income, c);
+            ret[c.type() == Account::income ? Account::outcome : Account::income][c.id()] = c;
     }
     
     return ret;

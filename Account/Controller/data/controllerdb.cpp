@@ -373,9 +373,9 @@ bool ControllerDB::removeCategory(QString name)
     return false;
 }
 
-QMultiMap<Account::TypeEnum, Category> ControllerDB::selectCategory()
+QMap<Account::TypeEnum, QMap<QUuid, Category>> ControllerDB::selectCategory()
 {
-    QMultiMap<Account::TypeEnum, Category> ret;
+    QMap<Account::TypeEnum, QMap<QUuid, Category>> ret;
 
     return ret;
 }
