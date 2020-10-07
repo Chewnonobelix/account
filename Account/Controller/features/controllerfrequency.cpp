@@ -223,7 +223,7 @@ void ControllerFrequency::updateFreqCat(QVariant id, QString cat)
 {
     Entry ref = m_freqs[id.toUuid()].referenceEntry();
 
-    ref.setCategory(cat);
+    //    ref.setCategory(cat);
 
     m_freqs[id.toUuid()].setReferenceEntry(ref);
 
@@ -234,7 +234,7 @@ void ControllerFrequency::updateFreqType(QVariant id, int type)
 {
     Entry ref = m_freqs[id.toUuid()].referenceEntry();
     ref.setType(Account::TypeEnum(type));
-    ref.setCategory("");
+    //    ref.setCategory("");
     m_freqs[id.toUuid()].setReferenceEntry(ref);
     
     m_db->updateFrequency(m_freqs[id.toUuid()]);

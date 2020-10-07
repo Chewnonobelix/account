@@ -61,11 +61,11 @@ void ControllerInformation::valueChange(double value)
 
 void ControllerInformation::categoryChange(QString cat)
 {
-    QString old = m_entry.category();
-    m_entry.setCategory(cat);
+    //    QString old = m_entry.category();
+    //    m_entry.setCategory(cat);
 
-    updateEntry(m_entry);
-    emit s_changeCat(old, m_entry.id());
+    //    updateEntry(m_entry);
+    //    emit s_changeCat(old, m_entry.id());
 }
 
 void ControllerInformation::addNewCategory(QString cat)

@@ -10,7 +10,7 @@ Entry::Entry()
     setType(Account::Outcome);
     setTitle(QString());
     setEstimated(false);
-    setCategory(QString());
+    setCategory(Category());
 }
 
 Entry& Entry::operator = (const Entry& e)
@@ -91,7 +91,7 @@ Entry::operator QVariantMap() const
     ret.insert("label", title());
     ret.insert("isBlock", isBlocked());
     ret.insert("support", QVariant::fromValue(support()));
-    ret.insert("category", category());
+    //    ret.insert("category", category());
 
     return ret;
 }
@@ -136,12 +136,12 @@ void Entry::setEstimated(bool estimated)
     setMetadata("estimated", estimated);
 }
 
-QString Entry::category() const
+Category Entry::category() const
 {
-    return metaData<QString>("category");
+    return metaData<Category>("category");
 }
 
-void Entry::setCategory(QString category)
+void Entry::setCategory(Category category)
 {
     setMetadata("category", category);
 }

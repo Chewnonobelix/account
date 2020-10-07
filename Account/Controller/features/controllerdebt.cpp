@@ -179,7 +179,7 @@ void ControllerDebt::onInitialCategoryChanged(QString id, QString c)
             e = it;
     }
 
-    e.setCategory(c);
+    //    e.setCategory(c);
     b.setInitial(e);
     db()->updateDebt(b);
 }

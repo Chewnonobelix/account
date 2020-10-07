@@ -2,6 +2,7 @@
 #define ENTRY_H
 
 #include "accountglobal.h"
+#include "category.h"
 #include "metadata.h"
 #include <QDate>
 #include <QJsonObject>
@@ -25,7 +26,7 @@ class ACCOUNT_EXPORT Entry: public MetaData
     Q_PROPERTY(Account::SupportEnum support READ support)
     Q_PROPERTY(QString title READ title)
     Q_PROPERTY(bool estimated READ estimated)
-    Q_PROPERTY(QString category READ category)
+    Q_PROPERTY(Category category READ category)
 
 private:
 
@@ -53,8 +54,8 @@ public:
     void setTitle(QString title);
     bool estimated() const;
     void setEstimated(bool estimated);
-    QString category() const;
-    void setCategory(QString category);
+    Category category() const;
+    void setCategory(Category category);
     bool isBlocked() const;
     void setBlocked(bool);
     Account::SupportEnum support() const;

@@ -45,8 +45,8 @@ bool ControllerBudget::removeFrom(QUuid id)
     bool ret = false;
     Entry e = entry(id);
 
-    if (m_budgets.contains(e.category()))
-        ret = m_budgets[e.category()].removeEntry(e);
+    //    if (m_budgets.contains(e.category()))
+    //        ret = m_budgets[e.category()].removeEntry(e);
 
     return ret;
 }
@@ -193,11 +193,11 @@ void ControllerBudget::updateEntry(QUuid id)
 {
     Entry e = entry(id);
 
-    if (m_budgets.contains(e.category())) {
-        m_budgets[e.category()] >> e;
+    //    if (m_budgets.contains(e.category())) {
+    //        m_budgets[e.category()] >> e;
 
-        m_budgets[e.category()] << e;
-    }
+    //        m_budgets[e.category()] << e;
+    //    }
 
     reload();
 }
@@ -207,10 +207,10 @@ void ControllerBudget::changeEntry(QString old, QUuid id)
     Entry e = entry(id);
 
     if (m_budgets.contains(old))
-        m_budgets[old]>>e;
+        m_budgets[old] >> e;
 
-    if (m_budgets.contains(e.category()))
-        m_budgets[e.category()] << e;
+    //    if (m_budgets.contains(e.category()))
+    //        m_budgets[e.category()] << e;
 
     reload();
 }

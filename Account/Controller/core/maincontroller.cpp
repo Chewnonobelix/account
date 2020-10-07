@@ -281,7 +281,7 @@ void MainController::quickAdding()
         auto et = quick->property("entry").value<QJSValue>();
         Entry e;
 
-        e.setCategory(et.property("category").toString());
+        //        e.setCategory(et.property("category").toString());
         e.setDate(QDate::fromString(et.property("date").toString(), "dd-MM-yyyy"));
         e.setValue(et.property("value").toNumber());
         e.setType(Account::TypeEnum(et.property("type").toInt()));

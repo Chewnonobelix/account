@@ -26,4 +26,6 @@ public:
     friend bool ACCOUNT_EXPORT operator==(const Category &, const Category &);
 };
 
+Q_DECLARE_METATYPE(Category)
+
 #endif // CATEGORY_HPP

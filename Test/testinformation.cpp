@@ -1,6 +1,6 @@
 #include "testinformation.h"
 
-const QString category = "test category";
+Category category;
 const bool estimated = true;
 const QString title = "test title";
 
@@ -11,6 +11,8 @@ TestInformation::TestInformation(QObject *parent) : QObject(parent)
 
 void TestInformation::initTestCase()
 {
+    category.setName("test category");
+    category.setId(QUuid::createUuid());
     model2.setCategory(category);
     model2.setEstimated(estimated);
     model2.setTitle(title);

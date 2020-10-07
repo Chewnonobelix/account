@@ -194,10 +194,10 @@ Budget& Budget::operator = (const Budget& b)
 
 Budget& Budget::operator <<(Entry e)
 {
-    if (e.category() == category())
-        if(!addEntry(e))
-        updateEntry(e);
-    
+    //    if (e.category() == category())
+    //        if(!addEntry(e))
+    //        updateEntry(e);
+
     return *this;
 }
 
