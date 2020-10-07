@@ -4,6 +4,7 @@ MainController::MainController(int storage)
     : AbstractController(), m_engine(this, QStringLiteral(QML_SOURCE) + "/View")
 {
     Q_UNUSED(storage)
+
     QString message = "Generate from backend";
     qDebug()<<"ControllerDB"<<qRegisterMetaType<ControllerDB>();
     qDebug()<<"ControllerXMLMulti"<<qRegisterMetaType<ControllerXMLMulti>();
@@ -12,9 +13,10 @@ MainController::MainController(int storage)
 
     qDebug() << "Worker Qml"
              << qmlRegisterUncreatableType<Worker>("Account.Frequency", 1, 0, "Worker", message);
-
+    qDebug() << "CategoryModel"
+             << qmlRegisterType<CategoryListModel>("Account.Model", 1, 0, "CategoryModel");
     qmlRegisterModule("Account.Style", 1, 0);
-    m_dbThread = new QThread;;
+    m_dbThread = new QThread;
     connect(m_dbThread, &QThread::started, this, &MainController::reload);
     try
     {

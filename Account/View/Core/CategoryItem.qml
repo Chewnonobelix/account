@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.11
 import QtQuick.Window 2.12
 import "../Style"
 
+import Account.Model 1.0
+
 AccountComboBox {
     
     id: root
@@ -12,6 +14,9 @@ AccountComboBox {
         addCategory(editText)
     }
 
+    model: CategoryModel {
+
+    }
 
     signal addCategory(string cat)
     signal currentTextChanged(string cat)

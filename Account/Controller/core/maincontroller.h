@@ -10,6 +10,7 @@
 #include <QQmlComponent>
 
 #include "../../account_global.h"
+#include "../ItemModel/categorylistmodel.h"
 #include "../data/controllerxmlmulti.h"
 #include "../data/xmltosql.h"
 #include "../graph/abstractgraphcontroller.h"

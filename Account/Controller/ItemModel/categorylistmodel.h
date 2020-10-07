@@ -6,7 +6,7 @@
 #include <QAbstractListModel>
 #include <QtCore/qglobal.h>
 
-class CategoryListModel : public QAbstractItemModel
+class CategoryListModel : public QAbstractListModel
 {
     Q_OBJECT
 

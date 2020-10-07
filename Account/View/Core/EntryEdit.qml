@@ -29,8 +29,8 @@ AccountBackground {
     onEntryChanged: {
         title.text = entry ? entry.title : ""
         spinbox.value = entry ? entry.value * 100 : 0
-        category.model = catModel
-        category.currentIndex = entry ? category.setting(entry.category) : category.model.length - 1
+//        category.model = catModel
+//        category.currentIndex = entry ? category.setting(entry.category) : category.model.length - 1
         support.currentIndex = support.model.findIndex(entry ? entry.support : Account.CB)
     }
 
