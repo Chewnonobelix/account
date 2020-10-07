@@ -75,7 +75,7 @@ bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root, QStrin
     adder(el, "value", QString::number(e.value()));
     adder(el, "account", e.account());
     adder(el, "type", QString::number(int(e.type())));
-    //    adder(el, "category", e.category());
+    adder(el, "category", e.category().id().toString());
     adder(el, "estimated", QString::number(e.estimated()));
     adder(el, "title", e.title());
 
@@ -135,7 +135,8 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
     child = el.elementsByTagName("estimated").at(0).toElement();
     e.setEstimated(child.text().toInt());
     child = el.elementsByTagName("category").at(0).toElement();
-    //    e.setCategory(child.text());
+    auto cat = selectCategory()[e.type()][QUuid::fromString(child.text())];
+    e.setCategory(cat);
 
     auto attr = el.attributes();
     for(int j = 0; j < attr.count(); j++)
@@ -226,14 +227,13 @@ bool ControllerXMLMulti::removeAccount(QString account)
 
 bool ControllerXMLMulti::updateEntryNode(const Entry & e, QDomElement & el)
 {
-    qDebug() << "Update" << e.id();
     Entry et = e;
     et.setMetadata("lastUpdate", QDateTime::currentDateTime());
 
     setter(el, "date", e.date().toString("dd-MM-yyyy"));
     setter(el, "value",QString::number(e.value()));
     setter(el, "type", QString::number(e.type()));
-    //    setter(el, "category", e.category());
+    setter(el, "category", e.category().id().toString());
     setter(el, "estimated", QString::number(e.estimated()));
     setter(el, "title", e.title());
 
