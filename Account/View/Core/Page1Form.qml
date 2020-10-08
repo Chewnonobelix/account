@@ -268,6 +268,7 @@ Page {
                     if (selection.contains(index) || index === -1) {
                         selection.clear()
                         _main.edit((currentId))
+                        currentRow = -1
                     } else {
                         selection.clear()
                         currentRow = index
@@ -275,6 +276,8 @@ Page {
                         currentEntry = model[index]
                         _main.edit(currentId)
                     }
+
+                    infoView.visible = currentRow !== -1 && !currentEntry.isBlock
                 }
                 
                 function selectFromId(id) {
