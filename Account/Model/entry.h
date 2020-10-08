@@ -20,7 +20,7 @@ class ACCOUNT_EXPORT Entry: public MetaData
     Q_PROPERTY(QString account READ account)
     Q_PROPERTY(double value READ value)
     Q_PROPERTY(QDate date READ date)
-    Q_PROPERTY(QString type READ type)
+    Q_PROPERTY(Account::TypeEnum type READ type)
     Q_PROPERTY(QUuid id READ id)
     Q_PROPERTY(bool isBlocked READ isBlocked)
     Q_PROPERTY(Account::SupportEnum support READ support)
