@@ -279,24 +279,27 @@ bool ControllerXMLMulti::addCategory(const Category &c)
     auto cat = selectCategory();
     bool ret = false;
 
+    bool toadd = true;
     for (auto it2 : cat) {
         for (auto it : it2) {
+            toadd &= it.name() != c.name();
             if (it.name() == c.name() && it.type() != c.type()) {
                 it.setBoth(true);
                 updateCategory(it);
                 ret = true;
-            } else if (it.name() != c.name()) {
-                QMap<QString, QString> attr;
-                attr["id"] = QUuid::createUuid().toString();
-                attr["type"] = QString::number((int) c.type());
-                adder(root, "category", "", attr);
-                Category ct(c);
-                ct.setId(QUuid::fromString(attr["id"]));
-                ret = updateCategory(ct);
             }
         }
     }
 
+    if (toadd) {
+        QMap<QString, QString> attr;
+        attr["id"] = QUuid::createUuid().toString();
+        attr["type"] = QString::number((int) c.type());
+        adder(root, "category", "", attr);
+        Category ct(c);
+        ct.setId(QUuid::fromString(attr["id"]));
+        ret = updateCategory(ct);
+    }
     emit s_updateCategory();
 
     return ret;
