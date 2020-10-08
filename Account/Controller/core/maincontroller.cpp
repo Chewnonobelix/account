@@ -27,6 +27,8 @@ MainController::MainController(int storage)
         qDebug()<<except;
     }
 
+    m_categoryModel = QSharedPointer<CategoryListModel>::create();
+
     auto *context = engine().rootContext();
     context->setContextProperty("_settings", &m_settings);
     context->setContextProperty("_db", db());
@@ -35,6 +37,7 @@ MainController::MainController(int storage)
     context->setContextProperty("_info", &m_info);
     context->setContextProperty("_transfert", &m_transfert);
     context->setContextProperty("_graph", &m_graph);
+    context->setContextProperty("_categoryModel", m_categoryModel.data());
     m_graph.set(engine());
 
     m_engine.createWindow(QUrl("/Core/Main.qml"));

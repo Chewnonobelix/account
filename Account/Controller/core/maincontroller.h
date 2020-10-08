@@ -54,7 +54,7 @@ private:
     ControllerTransfert m_transfert;
     ControllerSettings m_settings;
     ControllerSynchronization m_synchro;
-
+    QSharedPointer<CategoryListModel> m_categoryModel;
     AbstractGraphController m_graph;
     
     QList<QSharedPointer<FeatureBuilder>> m_features;
