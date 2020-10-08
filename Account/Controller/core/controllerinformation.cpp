@@ -70,11 +70,14 @@ void ControllerInformation::categoryChange(QString cat)
 
 void ControllerInformation::addNewCategory(QString cat)
 {
-    //    m_db->addCategory(cat, m_entry.type());
-    categoryChange(cat);
+    Category c;
+    c.setName(cat);
+    c.setType(m_entry.type());
+    //    qDebug() << "cat" << cat << m_db->addCategory(c);
+
+    //    categoryChange(c);
     view(m_entry.id());
     emit s_exec();
-    
 }
 
 void ControllerInformation::pageChange()
