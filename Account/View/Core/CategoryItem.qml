@@ -5,8 +5,9 @@ import QtQuick.Window 2.12
 import "../Style"
 
 import Account.Model 1.0
-
-AccountComboBox {
+import Account 1.0
+/*
+Account*/ComboBox {
     
     id: root
     
@@ -14,49 +15,65 @@ AccountComboBox {
         addCategory(editText)
     }
 
-    model: CategoryModel {
-
-    }
+    property int type: Account.Outcome
 
 
-    delegate: ItemDelegate {
-        id: categoryDelegate
+    model: _categoryModel
 
-        text: model[root.textRole]
+    onTypeChanged: _categoryModel.currentType = type
 
-        MouseArea {
-            anchors.fill: parent
-            acceptedButtons: Qt.NoButton
-            cursorShape: Qt.PointingHandCursor
-        }
+    textRole: "display"
+    valueRole: "type"
 
-        property Rectangle back2: Rectangle{
+    editable: false
 
-        }
+//    delegate: Rectangle {
+//        id: categoryDelegate
 
-        contentItem: AccountTextInput {
-                background: root.editable ? back2 : back
-                readOnly: !root.editable
-                text: categoryDelegate.text
+//        width: root.width
+//        height: root.height
 
-                onAccepted: {
-                    if(!readOnly)
-                        root.addCategory(text)
-                }
-        }
-    }
+//        Component.onCompleted: console.log("pute")
+//       AccountLabel {
+//           anchors.fill: parent
+//           text: display
+//       }
+
+//        MouseArea {
+//            anchors.fill: parent
+//            acceptedButtons: Qt.NoButton
+//            cursorShape: Qt.PointingHandCursor
+//        }
+
+
+//        property Rectangle back2: Rectangle{
+
+//        }
+
+//        contentItem: AccountTextInput {
+//                background: root.editable ? back2 : back
+//                readOnly: !root.editable
+//                text: categoryDelegate.text
+//                z:10
+//                onAccepted:  {
+//                    if(!readOnly) {
+//                        root.addCategory(text)
+//                    }
+//                }
+//        }
+//    }
 
     signal addCategory(string cat)
     signal currentTextChanged(string cat)
     property bool blocked: false
-        
+
 //    function close() {
 //        currentTextChanged(currentText)
 //    }
 
 //    Connections {
 //        target: popup
-        
+
 //        function onClosed() {
 //            currentTextChanged(currentText)
 //        }
@@ -64,17 +81,17 @@ AccountComboBox {
     
 //    function setting(type) {
 //        var index = find(type)
-        
+
 //        return index >= 0 ? index : model.lenth - 1
 //    }
-        
+
 //    contentItem: AccountTextInput {
 //        id: input
 //        horizontalAlignment: Qt.AlignHCenter
 //        verticalAlignment: Qt.AlignVCenter
-        
+
 //        ToolTip.text: readOnly ? qsTr("Select a transaction category") : qsTr("Add a new category")
-        
+
 //        property Item back2: AccountLabel{
 //            text: input.text
 //        }
@@ -101,22 +118,22 @@ AccountComboBox {
 //        contentItem: Rectangle  {
 //            gradient: AccountStyle.goldButton
 //            anchors.fill: parent
-            
+
 //            AccountLabel {
 //                color: "black"
 //                text: modelData
 //                anchors.centerIn: parent
 //            }
-            
+
 //            MouseArea {
 //                property string cTxt: modelData
 //                anchors.fill: parent
 //                cursorShape: index === (root.count - 1)  ? Qt.WhatsThisCursor : Qt.PointingHandCursor
-                
+
 //                ToolTip.visible: (index === (root.count - 1)) && hovered
 //                ToolTip.text: qsTr("Add a new category")
 //                ToolTip.delay: 500
-                
+
 //                onClicked: {
 //                    if(mouse.button === Qt.LeftButton) {
 //                        var index = root.find(cTxt)
