@@ -4,7 +4,7 @@
 #include "../core/abstractcontroller.h"
 #include "Model/accountglobal.h"
 #include "Model/category.h"
-#include <QAbstractListModel>
+#include <QStandardItemModel>
 #include <QtCore/qglobal.h>
 
 class CategoryListModel : public QAbstractListModel
@@ -41,10 +41,10 @@ signals:
     void currentTypeChanged();
 
 public:
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role) const override;
-    QHash<int, QByteArray> roleNames() const override;
-    Qt::ItemFlags flags(const QModelIndex &) const override;
+				Q_INVOKABLE int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+				Q_INVOKABLE QVariant data(const QModelIndex &index, int role) const override;
+				Q_INVOKABLE QHash<int, QByteArray> roleNames() const override;
+				Q_INVOKABLE Qt::ItemFlags flags(const QModelIndex &) const override;
 };
 
 #endif // CATEGORYLISTMODEL_H

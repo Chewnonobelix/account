@@ -27,23 +27,23 @@ Account*/ComboBox {
 
     editable: false
 
-//    delegate: Rectangle {
-//        id: categoryDelegate
+    delegate: Rectangle {
+        id: categoryDelegate
 
-//        width: root.width
-//        height: root.height
+        width: root.width
+        height: root.height
 
-//        Component.onCompleted: console.log("pute")
-//       AccountLabel {
-//           anchors.fill: parent
-//           text: display
-//       }
+       AccountLabel {
+           anchors.fill: parent
+           text: display
+       }
 
-//        MouseArea {
-//            anchors.fill: parent
-//            acceptedButtons: Qt.NoButton
-//            cursorShape: Qt.PointingHandCursor
-//        }
+        MouseArea {
+            anchors.fill: parent
+            acceptedButtons: Qt.NoButton
+            cursorShape: Qt.PointingHandCursor
+        }
+    }
 
 
 //        property Rectangle back2: Rectangle{
