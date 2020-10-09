@@ -25,7 +25,7 @@ Account*/ComboBox {
     textRole: "display"
     valueRole: "type"
 
-    editable: false
+    editable: currentText === ""
 
     delegate: ItemDelegate {
         id: categoryDelegate
