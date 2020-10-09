@@ -27,16 +27,13 @@ Account*/ComboBox {
 
     editable: false
 
-    delegate: Rectangle {
+    delegate: ItemDelegate {
         id: categoryDelegate
 
         width: root.width
         height: root.height
 
-       AccountLabel {
-           anchors.fill: parent
-           text: display
-       }
+        text: model[root.textRole]
 
         MouseArea {
             anchors.fill: parent
