@@ -9,42 +9,42 @@
 
 class CategoryListModel : public QAbstractListModel
 {
-    Q_OBJECT
+ Q_OBJECT
 
-    Q_PROPERTY(Account::TypeEnum currentType READ currentType WRITE setCurrentType NOTIFY
-                   currentTypeChanged)
+ Q_PROPERTY(
+  Account::TypeEnum currentType READ currentType WRITE setCurrentType NOTIFY currentTypeChanged)
 
-private:
-    Account::TypeEnum m_currentType = Account::TypeEnum::Outcome;
-    QMap<Account::TypeEnum, QMap<QUuid, Category>> m_categories;
-    int m_currentIndex = 0;
-    InterfaceDataSave *m_db;
+ private:
+ Account::TypeEnum m_currentType = Account::TypeEnum::Outcome;
+ QMap<Account::TypeEnum, QMap<QUuid, Category>> m_categories;
+ int m_currentIndex = 0;
+ InterfaceDataSave *m_db;
 
-    void reset();
-    void init();
+ void reset();
+ void init();
 
-public:
-    enum class CategoryRole { DisplayRole = Qt::UserRole + 1, TypeRole, IndexRole };
-    Q_ENUM(CategoryRole)
+ public:
+ enum class CategoryRole { DisplayRole = Qt::UserRole + 1, TypeRole };
+ Q_ENUM(CategoryRole)
 
-    CategoryListModel();
-    CategoryListModel(const CategoryListModel &) = default;
-    ~CategoryListModel() = default;
+ CategoryListModel();
+ CategoryListModel(const CategoryListModel &) = default;
+ ~CategoryListModel() = default;
 
-    Account::TypeEnum currentType() const;
-    void setCurrentType(Account::TypeEnum);
+ Account::TypeEnum currentType() const;
+ void setCurrentType(Account::TypeEnum);
 
-public slots:
-    void onUpdateCategory();
+ public slots:
+ void onUpdateCategory();
 
-signals:
-    void currentTypeChanged();
+ signals:
+ void currentTypeChanged();
 
-public:
-				Q_INVOKABLE int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-				Q_INVOKABLE QVariant data(const QModelIndex &index, int role) const override;
-				Q_INVOKABLE QHash<int, QByteArray> roleNames() const override;
-				Q_INVOKABLE Qt::ItemFlags flags(const QModelIndex &) const override;
+ public:
+ Q_INVOKABLE int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+ Q_INVOKABLE QVariant data(const QModelIndex &index, int role) const override;
+ Q_INVOKABLE QHash<int, QByteArray> roleNames() const override;
+ Q_INVOKABLE Qt::ItemFlags flags(const QModelIndex &) const override;
 };
 
 #endif // CATEGORYLISTMODEL_H
