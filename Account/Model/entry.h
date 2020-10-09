@@ -26,7 +26,7 @@ class ACCOUNT_EXPORT Entry: public MetaData
     Q_PROPERTY(Account::SupportEnum support READ support)
     Q_PROPERTY(QString title READ title)
     Q_PROPERTY(bool estimated READ estimated)
-    Q_PROPERTY(Category category READ category)
+	Q_PROPERTY(QString category READ category)
 
 private:
 

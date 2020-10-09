@@ -64,7 +64,7 @@ void ControllerInformation::categoryChange(QString cat)
  auto i = std::find_if(list.begin(), list.end(), [cat](Category it) { return it.name() == cat; });
 
  c = *i;
- qDebug() << cat << c;
+ qDebug() << cat << (QJsonObject) c;
  //    QString old = m_entry.category();
  m_entry.setCategory(c);
 

@@ -24,7 +24,6 @@ Account*/ComboBox {
     onTypeChanged: _categoryModel.currentType = type
 
     textRole: "display"
-    valueRole: "type"
 
     editable: currentText === ""
 
