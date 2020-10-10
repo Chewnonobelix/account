@@ -6,8 +6,8 @@ import "../Style"
 
 import Account.Model 1.0
 import Account 1.0
-/*
-Account*/ComboBox {
+
+ComboBox {
     
     id: root
     
@@ -27,6 +27,10 @@ Account*/ComboBox {
 
     editable: currentText === ""
 
+    background: Rectangle {
+        gradient: AccountStyle.goldHeader
+    }
+
     delegate: ItemDelegate {
         id: categoryDelegate
 
@@ -34,6 +38,10 @@ Account*/ComboBox {
         height: root.height
 
         text: model[root.textRole]
+
+        background: Rectangle {
+            gradient: AccountStyle.goldHeader
+        }
 
         MouseArea {
             anchors.fill: parent
