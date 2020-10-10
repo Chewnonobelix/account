@@ -53,6 +53,8 @@ Window {
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
 
+                onCurrentValueChanged: catComboQuick.type = currentValue
+
                 ToolTip.text: qsTr("Specify income or outcome")
             }
 
@@ -107,7 +109,6 @@ Window {
                 objectName: "cat"
                 Layout.preferredHeight: root.height * .15
                 Layout.preferredWidth: root.width * .47
-//                Component.onCompleted: model = Qt.binding(function() {return typeComboQuick.currentValue === Account.Income ? root.incomeCats : root.outcomeCats})
 
                 onAddCategory: _main.quickAddCategory(cat)
             }
