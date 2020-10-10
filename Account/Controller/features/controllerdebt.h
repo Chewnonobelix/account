@@ -50,9 +50,9 @@ public slots:
     void onInitialValueChanged(QString, double);
     void onInitialCategoryChanged(QString, QString);
     void onInitialSupportChanged(QString, int);
-    void onNewCategory(QString, QString);
+	void onNewCategory(int, QString);
 
-    void endFill();
+	void endFill();
 };
 
 #endif // CONTROLLERDEBT_H

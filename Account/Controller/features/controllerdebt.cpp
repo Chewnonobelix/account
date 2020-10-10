@@ -170,18 +170,18 @@ void ControllerDebt::onInitialValueChanged(QString id, double v)
 
 void ControllerDebt::onInitialCategoryChanged(QString id, QString c)
 {
-    Debt b = db()->selectDebt()[QUuid::fromString(id)];
-    auto el = db()->selectEntry();
+ Debt b = db()->selectDebt()[QUuid::fromString(id)];
+ auto el = db()->selectEntry();
 
-    Entry e;
-    for (auto it : el) {
-        if (it.id().toString() == id)
-            e = it;
-    }
-
-    //    e.setCategory(c);
-    b.setInitial(e);
-    db()->updateDebt(b);
+ Entry e;
+ for (auto it : el) {
+  if (it.id().toString() == id)
+   e = it;
+ }
+ auto cat = db()->selectCategory()[e.type()][QUuid::fromString(c)];
+ e.setCategory(cat);
+ b.setInitial(e);
+ db()->updateDebt(b);
 }
 
 void ControllerDebt::onInitialSupportChanged(QString id, int s)
@@ -200,9 +200,12 @@ void ControllerDebt::onInitialSupportChanged(QString id, int s)
     db()->updateDebt(b);
 }
 
-void ControllerDebt::onNewCategory(QString type, QString cat)
+void ControllerDebt::onNewCategory(int type, QString cat)
 {
-    //    db()->addCategory(cat, type);
+ Category c;
+ c.setType(Account::TypeEnum(type));
+ c.setName(cat);
+ db()->addCategory(c);
 }
 
 void ControllerDebt::generate(QString id)
