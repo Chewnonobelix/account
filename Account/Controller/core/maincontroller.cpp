@@ -6,14 +6,21 @@ MainController::MainController(int storage)
     Q_UNUSED(storage)
 
     QString message = "Generate from backend";
-    qDebug()<<"ControllerDB"<<qRegisterMetaType<ControllerDB>();
-    qDebug()<<"ControllerXMLMulti"<<qRegisterMetaType<ControllerXMLMulti>();
-    qDebug()<<"Account::FrequencyEnum QML"<<qmlRegisterUncreatableMetaObject(Account::staticMetaObject, "Account", 1,0, "Account", "This is Account's flags");
-    qDebug() << "Account::FrequencyEnum" << qRegisterMetaType<Account::FrequencyEnum>();
+	qDebug() << "ControllerDB" << qRegisterMetaType<ControllerDB>();
+	qDebug() << "ControllerXMLMulti" << qRegisterMetaType<ControllerXMLMulti>();
+	qDebug() << "ControllerJson" << qRegisterMetaType<ControllerJson>();
+	qDebug() << "Account::FrequencyEnum QML"
+			 << qmlRegisterUncreatableMetaObject(Account::staticMetaObject,
+												 "Account",
+												 1,
+												 0,
+												 "Account",
+												 "This is Account's flags");
+	qDebug() << "Account::FrequencyEnum" << qRegisterMetaType<Account::FrequencyEnum>();
 
-    qDebug() << "Worker Qml"
-             << qmlRegisterUncreatableType<Worker>("Account.Frequency", 1, 0, "Worker", message);
-    qDebug() << "CategoryModel"
+	qDebug() << "Worker Qml"
+			 << qmlRegisterUncreatableType<Worker>("Account.Frequency", 1, 0, "Worker", message);
+	qDebug() << "CategoryModel"
              << qmlRegisterType<CategoryListModel>("Account.Model", 1, 0, "CategoryModel");
     qmlRegisterModule("Account.Style", 1, 0);
     m_dbThread = new QThread;
