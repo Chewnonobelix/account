@@ -19,9 +19,9 @@ void ControllerPieGraph::clear()
 
 void ControllerPieGraph::add(const Entry & e)
 {
-    //    Total t = m_entries[e.type()][e.category()];
-    //    t = t + e;
-    //    m_entries[e.type()][e.category()] = t;
+ Total t = m_entries[e.type()][e.category().name()];
+ t = t + e;
+ m_entries[e.type()][e.category().name()] = t;
 }
 
 void ControllerPieGraph::setGran(Account::Granularity) {}
