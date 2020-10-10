@@ -363,7 +363,7 @@ bool ControllerDB::removeEntry(const Entry & e)
     return ret;
 }
 
-bool ControllerDB::addCategory(const Category &n)
+bool ControllerDB::addCategory(Category &n)
 {    
     return false;
 }

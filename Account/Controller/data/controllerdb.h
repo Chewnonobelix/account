@@ -98,8 +98,8 @@ public slots:
 
     bool updateEntry(const Entry &) override;
 
-    bool addCategory(const Category &) override;
-    bool removeCategory(QString) override;
+	bool addCategory(Category &) override;
+	bool removeCategory(QString) override;
     QMap<Account::TypeEnum, QMap<QUuid, Category>> selectCategory() override;
     virtual bool updateCategory(const Category &) override { return false; }
 

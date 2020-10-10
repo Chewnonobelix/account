@@ -59,7 +59,6 @@ private:
 
     QList<QVariant> m_model;
 
-    void loadCat();
     Filler<QUuid, Frequency> m_filler;
     
 public:
@@ -98,12 +97,12 @@ public slots:
     void openManager();
     
     void addFrequency();
-    void removeFrequency(QVariant);
+	void removeFrequency(QVariant);
 
-    void addNewCategory(QVariant, QString, QString);
+	void addNewCategory(QVariant, QString, int);
 
-    void updateFreqName(QVariant, QString);
-    void updateFreqValue(QVariant, double);
+	void updateFreqName(QVariant, QString);
+	void updateFreqValue(QVariant, double);
     void updateFreqCat(QVariant, QString);
     void updateFreqType(QVariant, int);
     void updateFreqFreq(QVariant, int);

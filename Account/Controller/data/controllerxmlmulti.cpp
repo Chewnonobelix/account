@@ -270,7 +270,7 @@ bool ControllerXMLMulti::updateEntry(const Entry & e)
     return true;
 }
 
-bool ControllerXMLMulti::addCategory(const Category &c)
+bool ControllerXMLMulti::addCategory(Category &c)
 {
     auto root = m_accounts[currentProfile() + "/" + currentAccount()]
                     .elementsByTagName("database")
@@ -296,10 +296,9 @@ bool ControllerXMLMulti::addCategory(const Category &c)
         attr["id"] = QUuid::createUuid().toString();
         attr["type"] = QString::number((int) c.type());
         adder(root, "category", "", attr);
-        Category ct(c);
-        ct.setId(QUuid::fromString(attr["id"]));
-        ret = updateCategory(ct);
-    }
+		c.setId(QUuid::fromString(attr["id"]));
+		ret = updateCategory(c);
+	}
     emit s_updateCategory();
 
     return ret;

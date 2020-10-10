@@ -62,17 +62,6 @@ void ControllerFrequency::endThread(QString)
     parent()->metaObject()->method(index).invoke(parent(), Qt::DirectConnection);
 }
 
-void ControllerFrequency::loadCat()
-{
-    auto cat = m_db->selectCategory();
-    QStringList income /*= cat.values("income")*/;
-    income<<"";
-    QStringList outcome /*= cat.values("outcome")*/;
-    outcome << "";
-
-    emit catList(income, outcome);
-}
-
 void ControllerFrequency::endFill()
 {
     m_model.clear();
@@ -112,8 +101,6 @@ int ControllerFrequency::exec()
     m_filler.entries = m_db->selectEntry().values();
 
     m_filler.start();
-
-    loadCat();
     
     return 0;
 }
@@ -192,11 +179,13 @@ void ControllerFrequency::removeFrequency(QVariant id)
     openManager();
 }
 
-void ControllerFrequency::addNewCategory(QVariant id, QString cat, QString type)
+void ControllerFrequency::addNewCategory(QVariant id, QString cat, int type)
 {
-    //    m_db->addCategory(cat, type);
-    loadCat();
-    updateFreqCat(id, cat);
+ Category c;
+ c.setName(cat);
+ c.setType(Account::TypeEnum(type));
+ m_db->addCategory(c);
+ updateFreqCat(id, cat);
 }
 
 void ControllerFrequency::updateFreqName(QVariant id, QString name)
@@ -221,23 +210,23 @@ void ControllerFrequency::updateFreqValue(QVariant id, double value)
 
 void ControllerFrequency::updateFreqCat(QVariant id, QString cat)
 {
-    Entry ref = m_freqs[id.toUuid()].referenceEntry();
+ Entry ref = m_freqs[id.toUuid()].referenceEntry();
+ auto c = db()->selectCategory()[ref.type()][QUuid::fromString(cat)];
+ ref.setCategory(c);
 
-    //    ref.setCategory(cat);
+ m_freqs[id.toUuid()].setReferenceEntry(ref);
 
-    m_freqs[id.toUuid()].setReferenceEntry(ref);
-
-    m_db->updateFrequency(m_freqs[id.toUuid()]);
+ m_db->updateFrequency(m_freqs[id.toUuid()]);
 }
 
 void ControllerFrequency::updateFreqType(QVariant id, int type)
 {
-    Entry ref = m_freqs[id.toUuid()].referenceEntry();
-    ref.setType(Account::TypeEnum(type));
-    //    ref.setCategory("");
-    m_freqs[id.toUuid()].setReferenceEntry(ref);
-    
-    m_db->updateFrequency(m_freqs[id.toUuid()]);
+ Entry ref = m_freqs[id.toUuid()].referenceEntry();
+ ref.setType(Account::TypeEnum(type));
+ ref.setCategory(Category());
+ m_freqs[id.toUuid()].setReferenceEntry(ref);
+
+ m_db->updateFrequency(m_freqs[id.toUuid()]);
 }
 
 void ControllerFrequency::updateFreqFreq(QVariant id, int f)

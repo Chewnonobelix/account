@@ -33,10 +33,6 @@ void ControllerInformation::view(QUuid id)
 {
  m_entry = AbstractController::entry(id);
 
- QStringList catList /*= m_db->selectCategory().values(m_entry.type())*/;
- catList << "";
- emit this->catList(catList);
-
  emit view(QVariant::fromValue(m_entry));
 
  exec();
@@ -62,12 +58,9 @@ void ControllerInformation::categoryChange(QString cat)
  auto list = m_db->selectCategory()[m_entry.type()];
  Category c = list[QUuid::fromString(cat)];
 
- qDebug() << cat << (QJsonObject) c;
- //    QString old = m_entry.category();
  m_entry.setCategory(c);
 
  updateEntry(m_entry);
- //    emit s_changeCat(old, m_entry.id());
 }
 
 void ControllerInformation::addNewCategory(QString cat)
