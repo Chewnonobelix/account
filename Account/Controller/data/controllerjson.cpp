@@ -15,14 +15,30 @@ bool ControllerJson::removeEntry(const Entry &)
  return false;
 }
 
-QStringList ControllerJson::selectAccount(QString)
+QStringList ControllerJson::selectAccount(QString profile)
 {
- return QStringList();
+ QDir dir;
+ dir.mkdir("jdata");
+ dir.cd("jdata");
+
+ auto p = profile.isEmpty() ? currentProfile() : profile;
+
+ dir.cd(p);
+
+ QStringList ret;
+ auto list = dir.entryInfoList(QStringList{"*.jacocunt"});
+ for (auto it : list)
+  ret << it.baseName();
+
+ return ret;
 }
 
-bool ControllerJson::removeAccount(QString)
+bool ControllerJson::removeAccount(QString account)
 {
- return false;
+ QDir dir;
+ dir.cd("jdata/" + currentProfile());
+
+ return dir.remove(account + ".jaccount");
 }
 
 bool ControllerJson::updateEntry(const Entry &)
@@ -165,5 +181,5 @@ bool ControllerJson::init()
 
 QSharedPointer<InterfaceDataSave> ControllerJson::clone() const
 {
- return QSharedPointer<ControllerJson>(*this);
+ return DesignPattern::factory<ControllerJson>(*this);
 }
