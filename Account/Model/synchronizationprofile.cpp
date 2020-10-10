@@ -1,5 +1,11 @@
 #include "synchronizationprofile.h"
 
+SynchronizationProfile &SynchronizationProfile::operator=(const SynchronizationProfile &s)
+{
+    MetaData::operator=(s);
+    return *this;
+}
+
 QString SynchronizationProfile::hostName() const
 {
     return metaData<QString>("hostName");
@@ -60,12 +66,17 @@ void SynchronizationProfile::setId(QUuid id)
     setMetadata("id", id);
 }
 
-QString SynchronizationProfile::idString() const
-{
-    return id().toString();
-}
-
 QString SynchronizationProfile::toString() const
 {
     return QString();
+}
+
+QJsonDocument SynchronizationProfile::document() const
+{
+    return metaData<QJsonDocument>("document");
+}
+
+void SynchronizationProfile::setDocument(QJsonDocument json)
+{
+    setMetadata("document", json);
 }

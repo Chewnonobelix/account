@@ -11,10 +11,23 @@ InterfaceDataSave::InterfaceDataSave()
         m_syncs.setContent(QString("<sync_profile />"));
 }
 
+InterfaceDataSave::InterfaceDataSave(const InterfaceDataSave &i)
+    : QObject(nullptr), backup(i.backup), m_currentProfile(i.currentProfile()),
+      m_currentAccount(i.currentAccount()), m_path(i.m_path)
+{
+    QFile f("synchronization.xml");
+    f.open(QIODevice::ReadWrite);
+    m_syncs.setContent(&f);
+    f.close();
+
+    if (m_syncs.toByteArray().isEmpty())
+        m_syncs.setContent(QString("<sync_profile />"));
+}
+
 InterfaceDataSave::~InterfaceDataSave()
 {
     QFile f("synchronization.xml");
-    f.open(QIODevice::ReadWrite);    
+    f.open(QIODevice::WriteOnly);
     f.write(m_syncs.toByteArray());
     f.close();
 }
@@ -23,11 +36,11 @@ void InterfaceDataSave::exec()
 {
 }
 
-QList<SynchronizationProfile> InterfaceDataSave::selectSyncProfile()
+QMap<QUuid, SynchronizationProfile> InterfaceDataSave::selectSyncProfile()
 {
     QDomElement root = m_syncs.documentElement();
 
-    QList<SynchronizationProfile> ret;
+    QMap<QUuid, SynchronizationProfile> ret;
     auto list = root.elementsByTagName("profile");
     for(auto i = 0; i < list.count(); i++)
     {
@@ -37,16 +50,20 @@ QList<SynchronizationProfile> InterfaceDataSave::selectSyncProfile()
         sp.setHostName(val);
         val = el.elementsByTagName("device").at(0).toElement().text();
         sp.setDeviceName(val);
-        val = el.elementsByTagName("begin").at(0).toElement().text();
+        val = el.elementsByTagName("start").at(0).toElement().text();
         sp.setBegin(QDate::fromString(val));
+        if (!sp.begin().isValid())
+            sp.setBegin(QDate::currentDate());
         val = el.elementsByTagName("end").at(0).toElement().text();
         sp.setEnd(QDate::fromString(val));
+        if (!sp.end().isValid())
+            sp.setEnd(QDate::currentDate());
         val = el.elementsByTagName("lastSync").at(0).toElement().text();
         sp.setLastSync(QDateTime::fromString(val));
-        ret<<sp;
+
         val = el.elementsByTagName("id").at(0).toElement().text();
         sp.setId(QUuid::fromString(val));
-        ret << sp;
+        ret[sp.id()] = sp;
     }
     return ret;
 }
@@ -61,6 +78,7 @@ bool InterfaceDataSave::removeSyncProfile(const SynchronizationProfile& sp)
         if (list.at(it).toElement().elementsByTagName("id").at(0).toElement().text()
             == sp.id().toString()) {
             ret |= !root.removeChild(list.at(it).toElement()).isNull();
+            emit s_updateSync();
         }
     }
     
@@ -93,11 +111,12 @@ QUuid InterfaceDataSave::addSyncProfile(const SynchronizationProfile &sp)
 
     func(m_syncs, "host", sp.hostName());
     func(m_syncs, "device", sp.deviceName());
-    func(m_syncs, "begin", sp.begin().toString());
+    func(m_syncs, "start", sp.begin().toString());
     func(m_syncs, "end", sp.end().toString());
-    func(m_syncs, "lastSync", sp.lastSync().toString());
+    func(m_syncs, "lastSync", QDateTime::currentDateTime().toString());
     func(m_syncs, "id", id.toString());
 
+    emit s_updateSync();
     return id;
 }
 
@@ -112,14 +131,37 @@ bool InterfaceDataSave::updateSyncProfile(const SynchronizationProfile& sp)
             == sp.id().toString()) {
             ret = true;
             QDomElement el = list.at(it).toElement();
-            el.elementsByTagName("begin").at(0).firstChild().setNodeValue(sp.begin().toString());
+
+            el.elementsByTagName("start").at(0).firstChild().setNodeValue(sp.begin().toString());
             el.elementsByTagName("end").at(0).firstChild().setNodeValue(sp.end().toString());
             el.elementsByTagName("lastSync")
                 .at(0)
                 .firstChild()
                 .setNodeValue(sp.lastSync().toString());
+
+            emit s_updateSync();
         }
     }
     
     return ret;
+}
+
+void InterfaceDataSave::setProfile(QString profile)
+{
+    m_currentProfile = profile;
+}
+
+QString InterfaceDataSave::currentProfile() const
+{
+    return m_currentProfile;
+}
+
+void InterfaceDataSave::setCurrentAccount(QString account)
+{
+    m_currentAccount = account;
+}
+
+QString InterfaceDataSave::currentAccount() const
+{
+    return m_currentAccount;
 }

@@ -61,7 +61,7 @@ void AbstractGraphController::increment(int nb)
         it->clear();
     }
 
-    auto e = m_db->selectEntry(currentAccount());
+    auto e = m_db->selectEntry();
 
     bool next = true, prev = true;
     for(auto it: e)

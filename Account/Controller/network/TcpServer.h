@@ -9,7 +9,7 @@
 class TcpServer : public QTcpServer
 {
 public:
-    TcpServer() = default;
+    TcpServer(QObject * = nullptr);
 
 protected:
     void incomingConnection(qintptr);

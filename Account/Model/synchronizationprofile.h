@@ -2,8 +2,13 @@
 #define SYNCHRONIZATIONPROFILE_H
 
 #include "account_global.h"
+#include "entry.h"
 #include "metadata.h"
 #include <QDate>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
 #include <QObject>
 #include <QUuid>
 
@@ -16,18 +21,17 @@ class ACCOUNT_EXPORT SynchronizationProfile : public MetaData
     Q_PROPERTY(QDate begin READ begin)
     Q_PROPERTY(QDate end READ end)
     Q_PROPERTY(QDateTime lastSync READ lastSync)
-    Q_PROPERTY(QString id READ idString)
+    Q_PROPERTY(QUuid id READ id)
 
 private:
 public:
     SynchronizationProfile() = default;
     SynchronizationProfile(const SynchronizationProfile&) = default;
     ~SynchronizationProfile() = default;
-    SynchronizationProfile &operator=(const SynchronizationProfile &) = default;
+    SynchronizationProfile &operator=(const SynchronizationProfile &);
+    using MetaData::MetaData;
 
     QUuid id() const;
-    QString idString() const;
-
     void setId(QUuid);
     QString hostName() const;
     void setHostName(QString);
@@ -39,6 +43,8 @@ public:
     void setEnd(QDate);
     QDateTime lastSync() const;
     void setLastSync(QDateTime);
+    QJsonDocument document() const;
+    void setDocument(QJsonDocument);
 
     QString toString() const;
 };

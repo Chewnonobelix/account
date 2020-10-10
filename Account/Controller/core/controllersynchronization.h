@@ -28,8 +28,8 @@ private slots:
 
 protected:
 public:
-    ControllerSynchronization() = default;
-    
+    ControllerSynchronization();
+
     int exec();
     void setView(QObject *);
     void lookup();
@@ -44,6 +44,9 @@ public slots:
     void clientConnect(QHostAddress);
     void onDisconnected();
     void openServer(bool);
+
+    void onBeginChanged(QString, QString);
+    void onEndChanged(QString, QString);
 };
 
 

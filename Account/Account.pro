@@ -24,6 +24,7 @@ DEPENDPATH += $$OUT_PWD/../DesignLibrary/DesignPattern/debug
 LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
 
 SOURCES += \
+    Controller/ItemModel/categorylistmodel.cpp \
     Controller/core/abstractcontroller.cpp \
     Controller/core/controllerinformation.cpp \
     Controller/core/controllersettings.cpp \
@@ -45,12 +46,12 @@ SOURCES += \
     Controller/network/AccountSocket.cpp \
     Controller/network/TcpServer.cpp \
     Model/accountglobal.cpp \
+    Model/category.cpp \
     Model/commonexpanse.cpp \
     Model/debt.cpp \
     Model/frequency.cpp \
     Model/subbudget.cpp \
     Model/entry.cpp \
-    Model/information.cpp \
     Model/synchronizationprofile.cpp \
     Model/total.cpp \
     Model/budget.cpp \
@@ -75,6 +76,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 #                account_en.ts \
 
 HEADERS += \
+    Controller/ItemModel/categorylistmodel.h \
     Controller/core/abstractcontroller.h \
     Controller/core/controllerinformation.h \
     Controller/core/controllersettings.h \
@@ -99,11 +101,11 @@ HEADERS += \
     Controller/graph/graphcontroller.h \
     Controller/network/AccountSocket.h \
     Controller/network/TcpServer.h \
+    Model/category.h \
     Model/commonexpanse.h \
     Model/debt.h \
     Model/entry.h \
     Model/frequency.h \
-    Model/information.h \
     Model/subbudget.h \
     Model/synchronizationprofile.h \
     Model/total.h \

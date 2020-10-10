@@ -1,14 +1,13 @@
 #include "TcpServer.h"
 
+TcpServer::TcpServer(QObject *parent) : QTcpServer(parent) {}
+
 void TcpServer::incomingConnection(qintptr socket)
 {
-    if (!AccountSocket::db())
-        AccountSocket::setDb(AbstractController::db());
-
-    AccountSocket *s = new AccountSocket;
+    AccountSocket *s = new AccountSocket(parent());
     s->setSocketDescriptor(socket);
 
-    s->getRemotename();
-    s->getProfileid();
+    s->getRemoteName();
+    s->getSyncIds();
     addPendingConnection(s);
 }

@@ -33,12 +33,7 @@ private:
     SqlQuery m_updateMetadata;
     SqlQuery m_selectMetadata;
     SqlQuery m_removeMetadata;
-    
-    SqlQuery m_updateInfo;
-    SqlQuery m_addInformation;
-    SqlQuery m_removeInformation;
-    SqlQuery m_selectInformation;
-    
+        
     SqlQuery m_addCategory;
     SqlQuery m_removeCategory;
     SqlQuery m_selectCategory;
@@ -79,7 +74,6 @@ private:
     QString m_currentAccount;
 
     void prepareEntry();
-    void prepareInformation();
     void prepareAccount();
     void prepareCategory();
     void prepareBudget();
@@ -95,22 +89,20 @@ public:
     
     bool isConnected() const;
 public slots:
-    bool addEntry(QSharedPointer<Entry>) {return false;}
     bool addEntry(const Entry&)  override;
-    QMultiMap<QDate, Entry> selectEntry(QString) override;
+    QMultiMap<QDate, Entry> selectEntry() override;
     bool removeEntry(const Entry&) override;
-    
-    QStringList selectAccount() override;
-    bool removeAccount(QString) override;
-    void setCurrentAccount(QString) override;
 
-    bool updateInfo(const Entry&) override;
+    QStringList selectAccount(QString) override;
+    bool removeAccount(QString) override;
+
     bool updateEntry(const Entry &) override;
-    
-    bool addCategory(QString, QString) override;
-    bool removeCategory(QString) override;
-    QMultiMap<QString, QString> selectCategory() override;
-    
+
+	bool addCategory(Category &) override;
+	bool removeCategory(QString) override;
+    QMap<Account::TypeEnum, QMap<QUuid, Category>> selectCategory() override;
+    virtual bool updateCategory(const Category &) override { return false; }
+
     virtual bool addBudget(const Budget&) override;
     virtual bool removeBudget(const Budget&) override;
     virtual QList<Budget> selectBudgets() override;
@@ -127,17 +119,16 @@ public slots:
     virtual bool updateCommon(const CommonExpanse&) override;
     
     virtual QStringList selectProfile() override;
-    virtual void setProfile(QString) override;
     virtual bool addProfile(QString, QString) override;
-    virtual QString currentProfile() override;
     virtual bool deleteProfile(QString) override;
 
-    virtual QMap<QUuid, Debt> selectDebt();
-    virtual bool addDebt(const Debt &);
-    virtual bool removeDebt(const Debt &);
-    virtual bool updateDebt(const Debt &);
+    virtual QMap<QUuid, Debt> selectDebt() override;
+    virtual bool addDebt(const Debt &) override;
+    virtual bool removeDebt(const Debt &) override;
+    virtual bool updateDebt(const Debt &) override;
 
     bool init() override;
+    QSharedPointer<InterfaceDataSave> clone() const override;
 };
 
 Q_DECLARE_METATYPE(ControllerDB)

@@ -1,21 +1,22 @@
 #include "AccountSocket.h"
 
-InterfaceDataSave *AccountSocket::m_db = AbstractController::db();
-
-InterfaceDataSave *AccountSocket::db()
+AccountSocket::AccountSocket(QObject *parent) : QTcpSocket(parent)
 {
-    return m_db;
-}
+    restapi["post"]["remoteName"] = "onPostRemoteName";
+    restapi["get"]["remoteName"] = "onGetRemoteName";
+    restapi["post"]["syncIds"] = "onPostSyncIds";
+    restapi["get"]["syncIds"] = "onGetSyncIds";
+    restapi["remove"]["syncIds"] = "onRemoveSyncIds";
+    restapi["post"]["syncProfile"] = "onPostSyncProfile";
+    restapi["get"]["syncProfile"] = "onGetSyncProfile";
+    restapi["update"]["syncProfile"] = "onUpdateSyncProfile";
 
-void AccountSocket::setDb(InterfaceDataSave *db)
-{
-    m_db = db;
-}
-
-AccountSocket::AccountSocket() : QTcpSocket()
-{
     connect(this, &QIODevice::readyRead, this, &AccountSocket::receiveDataSocket);
     connect(this, &QTcpSocket::disconnected, this, &AccountSocket::disconnected);
+    connect(AbstractController::db(),
+            &InterfaceDataSave::s_updateSync,
+            this,
+            &AccountSocket::updateLocalProfile);
 }
 
 QString AccountSocket::remoteName() const
@@ -37,6 +38,19 @@ void AccountSocket::receiveDataSocket()
 void AccountSocket::sync()
 {
     qDebug() << "Sync";
+    if (isConnected()) {
+        auto create = [](QString title) -> Entry {
+            Entry init;
+            init.setId(QUuid::createUuid());
+            init.setBlocked(true);
+            init.setTitle(title);
+
+            return init;
+        };
+
+        QMap<QString, QMap<QUuid, Entry>> entries;
+        QSet<QUuid> ids;
+    }
 }
 
 bool AccountSocket::isConnected() const
@@ -51,29 +65,37 @@ void AccountSocket::parser(QString data)
     if (split[0] != "account_api")
         return;
 
-    if (split[1] == "post") {
-        if (split[2] == "localName") {
-            m_remoteName = split[3];
-            m_localProfile = profile(m_remoteName);
-            emit profileChanged();
-            emit remoteNameChanged(m_remoteName);
-        }
-        if (split[2] == "syncId") {
-            m_remoteProfile.setId(QUuid::fromString(split[3]));
-        }
-    }
+    auto funcname = restapi[split[1]][split[2]];
+    qDebug() << funcname;
+    if (funcname.isEmpty())
+        return;
 
-    if (split[1] == "get") {
-        if (split[2] == "localName")
-            postLocalname();
-        if (split[2] == "syncId")
-            postProfileid();
-    }
+    QString postdata = split.size() == 4 ? split.last() : "";
+    QMetaObject::invokeMethod(this, funcname.toLatin1(), Q_ARG(QString, postdata));
+
+    //    if (split[1] == "post") {
+    //        if (split[2] == "localName") {
+    //            setRemoteName(split[3]);
+
+    //            emit profileChanged();
+    //            emit remoteNameChanged(m_remoteName);
+    //        }
+    //        if (split[2] == "syncId") {
+    //            m_remoteProfile.setId(QUuid::fromString(split[3]));
+    //        }
+    //    }
+
+    //    if (split[1] == "get") {
+    //        if (split[2] == "localName")
+    //            getLocalname();
+    //        if (split[2] == "syncId")
+    //            getProfileid();
+    //    }
 }
 
 SynchronizationProfile AccountSocket::profile(QString remote) const
 {
-    auto list = m_db->selectSyncProfile();
+    auto list = AbstractController::db()->selectSyncProfile();
     SynchronizationProfile ret;
 
     for (auto it : list) {
@@ -91,67 +113,68 @@ SynchronizationProfile AccountSocket::profile() const
     return m_localProfile;
 }
 
-void AccountSocket::postLocalname()
-{
-    if (isConnected())
-        write("account_api:post:localName:" + QHostInfo::localHostName().toLatin1());
-}
-
-void AccountSocket::getRemotename()
-{
-    if (isConnected())
-        qDebug() << "Write" << write("account_api:get:localName");
-}
-
-void AccountSocket::postProfileid()
-{
-    auto id = profile(remoteName()).id();
-
-    if (isConnected())
-        write("account_api:post:syncId:" + id.toByteArray());
-}
-
-void AccountSocket::getProfileid()
-{
-    if (isConnected())
-        write("account_api:get:syncId");
-}
-
-void AccountSocket::postProfile()
-{
-    if (isConnected()) {
-        write("account_api:post:syncProfile" + m_remoteProfile.toString().toLatin1());
-    }
-}
-void AccountSocket::getProfile()
-{
-    if (isConnected())
-        write("account_api:get:syncProfile");
-}
-
 void AccountSocket::addLocalProfile()
 {
-    m_localProfile.setHostName(QHostInfo::localHostName());
-    m_localProfile.setDeviceName(remoteName());
+    SynchronizationProfile sp;
+    sp.setBegin(AbstractController::db()->selectEntry().firstKey());
+    sp.setEnd(AbstractController::db()->selectEntry().lastKey());
+    sp.setDeviceName(remoteName());
+    sp.setHostName(QHostInfo::localHostName());
+    auto id = AbstractController::db()->addSyncProfile(sp);
+    sp.setId(id);
+    m_localProfile = sp;
+    emit profileChanged();
 
-    auto id = m_db->addSyncProfile(m_localProfile);
+    updateLocalProfile();
 
-    if (id.isNull())
+    //    postProfile();
+}
+
+void AccountSocket::updateLocalProfile()
+{
+    if (m_localProfile.id().isNull())
         return;
-    qDebug() << "Id" << id;
 
-    m_localProfile.setId(id);
-    m_remoteProfile = m_localProfile;
+    QStringList profiles = AbstractController::db()->selectProfile();
 
-    postProfile();
+    QJsonArray localjson;
+    for (auto profile : profiles) {
+        AbstractController::db()->setProfile(profile);
+        QStringList accounts = AbstractController::db()->selectAccount();
+        for (auto account : accounts) {
+            QJsonObject obj;
+            QJsonArray array;
+            for (auto e : AbstractController::db()->selectEntry()) {
+                if (e.date() < m_localProfile.begin())
+                    continue;
+                if (e.date() > m_localProfile.end())
+                    continue;
+
+                array.append((QJsonObject) e);
+            }
+            obj.insert("entries", array);
+            obj.insert("profile", profile);
+            obj.insert("account", account);
+
+            localjson.append(obj);
+        }
+    }
+
+    m_localProfile.setDocument(QJsonDocument(localjson));
+
+    QFile f(m_localProfile.id().toString() + ".json");
+    f.open(QIODevice::WriteOnly);
+    f.write(QJsonDocument(localjson).toJson());
+    f.close();
 }
 
 void AccountSocket::removeLocalProfile()
 {
-    m_db->removeSyncProfile(m_localProfile);
+    AbstractController::db()->removeSyncProfile(m_localProfile);
     m_localProfile = m_remoteProfile = SynchronizationProfile();
+
     emit profileChanged();
-    postProfile();
+    //    postProfile();
 }
 
 void AccountSocket::setLocalProfile(SynchronizationProfile p)
@@ -162,4 +185,112 @@ void AccountSocket::setLocalProfile(SynchronizationProfile p)
 void AccountSocket::setRemoteName(QString r)
 {
     m_remoteName = r;
+
+    m_localProfile = profile(remoteName());
+    updateLocalProfile();
+}
+
+void AccountSocket::getRemoteName()
+{
+    if (isConnected()) {
+        write("account_api:get:remoteName");
+    }
+}
+
+void AccountSocket::postRemoteName()
+{
+    if (isConnected()) {
+        write("account_api:post:remoteName:" + QHostInfo::localHostName().toLatin1());
+    }
+}
+
+void AccountSocket::onPostRemoteName(QString data)
+{
+    qDebug() << "onPostRemoteName" << data;
+    setRemoteName(data);
+    emit remoteNameChanged(m_remoteName);
+}
+
+void AccountSocket::onGetRemoteName(QString)
+{
+    postRemoteName();
+}
+
+void AccountSocket::getSyncIds()
+{
+    if (isConnected()) {
+        write("account_api:get:syncIds");
+    }
+}
+void AccountSocket::postSyncIds()
+{
+    if (isConnected()) {
+        QJsonArray list;
+        for (auto it : AbstractController::db()->selectSyncProfile().keys())
+            list << it.toString();
+
+        write("account_api:post:syncIds:" + QJsonDocument(list).toJson());
+    }
+}
+
+void AccountSocket::onPostSyncIds(QString data)
+{
+    QJsonArray list = QJsonDocument::fromJson(data.toLatin1()).array();
+    auto profiles = AbstractController::db()->selectSyncProfile();
+    for (auto it : list) {
+        if (profiles.contains(QUuid::fromString(it.toString())))
+            m_localProfile = profiles[QUuid::fromString(it.toString())];
+    }
+}
+
+void AccountSocket::onGetSyncIds(QString)
+{
+    postSyncIds();
+}
+
+void AccountSocket::removeSyncIds() {}
+void AccountSocket::onRemoveSyncIds(QString) {}
+
+void AccountSocket::getSyncProfile()
+{
+    if (isConnected()) {
+        write("account_api:get:syncProfile");
+    }
+}
+void AccountSocket::postSyncProfile()
+{
+    if (isConnected()) {
+        write("account_api:post:syncProfile:" + m_localProfile.document().toJson());
+    }
+}
+
+void AccountSocket::updateSyncProfile()
+{
+    if (isConnected()) {
+        write("account_api:update:syncProfile:" + m_localProfile.document().toJson());
+    }
+}
+
+void AccountSocket::onPostSyncProfile(QString data)
+{
+    m_remoteProfile.setDocument(QJsonDocument::fromJson(data.toLatin1()));
+}
+
+void AccountSocket::onGetSyncProfile(QString)
+{
+    postSyncProfile();
+}
+
+void AccountSocket::onUpdateSyncProfile(QString data)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(data.toLatin1());
+    m_localProfile.setDocument(doc);
+    m_remoteProfile.setDocument(doc);
+    AbstractController::db()->updateSyncProfile(m_localProfile);
+    auto array = doc.array();
+    for (auto it : array) {
+        Entry e(it.toObject());
+        if (!AbstractController::db()->updateEntry(e))
+            AbstractController::db()->addEntry(e);
+    }
 }

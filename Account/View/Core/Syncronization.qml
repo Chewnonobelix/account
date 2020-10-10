@@ -12,9 +12,17 @@ Item {
 
     onCurrentModelChanged: {
         if(currentModel) {
-            begin.extern(currentModel.begin)
-            end.extern(currentModel.end)
+            begin.extern(currentModel.begin ? currentModel.begin : new Date())
+            end.extern(currentModel.end ? currentModel.end : new Date())
+            syncLabel.lastSync = currentModel.lastSync
+
+            profileList.model = _db.selectProfile()
         }
+    }
+
+    Component.onCompleted: {
+        begin.extern(new Date())
+        end.extern(new Date())
     }
 
     GridLayout {
@@ -46,7 +54,11 @@ Item {
             Layout.preferredWidth: root.width * 0.22
 
             id: begin
-            objectName: "begin"
+
+            onTextChanged: {
+                if(currentModel)
+                    _sync.onBeginChanged(currentModel.id, text)
+            }
         }
 
         AccountLabel {
@@ -69,10 +81,15 @@ Item {
             Layout.preferredWidth: root.width * 0.22
 
             id: end
-            objectName: "end"
+
+            onTextChanged: {
+                if(currentModel)
+                    _sync.onEndChanged(currentModel.id, text)
+            }
         }
 
         AccountLabel{
+            id: syncLabel
             Layout.row: 1
             Layout.column: 0
             Layout.rowSpan: 1
@@ -80,7 +97,7 @@ Item {
             Layout.preferredHeight: root.height * 0.10
             Layout.preferredWidth: root.width * 0.96
 
-            property date lastSync: root.currentModel ? root.currentModel.lastSync : new Date()
+            property date lastSync: new Date()
             text: qsTr("Last syncronization") + ": " + Qt.formatDateTime(lastSync, "hh:mm:ss dd-MM-yyyy")
         }
 
@@ -95,15 +112,42 @@ Item {
         }
 
         ScrollView {
+            id: toSync
             Layout.row: 3
             Layout.column: 0
             Layout.rowSpan: 1
             Layout.columnSpan: 4
             Layout.preferredHeight: root.height * 0.60
             Layout.preferredWidth: root.width * 0.96
-            Repeater {
 
+            ListView {
+                id: profileList
+                width: toSync.width * 0.2
+                height: toSync.height * 2
+
+                anchors.left: toSync.left
+                anchors.top: toSync.top
+                delegate: AccountLabel {
+                    width: profileList.width
+                    height: profileList.height * 0.5
+
+                    text: modelData
+
+                    background: Rectangle {
+                        gradient: profileList.currentIndex === index ? AccountStyle.calSelect : AccountStyle.unselectView
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: profileList.currentIndex = index
+                    }
+                }
             }
+
+            ListView {
+                id: accountList
+            }
+
         }
     }
 }

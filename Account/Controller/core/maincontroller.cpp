@@ -4,6 +4,7 @@ MainController::MainController(int storage)
     : AbstractController(), m_engine(this, QStringLiteral(QML_SOURCE) + "/View")
 {
     Q_UNUSED(storage)
+
     QString message = "Generate from backend";
     qDebug()<<"ControllerDB"<<qRegisterMetaType<ControllerDB>();
     qDebug()<<"ControllerXMLMulti"<<qRegisterMetaType<ControllerXMLMulti>();
@@ -12,9 +13,10 @@ MainController::MainController(int storage)
 
     qDebug() << "Worker Qml"
              << qmlRegisterUncreatableType<Worker>("Account.Frequency", 1, 0, "Worker", message);
-
+    qDebug() << "CategoryModel"
+             << qmlRegisterType<CategoryListModel>("Account.Model", 1, 0, "CategoryModel");
     qmlRegisterModule("Account.Style", 1, 0);
-    m_dbThread = new QThread;;
+    m_dbThread = new QThread;
     connect(m_dbThread, &QThread::started, this, &MainController::reload);
     try
     {
@@ -25,6 +27,8 @@ MainController::MainController(int storage)
         qDebug()<<except;
     }
 
+    m_categoryModel = QSharedPointer<CategoryListModel>::create();
+
     auto *context = engine().rootContext();
     context->setContextProperty("_settings", &m_settings);
     context->setContextProperty("_db", db());
@@ -33,6 +37,7 @@ MainController::MainController(int storage)
     context->setContextProperty("_info", &m_info);
     context->setContextProperty("_transfert", &m_transfert);
     context->setContextProperty("_graph", &m_graph);
+    context->setContextProperty("_categoryModel", m_categoryModel.data());
     m_graph.set(engine());
 
     m_engine.createWindow(QUrl("/Core/Main.qml"));
@@ -218,18 +223,17 @@ void MainController::adding(QVariant ref)
 
     if (map["newAccount"].toBool()) {
         QVariant val, date, account;
-
         val = map["value"];
         date = map["date"];
         account = map["title"];
+        db()->setCurrentAccount(account.toString());
         e.setAccount(account.toString());
         e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
         e.setValue(val.toDouble());
-        e.setType("income");
-        
-        Information i;
-        i.setTitle("Initial");
-        e.setInfo(i);
+        e.setType(Account::Income);
+
+        e.setTitle("Initial");
+
         e.setBlocked(true);
     } else {
         QVariant val, date, label, type;
@@ -241,12 +245,12 @@ void MainController::adding(QVariant ref)
 
         e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
         e.setValue(val.toDouble());
-        e.setType(type.toString());
-        Information i;
-        i.setTitle(label.toString());
-        e.setInfo(i);
-        if(date.toDate() > QDate::currentDate())
-            i.setEstimated(true);
+        e.setType(type.value<Account::TypeEnum>());
+
+        e.setTitle(label.toString());
+
+        if (date.toDate() > QDate::currentDate())
+            e.setEstimated(true);
         e.setAccount(currentAccount());
     }
     AbstractController::addEntry(e);
@@ -256,15 +260,11 @@ void MainController::adding(QVariant ref)
 }
 
 void MainController::addEntryMain(Entry  e)
-{
-    Information i = e.info();
-    
+{    
     if(e.date() > QDate::currentDate())
-        i.setEstimated(true);
+        e.setEstimated(true);
     e.setAccount(currentAccount());
-    
-    e.setInfo(i);
-    
+        
     AbstractController::addEntry(e);
 }
 
@@ -272,7 +272,7 @@ void MainController::quickOpen()
 {
     QObject* quick = engine().rootObjects().first()->findChild<QObject*>("quick");
     auto cats = m_db->selectCategory();
-    QStringList modi = cats.values("income"), modo = cats.values("outcome");
+    QStringList modi /*= cats.values("income")*/, modo /* = cats.values("outcome")*/;
     modi<<""; modo<<"";
     quick->setProperty("outcomeCats", modo);
     quick->setProperty("incomeCats", modi);
@@ -285,16 +285,16 @@ void MainController::quickAdding()
     {
         auto et = quick->property("entry").value<QJSValue>();
         Entry e;
-        Information i;
-        i.setCategory(et.property("category").toString());
+
+        //        e.setCategory(et.property("category").toString());
         e.setDate(QDate::fromString(et.property("date").toString(), "dd-MM-yyyy"));
         e.setValue(et.property("value").toNumber());
-        e.setType(et.property("type").toString());
-        i.setEstimated(e.date() > QDate::currentDate());
-        i.setTitle(et.property("title").toString());
-        e.setInfo(i);
+        e.setType(Account::TypeEnum(et.property("type").toInt()));
+        e.setEstimated(e.date() > QDate::currentDate());
+        e.setTitle(et.property("title").toString());
+
         e.setAccount(currentAccount());
-        
+
         m_db->addEntry(e);
     }
 }
@@ -307,8 +307,8 @@ void MainController::quickAddCategory(QString cat)
     if(typecombo)
     {
         QString type = typecombo->property("currentValue").toString();
-        m_db->addCategory(cat, type);
-        QStringList list = m_db->selectCategory().values(type);
+        //        m_db->addCategory(cat, type);
+        QStringList list /*= m_db->selectCategory().values(type)*/;
         list<<"";
         quick->setProperty(type == "income" ? "incomeCats" : "outcomeCats", list);
         QMetaObject::invokeMethod(combo, "setting", Q_ARG(QVariant, cat));
@@ -405,9 +405,9 @@ void MainController::buildModel(QUuid)
     
     m_model.clear();
     QList<Entry> ret;
-    
-    ret = m_db->selectEntry(currentAccount()).values();
-    
+
+    ret = m_db->selectEntry().values();
+
     Total t;
     for(auto i = 0; i < qMin(ret.count(), 100); i++)
     {
@@ -537,8 +537,8 @@ void MainController::checkEstimated()
 
     QList<Entry> list;
 
-    for (auto it : m_db->selectEntry(currentAccount())) {
-        if(it.info().estimated() && it.date() <= QDate::currentDate())
+    for (auto it : m_db->selectEntry()) {
+        if (it.estimated() && it.date() <= QDate::currentDate())
             list<<it;
         else if(it.date() > QDate::currentDate())
             break;
@@ -561,9 +561,8 @@ void MainController::validateCheckEstimated(QVariantList tab)
         Entry e = entry(tab[i].toUuid());
 
         if (tab[i].toBool()) {
-            Information inf = e.info();
-            inf.setEstimated(false);
-            e.setInfo(inf);
+            e.setEstimated(false);
+
             updateEntry(e);
         } else {
             m_db->removeEntry(e);

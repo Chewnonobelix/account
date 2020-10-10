@@ -1,5 +1,6 @@
 #include "controllersynchronization.h"
 
+ControllerSynchronization::ControllerSynchronization() : AbstractController(), m_server(this) {}
 
 int ControllerSynchronization::exec()
 {
@@ -10,7 +11,7 @@ int ControllerSynchronization::exec()
             this,
             &ControllerSynchronization::receivedDatagram);
 
-    m_broadcast.bind(9000);
+    m_broadcast.bind(QHostAddress::AnyIPv4, 9000);
     updateViewList();
     return 0;
 }
@@ -57,6 +58,10 @@ void ControllerSynchronization::updateViewList()
         if (!remoteList.contains(it.deviceName()) && !it.id().isNull()) {
             m_disconnected << QSharedPointer<AccountSocket>::create();
             auto s = m_disconnected.last();
+            connect(s.data(),
+                    &AccountSocket::profileChanged,
+                    this,
+                    &ControllerSynchronization::updateViewList);
             s->setLocalProfile(it);
             s->setRemoteName(it.deviceName());
             vl << QVariant::fromValue(s.data());
@@ -69,10 +74,10 @@ void ControllerSynchronization::updateViewList()
 void ControllerSynchronization::lookup()
 {
     qDebug() << "Lookup" << m_server.isListening();
-        qDebug() << "Broadcast"
-                 << m_broadcast.writeDatagram("account_server_connect:test_server",
-                                              QHostAddress(QHostAddress::Broadcast),
-                                              7000);
+    qDebug() << "Broadcast"
+             << m_broadcast.writeDatagram("account_server_connect:test_server",
+                                          QHostAddress(QHostAddress::Broadcast),
+                                          9000);
 }
 
 void ControllerSynchronization::sync()
@@ -93,7 +98,7 @@ void ControllerSynchronization::receivedDatagram()
         m_broadcast.readDatagram(data.data(), m_broadcast.pendingDatagramSize(), &addr);
         auto split = data.split(':');
 
-        if(split[0] != "account_server" && !m_server.isListening())
+        if(split[0] != "account_server_connect" && !m_server.isListening())
             continue;
 
         clientConnect(addr);
@@ -131,3 +136,27 @@ void ControllerSynchronization::onDisconnected()
     updateViewList();
 }
 
+void ControllerSynchronization::onBeginChanged(QString id, QString begin)
+{
+    auto profiles = db()->selectSyncProfile();
+    SynchronizationProfile profile;
+    std::for_each(profiles.begin(), profiles.end(), [&profile, id](SynchronizationProfile p) {
+        if (QUuid::fromString(id) == p.id())
+            profile = p;
+    });
+
+    profile.setBegin(QDate::fromString(begin, "dd-MM-yyyy"));
+    db()->updateSyncProfile(profile);
+}
+void ControllerSynchronization::onEndChanged(QString id, QString end)
+{
+    auto profiles = db()->selectSyncProfile();
+    SynchronizationProfile profile;
+    std::for_each(profiles.begin(), profiles.end(), [&profile, id](SynchronizationProfile p) {
+        if (QUuid::fromString(id) == p.id())
+            profile = p;
+    });
+
+    profile.setEnd(QDate::fromString(end, "dd-MM-yyyy"));
+    db()->updateSyncProfile(profile);
+}

@@ -27,10 +27,10 @@ AccountBackground {
     }
 
     onEntryChanged: {
-        title.text = entry ? entry.info.title : ""
+        title.text = entry ? entry.title : ""
         spinbox.value = entry ? entry.value * 100 : 0
-        category.model = catModel
-        category.currentIndex = entry ? category.setting(entry.info.category) : category.model.length - 1
+        category.type = entry ? entry.type : Account.Outcome
+        category.currentIndex = entry ? category.find(entry.category) : 0
         support.currentIndex = support.model.findIndex(entry ? entry.support : Account.CB)
     }
 
@@ -142,13 +142,12 @@ AccountBackground {
                 height: parent.height * 0.59
                 width: parent.width
 
-                editable: currentText === ""
-
                 onAddCategory: root.addNewCategory(cat)
 
-                onCurrentTextChanged: {
-                    if(currentText !== "")
-                        catChanged(currentText)
+                onCurrentValueChanged: {
+                    if(currentText !== "") {
+                        catChanged(currentValue)
+                    }
                 }
             }
         }

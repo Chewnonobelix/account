@@ -3,6 +3,8 @@
 
 #include "../core/abstractcontroller.h"
 #include "../data/interfacedatasave.h"
+#include "Model/synchronizationprofile.h"
+#include <QDir>
 #include <QHostInfo>
 #include <QTcpSocket>
 #include <QtCore/qglobal.h>
@@ -15,15 +17,14 @@ class AccountSocket : public QTcpSocket
     Q_PROPERTY(SynchronizationProfile localProfile READ profile NOTIFY profileChanged)
 
 private:
-    static InterfaceDataSave *m_db;
     QString m_remoteName = QString();
     SynchronizationProfile m_remoteProfile, m_localProfile;
 
-public:
-    AccountSocket();
-    ~AccountSocket();
+    QMap<QString, QMap<QString, QString>> restapi;
 
-    void setSocket(QTcpSocket *);
+public:
+    AccountSocket(QObject * = nullptr);
+    ~AccountSocket();
 
     void parser(QString);
     Q_INVOKABLE bool isConnected() const;
@@ -34,17 +35,26 @@ public:
     void setRemoteName(QString);
 
 public:
-    Q_INVOKABLE void postLocalname();
-    Q_INVOKABLE void getRemotename();
-    Q_INVOKABLE void postProfileid();
-    Q_INVOKABLE void getProfileid();
-    Q_INVOKABLE void postProfile();
-    Q_INVOKABLE void getProfile();
-
     QString remoteName() const;
 
-    static InterfaceDataSave *db();
-    static void setDb(InterfaceDataSave *db);
+    void getRemoteName();
+    void postRemoteName();
+    Q_INVOKABLE void onPostRemoteName(QString);
+    Q_INVOKABLE void onGetRemoteName(QString);
+
+    void getSyncIds();
+    void postSyncIds();
+    void removeSyncIds();
+    Q_INVOKABLE void onGetSyncIds(QString);
+    Q_INVOKABLE void onPostSyncIds(QString);
+    Q_INVOKABLE void onRemoveSyncIds(QString);
+
+    void getSyncProfile();
+    void postSyncProfile();
+    void updateSyncProfile();
+    Q_INVOKABLE void onGetSyncProfile(QString);
+    Q_INVOKABLE void onPostSyncProfile(QString);
+    Q_INVOKABLE void onUpdateSyncProfile(QString);
 
 public slots:
     void receiveDataSocket();
@@ -52,6 +62,7 @@ public slots:
     void addLocalProfile();
     void removeLocalProfile();
 
+    void updateLocalProfile();
 signals:
     void remoteNameChanged(QString);
     void profileChanged();

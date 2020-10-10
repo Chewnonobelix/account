@@ -28,7 +28,7 @@ Rectangle {
         
         add.enabled = Qt.binding(function() {return model ? !model.isClose : false})
 
-        close.checked = model.isClose
+        close.checked = model ? model.isClose : false
     }
     
     color: "transparent"
@@ -253,6 +253,7 @@ Rectangle {
                 width: parent.width
                 height: parent.height * 0.49
                 
+                onModelChanged: console.log(model)
                 header: Rectangle {
                     gradient: AccountStyle.goldHeader
                     height: recap.height * 0.10
@@ -296,7 +297,8 @@ Rectangle {
             checked: model ? model.isClose : false
             
             onCheckedChanged: { 
-                _commonExpanse.closeCommon(model.id, checked)
+                if(model)
+                    _commonExpanse.closeCommon(model.id, checked)
             }
         }
         

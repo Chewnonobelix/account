@@ -7,19 +7,18 @@ Entry::Entry()
     setValue(0);
     setSupport(Account::CB);
     setDate(QDate::currentDate());
-    setType("outcome");
+    setType(Account::Outcome);
+    setTitle(QString());
+    setEstimated(false);
+    setCategory(Category());
 }
 
 Entry& Entry::operator = (const Entry& e)
 {
-    MetaData& md = *this;
-
-    md = e;
-    setInfo(e.info());
+    MetaData::operator=(e);
 
     return *this;
 }
-
 
 QUuid Entry::id() const
 {
@@ -61,24 +60,14 @@ void Entry::setDate(QDate date)
     setMetadata("date", date);
 }
 
-QString Entry::type() const
+Account::TypeEnum Entry::type() const
 {
-    return metaData<QString>("type");
+    return metaData<Account::TypeEnum>("type");
 }
 
-void Entry::setType(QString type)
+void Entry::setType(Account::TypeEnum type)
 {
     setMetadata("type", type);
-}
-
-Information Entry::info() const
-{
-    return m_info;
-}
-
-void Entry::setInfo(Information info)
-{
-    m_info = info;
 }
 
 bool operator == (const Entry& e1, const Entry& e2)
@@ -88,13 +77,7 @@ bool operator == (const Entry& e1, const Entry& e2)
 
 bool operator < (const Entry& e1, const Entry& e2)
 {
-    return (e1.date() < e2.date()) ||
-            (e1.info() < e2.info());
-}
-
-QString Entry::label() const
-{
-    return info().title();
+    return (e1.date() < e2.date());
 }
 
 Entry::operator QVariantMap() const
@@ -105,10 +88,10 @@ Entry::operator QVariantMap() const
     ret.insert("value", value());
     ret.insert("date", date());
     ret.insert("type", type());
-    ret.insert("info", QVariant::fromValue(info()));
-    ret.insert("label", label());
+    ret.insert("label", title());
     ret.insert("isBlock", isBlocked());
     ret.insert("support", QVariant::fromValue(support()));
+    //    ret.insert("category", category());
 
     return ret;
 }
@@ -123,12 +106,43 @@ void Entry::setBlocked(bool b)
     setMetadata("blocked", b);
 }
 
-Account::EntryTypeEnum Entry::support() const
+Account::SupportEnum Entry::support() const
 {
-    return hasMetadata("support") ? metaData<Account::EntryTypeEnum>("support") : Account::CB;
+    return hasMetadata("support") ? metaData<Account::SupportEnum>("support") : Account::CB;
 }
 
-void Entry::setSupport(Account::EntryTypeEnum s)
+void Entry::setSupport(Account::SupportEnum s)
 {
     setMetadata("support", s);
 }
+
+QString Entry::title() const
+{
+    return metaData<QString>("title");
+}
+
+void Entry::setTitle(QString title)
+{
+    setMetadata("title", title);
+}
+
+bool Entry::estimated() const
+{
+    return metaData<bool>("estimated");
+}
+
+void Entry::setEstimated(bool estimated)
+{
+    setMetadata("estimated", estimated);
+}
+
+Category Entry::category() const
+{
+    return metaData<Category>("category");
+}
+
+void Entry::setCategory(Category category)
+{
+    setMetadata("category", category);
+}
+

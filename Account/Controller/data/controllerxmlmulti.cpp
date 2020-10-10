@@ -1,6 +1,6 @@
 #include "controllerxmlmulti.h"
 
-ControllerXMLMulti::ControllerXMLMulti(bool backup): InterfaceDataSave(), m_currentProfile("Default")
+ControllerXMLMulti::ControllerXMLMulti(bool backup) : InterfaceDataSave()
 {
     this->backup = backup;
 }
@@ -15,85 +15,73 @@ ControllerXMLMulti::~ControllerXMLMulti()
     close();
 }
 
+QSharedPointer<InterfaceDataSave> ControllerXMLMulti::clone() const
+{
+    return DesignPattern::factory<ControllerXMLMulti>(*this);
+}
+
 void ControllerXMLMulti::close()
 {
-    
     QDir dir;
-    
-    QString basename = QString(m_path+"%1").arg(backup ? "_backup" : "");
-    if(!dir.cd(basename))
-    {
-        dir.mkdir(basename);
-        dir.cd(basename);
-    }
 
-    if(!dir.exists(currentProfile()))
-        dir.mkdir(currentProfile());
+    QString basename = QString(m_path + "%1").arg(backup ? "_backup" : "");
+    dir.mkdir(basename);
+    dir.cd(basename);
 
-    for(auto it = m_accounts.begin(); it != m_accounts.end(); it++)
-    {
+    dir.mkdir(currentProfile());
+
+    for (auto it = m_accounts.begin(); it != m_accounts.end(); it++) {
         if(!it.key().isEmpty())
         {
-            QFile file(basename + "\\" + m_currentProfile + "\\" + it.key() + ".xml");
+            QStringList split = it.key().split('/');
+            if (split.last().isEmpty())
+                continue;
+
+            QFile file(basename + "\\" + split.first() + "\\" + split.last() + ".account");
             file.open(QIODevice::WriteOnly);
             auto write64 = it.value().toByteArray().toBase64();
             file.write(write64);
             file.close();
-            QFile file2(basename + "\\" + m_currentProfile + "\\" + it.key() + "_clear.xml");
+            QFile file2(basename + "\\" + split.first() + "\\" + split.last() + ".xml");
             file2.open(QIODevice::WriteOnly);
             auto write642 = it.value().toByteArray();
             file2.write(write642);
             file2.close();
         }
     }
-    
 }
 
 void ControllerXMLMulti::createAccount(QString a)
 {
+    if (a.isEmpty())
+        return;
+
     QDomDocument doc;
     doc.setContent(QString("<database />"));
-    m_accounts[a] = doc;
-}
-
-void ControllerXMLMulti::setCurrentAccount(QString a)
-{
-    if(m_accounts.contains(a))
-        m_currentAccount = m_accounts[a];
-    else
-    {
-        m_currentAccount.clear();
-        return;
-    }
-    auto root = m_currentAccount.elementsByTagName("database").at(0).toElement();
-    for(auto it = root.firstChildElement(); !it.isNull(); it = it.nextSiblingElement())
-        m_ids[it.tagName()]<<it.attribute("id").toInt();
+    m_accounts[currentProfile() + "/" + a] = doc;
 }
 
 bool ControllerXMLMulti::addEntryNode(const Entry& e, QDomElement&  root, QString name )
 {
-    QDomElement el = m_currentAccount.createElement(name);
-    //el.setAttribute("id", e.id());
+    QDomElement el = m_accounts[currentProfile() + "/" + currentAccount()].createElement(name);
 
     auto meta = e.metadataList();
     for (auto it : meta) {
-        if (!QStringList({"date", "value", "account", "type"}).contains(it))
+        if (!QStringList({"date", "value", "account", "type", "category", "title", "estimated"})
+                 .contains(it))
             el.setAttribute(it, e.metaData<QString>(it));
     }
     adder(el, "date", e.date().toString("dd-MM-yyyy"));
     adder(el, "value", QString::number(e.value()));
     adder(el, "account", e.account());
-    adder(el, "type", e.type().toLower());
+    adder(el, "type", QString::number(int(e.type())));
+    adder(el, "category", e.category().id().toString());
+    adder(el, "estimated", QString::number(e.estimated()));
+    adder(el, "title", e.title());
 
-    addInfo(el, e.info());
     root.appendChild(el);
-    
-    return true;
-}
 
-bool ControllerXMLMulti::addEntry(QSharedPointer<Entry> e)
-{
-    return addEntry(*e);
+    return true;
 }
 
 bool ControllerXMLMulti::addEntry(const Entry& e)
@@ -102,25 +90,21 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     m_mutex.lock();
     
     QUuid ide = e.id().isNull() ? QUuid::createUuid() : e.id();
-    QUuid idi = e.info().id().isNull() ? QUuid::createUuid() : e.info().id();
     
     Entry et = e;
     et.setMetadata("lastUpdate", QDateTime::currentDateTime());
-    Information info = et.info();
-    info.setId(idi);
-    info.setIdEntry(ide);
-    et.setInfo(info);
+
     et.setId(ide);
 
     if (et.hasMetadata("notemit"))
         et.removeMetadata("notemit");
 
-    if(!m_accounts.contains(et.account()))
+    if (!m_accounts.contains(currentProfile() + "/" + et.account()))
         createAccount(et.account());
 
     setCurrentAccount(et.account());
 
-    QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+    QDomElement root = m_accounts[currentProfile() + "/" + currentAccount()].documentElement();
 
     addEntryNode(et, root);
 
@@ -133,24 +117,10 @@ bool ControllerXMLMulti::addEntry(const Entry& e)
     return true;
 }
 
-void ControllerXMLMulti::addInfo(QDomElement& el, const Information & i)
-{
-    QDomElement el2 = m_currentAccount.createElement("information");
-    el2.setAttribute("id", i.id().toString());
-    el2.setAttribute("id_entry", i.idEntry().toString());
-    
-    adder(el2, "title", i.title());
-    adder(el2, "estimated", QString::number(i.estimated()));
-    adder(el2, "categoryName", i.category());
-    
-    el.appendChild(el2);
-}
-
 Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
 {
     Entry e;
     
-    //    e.setId(el.attribute("id").toInt());
     QDomElement child = el.elementsByTagName("date").at(0).toElement();
     
     e.setDate(QDate::fromString(child.text(), "dd-MM-yyyy"));
@@ -159,32 +129,33 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
     child = el.elementsByTagName("value").at(0).toElement();
     e.setValue(child.text().toDouble());
     child = el.elementsByTagName("type").at(0).toElement();
-    e.setType(child.text().toLower());
+    e.setType(Account::TypeEnum(child.text().toInt()));
+    child = el.elementsByTagName("title").at(0).toElement();
+    e.setTitle(child.text().toLower());
+    child = el.elementsByTagName("estimated").at(0).toElement();
+    e.setEstimated(child.text().toInt());
+    child = el.elementsByTagName("category").at(0).toElement();
+    auto cat = selectCategory()[e.type()][QUuid::fromString(child.text())];
+    e.setCategory(cat);
 
-    child = el.elementsByTagName("information").at(0).toElement();
-
-    Information inf = selectInformation(child);
-    inf.setIdEntry(e.id());
-    e.setInfo(inf);
-        
     auto attr = el.attributes();
     for(int j = 0; j < attr.count(); j++)
         e.setMetadata(attr.item(j).nodeName(), attr.item(j).nodeValue());
-        
+
     return e;
 }
 
-QMultiMap<QDate, Entry> ControllerXMLMulti::selectEntry(QString account)
+QMultiMap<QDate, Entry> ControllerXMLMulti::selectEntry()
 {
-    setCurrentAccount(account);
-    
     QMultiMap<QDate, Entry> ret;
-    
-    
-    QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+
+    QDomElement root = m_accounts[currentProfile() + "/" + currentAccount()]
+                           .elementsByTagName("database")
+                           .at(0)
+                           .toElement();
     if(root.isNull())
     {
-        root = m_currentAccount.createElement("database");
+        root = m_accounts[currentProfile() + "/" + currentAccount()].createElement("database");
     }
     
     QDomNodeList children = root.elementsByTagName("entry");
@@ -194,23 +165,22 @@ QMultiMap<QDate, Entry> ControllerXMLMulti::selectEntry(QString account)
     {
         QDomElement el = children.at(i).toElement();
 
-        if(el.attribute("removed", "false") == "true")
+        if (el.attribute("removed", "false").toInt())
             continue;
         
         Entry e = selectEntryNode(el);
         ret.insert(e.date(), e);
     }
 
-    
     return ret;
 }
 
 bool ControllerXMLMulti::removeEntry(const Entry& e)
 {
     setCurrentAccount(e.account());
-        
+
     bool ret = false;
-    
+
     Entry t(e);
     t.setMetadata("removed", true);
     ret = updateEntry(t);
@@ -220,9 +190,27 @@ bool ControllerXMLMulti::removeEntry(const Entry& e)
     return ret;
 }
 
-QStringList ControllerXMLMulti::selectAccount()
+QStringList ControllerXMLMulti::selectAccount(QString profile)
 {
-    return m_accounts.keys();
+    QStringList ret;
+
+    if (profile.isEmpty()) {
+        for (auto it : m_accounts.keys()) {
+            auto split = it.split('/');
+
+            if (split.first() == currentProfile())
+                ret << split.last();
+        }
+
+    } else {
+        QDir dir("data/" + profile);
+        auto list = dir.entryInfoList(QStringList("*.account"));
+
+        for (auto it : list) {
+            ret << it.baseName();
+        }
+    }
+    return ret;
 }
 
 bool ControllerXMLMulti::removeAccount(QString account)
@@ -230,74 +218,41 @@ bool ControllerXMLMulti::removeAccount(QString account)
     QDir dir;
     dir.cd("data");
     QFile file;
-    file.setFileName("data\\" + currentProfile() + "\\" + account + ".xml");
-    
+    file.setFileName("data\\" + currentProfile() + "\\" + account + ".account");
+
     bool ret = (m_accounts.remove(account) > 0 && file.remove());
-    
-    
-    if(ret && m_accounts.size() == 0)
-        while (m_ids.size()) 
-            m_ids.remove(m_ids.keys().first());
-    
+
     return ret;
 }
 
-bool ControllerXMLMulti::updateInfo(const Entry& e)
-{
-    QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
-    
-    auto list = root.elementsByTagName("entry");
-    
-    for(int i = 0; i < list.size(); i ++)
-    {
-        QDomElement el = list.at(i).toElement();
-        if(el.attribute("id") == e.id().toString())
-        {
-            
-            QDomElement info = el.elementsByTagName("information").at(0).toElement();
-            
-            Information inf = e.info();
-            updateInfo(info, inf);
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-void ControllerXMLMulti::updateInfo(QDomElement &info , const Information & inf)
-{
-    setter(info, "estimated", QString::number(inf.estimated()));
-    setter(info, "categoryName", inf.category());
-    setter(info, "title", inf.title());
-    
-    close();  
-}
-
-
 bool ControllerXMLMulti::updateEntryNode(const Entry & e, QDomElement & el)
 {
-    
     Entry et = e;
     et.setMetadata("lastUpdate", QDateTime::currentDateTime());
 
     setter(el, "date", e.date().toString("dd-MM-yyyy"));
     setter(el, "value",QString::number(e.value()));
-    setter(el, "type", e.type());
+    setter(el, "type", QString::number(e.type()));
+    setter(el, "category", e.category().id().toString());
+    setter(el, "estimated", QString::number(e.estimated()));
+    setter(el, "title", e.title());
 
     for (auto it : et.metadataList())
-        if (it != "notemit" && !QStringList({"date", "value", "account", "type"}).contains(it))
+        if (it != "notemit"
+            && !QStringList({"date", "value", "account", "type", "title", "estimated", "category"})
+                    .contains(it))
             el.setAttribute(it, e.metaData<QString>(it));
-    
-    auto i = el.elementsByTagName("information").at(0).toElement();
-    updateInfo(i, e.info());
+
     close();
     return true;
 }
 
 bool ControllerXMLMulti::updateEntry(const Entry & e)
 {
-    auto root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+    auto root = m_accounts[currentProfile() + "/" + currentAccount()]
+                    .elementsByTagName("database")
+                    .at(0)
+                    .toElement();
     auto list = root.elementsByTagName("entry");
     
     for(auto i = 0; i < list.size(); i++)
@@ -308,70 +263,113 @@ bool ControllerXMLMulti::updateEntry(const Entry & e)
             updateEntryNode(e, el);
         }
     }
-    
-    if(!e.hasMetadata("notemit"))
-       emit s_updateEntry(e.id());
-    
+
+    if (!e.hasMetadata("notemit"))
+        emit s_updateEntry(e.id());
+
     return true;
 }
 
-bool ControllerXMLMulti::addCategory(QString name, QString type)
+bool ControllerXMLMulti::addCategory(Category &c)
 {
-    auto root = m_currentAccount.elementsByTagName("database").at(0).toElement();
-    auto list = root.elementsByTagName("category");
-    
-    for(int i = 0; i < list.size(); i++)
-        if(list.at(i).toElement().text() == name)
-            return false;
-    
-    QDomElement el = m_currentAccount.createElement("category");
-    el.setAttribute("type", type);
-    QDomText txt = m_currentAccount.createTextNode(name);
-    el.appendChild(txt);
-    root.appendChild(el);
+    auto root = m_accounts[currentProfile() + "/" + currentAccount()]
+                    .elementsByTagName("database")
+                    .at(0)
+                    .toElement();
+    auto cat = selectCategory();
+    bool ret = false;
 
-    emit s_updateCategory();
-    
-    return true;
-}
-
-bool ControllerXMLMulti::removeCategory(QString name)
-{
-    auto root = m_currentAccount.elementsByTagName("database").at(0).toElement();
-    auto list = root.elementsByTagName("category");
-    
-    for(int i = 0; i < list.size(); i++)
-    {
-        QDomElement el = list.at(i).toElement();
-        if(el.text() == name)
-        {
-            auto ret = root.removeChild(el);
-            
-            emit s_updateCategory();
-            
-            return !ret.isNull();
+    bool toadd = true;
+    for (auto it2 : cat) {
+        for (auto it : it2) {
+            toadd &= it.name() != c.name();
+            if (it.name() == c.name() && it.type() != c.type()) {
+                it.setBoth(true);
+                updateCategory(it);
+                ret = true;
+            }
         }
     }
-    return false;
+
+    if (toadd) {
+        QMap<QString, QString> attr;
+        attr["id"] = QUuid::createUuid().toString();
+        attr["type"] = QString::number((int) c.type());
+        adder(root, "category", "", attr);
+		c.setId(QUuid::fromString(attr["id"]));
+		ret = updateCategory(c);
+	}
+    emit s_updateCategory();
+
+    return ret;
 }
 
-QMultiMap<QString, QString> ControllerXMLMulti::selectCategory()
+bool ControllerXMLMulti::removeCategory(QString id)
 {
-    auto categories = m_currentAccount.documentElement().elementsByTagName("category");
-    QMultiMap<QString, QString> ret;
+    auto root = m_accounts[currentProfile() + "/" + currentAccount()]
+                    .elementsByTagName("database")
+                    .at(0)
+                    .toElement();
+    auto list = root.elementsByTagName("category");
+    bool ret = false;
+    for(int i = 0; i < list.size(); i++)
+    {
+        auto el = list.at(i).toElement();
+        if (el.attribute("id") == id) {
+            ret = root.removeChild(el).isNull();
+        }
+    }
+
+    return ret;
+}
+
+QMap<Account::TypeEnum, QMap<QUuid, Category>> ControllerXMLMulti::selectCategory()
+{
+    auto categories = m_accounts[currentProfile() + "/" + currentAccount()]
+                          .documentElement()
+                          .elementsByTagName("category");
+    QMap<Account::TypeEnum, QMap<QUuid, Category>> ret;
     for(int i = 0; i < categories.size(); i++)
     {
         QDomElement el = categories.at(i).toElement();
-        ret.insert(el.attribute("type"), el.text());
+        Category c;
+
+        c.setId(QUuid::fromString(el.attribute("id")));
+        auto name = el.elementsByTagName("name").at(0).toElement().text();
+        c.setName(name);
+        c.setBoth(el.attribute("both").toInt());
+        c.setType((Account::TypeEnum) el.attribute("type").toInt());
+        ret[c.type()][c.id()] = c;
+        if (c.both())
+            ret[c.type() == Account::Income ? Account::Outcome : Account::Income][c.id()] = c;
     }
     
     return ret;
 }
 
+bool ControllerXMLMulti::updateCategory(const Category &c)
+{
+    auto categories = m_accounts[currentProfile() + "/" + currentAccount()]
+                          .documentElement()
+                          .elementsByTagName("category");
+
+    bool ret = false;
+    for (int i = 0; i < categories.size(); i++) {
+        QDomElement el = categories.at(i).toElement();
+        if (el.attribute("id") == c.id().toString()) {
+            setter(el, "name", c.name());
+            el.setAttribute("both", c.both());
+            ret = true;
+        }
+    }
+
+    return ret;
+}
+
 void ControllerXMLMulti::adder(QDomElement& el, QString tagname, QString value, QMap<QString, QString> attr)
 {
-    QDomElement el3 = m_currentAccount.createElement(tagname);
-    QDomText txt = m_currentAccount.createTextNode(value);
+    QDomElement el3 = m_accounts[currentProfile() + "/" + currentAccount()].createElement(tagname);
+    QDomText txt = m_accounts[currentProfile() + "/" + currentAccount()].createTextNode(value);
     el3.appendChild(txt);
     el.appendChild(el3);
     
@@ -381,9 +379,11 @@ void ControllerXMLMulti::adder(QDomElement& el, QString tagname, QString value, 
 
 bool ControllerXMLMulti::addBudget(const Budget& b)
 {
-    
-    QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
-    QDomElement el = m_currentAccount.createElement("budget");
+    QDomElement root = m_accounts[currentProfile() + "/" + currentAccount()]
+                           .elementsByTagName("database")
+                           .at(0)
+                           .toElement();
+    QDomElement el = m_accounts[currentProfile() + "/" + currentAccount()].createElement("budget");
     QUuid id = b.id().isNull() ? QUuid::createUuid() : b.id();
     
     el.setAttribute("id", id.toString());
@@ -410,16 +410,18 @@ bool ControllerXMLMulti::removeBudget(const Budget &b)
 QList<Budget> ControllerXMLMulti::selectBudgets()
 {
     QList<Budget> ret;
-    
-    QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
-    
-    if(root.isNull())
-        root = m_currentAccount.createElement("database");
-    
+
+    QDomElement root = m_accounts[currentProfile() + "/" + currentAccount()]
+                           .elementsByTagName("database")
+                           .at(0)
+                           .toElement();
+
+    if (root.isNull())
+        root = m_accounts[currentProfile() + "/" + currentAccount()].createElement("database");
+
     QDomNodeList list = root.elementsByTagName("budget");
-    
-    for(int i = 0; i < list.size(); i++)
-    {
+
+    for (int i = 0; i < list.size(); i++) {
         QDomElement el = list.at(i).toElement();
         if(el.attribute("removed", "0").toInt())
             continue;
@@ -448,7 +450,7 @@ QList<Budget> ControllerXMLMulti::selectBudgets()
         
         ret<<b;
     }
-    
+
     return ret;
 }
 
@@ -470,7 +472,7 @@ void ControllerXMLMulti::deleter(QDomElement & el, QString tagname)
 
 bool ControllerXMLMulti::updateBudget(const Budget & b)
 {
-    QDomElement root = m_currentAccount.firstChildElement();
+    QDomElement root = m_accounts[currentProfile() + "/" + currentAccount()].firstChildElement();
     QDomNodeList list = root.elementsByTagName("budget");
     
     bool ret = false;
@@ -513,43 +515,38 @@ bool ControllerXMLMulti::init()
 {
     QDir dir;
 
-    QString basename = QString(m_path+"%1").arg(backup ? "_backup" : "");
+    QString basename = QString(m_path + "%1").arg(backup ? "_backup" : "");
 
+    dir.mkdir(basename);
+    dir.cd(basename);
 
-    if(!dir.cd(basename))
-    {
-        dir.mkdir(basename);
-        dir.cd(basename);
-    }
-    
-    dir.cd(m_currentProfile);
+    auto profileList = dir.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot);
 
-    auto infoList = dir.entryList(QStringList("*.xml"), QDir::Files);
-    m_accounts.clear();
-    for(auto filename: infoList)
-    {
-        if(filename.contains("_clear"))
-            continue;
-        
-        QDomDocument doc;
-        QFile file;
-        file.setFileName(basename+"\\"+m_currentProfile+"\\"+filename);
-        file.open(QIODevice::ReadWrite);
-        auto read64 = file.readAll();
-        auto read =  QByteArray::fromBase64(read64);
-        
-        if(!doc.setContent(read))
-        {
-            doc.createElement("database");
+    for (auto it : profileList) {
+        dir.cd(it.baseName());
+        auto infoList = dir.entryList(QStringList("*.account"), QDir::Files);
+
+        for (auto filename : infoList) {
+            QDomDocument doc;
+            QFile file;
+            file.setFileName(basename + "\\" + it.baseName() + "\\" + filename);
+            file.open(QIODevice::ReadWrite);
+            auto read64 = file.readAll();
+            auto read = QByteArray::fromBase64(read64);
+
+            if (!doc.setContent(read)) {
+                doc.createElement("database");
+            }
+
+            QString account = filename.split("\\").last().split(".").first();
+
+            m_accounts[it.baseName() + "/" + account] = doc;
+
+            file.close();
         }
-        
-        QString account = filename.split("\\").last().split(".").first();
-        
-        m_accounts[account] = doc;
-        
-        file.close();
+        dir.cdUp();
     }
-    
+
     return true;
 }
 
@@ -560,32 +557,12 @@ int ControllerXMLMulti::maxId(const QSet<int> & l) const
     return list.isEmpty() ? -1 : list.last();
 }
 
-Information ControllerXMLMulti::selectInformation(const QDomElement& el) const
-{
-    Information ret;
-    
-    QUuid id = QUuid::fromString(el.attribute("id"));
-    ret.setId(id);
-    id = QUuid::fromString(el.attribute("id_entry"));
-    ret.setIdEntry(id);
-    
-    bool est = el.elementsByTagName("estimated").at(0).toElement().text().toInt();
-    
-    QString cat;
-    if(el.elementsByTagName("categoryName").size() > 0)
-        cat = el.elementsByTagName("categoryName").at(0).toElement().text();
-    QString title = el.elementsByTagName("title").at(0).toElement().text();
-    
-    ret.setEstimated(est);
-    ret.setCategory(cat);
-    ret.setTitle(title);
-    
-    return ret;
-}
-
 bool ControllerXMLMulti::addFrequency(const Frequency &f)
 {
-    QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+    QDomElement root = m_accounts[currentProfile() + "/" + currentAccount()]
+                           .elementsByTagName("database")
+                           .at(0)
+                           .toElement();
     QUuid idf = f.id().isNull() ? QUuid::createUuid() : f.id();
 
     QMap<QString, QString> attr;
@@ -604,12 +581,8 @@ bool ControllerXMLMulti::addFrequency(const Frequency &f)
             auto current = freqs.at(i).toElement();
             Entry e(f.referenceEntry());
             e.setId(idf);
-            e.setType("outcome");
-            e.setAccount(m_accounts.key(m_currentAccount));
-            Information in = e.info();
-            in.setIdEntry(idf);
-            in.setId(idf);
-            e.setInfo(in);
+            e.setType(Account::Outcome);
+            e.setAccount(m_currentAccount);
             addEntryNode(e, current, "referenceEntry");
         }
     }
@@ -633,9 +606,11 @@ bool ControllerXMLMulti::removeFrequency(const Frequency& f)
 
 bool ControllerXMLMulti::updateFrequency(const Frequency& f)
 {
-    auto freqs = m_currentAccount.elementsByTagName("frequency");
-    
-    for(int i = 0; i < freqs.size(); i++)
+    auto freqs = m_accounts[currentProfile() + "/" + currentAccount()]
+                     .documentElement()
+                     .elementsByTagName("frequency");
+
+    for (int i = 0; i < freqs.size(); i++)
         if(freqs.at(i).toElement().attribute("id") == f.id().toString())
         {
             auto child = freqs.at(i).toElement();
@@ -662,10 +637,11 @@ bool ControllerXMLMulti::updateFrequency(const Frequency& f)
 QList<Frequency> ControllerXMLMulti::selectFrequency()
 {
     QMap<QUuid, Frequency> ret;
-    auto freqs = m_currentAccount.elementsByTagName("frequency");
-    
-    for(int i = 0; i < freqs.size(); i++)
-    {
+    auto freqs = m_accounts[currentProfile() + "/" + currentAccount()]
+                     .documentElement()
+                     .elementsByTagName("frequency");
+
+    for (int i = 0; i < freqs.size(); i++) {
         auto el = freqs.at(i).toElement();
         
         if(el.attribute("removed", "0").toInt())
@@ -678,8 +654,8 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
         auto child = el.elementsByTagName("end").at(0).toElement();
 
         auto nb = el.elementsByTagName("nbGroup");
-        
-        if(!nb.isEmpty())
+
+        if (!nb.isEmpty())
             f.setNbGroup(nb.at(0).toElement().text().toInt());
         
         child = el.elementsByTagName("referenceEntry").at(0).toElement();
@@ -690,11 +666,11 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
         child = el.elementsByTagName("endless").at(0).toElement();
         f.setEndless(child.text().toInt());
 
-        for(auto it: selectEntry(m_accounts.key(m_currentAccount)))
+        for (auto it : selectEntry())
             f<<it;
         ret[f.id()] = f;
     }
-    
+
     return ret.values();
 }
 
@@ -704,10 +680,11 @@ QMap<QUuid, CommonExpanse> ControllerXMLMulti::selectCommon()
     QMap<QUuid, CommonExpanse> ret;
     QList<QString> tag;
     tag<<"begin"<<"titleCommon"<<"close";
-    auto list = m_currentAccount.elementsByTagName("common");
+    auto list = m_accounts[currentProfile() + "/" + currentAccount()]
+                    .documentElement()
+                    .elementsByTagName("common");
 
-    for(int i = 0; i < list.size(); i++)
-    {
+    for (int i = 0; i < list.size(); i++) {
         QDomElement el = list.at(i).toElement();
         
         if(el.attribute("removed", "0").toInt())
@@ -725,11 +702,10 @@ QMap<QUuid, CommonExpanse> ControllerXMLMulti::selectCommon()
         
         child = el.elementsByTagName("close").at(0).toElement();
         ce.setIsClose(child.text().toInt());
-        
+
         child = el.firstChildElement();
 
-        for(;!child.isNull(); child = child.nextSiblingElement())
-        {
+        for (; !child.isNull(); child = child.nextSiblingElement()) {
             if(tag.contains(child.tagName()))
                 continue;
             
@@ -738,10 +714,10 @@ QMap<QUuid, CommonExpanse> ControllerXMLMulti::selectCommon()
             Entry e = selectEntryNode(child);
             ce.addEntries(member, e);
         }
-        
+
         ret[ce.id()] = ce;
     }
-    
+
     m_mutex.unlock();
     return ret;
 }
@@ -749,7 +725,7 @@ QMap<QUuid, CommonExpanse> ControllerXMLMulti::selectCommon()
 bool ControllerXMLMulti::addCommon(const CommonExpanse& ce)
 {
     m_mutex.lock();
-    QDomElement root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+    auto root = m_accounts[currentProfile() + "/" + currentAccount()].documentElement();
     QUuid id = !ce.id().isNull() ? ce.id() : QUuid::createUuid();
 
     QMap<QString, QString> att;
@@ -790,7 +766,7 @@ bool ControllerXMLMulti::removeCommon(const CommonExpanse& ce)
 bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
 {
     m_mutex.lock();
-    auto root = m_currentAccount.elementsByTagName("database").at(0).toElement();
+    auto root = m_accounts[currentProfile() + "/" + currentAccount()].documentElement();
     auto common = root.elementsByTagName("common");
     bool ret = false;
     for(auto i = 0; i < common.size(); i++)
@@ -801,12 +777,14 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
         
         
         QList<QString> tag;
-        tag<<"begin"<<"titleCommon"<<"close";
-        
-//        QStringList members = ce.members();
-        
+        tag << "begin"
+            << "titleCommon"
+            << "close";
+
+        //        QStringList members = ce.members();
+
         auto childs = el.childNodes();
-        
+
         int j = 0;
         while(childs.size() > 3)
         {
@@ -817,30 +795,23 @@ bool ControllerXMLMulti::updateCommon(const CommonExpanse& ce)
             }
             el.removeChild(childs.at(j));
         }
-        
-        
+
         auto map = ce.entries();
-                
-        for(auto it = map.begin(); it != map.end(); it++)
-        {
+
+        for (auto it = map.begin(); it != map.end(); it++) {
             Entry t = it.value();
             if(t.id().isNull())
             {
                 QUuid ide = QUuid::createUuid();
-                QUuid idi = QUuid::createUuid();
-                
-                Information in = t.info();
-                in.setId(idi);
-                in.setIdEntry(ide);
-                t.setInfo(in);
+
                 t.setId(ide);
             }
             
             QString tag = it.key();
             tag.replace(" ", "_");
             addEntryNode(t, el, tag);
-        }           
-        
+        }
+
         setter(el, "close", QString::number(ce.isClose()));
         setter(el, "titleCommon", ce.title());
         setter(el, "begin", ce.begin().toString("dd-MM-yyyy"));
@@ -864,36 +835,24 @@ QStringList ControllerXMLMulti::selectProfile()
     auto profiles = dir.entryInfoList(QDir::AllDirs | QDir::NoDotAndDotDot);
     QStringList ret;
     for(auto it: profiles)
-        ret<<it.baseName();
+        ret << it.baseName();
 
-    if(ret.isEmpty())
-    {
-       dir.mkdir("Default");
-       ret<<"Default";
+    if (ret.isEmpty()) {
+        dir.mkdir("Default");
+        ret << "Default";
     }
 
     return ret;
 }
 
-void ControllerXMLMulti::setProfile(QString profile)
-{
-    m_currentProfile = profile;
-    init();
-}
-
 bool ControllerXMLMulti::addProfile(QString name, QString password)
 {
     Q_UNUSED(password)
-    QString basename = QString(m_path+"%1").arg(backup ? "_backup" : "");
+    QString basename = QString(m_path + "%1").arg(backup ? "_backup" : "");
 
     QDir dir;
     dir.cd(basename);
     return dir.mkdir(name);
-}
-
-QString ControllerXMLMulti::currentProfile()
-{
-    return m_currentProfile;
 }
 
 bool ControllerXMLMulti::deleteProfile(QString name)
@@ -908,7 +867,7 @@ QMap<QUuid, Debt> ControllerXMLMulti::selectDebt()
 {
     auto ret = QMap<QUuid, Debt>();
 
-    auto root = m_currentAccount.documentElement();
+    auto root = m_accounts[currentProfile() + "/" + currentAccount()].documentElement();
     auto list = root.elementsByTagName("debt");
 
     for (auto i = 0; i < list.size(); i++) {
@@ -936,14 +895,14 @@ QMap<QUuid, Debt> ControllerXMLMulti::selectDebt()
 
 bool ControllerXMLMulti::addDebt(const Debt &d)
 {
-    auto root = m_currentAccount.documentElement();
+    auto root = m_accounts[currentProfile() + "/" + currentAccount()].documentElement();
     auto id = !d.id().isNull() ? d.id() : QUuid::createUuid();
 
     QMap<QString, QString> att;
     att["id"] = id.toString();
     att["lastUpdate"] = QDateTime::currentDateTime().toString();
     Entry e;
-    e.setAccount(m_accounts.key(m_currentAccount));
+    e.setAccount(m_currentAccount);
     e.setMetadata("debt", id);
 
     e.setId(id);
@@ -968,14 +927,14 @@ bool ControllerXMLMulti::removeDebt(const Debt &d)
 
 bool ControllerXMLMulti::updateDebt(const Debt &d)
 {
-    auto root = m_currentAccount.documentElement();
+    auto root = m_accounts[currentProfile() + "/" + currentAccount()].documentElement();
     auto list = root.elementsByTagName("debt");
     bool ret = false;
     for (auto i = 0; i < list.size(); i++) {
         if (list.at(i).toElement().attribute("id") == d.id().toString()) {
             ret = true;
             Entry e(d.initial());
-            e.setAccount(m_accounts.key(m_currentAccount));
+            e.setAccount(m_currentAccount);
             updateEntry(e);
             auto el = list.at(i).toElement();
             setter(el, "name", d.name());

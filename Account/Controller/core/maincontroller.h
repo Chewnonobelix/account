@@ -10,6 +10,7 @@
 #include <QQmlComponent>
 
 #include "../../account_global.h"
+#include "../ItemModel/categorylistmodel.h"
 #include "../data/controllerxmlmulti.h"
 #include "../data/xmltosql.h"
 #include "../graph/abstractgraphcontroller.h"
@@ -53,7 +54,7 @@ private:
     ControllerTransfert m_transfert;
     ControllerSettings m_settings;
     ControllerSynchronization m_synchro;
-
+    QSharedPointer<CategoryListModel> m_categoryModel;
     AbstractGraphController m_graph;
     
     QList<QSharedPointer<FeatureBuilder>> m_features;

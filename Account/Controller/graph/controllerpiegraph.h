@@ -11,7 +11,7 @@ class ControllerPieGraph: public AbstractController, public InterfaceGraph
 {
     Q_OBJECT
 private:
-    QMap<QString, QMap<QString, Total>> m_entries;
+    QMap<Account::TypeEnum, QMap<QString, Total>> m_entries;
 
 public:
     ControllerPieGraph(QObject * = nullptr);

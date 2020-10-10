@@ -171,13 +171,13 @@ Item {
             Layout.preferredHeight: root.height *0.22
             Layout.preferredWidth: root.width *0.74
 
-            onEntryChanged: {
-            }
             visible: debtView.currentIndex != -1
             onValueChanged: {
                 _debt.onInitialValueChanged(debtView.currentModel.id, value)
             }
-            onCatChanged: _debt.onInitialValueChanged(debtView.currentModel.id, cat)
+            onCatChanged: {
+                _debt.onInitialCategoryChanged(debtView.currentModel.id, cat)
+            }
             onSupportChanged: _debt.onInitialSupportChanged(debtView.currentModel.id, supp)
             onAddNewCategory: _debt.onNewCategory(type.currentValue, cat)
         }
@@ -350,7 +350,7 @@ Item {
             delegate: AccountLabel {
                 height: entryList.height * 0.05
                 width: entryList.width
-                text: modelData.label
+                text: modelData.title
                 background: Rectangle {
                     gradient: entryList.currentIndex === index ? AccountStyle.calSelect : AccountStyle.unselectView
                 }

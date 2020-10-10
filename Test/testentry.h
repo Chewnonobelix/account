@@ -40,8 +40,11 @@ private slots:
 
     void testCopyContructor();
     void testCopy();
-signals:
 
+    void test_jsonCast();
+    void test_EntryCast();
+
+signals:
 };
 
 #endif // TESTENTRY_H

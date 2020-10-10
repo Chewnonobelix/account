@@ -120,7 +120,7 @@ Rectangle {
                 height: 40
                 width: frequencyList.width
 
-                gradient: ref.entry && ListView.isCurrentItem ? ref.entry.type === "income" ? AccountStyle.selectViewIn : AccountStyle.selectViewOut : AccountStyle.unselectView
+                gradient: ref.entry && ListView.isCurrentItem ? ref.entry.type === Account.Income ? AccountStyle.selectViewIn : AccountStyle.selectViewOut : AccountStyle.unselectView
 
                 MouseArea {
                     anchors.fill: parent
@@ -205,13 +205,13 @@ Rectangle {
             onAddNewCategory: { if(entry && enabled) _frequency.addNewCategory(frequencyList.currentModel.id, cat, entry.type)
             }
             onEntryChanged: {
-                typeCombo.currentIndex = CoreModel.typeModel.find(entry ? entry.type: "outcome")
+                typeCombo.currentIndex = CoreModel.typeModel.find(entry ? entry.type: Account.Outcome)
             }
 
             Component.onCompleted: {
                 enabled = Qt.binding(function() {return frequencyList.count !== 0})
 
-                catModel = Qt.binding(function(){return (entry && entry.type === "income") ? incomeList : outcomeList})
+                catModel = Qt.binding(function(){return (entry && entry.type === Account.Income) ? incomeList : outcomeList})
             }
 
         }

@@ -2,12 +2,14 @@
 #define ENTRY_H
 
 #include "accountglobal.h"
-#include "information.h"
+#include "category.h"
 #include "metadata.h"
 #include <QDate>
+#include <QJsonObject>
 #include <QObject>
 #include <QSharedPointer>
 #include <QString>
+#include <QUuid>
 #include <QVariant>
 #include <QtMath>
 
@@ -18,19 +20,20 @@ class ACCOUNT_EXPORT Entry: public MetaData
     Q_PROPERTY(QString account READ account)
     Q_PROPERTY(double value READ value)
     Q_PROPERTY(QDate date READ date)
-    Q_PROPERTY(QString type READ type)
-    Q_PROPERTY(Information info READ info)
-    Q_PROPERTY(QString label READ label)
+    Q_PROPERTY(Account::TypeEnum type READ type)
     Q_PROPERTY(QUuid id READ id)
     Q_PROPERTY(bool isBlocked READ isBlocked)
-    Q_PROPERTY(Account::EntryTypeEnum support READ support)
+    Q_PROPERTY(Account::SupportEnum support READ support)
+    Q_PROPERTY(QString title READ title)
+    Q_PROPERTY(bool estimated READ estimated)
+	Q_PROPERTY(QString category READ category)
 
 private:
-    Information m_info;
 
 public:
     Entry();
     Entry(const Entry &) = default;
+    using MetaData::MetaData;
     ~Entry() = default;
 
     Entry& operator =(const Entry&);
@@ -45,17 +48,22 @@ public:
     void setValue(double value);
     QDate date() const;
     void setDate(QDate date);
-    QString type() const;
-    void setType(QString type);
-    Information info() const;
-    void setInfo(Information info);
-    QString label() const;
+    Account::TypeEnum type() const;
+    void setType(Account::TypeEnum type);
+    QString title() const;
+    void setTitle(QString title);
+    bool estimated() const;
+    void setEstimated(bool estimated);
+    Category category() const;
+    void setCategory(Category category);
     bool isBlocked() const;
     void setBlocked(bool);
-    Account::EntryTypeEnum support() const;
-    void setSupport(Account::EntryTypeEnum);
+    Account::SupportEnum support() const;
+    void setSupport(Account::SupportEnum);
 
     operator QVariantMap() const;
+    Entry &operator=(const QJsonObject &);
+
     inline operator QVariant() const { return QVariant::fromValue(*this); }
 };
 

@@ -11,6 +11,8 @@ import "../Style"
 import "../Functionnal"
 import "../Budget"
 
+import Account 1.0
+
 Page {
 
     
@@ -266,6 +268,7 @@ Page {
                     if (selection.contains(index) || index === -1) {
                         selection.clear()
                         _main.edit((currentId))
+                        currentRow = -1
                     } else {
                         selection.clear()
                         currentRow = index
@@ -273,6 +276,8 @@ Page {
                         currentEntry = model[index]
                         _main.edit(currentId)
                     }
+
+                    infoView.visible = currentRow !== -1 && !currentEntry.isBlock
                 }
                 
                 function selectFromId(id) {
@@ -304,9 +309,9 @@ Page {
                             }
                         }
                         AccountLabel {
-                            property string est: view.model[styleData.row] && view.model[styleData.row].info.estimated ? "*" : ""
+                            property string est: view.model[styleData.row] && view.model[styleData.row].estimated ? "*" : ""
                             
-                            text: styleData.value === "income" ? "+" + est : "-" + est
+                            text: styleData.value === Account.Income ? "+" + est : "-" + est
                             anchors.fill: parent
                             
                         }
@@ -480,7 +485,7 @@ Page {
                     width: view.width
                     height: view.height * .03
                     
-                    gradient: view.model[styleData.row] && styleData.selected ? view.model[styleData.row].type === "outcome" ? AccountStyle.selectViewOut : AccountStyle.selectViewIn : AccountStyle.unselectView
+                    gradient: view.model[styleData.row] && styleData.selected ? view.model[styleData.row].type === Account.Outcome ? AccountStyle.selectViewOut : AccountStyle.selectViewIn : AccountStyle.unselectView
                     
                 }
                 

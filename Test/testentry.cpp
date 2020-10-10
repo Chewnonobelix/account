@@ -2,7 +2,7 @@
 
 const QUuid ide = QUuid::createUuid();
 const QString account = "Test account";
-const QString type = "type ytewsyt";
+const Account::TypeEnum type = Account::Income;
 const double value = 2.12;
 const bool blacked = true;
 const QDate date = QDate::currentDate();
@@ -118,4 +118,18 @@ void TestEntry::testCopy()
 {
     *copy = model2;
     QCOMPARE(model2, *copy);
+}
+
+void TestEntry::test_jsonCast()
+{
+    QJsonObject obj = model;
+    QCOMPARE(obj.keys(), model.metadataList());
+}
+
+void TestEntry::test_EntryCast()
+{
+    QJsonObject obj = model;
+    QVERIFY(obj.keys() == model.metadataList());
+    Entry e(obj);
+    QCOMPARE(model, e);
 }

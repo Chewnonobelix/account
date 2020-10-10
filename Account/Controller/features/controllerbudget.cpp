@@ -17,8 +17,8 @@ void ControllerBudget::openManager()
     emit clearCat();
     emit blocked(true);
 
-    auto incomes = m_db->selectCategory().values("income");
-    auto outcomes = m_db->selectCategory().values("outcome");
+    //    auto incomes = m_db->selectCategory().values("income");
+    //    auto outcomes = m_db->selectCategory().values("outcome");
 
     auto func = [&](QString type, QStringList list) {
         for (auto it : list) {
@@ -31,8 +31,8 @@ void ControllerBudget::openManager()
         }
     };
 
-    func("income", incomes);
-    func("outcome", outcomes);
+    //    func("income", incomes);
+    //    func("outcome", outcomes);
 
     if (!m_selected.isEmpty())
         emit selectCat(m_selected);
@@ -45,8 +45,8 @@ bool ControllerBudget::removeFrom(QUuid id)
     bool ret = false;
     Entry e = entry(id);
 
-    if (m_budgets.contains(e.info().category()))
-        ret = m_budgets[e.info().category()].removeEntry(e);
+    //    if (m_budgets.contains(e.category()))
+    //        ret = m_budgets[e.category()].removeEntry(e);
 
     return ret;
 }
@@ -98,7 +98,7 @@ void ControllerBudget::reload()
     for (auto b : l)
         m_budgets[b.category()] = b;
 
-    m_filler.entries = m_db->selectEntry(currentAccount()).values();
+    m_filler.entries = m_db->selectEntry().values();
     m_filler.start();
 
     show(QDate::currentDate());
@@ -193,11 +193,11 @@ void ControllerBudget::updateEntry(QUuid id)
 {
     Entry e = entry(id);
 
-    if (m_budgets.contains(e.info().category())) {
-        m_budgets[e.info().category()] >> e;
+    //    if (m_budgets.contains(e.category())) {
+    //        m_budgets[e.category()] >> e;
 
-        m_budgets[e.info().category()] << e;
-    }
+    //        m_budgets[e.category()] << e;
+    //    }
 
     reload();
 }
@@ -207,10 +207,10 @@ void ControllerBudget::changeEntry(QString old, QUuid id)
     Entry e = entry(id);
 
     if (m_budgets.contains(old))
-        m_budgets[old]>>e;
-    
-    if(m_budgets.contains(e.info().category()))
-        m_budgets[e.info().category()] << e;
+        m_budgets[old] >> e;
+
+    //    if (m_budgets.contains(e.category()))
+    //        m_budgets[e.category()] << e;
 
     reload();
 }

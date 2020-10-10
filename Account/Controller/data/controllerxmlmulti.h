@@ -16,18 +16,15 @@ class ControllerXMLMulti: public InterfaceDataSave
     Q_OBJECT
 private:
     QMap<QString, QDomDocument> m_accounts;
-    
-    QMap<QString, QSet<int>> m_ids;
 
-    QDomDocument m_currentAccount;
-    QString m_currentProfile;
+    //    QMap<QString, QSet<int>> m_ids;
+
+    //    QDomDocument m_currentAccount;
+    //    QString m_currentProfile;
 
     QMutex m_mutex;
     
     int maxId(const QSet<int> &) const;
-    Information selectInformation(const QDomElement&) const;
-    void addInfo(QDomElement&, const Information&);
-    void updateInfo(QDomElement&, const Information&);
 
     void createAccount(QString);
 
@@ -51,49 +48,46 @@ public:
 
 public slots:
 
-    virtual bool addEntry(QSharedPointer<Entry>);
-    virtual bool addEntry(const Entry&);
-    virtual QMultiMap<QDate, Entry> selectEntry(QString = "");
-    virtual bool removeEntry(const Entry&);
+    virtual bool addEntry(const Entry &) override;
+    virtual QMultiMap<QDate, Entry> selectEntry() override;
+    virtual bool removeEntry(const Entry &) override;
 
-    virtual QStringList selectAccount();
-    virtual bool removeAccount(QString);
-    virtual void setCurrentAccount(QString);
+    virtual QStringList selectAccount(QString) override;
+    virtual bool removeAccount(QString) override;
 
-    virtual bool updateInfo(const Entry&);
-    virtual bool updateEntry(const Entry &);
+    virtual bool updateEntry(const Entry &) override;
 
-    virtual bool addCategory(QString, QString);
-    virtual bool removeCategory(QString);
-    virtual QMultiMap<QString, QString> selectCategory();
+	virtual bool addCategory(Category &) override;
+	virtual bool removeCategory(QString) override;
+    virtual QMap<Account::TypeEnum, QMap<QUuid, Category>> selectCategory() override;
+    virtual bool updateCategory(const Category &) override;
 
-    virtual bool addBudget(const Budget &);
-    virtual bool removeBudget(const Budget&);
-    virtual QList<Budget> selectBudgets();
-    virtual bool updateBudget(const Budget &);
-    
-    virtual bool addFrequency(const Frequency&);
-    virtual bool removeFrequency(const Frequency&);
-    virtual bool updateFrequency(const Frequency&);
-    virtual QList<Frequency> selectFrequency();
-    
-    virtual QMap<QUuid, CommonExpanse> selectCommon();
-    virtual bool addCommon(const CommonExpanse&);
-    virtual bool removeCommon(const CommonExpanse&);
-    virtual bool updateCommon(const CommonExpanse&);
-    
-    virtual QStringList selectProfile();
-    virtual void setProfile(QString);
-    virtual bool addProfile(QString, QString);
-    virtual QString currentProfile();
-    virtual bool deleteProfile(QString);
+    virtual bool addBudget(const Budget &) override;
+    virtual bool removeBudget(const Budget &) override;
+    virtual QList<Budget> selectBudgets() override;
+    virtual bool updateBudget(const Budget &) override;
 
-    virtual QMap<QUuid, Debt> selectDebt();
-    virtual bool addDebt(const Debt &);
-    virtual bool removeDebt(const Debt &);
-    virtual bool updateDebt(const Debt &);
+    virtual bool addFrequency(const Frequency &) override;
+    virtual bool removeFrequency(const Frequency &) override;
+    virtual bool updateFrequency(const Frequency &) override;
+    virtual QList<Frequency> selectFrequency() override;
 
-    virtual bool init();
+    virtual QMap<QUuid, CommonExpanse> selectCommon() override;
+    virtual bool addCommon(const CommonExpanse &) override;
+    virtual bool removeCommon(const CommonExpanse &) override;
+    virtual bool updateCommon(const CommonExpanse &) override;
+
+    virtual QStringList selectProfile() override;
+    virtual bool addProfile(QString, QString) override;
+    virtual bool deleteProfile(QString) override;
+
+    virtual QMap<QUuid, Debt> selectDebt() override;
+    virtual bool addDebt(const Debt &) override;
+    virtual bool removeDebt(const Debt &) override;
+    virtual bool updateDebt(const Debt &) override;
+
+    virtual bool init() override;
+    virtual QSharedPointer<InterfaceDataSave> clone() const override;
 };
 
 Q_DECLARE_METATYPE(ControllerXMLMulti)

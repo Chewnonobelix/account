@@ -25,12 +25,12 @@ AbstractController::CalcThread::CalcThread(int index, QList<Entry> l, QMap<QDate
 
 void AbstractController::setCurrentAccount(QString a)
 {
-    m_account = a;
+    db()->setCurrentAccount(a);
 }
 
 QString AbstractController::currentAccount()
 {
-    return m_account;
+    return db()->currentAccount();
 }
 
 void AbstractController::CalcThread::run()
@@ -77,10 +77,9 @@ void AbstractController::calculTotal()
     pool.clear();
     CalcThread::indexes.clear();
     m_accountTotal.clear();
-    auto l = m_db->selectEntry(currentAccount()).values();
-    
-    for(auto i = 0; i < 5; i++)
-    {
+    auto l = m_db->selectEntry().values();
+
+    for (auto i = 0; i < 5; i++) {
         auto t = QSharedPointer<CalcThread>::create(i, l, &m_accountTotal);
         pool<<t;
         t->start();
@@ -92,25 +91,23 @@ void AbstractController::calculTotal()
 void AbstractController::addEntry(const Entry& e)
 {
     Entry et = e;
-    Information i = et.info();
-    i.setEstimated(et.date() > QDate::currentDate());
-    et.setInfo(i);
-    if(m_db->addEntry(et))
-    {
+
+    et.setEstimated(et.date() > QDate::currentDate());
+
+    if (m_db->addEntry(et)) {
         Entry init;
-        for(auto it: m_db->selectEntry(currentAccount()))
-            if(it.label() == "Initial")
+        for (auto it : m_db->selectEntry())
+            if (it.title() == "Initial")
                 init = it;
         
         if(et.date() < init.date())
         {
-            QMetaEnum qme = QMetaEnum::fromType<Account::TypeEnum>();
             QDate nd = et.date().addDays(-1);
             
             
             init.setDate(nd);
             double val = init.value();
-            val -= (et.value()*qme.keysToValue(et.type().toLower().toLatin1()));
+            val -= (et.value() * int(et.type()));
             init.setValue(val);
             updateEntry(init);
         }
@@ -120,8 +117,8 @@ void AbstractController::addEntry(const Entry& e)
 Entry AbstractController::entry(QUuid id)
 {
     Entry ret;
-    
-    for(auto it: m_db->selectEntry(currentAccount()))
+
+    for (auto it : m_db->selectEntry())
         if(it.id() == id)
             ret = it;
     
@@ -158,7 +155,6 @@ void AbstractController::deleteDb()
 void AbstractController::updateEntry(const Entry & e)
 {
     m_db->updateEntry(e);
-    m_db->updateInfo(e);
 }
 
 Total AbstractController::accountTotal()

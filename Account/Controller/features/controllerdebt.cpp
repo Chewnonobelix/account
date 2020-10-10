@@ -37,7 +37,7 @@ int ControllerDebt::exec()
         m_filler.model = &m_debts;
 
     if (!m_filler.isRunning()) {
-        m_filler.entries = db()->selectEntry(currentAccount()).values();
+        m_filler.entries = db()->selectEntry().values();
         m_filler.start();
     }
 
@@ -59,8 +59,6 @@ void ControllerDebt::endFill()
     QVariantList list;
     int index = -1;
 
-    qDebug() << "end fill";
-
     for (auto it : m_debts) {
         list << QVariant::fromValue(it);
         if (it.id() == m_currentId)
@@ -80,7 +78,7 @@ void ControllerDebt::onNameChanged(QString id, QString name)
 {
     Debt d = db()->selectDebt()[QUuid::fromString(id)];
     d.setName(name);
-    auto el = db()->selectEntry(currentAccount());
+    auto el = db()->selectEntry();
 
     Entry e;
     for (auto it : el) {
@@ -88,9 +86,7 @@ void ControllerDebt::onNameChanged(QString id, QString name)
             e = it;
     }
 
-    Information i = e.info();
-    i.setTitle(name);
-    e.setInfo(i);
+    e.setTitle(name);
     d.setInitial(e);
     db()->updateDebt(d);
 }
@@ -125,7 +121,7 @@ void ControllerDebt::onRemoved(QString id)
 void ControllerDebt::onInitialDateChanged(QString id, QDate d)
 {
     Debt b = db()->selectDebt()[QUuid::fromString(id)];
-    auto el = db()->selectEntry(currentAccount());
+    auto el = db()->selectEntry();
 
     Entry e;
     for (auto it : el) {
@@ -138,10 +134,10 @@ void ControllerDebt::onInitialDateChanged(QString id, QDate d)
     db()->updateDebt(b);
 }
 
-void ControllerDebt::onInitialTypeChanged(QString id, QString t)
+void ControllerDebt::onInitialTypeChanged(QString id, int t)
 {
     Debt b = db()->selectDebt()[QUuid::fromString(id)];
-    auto el = db()->selectEntry(currentAccount());
+    auto el = db()->selectEntry();
 
     Entry e;
     for (auto it : el) {
@@ -149,14 +145,14 @@ void ControllerDebt::onInitialTypeChanged(QString id, QString t)
             e = it;
     }
 
-    e.setType(t);
+    e.setType(Account::TypeEnum(t));
     b.setInitial(e);
     db()->updateDebt(b);
 }
 
 void ControllerDebt::onInitialValueChanged(QString id, double v)
 {
-    auto el = db()->selectEntry(currentAccount());
+    auto el = db()->selectEntry();
 
     Entry e;
     for (auto it : el) {
@@ -174,26 +170,24 @@ void ControllerDebt::onInitialValueChanged(QString id, double v)
 
 void ControllerDebt::onInitialCategoryChanged(QString id, QString c)
 {
-    Debt b = db()->selectDebt()[QUuid::fromString(id)];
-    auto el = db()->selectEntry(currentAccount());
+ Debt b = db()->selectDebt()[QUuid::fromString(id)];
+ auto el = db()->selectEntry();
 
-    Entry e;
-    for (auto it : el) {
-        if (it.id().toString() == id)
-            e = it;
-    }
-
-    Information i = e.info();
-    i.setCategory(c);
-    e.setInfo(i);
-    b.setInitial(e);
-    db()->updateDebt(b);
+ Entry e;
+ for (auto it : el) {
+  if (it.id().toString() == id)
+   e = it;
+ }
+ auto cat = db()->selectCategory()[e.type()][QUuid::fromString(c)];
+ e.setCategory(cat);
+ b.setInitial(e);
+ db()->updateDebt(b);
 }
 
 void ControllerDebt::onInitialSupportChanged(QString id, int s)
 {
     Debt b = db()->selectDebt()[QUuid::fromString(id)];
-    auto el = db()->selectEntry(currentAccount());
+    auto el = db()->selectEntry();
 
     Entry e;
     for (auto it : el) {
@@ -201,14 +195,17 @@ void ControllerDebt::onInitialSupportChanged(QString id, int s)
             e = it;
     }
 
-    e.setSupport((Account::EntryTypeEnum) s);
+    e.setSupport((Account::SupportEnum) s);
     b.setInitial(e);
     db()->updateDebt(b);
 }
 
-void ControllerDebt::onNewCategory(QString type, QString cat)
+void ControllerDebt::onNewCategory(int type, QString cat)
 {
-    db()->addCategory(cat, type);
+ Category c;
+ c.setType(Account::TypeEnum(type));
+ c.setName(cat);
+ db()->addCategory(c);
 }
 
 void ControllerDebt::generate(QString id)
@@ -220,9 +217,8 @@ void ControllerDebt::generate(QString id)
     if (ret) {
         auto list = debt.entries();
         for (auto it : list) {
-            Information i = it.info();
-            i.setTitle(debt.name() + "_" + it.date().toString("dd-MM-yyyy"));
-            it.setInfo(i);
+            it.setTitle(debt.name() + "_" + it.date().toString("dd-MM-yyyy"));
+
             it.setAccount(currentAccount());
             db()->addEntry(it);
         }

@@ -46,13 +46,13 @@ public slots:
     void onRateChanged(QString, double);
 
     void onInitialDateChanged(QString, QDate);
-    void onInitialTypeChanged(QString, QString);
+    void onInitialTypeChanged(QString, int);
     void onInitialValueChanged(QString, double);
     void onInitialCategoryChanged(QString, QString);
     void onInitialSupportChanged(QString, int);
-    void onNewCategory(QString, QString);
+	void onNewCategory(int, QString);
 
-    void endFill();
+	void endFill();
 };
 
 #endif // CONTROLLERDEBT_H

@@ -63,7 +63,7 @@ void Frequency::setNbGroup(int nbGroup)
 
 Frequency::Frequency()
 {
-    m_referenceEntry.setType("outcome");
+    m_referenceEntry.setType(Account::Outcome);
     setId(QUuid());
     setFreq(Account::FrequencyEnum::Unique);
     setBegin(QDate::currentDate());
@@ -131,7 +131,7 @@ Frequency& Frequency::operator<< (const Entry& e)
 
 QString Frequency::name() const
 {
-    return m_referenceEntry.info().title();
+    return m_referenceEntry.title();
 }
 
 QVariantList Frequency::listEntries(int group) const

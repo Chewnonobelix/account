@@ -70,7 +70,7 @@ bool Debt::generate()
 
     Entry ref;
     ref.setValue(value / 100.0);
-    ref.setType(initial().type() == "income" ? "outcome" : "income");
+    ref.setType(initial().type() == Account::Outcome ? Account::Outcome : Account::Income);
     QDate first = initial().date();
     QDate last = first.addDays((nb() + 1) * Account::nbDay(first, freq()));
 
@@ -79,7 +79,7 @@ bool Debt::generate()
     scheduler.setReferenceEntry(ref);
 
     QList<Entry> list;
-    for (first; first < last; first = first.addDays(Account::nbDay(first, freq()))) {
+    for (; first < last; first = first.addDays(Account::nbDay(first, freq()))) {
         list << scheduler.clone(ref);
         list.last().setDate(first);
         list.last().setMetadata("debt", id());
@@ -124,12 +124,10 @@ void Debt::setEntries(QList<Entry> e)
 
 Debt &Debt::operator<<(Entry e)
 {
-    qDebug() << e.metadataList() << e.label();
     if (e.hasMetadata("debt") && e.metaData<QUuid>("debt") == id()) {
         auto list = entries();
 
         if (e.id() == id()) {
-            qDebug() << "Set init";
             setInitial(e);
         } else {
             list << e;
