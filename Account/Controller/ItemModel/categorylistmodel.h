@@ -24,15 +24,15 @@ class CategoryListModel : public QAbstractListModel
  void init();
 
  public:
- enum class CategoryRole { DisplayRole = Qt::UserRole + 1, TypeRole };
- Q_ENUM(CategoryRole)
+	 enum class CategoryRole { DisplayRole = Qt::UserRole + 1, TypeRole, StringIdRole };
+	 Q_ENUM(CategoryRole)
 
- CategoryListModel();
- CategoryListModel(const CategoryListModel &) = default;
- ~CategoryListModel() = default;
+	 CategoryListModel();
+	 CategoryListModel(const CategoryListModel &) = default;
+	 ~CategoryListModel() = default;
 
- Account::TypeEnum currentType() const;
- void setCurrentType(Account::TypeEnum);
+	 Account::TypeEnum currentType() const;
+	 void setCurrentType(Account::TypeEnum);
 
  public slots:
  void onUpdateCategory();

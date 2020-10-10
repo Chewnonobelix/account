@@ -142,14 +142,12 @@ AccountBackground {
                 height: parent.height * 0.59
                 width: parent.width
 
-//                editable: currentText === ""
-
                 onAddCategory: root.addNewCategory(cat)
 
-//                onTypeChanged: console.log(type, "type", model, model.currentType)
-                onCurrentTextChanged: {
-                    if(currentText !== "")
-                        catChanged(currentText)
+                onCurrentValueChanged: {
+                    if(currentText !== "") {
+                        catChanged(currentValue)
+                    }
                 }
             }
         }

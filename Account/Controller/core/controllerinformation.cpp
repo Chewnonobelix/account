@@ -60,10 +60,8 @@ void ControllerInformation::valueChange(double value)
 void ControllerInformation::categoryChange(QString cat)
 {
  auto list = m_db->selectCategory()[m_entry.type()];
- Category c;
- auto i = std::find_if(list.begin(), list.end(), [cat](Category it) { return it.name() == cat; });
+ Category c = list[QUuid::fromString(cat)];
 
- c = *i;
  qDebug() << cat << (QJsonObject) c;
  //    QString old = m_entry.category();
  m_entry.setCategory(c);

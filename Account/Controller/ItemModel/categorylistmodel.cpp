@@ -13,10 +13,12 @@ Account::TypeEnum CategoryListModel::currentType() const
 
 void CategoryListModel::setCurrentType(Account::TypeEnum type)
 {
+ reset();
+
  m_currentType = type;
 
- reset();
  init();
+
  emit currentTypeChanged();
 }
 
@@ -74,6 +76,8 @@ QVariant CategoryListModel::data(const QModelIndex &index, int role) const
  case CategoryRole::TypeRole:
   ret = QVariant::fromValue(currentType());
   break;
+ case CategoryRole::StringIdRole:
+  ret = QVariant::fromValue(m_db->selectCategory()[currentType()].values()[row].id());
  }
 
  qDebug() << "Debug" << enumrole << row << ret;
@@ -84,6 +88,7 @@ QVariant CategoryListModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> CategoryListModel::roleNames() const
 {
  static auto ret = QHash<int, QByteArray>{{int(CategoryRole::DisplayRole), "display"},
-										  {int(CategoryRole::TypeRole), "type"}};
+										  {int(CategoryRole::TypeRole), "type"},
+										  {int(CategoryRole::StringIdRole), "idstring"}};
  return ret;
 }

@@ -24,6 +24,7 @@ ComboBox {
     onTypeChanged: _categoryModel.currentType = type
 
     textRole: "display"
+    valueRole: "idstring"
 
     editable: currentText === ""
 
