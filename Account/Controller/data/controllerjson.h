@@ -2,6 +2,8 @@
 #define CONTROLLERJSON_H
 
 #include "interfacedatasave.h"
+#include <QDir>
+#include <QFile>
 #include <QtCore/qglobal.h>
 
 class ControllerJson : public InterfaceDataSave

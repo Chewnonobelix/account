@@ -132,17 +132,30 @@ bool ControllerJson::updateDebt(const Debt &)
 
 QStringList ControllerJson::selectProfile()
 {
- return QStringList();
+ QDir dir;
+ dir.mkdir("jdata");
+ dir.cd("jdata");
+
+ auto list = dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
+ return list;
 }
 
-bool ControllerJson::addProfile(QString, QString)
+bool ControllerJson::addProfile(QString name, QString)
 {
- return false;
+ QDir dir;
+ dir.mkdir("jdata");
+ dir.cd("jdata");
+
+ return dir.mkdir(name);
 }
 
-bool ControllerJson::deleteProfile(QString)
+bool ControllerJson::deleteProfile(QString profile)
 {
- return false;
+ QDir dir;
+ dir.mkdir("jdata");
+ dir.cd("jdata");
+
+ return dir.rmdir(profile);
 }
 
 bool ControllerJson::init()
@@ -152,5 +165,5 @@ bool ControllerJson::init()
 
 QSharedPointer<InterfaceDataSave> ControllerJson::clone() const
 {
- return QSharedPointer<InterfaceDataSave>();
+ return QSharedPointer<ControllerJson>(*this);
 }
