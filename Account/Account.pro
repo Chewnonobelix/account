@@ -33,6 +33,7 @@ SOURCES += \
     Controller/core/languagecontroller.cpp \
     Controller/core/maincontroller.cpp \
     Controller/data/controllerdb.cpp \
+ Controller/data/controllerjson.cpp \
     Controller/data/controllerxmlmulti.cpp \
     Controller/data/interfacedatasave.cpp \
     Controller/data/xmltosql.cpp \
@@ -85,6 +86,7 @@ HEADERS += \
     Controller/core/languagecontroller.h \
     Controller/core/maincontroller.h \
     Controller/data/controllerdb.h \
+    Controller/data/controllerjson.h \
     Controller/data/controllerxmlmulti.h \
     Controller/data/dbrequestsinit.h \
     Controller/data/interfacedatasave.h \
