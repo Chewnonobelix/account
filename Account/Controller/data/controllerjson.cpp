@@ -1,13 +1,29 @@
 #include "controllerjson.h"
 
-bool ControllerJson::addEntry(const Entry &)
+bool ControllerJson::addEntry(const Entry &e)
 {
- return false;
+ auto json = load(currentProfile(), currentAccount());
+ auto array = json.value("entry").toArray();
+ auto et = Entry(e);
+ if (et.id().isNull())
+  et.setId(QUuid::createUuid());
+ array << et;
+ json["entry"] = array;
+ save(json);
+ return true;
 }
 
 QMultiMap<QDate, Entry> ControllerJson::selectEntry()
 {
- return QMultiMap<QDate, Entry>();
+ QMultiMap<QDate, Entry> ret;
+ auto json = load(currentProfile(), currentAccount());
+ auto array = json.value("entry").toArray();
+ for (auto it : array) {
+  Entry e(it);
+  ret.insert(e.date(), e);
+ }
+
+ return ret;
 }
 
 bool ControllerJson::removeEntry(const Entry &)
