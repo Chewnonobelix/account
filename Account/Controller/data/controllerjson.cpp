@@ -17,9 +17,7 @@ bool ControllerJson::removeEntry(const Entry &)
 
 QStringList ControllerJson::selectAccount(QString profile)
 {
- QDir dir;
- dir.mkdir("jdata");
- dir.cd("jdata");
+ auto dir = dir();
 
  auto p = profile.isEmpty() ? currentProfile() : profile;
 
@@ -35,9 +33,8 @@ QStringList ControllerJson::selectAccount(QString profile)
 
 bool ControllerJson::removeAccount(QString account)
 {
- QDir dir;
- dir.cd("jdata/" + currentProfile());
-
+ auto dir = dir();
+ dir.cd(currentProfile());
  return dir.remove(account + ".jaccount");
 }
 
@@ -148,9 +145,7 @@ bool ControllerJson::updateDebt(const Debt &)
 
 QStringList ControllerJson::selectProfile()
 {
- QDir dir;
- dir.mkdir("jdata");
- dir.cd("jdata");
+ auto dir = dir();
 
  auto list = dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
  return list;
@@ -158,28 +153,53 @@ QStringList ControllerJson::selectProfile()
 
 bool ControllerJson::addProfile(QString name, QString)
 {
- QDir dir;
- dir.mkdir("jdata");
- dir.cd("jdata");
+ auto dir = dir();
 
  return dir.mkdir(name);
 }
 
 bool ControllerJson::deleteProfile(QString profile)
 {
- QDir dir;
- dir.mkdir("jdata");
- dir.cd("jdata");
-
+ auto dir = dir();
  return dir.rmdir(profile);
 }
 
 bool ControllerJson::init()
 {
- return false;
+ return true;
 }
 
 QSharedPointer<InterfaceDataSave> ControllerJson::clone() const
 {
  return DesignPattern::factory<ControllerJson>(*this);
+}
+
+QDir ControllerJson::dir() const
+{
+ QDir dir;
+ dir.mkdir("jdata");
+ dir.cd("jdata");
+
+ return dir;
+}
+
+QJsonObject ControllerJson::load(QString profile, QString account)
+{
+ auto dir = dir();
+ dir.cd(profile);
+}
+
+void ControllerJson::save(QJsonObject json)
+{
+ auto dir = dir();
+ dir.cd(currentProfile());
+ QFile file(currentAccount() + ".jaccount");
+ file.open(QIODevice::WriteOnly);
+ QJsonDocument doc(json);
+ file.write(doc.toJson().toBase64());
+ file.close();
+ file.setFileName(currentAccount() + ".json");
+ file.open(QIODevice::WriteOnly);
+ file.write(doc.toJson());
+ file.close();
 }

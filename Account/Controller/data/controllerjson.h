@@ -8,6 +8,11 @@
 
 class ControllerJson : public InterfaceDataSave
 {
+ private:
+ QJsonObject load(QString, QString);
+ void save(QJsonObject);
+ QDir dir() const;
+
  public:
  using InterfaceDataSave::InterfaceDataSave;
  ~ControllerJson() = default;
