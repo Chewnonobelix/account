@@ -69,9 +69,15 @@ bool ControllerJson::removeAccount(QString account)
  return di.remove(account + ".jaccount");
 }
 
-bool ControllerJson::addCategory(Category &)
+bool ControllerJson::addCategory(Category & c)
 {
- return false;
+    auto doc = load(currentProfile(), currentAccount());
+    auto array = doc["category"].toArray();
+    if(c.id().isNull())
+        c.setId(QUuid::createUuid());
+    array<<QJsonObject(c);
+
+ return true;
 }
 
 bool ControllerJson::removeCategory(QString)
@@ -81,12 +87,30 @@ bool ControllerJson::removeCategory(QString)
 
 QMap<Account::TypeEnum, QMap<QUuid, Category>> ControllerJson::selectCategory()
 {
- return QMap<Account::TypeEnum, QMap<QUuid, Category>>();
+    QMap<Account::TypeEnum, QMap<QUuid, Category>>ret;
+
+    auto array = load(currentProfile(), currentAccount())["category"].toArray();
+
+    for(auto i = 0; i < array.size(); i++) {
+        Category cat(array[i].toObject());
+        ret[cat.type()][cat.id()] = cat;
+        if(cat.both())
+            ret[cat.type() == Account::TypeEnum::Income ? Account::TypeEnum::Outcome : Account::TypeEnum::Income][cat.id()] = cat;
+    }
+
+    return ret;
 }
 
-bool ControllerJson::updateCategory(const Category &)
+bool ControllerJson::updateCategory(const Category & cat)
 {
- return false;
+    auto doc = load(currentProfile(), currentAccount());
+    auto array = doc["category"].toArray();
+    auto index = findIndex(array, cat.id());
+
+    if(index > -1)
+        array[index] = QJsonObject(cat);
+
+    return index > -1;
 }
 
 bool ControllerJson::addBudget(const Budget &)
