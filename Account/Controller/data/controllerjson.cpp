@@ -219,3 +219,14 @@ void ControllerJson::save(QJsonObject json)
  file.write(doc.toJson());
  file.close();
 }
+
+int  ControllerJson::findIndex(QJsonArray array, QUuid id) const
+{
+    bool ret = -1;
+    for(auto i = 0; i<array.size();i++) {
+        if(array[i].toObject()["id"].toString() == id.toString())
+            ret = i;
+    }
+
+    return ret;
+}
