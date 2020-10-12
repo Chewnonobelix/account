@@ -14,6 +14,40 @@ class ControllerJson : public InterfaceDataSave
  QDir dir() const;
  int findIndex(QJsonArray, QUuid) const;
 
+ template<class T>
+ bool update(QString key, T val)
+ {
+     auto doc = load(currentProfile(), currentAccount());
+     auto array = doc[key].toArray();
+     auto index = findIndex(array, val.id());
+
+     if(index > -1)
+         array[index] = QJsonObject(val);
+
+     return index > -1;
+ }
+
+ template<class T>
+ bool remove(QString key, T val)
+ {
+     val.setMetadata("removed", true);
+
+     return update(key, val);
+ }
+
+ template<class T>
+ bool add(QString key, T val)
+ {
+     auto json = load(currentProfile(), currentAccount());
+     auto array = json.value(key).toArray();
+     QUuid id = val.id().isNull() ? QUuid::createUuid() : val.id();
+     val.setId(id);
+     array << QJsonObject(val);
+     json[key] = array;
+     save(json);
+     return true;
+ }
+
  public:
  using InterfaceDataSave::InterfaceDataSave;
  ~ControllerJson() = default;

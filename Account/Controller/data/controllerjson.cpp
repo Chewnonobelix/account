@@ -2,15 +2,7 @@
 
 bool ControllerJson::addEntry(const Entry &e)
 {
- auto json = load(currentProfile(), currentAccount());
- auto array = json.value("entry").toArray();
- auto et = Entry(e);
- if (et.id().isNull())
-  et.setId(QUuid::createUuid());
- array << QJsonObject(et);
- json["entry"] = array;
- save(json);
- return true;
+    return add("entry", e);
 }
 
 QMultiMap<QDate, Entry> ControllerJson::selectEntry()
@@ -28,22 +20,12 @@ QMultiMap<QDate, Entry> ControllerJson::selectEntry()
 
 bool ControllerJson::updateEntry(const Entry & e)
 {
-    auto json = load(currentProfile(), currentAccount());
-    auto array = json.value("entry").toArray();
-    auto index = findIndex(array, e.id());
-
-    if(index > -1)
-        array[index] = QJsonObject(e);
-
-    return index > -1;
+    return update("entry", e);
 }
 
 bool ControllerJson::removeEntry(const Entry & et)
 {
-    auto e(et);
-    e.setMetadata("removed", true);
-
- return updateEntry(e);
+    return remove("entry", et);
 }
 
 QStringList ControllerJson::selectAccount(QString profile)
@@ -55,7 +37,7 @@ QStringList ControllerJson::selectAccount(QString profile)
  di.cd(p);
 
  QStringList ret;
- auto list = di.entryInfoList(QStringList{"*.jacocunt"});
+ auto list = di.entryInfoList(QStringList{"*.jaccount"});
  for (auto it : list)
   ret << it.baseName();
 
@@ -71,13 +53,7 @@ bool ControllerJson::removeAccount(QString account)
 
 bool ControllerJson::addCategory(Category & c)
 {
-    auto doc = load(currentProfile(), currentAccount());
-    auto array = doc["category"].toArray();
-    if(c.id().isNull())
-        c.setId(QUuid::createUuid());
-    array<<QJsonObject(c);
-
- return true;
+    return add("category", c);
 }
 
 bool ControllerJson::removeCategory(QString)
@@ -103,34 +79,35 @@ QMap<Account::TypeEnum, QMap<QUuid, Category>> ControllerJson::selectCategory()
 
 bool ControllerJson::updateCategory(const Category & cat)
 {
-    auto doc = load(currentProfile(), currentAccount());
-    auto array = doc["category"].toArray();
-    auto index = findIndex(array, cat.id());
-
-    if(index > -1)
-        array[index] = QJsonObject(cat);
-
-    return index > -1;
+    return update("category", cat);
 }
 
-bool ControllerJson::addBudget(const Budget &)
+bool ControllerJson::addBudget(const Budget & budget)
 {
- return false;
+    return add("budget", budget);
 }
 
-bool ControllerJson::removeBudget(const Budget &)
+bool ControllerJson::removeBudget(const Budget & budget)
 {
- return false;
+    return remove("budget", budget);
 }
 
 QList<Budget> ControllerJson::selectBudgets()
 {
- return QList<Budget>();
+    QList<Budget> ret;
+    auto json = load(currentProfile(), currentAccount());
+    auto array = json.value("budget").toArray();
+    for (auto it : array) {
+        Budget e(it.toObject());
+        ret<<e;
+    }
+
+    return ret;
 }
 
-bool ControllerJson::updateBudget(const Budget &)
+bool ControllerJson::updateBudget(const Budget & budget)
 {
- return false;
+    return update("budget", budget);
 }
 
 bool ControllerJson::addFrequency(const Frequency &)
