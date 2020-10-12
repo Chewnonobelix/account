@@ -12,7 +12,7 @@ class ControllerJson : public InterfaceDataSave
  QJsonObject load(QString, QString);
  void save(QJsonObject);
  QDir dir() const;
- int findIndex(QJsonArray, QString, QUuid) const;
+ int findIndex(QJsonArray, QUuid) const;
 
  public:
  using InterfaceDataSave::InterfaceDataSave;

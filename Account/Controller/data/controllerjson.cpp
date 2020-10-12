@@ -7,7 +7,7 @@ bool ControllerJson::addEntry(const Entry &e)
  auto et = Entry(e);
  if (et.id().isNull())
   et.setId(QUuid::createUuid());
- array << et;
+ array << QJsonObject(et);
  json["entry"] = array;
  save(json);
  return true;
@@ -19,28 +19,43 @@ QMultiMap<QDate, Entry> ControllerJson::selectEntry()
  auto json = load(currentProfile(), currentAccount());
  auto array = json.value("entry").toArray();
  for (auto it : array) {
-  Entry e(it);
+  Entry e(it.toObject());
   ret.insert(e.date(), e);
  }
 
  return ret;
 }
 
-bool ControllerJson::removeEntry(const Entry &)
+bool ControllerJson::updateEntry(const Entry & e)
 {
- return false;
+    auto json = load(currentProfile(), currentAccount());
+    auto array = json.value("entry").toArray();
+    auto index = findIndex(array, e.id());
+
+    if(index > -1)
+        array[index] = QJsonObject(e);
+
+    return index > -1;
+}
+
+bool ControllerJson::removeEntry(const Entry & et)
+{
+    auto e(et);
+    e.setMetadata("removed", true);
+
+ return updateEntry(e);
 }
 
 QStringList ControllerJson::selectAccount(QString profile)
 {
- auto dir = dir();
+ auto di = dir();
 
  auto p = profile.isEmpty() ? currentProfile() : profile;
 
- dir.cd(p);
+ di.cd(p);
 
  QStringList ret;
- auto list = dir.entryInfoList(QStringList{"*.jacocunt"});
+ auto list = di.entryInfoList(QStringList{"*.jacocunt"});
  for (auto it : list)
   ret << it.baseName();
 
@@ -49,14 +64,9 @@ QStringList ControllerJson::selectAccount(QString profile)
 
 bool ControllerJson::removeAccount(QString account)
 {
- auto dir = dir();
- dir.cd(currentProfile());
- return dir.remove(account + ".jaccount");
-}
-
-bool ControllerJson::updateEntry(const Entry &)
-{
- return false;
+ auto di = dir();
+ di.cd(currentProfile());
+ return di.remove(account + ".jaccount");
 }
 
 bool ControllerJson::addCategory(Category &)
@@ -161,23 +171,23 @@ bool ControllerJson::updateDebt(const Debt &)
 
 QStringList ControllerJson::selectProfile()
 {
- auto dir = dir();
+ auto di = dir();
 
- auto list = dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
+ auto list = di.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
  return list;
 }
 
 bool ControllerJson::addProfile(QString name, QString)
 {
- auto dir = dir();
+ auto di = dir();
 
- return dir.mkdir(name);
+ return di.mkdir(name);
 }
 
 bool ControllerJson::deleteProfile(QString profile)
 {
- auto dir = dir();
- return dir.rmdir(profile);
+ auto di = dir();
+ return di.rmdir(profile);
 }
 
 bool ControllerJson::init()
@@ -201,14 +211,20 @@ QDir ControllerJson::dir() const
 
 QJsonObject ControllerJson::load(QString profile, QString account)
 {
- auto dir = dir();
- dir.cd(profile);
+ auto di = dir();
+ di.cd(profile);
+ QFile file(account+".jaccount");
+ file.open(QIODevice::ReadOnly);
+ auto data = file.readAll();
+ file.close();
+ auto doc = QJsonDocument::fromJson(data);
+ return doc.object();
 }
 
 void ControllerJson::save(QJsonObject json)
 {
- auto dir = dir();
- dir.cd(currentProfile());
+ auto di = dir();
+ di.cd(currentProfile());
  QFile file(currentAccount() + ".jaccount");
  file.open(QIODevice::WriteOnly);
  QJsonDocument doc(json);
