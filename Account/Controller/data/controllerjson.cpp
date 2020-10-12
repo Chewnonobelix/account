@@ -110,19 +110,19 @@ bool ControllerJson::updateBudget(const Budget & budget)
     return update("budget", budget);
 }
 
-bool ControllerJson::addFrequency(const Frequency &)
+bool ControllerJson::addFrequency(const Frequency & f)
 {
- return false;
+    return add("frequency", f);
 }
 
-bool ControllerJson::removeFrequency(const Frequency &)
+bool ControllerJson::removeFrequency(const Frequency & f)
 {
- return false;
+    return remove("frequency", f);
 }
 
-bool ControllerJson::updateFrequency(const Frequency &)
+bool ControllerJson::updateFrequency(const Frequency & f)
 {
- return false;
+    return update("frequency", f);
 }
 
 QList<Frequency> ControllerJson::selectFrequency()
@@ -135,19 +135,19 @@ QMap<QUuid, CommonExpanse> ControllerJson::selectCommon()
  return QMap<QUuid, CommonExpanse>();
 }
 
-bool ControllerJson::addCommon(const CommonExpanse &)
+bool ControllerJson::addCommon(const CommonExpanse & ce)
 {
- return false;
+    return add("commonExpanse", ce);
 }
 
-bool ControllerJson::removeCommon(const CommonExpanse &)
+bool ControllerJson::removeCommon(const CommonExpanse & ce)
 {
- return false;
+    return remove("commonExpanse", ce);
 }
 
-bool ControllerJson::updateCommon(const CommonExpanse &)
+bool ControllerJson::updateCommon(const CommonExpanse & ce)
 {
- return false;
+    return update("commonExpanse", ce);
 }
 
 QMap<QUuid, Debt> ControllerJson::selectDebt()
@@ -155,19 +155,19 @@ QMap<QUuid, Debt> ControllerJson::selectDebt()
  return QMap<QUuid, Debt>();
 }
 
-bool ControllerJson::addDebt(const Debt &)
+bool ControllerJson::addDebt(const Debt & d)
 {
- return false;
+    return add("debt", d);
 }
 
-bool ControllerJson::removeDebt(const Debt &)
+bool ControllerJson::removeDebt(const Debt & d)
 {
- return false;
+    return remove("debt", d);
 }
 
-bool ControllerJson::updateDebt(const Debt &)
+bool ControllerJson::updateDebt(const Debt & d)
 {
- return false;
+    return update("debt", d);
 }
 
 QStringList ControllerJson::selectProfile()
