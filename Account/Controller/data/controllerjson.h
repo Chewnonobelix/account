@@ -14,29 +14,33 @@ class ControllerJson : public InterfaceDataSave
  QDir dir() const;
  int findIndex(QJsonArray, QUuid) const;
 
- template<class T>
- bool update(QString key, T val)
+ template<class T, class S>
+ bool update(QString key, T val, S sig)
  {
-     auto doc = load(currentProfile(), currentAccount());
-     auto array = doc[key].toArray();
-     auto index = findIndex(array, val.id());
+  auto doc = load(currentProfile(), currentAccount());
+  auto array = doc[key].toArray();
+  auto index = findIndex(array, val.id());
 
-     if(index > -1)
-         array[index] = QJsonObject(val);
+  if (index > -1) {
+   array[index] = QJsonObject(val);
+   doc[key] = array;
+   save(doc);
+   sig();
+  }
 
-     return index > -1;
+  return index > -1;
  }
 
- template<class T>
- bool remove(QString key, T val)
+ template<class T, class S>
+ bool remove(QString key, T val, S sig)
  {
-     val.setMetadata("removed", true);
+  val.setMetadata("removed", true);
 
-     return update(key, val);
+  return update(key, val, sig);
  }
 
- template<class T>
- bool add(QString key, T val)
+ template<class T, class S>
+ bool add(QString key, T val, S sig)
  {
      auto json = load(currentProfile(), currentAccount());
      auto array = json.value(key).toArray();
@@ -45,7 +49,8 @@ class ControllerJson : public InterfaceDataSave
      array << QJsonObject(val);
      json[key] = array;
      save(json);
-     return true;
+	 sig();
+	 return true;
  }
 
  public:

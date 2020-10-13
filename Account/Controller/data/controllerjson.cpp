@@ -2,17 +2,20 @@
 
 bool ControllerJson::addEntry(const Entry &e)
 {
-    return add("entry", e);
+ return add("entry", e, [this, e]() { emit s_updateEntry(); });
 }
 
 QMultiMap<QDate, Entry> ControllerJson::selectEntry()
 {
  QMultiMap<QDate, Entry> ret;
+ if (currentProfile().isEmpty() || currentAccount().isEmpty())
+  return ret;
  auto json = load(currentProfile(), currentAccount());
  auto array = json.value("entry").toArray();
  for (auto it : array) {
   Entry e(it.toObject());
-  ret.insert(e.date(), e);
+  if (!e.metaData<bool>("removed"))
+   ret.insert(e.date(), e);
  }
 
  return ret;
@@ -20,12 +23,12 @@ QMultiMap<QDate, Entry> ControllerJson::selectEntry()
 
 bool ControllerJson::updateEntry(const Entry & e)
 {
-    return update("entry", e);
+ return update("entry", e, [this, e]() { emit s_updateEntry(e.id()); });
 }
 
 bool ControllerJson::removeEntry(const Entry & et)
 {
-    return remove("entry", et);
+ return remove("entry", et, [this, et]() { emit s_updateEntry(et.id()); });
 }
 
 QStringList ControllerJson::selectAccount(QString profile)
@@ -53,7 +56,7 @@ bool ControllerJson::removeAccount(QString account)
 
 bool ControllerJson::addCategory(Category & c)
 {
-    return add("category", c);
+ return add("category", c, [this]() { emit s_updateCategory(); });
 }
 
 bool ControllerJson::removeCategory(QString)
@@ -63,111 +66,158 @@ bool ControllerJson::removeCategory(QString)
 
 QMap<Account::TypeEnum, QMap<QUuid, Category>> ControllerJson::selectCategory()
 {
-    QMap<Account::TypeEnum, QMap<QUuid, Category>>ret;
+ QMap<Account::TypeEnum, QMap<QUuid, Category>> ret;
 
-    auto array = load(currentProfile(), currentAccount())["category"].toArray();
+ if (currentProfile().isEmpty() || currentAccount().isEmpty())
+  return ret;
 
-    for(auto i = 0; i < array.size(); i++) {
-        Category cat(array[i].toObject());
-        ret[cat.type()][cat.id()] = cat;
-        if(cat.both())
-            ret[cat.type() == Account::TypeEnum::Income ? Account::TypeEnum::Outcome : Account::TypeEnum::Income][cat.id()] = cat;
-    }
+ auto array = load(currentProfile(), currentAccount())["category"].toArray();
 
-    return ret;
+ for (auto i = 0; i < array.size(); i++) {
+  Category cat(array[i].toObject());
+  if (!cat.metaData<bool>("removed")) {
+   ret[cat.type()][cat.id()] = cat;
+   if (cat.both())
+	ret[cat.type() == Account::TypeEnum::Income ? Account::TypeEnum::Outcome
+												: Account::TypeEnum::Income][cat.id()]
+	 = cat;
+  }
+ }
+
+ return ret;
 }
 
 bool ControllerJson::updateCategory(const Category & cat)
 {
-    return update("category", cat);
+ return update("category", cat, [this]() { emit s_updateCategory(); });
 }
 
 bool ControllerJson::addBudget(const Budget & budget)
 {
-    return add("budget", budget);
+ return add("budget", budget, [this]() { emit s_updateBudget(); });
 }
 
 bool ControllerJson::removeBudget(const Budget & budget)
 {
-    return remove("budget", budget);
+ return remove("budget", budget, [this]() { emit s_updateBudget(); });
 }
 
 QList<Budget> ControllerJson::selectBudgets()
 {
-    QList<Budget> ret;
-    auto json = load(currentProfile(), currentAccount());
-    auto array = json.value("budget").toArray();
-    for (auto it : array) {
-        Budget e(it.toObject());
-        ret<<e;
-    }
+ QList<Budget> ret;
 
-    return ret;
+ if (currentProfile().isEmpty() || currentAccount().isEmpty())
+  return ret;
+
+ auto json = load(currentProfile(), currentAccount());
+ auto array = json.value("budget").toArray();
+ for (auto it : array) {
+  Budget e(it.toObject());
+  if (!e.metaData<bool>("removed"))
+   ret << e;
+ }
+
+ return ret;
 }
 
 bool ControllerJson::updateBudget(const Budget & budget)
 {
-    return update("budget", budget);
+ return update("budget", budget, [this]() { emit s_updateBudget(); });
 }
 
 bool ControllerJson::addFrequency(const Frequency & f)
 {
-    return add("frequency", f);
+ return add("frequency", f, [this]() { emit s_updateFrequency(); });
 }
 
 bool ControllerJson::removeFrequency(const Frequency & f)
 {
-    return remove("frequency", f);
+ return remove("frequency", f, [this]() { emit s_updateFrequency(); });
 }
 
 bool ControllerJson::updateFrequency(const Frequency & f)
 {
-    return update("frequency", f);
+ return update("frequency", f, [this]() { emit s_updateFrequency(); });
 }
 
 QList<Frequency> ControllerJson::selectFrequency()
 {
- return QList<Frequency>();
+ auto ret = QList<Frequency>();
+ if (currentProfile().isEmpty() || currentAccount().isEmpty())
+  return ret;
+ auto doc = load(currentProfile(), currentAccount());
+ auto array = doc["frequency"].toArray();
+
+ for (auto i = 0; i < array.size(); i++) {
+  Frequency ce(array[i].toObject());
+  if (!ce.metaData<bool>("removed"))
+   ret << ce;
+ }
+ return ret;
 }
 
 QMap<QUuid, CommonExpanse> ControllerJson::selectCommon()
 {
- return QMap<QUuid, CommonExpanse>();
+ auto ret = QMap<QUuid, CommonExpanse>();
+ if (currentProfile().isEmpty() || currentAccount().isEmpty())
+  return ret;
+
+ auto doc = load(currentProfile(), currentAccount());
+ auto array = doc["commonExpanse"].toArray();
+
+ for (auto i = 0; i < array.size(); i++) {
+  CommonExpanse ce(array[i].toObject());
+  if (!ce.metaData<bool>("removed"))
+   ret[ce.id()] = ce;
+ }
+ return ret;
 }
 
 bool ControllerJson::addCommon(const CommonExpanse & ce)
 {
-    return add("commonExpanse", ce);
+ return add("commonExpanse", ce, [this]() { emit s_updateCommon(); });
 }
 
 bool ControllerJson::removeCommon(const CommonExpanse & ce)
 {
-    return remove("commonExpanse", ce);
+ return remove("commonExpanse", ce, [this]() { emit s_updateCommon(); });
 }
 
 bool ControllerJson::updateCommon(const CommonExpanse & ce)
 {
-    return update("commonExpanse", ce);
+ return update("commonExpanse", ce, [this]() { emit s_updateCommon(); });
 }
 
 QMap<QUuid, Debt> ControllerJson::selectDebt()
 {
- return QMap<QUuid, Debt>();
+ auto ret = QMap<QUuid, Debt>();
+ if (currentProfile().isEmpty() || currentAccount().isEmpty())
+  return ret;
+
+ auto doc = load(currentProfile(), currentAccount());
+ auto array = doc["debt"].toArray();
+
+ for (auto i = 0; i < array.size(); i++) {
+  Debt ce(array[i].toObject());
+  if (!ce.metaData<bool>("removed"))
+   ret[ce.id()] = ce;
+ }
+ return ret;
 }
 
 bool ControllerJson::addDebt(const Debt & d)
 {
-    return add("debt", d);
+ return add("debt", d, [this]() { emit s_updateDebt(); });
 }
 
 bool ControllerJson::removeDebt(const Debt & d)
 {
-    return remove("debt", d);
+ return remove("debt", d, [this]() { emit s_updateDebt(); });
 }
 
 bool ControllerJson::updateDebt(const Debt & d)
 {
-    return update("debt", d);
+ return update("debt", d, [this]() { emit s_updateDebt(); });
 }
 
 QStringList ControllerJson::selectProfile()
@@ -193,6 +243,10 @@ bool ControllerJson::deleteProfile(QString profile)
 
 bool ControllerJson::init()
 {
+ QDir dir;
+ dir.mkdir("jdata");
+ dir.cd("jdata");
+ dir.mkdir("Default");
  return true;
 }
 
@@ -213,12 +267,13 @@ QDir ControllerJson::dir() const
 QJsonObject ControllerJson::load(QString profile, QString account)
 {
  auto di = dir();
+ di.mkdir(profile);
  di.cd(profile);
- QFile file(account+".jaccount");
- file.open(QIODevice::ReadOnly);
+ QFile file(di.absolutePath() + "/" + account + ".jaccount");
+ file.open(QIODevice::ReadWrite);
  auto data = file.readAll();
  file.close();
- auto doc = QJsonDocument::fromJson(data);
+ auto doc = QJsonDocument::fromJson(QByteArray::fromBase64((data)));
  return doc.object();
 }
 
@@ -226,12 +281,13 @@ void ControllerJson::save(QJsonObject json)
 {
  auto di = dir();
  di.cd(currentProfile());
- QFile file(currentAccount() + ".jaccount");
+ auto base = di.absolutePath() + "/";
+ QFile file(base + currentAccount() + ".jaccount");
  file.open(QIODevice::WriteOnly);
  QJsonDocument doc(json);
  file.write(doc.toJson().toBase64());
  file.close();
- file.setFileName(currentAccount() + ".json");
+ file.setFileName(base + currentAccount() + ".json");
  file.open(QIODevice::WriteOnly);
  file.write(doc.toJson());
  file.close();
@@ -239,11 +295,10 @@ void ControllerJson::save(QJsonObject json)
 
 int  ControllerJson::findIndex(QJsonArray array, QUuid id) const
 {
-    bool ret = -1;
-    for(auto i = 0; i<array.size();i++) {
-        if(array[i].toObject()["id"].toString() == id.toString())
-            ret = i;
-    }
-
-    return ret;
+ int ret = -1;
+ for (auto i = 0; i < array.size(); i++) {
+  if (array[i].toObject()["id"].toString() == id.toString())
+   ret = i;
+ }
+ return ret;
 }
