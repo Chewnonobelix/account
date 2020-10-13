@@ -143,3 +143,11 @@ Debt &Debt::operator=(const Debt &d)
     MetaData::operator=(d);
     return *this;
 }
+
+Debt::operator QJsonObject() const
+{
+ auto ret = MetaData::operator QJsonObject();
+ ret["initial"] = QJsonObject(initial());
+
+ return ret;
+}
