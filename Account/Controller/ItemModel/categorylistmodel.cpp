@@ -80,8 +80,6 @@ QVariant CategoryListModel::data(const QModelIndex &index, int role) const
   ret = QVariant::fromValue(m_db->selectCategory()[currentType()].values()[row].id());
  }
 
- qDebug() << "Debug" << enumrole << row << ret;
-
  return ret;
 }
 

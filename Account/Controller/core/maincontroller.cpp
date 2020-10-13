@@ -510,7 +510,7 @@ void MainController::accountChange(QString acc)
     if(acc.isEmpty())
         return;
 
-    AbstractController::setCurrentAccount(acc);
+	AbstractController::setCurrentAccount(acc);
     m_settings.setCurrentAccount(acc);
     calculTotal();
 
