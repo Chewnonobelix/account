@@ -88,7 +88,7 @@ void AbstractController::calculTotal()
     }
 }
 
-void AbstractController::addEntry(const Entry& e)
+void AbstractController::addEntry(Entry &e)
 {
     Entry et = e;
 
@@ -152,7 +152,7 @@ void AbstractController::deleteDb()
         delete m_db;
 }
 
-void AbstractController::updateEntry(const Entry & e)
+void AbstractController::updateEntry(Entry & e)
 {
     m_db->updateEntry(e);
 }

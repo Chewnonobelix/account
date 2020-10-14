@@ -89,43 +89,43 @@ public:
     
     bool isConnected() const;
 public slots:
-    bool addEntry(const Entry&)  override;
+    bool addEntry(Entry&)  override;
     QMultiMap<QDate, Entry> selectEntry() override;
-    bool removeEntry(const Entry&) override;
+    bool removeEntry(Entry&) override;
 
     QStringList selectAccount(QString) override;
     bool removeAccount(QString) override;
 
-    bool updateEntry(const Entry &) override;
+    bool updateEntry(Entry &) override;
 
 	bool addCategory(Category &) override;
 	bool removeCategory(QString) override;
     QMap<Account::TypeEnum, QMap<QUuid, Category>> selectCategory() override;
-    virtual bool updateCategory(const Category &) override { return false; }
+    virtual bool updateCategory(Category &) override { return false; }
 
-    virtual bool addBudget(const Budget&) override;
-    virtual bool removeBudget(const Budget&) override;
+    virtual bool addBudget(Budget&) override;
+    virtual bool removeBudget(Budget&) override;
     virtual QList<Budget> selectBudgets() override;
-    virtual bool updateBudget(const Budget &) override;
+    virtual bool updateBudget(Budget &) override;
     
-    virtual bool addFrequency(const Frequency&) override;
-    virtual bool removeFrequency(const Frequency&) override;
-    virtual bool updateFrequency(const Frequency&) override;
+    virtual bool addFrequency(Frequency&) override;
+    virtual bool removeFrequency(Frequency&) override;
+    virtual bool updateFrequency(Frequency&) override;
     virtual QList<Frequency> selectFrequency() override;
     
     virtual QMap<QUuid, CommonExpanse> selectCommon() override;
-    virtual bool addCommon(const CommonExpanse&) override;
-    virtual bool removeCommon(const CommonExpanse&) override;
-    virtual bool updateCommon(const CommonExpanse&) override;
+    virtual bool addCommon(CommonExpanse&) override;
+    virtual bool removeCommon(CommonExpanse&) override;
+    virtual bool updateCommon(CommonExpanse&) override;
     
     virtual QStringList selectProfile() override;
     virtual bool addProfile(QString, QString) override;
     virtual bool deleteProfile(QString) override;
 
     virtual QMap<QUuid, Debt> selectDebt() override;
-    virtual bool addDebt(const Debt &) override;
-    virtual bool removeDebt(const Debt &) override;
-    virtual bool updateDebt(const Debt &) override;
+    virtual bool addDebt(Debt &) override;
+    virtual bool removeDebt(Debt &) override;
+    virtual bool updateDebt(Debt &) override;
 
     bool init() override;
     QSharedPointer<InterfaceDataSave> clone() const override;

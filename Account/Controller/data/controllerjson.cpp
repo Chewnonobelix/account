@@ -1,6 +1,6 @@
 #include "controllerjson.h"
 
-bool ControllerJson::addEntry(const Entry &e)
+bool ControllerJson::addEntry(Entry &e)
 {
  return add("entry", e, [this, e]() { emit s_updateEntry(); });
 }
@@ -21,12 +21,12 @@ QMultiMap<QDate, Entry> ControllerJson::selectEntry()
  return ret;
 }
 
-bool ControllerJson::updateEntry(const Entry & e)
+bool ControllerJson::updateEntry(Entry & e)
 {
  return update("entry", e, [this, e]() { emit s_updateEntry(e.id()); });
 }
 
-bool ControllerJson::removeEntry(const Entry & et)
+bool ControllerJson::removeEntry(Entry & et)
 {
  return remove("entry", et, [this, et]() { emit s_updateEntry(et.id()); });
 }
@@ -87,17 +87,17 @@ QMap<Account::TypeEnum, QMap<QUuid, Category>> ControllerJson::selectCategory()
  return ret;
 }
 
-bool ControllerJson::updateCategory(const Category & cat)
+bool ControllerJson::updateCategory(Category & cat)
 {
  return update("category", cat, [this]() { emit s_updateCategory(); });
 }
 
-bool ControllerJson::addBudget(const Budget & budget)
+bool ControllerJson::addBudget(Budget & budget)
 {
  return add("budget", budget, [this]() { emit s_updateBudget(); });
 }
 
-bool ControllerJson::removeBudget(const Budget & budget)
+bool ControllerJson::removeBudget(Budget & budget)
 {
  return remove("budget", budget, [this]() { emit s_updateBudget(); });
 }
@@ -120,22 +120,22 @@ QList<Budget> ControllerJson::selectBudgets()
  return ret;
 }
 
-bool ControllerJson::updateBudget(const Budget & budget)
+bool ControllerJson::updateBudget(Budget & budget)
 {
  return update("budget", budget, [this]() { emit s_updateBudget(); });
 }
 
-bool ControllerJson::addFrequency(const Frequency & f)
+bool ControllerJson::addFrequency(Frequency & f)
 {
  return add("frequency", f, [this]() { emit s_updateFrequency(); });
 }
 
-bool ControllerJson::removeFrequency(const Frequency & f)
+bool ControllerJson::removeFrequency(Frequency & f)
 {
  return remove("frequency", f, [this]() { emit s_updateFrequency(); });
 }
 
-bool ControllerJson::updateFrequency(const Frequency & f)
+bool ControllerJson::updateFrequency(Frequency & f)
 {
  return update("frequency", f, [this]() { emit s_updateFrequency(); });
 }
@@ -173,17 +173,17 @@ QMap<QUuid, CommonExpanse> ControllerJson::selectCommon()
  return ret;
 }
 
-bool ControllerJson::addCommon(const CommonExpanse & ce)
+bool ControllerJson::addCommon(CommonExpanse & ce)
 {
  return add("commonExpanse", ce, [this]() { emit s_updateCommon(); });
 }
 
-bool ControllerJson::removeCommon(const CommonExpanse & ce)
+bool ControllerJson::removeCommon(CommonExpanse & ce)
 {
  return remove("commonExpanse", ce, [this]() { emit s_updateCommon(); });
 }
 
-bool ControllerJson::updateCommon(const CommonExpanse & ce)
+bool ControllerJson::updateCommon(CommonExpanse & ce)
 {
  return update("commonExpanse", ce, [this]() { emit s_updateCommon(); });
 }
@@ -205,17 +205,19 @@ QMap<QUuid, Debt> ControllerJson::selectDebt()
  return ret;
 }
 
-bool ControllerJson::addDebt(const Debt & d)
+bool ControllerJson::addDebt(Debt & d)
 {
- return add("debt", d, [this]() { emit s_updateDebt(); });
+    auto ret = add("debt", d, [this]() { emit s_updateDebt(); });
+
+    return ret;
 }
 
-bool ControllerJson::removeDebt(const Debt & d)
+bool ControllerJson::removeDebt(Debt & d)
 {
  return remove("debt", d, [this]() { emit s_updateDebt(); });
 }
 
-bool ControllerJson::updateDebt(const Debt & d)
+bool ControllerJson::updateDebt(Debt & d)
 {
  return update("debt", d, [this]() { emit s_updateDebt(); });
 }

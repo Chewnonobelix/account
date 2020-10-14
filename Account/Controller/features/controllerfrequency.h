@@ -39,7 +39,7 @@ public slots:
 
 signals:
     void s_finish(QString);
-    void s_add(const Entry&);
+    void s_add(Entry&);
     void s_progressChanged(double);
 };
 

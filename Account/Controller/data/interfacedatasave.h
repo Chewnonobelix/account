@@ -52,49 +52,49 @@ signals:
 
 public slots:
     void exec();
-    virtual bool addEntry(const Entry&) = 0;
+    virtual bool addEntry(Entry&) = 0;
     virtual QMultiMap<QDate, Entry> selectEntry() = 0;
-    virtual bool removeEntry(const Entry&) = 0;
+    virtual bool removeEntry(Entry&) = 0;
 
     virtual QStringList selectAccount(QString = "") = 0;
     virtual bool removeAccount(QString) = 0;
 
-    virtual bool updateEntry(const Entry &) = 0;
+    virtual bool updateEntry(Entry &) = 0;
 
 	virtual bool addCategory(Category &) = 0;
 	virtual bool removeCategory(QString) = 0;
     virtual QMap<Account::TypeEnum, QMap<QUuid, Category>> selectCategory() = 0;
-    virtual bool updateCategory(const Category &) = 0;
+    virtual bool updateCategory(Category &) = 0;
 
-    virtual bool addBudget(const Budget &) = 0;
-    virtual bool removeBudget(const Budget&) = 0;
+    virtual bool addBudget(Budget &) = 0;
+    virtual bool removeBudget(Budget&) = 0;
     virtual QList<Budget> selectBudgets() = 0;
-    virtual bool updateBudget(const Budget&) = 0;
+    virtual bool updateBudget(Budget&) = 0;
     
     
-    virtual bool addFrequency(const Frequency&) = 0;
-    virtual bool removeFrequency(const Frequency&) = 0;
-    virtual bool updateFrequency(const Frequency&) = 0;
+    virtual bool addFrequency(Frequency&) = 0;
+    virtual bool removeFrequency(Frequency&) = 0;
+    virtual bool updateFrequency(Frequency&) = 0;
     virtual QList<Frequency> selectFrequency() = 0;
     
     virtual QMap<QUuid, CommonExpanse> selectCommon() = 0;
-    virtual bool addCommon(const CommonExpanse&) = 0;
-    virtual bool removeCommon(const CommonExpanse&) = 0;
-    virtual bool updateCommon(const CommonExpanse &) = 0;
+    virtual bool addCommon(CommonExpanse&) = 0;
+    virtual bool removeCommon(CommonExpanse&) = 0;
+    virtual bool updateCommon(CommonExpanse &) = 0;
 
     virtual QMap<QUuid, Debt> selectDebt() = 0;
-    virtual bool addDebt(const Debt &) = 0;
-    virtual bool removeDebt(const Debt &) = 0;
-    virtual bool updateDebt(const Debt &) = 0;
+    virtual bool addDebt(Debt &) = 0;
+    virtual bool removeDebt(Debt &) = 0;
+    virtual bool updateDebt(Debt &) = 0;
 
     virtual QStringList selectProfile() = 0;
     virtual bool addProfile(QString, QString) = 0;
     virtual bool deleteProfile(QString) = 0;
 
     virtual QMap<QUuid, SynchronizationProfile> selectSyncProfile();
-    virtual bool removeSyncProfile(const SynchronizationProfile&);
-    virtual QUuid addSyncProfile(const SynchronizationProfile &);
-    virtual bool updateSyncProfile(const SynchronizationProfile&);
+    virtual bool removeSyncProfile(SynchronizationProfile&);
+    virtual QUuid addSyncProfile(SynchronizationProfile &);
+    virtual bool updateSyncProfile(SynchronizationProfile&);
         
     virtual bool init() = 0;
     virtual QSharedPointer<InterfaceDataSave> clone() const = 0;

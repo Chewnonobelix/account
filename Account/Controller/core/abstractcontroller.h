@@ -54,8 +54,8 @@ public:
     static void setCurrentAccount(QString);
     static QString currentAccount();
     
-    static void addEntry(const Entry&);
-    static void updateEntry(const Entry&);
+    static void addEntry(Entry&);
+    static void updateEntry(Entry &);
     
     static Entry entry(QUuid);
 

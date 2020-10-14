@@ -15,7 +15,7 @@ class ControllerJson : public InterfaceDataSave
  int findIndex(QJsonArray, QUuid) const;
 
  template<class T, class S>
- bool update(QString key, T val, S sig)
+ bool update(QString key, T& val, S sig)
  {
   auto doc = load(currentProfile(), currentAccount());
   auto array = doc[key].toArray();
@@ -32,7 +32,7 @@ class ControllerJson : public InterfaceDataSave
  }
 
  template<class T, class S>
- bool remove(QString key, T val, S sig)
+ bool remove(QString key, T& val, S sig)
  {
   val.setMetadata("removed", true);
 
@@ -40,7 +40,7 @@ class ControllerJson : public InterfaceDataSave
  }
 
  template<class T, class S>
- bool add(QString key, T val, S sig)
+ bool add(QString key, T& val, S sig)
  {
      auto json = load(currentProfile(), currentAccount());
      auto array = json.value(key).toArray();
@@ -58,39 +58,39 @@ class ControllerJson : public InterfaceDataSave
  ~ControllerJson() = default;
 
  public slots:
- virtual bool addEntry(const Entry &);
+ virtual bool addEntry(Entry &);
  virtual QMultiMap<QDate, Entry> selectEntry();
- virtual bool removeEntry(const Entry &);
+ virtual bool removeEntry(Entry &);
 
  virtual QStringList selectAccount(QString = "");
  virtual bool removeAccount(QString);
 
- virtual bool updateEntry(const Entry &);
+ virtual bool updateEntry(Entry &);
 
  virtual bool addCategory(Category &);
  virtual bool removeCategory(QString);
  virtual QMap<Account::TypeEnum, QMap<QUuid, Category>> selectCategory();
- virtual bool updateCategory(const Category &);
+ virtual bool updateCategory(Category &);
 
- virtual bool addBudget(const Budget &);
- virtual bool removeBudget(const Budget &);
+ virtual bool addBudget(Budget &);
+ virtual bool removeBudget(Budget &);
  virtual QList<Budget> selectBudgets();
- virtual bool updateBudget(const Budget &);
+ virtual bool updateBudget(Budget &);
 
- virtual bool addFrequency(const Frequency &);
- virtual bool removeFrequency(const Frequency &);
- virtual bool updateFrequency(const Frequency &);
+ virtual bool addFrequency(Frequency &);
+ virtual bool removeFrequency(Frequency &);
+ virtual bool updateFrequency(Frequency &);
  virtual QList<Frequency> selectFrequency();
 
  virtual QMap<QUuid, CommonExpanse> selectCommon();
- virtual bool addCommon(const CommonExpanse &);
- virtual bool removeCommon(const CommonExpanse &);
- virtual bool updateCommon(const CommonExpanse &);
+ virtual bool addCommon(CommonExpanse &);
+ virtual bool removeCommon(CommonExpanse &);
+ virtual bool updateCommon(CommonExpanse &);
 
  virtual QMap<QUuid, Debt> selectDebt();
- virtual bool addDebt(const Debt &);
- virtual bool removeDebt(const Debt &);
- virtual bool updateDebt(const Debt &);
+ virtual bool addDebt(Debt &);
+ virtual bool removeDebt(Debt &);
+ virtual bool updateDebt(Debt &);
 
  virtual QStringList selectProfile();
  virtual bool addProfile(QString, QString);
