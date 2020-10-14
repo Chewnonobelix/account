@@ -7,18 +7,7 @@ bool ControllerJson::addEntry(Entry &e)
 
 QMap<QUuid, Entry> ControllerJson::selectEntry()
 {
- QMap<QUuid, Entry> ret;
- if (currentProfile().isEmpty() || currentAccount().isEmpty())
-  return ret;
- auto json = load(currentProfile(), currentAccount());
- auto array = json.value("entry").toArray();
- for (auto it : array) {
-  Entry e(it.toObject());
-  if (!e.metaData<bool>("removed"))
-   ret[e.id()] = e;
- }
-
- return ret;
+ return select<Entry>("entry");
 }
 
 bool ControllerJson::updateEntry(Entry & e)
@@ -104,20 +93,7 @@ bool ControllerJson::removeBudget(Budget & budget)
 
 QMap<QUuid, Budget> ControllerJson::selectBudgets()
 {
- QMap<QUuid, Budget> ret;
-
- if (currentProfile().isEmpty() || currentAccount().isEmpty())
-  return ret;
-
- auto json = load(currentProfile(), currentAccount());
- auto array = json.value("budget").toArray();
- for (auto it : array) {
-  Budget e(it.toObject());
-  if (!e.metaData<bool>("removed"))
-   ret[e.id()] = e;
- }
-
- return ret;
+    return select<Budget>("budget");
 }
 
 bool ControllerJson::updateBudget(Budget & budget)
@@ -142,35 +118,12 @@ bool ControllerJson::updateFrequency(Frequency & f)
 
 QMap<QUuid, Frequency> ControllerJson::selectFrequency()
 {
- auto ret = QMap<QUuid, Frequency>();
- if (currentProfile().isEmpty() || currentAccount().isEmpty())
-  return ret;
- auto doc = load(currentProfile(), currentAccount());
- auto array = doc["frequency"].toArray();
-
- for (auto i = 0; i < array.size(); i++) {
-  Frequency ce(array[i].toObject());
-  if (!ce.metaData<bool>("removed"))
-   ret[ce.id()] = ce;
- }
- return ret;
+    return select<Frequency>("frequency");
 }
 
 QMap<QUuid, CommonExpanse> ControllerJson::selectCommon()
 {
- auto ret = QMap<QUuid, CommonExpanse>();
- if (currentProfile().isEmpty() || currentAccount().isEmpty())
-  return ret;
-
- auto doc = load(currentProfile(), currentAccount());
- auto array = doc["commonExpanse"].toArray();
-
- for (auto i = 0; i < array.size(); i++) {
-  CommonExpanse ce(array[i].toObject());
-  if (!ce.metaData<bool>("removed"))
-   ret[ce.id()] = ce;
- }
- return ret;
+    return select<CommonExpanse>("commonExpanse");
 }
 
 bool ControllerJson::addCommon(CommonExpanse & ce)
@@ -190,19 +143,7 @@ bool ControllerJson::updateCommon(CommonExpanse & ce)
 
 QMap<QUuid, Debt> ControllerJson::selectDebt()
 {
- auto ret = QMap<QUuid, Debt>();
- if (currentProfile().isEmpty() || currentAccount().isEmpty())
-  return ret;
-
- auto doc = load(currentProfile(), currentAccount());
- auto array = doc["debt"].toArray();
-
- for (auto i = 0; i < array.size(); i++) {
-  Debt ce(array[i].toObject());
-  if (!ce.metaData<bool>("removed"))
-   ret[ce.id()] = ce;
- }
- return ret;
+    return select<Debt>("debt");
 }
 
 bool ControllerJson::addDebt(Debt & d)

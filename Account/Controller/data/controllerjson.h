@@ -53,6 +53,21 @@ class ControllerJson : public InterfaceDataSave
 	 return true;
  }
 
+ template<class T>
+ QMap<QUuid, T> select(QString key)
+ {
+     auto json = load(currentProfile(), currentAccount());
+     auto array = json.value(key).toArray();
+     QMap<QUuid, T> ret;
+     for(auto i = 0; i < array.size(); i++) {
+         T val(array[i].toObject());
+         if(!array[i].toObject()["removed"].toBool(false))
+             ret[val.id()] = val;
+     }
+
+     return ret;
+ }
+
  public:
  using InterfaceDataSave::InterfaceDataSave;
  ~ControllerJson() = default;
