@@ -390,9 +390,9 @@ bool ControllerDB::removeBudget(Budget & b)
     return false;
 }
 
-QList<Budget> ControllerDB::selectBudgets()
+QMap<QUuid, Budget> ControllerDB::selectBudgets()
 {
-    QList<Budget> ret;
+    QMap<QUuid, Budget> ret;
     
     return ret;
 }

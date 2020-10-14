@@ -407,9 +407,9 @@ bool ControllerXMLMulti::removeBudget(Budget &b)
     return ret;
 }
 
-QList<Budget> ControllerXMLMulti::selectBudgets()
+QMap<QUuid, Budget> ControllerXMLMulti::selectBudgets()
 {
-    QList<Budget> ret;
+    QMap<QUuid, Budget> ret;
 
     QDomElement root = m_accounts[currentProfile() + "/" + currentAccount()]
                            .elementsByTagName("database")
@@ -448,7 +448,7 @@ QList<Budget> ControllerXMLMulti::selectBudgets()
             b.addTarget(d, v);
         }
         
-        ret<<b;
+        ret[b.id()] = b;
     }
 
     return ret;

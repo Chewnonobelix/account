@@ -102,9 +102,9 @@ bool ControllerJson::removeBudget(Budget & budget)
  return remove("budget", budget, [this]() { emit s_updateBudget(); });
 }
 
-QList<Budget> ControllerJson::selectBudgets()
+QMap<QUuid, Budget> ControllerJson::selectBudgets()
 {
- QList<Budget> ret;
+ QMap<QUuid, Budget> ret;
 
  if (currentProfile().isEmpty() || currentAccount().isEmpty())
   return ret;
@@ -114,7 +114,7 @@ QList<Budget> ControllerJson::selectBudgets()
  for (auto it : array) {
   Budget e(it.toObject());
   if (!e.metaData<bool>("removed"))
-   ret << e;
+   ret[e.id()] = e;
  }
 
  return ret;

@@ -74,7 +74,7 @@ class ControllerJson : public InterfaceDataSave
 
  virtual bool addBudget(Budget &);
  virtual bool removeBudget(Budget &);
- virtual QList<Budget> selectBudgets();
+ virtual QMap<QUuid, Budget> selectBudgets();
  virtual bool updateBudget(Budget &);
 
  virtual bool addFrequency(Frequency &);

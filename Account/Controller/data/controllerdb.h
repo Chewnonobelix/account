@@ -105,7 +105,7 @@ public slots:
 
     virtual bool addBudget(Budget&) override;
     virtual bool removeBudget(Budget&) override;
-    virtual QList<Budget> selectBudgets() override;
+    virtual QMap<QUuid, Budget> selectBudgets() override;
     virtual bool updateBudget(Budget &) override;
     
     virtual bool addFrequency(Frequency&) override;

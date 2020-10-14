@@ -68,7 +68,7 @@ public slots:
 
     virtual bool addBudget(Budget &) = 0;
     virtual bool removeBudget(Budget&) = 0;
-    virtual QList<Budget> selectBudgets() = 0;
+    virtual QMap<QUuid, Budget> selectBudgets() = 0;
     virtual bool updateBudget(Budget&) = 0;
     
     
