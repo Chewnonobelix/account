@@ -16,6 +16,7 @@ private:
 public:
     SubBudget();
     SubBudget(const SubBudget&);
+    ~SubBudget() = default;
     using MetaData::MetaData;
 
     SubBudget& operator = (const SubBudget&);
