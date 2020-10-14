@@ -90,7 +90,7 @@ public:
     bool isConnected() const;
 public slots:
     bool addEntry(Entry&)  override;
-    QMultiMap<QDate, Entry> selectEntry() override;
+    QMap<QUuid, Entry> selectEntry() override;
     bool removeEntry(Entry&) override;
 
     QStringList selectAccount(QString) override;

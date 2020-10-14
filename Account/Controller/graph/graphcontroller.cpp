@@ -25,7 +25,7 @@ void TimeGraphController::add(const Entry &e)
     if (m_sum.isEmpty()) {
         auto ent = m_db->selectEntry();
         Total t;
-        t.setDate(ent.begin().key().addDays(-1));
+        t.setDate(ent.first().date().addDays(-1));
 
         for (auto it = ent.begin(); it != ent.end() && it->date() < e.date(); it++)
             t = t + *it;

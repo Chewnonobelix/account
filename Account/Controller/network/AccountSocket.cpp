@@ -116,8 +116,8 @@ SynchronizationProfile AccountSocket::profile() const
 void AccountSocket::addLocalProfile()
 {
     SynchronizationProfile sp;
-    sp.setBegin(AbstractController::db()->selectEntry().firstKey());
-    sp.setEnd(AbstractController::db()->selectEntry().lastKey());
+//    sp.setBegin(AbstractController::db()->selectEntry().firstKey());
+//    sp.setEnd(AbstractController::db()->selectEntry().lastKey());
     sp.setDeviceName(remoteName());
     sp.setHostName(QHostInfo::localHostName());
     auto id = AbstractController::db()->addSyncProfile(sp);

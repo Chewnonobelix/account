@@ -343,9 +343,9 @@ bool ControllerDB::addEntry(Entry & e)
     return ret;
 }
 
-QMultiMap<QDate, Entry> ControllerDB::selectEntry()
+QMap<QUuid, Entry> ControllerDB::selectEntry()
 {
-    QMultiMap<QDate, Entry> res;
+    QMap<QUuid, Entry> res;
         
     return res;
 }

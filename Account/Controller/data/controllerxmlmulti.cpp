@@ -145,9 +145,9 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
     return e;
 }
 
-QMultiMap<QDate, Entry> ControllerXMLMulti::selectEntry()
+QMap<QUuid, Entry> ControllerXMLMulti::selectEntry()
 {
-    QMultiMap<QDate, Entry> ret;
+    QMap<QUuid, Entry> ret;
 
     QDomElement root = m_accounts[currentProfile() + "/" + currentAccount()]
                            .elementsByTagName("database")
@@ -169,7 +169,7 @@ QMultiMap<QDate, Entry> ControllerXMLMulti::selectEntry()
             continue;
         
         Entry e = selectEntryNode(el);
-        ret.insert(e.date(), e);
+        ret[e.id()] = e;
     }
 
     return ret;

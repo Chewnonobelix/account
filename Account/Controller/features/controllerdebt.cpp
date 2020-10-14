@@ -80,12 +80,7 @@ void ControllerDebt::onNameChanged(QString id, QString name)
     d.setName(name);
     auto el = db()->selectEntry();
 
-    Entry e;
-    for (auto it : el) {
-        if (it.id().toString() == id)
-            e = it;
-    }
-
+    Entry e = el[QUuid::fromString(id)];
     e.setTitle(name);
     d.setInitial(e);
     db()->updateDebt(d);
@@ -123,11 +118,7 @@ void ControllerDebt::onInitialDateChanged(QString id, QDate d)
     Debt b = db()->selectDebt()[QUuid::fromString(id)];
     auto el = db()->selectEntry();
 
-    Entry e;
-    for (auto it : el) {
-        if (it.id().toString() == id)
-            e = it;
-    }
+    Entry e = el[QUuid::fromString(id)];
 
     e.setDate(d);
     b.setInitial(e);
@@ -139,11 +130,7 @@ void ControllerDebt::onInitialTypeChanged(QString id, int t)
     Debt b = db()->selectDebt()[QUuid::fromString(id)];
     auto el = db()->selectEntry();
 
-    Entry e;
-    for (auto it : el) {
-        if (it.id().toString() == id)
-            e = it;
-    }
+    Entry e = el[QUuid::fromString(id)];
 
     e.setType(Account::TypeEnum(t));
     b.setInitial(e);
@@ -154,11 +141,7 @@ void ControllerDebt::onInitialValueChanged(QString id, double v)
 {
     auto el = db()->selectEntry();
 
-    Entry e;
-    for (auto it : el) {
-        if (it.id().toString() == id)
-            e = it;
-    }
+    Entry e = el[QUuid::fromString(id)];
 
     Debt b = db()->selectDebt()[QUuid::fromString(id)];
 
@@ -173,11 +156,7 @@ void ControllerDebt::onInitialCategoryChanged(QString id, QString c)
  Debt b = db()->selectDebt()[QUuid::fromString(id)];
  auto el = db()->selectEntry();
 
- Entry e;
- for (auto it : el) {
-  if (it.id().toString() == id)
-   e = it;
- }
+ Entry e = el[QUuid::fromString(id)];
  auto cat = db()->selectCategory()[e.type()][QUuid::fromString(c)];
  e.setCategory(cat);
  b.setInitial(e);
@@ -189,11 +168,7 @@ void ControllerDebt::onInitialSupportChanged(QString id, int s)
     Debt b = db()->selectDebt()[QUuid::fromString(id)];
     auto el = db()->selectEntry();
 
-    Entry e;
-    for (auto it : el) {
-        if (it.id().toString() == id)
-            e = it;
-    }
+    Entry e = el[QUuid::fromString(id)];
 
     e.setSupport((Account::SupportEnum) s);
     b.setInitial(e);

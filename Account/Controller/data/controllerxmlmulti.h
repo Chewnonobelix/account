@@ -42,7 +42,7 @@ public:
 public slots:
 
     virtual bool addEntry(Entry &) override;
-    virtual QMultiMap<QDate, Entry> selectEntry() override;
+    virtual QMap<QUuid, Entry> selectEntry() override;
     virtual bool removeEntry(Entry &) override;
 
     virtual QStringList selectAccount(QString) override;

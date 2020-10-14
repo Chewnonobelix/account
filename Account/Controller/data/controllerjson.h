@@ -59,7 +59,7 @@ class ControllerJson : public InterfaceDataSave
 
  public slots:
  virtual bool addEntry(Entry &);
- virtual QMultiMap<QDate, Entry> selectEntry();
+ virtual QMap<QUuid, Entry> selectEntry();
  virtual bool removeEntry(Entry &);
 
  virtual QStringList selectAccount(QString = "");

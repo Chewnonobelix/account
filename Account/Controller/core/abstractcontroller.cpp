@@ -78,6 +78,9 @@ void AbstractController::calculTotal()
     CalcThread::indexes.clear();
     m_accountTotal.clear();
     auto l = m_db->selectEntry().values();
+    std::sort(l.begin(), l.end(), [](const Entry& e1, const Entry& e2) {
+            return e1.date() < e2.date();
+    });
 
     for (auto i = 0; i < 5; i++) {
         auto t = QSharedPointer<CalcThread>::create(i, l, &m_accountTotal);
@@ -115,14 +118,8 @@ void AbstractController::addEntry(Entry &e)
 }
 
 Entry AbstractController::entry(QUuid id)
-{
-    Entry ret;
-
-    for (auto it : m_db->selectEntry())
-        if(it.id() == id)
-            ret = it;
-    
-    return ret;
+{    
+    return m_db->selectEntry()[id];
 }
 
 void AbstractController::setDb(QString name)

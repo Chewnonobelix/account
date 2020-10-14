@@ -5,9 +5,9 @@ bool ControllerJson::addEntry(Entry &e)
  return add("entry", e, [this, e]() { emit s_updateEntry(); });
 }
 
-QMultiMap<QDate, Entry> ControllerJson::selectEntry()
+QMap<QUuid, Entry> ControllerJson::selectEntry()
 {
- QMultiMap<QDate, Entry> ret;
+ QMap<QUuid, Entry> ret;
  if (currentProfile().isEmpty() || currentAccount().isEmpty())
   return ret;
  auto json = load(currentProfile(), currentAccount());
@@ -15,7 +15,7 @@ QMultiMap<QDate, Entry> ControllerJson::selectEntry()
  for (auto it : array) {
   Entry e(it.toObject());
   if (!e.metaData<bool>("removed"))
-   ret.insert(e.date(), e);
+   ret[e.id()] = e;
  }
 
  return ret;

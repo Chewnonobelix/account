@@ -53,7 +53,7 @@ signals:
 public slots:
     void exec();
     virtual bool addEntry(Entry&) = 0;
-    virtual QMultiMap<QDate, Entry> selectEntry() = 0;
+    virtual QMap<QUuid, Entry> selectEntry() = 0;
     virtual bool removeEntry(Entry&) = 0;
 
     virtual QStringList selectAccount(QString = "") = 0;

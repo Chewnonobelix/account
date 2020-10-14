@@ -414,6 +414,9 @@ void MainController::buildModel(QUuid)
     QList<Entry> ret;
 
     ret = m_db->selectEntry().values();
+    std::sort(ret.begin(), ret.end(), [](const Entry& e1, const Entry& e2) {
+        return e1.date() < e2.date();
+    });
 
     Total t;
     for(auto i = 0; i < qMin(ret.count(), 100); i++)
