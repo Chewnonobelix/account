@@ -79,12 +79,12 @@ void ControllerFrequency::endFill()
 
 int ControllerFrequency::exec()
 {
-    auto freqs = m_db->selectFrequency();
-    
     m_freqs.clear();
-    for(auto it: freqs)
+
+    m_freqs = m_db->selectFrequency();
+    
+    for(auto it: m_freqs)
     {
-        m_freqs[it.id()] = it;
         if(it.endless() && ((it.end() < QDate::currentDate()) || it.nbGroup() == 0))
         {
             auto date = it.end().addDays( Account::nbDay(it.end(), it.freq()));

@@ -2,87 +2,85 @@
 
 int ControllerInformation::exec()
 {
- if (m_entry.hasMetadata("frequency")) {
-  emit frequencyVisible(m_entry.hasMetadata("frequency"));
+    if (m_entry.hasMetadata("frequency")) {
+        emit frequencyVisible(m_entry.hasMetadata("frequency"));
 
-  if (m_entry.hasMetadata("frequency")) {
-   QUuid f = m_entry.metaData<QUuid>("frequency");
-   int g = m_entry.metaData<int>("freqGroup");
-   auto freqs = m_db->selectFrequency();
-   int page = m_currentPage;
-   page--;
-   for (auto it : freqs) {
-	if (it.id() == f) {
-	 auto le = it.listEntries(g);
-	 QVariantList model;
-	 emit maxPageChanged(le.size() / 100 + 1);
-	 emit currentPageChanged(1);
-	 for (int i = (page * 100); i < le.size() && i < (page + 1) * 100; i++)
-	  model << le[i];
+        if (m_entry.hasMetadata("frequency")) {
+            QUuid f = m_entry.metaData<QUuid>("frequency");
+            int g = m_entry.metaData<int>("freqGroup");
+            auto freqs = m_db->selectFrequency();
+            int page = m_currentPage;
+            page--;
 
-	 emit pageModel(QVariant::fromValue(model));
-	}
-   }
-  }
- }
+            auto it = freqs[f];
+            auto le = it.listEntries(g);
+            QVariantList model;
+            emit maxPageChanged(le.size() / 100 + 1);
+            emit currentPageChanged(1);
+            for (int i = (page * 100); i < le.size() && i < (page + 1) * 100; i++)
+                model << le[i];
 
- return 0;
+            emit pageModel(QVariant::fromValue(model));
+        }
+    }
+
+    return 0;
 }
 
 void ControllerInformation::view(QUuid id)
 {
- m_entry = AbstractController::entry(id);
+    m_entry = AbstractController::entry(id);
 
- emit view(QVariant::fromValue(m_entry));
+    emit view(QVariant::fromValue(m_entry));
 
- exec();
+    exec();
 }
 
 void ControllerInformation::titleChange(QString title)
 {
- m_entry.setTitle(title);
+    m_entry.setTitle(title);
 
- updateEntry(m_entry);
+    updateEntry(m_entry);
 }
 
 void ControllerInformation::valueChange(double value)
 {
- m_entry.setValue(value);
+    m_entry.setValue(value);
 
- updateEntry(m_entry);
- emit s_update(m_entry.id());
+    updateEntry(m_entry);
+    emit s_update(m_entry.id());
 }
 
 void ControllerInformation::categoryChange(QString cat)
 {
- auto list = m_db->selectCategory()[m_entry.type()];
- Category c = list[QUuid::fromString(cat)];
+    auto list = m_db->selectCategory()[m_entry.type()];
+    Category c = list[QUuid::fromString(cat)];
 
- m_entry.setCategory(c);
+    m_entry.setCategory(c);
 
- updateEntry(m_entry);
+    updateEntry(m_entry);
 }
 
 void ControllerInformation::addNewCategory(QString cat)
 {
- Category c;
- c.setName(cat);
- c.setType(m_entry.type());
- m_db->addCategory(c);
+    Category c;
+    c.setName(cat);
+    c.setType(m_entry.type());
+    m_db->addCategory(c);
 
- categoryChange(cat);
- view(m_entry.id());
- emit s_exec();
+    categoryChange(cat);
+    view(m_entry.id());
+    emit s_exec();
 }
 
 void ControllerInformation::pageChange()
 {
- exec();
+    exec();
 }
 
 void ControllerInformation::supportChange(int support)
 {
- m_entry.setSupport((Account::SupportEnum) support);
- m_db->updateEntry(m_entry);
- emit s_exec();
+    m_entry.setSupport((Account::SupportEnum) support);
+    m_db->updateEntry(m_entry);
+    emit s_exec();
 }

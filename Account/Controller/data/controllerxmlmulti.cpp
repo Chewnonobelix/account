@@ -628,7 +628,7 @@ bool ControllerXMLMulti::updateFrequency(Frequency& f)
     return false;
 }
 
-QList<Frequency> ControllerXMLMulti::selectFrequency()
+QMap<QUuid, Frequency> ControllerXMLMulti::selectFrequency()
 {
     QMap<QUuid, Frequency> ret;
     auto freqs = m_accounts[currentProfile() + "/" + currentAccount()]
@@ -665,7 +665,7 @@ QList<Frequency> ControllerXMLMulti::selectFrequency()
         ret[f.id()] = f;
     }
 
-    return ret.values();
+    return ret;
 }
 
 QMap<QUuid, CommonExpanse> ControllerXMLMulti::selectCommon()

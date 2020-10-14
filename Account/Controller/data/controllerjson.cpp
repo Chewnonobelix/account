@@ -140,9 +140,9 @@ bool ControllerJson::updateFrequency(Frequency & f)
  return update("frequency", f, [this]() { emit s_updateFrequency(); });
 }
 
-QList<Frequency> ControllerJson::selectFrequency()
+QMap<QUuid, Frequency> ControllerJson::selectFrequency()
 {
- auto ret = QList<Frequency>();
+ auto ret = QMap<QUuid, Frequency>();
  if (currentProfile().isEmpty() || currentAccount().isEmpty())
   return ret;
  auto doc = load(currentProfile(), currentAccount());
@@ -151,7 +151,7 @@ QList<Frequency> ControllerJson::selectFrequency()
  for (auto i = 0; i < array.size(); i++) {
   Frequency ce(array[i].toObject());
   if (!ce.metaData<bool>("removed"))
-   ret << ce;
+   ret[ce.id()] = ce;
  }
  return ret;
 }

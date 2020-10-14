@@ -75,7 +75,7 @@ public slots:
     virtual bool addFrequency(Frequency&) = 0;
     virtual bool removeFrequency(Frequency&) = 0;
     virtual bool updateFrequency(Frequency&) = 0;
-    virtual QList<Frequency> selectFrequency() = 0;
+    virtual QMap<QUuid, Frequency> selectFrequency() = 0;
     
     virtual QMap<QUuid, CommonExpanse> selectCommon() = 0;
     virtual bool addCommon(CommonExpanse&) = 0;

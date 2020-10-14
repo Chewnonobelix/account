@@ -417,9 +417,9 @@ bool ControllerDB::updateFrequency(Frequency& f)
     return false;
 }
 
-QList<Frequency> ControllerDB::selectFrequency()
+QMap<QUuid, Frequency> ControllerDB::selectFrequency()
 {
-    QList<Frequency> ret;
+   QMap<QUuid, Frequency> ret;
     
     return ret;
 }

@@ -80,7 +80,7 @@ class ControllerJson : public InterfaceDataSave
  virtual bool addFrequency(Frequency &);
  virtual bool removeFrequency(Frequency &);
  virtual bool updateFrequency(Frequency &);
- virtual QList<Frequency> selectFrequency();
+ virtual QMap<QUuid, Frequency> selectFrequency();
 
  virtual QMap<QUuid, CommonExpanse> selectCommon();
  virtual bool addCommon(CommonExpanse &);

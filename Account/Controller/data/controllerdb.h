@@ -111,7 +111,7 @@ public slots:
     virtual bool addFrequency(Frequency&) override;
     virtual bool removeFrequency(Frequency&) override;
     virtual bool updateFrequency(Frequency&) override;
-    virtual QList<Frequency> selectFrequency() override;
+    virtual QMap<QUuid, Frequency> selectFrequency() override;
     
     virtual QMap<QUuid, CommonExpanse> selectCommon() override;
     virtual bool addCommon(CommonExpanse&) override;
