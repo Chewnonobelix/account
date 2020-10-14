@@ -23,6 +23,7 @@ class ACCOUNT_EXPORT Debt : public MetaData
 public:
     Debt() = default;
     Debt(const Debt &) = default;
+    Debt(const QJsonObject &);
     ~Debt() = default;
 
     Debt &operator=(const Debt &);

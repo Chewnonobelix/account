@@ -207,8 +207,12 @@ QMap<QUuid, Debt> ControllerJson::selectDebt()
 
 bool ControllerJson::addDebt(Debt & d)
 {
+    auto init = d.initial();
+    init.setId(QUuid::createUuid());
+    d.setInitial(init);
+    d.setId(init.id());
+    addEntry(init);
     auto ret = add("debt", d, [this]() { emit s_updateDebt(); });
-
     return ret;
 }
 
@@ -219,7 +223,8 @@ bool ControllerJson::removeDebt(Debt & d)
 
 bool ControllerJson::updateDebt(Debt & d)
 {
- return update("debt", d, [this]() { emit s_updateDebt(); });
+    auto init = d.initial();
+    return update("debt", d, [this]() { emit s_updateDebt(); }) && updateEntry(init);
 }
 
 QStringList ControllerJson::selectProfile()
