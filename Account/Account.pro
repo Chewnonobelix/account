@@ -25,6 +25,7 @@ LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
 
 SOURCES += \
     Controller/ItemModel/categorylistmodel.cpp \
+    Controller/ItemModel/mainmodel.cpp \
     Controller/core/abstractcontroller.cpp \
     Controller/core/controllerinformation.cpp \
     Controller/core/controllersettings.cpp \
@@ -78,6 +79,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     Controller/ItemModel/categorylistmodel.h \
+    Controller/ItemModel/mainmodel.h \
     Controller/core/abstractcontroller.h \
     Controller/core/controllerinformation.h \
     Controller/core/controllersettings.h \
