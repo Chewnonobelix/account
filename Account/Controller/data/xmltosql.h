@@ -15,6 +15,7 @@ private:
     bool transfertBudget();
     bool transfertFrequency();
     bool transfertCommon();
+    bool transfertDebt();
 
     QStringList accounts;
     QString backuptype;
@@ -29,8 +30,6 @@ public:
     inline bool isSucess() {return m_sucess;}
     InterfaceDataSave* m_backup;
     InterfaceDataSave* m_db;
-
-
 };
 
 #endif // XMLTOSQL_H
