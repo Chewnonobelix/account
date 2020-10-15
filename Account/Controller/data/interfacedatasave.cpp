@@ -159,6 +159,8 @@ QString InterfaceDataSave::currentProfile() const
 void InterfaceDataSave::setCurrentAccount(QString account)
 {
     m_currentAccount = account;
+	emit s_updateEntry();
+	emit s_updateCategory();
 }
 
 QString InterfaceDataSave::currentAccount() const

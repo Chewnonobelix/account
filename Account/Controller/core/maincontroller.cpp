@@ -22,8 +22,9 @@ MainController::MainController(int storage)
 			 << qmlRegisterUncreatableType<Worker>("Account.Frequency", 1, 0, "Worker", message);
 	qDebug() << "CategoryModel"
              << qmlRegisterType<CategoryListModel>("Account.Model", 1, 0, "CategoryModel");
-    qmlRegisterModule("Account.Style", 1, 0);
-    m_dbThread = new QThread;
+	qDebug() << "MainModel" << qmlRegisterType<MainModel>("Account.Model", 1, 0, "MainModel");
+	qmlRegisterModule("Account.Style", 1, 0);
+	m_dbThread = new QThread;
     connect(m_dbThread, &QThread::started, this, &MainController::reload);
     try
     {
@@ -32,22 +33,24 @@ MainController::MainController(int storage)
     catch(QString except)
     {
         qDebug()<<except;
-    }
+	}
 
-    m_categoryModel = QSharedPointer<CategoryListModel>::create();
+	m_categoryModel = QSharedPointer<CategoryListModel>::create();
+	m_mainModel = QSharedPointer<MainModel>::create();
 
-    auto *context = engine().rootContext();
-    context->setContextProperty("_settings", &m_settings);
+	auto *context = engine().rootContext();
+	context->setContextProperty("_settings", &m_settings);
     context->setContextProperty("_db", db());
     context->setContextProperty("_sync", &m_synchro);
     context->setContextProperty("_main", this);
     context->setContextProperty("_info", &m_info);
-    context->setContextProperty("_transfert", &m_transfert);
-    context->setContextProperty("_graph", &m_graph);
-    context->setContextProperty("_categoryModel", m_categoryModel.data());
-    m_graph.set(engine());
+	context->setContextProperty("_transfert", &m_transfert);
+	context->setContextProperty("_graph", &m_graph);
+	context->setContextProperty("_categoryModel", m_categoryModel.data());
+	context->setContextProperty("_mainModel", m_mainModel.data());
+	m_graph.set(engine());
 
-    m_engine.createWindow(QUrl("/Core/Main.qml"));
+	m_engine.createWindow(QUrl("/Core/Main.qml"));
 
 #ifdef ENABLE_HOTRELOADING
 //    temp.setQmlSourceDir(QML_SOURCE);
