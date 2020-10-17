@@ -16,7 +16,9 @@ MainController::MainController(int storage)
 												 0,
 												 "Account",
 												 "This is Account's flags");
-	qDebug() << "Account::FrequencyEnum" << qRegisterMetaType<Account::FrequencyEnum>();
+    qDebug() << "Account::FrequencyEnum" << qRegisterMetaType<Account::FrequencyEnum>();
+    qDebug() << "Account::TypeEnum" << qRegisterMetaType<Account::TypeEnum>();
+//    qDebug() << "Account::TypeEnumQml" << qRegisterMetaType<Account::TypeEnum>();
 
 	qDebug() << "Worker Qml"
 			 << qmlRegisterUncreatableType<Worker>("Account.Frequency", 1, 0, "Worker", message);

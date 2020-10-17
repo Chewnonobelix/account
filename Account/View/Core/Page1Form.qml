@@ -1,9 +1,9 @@
-import QtQuick 2.13
+import QtQuick 2.15
 //import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.13
 //import QtQuick.Controls.Styles 1.4
 
-import QtQuick.Controls 2.13
+import QtQuick.Controls 2.15
 import QtQuick.Window 2.13
 
 //import Style 1.0
@@ -188,349 +188,41 @@ Page {
             Layout.preferredWidth: pageTable.width * 0.20
             spacing: 0
 
+            HorizontalHeaderView {
+                 height: view.height*0.20
+ //                    model: 5
+
+                 syncView: view
+                 z:5
+             }
+
             TableView {
-                height: parent.height * 0.95
+
+                height: parent.height * 0.75
                 width: parent.width
                 id: view
                 model: _mainModel
                 clip: true
-                delegate:
-                    AccountLabel {
-                    Component.onCompleted: console.log(row, column)
+                delegate: ItemDelegate {
+                    required property var type
+
+                    Component.onCompleted: {
+                    }
+
+                    onClicked: {
+                        _mainModel.currentIndex = _mainModel.currentIndex === row ? -1 : row
+                    }
+
                     height: view.height*0.05
                     width: view.width *0.15
-                    text: if(view.model) view.model.at(row,column)
+                    text: view.model.at(row,column)
+
+
+                    background: Rectangle {
+                        gradient: row === _mainModel.currentIndex ? type === Account.Income ? AccountStyle.selectViewIn : AccountStyle.selectViewOut : AccountStyle.unselectView
+                    }
                 }
             }
-
-            //            Connections {
-            //                target: _main
-
-            //                function onCurrentModelChanged(list) {
-            //                    view.model = list
-            //                }
-
-            //                function onCurrentRowChanged(index) {
-            //                    view.currentRow = index
-            //                }
-            //            }
-
-            //            TableView {
-            //                height: parent.height * 0.95
-            //                width: parent.width
-            //                id: view
-            //                objectName: "entryView"
-            //                model: []
-
-            //                ToolTip.text: qsTr("Transactions list")
-            //                ToolTip.visible: tableArea.containsMouse && rowAt(tableArea.mouseX, tableArea.mouseY) === -1
-            //                ToolTip.delay: 500
-            //                ToolTip.timeout: 1000
-
-            //                MouseArea {
-            //                    id: tableArea
-            //                    anchors.fill: parent
-            //                    hoverEnabled: true
-            //                    acceptedButtons: Qt.NoButton
-            //                }
-
-            //                Component.onCompleted: {
-            //                    selection.clear()
-            //                    currentEntry = Qt.binding( function(){ return selection.count !== 0 ? model[currentRow] : null } )
-            //                }
-
-            //                onModelChanged: selection.clear()
-
-            //                horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
-
-            //                sortIndicatorVisible: true
-
-            //                function unselectAll() {
-            //                    selection.clear()
-            //                }
-
-            //                function reset() {
-            //                    infoView.visible = false
-            //                }
-
-            //                signal s_view(var index)
-
-            //                property var currentEntry
-
-            //                backgroundVisible: false
-
-            //                onWidthChanged: {
-            //                    flickableItem.contentX = 0
-            //                }
-
-            //                onHeightChanged: {
-            //                    flickableItem.contentY = 0
-            //                }
-
-            //                TableViewColumn {
-            //                    role: "id"
-            //                    visible: false
-            //                    width: 0
-            //                }
-
-            //                TableViewColumn {
-            //                    role: "estimated"
-            //                    visible: false
-            //                    width: 0
-            //                }
-
-            //                function setNewIndex(index) {
-            //                    if (selection.contains(index) || index === -1) {
-            //                        selection.clear()
-            //                        _main.edit((currentId))
-            //                        currentRow = -1
-            //                    } else {
-            //                        selection.clear()
-            //                        currentRow = index
-            //                        selection.select(index)
-            //                        currentEntry = model[index]
-            //                        _main.edit(currentId)
-            //                    }
-
-            //                    infoView.visible = currentRow !== -1 && !currentEntry.isBlock
-            //                }
-
-            //                function selectFromId(id) {
-            //                    for (var i = 0; i < model.length; i++) {
-            //                        if (model[i].id === id) {
-            //                            setNewIndex(i)
-            //                        }
-            //                    }
-            //                }
-
-            //                TableViewColumn {
-            //                    role: "type"
-            //                    title: "[+/-]"
-            //                    width: 45
-            //                    movable: false
-            //                    resizable: false
-            //                    id: typeColumn
-            //                    property string tipText: "*:" + qsTr("estimated entry")
-            //                    delegate: Rectangle {
-            //                        color: "transparent"
-            //                        anchors.centerIn: parent
-            //                        MouseArea {
-            //                            anchors.fill: parent
-            //                            cursorShape: Qt.PointingHandCursor
-            //                            propagateComposedEvents: true
-
-            //                            onClicked: {
-            //                                view.setNewIndex(styleData.row)
-            //                            }
-            //                        }
-            //                        AccountLabel {
-            //                            property string est: view.model[styleData.row] && view.model[styleData.row].estimated ? "*" : ""
-
-            //                            text: styleData.value === Account.Income ? "+" + est : "-" + est
-            //                            anchors.fill: parent
-
-            //                        }
-            //                    }
-            //                }
-
-            //                TableViewColumn {
-            //                    role: "date"
-            //                    title: qsTr("Date")
-            //                    width: (Screen.width * .20 - 45) / 4
-            //                    movable: false
-            //                    resizable: false
-            //                    id: columnDate
-
-            //                    delegate: Rectangle {
-            //                        color: "transparent"
-            //                        anchors.centerIn: parent
-            //                        MouseArea {
-            //                            anchors.fill: parent
-            //                            cursorShape: Qt.PointingHandCursor
-            //                            propagateComposedEvents: true
-            //                            onClicked: {
-            //                                view.setNewIndex(styleData.row)
-            //                            }
-            //                        }
-
-            //                        AccountLabel {
-            //                            text: Qt.formatDate(styleData.value, "dd-MM-yyyy")
-            //                            anchors.fill: parent
-            //                        }
-            //                    }
-            //                }
-
-            //                TableViewColumn {
-            //                    role: "value"
-            //                    title: qsTr("Value")
-            //                    width: (Screen.width * .20 - 45) / 4
-            //                    movable: false
-            //                    resizable: false
-
-            //                    delegate: Rectangle {
-            //                        color: "transparent"
-            //                        anchors.centerIn: parent
-            //                        MouseArea {
-            //                            anchors.fill: parent
-            //                            cursorShape: Qt.PointingHandCursor
-            //                            propagateComposedEvents: true
-            //                            onClicked: {
-            //                                view.setNewIndex(styleData.row)
-            //                            }
-            //                        }
-
-            //                        AccountLabel {
-            //                            text: styleData.value
-            //                            clip: true
-            //                            anchors.fill: parent
-            //                        }
-            //                    }
-            //                }
-
-            //                TableViewColumn {
-            //                    role: "label"
-            //                    title: qsTr("Label")
-            //                    width: (Screen.width * .20 - 45) / 4
-            //                    movable: false
-            //                    resizable: false
-            //                    id: labelHeader
-
-            //                    delegate: Rectangle {
-            //                        color: "transparent"
-            //                        anchors.centerIn: parent
-            //                        MouseArea {
-            //                            anchors.fill: parent
-            //                            cursorShape: Qt.PointingHandCursor
-            //                            propagateComposedEvents: true
-            //                            onClicked: {
-            //                                view.setNewIndex(styleData.row)
-            //                            }
-            //                        }
-
-            //                        AccountLabel {
-            //                            text: styleData.value
-            //                            clip: true
-            //                            anchors.fill: parent
-            //                        }
-            //                    }
-            //                }
-
-            //                TableViewColumn {
-            //                    role: "total"
-            //                    title: qsTr("Total")
-            //                    width: (Screen.width * .20 - 45) / 4
-            //                    movable: false
-            //                    resizable: false
-
-            //                    delegate: Rectangle {
-            //                        color: "transparent"
-            //                        anchors.centerIn: parent
-            //                        MouseArea {
-            //                            anchors.fill: parent
-            //                            cursorShape: Qt.PointingHandCursor
-            //                            propagateComposedEvents: true
-            //                            onClicked: {
-            //                                view.setNewIndex(styleData.row)
-            //                            }
-            //                            hoverEnabled: true
-            //                        }
-
-            //                        AccountLabel {
-            //                            text: styleData.value.value
-            //                            clip: true
-            //                            anchors.fill: parent
-            //                        }
-            //                    }
-            //                }
-
-            //                headerDelegate: Rectangle {
-            //                    gradient: styleData.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldHeader
-
-            //                    height: view.height * 0.03
-            //                    anchors.centerIn: parent
-            //                    anchors.leftMargin: 10
-
-            //                    border.color: "darkgoldenrod"
-            //                    AccountLabel {
-            //                        id: headerText
-            //                        height: parent.height * .8
-            //                        anchors.centerIn: parent
-            //                        text: styleData.value
-            //                        font.family: AccountStyle.title.name
-            //                        font.pixelSize: height * 0.85
-
-            //                        ToolTip.visible: styleData.containsMouse && (styleData.column === 2)
-            //                        ToolTip.text: view.getToolTip(styleData.column)
-            //                        ToolTip.delay: 500
-            //                    }
-            //                }
-
-            //                signal s_sortRole(string role)
-            //                signal s_sortOrder(int order)
-
-            //                onSortIndicatorColumnChanged: {
-            //                   _main.sortRole(getColumn(sortIndicatorColumn).role)
-            //                }
-
-            //                onSortIndicatorOrderChanged: {
-            //                    _main.sortOrder(sortIndicatorOrder)
-            //                }
-
-            //                function getToolTip(index) {
-            //                    if (index === 2) {
-            //                        return typeColumn.tipText
-            //                    }
-
-            //                    return ""
-            //                }
-
-            //                itemDelegate: Rectangle {
-            //                    MouseArea {
-            //                        anchors.fill: parent
-            //                        cursorShape: Qt.PointingHandCursor
-            //                        onClicked: {
-            //                            view.setNewIndex(styleData.row)
-            //                        }
-            //                    }
-            //                }
-
-            //                rowDelegate: Rectangle {
-            //                    id: rectRow
-
-            //                    width: view.width
-            //                    height: view.height * .03
-
-            //                    gradient: view.model[styleData.row] && styleData.selected ? view.model[styleData.row].type === Account.Outcome ? AccountStyle.selectViewOut : AccountStyle.selectViewIn : AccountStyle.unselectView
-
-            //                }
-
-            //                onCurrentRowChanged: {
-            //                    setNewIndex(currentRow)
-            //                }
-
-            //                function swap(i,j) {
-            //                    var t = model[i]
-            //                    model[i] = model[j]
-            //                    model[j] = t
-            //                }
-
-            //                function sort(role, roleorder) {
-            //                    for (var i = 0; i < rowCount; i++) {
-            //                        for (var j = i; j < rowCount; j++) {
-            //                            if (roleorder === Qt.AscendingOrder) {
-            //                                if (model[j][role] < model[i][role]) {
-            //                                    swap(i, j)
-            //                                }
-            //                            } else {
-            //                                if (model[j][role] > model[i][role]) {
-            //                                    swap(i, j)
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                    model = model
-            //                }
-            //            }
             
             PageChanger {
                 id: changer
