@@ -83,11 +83,14 @@ QVariant MainModel::at(int row, int column) const
 
 QVariant MainModel::data(QModelIndex const &index, int role) const
 {
+    if(!index.isValid())
+        return QVariant();
+
     auto row = index.row();
     auto en = MainRole(role);
     auto it = m_model[row];
 
-    // qDebug() << "Data" << role << row << (QJsonObject) it.e /*<< it.t*/;
+    qDebug() << "Data" <<en<< role << row << (QJsonObject) it.e /*<< it.t*/;
     QString ret;
     switch (en) {
     case MainRole::DateRole:

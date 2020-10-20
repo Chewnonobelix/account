@@ -22,16 +22,6 @@ class MainModel : public QAbstractTableModel
     };
 
 private:
-    enum class MainRole {
-        EstimatedRole = Qt::UserRole + 1,
-        TypeRole,
-        DateRole,
-        TitleRole,
-        ValueRole,
-        TotalRole,
-        TypeDisplayRole
-    };
-
     int m_currentIndex = -1;
     QList<Model> m_model;
     int m_columnSort = 0;
@@ -45,6 +35,17 @@ private:
 
 
 public:
+    enum class MainRole {
+        EstimatedRole = Qt::UserRole + 1,
+        TypeRole,
+        DateRole,
+        TitleRole,
+        ValueRole,
+        TotalRole,
+        TypeDisplayRole
+    };
+    Q_ENUM(MainRole)
+
     MainModel();
     MainModel(const MainModel &);
     ~MainModel() = default;

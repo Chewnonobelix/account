@@ -189,36 +189,62 @@ Page {
             spacing: 0
 
             HorizontalHeaderView {
-                 height: view.height*0.20
- //                    model: 5
-
-                 syncView: view
-                 z:5
-             }
+                id: headerView
+//                height: view.height*0.15
+//                rowHeightProvider: height
+                syncView: view
+                z:5
+                clip: true
+                delegate: AccountHeader {
+                    text: display
+                    clip: true
+//                    height: headerView.height
+                }
+            }
 
             TableView {
 
-                height: parent.height * 0.75
+                height: parent.height * 0.85
                 width: parent.width
                 id: view
                 model: _mainModel
                 clip: true
-                delegate: ItemDelegate {
+
+                property var columns: [width*0.10,
+                    width*0.23,
+                    width*0.23,
+                    width*0.22,
+                    width*0.22]
+                onHeightChanged: forceLayout()
+                rowHeightProvider: -1
+                columnWidthProvider: function(column) {
+                    return columns[column]
+                }
+
+                rowSpacing: height* 0.02
+                delegate: AccountLabel {
                     required property var type
 
+                    clip: true
                     Component.onCompleted: {
                     }
 
-                    onClicked: {
-                        _mainModel.currentIndex = _mainModel.currentIndex === row ? -1 : row
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            console.log(width, row, column, text)
+                            _mainModel.currentIndex = _mainModel.currentIndex === row ? -1 : row
+                        }
                     }
 
                     height: view.height*0.05
-                    width: view.width *0.15
-                    text: view.model.at(row,column)
+//                    width: view.columnWidthProvider(column)
+                    //                    width: view.width *0.15
+                    text: _mainModel.at(row,column)
 
 
                     background: Rectangle {
+                        anchors.fill: parent
                         gradient: row === _mainModel.currentIndex ? type === Account.Income ? AccountStyle.selectViewIn : AccountStyle.selectViewOut : AccountStyle.unselectView
                     }
                 }
