@@ -81,42 +81,52 @@ QVariant MainModel::at(int row, int column) const
     return data(index(row, column), columnsOrder[column]);
 }
 
+QVariant MainModel::at(int row) const
+{
+ return data(index(row, 0), -1);
+}
+
 QVariant MainModel::data(QModelIndex const &index, int role) const
 {
-    if(!index.isValid())
-        return QVariant();
+ if (!index.isValid())
+  return QVariant();
 
-    auto row = index.row();
-    auto en = MainRole(role);
-    auto it = m_model[row];
+ auto row = index.row();
+ auto it = m_model[row];
 
-    qDebug() << "Data" <<en<< role << row << (QJsonObject) it.e /*<< it.t*/;
-    QString ret;
-    switch (en) {
-    case MainRole::DateRole:
-        return it.e.date().toString("dd-MM-yyyy");
-        break;
-    case MainRole::EstimatedRole:
-        return it.e.estimated();
-        break;
-    case MainRole::TitleRole:
-        return it.e.title();
-        break;
-    case MainRole::TotalRole:
-        return it.t.value();
-        break;
-    case MainRole::TypeRole:
-        return it.e.type();
-        break;
-    case MainRole::TypeDisplayRole:
-        ret = it.e.type() == Account::TypeEnum::Income ? "+" : "-";
-        if(it.e.estimated()) ret = "*"+ret;
-        return ret;
-        break;
-    case MainRole::ValueRole:
-        return it.e.value();
-        break;
-    }
+ if (role == -1)
+  return QVariant::fromValue(it.e);
+
+ auto en = MainRole(role);
+
+ //    qDebug() << "Data" <<en<< role << row << (QJsonObject) it.e /*<< it.t*/;
+ QString ret;
+ switch (en) {
+ case MainRole::DateRole:
+  return it.e.date().toString("dd-MM-yyyy");
+  break;
+ case MainRole::EstimatedRole:
+  return it.e.estimated();
+  break;
+ case MainRole::TitleRole:
+  return it.e.title();
+  break;
+ case MainRole::TotalRole:
+  return it.t.value();
+  break;
+ case MainRole::TypeRole:
+  return it.e.type();
+  break;
+ case MainRole::TypeDisplayRole:
+  ret = it.e.type() == Account::TypeEnum::Income ? "+" : "-";
+  if (it.e.estimated())
+   ret = "*" + ret;
+  return ret;
+  break;
+ case MainRole::ValueRole:
+  return it.e.value();
+  break;
+ }
 }
 
 QVariant MainModel::headerData(int section, Qt::Orientation, int) const
@@ -143,14 +153,15 @@ void MainModel::sort(int column, Qt::SortOrder order)
 
 QHash<int, QByteArray> MainModel::roleNames() const
 {
-    static auto ret = QHash<int, QByteArray>{{int(MainRole::TypeRole), "type"},
-                                             {int(MainRole::TitleRole), "title"},
-                                             {int(MainRole::TotalRole), "total"},
-                                             {int(MainRole::DateRole), "date"},
-                                             {int(MainRole::EstimatedRole), "estimated"},
-                                             {int(MainRole::ValueRole), "value"},
-                                             {int(MainRole::TypeDisplayRole), "typeDisplay"}};
-    return ret;
+ static auto ret = QHash<int, QByteArray>{{int(MainRole::TypeRole), "type"},
+										  {int(MainRole::TitleRole), "title"},
+										  {int(MainRole::TotalRole), "total"},
+										  {int(MainRole::DateRole), "date"},
+										  {int(MainRole::EstimatedRole), "estimated"},
+										  {int(MainRole::ValueRole), "value"},
+										  {int(MainRole::TypeDisplayRole), "typeDisplay"},
+										  {int(MainRole::IdRole), "id"}};
+ return ret;
 }
 
 void MainModel::onUpdateEntry(QUuid)

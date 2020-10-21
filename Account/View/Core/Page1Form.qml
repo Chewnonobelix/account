@@ -1,12 +1,9 @@
 import QtQuick 2.15
-//import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.13
-//import QtQuick.Controls.Styles 1.4
 
 import QtQuick.Controls 2.15
 import QtQuick.Window 2.13
 
-//import Style 1.0
 import "../Style"
 import "../Functionnal"
 import "../Budget"
@@ -60,7 +57,7 @@ Page {
 
             onUpdateSelected:  {
                 _main = selectedDates
-                //                view.unselectAll()
+                _mainModel.currentIndex = -1
             }
 
             onDatesChanged:  {
@@ -117,8 +114,8 @@ Page {
             id: remove
             text: qsTr("Remove")
 
-            //            property int index: view.currentRow
-            enabled: infoView.visible
+            property int index: _mainModel.currentIndex
+            enabled: currentId
             Layout.column: 1
             Layout.row: 1
             Layout.rowSpan: 1
@@ -190,15 +187,12 @@ Page {
 
             HorizontalHeaderView {
                 id: headerView
-//                height: view.height*0.15
-//                rowHeightProvider: height
                 syncView: view
                 z:5
                 clip: true
                 delegate: AccountHeader {
                     text: display
                     clip: true
-//                    height: headerView.height
                 }
             }
 
@@ -216,7 +210,10 @@ Page {
                     width*0.22,
                     width*0.22]
                 onHeightChanged: forceLayout()
-                rowHeightProvider: -1
+                rowHeightProvider: function(row) {
+                    return height * 0.05
+                }
+
                 columnWidthProvider: function(column) {
                     return columns[column]
                 }
@@ -232,14 +229,11 @@ Page {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            console.log(width, row, column, text)
                             _mainModel.currentIndex = _mainModel.currentIndex === row ? -1 : row
+                            _main.edit(currentId)
                         }
                     }
 
-                    height: view.height*0.05
-//                    width: view.columnWidthProvider(column)
-                    //                    width: view.width *0.15
                     text: _mainModel.at(row,column)
 
 
@@ -287,7 +281,8 @@ Page {
                 id: infoView
                 objectName: "infoView"
                 clip: true
-                enabled: true
+                enabled: currentId
+                visible: enabled
                 
                 implicitWidth: Screen.width * 0.52
                 implicitHeight: grid.height
@@ -322,10 +317,9 @@ Page {
     
     
     Component.onCompleted: {
-        //        view.setNewIndex(-1)
+        _mainModel.currentIndex = -1
         _main.exec()
-        //        currentId = Qt.binding(function() {return view.currentEntry && !view.currentEntry.isBlocked ? view.currentEntry.id : -1})
     }
     
-    //    property var currentId: view.selection.count !== 0 && !model[view.currentRow].isBlocked ? model[view.currentRow].id : null
+    property var currentId: _mainModel.currentIndex > -1 && !_mainModel.at(_mainModel.currentIndex).isBlocked ? _mainModel.at(_mainModel.currentIndex).id : null
 }

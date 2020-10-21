@@ -12,14 +12,14 @@ class MainModel : public QAbstractTableModel
     Q_OBJECT
 
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
-    Q_PROPERTY(int sort READ sort WRITE setSort NOTIFY sortChanged)
-    Q_PROPERTY(int columnSort READ columnSort WRITE setColumnSort NOTIFY columnSortChanged)
+	Q_PROPERTY(int sort READ sort WRITE setSort NOTIFY sortChanged)
+	Q_PROPERTY(int columnSort READ columnSort WRITE setColumnSort NOTIFY columnSortChanged)
 
-    struct Model
-    {
-        Entry e;
-        Total t;
-    };
+	struct Model
+	{
+	 Entry e;
+	 Total t;
+	};
 
 private:
     int m_currentIndex = -1;
@@ -33,20 +33,20 @@ private:
             int(MainRole::ValueRole),
             int(MainRole::TotalRole)};
 
-
 public:
-    enum class MainRole {
-        EstimatedRole = Qt::UserRole + 1,
-        TypeRole,
-        DateRole,
-        TitleRole,
-        ValueRole,
-        TotalRole,
-        TypeDisplayRole
-    };
-    Q_ENUM(MainRole)
+	enum class MainRole {
+	 EstimatedRole = Qt::UserRole + 1,
+	 TypeRole,
+	 DateRole,
+	 TitleRole,
+	 ValueRole,
+	 TotalRole,
+	 TypeDisplayRole,
+	 IdRole
+	};
+	Q_ENUM(MainRole)
 
-    MainModel();
+	MainModel();
     MainModel(const MainModel &);
     ~MainModel() = default;
     int currentIndex() const;
@@ -57,7 +57,8 @@ public:
     void setSort(int sort);
     void insertData(Entry);
     void clear();
-    Q_INVOKABLE QVariant at(int row, int column) const;
+	Q_INVOKABLE QVariant at(int row, int column) const;
+	Q_INVOKABLE QVariant at(int row) const;
 signals:
     void currentIndexChanged();
     void sortChanged();
