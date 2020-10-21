@@ -56,19 +56,17 @@ void MainModel::insertData(Entry e)
 
     model.insert(e.date(), Model{e, Total()});
 
-    Total t;
-    for (auto it : model) {
-        t = t + it.e;
-        it.t = t;
-    }
+	Total t;
+	for (auto &it : model) {
+	 t = t + it.e;
+	 it.t = t;
+	}
 
-    m_model = model.values();
+	m_model = model.values();
 
-    beginInsertRows(QModelIndex(), rowCount() - 1, rowCount());
-    insertRow(rowCount() - 1);
-    endInsertRows();
-
-    qDebug() << "Insert" << rowCount();
+	beginInsertRows(QModelIndex(), rowCount() - 1, rowCount());
+	insertRow(rowCount() - 1);
+	endInsertRows();
 }
 
 Qt::ItemFlags MainModel::flags(QModelIndex const &) const
