@@ -40,7 +40,7 @@ ApplicationWindow {
     }
     
     onVisibilityChanged: {
-
+        _categoryModel.onUpdateCategory()
         if(visibility === Window.Minimized)
             hide()
     }

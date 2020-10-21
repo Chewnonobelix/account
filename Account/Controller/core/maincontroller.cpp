@@ -341,47 +341,42 @@ void MainController::edit(QVariant id)
 
 void MainController::previewCalendar(int month, int year)
 {
-    QMap<QDate, Total> all = allTotal();
-    month--;
+ QMap<QDate, Total> all = allTotal();
+ month--;
 
-    QVector<Total> monthPreview, dayPreview;
-    QDate itDate;
-    itDate.setDate(year, month, 1);
-    QDate last = itDate.addMonths(1);
-    while(itDate < last)
-    {
-        
-        if(all.contains(itDate))
-            monthPreview<<all[itDate];
-        else if(!monthPreview.isEmpty())
-        {
-            monthPreview<<monthPreview.last();
-            monthPreview.last().setDate(itDate);
-        }
-        
-        if(all.contains(itDate))
-        {
-            auto it = all.find(itDate);
-            
-            if((it) == all.begin())
-                dayPreview<<all[itDate];
-            else
-                dayPreview<<(*it - *(it-1));
-        }
-        
-        itDate = itDate.addDays(1);
-    }
+ QVector<Total> monthPreview, dayPreview;
+ QDate itDate;
+ itDate.setDate(year, month, 1);
+ QDate last = itDate.addMonths(1);
+ while (itDate < last) {
+  if (all.contains(itDate))
+   monthPreview << all[itDate];
+  else if (!monthPreview.isEmpty()) {
+   monthPreview << monthPreview.last();
+   monthPreview.last().setDate(itDate);
+  }
 
-    emit clearCalendar();
-    QDate first;
-    first.setDate(year, month, 1);
-    for(auto i = 0; i < dayPreview.size(); i++)
-    {
-        QVariantMap map;
-        map.insert("day", dayPreview[i].date().day());
-        map.insert("value", dayPreview[i].value());
+  if (all.contains(itDate)) {
+   auto it = all.find(itDate);
 
-        emit appendCalendarPreview(map);
+   if ((it) == all.begin())
+	dayPreview << all[itDate];
+   else
+	dayPreview << (*it - *(it - 1));
+  }
+
+  itDate = itDate.addDays(1);
+ }
+
+ emit clearCalendar();
+ QDate first;
+ first.setDate(year, month, 1);
+ for (auto i = 0; i < dayPreview.size(); i++) {
+  QVariantMap map;
+  map.insert("day", dayPreview[i].date().day());
+  map.insert("value", dayPreview[i].value());
+
+  emit appendCalendarPreview(map);
     }
 
     for (auto i = 0; i < monthPreview.size(); i++) {

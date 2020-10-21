@@ -71,7 +71,10 @@ void ControllerDebt::endFill()
 void ControllerDebt::addDebt()
 {
     Debt d;
-    db()->addDebt(d);
+	auto i = d.initial();
+	i.setBlocked(true);
+	d.setInitial(i);
+	db()->addDebt(d);
 }
 
 void ControllerDebt::onNameChanged(QString id, QString name)
@@ -177,6 +180,15 @@ void ControllerDebt::onInitialSupportChanged(QString id, int s)
 
 void ControllerDebt::onNewCategory(int type, QString cat)
 {
+ auto cats = db()->selectCategory()[Account::TypeEnum(type)].values();
+
+ auto f = std::find_if(cats.begin(), cats.end(), [cat, type](Category c) {
+  return c.name() == cat;
+ });
+
+ if (f != cats.end())
+  return;
+
  Category c;
  c.setType(Account::TypeEnum(type));
  c.setName(cat);

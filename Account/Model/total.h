@@ -15,8 +15,6 @@ class ACCOUNT_EXPORT Total : public MetaData
     Q_PROPERTY(double value READ value)
     
 private:
-    QDate m_date;
-    double m_value;
 
 public:
     Total();

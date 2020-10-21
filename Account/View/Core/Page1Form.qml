@@ -61,7 +61,7 @@ Page {
             }
 
             onDatesChanged:  {
-                view.reset()
+                _mainModel.currentIndex = -1
                 _main.updateQuickView()
                 _main.pageChange()
 
@@ -114,7 +114,7 @@ Page {
             id: remove
             text: qsTr("Remove")
 
-            property int index: _mainModel.currentIndex
+            property int index: _mainModel ? _mainModel.currentIndex : -1
             enabled: currentId
             Layout.column: 1
             Layout.row: 1
@@ -234,12 +234,12 @@ Page {
                         }
                     }
 
-                    text: _mainModel.at(row,column)
+                    text: _mainModel ? _mainModel.at(row,column) : ""
 
 
                     background: Rectangle {
                         anchors.fill: parent
-                        gradient: row === _mainModel.currentIndex ? type === Account.Income ? AccountStyle.selectViewIn : AccountStyle.selectViewOut : AccountStyle.unselectView
+                        gradient: if(_mainModel) row === _mainModel.currentIndex ? type === Account.Income ? AccountStyle.selectViewIn : AccountStyle.selectViewOut : AccountStyle.unselectView
                     }
                 }
             }
@@ -321,5 +321,5 @@ Page {
         _main.exec()
     }
     
-    property var currentId: _mainModel.currentIndex > -1 && !_mainModel.at(_mainModel.currentIndex).isBlocked ? _mainModel.at(_mainModel.currentIndex).id : null
+    property var currentId: if(_mainModel) _mainModel.currentIndex > -1 && !_mainModel.at(_mainModel.currentIndex).isBlocked ? _mainModel.at(_mainModel.currentIndex).id : null
 }

@@ -7,7 +7,13 @@ bool ControllerJson::addEntry(Entry &e)
 
 QMap<QUuid, Entry> ControllerJson::selectEntry()
 {
- return select<Entry>("entry");
+ auto ret = select<Entry>("entry");
+
+ // qDebug() << "----------------";
+ // for (auto it : ret)
+ //  qDebug() << (QJsonObject) it;
+
+ return ret;
 }
 
 bool ControllerJson::updateEntry(Entry & e)
@@ -143,7 +149,7 @@ bool ControllerJson::updateCommon(CommonExpanse & ce)
 
 QMap<QUuid, Debt> ControllerJson::selectDebt()
 {
-    return select<Debt>("debt");
+ return select<Debt>("debt");
 }
 
 bool ControllerJson::addDebt(Debt & d)
@@ -165,7 +171,13 @@ bool ControllerJson::removeDebt(Debt & d)
 bool ControllerJson::updateDebt(Debt & d)
 {
     auto init = d.initial();
-    return update("debt", d, [this]() { emit s_updateDebt(); }) && updateEntry(init);
+	auto list = d.entries();
+	auto ret = true;
+
+	for (auto it : list)
+	 ret &= it.id().isNull() ? addEntry(it) : updateEntry(it);
+
+	return ret && update("debt", d, [this]() { emit s_updateDebt(); }) && updateEntry(init);
 }
 
 QStringList ControllerJson::selectProfile()

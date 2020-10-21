@@ -63,14 +63,23 @@ void ControllerInformation::categoryChange(QString cat)
 
 void ControllerInformation::addNewCategory(QString cat)
 {
-    Category c;
-    c.setName(cat);
-    c.setType(m_entry.type());
-    m_db->addCategory(c);
+ auto type = m_entry.type();
+ auto cats = db()->selectCategory()[type].values();
+ auto f = std::find_if(cats.begin(), cats.end(), [cat, type](Category c) {
+  return c.name() == cat && c.type() == type;
+ });
 
-    categoryChange(cat);
-    view(m_entry.id());
-    emit s_exec();
+ if (f != cats.end())
+  return;
+
+ Category c;
+ c.setName(cat);
+ c.setType(m_entry.type());
+ m_db->addCategory(c);
+
+ categoryChange(cat);
+ view(m_entry.id());
+ emit s_exec();
 }
 
 void ControllerInformation::pageChange()

@@ -13,6 +13,12 @@ Entry::Entry()
     setCategory(Category());
 }
 
+Entry::Entry(const QJsonObject &j) : MetaData(j)
+{
+ auto c = Category(j["category"].toObject());
+ setCategory(c);
+}
+
 Entry& Entry::operator = (const Entry& e)
 {
     MetaData::operator=(e);
@@ -146,3 +152,9 @@ void Entry::setCategory(Category category)
     setMetadata("category", category);
 }
 
+Entry::operator QJsonObject() const
+{
+ auto ret = MetaData::operator QJsonObject();
+ ret["category"] = QJsonObject(category());
+ return ret;
+}
