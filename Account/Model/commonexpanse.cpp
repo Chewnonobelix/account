@@ -1,11 +1,42 @@
 #include "commonexpanse.h"
-
+#include <QJsonArray>
 CommonExpanse::CommonExpanse()
 {
     setId(QUuid());
     setBegin(QDate::currentDate());
     setTitle(QString());
     setIsClose(false);
+}
+
+CommonExpanse::CommonExpanse(const QJsonObject &obj) : MetaData(obj)
+{
+ auto keys = obj.keys();
+ keys.removeAll("id");
+ keys.removeAll("title");
+ keys.removeAll("isClose");
+ keys.removeAll("begin");
+
+ for (auto it : keys) {
+  auto array = obj[it].toArray();
+  for (auto it2 : array) {
+   Entry e(it2.toObject());
+   addEntries(it, e);
+  }
+ }
+}
+
+CommonExpanse::operator QJsonObject() const
+{
+ auto ret = MetaData::operator QJsonObject();
+
+ for (auto it : members()) {
+  QJsonArray array;
+  auto list = entries().values(it);
+  for (auto it2 : list)
+   array << QJsonObject(it2);
+  ret[it] = array;
+ }
+ return ret;
 }
 
 QUuid CommonExpanse::id() const

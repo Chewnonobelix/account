@@ -41,14 +41,14 @@ private:
 
 public:
     CommonExpanse();
-    CommonExpanse(const CommonExpanse&) = default;
-    using MetaData::MetaData;
-    ~CommonExpanse() = default;
+	CommonExpanse(const CommonExpanse &) = default;
+	CommonExpanse(const QJsonObject &);
+	~CommonExpanse() = default;
 
     CommonExpanse& operator= (const CommonExpanse&) = default;
+	operator QJsonObject() const override;
 
-
-    QUuid id() const;
+	QUuid id() const;
     void setId(QUuid id);
     QDate begin() const;
     void setBegin(QDate begin);
