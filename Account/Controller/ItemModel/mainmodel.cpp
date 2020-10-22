@@ -124,7 +124,12 @@ QVariant MainModel::data(QModelIndex const &index, int role) const
  case MainRole::ValueRole:
   return it.e.value();
   break;
+ case MainRole::IdRole:
+  return it.e.id();
+  break;
  }
+
+ return QVariant();
 }
 
 QVariant MainModel::headerData(int section, Qt::Orientation, int) const

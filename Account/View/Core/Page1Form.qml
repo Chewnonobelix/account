@@ -115,7 +115,7 @@ Page {
             text: qsTr("Remove")
 
             property int index: _mainModel ? _mainModel.currentIndex : -1
-            enabled: currentId
+            enabled: currentEntry && !currentEntry.isBlocked
             Layout.column: 1
             Layout.row: 1
             Layout.rowSpan: 1
@@ -127,7 +127,7 @@ Page {
             
             onClicked: {
                 if (enabled) {
-                    _main.remove(pageTable.currentId)
+                    _main.remove(pageTable.currentEntry.id)
                 }
             }
         }
@@ -226,20 +226,28 @@ Page {
                     Component.onCompleted: {
                     }
 
+                    function isSelect() {
+                        return _mainModel.currentIndex === row
+                    }
+
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            _mainModel.currentIndex = _mainModel.currentIndex === row ? -1 : row
-                            _main.edit(currentId)
+                            _mainModel.currentIndex = isSelect() ? -1 : row
+                            currentEntry = isSelect() ? _mainModel.at(_mainModel.currentIndex) : null
+
+                            if(currentEntry)
+                                _main.edit(currentEntry.id)
                         }
                     }
+
 
                     text: _mainModel ? _mainModel.at(row,column) : ""
 
 
                     background: Rectangle {
                         anchors.fill: parent
-                        gradient: if(_mainModel) row === _mainModel.currentIndex ? type === Account.Income ? AccountStyle.selectViewIn : AccountStyle.selectViewOut : AccountStyle.unselectView
+                        gradient: isSelect() ? type === Account.Income ? AccountStyle.selectViewIn : AccountStyle.selectViewOut : AccountStyle.unselectView
                     }
                 }
             }
@@ -281,8 +289,8 @@ Page {
                 id: infoView
                 objectName: "infoView"
                 clip: true
-                enabled: currentId
-                visible: enabled
+                enabled: visible
+                visible: currentEntry && !currentEntry.isBlocked
                 
                 implicitWidth: Screen.width * 0.52
                 implicitHeight: grid.height
@@ -320,6 +328,6 @@ Page {
         _mainModel.currentIndex = -1
         _main.exec()
     }
-    
-    property var currentId: if(_mainModel) _mainModel.currentIndex > -1 && !_mainModel.at(_mainModel.currentIndex).isBlocked ? _mainModel.at(_mainModel.currentIndex).id : null
+
+    property var currentEntry: null
 }

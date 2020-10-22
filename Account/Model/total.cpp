@@ -19,8 +19,6 @@ Total operator+(const Entry& e1, const Entry& e2)
 {
     Total ret;
 
-    QMetaEnum qme = QMetaEnum::fromType<TypeEnum>();
-
     ret.setValue((int(e1.type()) * e1.value()) + (int(e1.type()) * e2.value()));
     ret.setDate(Total::maxDate(e1.date(), e2.date()));
 
