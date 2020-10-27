@@ -59,6 +59,7 @@ public:
     void clear();
 	Q_INVOKABLE QVariant at(int row, int column) const;
 	Q_INVOKABLE QVariant at(int row) const;
+
 signals:
     void currentIndexChanged();
     void sortChanged();

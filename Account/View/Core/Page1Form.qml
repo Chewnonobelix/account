@@ -18,9 +18,6 @@ Page {
     
     id: pageTable
     
-    property int v_dateMonth: cal.currentMonth + 1
-    property int v_dateYear: cal.currentYear
-
     background: AccountBackground {
         invisible: true
     }
@@ -70,9 +67,10 @@ Page {
             }
 
             onMonthChanged: {
-                _main.previewCalendar(currentMonth, currentYear)
+                _main.previewCalendar(currentMonth+1, currentYear)
             }
 
+            Component.onCompleted: set(new Date())
             Connections {
                 target: _main
 

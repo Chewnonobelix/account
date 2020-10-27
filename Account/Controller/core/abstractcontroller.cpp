@@ -66,7 +66,7 @@ void AbstractController::finishTotalThread()
         }
     }
 
-    emit s_totalChanged(0, 0);
+    emit s_totalChanged(QDate::currentDate().month()+1, QDate::currentDate().year());
 }
 
 void AbstractController::calculTotal()
