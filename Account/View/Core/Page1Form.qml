@@ -235,8 +235,13 @@ Page {
                             _mainModel.currentIndex = isSelect() ? -1 : row
                             currentEntry = isSelect() ? _mainModel.at(_mainModel.currentIndex) : null
 
-                            if(currentEntry)
+                            if(currentEntry) {
                                 _main.edit(currentEntry.id)
+                                infoView.visible = !currentEntry.isBlocked
+                            }
+                            else {
+                                infoView.visible = false
+                            }
                         }
                     }
 
@@ -289,8 +294,7 @@ Page {
                 objectName: "infoView"
                 clip: true
                 enabled: visible
-                visible: currentEntry && !currentEntry.isBlocked
-                
+                visible: false
                 implicitWidth: Screen.width * 0.52
                 implicitHeight: grid.height
             }
