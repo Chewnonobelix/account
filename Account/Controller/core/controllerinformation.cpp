@@ -5,24 +5,28 @@ int ControllerInformation::exec()
     if (m_entry.hasMetadata("frequency")) {
         emit frequencyVisible(m_entry.hasMetadata("frequency"));
 
-        if (m_entry.hasMetadata("frequency")) {
-            QUuid f = m_entry.metaData<QUuid>("frequency");
-            int g = m_entry.metaData<int>("freqGroup");
-            auto freqs = m_db->selectFrequency();
-            int page = m_currentPage;
-            page--;
+		if (m_entry.hasMetadata("frequency")) {
+		 QUuid f = m_entry.metaData<QUuid>("frequency");
+		 int g = m_entry.metaData<int>("freqGroup");
 
-            auto it = freqs[f];
-            auto le = it.listEntries(g);
-            QVariantList model;
-            emit maxPageChanged(le.size() / 100 + 1);
-            emit currentPageChanged(1);
-            for (int i = (page * 100); i < le.size() && i < (page + 1) * 100; i++)
-                model << le[i];
+		 int page = m_currentPage;
+		 page--;
 
-            emit pageModel(QVariant::fromValue(model));
-        }
-    }
+		 QVariantList model, le;
+		 QList<Entry> les = db()->selectEntry().values();
+		 std::for_each(les.begin(), les.end(), [&le, f, g](Entry e) {
+		  if (e.metaData<QUuid>("frequency") == f && e.metaData<int>("freqGroup") == g)
+		   le << QVariant::fromValue(e);
+		 });
+
+		 emit maxPageChanged(le.size() / 100 + 1);
+		 emit currentPageChanged(1);
+		 for (int i = (page * 100); i < le.size() && i < (page + 1) * 100; i++)
+		  model << le[i];
+
+		 emit pageModel(QVariant::fromValue(model));
+		}
+	}
 
     return 0;
 }

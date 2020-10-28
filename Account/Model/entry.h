@@ -27,6 +27,8 @@ class ACCOUNT_EXPORT Entry: public MetaData
     Q_PROPERTY(QString title READ title)
     Q_PROPERTY(bool estimated READ estimated)
 	Q_PROPERTY(QString category READ category)
+	Q_PROPERTY(bool isFrequency READ isFrequency)
+	Q_PROPERTY(bool isDebt READ isDebt)
 
 private:
 public:
@@ -58,10 +60,13 @@ public:
     bool isBlocked() const;
     void setBlocked(bool);
     Account::SupportEnum support() const;
-    void setSupport(Account::SupportEnum);
+	void setSupport(Account::SupportEnum);
 
-    operator QVariantMap() const;
-    Entry &operator=(const QJsonObject &);
+	bool isFrequency() const;
+	bool isDebt() const;
+
+	operator QVariantMap() const;
+	Entry &operator=(const QJsonObject &);
 
     inline operator QVariant() const { return QVariant::fromValue(*this); }
 	operator QJsonObject() const override;

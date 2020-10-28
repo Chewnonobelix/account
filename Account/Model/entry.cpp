@@ -158,3 +158,13 @@ Entry::operator QJsonObject() const
  ret["category"] = QJsonObject(category());
  return ret;
 }
+
+bool Entry::isFrequency() const
+{
+ return metadataList().contains("frequency");
+}
+
+bool Entry::isDebt() const
+{
+ return metadataList().contains("debt");
+}

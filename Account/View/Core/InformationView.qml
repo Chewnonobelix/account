@@ -41,7 +41,6 @@ Item {
 
         EntryEdit {
             id: ee
-            objectName: "entryEdit"
 
             Layout.maximumWidth: root.width
             Layout.maximumHeight: root.height * .15
@@ -64,6 +63,7 @@ Item {
         columnSpacing: root.width * 0.02
         
         Frequency {
+            visible: ee.entry.isFrequency
             enabled: visible
             id: frequency
             Layout.maximumWidth: root.width *.49
