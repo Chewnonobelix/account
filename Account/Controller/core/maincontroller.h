@@ -44,11 +44,11 @@ class ACCOUNT_EXPORT MainController: public AbstractController
     Q_OBJECT
 
     Q_PROPERTY(int currentPage MEMBER m_currentPage)
-    Q_PROPERTY(QVariantList dateList MEMBER m_dateList)
+    Q_PROPERTY(QVariant dateList MEMBER m_dateList)
 
 private:
     int m_currentPage = 1;
-    QVariantList m_dateList;
+    QVariant m_dateList;
 
     LiveQmlEngine m_engine;
     ControllerInformation m_info;

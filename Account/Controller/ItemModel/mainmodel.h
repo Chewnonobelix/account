@@ -14,6 +14,7 @@ class MainModel : public QAbstractTableModel
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
 	Q_PROPERTY(int sort READ sort WRITE setSort NOTIFY sortChanged)
 	Q_PROPERTY(int columnSort READ columnSort WRITE setColumnSort NOTIFY columnSortChanged)
+	Q_PROPERTY(QVariant dateList READ dateList WRITE setDateList)
 
 	struct Model
 	{
@@ -22,8 +23,11 @@ class MainModel : public QAbstractTableModel
 	};
 
 private:
-    int m_currentIndex = -1;
-    QList<Model> m_model;
+	int m_currentIndex = -1;
+	QMultiMap<QDate, Model> m_model;
+	QList<Model> m_displayModel;
+	QVariant m_dateList;
+
     int m_columnSort = 0;
     Qt::SortOrder m_sort = Qt::AscendingOrder;
 
@@ -57,6 +61,9 @@ public:
     void setSort(int sort);
     void insertData(Entry);
     void clear();
+    QVariant dateList() const;
+    void setDateList(QVariant);
+
 	Q_INVOKABLE QVariant at(int row, int column) const;
 	Q_INVOKABLE QVariant at(int row) const;
 

@@ -53,7 +53,8 @@ Page {
             Layout.preferredWidth: pageTable.width * 0.20
 
             onUpdateSelected:  {
-                _main = selectedDates
+                _main.dateList = selectedDates
+                _mainModel.dateList = selectedDates
                 _mainModel.currentIndex = -1
             }
 

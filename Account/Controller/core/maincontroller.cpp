@@ -487,6 +487,7 @@ void MainController::pageChange(QUuid id)
 
 void MainController::updateQuickView()
 {
+	//TODO
 	auto ld = dateList();
 	QObject* quickView = engine().rootObjects().first()->findChild<QObject*>("quickViewDate");
 
@@ -497,8 +498,9 @@ void MainController::updateQuickView()
 QList<QDate> MainController::dateList() const
 {
 	QList<QDate> ld;
-	for (int i = 0; i < m_dateList.size(); i++)
-		ld << QDate::fromString(m_dateList[i].toString(), "dd-MM-yyyy");
+	auto l = m_dateList.toList();
+	for (int i = 0; i < l.size(); i++)
+		ld << QDate::fromString(l[i].toString(), "dd-MM-yyyy");
 
 	for (int i = 0; i < ld.size(); i++)
 		for(int j = i; j < ld.size(); j++)
