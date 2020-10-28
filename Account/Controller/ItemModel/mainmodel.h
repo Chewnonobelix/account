@@ -37,6 +37,8 @@ private:
             int(MainRole::ValueRole),
             int(MainRole::TotalRole)};
 
+	void setRow();
+
 public:
 	enum class MainRole {
 	 EstimatedRole = Qt::UserRole + 1,

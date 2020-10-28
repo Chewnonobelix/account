@@ -60,9 +60,15 @@ void MainModel::insertData(Entry e)
 
 	m_displayModel = m_model.values();
 
-	beginInsertRows(QModelIndex(), rowCount() - 1, rowCount());
-	insertRow(rowCount() - 1);
-	endInsertRows();
+	setRow();
+}
+
+void MainModel::setRow()
+{
+ clear();
+ beginInsertRows(QModelIndex(), rowCount() - 1, rowCount());
+ insertRow(rowCount() - 1);
+ endInsertRows();
 }
 
 Qt::ItemFlags MainModel::flags(QModelIndex const &) const
@@ -166,6 +172,7 @@ QHash<int, QByteArray> MainModel::roleNames() const
 void MainModel::onUpdateEntry(QUuid)
 {
 	clear();
+	m_model.clear();
 	setCurrentIndex(-1);
 	auto entries = AbstractController::db()->selectEntry();
 	for (auto it : entries)
@@ -177,7 +184,6 @@ void MainModel::clear()
 	beginRemoveRows(QModelIndex(), 0, m_model.size());
 	removeRows(0, rowCount());
 	endRemoveRows();
-	m_model.clear();
 }
 
 QVariant MainModel::dateList() const
@@ -196,12 +202,11 @@ void MainModel::setDateList(QVariant list)
 	}
 	else {
 		auto dl = m_dateList.toList();
-
 		for(auto it: dl) {
-			auto values = m_model.values(it.toDate());
-			m_displayModel<<values;
+		 auto values = m_model.values(QDate::fromString(it.toString(), "dd-MM-yyyy"));
+		 m_displayModel << values;
 		}
 	}
 
-
+	setRow();
 }
