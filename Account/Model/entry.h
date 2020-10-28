@@ -29,15 +29,14 @@ class ACCOUNT_EXPORT Entry: public MetaData
 	Q_PROPERTY(QString category READ category)
 
 private:
-
 public:
-    Entry();
-    Entry(const Entry &) = default;
-    using MetaData::MetaData;
-    ~Entry() = default;
+	Entry();
+	Entry(const Entry &) = default;
+	Entry(const QJsonObject &);
+	~Entry() = default;
 
-    Entry& operator =(const Entry&);
-    friend bool ACCOUNT_EXPORT operator ==(const Entry&, const Entry&);
+	Entry &operator=(const Entry &);
+	friend bool ACCOUNT_EXPORT operator ==(const Entry&, const Entry&);
     friend bool ACCOUNT_EXPORT operator < (const Entry&, const Entry&);
 
     QUuid id() const;
@@ -65,6 +64,7 @@ public:
     Entry &operator=(const QJsonObject &);
 
     inline operator QVariant() const { return QVariant::fromValue(*this); }
+	operator QJsonObject() const override;
 };
 
 Q_DECLARE_METATYPE(Entry)

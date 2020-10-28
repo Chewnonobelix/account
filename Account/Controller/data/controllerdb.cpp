@@ -336,27 +336,27 @@ bool ControllerDB::deleteProfile(QString name)
     return false;
 }
 
-bool ControllerDB::addEntry(const Entry & e)
+bool ControllerDB::addEntry(Entry & e)
 {        
     bool ret = false;
     
     return ret;
 }
 
-QMultiMap<QDate, Entry> ControllerDB::selectEntry()
+QMap<QUuid, Entry> ControllerDB::selectEntry()
 {
-    QMultiMap<QDate, Entry> res;
+    QMap<QUuid, Entry> res;
         
     return res;
 }
 
-bool ControllerDB::updateEntry(const Entry & e)
+bool ControllerDB::updateEntry(Entry & e)
 {
     bool ret = false;
     return ret;
 }
 
-bool ControllerDB::removeEntry(const Entry & e)
+bool ControllerDB::removeEntry(Entry & e)
 {
     bool ret = false;
     
@@ -380,46 +380,46 @@ QMap<Account::TypeEnum, QMap<QUuid, Category>> ControllerDB::selectCategory()
     return ret;
 }
 
-bool ControllerDB::addBudget(const Budget& b)
+bool ControllerDB::addBudget(Budget& b)
 {    
     return false;
 }
 
-bool ControllerDB::removeBudget(const Budget & b)
+bool ControllerDB::removeBudget(Budget & b)
 {    
     return false;
 }
 
-QList<Budget> ControllerDB::selectBudgets()
+QMap<QUuid, Budget> ControllerDB::selectBudgets()
 {
-    QList<Budget> ret;
+    QMap<QUuid, Budget> ret;
     
     return ret;
 }
 
-bool ControllerDB::updateBudget(const Budget & b)
+bool ControllerDB::updateBudget(Budget & b)
 {    
     return false;
 }
 
-bool ControllerDB::addFrequency(const Frequency & f)
+bool ControllerDB::addFrequency(Frequency & f)
 {
     return false;
 }
 
-bool ControllerDB::removeFrequency(const Frequency& f)
+bool ControllerDB::removeFrequency(Frequency& f)
 {    
     return false;
 }
 
-bool ControllerDB::updateFrequency(const Frequency& f)
+bool ControllerDB::updateFrequency(Frequency& f)
 {
     return false;
 }
 
-QList<Frequency> ControllerDB::selectFrequency()
+QMap<QUuid, Frequency> ControllerDB::selectFrequency()
 {
-    QList<Frequency> ret;
+   QMap<QUuid, Frequency> ret;
     
     return ret;
 }
@@ -431,17 +431,17 @@ QMap<QUuid, CommonExpanse> ControllerDB::selectCommon()
     return  ret; 
 }
 
-bool ControllerDB::addCommon(const CommonExpanse& c)
+bool ControllerDB::addCommon(CommonExpanse& c)
 {
     return false;
 }
 
-bool ControllerDB::removeCommon(const CommonExpanse& c) 
+bool ControllerDB::removeCommon(CommonExpanse& c)
 {    
     return false;
 }
 
-bool ControllerDB::updateCommon(const CommonExpanse& c) 
+bool ControllerDB::updateCommon(CommonExpanse& c)
 {
     return false;
 }
@@ -453,19 +453,19 @@ QMap<QUuid, Debt> ControllerDB::selectDebt()
     return ret;
 }
 
-bool ControllerDB::addDebt(const Debt &d)
+bool ControllerDB::addDebt(Debt &d)
 {
     bool ret = false;
 
     return ret;
 }
 
-bool ControllerDB::removeDebt(const Debt &d)
+bool ControllerDB::removeDebt(Debt &d)
 {
     return false;
 }
 
-bool ControllerDB::updateDebt(const Debt &d)
+bool ControllerDB::updateDebt(Debt &d)
 {
     return false;
 }

@@ -68,6 +68,8 @@ Calendar {
     
     signal updateSelected()
 
+    onCurrentMonthChanged: monthChanged()
+
     function showNextMonth() {
         currentMonth ++
         
@@ -77,7 +79,6 @@ Calendar {
         }
         visibleMonth = Qt.binding( function() { return currentMonth})
         
-        monthChanged()
     }
     
     
@@ -89,7 +90,6 @@ Calendar {
             currentMonth = 11
         }
         visibleMonth = Qt.binding( function() { return currentMonth})
-        monthChanged()
     }
     
     function showNextYear() {

@@ -62,9 +62,12 @@ void AbstractGraphController::increment(int nb)
     }
 
     auto e = m_db->selectEntry();
+    QMultiMap<QDate, Entry> map;
+    for(auto it: e)
+        map.insert(it.date(), it);
 
     bool next = true, prev = true;
-    for(auto it: e)
+    for(auto it: map)
     {
         bool b = (m_currentGran == Account::Granularity::Month && (it.date().month() == m_currentDate.month()) &&
                 (it.date().year() == m_currentDate.year()));
@@ -76,8 +79,8 @@ void AbstractGraphController::increment(int nb)
 
         if(b)
         {
-            next &= it.date() != e.uniqueKeys().last();
-            prev &= it.date() != e.uniqueKeys().first();
+            next &= it.date() != map.uniqueKeys().last();
+            prev &= it.date() != map.uniqueKeys().first();
 
             for(auto it2: m_graphList)
                 it2->add(it);

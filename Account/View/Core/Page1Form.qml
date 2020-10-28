@@ -1,12 +1,9 @@
-import QtQuick 2.13
-import QtQuick.Controls 1.4
+import QtQuick 2.15
 import QtQuick.Layouts 1.13
-import QtQuick.Controls.Styles 1.4
 
-import QtQuick.Controls 2.13
+import QtQuick.Controls 2.15
 import QtQuick.Window 2.13
 
-//import Style 1.0
 import "../Style"
 import "../Functionnal"
 import "../Budget"
@@ -21,12 +18,9 @@ Page {
     
     id: pageTable
     
-    property int v_dateMonth: cal.currentMonth + 1
-    property int v_dateYear: cal.currentYear
-        
     background: AccountBackground {
         invisible: true
-   }
+    }
     
     MouseArea {
         acceptedButtons: Qt.NoButton
@@ -59,12 +53,13 @@ Page {
             Layout.preferredWidth: pageTable.width * 0.20
 
             onUpdateSelected:  {
-                _main = selectedDates
-                view.unselectAll()
+                _main.dateList = selectedDates
+                _mainModel.dateList = selectedDates
+                _mainModel.currentIndex = -1
             }
 
             onDatesChanged:  {
-                view.reset()
+                _mainModel.currentIndex = -1
                 _main.updateQuickView()
                 _main.pageChange()
 
@@ -73,9 +68,10 @@ Page {
             }
 
             onMonthChanged: {
-                _main.previewCalendar(currentMonth, currentYear)
+                _main.previewCalendar(currentMonth+1, currentYear)
             }
 
+            Component.onCompleted: set(new Date())
             Connections {
                 target: _main
 
@@ -107,7 +103,7 @@ Page {
             Layout.preferredWidth: pageTable.width * 0.09
             
             ToolTip.text: qsTr("Add new transaction")
-                        
+
             onClicked: {
                 _main.add(false)
             }
@@ -117,8 +113,8 @@ Page {
             id: remove
             text: qsTr("Remove")
 
-            property int index: view.currentRow
-            enabled: infoView.visible
+            property int index: _mainModel ? _mainModel.currentIndex : -1
+            enabled: currentEntry && !currentEntry.isBlocked
             Layout.column: 1
             Layout.row: 1
             Layout.rowSpan: 1
@@ -130,7 +126,7 @@ Page {
             
             onClicked: {
                 if (enabled) {
-                    _main.remove(pageTable.currentId)
+                    _main.remove(pageTable.currentEntry.id)
                 }
             }
         }
@@ -188,332 +184,70 @@ Page {
             Layout.preferredWidth: pageTable.width * 0.20
             spacing: 0
 
-            Connections {
-                target: _main
-
-                function onCurrentModelChanged(list) {
-                    view.model = list
-                }
-
-                function onCurrentRowChanged(index) {
-                    view.currentRow = index
+            HorizontalHeaderView {
+                id: headerView
+                syncView: view
+                z:5
+                clip: true
+                delegate: AccountHeader {
+                    text: display
+                    clip: true
                 }
             }
 
             TableView {
-                height: parent.height * 0.95
+
+                height: parent.height * 0.85
                 width: parent.width
                 id: view
-                objectName: "entryView"
-                model: []
-                
-                ToolTip.text: qsTr("Transactions list")
-                ToolTip.visible: tableArea.containsMouse && rowAt(tableArea.mouseX, tableArea.mouseY) === -1
-                ToolTip.delay: 500
-                ToolTip.timeout: 1000
-                
-                MouseArea {
-                    id: tableArea
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    acceptedButtons: Qt.NoButton
+                model: _mainModel
+                clip: true
+
+                property var columns: [width*0.10,
+                    width*0.23,
+                    width*0.23,
+                    width*0.22,
+                    width*0.22]
+                onHeightChanged: forceLayout()
+                rowHeightProvider: function(row) {
+                    return height * 0.05
                 }
 
-                Component.onCompleted: {
-                    selection.clear()
-                    currentEntry = Qt.binding( function(){ return selection.count !== 0 ? model[currentRow] : null } )
+                columnWidthProvider: function(column) {
+                    return columns[column]
                 }
-                
-                onModelChanged: selection.clear()
-                
-                horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
-                
-                sortIndicatorVisible: true
-                
-                function unselectAll() {
-                    selection.clear()
-                }
-                
-                function reset() {
-                    infoView.visible = false
-                }
-                
-                signal s_view(var index)
-                
-                property var currentEntry
-                
-                backgroundVisible: false
-                
-                onWidthChanged: {
-                    flickableItem.contentX = 0
-                }
-                
-                onHeightChanged: {
-                    flickableItem.contentY = 0
-                }
-                
-                TableViewColumn {
-                    role: "id"
-                    visible: false
-                    width: 0
-                }
-                
-                TableViewColumn {
-                    role: "estimated"
-                    visible: false
-                    width: 0
-                }
-                
-                function setNewIndex(index) {
-                    if (selection.contains(index) || index === -1) {
-                        selection.clear()
-                        _main.edit((currentId))
-                        currentRow = -1
-                    } else {
-                        selection.clear()
-                        currentRow = index
-                        selection.select(index)
-                        currentEntry = model[index]
-                        _main.edit(currentId)
+
+                rowSpacing: height* 0.02
+                delegate: AccountLabel {
+                    required property var type
+
+                    clip: true
+                    Component.onCompleted: {
                     }
 
-                    infoView.visible = currentRow !== -1 && !currentEntry.isBlock
-                }
-                
-                function selectFromId(id) {
-                    for (var i = 0; i < model.length; i++) {
-                        if (model[i].id === id) {
-                            setNewIndex(i)
-                        }
+                    function isSelect() {
+                        return _mainModel.currentIndex === row
                     }
-                }
-                
-                TableViewColumn {
-                    role: "type"
-                    title: "[+/-]"
-                    width: 45
-                    movable: false
-                    resizable: false
-                    id: typeColumn
-                    property string tipText: "*:" + qsTr("estimated entry")
-                    delegate: Rectangle {
-                        color: "transparent"
-                        anchors.centerIn: parent
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            propagateComposedEvents: true
-                            
-                            onClicked: {
-                                view.setNewIndex(styleData.row)
-                            }
-                        }
-                        AccountLabel {
-                            property string est: view.model[styleData.row] && view.model[styleData.row].estimated ? "*" : ""
-                            
-                            text: styleData.value === Account.Income ? "+" + est : "-" + est
-                            anchors.fill: parent
-                            
-                        }
-                    }
-                }
-                
-                TableViewColumn {
-                    role: "date"
-                    title: qsTr("Date")
-                    width: (Screen.width * .20 - 45) / 4
-                    movable: false
-                    resizable: false
-                    id: columnDate
-                    
-                    delegate: Rectangle {
-                        color: "transparent"
-                        anchors.centerIn: parent
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            propagateComposedEvents: true
-                            onClicked: {
-                                view.setNewIndex(styleData.row)
-                            }
-                        }
-                        
-                        AccountLabel {
-                            text: Qt.formatDate(styleData.value, "dd-MM-yyyy")
-                            anchors.fill: parent
-                        }
-                    }
-                }
-                
-                TableViewColumn {
-                    role: "value"
-                    title: qsTr("Value")
-                    width: (Screen.width * .20 - 45) / 4
-                    movable: false
-                    resizable: false
-                    
-                    delegate: Rectangle {
-                        color: "transparent"
-                        anchors.centerIn: parent
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            propagateComposedEvents: true
-                            onClicked: {
-                                view.setNewIndex(styleData.row)
-                            }
-                        }
-                        
-                        AccountLabel {
-                            text: styleData.value
-                            clip: true
-                            anchors.fill: parent
-                        }
-                    }
-                }
-                
-                TableViewColumn {
-                    role: "label"
-                    title: qsTr("Label")
-                    width: (Screen.width * .20 - 45) / 4
-                    movable: false
-                    resizable: false
-                    id: labelHeader
-                    
-                    delegate: Rectangle {
-                        color: "transparent"
-                        anchors.centerIn: parent
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            propagateComposedEvents: true
-                            onClicked: {
-                                view.setNewIndex(styleData.row)
-                            }
-                        }
-                        
-                        AccountLabel {
-                            text: styleData.value
-                            clip: true
-                            anchors.fill: parent
-                        }
-                    }
-                }
-                
-                TableViewColumn {
-                    role: "total"
-                    title: qsTr("Total")
-                    width: (Screen.width * .20 - 45) / 4
-                    movable: false
-                    resizable: false
-                    
-                    delegate: Rectangle {
-                        color: "transparent"
-                        anchors.centerIn: parent
-                        MouseArea {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            propagateComposedEvents: true
-                            onClicked: {
-                                view.setNewIndex(styleData.row)
-                            }
-                            hoverEnabled: true
-                        }
-                        
-                        AccountLabel {
-                            text: styleData.value.value
-                            clip: true
-                            anchors.fill: parent
-                        }
-                    }
-                }
-                
-                headerDelegate: Rectangle {
-                    gradient: styleData.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldHeader
-                    
-                    height: view.height * 0.03
-                    anchors.centerIn: parent
-                    anchors.leftMargin: 10
-                    
-                    border.color: "darkgoldenrod"
-                    AccountLabel {
-                        id: headerText
-                        height: parent.height * .8
-                        anchors.centerIn: parent
-                        text: styleData.value
-                        font.family: AccountStyle.title.name
-                        font.pixelSize: height * 0.85
-                        
-                        ToolTip.visible: styleData.containsMouse && (styleData.column === 2)
-                        ToolTip.text: view.getToolTip(styleData.column)
-                        ToolTip.delay: 500
-                    }
-                }
-                
-                signal s_sortRole(string role)
-                signal s_sortOrder(int order)
 
-                onSortIndicatorColumnChanged: {
-                   _main.sortRole(getColumn(sortIndicatorColumn).role)
-                }
-                
-                onSortIndicatorOrderChanged: {
-                    _main.sortOrder(sortIndicatorOrder)
-                }
-                
-                function getToolTip(index) {
-                    if (index === 2) {
-                        return typeColumn.tipText
-                    }
-                    
-                    return ""
-                }
-                
-                itemDelegate: Rectangle {
                     MouseArea {
                         anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
                         onClicked: {
-                            view.setNewIndex(styleData.row)
+                            _mainModel.currentIndex = isSelect() ? -1 : row
+                            currentEntry = isSelect() ? _mainModel.at(_mainModel.currentIndex) : null
+
+                            if(currentEntry)
+                                _main.edit(currentEntry.id)
                         }
                     }
-                }
-                
-                rowDelegate: Rectangle {
-                    id: rectRow
-                    
-                    width: view.width
-                    height: view.height * .03
-                    
-                    gradient: view.model[styleData.row] && styleData.selected ? view.model[styleData.row].type === Account.Outcome ? AccountStyle.selectViewOut : AccountStyle.selectViewIn : AccountStyle.unselectView
-                    
-                }
-                
-                onCurrentRowChanged: {
-                    setNewIndex(currentRow)
-                }
-                
-                function swap(i,j) {
-                    var t = model[i]
-                    model[i] = model[j]
-                    model[j] = t
-                }
-                
-                function sort(role, roleorder) {
-                    for (var i = 0; i < rowCount; i++) {
-                        for (var j = i; j < rowCount; j++) {
-                            if (roleorder === Qt.AscendingOrder) {
-                                if (model[j][role] < model[i][role]) {
-                                    swap(i, j)
-                                }
-                            } else {
-                                if (model[j][role] > model[i][role]) {
-                                    swap(i, j)
-                                }
-                            }
-                        }
+
+
+                    text: _mainModel ? _mainModel.at(row,column) : ""
+
+
+                    background: Rectangle {
+                        anchors.fill: parent
+                        gradient: isSelect() ? type === Account.Income ? AccountStyle.selectViewIn : AccountStyle.selectViewOut : AccountStyle.unselectView
                     }
-                    model = model
                 }
             }
             
@@ -554,7 +288,8 @@ Page {
                 id: infoView
                 objectName: "infoView"
                 clip: true
-                enabled: true
+                enabled: visible
+                visible: currentEntry && !currentEntry.isBlocked
                 
                 implicitWidth: Screen.width * 0.52
                 implicitHeight: grid.height
@@ -589,10 +324,9 @@ Page {
     
     
     Component.onCompleted: {
-        view.setNewIndex(-1)
+        _mainModel.currentIndex = -1
         _main.exec()
-        currentId = Qt.binding(function() {return view.currentEntry && !view.currentEntry.isBlocked ? view.currentEntry.id : -1})
     }
-    
-    property var currentId: view.selection.count !== 0 && !model[view.currentRow].isBlocked ? model[view.currentRow].id : null
+
+    property var currentEntry: null
 }

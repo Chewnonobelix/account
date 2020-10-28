@@ -29,6 +29,7 @@ private:
 public:
     Budget();
     Budget(const Budget &);
+    ~Budget() = default;
     using MetaData::MetaData;
 
     QUuid id() const;

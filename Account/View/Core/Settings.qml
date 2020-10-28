@@ -222,6 +222,11 @@ Dialog {
                             name: qsTr("Sql")
                             value: "ControllerDB"
                         }
+
+                        ListElement {
+                            name: qsTr("Json")
+                            value: "ControllerJson"
+                        }
                     }
                 }
             }

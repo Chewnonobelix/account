@@ -23,6 +23,7 @@ class ACCOUNT_EXPORT Debt : public MetaData
 public:
     Debt() = default;
     Debt(const Debt &) = default;
+    Debt(const QJsonObject &);
     ~Debt() = default;
 
     Debt &operator=(const Debt &);
@@ -48,8 +49,9 @@ public:
     void setEntries(QList<Entry>);
 
     Debt &operator<<(Entry);
-    friend bool ACCOUNT_EXPORT operator<(const Debt &, const Debt &);
-    friend bool ACCOUNT_EXPORT operator==(const Debt &, const Debt &);
+	operator QJsonObject() const override;
+	friend bool ACCOUNT_EXPORT operator<(const Debt &, const Debt &);
+	friend bool ACCOUNT_EXPORT operator==(const Debt &, const Debt &);
 };
 
 #endif // DEBT_H

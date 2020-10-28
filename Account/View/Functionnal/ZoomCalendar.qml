@@ -105,7 +105,9 @@ MouseArea {
             weekNumbersVisible: true
             multiple: area.multiple
             onDatesChanged: area.datesChanged()
-            onMonthChanged: area.monthChanged()
+            onMonthChanged: {
+                area.monthChanged()
+            }
 
             onUpdateSelected: {
                 area.updateSelected()

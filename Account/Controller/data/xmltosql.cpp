@@ -5,16 +5,38 @@ TransfertDatabase::TransfertDatabase()
 
 }
 
+template<class S, class U, class A>
+bool transfert(S select, U update, A add)
+{
+    bool ret = true;
+
+    for (auto it2 : select()) {
+        ret &= add(it2);
+        ret &= update(it2);
+    }
+    return ret;
+}
+
 bool TransfertDatabase::transfertEntries()
 {
     bool ret = true;
 
+    auto s = [this]() {
+        return m_db->selectEntry();
+    };
+
+    auto a = [this](auto e) {
+        return m_db->addEntry(e);
+    };
+
+    auto u = [this](auto e) {
+        return m_db->updateEntry(e);
+    };
+
     for (auto it : accounts) {
         m_db->setCurrentAccount(it);
-        for (auto it2 : m_db->selectEntry()) {
-            ret &= m_backup->addEntry(it2);
-            ret &= m_backup->updateEntry(it2);
-        }
+        m_backup->setCurrentAccount(it);
+        ret &= transfert(s, u, a);
     }
     return ret;
 }
@@ -23,16 +45,27 @@ bool TransfertDatabase::transfertCategories()
 {
     bool ret = true;
 
-    for(auto it: accounts)
-    {
+    auto s = [this]() {
+        QMap<QUuid, Category> ret;
+        ret = m_db->selectCategory()[Account::TypeEnum::Income];
+        for(auto c: m_db->selectCategory()[Account::TypeEnum::Outcome])
+            ret[c.id()] = c;
+
+        return ret;
+    };
+
+    auto a = [this](auto e) {
+        return m_db->addCategory(e);
+    };
+
+    auto u = [this](auto e) {
+        return m_db->updateCategory(e);
+    };
+
+    for (auto it : accounts) {
         m_db->setCurrentAccount(it);
         m_backup->setCurrentAccount(it);
-
-        auto cats = m_db->selectCategory();
-        for(auto it2 = cats.begin(); it2 != cats.end(); it2++)
-        {
-            //            m_backup->addCategory(it2.value(), it2.key());
-        }
+        ret &= transfert(s, u, a);
     }
     return ret;
 }
@@ -47,22 +80,29 @@ void TransfertDatabase::run()
     m_sucess &= transfertBudget();
     m_sucess &= transfertFrequency();
     m_sucess &= transfertCommon();
+    m_sucess &= transfertDebt();
 }
 
 bool TransfertDatabase::transfertBudget()
 {
     bool ret = true;
 
-    for(auto it: accounts)
-    {
+    auto s = [this]() {
+        return m_db->selectBudgets();
+    };
+
+    auto a = [this](auto e) {
+        return m_db->addBudget(e);
+    };
+
+    auto u = [this](auto e) {
+        return m_db->updateBudget(e);
+    };
+
+    for (auto it : accounts) {
         m_db->setCurrentAccount(it);
         m_backup->setCurrentAccount(it);
-
-        for(auto it2: m_db->selectBudgets())
-        {
-            ret &= m_backup->addBudget(it2);
-            ret &= m_backup->updateBudget(it2);
-        }
+        ret &= transfert(s, u, a);
     }
     return ret;
 }
@@ -71,16 +111,22 @@ bool TransfertDatabase::transfertFrequency()
 {
     bool ret = true;
 
-    for(auto it: accounts)
-    {
+    auto s = [this]() {
+        return m_db->selectFrequency();
+    };
+
+    auto a = [this](auto e) {
+        return m_db->addFrequency(e);
+    };
+
+    auto u = [this](auto e) {
+        return m_db->updateFrequency(e);
+    };
+
+    for (auto it : accounts) {
         m_db->setCurrentAccount(it);
         m_backup->setCurrentAccount(it);
-
-        for(auto it2: m_db->selectFrequency())
-        {
-            ret &= m_backup->addFrequency(it2);
-            ret &= m_backup->updateFrequency(it2);
-        }
+        ret &= transfert(s, u, a);
     }
     return ret;
 }
@@ -89,16 +135,46 @@ bool TransfertDatabase::transfertCommon()
 {
     bool ret = true;
 
-    for(auto it: accounts)
-    {
+    auto s = [this]() {
+        return m_db->selectCommon();
+    };
+
+    auto a = [this](auto e) {
+        return m_db->addCommon(e);
+    };
+
+    auto u = [this](auto e) {
+        return m_db->updateCommon(e);
+    };
+
+    for (auto it : accounts) {
         m_db->setCurrentAccount(it);
         m_backup->setCurrentAccount(it);
+        ret &= transfert(s, u, a);
+    }
+    return ret;
+}
 
-        for(auto it2: m_db->selectCommon())
-        {
-            ret &= m_backup->addCommon(it2);
-            ret &= m_backup->updateCommon(it2);
-        }
+bool TransfertDatabase::transfertDebt()
+{
+    bool ret = true;
+
+    auto s = [this]() {
+        return m_db->selectDebt();
+    };
+
+    auto a = [this](auto e) {
+        return m_db->addDebt(e);
+    };
+
+    auto u = [this](auto e) {
+        return m_db->updateDebt(e);
+    };
+
+    for (auto it : accounts) {
+        m_db->setCurrentAccount(it);
+        m_backup->setCurrentAccount(it);
+        ret &= transfert(s, u, a);
     }
     return ret;
 }

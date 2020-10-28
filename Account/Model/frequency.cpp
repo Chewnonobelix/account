@@ -43,12 +43,12 @@ void Frequency::setBegin(QDate end)
 
 Entry Frequency::referenceEntry() const
 {
-    return m_referenceEntry;
+ return metaData<Entry>("reference");
 }
 
 void Frequency::setReferenceEntry(Entry referenceEntry)
 {
-    m_referenceEntry = referenceEntry;
+ setMetadata("reference", referenceEntry);
 }
 
 int Frequency::nbGroup() const
@@ -63,13 +63,26 @@ void Frequency::setNbGroup(int nbGroup)
 
 Frequency::Frequency()
 {
-    m_referenceEntry.setType(Account::Outcome);
-    setId(QUuid());
-    setFreq(Account::FrequencyEnum::Unique);
-    setBegin(QDate::currentDate());
-    setEnd(QDate::currentDate());
-    setNbGroup(0);
-    setEndless(false);
+ //    m_referenceEntry.setType(Account::Outcome);
+ setId(QUuid());
+ setFreq(Account::FrequencyEnum::Unique);
+ setBegin(QDate::currentDate());
+ setEnd(QDate::currentDate());
+ setNbGroup(0);
+ setEndless(false);
+}
+
+Frequency::Frequency(const QJsonObject &obj) : MetaData(obj)
+{
+ Entry ref(obj["reference"].toObject());
+ setReferenceEntry(ref);
+}
+
+Frequency::operator QJsonObject() const
+{
+ auto ret = MetaData::operator QJsonObject();
+ ret["reference"] = QJsonObject(referenceEntry());
+ return ret;
 }
 
 Frequency& Frequency::operator =(const Frequency& f)
@@ -102,36 +115,35 @@ Entry Frequency::clone(const Entry & e) const
 
 QList<QVariant> Frequency::entries() const
 {
-    return m_entriesId;    
+ return m_entriesId;
 }
 
 int Frequency::count() const
 {
-    return m_entriesId.count();
+ return m_entriesId.count();
 }
 
 Frequency& Frequency::operator<< (const Entry& e)
-{   
-    if(e.hasMetadata("frequency") && e.metaData<QUuid>("frequency") == id())
-    {
-        if(e.date() < begin())
-            setBegin(e.date());
-        if(e.date() > end() || m_entriesId.isEmpty())
-            setEnd(e.date());
-        
-        QVariantMap le;
-        le["id"] = e.id().toString();
-        le["date"] = e.date();
-        le["freqGroup"] = e.metaData<int>("freqGroup");
-        le["isVisible"] = true;
-        m_entriesId<<le;
-    }
-    return *this;
+{
+ if (e.hasMetadata("frequency") && e.metaData<QUuid>("frequency") == id()) {
+  if (e.date() < begin())
+   setBegin(e.date());
+  if (e.date() > end() || m_entriesId.isEmpty())
+   setEnd(e.date());
+
+  QVariantMap le;
+  le["id"] = e.id().toString();
+  le["date"] = e.date();
+  le["freqGroup"] = e.metaData<int>("freqGroup");
+  le["isVisible"] = true;
+  m_entriesId << le;
+ }
+ return *this;
 }
 
 QString Frequency::name() const
 {
-    return m_referenceEntry.title();
+ return referenceEntry().title();
 }
 
 QVariantList Frequency::listEntries(int group) const

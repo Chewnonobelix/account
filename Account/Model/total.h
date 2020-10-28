@@ -7,7 +7,7 @@
 #include "entry.h"
 #include "../account_global.h"
 
-class ACCOUNT_EXPORT Total
+class ACCOUNT_EXPORT Total : public MetaData
 {
     Q_GADGET
     
@@ -15,15 +15,13 @@ class ACCOUNT_EXPORT Total
     Q_PROPERTY(double value READ value)
     
 private:
-    QDate m_date;
-    double m_value;
 
 public:
     Total();
     Total(const Total&);
-    ~Total();
+	~Total() = default;
 
-    Total& operator = (const Total&);
+	Total& operator = (const Total&);
 
     friend Total ACCOUNT_EXPORT operator-(const Total &, const Total &);
     friend Total ACCOUNT_EXPORT operator+(const Entry &, const Entry &);

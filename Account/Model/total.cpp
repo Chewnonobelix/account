@@ -5,30 +5,19 @@
 #include <QDebug>
 
 using namespace Account;
-Total::Total(): m_value(0)
-{
+Total::Total() : MetaData() {}
 
-}
-
-Total::Total(const Total& t): m_date(t.date()), m_value(t.value())
-{
-}
-
-Total::~Total() {}
+Total::Total(const Total &t) : MetaData(t) {}
 
 Total& Total::operator = (const Total& t)
 {
-    setDate(t.date());
-    setValue(t.value());
-
-    return *this;
+ MetaData::operator=(t);
+ return *this;
 }
 
 Total operator+(const Entry& e1, const Entry& e2)
 {
     Total ret;
-
-    QMetaEnum qme = QMetaEnum::fromType<TypeEnum>();
 
     ret.setValue((int(e1.type()) * e1.value()) + (int(e1.type()) * e2.value()));
     ret.setDate(Total::maxDate(e1.date(), e2.date()));
@@ -72,22 +61,22 @@ Total operator -(const Total& t1, const Total& t2)
 
 QDate Total::date() const
 {
-    return m_date;
+ return metaData<QDate>("date");
 }
 
 void Total::setDate(QDate date)
 {
-    m_date = date;
+ setMetadata("date", date);
 }
 
 double Total::value() const
 {
-    return m_value;
+ return metaData<double>("value");
 }
 
 void Total::setValue(double value)
 {
-    m_value = value;
+ setMetadata("value", value);
 }
 
 QDate Total::maxDate(const QDate & d1, const QDate & d2)

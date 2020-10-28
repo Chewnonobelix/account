@@ -40,7 +40,7 @@ ApplicationWindow {
     }
     
     onVisibilityChanged: {
-
+        _categoryModel.onUpdateCategory()
         if(visibility === Window.Minimized)
             hide()
     }
@@ -237,7 +237,7 @@ ApplicationWindow {
         id: delShort
         sequence: "CTRL+D"
         context: Qt.ApplicationShortcut
-        onActivated: _main.remove(table.currentId)
+        onActivated: _main.remove(table.currentEntry.id)
         
     }
     

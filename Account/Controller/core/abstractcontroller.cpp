@@ -66,7 +66,7 @@ void AbstractController::finishTotalThread()
         }
     }
 
-    emit s_totalChanged(0, 0);
+    emit s_totalChanged(QDate::currentDate().month()+1, QDate::currentDate().year());
 }
 
 void AbstractController::calculTotal()
@@ -78,6 +78,9 @@ void AbstractController::calculTotal()
     CalcThread::indexes.clear();
     m_accountTotal.clear();
     auto l = m_db->selectEntry().values();
+    std::sort(l.begin(), l.end(), [](const Entry& e1, const Entry& e2) {
+            return e1.date() < e2.date();
+    });
 
     for (auto i = 0; i < 5; i++) {
         auto t = QSharedPointer<CalcThread>::create(i, l, &m_accountTotal);
@@ -88,7 +91,7 @@ void AbstractController::calculTotal()
     }
 }
 
-void AbstractController::addEntry(const Entry& e)
+void AbstractController::addEntry(Entry &e)
 {
     Entry et = e;
 
@@ -115,14 +118,8 @@ void AbstractController::addEntry(const Entry& e)
 }
 
 Entry AbstractController::entry(QUuid id)
-{
-    Entry ret;
-
-    for (auto it : m_db->selectEntry())
-        if(it.id() == id)
-            ret = it;
-    
-    return ret;
+{    
+    return m_db->selectEntry()[id];
 }
 
 void AbstractController::setDb(QString name)
@@ -152,7 +149,7 @@ void AbstractController::deleteDb()
         delete m_db;
 }
 
-void AbstractController::updateEntry(const Entry & e)
+void AbstractController::updateEntry(Entry & e)
 {
     m_db->updateEntry(e);
 }

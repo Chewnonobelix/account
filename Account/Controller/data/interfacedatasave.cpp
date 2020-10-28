@@ -68,7 +68,7 @@ QMap<QUuid, SynchronizationProfile> InterfaceDataSave::selectSyncProfile()
     return ret;
 }
 
-bool InterfaceDataSave::removeSyncProfile(const SynchronizationProfile& sp)
+bool InterfaceDataSave::removeSyncProfile(SynchronizationProfile& sp)
 {
     QDomElement root = m_syncs.documentElement();
     auto list = root.elementsByTagName("profile");
@@ -85,7 +85,7 @@ bool InterfaceDataSave::removeSyncProfile(const SynchronizationProfile& sp)
     return ret;
 }
 
-QUuid InterfaceDataSave::addSyncProfile(const SynchronizationProfile &sp)
+QUuid InterfaceDataSave::addSyncProfile(SynchronizationProfile &sp)
 {
     QDomElement root = m_syncs.documentElement();
     auto list = root.elementsByTagName("profile");
@@ -120,7 +120,7 @@ QUuid InterfaceDataSave::addSyncProfile(const SynchronizationProfile &sp)
     return id;
 }
 
-bool InterfaceDataSave::updateSyncProfile(const SynchronizationProfile& sp)
+bool InterfaceDataSave::updateSyncProfile(SynchronizationProfile &sp)
 {
     QDomElement root = m_syncs.documentElement();
     auto list = root.elementsByTagName("profile");
@@ -159,6 +159,8 @@ QString InterfaceDataSave::currentProfile() const
 void InterfaceDataSave::setCurrentAccount(QString account)
 {
     m_currentAccount = account;
+	emit s_updateEntry();
+	emit s_updateCategory();
 }
 
 QString InterfaceDataSave::currentAccount() const

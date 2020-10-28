@@ -26,17 +26,17 @@ public:
     
 private:
     QList<QVariant> m_entriesId;
-    Entry m_referenceEntry;
 
 public:
     Frequency();
-    Frequency(const Frequency&) = default;
-    ~Frequency() = default;
-    using MetaData::MetaData;
+	Frequency(const Frequency &) = default;
+	~Frequency() = default;
+	Frequency(const QJsonObject &);
 
-    Frequency& operator =(const Frequency&);
-    
-    QUuid id() const;
+	Frequency &operator=(const Frequency &);
+	operator QJsonObject() const override;
+
+	QUuid id() const;
     void setId(QUuid);
     
     Account::FrequencyEnum freq() const;

@@ -1,5 +1,11 @@
 #include "debt.h"
 
+Debt::Debt(const QJsonObject & j): MetaData(j)
+{
+    Entry init(j["initial"].toObject());
+    setInitial(init);
+}
+
 QUuid Debt::id() const
 {
     return metaData<QUuid>("id");
@@ -142,4 +148,12 @@ Debt &Debt::operator=(const Debt &d)
 {
     MetaData::operator=(d);
     return *this;
+}
+
+Debt::operator QJsonObject() const
+{
+ auto ret = MetaData::operator QJsonObject();
+ ret["initial"] = QJsonObject(initial());
+
+ return ret;
 }
