@@ -78,7 +78,7 @@ void MainController::reload()
 
 void MainController::bind(QVariant id)
 {
-	pageChange(id.toUuid());
+ pageChange(QUuid::fromString(id.toString()));
 }
 
 int MainController::exec()
@@ -478,8 +478,8 @@ void MainController::pageChange(QUuid id)
 	});
 
 	for(auto i = 0; i < modelList.size(); i++)
-		if(modelList[i].toMap()["id"] == id)
-			index = i;
+	 if (modelList[i].toMap()["id"].toUuid() == id)
+	  index = i;
 
 	emit currentModelChanged(modelList);
 	emit currentRowChanged(index);

@@ -203,6 +203,27 @@ Page {
                 model: _mainModel
                 clip: true
 
+                Connections {
+                    target: _main
+
+                    function onCurrentRowChanged(index) {
+                        _mainModel.currentIndex = index
+                        view.viewEntry()
+                    }
+                }
+
+                function viewEntry() {
+                    currentEntry = _mainModel.currentIndex > -1 ? _mainModel.at(_mainModel.currentIndex) : null
+
+                    if(currentEntry) {
+                        _main.edit(currentEntry.id)
+                        infoView.visible = !currentEntry.isBlocked
+                    }
+                    else {
+                        infoView.visible = false
+                    }
+                }
+
                 property var columns: [width*0.10,
                     width*0.23,
                     width*0.23,
@@ -233,15 +254,7 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             _mainModel.currentIndex = isSelect() ? -1 : row
-                            currentEntry = isSelect() ? _mainModel.at(_mainModel.currentIndex) : null
-
-                            if(currentEntry) {
-                                _main.edit(currentEntry.id)
-                                infoView.visible = !currentEntry.isBlocked
-                            }
-                            else {
-                                infoView.visible = false
-                            }
+                            view.viewEntry()
                         }
                     }
 
