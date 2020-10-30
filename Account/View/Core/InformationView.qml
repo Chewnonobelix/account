@@ -63,7 +63,7 @@ Item {
         columnSpacing: root.width * 0.02
         
         Frequency {
-            visible: ee.entry.isFrequency
+            visible:ee.entry ?  ee.entry.isFrequency : null
             enabled: visible
             id: frequency
             Layout.maximumWidth: root.width *.49
