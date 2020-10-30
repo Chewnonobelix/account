@@ -61,7 +61,7 @@ class ControllerJson : public InterfaceDataSave
      QMap<QUuid, T> ret;
      for(auto i = 0; i < array.size(); i++) {
          T val(array[i].toObject());
-         if(!array[i].toObject()["removed"].toBool(false))
+		 if(array[i].toObject()["removed"].toString() != "true")
              ret[val.id()] = val;
      }
 
