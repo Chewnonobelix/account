@@ -247,7 +247,7 @@ Page {
                     }
 
                     function isSelect() {
-                        return _mainModel.currentIndex === row
+                        return _mainModel ? _mainModel.currentIndex === row : false
                     }
 
                     MouseArea {
