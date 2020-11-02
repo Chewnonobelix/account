@@ -85,24 +85,28 @@ Rectangle {
                     _frequency.setWorker(currentModel.name)
                     pageChanger.pageIndex = 1
                     pageChanger.pageChange()
+                    ref.entry = currentModel.reference
+                    ref.enabled = true
+                    groupText.nb = currentModel.nbGroup
+                    countText.nb = currentModel.count
+                    pageChanger.maxPage = countText.nb / 100 + 1
+                    whenCombo.enabled = count !== 0
+                    whenCombo.currentIndex = whenCombo.model.findIndex(currentModel.freq + 0)
+                    endless.checked = currentModel.endless
                 }
                 else
                 {
                     testModel.clear()
                     pageChanger.pageIndex = 0
+                    ref.entry = null
+                    ref.enabled = false
+                    groupText.nb = 0
+                    countText.nb = 0
+                    pageChanger.maxPage = 1
+                    whenCombo.enabled = count !== 0
+                    whenCombo.currentIndex = 0
+                    endless.checked = false
                 }
-
-            }
-
-            Component.onCompleted: {
-                ref.entry = Qt.binding(function() {return currentModel ? currentModel.reference : null})
-                ref.enabled = Qt.binding(function() {return currentModel !== null})
-                groupText.nb = Qt.binding(function() {return currentModel ? currentModel.nbGroup : 0})
-                countText.nb = Qt.binding(function() {return currentModel ? currentModel.count : 0})
-                pageChanger.maxPage = Qt.binding(function() {return countText.nb / 100 + 1})
-                whenCombo.enabled = Qt.binding(function() {return count !== 0})
-                whenCombo.currentIndex = Qt.binding(function() {return currentModel  ? whenCombo.model.findIndex(currentModel.freq + 0) : 0})
-                endless.checked = Qt.binding(function() {return currentModel ? currentModel.endless : false})
             }
 
             clip: true

@@ -19,9 +19,9 @@ ComboBox {
     signal addCategory(string cat)
     property bool blocked: false
 
-    model: _categoryModel
+    model: CategoryModel {}
 
-    onTypeChanged: _categoryModel.currentType = type
+    onTypeChanged: model.currentType = type
 
     textRole: "display"
     valueRole: "idstring"

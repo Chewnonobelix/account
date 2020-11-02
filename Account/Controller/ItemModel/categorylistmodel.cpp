@@ -2,91 +2,91 @@
 
 CategoryListModel::CategoryListModel() : QAbstractListModel(), m_db(AbstractController::db())
 {
- connect(m_db, &InterfaceDataSave::s_updateCategory, this, &CategoryListModel::onUpdateCategory);
- onUpdateCategory();
+	connect(m_db, &InterfaceDataSave::s_updateCategory, this, &CategoryListModel::onUpdateCategory);
+	onUpdateCategory();
 }
 
 Account::TypeEnum CategoryListModel::currentType() const
 {
- return m_currentType;
+	return m_currentType;
 }
 
 void CategoryListModel::setCurrentType(Account::TypeEnum type)
 {
- reset();
+	reset();
 
- m_currentType = type;
+	m_currentType = type;
 
- init();
+	init();
 
- emit currentTypeChanged();
+	emit currentTypeChanged();
 }
 
 void CategoryListModel::onUpdateCategory()
 {
- reset();
- init();
+	reset();
+	init();
 }
 
 void CategoryListModel::reset()
 {
- beginRemoveRows(QModelIndex(), 0, rowCount());
- removeRows(0, rowCount());
- endRemoveRows();
+	beginRemoveRows(QModelIndex(), 0, rowCount());
+	removeRows(0, rowCount());
+	endRemoveRows();
 }
 
 void CategoryListModel::init()
 {
- if (!m_db)
-  return;
+	if (!m_db)
+		return;
 
- auto list = m_db->selectCategory()[currentType()].values();
+	auto list = m_db->selectCategory()[currentType()].values();
 
- beginInsertRows(QModelIndex(), 0, list.size());
- insertRows(0, rowCount());
- endInsertRows();
+	beginInsertRows(QModelIndex(), 0, list.size());
+	insertRows(0, rowCount());
+	endInsertRows();
 }
 
 int CategoryListModel::rowCount(const QModelIndex &) const
 {
- return m_db->selectCategory()[currentType()].size();
+	return m_db->selectCategory()[currentType()].size();
 }
 
 Qt::ItemFlags CategoryListModel::flags(const QModelIndex &) const
 {
- return Qt::ItemIsSelectable;
+	return Qt::ItemIsSelectable;
 }
 
 QVariant CategoryListModel::data(const QModelIndex &index, int role) const
 {
- auto enumrole = CategoryRole(role);
- auto row = index.row();
+	auto enumrole = CategoryRole(role);
+	auto row = index.row();
 
- if (row < 0 || row >= rowCount())
-  return QVariant();
+	if (row < 0 || row >= rowCount())
+		return QVariant();
 
- QVariant ret;
- switch (enumrole) {
- case CategoryRole::DisplayRole:
-  if (row == rowCount())
-   ret = QVariant(QVariant::String);
-  else
-   ret = QVariant::fromValue(m_db->selectCategory()[currentType()].values()[row].name());
-  break;
- case CategoryRole::TypeRole:
-  ret = QVariant::fromValue(currentType());
-  break;
- case CategoryRole::StringIdRole:
-  ret = QVariant::fromValue(m_db->selectCategory()[currentType()].values()[row].id());
- }
+	QVariant ret;
+	switch (enumrole) {
+		case CategoryRole::DisplayRole:
+			if (row == rowCount())
+				ret = QVariant(QVariant::String);
+			else
+				ret = QVariant::fromValue(m_db->selectCategory()[currentType()].values()[row].name());
+			break;
+		case CategoryRole::TypeRole:
+			ret = QVariant::fromValue(currentType());
+			break;
+		case CategoryRole::StringIdRole:
+			ret = QVariant::fromValue(m_db->selectCategory()[currentType()].values()[row].id());
+	}
 
- return ret;
+	return ret;
 }
 
 QHash<int, QByteArray> CategoryListModel::roleNames() const
 {
- static auto ret = QHash<int, QByteArray>{{int(CategoryRole::DisplayRole), "display"},
-										  {int(CategoryRole::TypeRole), "type"},
-										  {int(CategoryRole::StringIdRole), "idstring"}};
- return ret;
+	static auto ret = QHash<int, QByteArray>{{int(CategoryRole::DisplayRole), "display"},
+											 {int(CategoryRole::TypeRole), "type"},
+											 {int(CategoryRole::StringIdRole), "idstring"}};
+	return ret;
 }
