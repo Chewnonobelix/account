@@ -73,12 +73,10 @@ MainController::~MainController()
 void MainController::reload()
 {
 	loadAccount();
-	buildModel();
 }
 
 void MainController::bind(QVariant id)
 {
- pageChange(QUuid::fromString(id.toString()));
 }
 
 int MainController::exec()
@@ -94,7 +92,6 @@ int MainController::exec()
 
 	if (transfert) {
 		m_transfert.set(transfert);
-		connect(&m_transfert, &ControllerTransfert::s_finish, this, &MainController::buildModel);
 	}
 
 	for (auto it : m_settings.featuresList()) {
@@ -115,9 +112,6 @@ int MainController::exec()
 
 	loadFeatures();
 	qDebug() << ControllerSettings::registredFeature();
-
-	connect(m_db, &InterfaceDataSave::s_updateEntry, this, &MainController::buildModel);
-	connect(m_db, &InterfaceDataSave::s_updateEntry, this, &MainController::pageChange);
 
 	m_settings.init(engine());
 
@@ -391,100 +385,6 @@ void MainController::previewCalendar(int month, int year)
 	}
 }
 
-void Builder::run()
-{
-	QVariantList temp;
-	for(auto i = 100; i < init.count(); i++)
-	{
-		t = t + init[i];
-		QVariantMap map = init[i];
-
-		map.insert("total", QVariant::fromValue(t));
-		temp.append(QVariant::fromValue(map));
-	}
-	model->append(temp);
-}
-
-void MainController::buildModel(QUuid)
-{
-	if(m_modelBuilder && m_modelBuilder->isRunning())
-		return;
-
-	m_model.clear();
-	QList<Entry> ret;
-
-	ret = m_db->selectEntry().values();
-	std::sort(ret.begin(), ret.end(), [](const Entry& e1, const Entry& e2) {
-		return e1.date() < e2.date();
-	});
-
-	Total t;
-	for(auto i = 0; i < qMin(ret.count(), 100); i++)
-	{
-		t = t + ret[i];
-		QVariantMap map = ret[i];
-
-		map.insert("total", QVariant::fromValue(t));
-		m_model.push_back(QVariant::fromValue(map));
-	}
-
-	if(!m_modelBuilder)
-	{
-		m_modelBuilder.reset(new Builder);
-		m_modelBuilder->setObjectName("Builder Thread");
-	}
-
-	m_modelBuilder->init = ret;
-
-	m_modelBuilder->t = t;
-	m_modelBuilder->model = &m_model;
-
-	m_modelBuilder->start();
-}
-
-void MainController::pageChange(QUuid id)
-{
-	auto ld = dateList();
-	int index = -1;
-	int first = 0;
-
-	QList<QVariant> currentModel;
-
-	std::for_each(m_model.begin(), m_model.end(), [ld, &currentModel](const QVariant &e) {
-		if(ld.isEmpty() || ld.contains(e.toMap()["date"].toDate()))
-			currentModel << e;
-	});
-
-	int maxPage = currentModel.size() < 100 ? 1 : (currentModel.size() / 100 + 1);
-	emit maxPageChanged(maxPage);
-
-	first = index != -1 ? (index / 100) + 1 : m_currentPage;
-
-	first -= 1;
-	first *= 100;
-
-	QVariantList modelList;
-
-	for(auto i = first ; i < qMin(currentModel.size(), first+100); i++)
-		modelList<<currentModel[i];
-	Qt::SortOrder order = m_settings.sortOrder();
-	QString role = m_settings.sortingRole();
-
-	std::sort(modelList.begin(), modelList.end(), [order, role](QVariant a, QVariant b) {
-		if(order == Qt::AscendingOrder)
-			return (a.toMap()[role] < b.toMap()[role]);
-		else
-			return (a.toMap()[role] > b.toMap()[role]);
-	});
-
-	for(auto i = 0; i < modelList.size(); i++)
-	 if (modelList[i].toMap()["id"].toUuid() == id)
-	  index = i;
-
-	emit currentModelChanged(modelList);
-	emit currentRowChanged(index);
-}
-
 void MainController::updateQuickView()
 {
 	//TODO
@@ -521,8 +421,6 @@ void MainController::accountChange(QString acc)
 
 	emit totaleChanged(QVariant::fromValue(accountTotal()));
 
-	buildModel();
-	pageChange();
 	checkEstimated();
 }
 
@@ -580,8 +478,6 @@ void MainController::validateCheckEstimated(QVariantList tab)
 			m_db->removeEntry(e);
 		}
 	}
-
-	buildModel();
 }
 
 void MainController::deleteAccount(QString account)
@@ -640,12 +536,10 @@ void MainController::sortRole(QString role)
 {
 	m_settings.setSortingRole(role);
 	QUuid id = engine().rootObjects().first()->findChild<QObject*>("table")->property("currentId").toUuid();
-	pageChange(id);
 }
 
 void MainController::sortOrder(int order)
 {
 	m_settings.setSortOrdre((Qt::SortOrder)order);
 	QUuid id = engine().rootObjects().first()->findChild<QObject*>("table")->property("currentId").toUuid();
-	pageChange(id);
 }
