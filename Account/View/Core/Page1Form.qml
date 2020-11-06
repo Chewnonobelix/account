@@ -189,17 +189,25 @@ Page {
 				syncView: view
 				z:5
 				clip: true
-				delegate: AccountHeader {
-					text: display
-					clip: true
+				delegate: Rectangle {
+					border.color: "gold"
+					AccountHeader {
+						anchors {
+							fill: parent
+							margins: 1
+						}
 
-					MouseArea {
-						anchors.fill: parent
-						onClicked: {
-							if(_mainModel.columnSort !== index)
-							_mainModel.columnSort = index
-							else
-							_mainModel.sort = _mainModel.sort === Qt.AscendingOrder ? Qt.DescendingOrder : Qt.AscendingOrder
+						text: display
+						clip: true
+
+						MouseArea {
+							anchors.fill: parent
+							onClicked: {
+								if(_mainModel.columnSort !== index)
+									_mainModel.columnSort = index
+								else
+									_mainModel.sort = _mainModel.sort === Qt.AscendingOrder ? Qt.DescendingOrder : Qt.AscendingOrder
+							}
 						}
 					}
 				}
