@@ -57,7 +57,7 @@ void TestDebt::test_generate()
         t = t + it;
     }
 
-    QCOMPARE(t.value(), -init.value() * (rate + 1));
+    QCOMPARE(t.value(), init.value() * (rate + 1));
 }
 
 void TestDebt::test_entries()
