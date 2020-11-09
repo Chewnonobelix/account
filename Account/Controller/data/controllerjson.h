@@ -56,9 +56,13 @@ class ControllerJson : public InterfaceDataSave
  template<class T>
  QMap<QUuid, T> select(QString key)
  {
-     auto json = load(currentProfile(), currentAccount());
-     auto array = json.value(key).toArray();
      QMap<QUuid, T> ret;
+
+     auto json = load(currentProfile(), currentAccount());
+     if(json.isEmpty())
+         return ret;
+
+     auto array = json.value(key).toArray();
      for(auto i = 0; i < array.size(); i++) {
          T val(array[i].toObject());
 		 if(array[i].toObject()["removed"].toString() != "true")
