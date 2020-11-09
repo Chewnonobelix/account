@@ -190,7 +190,7 @@ Page {
 				z:5
 				clip: true
 				delegate: Rectangle {
-					border.color: "gold"
+					border.color: "goldenrod"
 					AccountHeader {
 						anchors {
 							fill: parent
