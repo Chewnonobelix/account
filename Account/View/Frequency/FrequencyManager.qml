@@ -209,7 +209,7 @@ Rectangle {
             onAddNewCategory: { if(entry && enabled) _frequency.addNewCategory(frequencyList.currentModel.id, cat, entry.type)
             }
             onEntryChanged: {
-                typeCombo.currentIndex = CoreModel.typeModel.find(entry ? entry.type: Account.Outcome)
+								typeCombo.currentIndex = CoreModel.typeModel.findIndex(entry ? entry.type: Account.Outcome)
             }
 
             Component.onCompleted: {

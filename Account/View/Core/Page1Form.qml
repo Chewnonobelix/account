@@ -283,7 +283,7 @@ Page {
 
 					background: Rectangle {
 						anchors.fill: parent
-						gradient: isSelect() ? type === Account.Income ? AccountStyle.selectViewIn : AccountStyle.selectViewOut : AccountStyle.unselectView
+						gradient: isSelect() ? type == Account.TypeEnum.Income ? AccountStyle.selectViewIn : AccountStyle.selectViewOut : AccountStyle.unselectView
 					}
 				}
 			}

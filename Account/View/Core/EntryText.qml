@@ -15,7 +15,7 @@ Item {
             date.data = Qt.formatDate(model.date)
             label.data = model.title
             value.data = model.value
-						type.data = model.type === Account.Outcome ? Account.Outcome : Account.Income
+						type.data = CoreModel.typeModel.findText(model.type)
             support.data = CoreModel.entryTypeModel.findText(model.support)
             category.data = model.category
         }
@@ -50,7 +50,7 @@ Item {
         }
         AccountLabel {
             id: type
-            property string data
+						property string data
 
             text: qsTr("Type") + ": " + data
         }

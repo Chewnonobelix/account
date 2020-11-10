@@ -18,28 +18,28 @@ QtObject {
 
         ListElement {
             name: qsTr("Unique")
-            role: Account.Unique
+						role: Account.FrequencyEnum.Unique
         }
 
         ListElement {
             name: qsTr("Day")
-            role: Account.Day
+						role: Account.FrequencyEnum.Day
         }
         ListElement {
             name: qsTr("Week")
-            role: Account.Week
+						role: Account.FrequencyEnum.Week
         }
         ListElement {
             name: qsTr("Month")
-            role: Account.Month
+						role: Account.FrequencyEnum.Month
         }
         ListElement {
             name: qsTr("Quarter")
-            role: Account.Quarter
+						role: Account.FrequencyEnum.Quarter
         }
         ListElement {
             name: qsTr("Year")
-            role: Account.Year
+						role: Account.FrequencyEnum.Year
         }
     }
     
@@ -81,9 +81,14 @@ QtObject {
     property ListModel typeModel: ListModel {
         id: typeModel
 
-        function find (role) {
+				function findIndex (role) {
              return role === Account.Income ? 0 : 1
         }
+
+				function findText(role) {
+						var index = findIndex(role)
+						return get(index).name
+				}
 
         ListElement {name: qsTr("Income"); type: Account.Income}
         ListElement {name: qsTr("Outcome"); type: Account.Outcome}
