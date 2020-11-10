@@ -2,7 +2,7 @@
 
 const QUuid ide = QUuid::createUuid();
 const QString account = "Test account";
-const Account::TypeEnum type = Account::Income;
+const Account::TypeEnum type = Account::TypeEnum::Income;
 const double value = 2.12;
 const bool blacked = true;
 const QDate date = QDate::currentDate();

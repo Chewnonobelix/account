@@ -13,8 +13,8 @@ int ControllerPieGraph::exec()
 void ControllerPieGraph::clear()
 {
     m_entries.clear();
-    m_entries[Account::Income][""] = Total();
-    m_entries[Account::Outcome][""] = Total();
+    m_entries[Account::TypeEnum::Income][""] = Total();
+    m_entries[Account::TypeEnum::Outcome][""] = Total();
 }
 
 void ControllerPieGraph::add(const Entry & e)
@@ -35,8 +35,8 @@ void ControllerPieGraph::update()
         }
     };
 
-    setter(m_entries[Account::Income], "income");
-    setter(m_entries[Account::Outcome], "outcome");
+    setter(m_entries[Account::TypeEnum::Income], "income");
+    setter(m_entries[Account::TypeEnum::Outcome], "outcome");
 }
 
 void ControllerPieGraph::setView(const QQmlApplicationEngine & eng)

@@ -3,6 +3,8 @@ import QtQuick.Layouts 1.15
 
 import "../Style"
 
+import Account 1.0
+
 Item {
     id: root
 
@@ -13,7 +15,7 @@ Item {
             date.data = Qt.formatDate(model.date)
             label.data = model.title
             value.data = model.value
-            type.data = model.type
+						type.data = model.type === Account.Outcome ? Account.Outcome : Account.Income
             support.data = CoreModel.entryTypeModel.findText(model.support)
             category.data = model.category
         }

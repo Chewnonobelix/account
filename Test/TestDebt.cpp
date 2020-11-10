@@ -2,7 +2,7 @@
 
 void TestDebt::initTestCase() {
     init.setValue(2000);
-    init.setType(Account::Income);
+    init.setType(Account::TypeEnum::Income);
     init.setId(QUuid::createUuid());
     init.setDate(QDate::currentDate());
 }

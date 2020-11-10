@@ -117,7 +117,7 @@ QVariant MainModel::data(QModelIndex const &index, int role) const
 	  return it.t.value();
 	  break;
 	case MainRole::TypeRole:
-	  return it.e.type();
+      return QVariant::fromValue(it.e.type());
 	  break;
 	case MainRole::TypeDisplayRole:
 	  ret = it.e.type() == Account::TypeEnum::Income ? "+" : "-";

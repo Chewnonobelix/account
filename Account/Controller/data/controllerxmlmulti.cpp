@@ -232,7 +232,7 @@ bool ControllerXMLMulti::updateEntryNode(Entry & e, QDomElement & el)
 
     setter(el, "date", e.date().toString("dd-MM-yyyy"));
     setter(el, "value",QString::number(e.value()));
-    setter(el, "type", QString::number(e.type()));
+    setter(el, "type", QString::number(int(e.type())));
     setter(el, "category", e.category().id().toString());
     setter(el, "estimated", QString::number(e.estimated()));
     setter(el, "title", e.title());
@@ -341,7 +341,7 @@ QMap<Account::TypeEnum, QMap<QUuid, Category>> ControllerXMLMulti::selectCategor
         c.setType((Account::TypeEnum) el.attribute("type").toInt());
         ret[c.type()][c.id()] = c;
         if (c.both())
-            ret[c.type() == Account::Income ? Account::Outcome : Account::Income][c.id()] = c;
+            ret[c.type() == Account::TypeEnum::Income ? Account::TypeEnum::Outcome : Account::TypeEnum::Income][c.id()] = c;
     }
     
     return ret;
@@ -574,7 +574,7 @@ bool ControllerXMLMulti::addFrequency(Frequency &f)
             auto current = freqs.at(i).toElement();
             Entry e(f.referenceEntry());
             e.setId(idf);
-            e.setType(Account::Outcome);
+            e.setType(Account::TypeEnum::Outcome);
             e.setAccount(m_currentAccount);
             addEntryNode(e, current, "referenceEntry");
         }

@@ -2,7 +2,7 @@
 
 const QUuid ide = QUuid::createUuid();
 const bool both = true;
-const Account::TypeEnum type = Account::Income;
+const Account::TypeEnum type = Account::TypeEnum::Income;
 const QString name = "name1";
 
 void TestCategory::initTestCase()

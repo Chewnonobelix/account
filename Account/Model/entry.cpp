@@ -5,9 +5,9 @@ Entry::Entry()
     setId(QUuid());
     setAccount(QString());
     setValue(0);
-    setSupport(Account::CB);
+    setSupport(Account::SupportEnum::CB);
     setDate(QDate::currentDate());
-    setType(Account::Outcome);
+    setType(Account::TypeEnum::Outcome);
     setTitle(QString());
     setEstimated(false);
     setCategory(Category());
@@ -93,7 +93,7 @@ Entry::operator QVariantMap() const
     ret.insert("account", account());
     ret.insert("value", value());
     ret.insert("date", date());
-    ret.insert("type", type());
+    ret.insert("type", QVariant::fromValue(type()));
     ret.insert("label", title());
     ret.insert("isBlock", isBlocked());
     ret.insert("support", QVariant::fromValue(support()));
@@ -114,7 +114,7 @@ void Entry::setBlocked(bool b)
 
 Account::SupportEnum Entry::support() const
 {
-    return hasMetadata("support") ? metaData<Account::SupportEnum>("support") : Account::CB;
+    return hasMetadata("support") ? metaData<Account::SupportEnum>("support") : Account::SupportEnum::CB;
 }
 
 void Entry::setSupport(Account::SupportEnum s)

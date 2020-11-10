@@ -27,11 +27,11 @@ void ControllerTransfert::accept()
     Entry in(m_entry), out(m_entry);
 
     out.setAccount(m_outcomeAccount);
-    out.setType(Account::Outcome);
+    out.setType(Account::TypeEnum::Outcome);
     setCurrentAccount(out.account());
     addEntry(out);
 
-    in.setType(Account::Income);
+    in.setType(Account::TypeEnum::Income);
     in.setAccount(m_incomeAccount);
     setCurrentAccount(in.account());
     addEntry(in);

@@ -26,6 +26,7 @@ MainController::MainController(int storage)
 			 << qmlRegisterType<CategoryListModel>("Account.Model", 1, 0, "CategoryModel");
 	qDebug() << "MainModel" << qmlRegisterType<MainModel>("Account.Model", 1, 0, "MainModel");
 	qmlRegisterModule("Account.Style", 1, 0);
+
 	m_dbThread = new QThread;
 	connect(m_dbThread, &QThread::started, this, &MainController::reload);
 	try
@@ -236,7 +237,7 @@ void MainController::adding(QVariant ref)
 		e.setAccount(account.toString());
 		e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
 		e.setValue(val.toDouble());
-		e.setType(Account::Income);
+        e.setType(Account::TypeEnum::Income);
 
 		e.setTitle("Initial");
 

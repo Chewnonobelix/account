@@ -13,13 +13,13 @@ namespace Account
     enum class FrequencyEnum {Unique = 0, Day = 1, Week = 2, Month = 3, Quarter = 4, Year = 5};
     Q_ENUM_NS(FrequencyEnum)
 
-    enum TypeEnum { Outcome = -1, Income = 1 };
+    enum class TypeEnum { Outcome = -1, Income = 1 };
     Q_ENUM_NS(TypeEnum)
     
-    enum Granularity {Month = 3, Year = 5, Over};
+    enum class  Granularity {Month = 3, Year = 5, Over};
     Q_ENUM_NS(Granularity)
 
-    enum SupportEnum { Money, CB, Transfert, Cheque };
+    enum class SupportEnum { Money, CB, Transfert, Cheque };
     Q_ENUM_NS(SupportEnum)
 
     int ACCOUNT_EXPORT nbDay(QDate, FrequencyEnum);
