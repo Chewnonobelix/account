@@ -192,13 +192,13 @@ void MainModel::onUpdateEntry(QUuid id)
   for (auto it : entries){
 	insertData(it);
   }
+  sort(columnSort(), sort());
 
   for(auto it = 0; it < m_displayModel.size(); it++)
 	if(m_displayModel[it].e.id() == id) {
 	  setCurrentIndex(it);
 	}
 
-  sort(columnSort(), sort());
 }
 
 void MainModel::clear()
