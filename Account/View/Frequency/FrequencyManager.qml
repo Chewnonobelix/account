@@ -209,13 +209,13 @@ Rectangle {
             onAddNewCategory: { if(entry && enabled) _frequency.addNewCategory(frequencyList.currentModel.id, cat, entry.type)
             }
             onEntryChanged: {
-								typeCombo.currentIndex = CoreModel.typeModel.findIndex(entry ? entry.type: Account.Outcome)
+								typeCombo.currentIndex = CoreModel.typeModel.findIndex(entry ? entry.type: Account.TypeEnum.Outcome)
             }
 
             Component.onCompleted: {
                 enabled = Qt.binding(function() {return frequencyList.count !== 0})
 
-                catModel = Qt.binding(function(){return (entry && entry.type === Account.Income) ? incomeList : outcomeList})
+								catModel = Qt.binding(function(){return (entry && entry.type === Account.TypeEnum.Income) ? incomeList : outcomeList})
             }
 
         }
