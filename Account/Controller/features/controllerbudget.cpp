@@ -131,20 +131,18 @@ void ControllerBudget::removeTarget(QString cat, QString date)
 
 void ControllerBudget::addBudget(QString id, int type)
 {
-    if(m_budgets.contains(QUuid::fromString(id)))
-    {
-        m_db->removeBudget(m_budgets[QUuid::fromString(id)]);
-        m_budgets.remove(QUuid::fromString(id));
-    }
-    else
-    {
-        Budget b;
-        b.setCategory(db()->selectCategory()[Account::TypeEnum(type)][QUuid::fromString(id)]);
-        m_db->addBudget(b);
-    }
-    
-    reload();
-    openManager();
+    Budget b;
+    auto c = db()->selectCategory()[Account::TypeEnum(type)][QUuid::fromString(id)];
+    b.setCategory(c);
+    m_db->addBudget(b);
+    auto tn = (Account::TypeEnum(type) == Account::TypeEnum::Income ? "income" : "outcome");
+    c.setMetadata(tn, b.id());
+    db()->updateCategory(c);
+}
+
+void ControllerBudget::removeBudget(QString id)
+{
+    db()->removeBudget(m_budgets[QUuid::fromString(id)]);
 }
 
 void ControllerBudget::editBudget(QString cat)

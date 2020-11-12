@@ -47,6 +47,7 @@ public slots:
     void showTarget(QString, QString, bool);
 
     void addBudget(QString, int type);
+    void removeBudget(QString);
     void editBudget(QString);
     void getTarget(QString);
     

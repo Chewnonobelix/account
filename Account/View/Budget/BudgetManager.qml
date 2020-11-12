@@ -165,9 +165,10 @@ Rectangle {
                     }
                     
                     Action {
+											//TODO
                         id: addBudget
                         text:  has ? qsTr("Remove budget") : qsTr("Add budget")
-                        onTriggered: _budget.addBudget(catName)
+												onTriggered:  _budget.addBudget(catName)
                     }
                     
                 }
