@@ -26,7 +26,7 @@ void Budget::setId(QUuid i)
 
 Account::TypeEnum Budget::type() const
 {
-    return metaData<Account::TypeEnum>("type";)
+    return metaData<Account::TypeEnum>("type");
 }
 
 void Budget::setType(Account::TypeEnum type)

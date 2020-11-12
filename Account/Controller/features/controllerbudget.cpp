@@ -17,22 +17,28 @@ void ControllerBudget::openManager()
     emit clearCat();
     emit blocked(true);
 
-    //    auto incomes = m_db->selectCategory().values("income");
-    //    auto outcomes = m_db->selectCategory().values("outcome");
+    auto incomes = m_db->selectCategory()[Account::TypeEnum::Income];
+    auto outcomes = m_db->selectCategory()[Account::TypeEnum::Outcome];
 
-    auto func = [&](QString type, QStringList list) {
-        for (auto it : list) {
+    auto func = [&](Account::TypeEnum type, auto list) {
+        for (auto it : list.values()) {
             QVariantMap map;
-            map.insert("type", type);
-            map.insert("catName", it);
-            map.insert("has", m_budgets.contains(it));
+            map.insert("type", type == Account::TypeEnum::Income ? tr("Income") : tr("Outcome"));
+            map.insert("catName", it.name());
+            map.insert("id", it.id());
+
+            bool has = std::find_if(m_budgets.begin(), m_budgets.end(), [it, type](Budget b) {
+                return b.category().name() == it.name() && (it.both() || it.type() == type);
+            }) != m_budgets.end();
+
+            map.insert("has", has);
 
             emit addCat(QVariant::fromValue(map));
         }
     };
 
-    //    func("income", incomes);
-    //    func("outcome", outcomes);
+    func(Account::TypeEnum::Income, incomes);
+    func(Account::TypeEnum::Outcome, outcomes);
 
     if (!m_selected.isEmpty())
         emit selectCat(m_selected);
@@ -45,8 +51,8 @@ bool ControllerBudget::removeFrom(QUuid id)
     bool ret = false;
     Entry e = entry(id);
 
-    //    if (m_budgets.contains(e.category()))
-    //        ret = m_budgets[e.category()].removeEntry(e);
+    if (m_budgets.contains(e.metaData<QUuid>("budget")))
+        ret = m_budgets[e.metaData<QUuid>("budget")].removeEntry(e);
 
     return ret;
 }
@@ -93,10 +99,8 @@ void ControllerBudget::reload()
 
     m_budgets.clear();
 
-    auto l = m_db->selectBudgets();
+    m_budgets = m_db->selectBudgets();
 
-    for (auto b : l)
-        m_budgets[b.category()] = b;
 
     m_filler.entries = m_db->selectEntry().values();
     m_filler.start();
@@ -125,21 +129,19 @@ void ControllerBudget::removeTarget(QString cat, QString date)
     editBudget(cat);
 }
 
-void ControllerBudget::addBudget(QString name)
+void ControllerBudget::addBudget(QString id, int type)
 {
-    if(m_budgets.contains(name))
+    if(m_budgets.contains(QUuid::fromString(id)))
     {
-        m_db->removeBudget(m_budgets[name]);        
-        m_budgets.remove(name);
+        m_db->removeBudget(m_budgets[QUuid::fromString(id)]);
+        m_budgets.remove(QUuid::fromString(id));
     }
     else
     {
         Budget b;
-        b.setCategory(name);
-        m_budgets[name] = b;
+        b.setCategory(db()->selectCategory()[Account::TypeEnum(type)][QUuid::fromString(id)]);
         m_db->addBudget(b);
     }
-    m_selected = name;
     
     reload();
     openManager();
@@ -160,12 +162,12 @@ void ControllerBudget::editReference(QVariant ref)
     QVariantMap map = ref.toMap();
 
     m_budgets[map["cat"].toString()].setFrequency(QDate::fromString(map["date"].toString(),
-                                                                    "dd-MM-yyyy"),
-                                                  map["role"].value<Account::FrequencyEnum>());
+                                                  "dd-MM-yyyy"),
+            map["role"].value<Account::FrequencyEnum>());
 
     m_budgets[map["cat"].toString()].addTarget(QDate::fromString(map["date"].toString(),
-                                                                 "dd-MM-yyyy"),
-                                               map["value"].toDouble());
+                                               "dd-MM-yyyy"),
+            map["value"].toDouble());
     m_db->updateBudget(m_budgets[map["cat"].toString()]);
     reload();
     getTarget(map["cat"].toString());
@@ -193,11 +195,11 @@ void ControllerBudget::updateEntry(QUuid id)
 {
     Entry e = entry(id);
 
-    //    if (m_budgets.contains(e.category())) {
-    //        m_budgets[e.category()] >> e;
+    if (m_budgets.contains(e.metaData<QUuid>("budget"))) {
+        m_budgets[e.metaData<QUuid>("budget")] >> e;
 
-    //        m_budgets[e.category()] << e;
-    //    }
+        m_budgets[e.metaData<QUuid>("budget")] << e;
+    }
 
     reload();
 }
@@ -209,8 +211,8 @@ void ControllerBudget::changeEntry(QString old, QUuid id)
     if (m_budgets.contains(old))
         m_budgets[old] >> e;
 
-    //    if (m_budgets.contains(e.category()))
-    //        m_budgets[e.category()] << e;
+    if (m_budgets.contains(e.metaData<QUuid>("budget")))
+        m_budgets[e.metaData<QUuid>("budget")] << e;
 
     reload();
 }
@@ -263,6 +265,8 @@ QSharedPointer<FeatureBuilder> ControllerBudget::build(QQmlApplicationEngine * e
 
     connect(m_db, &InterfaceDataSave::s_updateEntry, budget.data(), &ControllerBudget::updateEntry);
     connect(m_db, &InterfaceDataSave::s_updateCategory, budget.data(), &ControllerBudget::exec);
+    connect(m_db, &InterfaceDataSave::s_updateBudget, budget.data(), &ControllerBudget::exec);
+
     budget.dynamicCast<ControllerBudget>()->calDateChange(QVariantList());
 
     return budget;

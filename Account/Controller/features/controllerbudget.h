@@ -16,10 +16,10 @@ class ControllerBudget: public AbstractController, public FeatureBuilder
 
 private:
     QMap<QString, QObject*> m_views;
-    QMap<QString, Budget> m_budgets;
+    QMap<QUuid, Budget> m_budgets;
     QDate m_currentDate;
     QString m_selected;
-    Filler<QString, Budget> m_filler;
+    Filler<QUuid, Budget> m_filler;
         
 public:
     ControllerBudget() = default;
@@ -46,7 +46,7 @@ public slots:
     void editReference(QVariant);
     void showTarget(QString, QString, bool);
 
-    void addBudget(QString);
+    void addBudget(QString, int type);
     void editBudget(QString);
     void getTarget(QString);
     
