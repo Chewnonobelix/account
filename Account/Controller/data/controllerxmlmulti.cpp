@@ -385,7 +385,7 @@ bool ControllerXMLMulti::addBudget(Budget& b)
                            .toElement();
     QDomElement el = m_accounts[currentProfile() + "/" + currentAccount()].createElement("budget");
     QUuid id = b.id().isNull() ? QUuid::createUuid() : b.id();
-    
+    b.setId(id);
     el.setAttribute("id", id.toString());
     el.setAttribute("lastUpdate", QDateTime::currentDateTime().toString());
     el.setAttribute("removed", false);
@@ -395,6 +395,8 @@ bool ControllerXMLMulti::addBudget(Budget& b)
     
     root.appendChild(el);
     close();
+
+    emit s_updateBudget(id);
     return true;
 }
 
@@ -507,6 +509,8 @@ bool ControllerXMLMulti::updateBudget(Budget & b)
             el.setAttribute("removed", b.metaData<bool>("removed"));
         }
     }
+
+    emit s_updateBudget(b.id());
     
     close();
     return ret;

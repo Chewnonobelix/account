@@ -41,14 +41,14 @@ public:
 
 signals:
     void s_updateEntry(QUuid = QUuid());
-    void s_updateCategory();
-    void s_updateBudget();
-    void s_updateFrequency();
-    void s_updateCommon();
-    void s_updateProfile();
-    void s_updateAccount();
-    void s_updateDebt();
-    void s_updateSync();
+    void s_updateCategory(QUuid = QUuid());
+    void s_updateBudget(QUuid = QUuid());
+    void s_updateFrequency(QUuid = QUuid());
+    void s_updateCommon(QUuid = QUuid());
+    void s_updateProfile(QUuid = QUuid());
+    void s_updateAccount(QUuid = QUuid());
+    void s_updateDebt(QUuid = QUuid());
+    void s_updateSync(QUuid = QUuid());
 
 public slots:
     void exec();
