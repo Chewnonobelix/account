@@ -3,7 +3,7 @@
 Budget::Budget()
 {
     setReference(QDate::currentDate());
-    setCategory(QString());
+    setCategory(Category());
     setId(QUuid());
 }
 
@@ -22,6 +22,16 @@ QUuid Budget::id() const
 void Budget::setId(QUuid i)
 {
     setMetadata("id", i);
+}
+
+Account::TypeEnum Budget::type() const
+{
+    return metaData<Account::TypeEnum>("type";)
+}
+
+void Budget::setType(Account::TypeEnum type)
+{
+    setMetadata("type", type);
 }
 
 bool Budget::addEntry(Entry e)
@@ -172,12 +182,12 @@ void Budget::setFrequency(QDate d, Account::FrequencyEnum f)
     m_frequency[d] = f;
 }
 
-QString Budget::category() const
+Category Budget::category() const
 {
-    return metaData<QString>("category");
+    return metaData<Category>("category");
 }
 
-void Budget::setCategory(QString c)
+void Budget::setCategory(Category c)
 {
     setMetadata("category", c);
 }
@@ -194,9 +204,9 @@ Budget& Budget::operator = (const Budget& b)
 
 Budget& Budget::operator <<(Entry e)
 {
-    //    if (e.category() == category())
-    //        if(!addEntry(e))
-    //        updateEntry(e);
+        if (e.category() == category())
+            if(!addEntry(e))
+            updateEntry(e);
 
     return *this;
 }

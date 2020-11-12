@@ -35,6 +35,9 @@ public:
     QUuid id() const;
     void setId(QUuid);
 
+    Account::TypeEnum type() const;
+    void setType(Account::TypeEnum);
+
     bool addEntry(Entry);
     bool removeEntry(Entry);
     bool updateEntry(Entry);
@@ -50,8 +53,8 @@ public:
     Account::FrequencyEnum frequency(QDate) const;
     void setFrequency(QDate, Account::FrequencyEnum);
 
-    QString category() const;
-    void setCategory(QString);
+    Category category() const;
+    void setCategory(Category);
 
     QDate reference() const;
     void setReference(QDate);
