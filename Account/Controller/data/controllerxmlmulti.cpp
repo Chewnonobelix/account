@@ -389,8 +389,8 @@ bool ControllerXMLMulti::addBudget(Budget& b)
     el.setAttribute("id", id.toString());
     el.setAttribute("lastUpdate", QDateTime::currentDateTime().toString());
     el.setAttribute("removed", false);
-    
-    adder(el, "name", b.category());
+    el.setAttribute("type", (int)b.type());
+    adder(el, "name", b.category().id().toString());
     adder(el, "reference",  b.reference().toString("dd-MM-yyyy"));
     
     root.appendChild(el);
@@ -428,9 +428,10 @@ QMap<QUuid, Budget> ControllerXMLMulti::selectBudgets()
         
         Budget b;
         b.setId(QUuid::fromString(el.attribute("id")));
-        b.setMetadata("lastUpdate", QDateTime::fromString(el.attribute("lastUpdate")));  
+        b.setMetadata("lastUpdate", QDateTime::fromString(el.attribute("lastUpdate")));
+        b.setType((Account::TypeEnum)el.attribute("type").toInt());
         QDomElement child = el.elementsByTagName("name").at(0).toElement();
-        b.setCategory(child.text());
+        b.setCategory(selectCategory()[b.type()][QUuid::fromString(child.text())]);
         child = el.elementsByTagName("reference").at(0).toElement();
         b.setReference(QDate::fromString(child.text(), "dd-MM-yyyy"));
         
