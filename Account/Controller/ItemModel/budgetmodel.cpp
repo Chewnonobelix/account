@@ -19,7 +19,7 @@ QVariant BudgetModel::data(const QModelIndex &index, int role) const
     int row = index.row();
     auto c =  m_list[row];
 
-    auto t = QMetaEnum::fromType<Account::TypeEnum>().valueToKeys((int)type());
+    auto t = QMetaEnum::fromType<Account::TypeEnum>().valueToKey((int)type());
     switch (BudgetRole(role)) {
     case BudgetRole::NameRole:
         return c.name();

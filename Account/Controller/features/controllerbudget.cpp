@@ -134,6 +134,7 @@ void ControllerBudget::addBudget(QString id, int type)
     Budget b;
     auto c = db()->selectCategory()[Account::TypeEnum(type)][QUuid::fromString(id)];
     b.setCategory(c);
+		b.setType(Account::TypeEnum(type));
     m_db->addBudget(b);
     auto tn = QMetaEnum::fromType<Account::TypeEnum>().valueToKey(type);
     c.setMetadata(tn, b.id());
@@ -142,7 +143,11 @@ void ControllerBudget::addBudget(QString id, int type)
 
 void ControllerBudget::removeBudget(QString id)
 {
-    db()->removeBudget(m_budgets[QUuid::fromString(id)]);
+		auto b = m_budgets[QUuid::fromString(id)];
+		auto c = db()->selectCategory()[b.type()][b.category().id()];
+		c.setMetadata(QMetaEnum::fromType<Account::TypeEnum>().valueToKey(int(b.type())), QUuid());
+		db()->updateCategory(c);
+		db()->removeBudget(b);
 }
 
 void ControllerBudget::editBudget(QString cat)
