@@ -8,7 +8,7 @@ BudgetModel::BudgetModel()
 
 int BudgetModel::rowCount(const QModelIndex &) const
 {
-    return m_incomes.size() + m_outcomes.size();
+    return m_list.size();
 }
 
 QVariant BudgetModel::data(const QModelIndex &index, int role) const
@@ -17,18 +17,18 @@ QVariant BudgetModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     int row = index.row();
-    auto b = row > m_outcomes.size() ? m_incomes[row - m_outcomes.size()] : m_outcomes[row];
-    auto type =  row > m_outcomes.size() ? "income" : "outcome";
+    auto c =  m_list[row];
 
+    auto t = QMetaEnum::fromType<Account::TypeEnum>().valueToKeys((int)type());
     switch (BudgetRole(role)) {
     case BudgetRole::NameRole:
-        return b.name();
+        return c.name();
     case BudgetRole::CategoryRole:
-        return b.id();
+        return c.id();
     case BudgetRole::IdBudgetRole:
-        return b.metaData<QString>(type);
+        return c.metaData<QString>(t);
     case BudgetRole::HasRole:
-        return !QUuid::fromString(b.metaData<QString>(type)).isNull();
+        return !QUuid::fromString(c.metaData<QString>(t)).isNull();
     }
 }
 
@@ -36,7 +36,7 @@ QHash<int, QByteArray> BudgetModel::roleNames() const
 {
     static QHash<int, QByteArray> ret = {{int(BudgetRole::NameRole), "name"},
                                          {int(BudgetRole::CategoryRole),"category"},
-                                         {int(BudgetRole::IdBudgetRole),"id"},
+                                         {int(BudgetRole::IdBudgetRole),"idBudget"},
                                          {int(BudgetRole::HasRole),"has"}};
     return ret;
 }
@@ -49,5 +49,33 @@ Qt::ItemFlags BudgetModel::flags(const QModelIndex &) const
 
 void BudgetModel::onBudgetChanged()
 {
+    clear();
+    m_list = AbstractController::db()->selectCategory()[type()].values();
+    prepareRow();
+}
 
+Account::TypeEnum BudgetModel::type() const
+{
+    return m_type;
+}
+
+void BudgetModel::setType(Account::TypeEnum type)
+{
+    m_type = type;
+    emit typeChanged();
+    onBudgetChanged();
+}
+
+void BudgetModel::clear()
+{
+    beginRemoveRows(QModelIndex(), 0, rowCount());
+    removeRows(0, rowCount());
+    endRemoveRows();
+}
+
+void BudgetModel::prepareRow()
+{
+    beginInsertRows(QModelIndex(), 0, rowCount() - 1);
+    insertRows(0, rowCount()-1);
+    endInsertRows();
 }

@@ -8,9 +8,11 @@
 class BudgetModel: public QAbstractListModel
 {
     Q_OBJECT
+
+    Q_PROPERTY(Account::TypeEnum type READ type WRITE setType NOTIFY typeChanged)
 private:
-    QList<Category> m_incomes;
-    QList<Category> m_outcomes;
+    QList<Category> m_list;
+    Account::TypeEnum m_type = Account::TypeEnum::Outcome;
 
 public:
     enum class BudgetRole {NameRole = Qt::UserRole + 1,
@@ -21,8 +23,17 @@ public:
 
     BudgetModel();
 
+    Account::TypeEnum type() const;
+    void setType(Account::TypeEnum);
+
+    void clear();
+    void prepareRow();
+
 public slots:
     void onBudgetChanged();
+
+signals:
+    void typeChanged();
 
 public:
     Q_INVOKABLE int rowCount(const QModelIndex &parent = QModelIndex()) const override;
