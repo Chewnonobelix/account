@@ -22,6 +22,7 @@
 #include "controllertransfert.h"
 #include "languagecontroller.h"
 #include "liveqmlengine.h"
+#include "../ItemModel/budgetmodel.h"
 
 class ACCOUNT_EXPORT MainController: public AbstractController
 {

@@ -24,7 +24,8 @@ MainController::MainController(int storage)
 			 << qmlRegisterUncreatableType<Worker>("Account.Frequency", 1, 0, "Worker", message);
 	qDebug() << "CategoryModel"
 			 << qmlRegisterType<CategoryListModel>("Account.Model", 1, 0, "CategoryModel");
-	qDebug() << "MainModel" << qmlRegisterType<MainModel>("Account.Model", 1, 0, "MainModel");
+    qDebug() << "MainModel" << qmlRegisterType<MainModel>("Account.Model", 1, 0, "MainModel");
+    qDebug() << "BudgetModel" << qmlRegisterType<BudgetModel>("Account.Model", 1, 0, "BudgetModel");
 	qmlRegisterModule("Account.Style", 1, 0);
 
 	m_dbThread = new QThread;
