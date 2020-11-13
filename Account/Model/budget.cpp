@@ -13,6 +13,19 @@ Budget::Budget(const Budget & b): MetaData(b)
     m_targets = b.m_targets;
     m_subs = b.m_subs;
 }
+Budget::Budget(const QJsonObject& obj): MetaData(obj)
+{
+    Category c(obj["category"].toObject());
+    setCategory(c);
+}
+
+Budget::operator QJsonObject() const
+{
+    auto ret = MetaData::operator QJsonObject();
+    ret["category"] = (QJsonObject)category();
+    return ret;
+}
+
 
 QUuid Budget::id() const
 {
@@ -204,8 +217,8 @@ Budget& Budget::operator = (const Budget& b)
 
 Budget& Budget::operator <<(Entry e)
 {
-        if (e.category() == category())
-            if(!addEntry(e))
+    if (e.category() == category())
+        if(!addEntry(e))
             updateEntry(e);
 
     return *this;

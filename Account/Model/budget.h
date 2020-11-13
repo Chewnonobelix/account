@@ -30,7 +30,8 @@ public:
     Budget();
     Budget(const Budget &);
     ~Budget() = default;
-    using MetaData::MetaData;
+    Budget(const QJsonObject&);
+    operator QJsonObject() const;
 
     QUuid id() const;
     void setId(QUuid);
