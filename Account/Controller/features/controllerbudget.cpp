@@ -135,7 +135,7 @@ void ControllerBudget::addBudget(QString id, int type)
     auto c = db()->selectCategory()[Account::TypeEnum(type)][QUuid::fromString(id)];
     b.setCategory(c);
     m_db->addBudget(b);
-    auto tn = QMetaEnum::fromType<Account::TypeEnum>().valueToKeys(type);
+    auto tn = QMetaEnum::fromType<Account::TypeEnum>().valueToKey(type);
     c.setMetadata(tn, b.id());
     db()->updateCategory(c);
 }
