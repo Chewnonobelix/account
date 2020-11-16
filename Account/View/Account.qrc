@@ -55,5 +55,6 @@
         <file>Core/AccountMenu.qml</file>
         <file>Debt/Debt.qml</file>
         <file>Core/EntryText.qml</file>
+        <file>Budget/BudgetList.qml</file>
     </qresource>
 </RCC>

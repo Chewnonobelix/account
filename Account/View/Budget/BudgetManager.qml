@@ -23,140 +23,32 @@ Rectangle {
 		width: 150 * 1.5
 	}
 
-	ListModel {
-		id: categoryModel
-
-		function getIndex(name) {
-			var ret = -1;
-
-			for(var i = 0; i < count; i++) {
-				if(get(i).catName === name)
-					ret = i;
-			}
-
-			return ret
-		}
-
-
-		onCountChanged: catView.currentIndex = -1
-	}
-
 	Connections {
 		target: _budget
-
-		function onAddCat(cat) {
-			categoryModel.append(cat)
-		}
-
-		function onClearCat() {
-			categoryModel.clear()
-		}
-
-		function onAddTarget2(target2) {
-			targetModel.append(target2)
-		}
-
-		function onClearTarget() {
-			targetModel.clear()
-		}
-
-		function onAddSub(sub) {
-			subModel.append(sub)
-		}
-
-		function onClearSub() {
-			subModel.clear()
-		}
-
-		function onBlocked(block) {
-			root.blocked = block
-		}
-
-		function onSelectCat(select) {
-			catView.currentIndex = categoryModel.getIndex(select)        }
 	}
 
-	ListModel {
-		id: targetModel
-	}
-
-	ListModel {
-		id: subModel
-	}
-
+	property var currentBudget: null
 	RowLayout {
 		anchors.fill: parent
 
 		spacing: width * 0.02
 
-		ListView {
-			id: outcomeListView
-			model: BudgetModel {
-				type: Account.TypeEnum.Outcome
-			}
-
+		Column {
 			Layout.preferredHeight:  root.height * .85
 			Layout.preferredWidth: root.width * .30
 			Layout.alignment: Qt.AlignTop
+			BudgetList  {
+				id: outcomeList
 
-			header: AccountHeader {
-				width: outcomeListView.width
-				height: outcomeListView.height * .15
-				text: qsTr("Outcome")
+				title: qsTr("Outcome")
+				type: Account.TypeEnum.Outcome
 			}
+//			BudgetList  {
+//				id: incomeList
 
-			delegate: AccountBackground {
-				invisible: true
-				Component.onCompleted: {
-					console.log(has, idBudget, category, name )
-				}
-				width: outcomeListView.width
-				height: outcomeListView.height * .10
-
-
-				AccountLabel {
-					anchors.fill: parent
-					text: name
-					color: has ? "green" : "red"
-				}
-
-				Menu {
-					id: catMenu
-
-					height: parent.height
-
-					delegate: MenuItem {
-						font.family: AccountStyle.core.name
-						font.pixelSize: AccountStyle.core.size
-
-						height: catMenu.height
-						background: Rectangle {
-							anchors.fill: parent
-							gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
-						}
-					}
-
-					Action {
-						//TODO
-						id: addBudget
-						text:  has ? qsTr("Remove budget") : qsTr("Add budget")
-						onTriggered:  has ? _budget.removeBudget(idBudget) : _budget.addBudget(category, outcomeListView.model.type)
-					}
-
-				}
-
-				MouseArea {
-					anchors.fill: parent
-					cursorShape: Qt.PointingHandCursor
-					acceptedButtons: Qt.LeftButton | Qt.RightButton
-
-					onClicked: {
-						if(mouse.button == Qt.RightButton)
-							catMenu.open()
-					}
-
-				}
-			}
+//				title: qsTr("Income")
+//				type: Account.TypeEnum.Income
+//			}
 		}
 
 		Rectangle {
@@ -172,15 +64,15 @@ Rectangle {
 				objectName: "targetView"
 				anchors.fill: parent
 
-				visible: catView.currentIndex !== -1 && categoryModel.get(catView.currentIndex).has
+				visible: outcomeListView.currentIndex !== -1
 
-				ToolTip.text: catView.currentIndex !== -1 ? categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list") : ""
+				ToolTip.text: outcomeListView.currentIndex !== -1 ? categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list") : ""
 				ToolTip.delay: 500
 				ToolTip.timeout: 1000
 				ToolTip.visible: budgetArea.containsMouse && catView.currentIndex !== -1
 
 
-				model: targetModel
+				//				model: targetModel
 				currentIndex: -1
 				clip: true
 				spacing: height * 0.02
@@ -292,7 +184,7 @@ Rectangle {
 			Layout.alignment: Qt.AlignTop
 
 			visible: targetView.visible
-			model: subModel
+			//			model: subModel
 			clip: true
 			spacing: height * 0.02
 
