@@ -37,18 +37,26 @@ Rectangle {
 			Layout.preferredHeight:  root.height * .85
 			Layout.preferredWidth: root.width * .30
 			Layout.alignment: Qt.AlignTop
+			clip: true
 			BudgetList  {
 				id: outcomeList
 
 				title: qsTr("Outcome")
 				type: Account.TypeEnum.Outcome
+				width: parent.width
+				height: parent.height / 2
+				clip: true
 			}
-//			BudgetList  {
-//				id: incomeList
+			BudgetList  {
+				id: incomeList
 
-//				title: qsTr("Income")
-//				type: Account.TypeEnum.Income
-//			}
+				title: qsTr("Income")
+				type: Account.TypeEnum.Income
+				width: parent.width
+				height: parent.height / 2
+
+				clip: true
+			}
 		}
 
 		Rectangle {
@@ -57,19 +65,19 @@ Rectangle {
 			Layout.preferredHeight: root.height * .85
 			Layout.preferredWidth: root.width * .30
 			Layout.alignment: Qt.AlignTop
-			visible: catView.currentIndex !== -1 && categoryModel.get(catView.currentIndex).has
+			visible:  outcomeList.currentIndex !== -1
 
 			ListView {
 				id: targetView
 				objectName: "targetView"
 				anchors.fill: parent
 
-				visible: outcomeListView.currentIndex !== -1
+				visible: outcomeList.currentIndex !== -1
 
-				ToolTip.text: outcomeListView.currentIndex !== -1 ? categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list") : ""
+//				ToolTip.text: outcomeList.currentIndex !== -1 ? categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list") : ""
 				ToolTip.delay: 500
 				ToolTip.timeout: 1000
-				ToolTip.visible: budgetArea.containsMouse && catView.currentIndex !== -1
+//				ToolTip.visible: budgetArea.containsMouse && catView.currentIndex !== -1
 
 
 				//				model: targetModel
