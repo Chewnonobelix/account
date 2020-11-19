@@ -16,9 +16,21 @@ class ACCOUNT_EXPORT Budget: public MetaData
 {
 public:
 
+				class Target {
+					Q_GADGET
+
+					Q_PROPERTY(double target MEMBER target)
+					Q_PROPERTY(Account::FrequencyEnum frequency MEMBER frequency)
+					Q_PROPERTY(QDate date MEMBER frequency)
+
+					public:
+									QDate date;
+									double target;
+									Account::FrequencyEnum frequency;
+				};
+
 private:
-    QMap<QDate, Account::FrequencyEnum> m_frequency;
-    QMap<QDate, double> m_targets;
+				QMap<QDate, Target> m_targets;
     QMap<QDate, SubBudget> m_subs;
 
     QMap<QDate, SubBudget>::iterator m_subit = m_subs.end();
