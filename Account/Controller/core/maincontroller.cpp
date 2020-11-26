@@ -25,7 +25,8 @@ MainController::MainController(int storage)
 	qDebug() << "CategoryModel"
 			 << qmlRegisterType<CategoryListModel>("Account.Model", 1, 0, "CategoryModel");
     qDebug() << "MainModel" << qmlRegisterType<MainModel>("Account.Model", 1, 0, "MainModel");
-    qDebug() << "BudgetModel" << qmlRegisterType<BudgetModel>("Account.Model", 1, 0, "BudgetModel");
+				qDebug() << "BudgetModel" << qmlRegisterType<BudgetModel>("Account.Model", 1, 0, "BudgetModel");
+				qDebug() << "TargetListModel" << qmlRegisterType<TargetListModel>("Account.Model", 1, 0, "TargetListModel");
 	qmlRegisterModule("Account.Style", 1, 0);
 
 	m_dbThread = new QThread;
