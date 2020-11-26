@@ -9,34 +9,37 @@ void TargetListModel::setCurrentId(QString id)
 {
 	beginRemoveRows(QModelIndex(), 0, rowCount());
 	removeRows(0, rowCount());
-	endRemoveColumns();
+	endRemoveRows();
 
 	m_currentBudgetId = QUuid::fromString(id);
 
-	beginInsertRows(QModelIndex(), 0, rowCount());
-	insertRows(0, rowCount());
-	endInsertColumns();
+	m_list = AbstractController::db()->selectBudgets()[m_currentBudgetId].targets().values();
+
+	beginInsertRows(QModelIndex(), 0, rowCount() - 1);
+	insertRows(0, rowCount() - 1);
+	endInsertRows();
 
 	emit currentIdChanged();
 }
 
 int TargetListModel::rowCount(const QModelIndex &) const
 {
-	return AbstractController::db()->selectBudgets()[currentId()].targets().size();
+	return m_list.size();
 }
 
 QVariant TargetListModel::data(const QModelIndex &index, int role) const
 {
-	auto row = index.row();
-	Budget b = AbstractController::db()->selectBudgets()[currentId()];
+	if(index.isValid() && index.row() < rowCount()) {
+		auto row = index.row();
 
-	switch (TargetRole(role)) {
-	case TargetRole::DateRole:
-		return b.targets().values()[row].date;
-	case TargetRole::ValueRole:
-		return b.targets().values()[row].target;
-	case TargetRole::FrequencyRole:
-		return QVariant::fromValue(b.targets().values()[row].frequency);
+		switch (TargetRole(role)) {
+		case TargetRole::DateRole:
+			return m_list[row].date;
+		case TargetRole::ValueRole:
+			return m_list[row].target;
+		case TargetRole::FrequencyRole:
+			return QVariant::fromValue(m_list[row].frequency);
+		}
 	}
 
 	return QVariant();

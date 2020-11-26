@@ -49,6 +49,7 @@ Rectangle {
 				clip: true
 
 				onCurrentModelChanged: targetModel.currentId = currentModel
+				onCountChanged: console.log("lolyu")
 			}
 			BudgetList  {
 				id: incomeList
@@ -77,27 +78,25 @@ Rectangle {
 				objectName: "targetView"
 				anchors.fill: parent
 
-
-//				ToolTip.text: outcomeList.currentIndex !== -1 ? categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list") : ""
+				//				ToolTip.text: outcomeList.currentIndex !== -1 ? categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list") : ""
 				ToolTip.delay: 500
 				ToolTip.timeout: 1000
-//				ToolTip.visible: budgetArea.containsMouse && catView.currentIndex !== -1
-
+				//				ToolTip.visible: budgetArea.containsMouse && catView.currentIndex !== -1
 
 				model: TargetListModel {
 					id: targetModel
-
-					onCurrentIdChanged: targetView.visible = isValid
 				}
 
 				currentIndex: -1
 				clip: true
 				spacing: height * 0.02
 
+				headerPositioning: ListView.OverlayHeader
 				header: AccountHeader {
 					text: qsTr("Target")
 					width: targetView.width
 					height: targetView.height * .07
+					z:5
 				}
 
 				onCurrentIndexChanged: {
@@ -146,8 +145,10 @@ Rectangle {
 
 				delegate: Rectangle {
 					width: targetView.width
-					height: 40
+					height: targetView.height * 0.10
+					clip: true
 
+					Component.onCompleted: console.log("wesh")
 					border.color: "gray"
 					gradient: targetView.currentIndex === index ? AccountStyle.calSelect : AccountStyle.backgroundGradient
 					AccountLabel {

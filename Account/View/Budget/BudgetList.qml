@@ -17,10 +17,15 @@ ListView {
 		type: root.type
 	}
 
+	clip: true
+
+	headerPositioning: ListView.OverlayHeader
+
 	header: AccountHeader {
 		width: root.width
 		height: root.height * .15
 		text: root.title
+		z:5
 	}
 
 	highlight: Rectangle{
@@ -29,9 +34,8 @@ ListView {
 
 	delegate: AccountBackground {
 		invisible: true
-		Component.onCompleted: {
-			console.log("Item budget", has, idBudget, category, name )
-		}
+		clip: true
+
 		width: root.width
 		height: root.height * .10
 

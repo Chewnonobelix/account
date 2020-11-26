@@ -10,12 +10,12 @@ class TargetListModel: public QAbstractListModel
 	Q_PROPERTY(QString currentId READ currentId WRITE setCurrentId NOTIFY currentIdChanged)
 	Q_PROPERTY(bool isValid READ isValid CONSTANT)
 
-private:
-				enum class TargetRole {DateRole = Qt::UserRole + 1, ValueRole, FrequencyRole};
+	private:
+	QUuid m_currentBudgetId;
+	QList<Target> m_list;
 
-				QUuid m_currentBudgetId;
-
-public:
+	public:
+	enum class TargetRole {DateRole = Qt::UserRole + 1, ValueRole, FrequencyRole};
 	TargetListModel() = default;
 	~TargetListModel() = default;
 
@@ -24,8 +24,9 @@ public:
 	bool isValid() const;
 
 	signals:
-						void currentIdChanged();
-public:
+
+	void currentIdChanged();
+	public:
 	Q_INVOKABLE int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	Q_INVOKABLE QVariant data(const QModelIndex &index, int role) const override;
 	Q_INVOKABLE QHash<int, QByteArray> roleNames() const override;
