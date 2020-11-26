@@ -17,7 +17,7 @@ Rectangle {
 	color: "transparent"
 
 	ReferenceView {
-		objectName: "reference"
+		id: reference
 		anchors.centerIn: parent
 		height: width * 1.33
 		width: 150 * 1.5
@@ -40,15 +40,20 @@ Rectangle {
 			clip: true
 			BudgetList  {
 				id: outcomeList
+				onCurrentIndexChanged: if(currentIndex !== -1) incomeList.currentIndex = -1
 
 				title: qsTr("Outcome")
 				type: Account.TypeEnum.Outcome
 				width: parent.width
 				height: parent.height / 2
 				clip: true
+
+				onCurrentModelChanged: targetModel.currentId = currentModel
 			}
 			BudgetList  {
 				id: incomeList
+
+				onCurrentIndexChanged: if(currentIndex !== -1) outcomeList.currentIndex = -1
 
 				title: qsTr("Income")
 				type: Account.TypeEnum.Income
@@ -72,7 +77,6 @@ Rectangle {
 				objectName: "targetView"
 				anchors.fill: parent
 
-				visible: outcomeList.currentIndex !== -1
 
 //				ToolTip.text: outcomeList.currentIndex !== -1 ? categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list") : ""
 				ToolTip.delay: 500
@@ -80,7 +84,12 @@ Rectangle {
 //				ToolTip.visible: budgetArea.containsMouse && catView.currentIndex !== -1
 
 
-				//				model: targetModel
+				model: TargetListModel {
+					id: targetModel
+
+					onCurrentIdChanged: targetView.visible = isValid
+				}
+
 				currentIndex: -1
 				clip: true
 				spacing: height * 0.02
@@ -112,7 +121,8 @@ Rectangle {
 					id: targetItemMenu
 
 					height: count * 20
-
+					width: targetView.width * 0.40
+					z: 10
 					delegate: MenuItem {
 						font.family: AccountStyle.core.name
 						font.pixelSize: AccountStyle.core.size
@@ -123,10 +133,12 @@ Rectangle {
 					}
 
 
+					onOpened: console.log("bite", count)
+
 					Action {
 						id: addSubTarget
 						text: qsTr("Add target")
-						onTriggered: _budget.addTarget(categoryModel.get(catView.currentIndex).catName)
+						onTriggered: _budget.addTarget(targetModel.currentId)
 					}
 
 
@@ -145,7 +157,7 @@ Rectangle {
 							z:5
 							onClicked: {
 								targetView.currentIndex = targetView.currentIndex === index ? -1 :  index
-								if(mouse.button === Qt.RightButton && targetItemMenu.count === 1) {
+								if(mouse.button === Qt.RightButton) {
 									targetView.currentIndex = index
 									targetItemMenu.addAction(compRemoveAction.createObject())
 									targetItemMenu.popup()
