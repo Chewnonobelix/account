@@ -152,11 +152,6 @@ void ControllerBudget::removeBudget(QString id)
 
 void ControllerBudget::editBudget(QString cat)
 {
-    //    if(!m_referenceView)
-    //    {
-    //        m_referenceView = m_view->findChild<QObject*>("reference");
-    //    }
-
     emit catChanged(cat);
 }
 
@@ -164,34 +159,43 @@ void ControllerBudget::editReference(QVariant ref)
 {
     QVariantMap map = ref.toMap();
 
-    m_budgets[map["cat"].toString()].setFrequency(QDate::fromString(map["date"].toString(),
-                                                  "dd-MM-yyyy"),
-            map["role"].value<Account::FrequencyEnum>());
+				auto b = db()->selectBudgets()[map["cat"].toUuid()];
+				b.addTarget(QDate::fromString(map["date"].toString(), "dd-MM-yyyy"),
+																map["value"].toDouble(), Account::FrequencyEnum(map["role"].toInt()));
 
-    m_budgets[map["cat"].toString()].addTarget(QDate::fromString(map["date"].toString(),
-                                               "dd-MM-yyyy"),
-            map["value"].toDouble());
-    m_db->updateBudget(m_budgets[map["cat"].toString()]);
-    reload();
-    getTarget(map["cat"].toString());
+				db()->updateBudget(b);
+
+				reload();
+				//TODO
+//    m_budgets[map["cat"].toString()].setFrequency(QDate::fromString(map["date"].toString(),
+//                                                  "dd-MM-yyyy"),
+//            map["role"].value<Account::FrequencyEnum>());
+
+//    m_budgets[map["cat"].toString()].addTarget(QDate::fromString(map["date"].toString(),
+//                                               "dd-MM-yyyy"),
+//            map["value"].toDouble());
+//    m_db->updateBudget(m_budgets[map["cat"].toString()]);
+//    reload();
+//    getTarget(map["cat"].toString());
 }
 
 void ControllerBudget::getTarget(QString catName)
 {
-    auto list = m_budgets[catName].targets();
+	//TODO
+//    auto list = m_budgets[catName].targets();
 
-    emit clearTarget();
+//    emit clearTarget();
 
-    for (auto it = list.begin(); it != list.end(); it++) {
-        QVariantMap map;
-        map.insert("date", it.key());
-        map.insert("target", it.value());
-        map.insert("frequency", (int) m_budgets[catName].frequency(it.key()));
+//    for (auto it = list.begin(); it != list.end(); it++) {
+//        QVariantMap map;
+//        map.insert("date", it.key());
+//        map.insert("target", it.value());
+//        map.insert("frequency", (int) m_budgets[catName].frequency(it.key()));
 
-        emit addTarget2(map);
-    }
+//        emit addTarget2(map);
+//    }
 
-    showTarget(catName, "", true);
+//    showTarget(catName, "", true);
 }
 
 void ControllerBudget::updateEntry(QUuid id)
