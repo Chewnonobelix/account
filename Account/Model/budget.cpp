@@ -2,288 +2,320 @@
 
 Budget::Budget()
 {
-    setReference(QDate::currentDate());
-    setCategory(Category());
-    setId(QUuid());
+	setReference(QDate::currentDate());
+	setCategory(Category());
+	setId(QUuid());
 }
 
 Budget::Budget(const Budget & b): MetaData(b)
 {
-    m_frequency = b.m_frequency;
-    m_targets = b.m_targets;
-    m_subs = b.m_subs;
+	m_subs = b.m_subs;
 }
 Budget::Budget(const QJsonObject& obj): MetaData(obj)
 {
-    Category c(obj["category"].toObject());
-    setCategory(c);
+	Category c(obj["category"].toObject());
+	setCategory(c);
+
+	auto t = obj["targets"].toArray();
+	QMap<QDate, Target> tars;
+	for(auto it: t)
+	{
+		Target temp(it.toObject());
+		tars[temp.date] = temp;
+	}
+
+	setMetadata("targets", tars);
 }
 
 Budget::operator QJsonObject() const
 {
-    auto ret = MetaData::operator QJsonObject();
-    ret["category"] = (QJsonObject)category();
-    return ret;
+	auto ret = MetaData::operator QJsonObject();
+	ret["category"] = (QJsonObject)category();
+	auto t = targets().values();
+	QJsonArray array;
+
+	for(auto it: t)
+		array<<(QJsonObject)it;
+
+	ret["targets"] = array;
+
+	return ret;
+}
+
+Target::operator QJsonObject() const
+{
+	QJsonObject ret;
+	ret["date"] = date.toString("dd-MM-yyyy");
+	ret["target"] = target;
+	ret["frequency"] = QVariant::fromValue(frequency).toString();
+
+	return ret;
+}
+
+Target::Target(QDate d, double t, Account::FrequencyEnum f):
+						date(d), target(t), frequency(f)
+{
+
+}
+
+Target::Target(const QJsonObject& obj)
+{
+	target = obj["target"].toDouble();
+	date = QDate::fromString(obj["date"].toString(), "dd-MM-yyyy");
+	frequency = obj["frequency"].toVariant().value<Account::FrequencyEnum>();
 }
 
 
 QUuid Budget::id() const
 {
-    return metaData<QUuid>("id");
+	return metaData<QUuid>("id");
 }
 
 void Budget::setId(QUuid i)
 {
-    setMetadata("id", i);
+	setMetadata("id", i);
 }
 
 Account::TypeEnum Budget::type() const
 {
-    return metaData<Account::TypeEnum>("type");
+	return metaData<Account::TypeEnum>("type");
 }
 
 void Budget::setType(Account::TypeEnum type)
 {
-    setMetadata("type", type);
+	setMetadata("type", type);
 }
 
 bool Budget::addEntry(Entry e)
 {
-    if(m_targets.isEmpty())
-        return false;
+	auto m_targets = targets();
+	if(m_targets.isEmpty())
+		return false;
 
-    m_subit = std::find_if(m_subs.begin(), m_subs.end(), [e](const SubBudget& it) {
-        return it.in(e.date());    
+	m_subit = std::find_if(m_subs.begin(), m_subs.end(), [e](const SubBudget& it) {
+		return it.in(e.date());
     });
 
-    if(m_subit == m_subs.end())
-        createSub(e.date());
-    
-    
-    return (*m_subit).addEntry(e);;
+	if(m_subit == m_subs.end())
+		createSub(e.date());
+
+
+	return (*m_subit).addEntry(e);;
 }
 
 bool Budget::removeEntry(Entry e)
 {
-    bool ret = false;
+	bool ret = false;
 
-    for(auto it: m_subs)
-        if(it.begin() <= e.date() && e.date() <= it.end())
-            ret = it.removeEntry(e);
+	for(auto it: m_subs)
+		if(it.begin() <= e.date() && e.date() <= it.end())
+			ret = it.removeEntry(e);
 
-    return ret;
+	return ret;
 }
 
 bool Budget::updateEntry(Entry e)
 {
-    bool ret = false;
+	bool ret = false;
 
-    for(auto it: m_subs)
-        if(it.begin() <= e.date() && e.date() <= it.end())
-            ret = it.updateEntry(e);
+	for(auto it: m_subs)
+		if(it.begin() <= e.date() && e.date() <= it.end())
+			ret = it.updateEntry(e);
 
-    return ret;
+	return ret;
 }
 
-bool Budget::addTarget(QDate d, double t)
+bool Budget::addTarget(QDate d, double t, Account::FrequencyEnum f)
 {
-    bool ret = !m_targets.contains(d);
+	auto m_targets = targets();
 
-    if(ret)
-        m_targets[d] = t;
+	bool ret = !m_targets.contains(d);
 
-    return ret;
+	if(ret)
+		m_targets[d] = Target {d, t, f};
+
+	setMetadata("targets", m_targets);
+	return ret;
 }
 
 bool Budget::removeTarget(QDate d)
 {
-    bool ret = m_targets.remove(d) != 0 && m_frequency.remove(d) != 0;
-    m_subs.clear();
+	auto m_targets = targets();
+
+	bool ret = m_targets.remove(d) != 0;
+	m_subs.clear();
+	setMetadata("targets", m_targets);
 
 
-    return ret;
+	return ret;
 }
 
 bool Budget::updateTarget(QDate d, double t)
 {
-    bool ret = m_targets.contains(d);
+	auto m_targets = targets();
+	bool ret = m_targets.contains(d);
 
-    if(ret)
-        m_targets[d] = t;
-    return ret;
+	if(ret)
+		m_targets[d].target = t;
+	setMetadata("targets", m_targets);
+
+	return ret;
 }
 
 bool Budget::createSub(QDate d)
 {
-    if(m_targets.isEmpty())
-        return false;
+	if(targets().isEmpty())
+		return false;
 
-    QDate start = m_targets.begin().key();
-    QDate end = next(start).addDays(-1);
-    bool ret = false;
-    SubBudget sub;
-    sub.setBegin(start);
-    sub.setEnd(end);
+	auto m_targets = targets();
+	QDate start = m_targets.begin().key();
+	QDate end = next(start).addDays(-1);
+	bool ret = false;
+	SubBudget sub;
+	sub.setBegin(start);
+	sub.setEnd(end);
 
-    while(!sub.in(d))
-    {                
-        if(d < start)
-        {
-            start = previous(start);
-            end = previous(end);
-        }
-        else
-        {
-            start = next(start);
-            end = next(end);
-        }
+	while(!sub.in(d))
+	{
+								if(d < start)
+		{
+			start = previous(start);
+			end = previous(end);
+		}
+		else
+		{
+			start = next(start);
+			end = next(end);
+		}
 
-        sub.setBegin(start);
-        sub.setEnd(end);
-    }
+		sub.setBegin(start);
+		sub.setEnd(end);
+	}
 
-    auto l = m_targets.keys();
+	auto l = m_targets.keys();
 
-    double tar = m_targets.last();
-    sub.setReference(m_targets.lastKey());
-    ret = !l.isEmpty();
-    if(l.size() == 1 || d < l.first())
-    {
-        sub.setReference(m_targets.firstKey());
-        tar = m_targets.first();
-    }
-    else
-    {
-        for(auto it = l.begin(); it != l.end(); it++)
-        {
-            if(d < *it)
-            {
-                sub.setReference(*(it-1));
-                tar = m_targets[*(it-1)];
-            }
-        }
-    }
+	double tar = m_targets.last().target;
+	sub.setReference(m_targets.lastKey());
+	ret = !l.isEmpty();
+	if(l.size() == 1 || d < l.first())
+	{
+		sub.setReference(m_targets.firstKey());
+		tar = m_targets.first().target;
+	}
+	else
+	{
+		for(auto it = l.begin(); it != l.end(); it++)
+		{
+			if(d < *it)
+			{
+				sub.setReference(*(it-1));
+				tar = m_targets[*(it-1)].target;
+			}
+		}
+	}
 
-    sub.setTarget(tar);
-    m_subs[sub.begin()] = sub;
-    m_subit = m_subs.find(sub.begin());
-    return ret;
+	sub.setTarget(tar);
+	m_subs[sub.begin()] = sub;
+	m_subit = m_subs.find(sub.begin());
+	return ret;
 }
 
 double Budget::current(QDate d)
 {
-    double ret = 0;
-    for(auto it: m_subs)
-        if(it.in(d))
-            ret = it.current();
-    return ret;
-}
-
-Account::FrequencyEnum Budget::frequency(QDate d) const
-{
-    Account::FrequencyEnum ret;
-    auto it = m_frequency.begin();
-    for(; it != m_frequency.end(); it++)
-        if((d >= it.key() && d < (it+1).key()) || (it+1) == m_frequency.end())
-            ret = it.value();
-    
-    return ret;
-}
-
-void Budget::setFrequency(QDate d, Account::FrequencyEnum f)
-{
-    m_frequency[d] = f;
+	double ret = 0;
+	for(auto it: m_subs)
+		if(it.in(d))
+			ret = it.current();
+	return ret;
 }
 
 Category Budget::category() const
 {
-    return metaData<Category>("category");
+	return metaData<Category>("category");
 }
 
 void Budget::setCategory(Category c)
 {
-    setMetadata("category", c);
+	setMetadata("category", c);
 }
 
 Budget& Budget::operator = (const Budget& b)
 {
-    MetaData::operator=(b);
-    m_frequency = b.m_frequency;
-    m_targets = b.m_targets;
-    m_subs = b.m_subs;
+	MetaData::operator=(b);
+	m_subs = b.m_subs;
 
-    return *this;
+	return *this;
 }
 
 Budget& Budget::operator <<(Entry e)
 {
-    if (e.category() == category())
-        if(!addEntry(e))
-            updateEntry(e);
+	if (e.category() == category())
+		if(!addEntry(e))
+			updateEntry(e);
 
-    return *this;
+	return *this;
 }
 
 Budget& Budget::operator >>(Entry e)
 {
-    removeEntry(e);
-    return *this;
+	removeEntry(e);
+	return *this;
 }
 
 QDate Budget::next(QDate d) const
 {
-    switch(frequency(d))
-    {
-    case Account::FrequencyEnum::Day:
-        return d.addDays(1);
-    case Account::FrequencyEnum::Week:
-        return d.addDays(8);
-    case Account::FrequencyEnum::Month:
-        return d.addMonths(1);
-    case Account::FrequencyEnum::Quarter:
-        return d.addMonths(4);
-    case Account::FrequencyEnum::Year:
-        return d.addYears(1);
-    default:
-        return d;
-    }
+	switch(targets()[d].frequency)
+	{
+	case Account::FrequencyEnum::Day:
+		return d.addDays(1);
+	case Account::FrequencyEnum::Week:
+		return d.addDays(8);
+	case Account::FrequencyEnum::Month:
+		return d.addMonths(1);
+	case Account::FrequencyEnum::Quarter:
+		return d.addMonths(4);
+	case Account::FrequencyEnum::Year:
+		return d.addYears(1);
+	default:
+		return d;
+	}
 }
 
 QDate Budget::previous(QDate d) const
 {
-    switch(frequency(d))
-    {
-    case Account::FrequencyEnum::Day:
-        return d.addDays(-1);
-    case Account::FrequencyEnum::Week:
-        return d.addDays(-8);
-    case Account::FrequencyEnum::Month:
-        return d.addMonths(-1);
-    case Account::FrequencyEnum::Quarter:
-        return d.addMonths(-4);
-    case Account::FrequencyEnum::Year:
-        return d.addYears(-1);
-    default:
-        return d;
-    }
+	switch(targets()[d].frequency)
+	{
+	case Account::FrequencyEnum::Day:
+		return d.addDays(-1);
+	case Account::FrequencyEnum::Week:
+		return d.addDays(-8);
+	case Account::FrequencyEnum::Month:
+		return d.addMonths(-1);
+	case Account::FrequencyEnum::Quarter:
+		return d.addMonths(-4);
+	case Account::FrequencyEnum::Year:
+		return d.addYears(-1);
+	default:
+		return d;
+	}
 }
 
 QDate Budget::reference() const
 {
-    return metaData<QDate>("reference");
+	return metaData<QDate>("reference");
 }
 
 void Budget::setReference(QDate d)
 {
-    setMetadata("reference", d);
+	setMetadata("reference", d);
 }
 
-QMap<QDate, double> Budget::targets() const
+QMap<QDate, Target> Budget::targets() const
 {
-    return m_targets;
+	return metaData<QMap<QDate, Target>>("targets");
 }
 
 QMap<QDate, SubBudget> Budget::subs() const
 {
-    return m_subs;
+	return m_subs;
 }
