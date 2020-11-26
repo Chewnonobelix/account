@@ -1,5 +1,5 @@
 CONFIG += c++17 
-QT += quick sql core xml widgets charts qml gui xmlpatterns
+QT += quick sql core xml widgets qml gui
 
 TEMPLATE = app
 TARGET = Account
