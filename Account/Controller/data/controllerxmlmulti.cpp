@@ -446,9 +446,9 @@ QMap<QUuid, Budget> ControllerXMLMulti::selectBudgets()
             auto t = targets.at(j).toElement();
             QDate d = QDate::fromString(t.attribute("date"), "dd-MM-yyyy");
             double v = t.text().toDouble();
-            int f = t.attribute("frequency").toInt();
-            b.setFrequency(d, (Account::FrequencyEnum)f);
-            b.addTarget(d, v);
+												int f = t.attribute("frequency").toInt();
+
+												b.addTarget(d, v, Account::FrequencyEnum(f));
         }
         
         ret[b.id()] = b;
@@ -497,12 +497,13 @@ bool ControllerXMLMulti::updateBudget(Budget & b)
             
             auto target = b.targets();
             
-            for(auto it: target.keys())
+												for(auto it: target)
             {
                 QMap<QString, QString> attr;
-                attr["date"] = it.toString("dd-MM-yyyy");
-                attr["frequency"] = QString::number((int)b.frequency(it));
-                adder(el, "target", QString::number(target[it]), attr);
+
+																attr["date"] = it.date.toString("dd-MM-yyyy");
+																attr["frequency"] = QString::number((int)it.frequency);
+																adder(el, "target", QString::number(it.target));
             }
             
             el.setAttribute("lastUpdate", QDateTime::currentDateTime().toString());
