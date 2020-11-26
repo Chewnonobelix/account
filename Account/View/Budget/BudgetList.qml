@@ -11,6 +11,8 @@ ListView {
 	property string title: qsTr("Outcome")
 	property var type: Account.TypeEnum.Outcome
 
+	property var currentModel: null
+
 	model: BudgetModel {
 		type: root.type
 	}
@@ -60,7 +62,7 @@ ListView {
 				//TODO
 				id: addBudget
 				text:  has ? qsTr("Remove budget") : qsTr("Add budget")
-				onTriggered:  has ? _budget.removeBudget(idBudget) : _budget.addBudget(category, outcomeListView.model.type)
+				onTriggered:  has ? _budget.removeBudget(idBudget) : _budget.addBudget(category, root.model.type)
 			}
 
 		}
@@ -71,13 +73,16 @@ ListView {
 			acceptedButtons: Qt.LeftButton | Qt.RightButton
 
 			onClicked: {
-				console.log(index)
 				if(mouse.button == Qt.RightButton)
 					catMenu.open()
-				else if(mouse.button == Qt.LeftButton && root.currentIndex !== index)
+				else if(mouse.button == Qt.LeftButton && root.currentIndex !== index) {
 					root.currentIndex = index
-				else
+					root.currentModel = idBudget
+				}
+				else {
 					root.currentIndex = -1
+					root.currentModel = ""
+				}
 			}
 		}
 	}
