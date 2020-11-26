@@ -1,4 +1,4 @@
-QT += quick sql core xml widgets charts qml gui xmlpatterns network
+QT += quick sql core xml widgets qml gui network
 CONFIG += c++17 windeployqt
 
 TEMPLATE = lib
@@ -27,6 +27,7 @@ SOURCES += \
 	Controller/ItemModel/budgetmodel.cpp \
     Controller/ItemModel/categorylistmodel.cpp \
     Controller/ItemModel/mainmodel.cpp \
+	Controller/ItemModel/targetlistmodel.cpp \
     Controller/core/abstractcontroller.cpp \
     Controller/core/controllerinformation.cpp \
     Controller/core/controllersettings.cpp \
@@ -82,6 +83,7 @@ HEADERS += \
     Controller/ItemModel/budgetmodel.h \
     Controller/ItemModel/categorylistmodel.h \
     Controller/ItemModel/mainmodel.h \
+    Controller/ItemModel/targetlistmodel.h \
     Controller/core/abstractcontroller.h \
     Controller/core/controllerinformation.h \
     Controller/core/controllersettings.h \
