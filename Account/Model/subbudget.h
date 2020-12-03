@@ -9,6 +9,14 @@
 
 class ACCOUNT_EXPORT SubBudget : public MetaData
 {
+	Q_GADGET
+
+	Q_PROPERTY(QDate begin READ begin)
+	Q_PROPERTY(QDate end READ end)
+	Q_PROPERTY(double target READ target)
+	Q_PROPERTY(double current READ current)
+//	Q_PROPERTY(QString cat READ cat)
+
 private:
     QMap<QUuid, double> m_values;
 
@@ -38,5 +46,7 @@ public:
 
     bool in(QDate) const;
 };
+
+Q_DECLARE_METATYPE(SubBudget)
 
 #endif // SUBBUDGET_H

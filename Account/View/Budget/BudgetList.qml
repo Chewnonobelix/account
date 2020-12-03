@@ -12,7 +12,7 @@ ListView {
 	property var type: Account.TypeEnum.Outcome
 
 	property var currentModel: null
-
+	currentIndex: -1
 	model: BudgetModel {
 		type: root.type
 	}

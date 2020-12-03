@@ -94,10 +94,17 @@ bool Budget::addEntry(Entry e)
 
 	m_subit = std::find_if(m_subs.begin(), m_subs.end(), [e](const SubBudget& it) {
 		return it.in(e.date());
-    });
+	});
 
 	if(m_subit == m_subs.end())
+	{
 		createSub(e.date());
+
+		m_subit = std::find_if(m_subs.begin(), m_subs.end(), [e](const SubBudget& it) {
+			return it.in(e.date());
+		});
+
+	}
 
 
 	return (*m_subit).addEntry(e);;
@@ -167,57 +174,42 @@ bool Budget::createSub(QDate d)
 	if(targets().isEmpty())
 		return false;
 
-	auto m_targets = targets();
-	QDate start = m_targets.begin().key();
-	QDate end = next(start).addDays(-1);
-	bool ret = false;
-	SubBudget sub;
-	sub.setBegin(start);
-	sub.setEnd(end);
+	Target t;
 
-	while(!sub.in(d))
+	if(d <= targets().firstKey())
+		t = targets().first();
+	else if(d >= targets().lastKey())
+		t = targets().last();
+	else
 	{
-								if(d < start)
+		auto targs = targets();
+		for(auto it = targs.begin(); it != targs.end(); it++)
+			if(d >= it.key() && d < (it+1).key()) t = *it;
+	}
+
+	SubBudget sub;
+	sub.setBegin(t.date);
+	sub.setEnd(t.date.addDays(Account::nbDay(t.date, t.frequency)));
+	sub.setReference(t.date);
+	sub.setTarget(t.target);
+	bool ret = false;
+	while (ret = !sub.in(d))
+	{
+		if(d > sub.begin())
 		{
-			start = previous(start);
-			end = previous(end);
+			sub.setBegin(next(sub.begin(), t.frequency));
+			sub.setEnd(next(sub.end(), t.frequency));
 		}
 		else
 		{
-			start = next(start);
-			end = next(end);
-		}
-
-		sub.setBegin(start);
-		sub.setEnd(end);
-	}
-
-	auto l = m_targets.keys();
-
-	double tar = m_targets.last().target;
-	sub.setReference(m_targets.lastKey());
-	ret = !l.isEmpty();
-	if(l.size() == 1 || d < l.first())
-	{
-		sub.setReference(m_targets.firstKey());
-		tar = m_targets.first().target;
-	}
-	else
-	{
-		for(auto it = l.begin(); it != l.end(); it++)
-		{
-			if(d < *it)
-			{
-				sub.setReference(*(it-1));
-				tar = m_targets[*(it-1)].target;
-			}
+			sub.setBegin(previous(sub.begin(), t.frequency));
+			sub.setEnd(previous(sub.end(), t.frequency));
 		}
 	}
 
-	sub.setTarget(tar);
 	m_subs[sub.begin()] = sub;
-	m_subit = m_subs.find(sub.begin());
-	return ret;
+
+	return !ret;
 }
 
 double Budget::current(QDate d)
@@ -262,9 +254,9 @@ Budget& Budget::operator >>(Entry e)
 	return *this;
 }
 
-QDate Budget::next(QDate d) const
+QDate Budget::next(QDate d, Account::FrequencyEnum f) const
 {
-	switch(targets()[d].frequency)
+	switch(f)
 	{
 	case Account::FrequencyEnum::Day:
 		return d.addDays(1);
@@ -281,9 +273,9 @@ QDate Budget::next(QDate d) const
 	}
 }
 
-QDate Budget::previous(QDate d) const
+QDate Budget::previous(QDate d, Account::FrequencyEnum f) const
 {
-	switch(targets()[d].frequency)
+	switch(f)
 	{
 	case Account::FrequencyEnum::Day:
 		return d.addDays(-1);

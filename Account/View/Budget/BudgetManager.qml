@@ -48,8 +48,10 @@ Rectangle {
 				height: parent.height / 2
 				clip: true
 
-				onCurrentModelChanged: targetModel.currentId = currentModel
-				onCountChanged: console.log("lolyu")
+				onCurrentModelChanged: {
+					targetModel.currentId = currentModel
+					targetModel.budget = _budget.get(currentModel)
+				}
 			}
 			BudgetList  {
 				id: incomeList
@@ -73,6 +75,9 @@ Rectangle {
 			Layout.alignment: Qt.AlignTop
 			visible:  outcomeList.currentIndex !== -1
 
+			onVisibleChanged: {
+			}
+
 			ListView {
 				id: targetView
 				objectName: "targetView"
@@ -85,6 +90,11 @@ Rectangle {
 
 				model: TargetListModel {
 					id: targetModel
+
+					onBudgetChanged: {
+						if(isValid)
+							subView.model = allSubs()
+					}
 				}
 
 				currentIndex: -1
@@ -100,8 +110,8 @@ Rectangle {
 				}
 
 				onCurrentIndexChanged: {
-					var temp = currentIndex !== - 1 ? Qt.formatDate(targetModel.get(currentIndex).date, "dd-MM-yyyy") : ""
-					_budget.showTarget(categoryModel.get(catView.currentIndex).catName, temp, currentIndex === -1)
+//					var temp = currentIndex !== - 1 ? Qt.formatDate(targetModel.get(currentIndex).date, "dd-MM-yyyy") : ""
+//					_budget.showTarget(categoryModel.get(catView.currentIndex).catName, temp, currentIndex === -1)
 				}
 
 				Component {
@@ -148,7 +158,6 @@ Rectangle {
 					height: targetView.height * 0.10
 					clip: true
 
-					Component.onCompleted: console.log("wesh")
 					border.color: "gray"
 					gradient: targetView.currentIndex === index ? AccountStyle.calSelect : AccountStyle.backgroundGradient
 					AccountLabel {
@@ -158,6 +167,8 @@ Rectangle {
 							z:5
 							onClicked: {
 								targetView.currentIndex = targetView.currentIndex === index ? -1 :  index
+								subView.model = subs
+
 								if(mouse.button === Qt.RightButton) {
 									targetView.currentIndex = index
 									targetItemMenu.addAction(compRemoveAction.createObject())
@@ -171,7 +182,6 @@ Rectangle {
 
 						text: qsTr("Date") + ": " + Qt.formatDate(date, "dd-MM-yyyy") + "\n" + qsTr("Target") + ": " + target + Qt.locale().currencySymbol(Locale.CurrencySymbol)
 					}
-
 				}
 
 
@@ -219,8 +229,10 @@ Rectangle {
 				text: qsTr("All sub budget")
 				width: subView.width
 				height: subView.height * .07
+				z: 5
 			}
 
+			headerPositioning: ListView.OverlayHeader
 
 			delegate: Rectangle {
 				height: 60
@@ -228,13 +240,12 @@ Rectangle {
 				gradient: AccountStyle.backgroundGradient
 				border.color: "gray"
 
-
 				Column {
 					anchors.fill: parent
 					AccountLabel {
 						width: parent.width
 						height: 25
-						text: Qt.formatDate(begin, "dd-MM-yyyy") + " -> " + Qt.formatDate(end, "dd-MM-yyyy")
+						text: Qt.formatDate(modelData.begin, "dd-MM-yyyy") + " -> " + Qt.formatDate(modelData.end, "dd-MM-yyyy")
 					}
 
 					BudgetViewItem {
@@ -242,9 +253,9 @@ Rectangle {
 						clip: true
 						height: 30
 						width: parent.width
-						to: target
-						realValue: current
-						title: cat
+						to: modelData.target
+						realValue: modelData.current
+//						title: modelData.cat
 					}
 				}
 			}

@@ -46,10 +46,10 @@ public:
 private:
     QMap<QDate, SubBudget> m_subs;
 
-    QMap<QDate, SubBudget>::iterator m_subit = m_subs.end();
-    
-    QDate next(QDate) const;
-    QDate previous(QDate) const;
+				QMap<QDate, SubBudget>::iterator m_subit = m_subs.end();
+
+				QDate next(QDate, Account::FrequencyEnum) const;
+				QDate previous(QDate, Account::FrequencyEnum) const;
 
 public:
     Budget();

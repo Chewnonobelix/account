@@ -12,61 +12,63 @@
 
 class ControllerBudget: public AbstractController, public FeatureBuilder
 {
-    Q_OBJECT
+	Q_OBJECT
 
-private:
-    QMap<QString, QObject*> m_views;
-    QMap<QUuid, Budget> m_budgets;
-    QDate m_currentDate;
-    QString m_selected;
-    Filler<QUuid, Budget> m_filler;
-        
-public:
-    ControllerBudget() = default;
-    ControllerBudget(const ControllerBudget &);
+	private:
+	QMap<QString, QObject*> m_views;
+	QMap<QUuid, Budget> m_budgets;
+	QDate m_currentDate;
+	QString m_selected;
+	Filler<QUuid, Budget> m_filler;
 
-    ~ControllerBudget();
-    bool removeFrom(QUuid);
+	public:
+	ControllerBudget() = default;
+	ControllerBudget(const ControllerBudget &);
 
-    int exec();
-    void openManager();
-    void reload();
-    
-    QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *);
-    QString displayText() const;
-    QString baseText() const;
-    void checker() {}
+	~ControllerBudget();
+	bool removeFrom(QUuid);
 
-public slots:
-    void calDateChange(QVariantList);
-    void show(QDate);
-    void closeManager();
-    void addTarget(QString);
-    void removeTarget(QString, QString);
-    void editReference(QVariant);
-    void showTarget(QString, QString, bool);
+	int exec();
+	void openManager();
+	void reload();
 
-    void addBudget(QString, int type);
-    void removeBudget(QString);
-    void editBudget(QString);
-    void getTarget(QString);
-    
-    void updateEntry(QUuid);
-    void changeEntry(QString, QUuid);
+	QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *);
+	QString displayText() const;
+	QString baseText() const;
+	void checker() {}
 
-signals:
-    void selectCat(QString);
-    void blocked(bool);
-    void dateChanged(QVariant);
-    void clearDate();
-    void catChanged(QString);
-    void addCat(QVariant);
-    void clearCat();
-    void addTarget2(QVariant);
-    void clearTarget();
-    void addSub(QVariant);
-    void clearSub();
-    void close();
+	Q_INVOKABLE QVariant get(QString) const;
+
+	public slots:
+	void calDateChange(QVariantList);
+	void show(QDate);
+	void closeManager();
+	void addTarget(QString);
+	void removeTarget(QString, QString);
+	void editReference(QVariant);
+	void showTarget(QString, QString, bool);
+
+	void addBudget(QString, int type);
+	void removeBudget(QString);
+	void editBudget(QString);
+	void getTarget(QString);
+
+	void updateEntry(QUuid);
+	void changeEntry(QString, QUuid);
+
+	signals:
+	void selectCat(QString);
+	void blocked(bool);
+	void dateChanged(QVariant);
+	void clearDate();
+	void catChanged(QString);
+	void addCat(QVariant);
+	void clearCat();
+	void addTarget2(QVariant);
+	void clearTarget();
+	void addSub(QVariant);
+	void clearSub();
+	void close();
 };
 
 Q_DECLARE_METATYPE(ControllerBudget)

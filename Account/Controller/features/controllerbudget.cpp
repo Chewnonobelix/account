@@ -108,6 +108,14 @@ void ControllerBudget::reload()
     show(QDate::currentDate());
 }
 
+QVariant ControllerBudget::get(QString id) const
+{
+	if(QUuid::fromString(id).isNull())
+		return QVariant();
+
+	return QVariant::fromValue(m_budgets[QUuid::fromString(id)]);
+}
+
 void ControllerBudget::addTarget(QString cat)
 {
     editBudget(cat);
@@ -115,6 +123,7 @@ void ControllerBudget::addTarget(QString cat)
 
 void ControllerBudget::removeTarget(QString cat, QString date)
 {
+	//TODO
     if (m_budgets.contains(cat))
         if(m_budgets[cat].removeTarget(QDate::fromString(date, "dd-MM-yyyy")))
         {
