@@ -4,6 +4,7 @@ SUBDIRS = \
 Account \
     AccountApp \
     DesignLibrary \
+    Plugins \
     Test
 
 TRANSLATIONS += Account\Francais.ts \
@@ -12,5 +13,6 @@ TRANSLATIONS += Account\Francais.ts \
 CONFIG += ENABLE_HOTRELOADING QML_SOURCE=Account/View
 
 AccountApp.depends = Account
-Test.depends = Account
+Test.depends = Account Plugins
 Account.depends = DesignLibrary
+Plugins.depends = Account

@@ -78,7 +78,7 @@ bool Debt::generate()
     ref.setValue(value / 100.0);
     ref.setType(initial().type() == Account::TypeEnum::Outcome ? Account::TypeEnum::Outcome : Account::TypeEnum::Income);
     QDate first = initial().date();
-    QDate last = first.addDays((nb() + 1) * Account::nbDay(first, freq()));
+				QDate last = first.addDays((nb()) * Account::nbDay(first, freq()));
 
     Frequency scheduler;
     scheduler.setFreq(freq());
