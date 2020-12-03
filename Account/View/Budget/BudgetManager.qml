@@ -69,7 +69,6 @@ Rectangle {
 					targetModel.currentId = currentModel
 					targetModel.budget = _budget.get(currentModel)
 				}
-
 			}
 		}
 
@@ -92,13 +91,12 @@ Rectangle {
 				//				ToolTip.text: outcomeList.currentIndex !== -1 ? categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list") : ""
 				ToolTip.delay: 500
 				ToolTip.timeout: 1000
-				//				ToolTip.visible: budgetArea.containsMouse && catView.currentIndex !== -1
+				ToolTip.visible: budgetArea.containsMouse && (incomeList.currentIndex !== -1 || outcomeList.currentIndex !== -1)
 
 				model: TargetListModel {
 					id: targetModel
 
 					onBudgetChanged: {
-
 						if(isValid)
 							subView.model = allSubs()
 					}
@@ -114,11 +112,6 @@ Rectangle {
 					width: targetView.width
 					height: targetView.height * .07
 					z:5
-				}
-
-				onCurrentIndexChanged: {
-//					var temp = currentIndex !== - 1 ? Qt.formatDate(targetModel.get(currentIndex).date, "dd-MM-yyyy") : ""
-//					_budget.showTarget(categoryModel.get(catView.currentIndex).catName, temp, currentIndex === -1)
 				}
 
 				Component {
@@ -260,7 +253,7 @@ Rectangle {
 						width: parent.width
 						to: modelData.target
 						realValue: modelData.current
-//						title: modelData.cat
+						title: targetModel.name
 					}
 				}
 			}

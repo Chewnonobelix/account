@@ -9,6 +9,7 @@ class TargetListModel: public QAbstractListModel
 	Q_OBJECT
 	Q_PROPERTY(QString currentId READ currentId WRITE setCurrentId NOTIFY currentIdChanged)
 	Q_PROPERTY(bool isValid READ isValid CONSTANT)
+	Q_PROPERTY(QString name READ name CONSTANT)
 	Q_PROPERTY(QVariant budget READ budget WRITE setBudget NOTIFY budgetChanged)
 
 	private:
@@ -27,6 +28,7 @@ class TargetListModel: public QAbstractListModel
 	QVariant budget() const;
 	void setBudget(QVariant);
 
+	QString name() const;
 	bool isValid() const;
 
 	Q_INVOKABLE QVariant allSubs() const;

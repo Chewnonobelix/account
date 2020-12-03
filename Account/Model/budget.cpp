@@ -192,6 +192,7 @@ bool Budget::createSub(QDate d)
 	sub.setEnd(t.date.addDays(Account::nbDay(t.date, t.frequency)));
 	sub.setReference(t.date);
 	sub.setTarget(t.target);
+
 	bool ret = false;
 	while (ret = !sub.in(d))
 	{

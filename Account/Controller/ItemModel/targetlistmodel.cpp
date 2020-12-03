@@ -107,3 +107,8 @@ bool TargetListModel::isValid() const
 {
 	return !m_currentBudgetId.isNull();
 }
+
+QString TargetListModel::name() const
+{
+	return m_budget.value<Budget>().category().name();
+}
