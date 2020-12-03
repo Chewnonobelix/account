@@ -64,6 +64,12 @@ Rectangle {
 				height: parent.height / 2
 
 				clip: true
+
+				onCurrentModelChanged: {
+					targetModel.currentId = currentModel
+					targetModel.budget = _budget.get(currentModel)
+				}
+
 			}
 		}
 
@@ -73,7 +79,7 @@ Rectangle {
 			Layout.preferredHeight: root.height * .85
 			Layout.preferredWidth: root.width * .30
 			Layout.alignment: Qt.AlignTop
-			visible:  outcomeList.currentIndex !== -1
+			visible:  outcomeList.currentIndex !== -1 || incomeList.currentIndex !== -1
 
 			onVisibleChanged: {
 			}
@@ -92,6 +98,7 @@ Rectangle {
 					id: targetModel
 
 					onBudgetChanged: {
+
 						if(isValid)
 							subView.model = allSubs()
 					}
@@ -168,7 +175,7 @@ Rectangle {
 							onClicked: {
 								targetView.currentIndex = targetView.currentIndex === index ? -1 :  index
 								subView.model = subs
-
+								subView.selectedDate = Qt.formatDate(date, "dd-MM-yyyy")
 								if(mouse.button === Qt.RightButton) {
 									targetView.currentIndex = index
 									targetItemMenu.addAction(compRemoveAction.createObject())
@@ -183,9 +190,6 @@ Rectangle {
 						text: qsTr("Date") + ": " + Qt.formatDate(date, "dd-MM-yyyy") + "\n" + qsTr("Target") + ": " + target + Qt.locale().currencySymbol(Locale.CurrencySymbol)
 					}
 				}
-
-
-
 
 				MouseArea {
 					id: budgetArea
@@ -225,8 +229,9 @@ Rectangle {
 				border.color: "darkseagreen"
 			}
 
+			property string selectedDate
 			header: AccountHeader {
-				text: qsTr("All sub budget")
+				text: qsTr("Sub budget") + ": " + (targetView.currentIndex === - 1 ? qsTr("All") : subView.selectedDate)
 				width: subView.width
 				height: subView.height * .07
 				z: 5
