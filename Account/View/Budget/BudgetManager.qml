@@ -78,8 +78,8 @@ Rectangle {
 			Layout.preferredHeight: root.height * .85
 			Layout.preferredWidth: root.width * .30
 			Layout.alignment: Qt.AlignTop
-			visible:  outcomeList.currentIndex !== -1 || incomeList.currentIndex !== -1
-
+			visible:  (outcomeList.currentIndex !== -1 || incomeList.currentIndex !== -1 )
+			id: rect
 			onVisibleChanged: {
 			}
 
@@ -97,6 +97,7 @@ Rectangle {
 					id: targetModel
 
 					onBudgetChanged: {
+						rect.visible = isValid
 						if(isValid)
 							subView.model = allSubs()
 					}

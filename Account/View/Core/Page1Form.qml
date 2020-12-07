@@ -159,7 +159,7 @@ Page {
 
 				active: false
 				width: parent.width
-				height: parent.height - parent.spacing - quickViewDate.height
+				height: parent.height * .86
 
 				onActiveChanged: {
 					item.width = width

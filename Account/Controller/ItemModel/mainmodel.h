@@ -11,7 +11,7 @@ class MainModel : public QAbstractTableModel
 {
     Q_OBJECT
 
-    Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
+	Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
 	Q_PROPERTY(int sort READ sort WRITE setSort NOTIFY sortChanged)
 	Q_PROPERTY(int columnSort READ columnSort WRITE setColumnSort NOTIFY columnSortChanged)
 	Q_PROPERTY(QVariant dateList READ dateList WRITE setDateList)

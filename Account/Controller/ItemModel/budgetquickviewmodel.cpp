@@ -18,11 +18,11 @@ QHash<int, QByteArray> BudgetQuickviewModel::roleNames() const
 
 QVariant BudgetQuickviewModel::data(const QModelIndex &index, int role) const
 {
-	if(index.isValid())
+	if(index.isValid() && index.row() < rowCount())
 	{
 		auto row = index.row();
-
 		auto id = m_budget.keys()[row];
+
 		switch(BudgetQuickRole(role))
 		{
 		case BudgetQuickRole::NameRole:
@@ -43,7 +43,6 @@ QVariant BudgetQuickviewModel::data(const QModelIndex &index, int role) const
 
 void BudgetQuickviewModel::setBudget(QMap<QUuid, Budget> list)
 {
-	qDebug()<<"Wesh"<<list.keys();
 	m_budget.clear();
 	m_budget = list;
 }
@@ -55,22 +54,25 @@ void BudgetQuickviewModel::reload()
 	endRemoveRows();
 
 	m_list.clear();
-	for(auto it: m_dateList)
+	for(auto it2: m_budget)
 	{
-		for(auto it2: m_budget)
+		for(auto it3: it2.subs())
 		{
-			for(auto it3: it2.subs())
+			if(m_dateList.isEmpty())
 			{
-				if(it3.in(it))
-				{
-					m_list.insert(it2.id(), it3);
-				}
+				m_list.insert(it2.id(), it3);
+			}
+			else
+			{
+				for(auto it: m_dateList)
+					if(it3.in(it))
+						m_list.insert(it2.id(), it3);
 			}
 		}
 	}
 
-	beginInsertRows(QModelIndex(), 0, rowCount());
-	insertRows(0, rowCount());
+	beginInsertRows(QModelIndex(), 0, rowCount() - 1);
+	insertRows(0, rowCount() - 1);
 	endInsertRows();
 }
 

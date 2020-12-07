@@ -3,7 +3,7 @@ import QtQuick.Controls 2.5
 import "../Style"
 
 MenuItem {
-    id: budgetItem
+		id: root
 
     property double realValue
     property double to
@@ -11,16 +11,12 @@ MenuItem {
 
     contentItem: ProgressBar {
         id: budget
-        //        anchors.top: title.bottom
-        //    enabled: false
         from: 0
-        to: budgetItem.to
+				to: root.to
 
-        value: budgetItem.realValue
-        //    height: 50
-        background: Rectangle {
-            implicitWidth: 100
-            implicitHeight: 10
+				value: root.realValue
+
+				background: Rectangle {
             color: "#e6e6e6"
             radius: 3
         }
@@ -29,17 +25,17 @@ MenuItem {
 
             Rectangle {
                 width: budget.visualPosition * parent.width
-                height: parent.height
+								height: budget.height
                 radius: 2
                 color: budget.value < budget.to ? "green" : "red"
             }
 
             AccountLabel {
-                property int val: budgetItem.realValue / budget.to * 10000
-                text: budgetItem.title + ": " + (val / 100.0) + "%"
+								property int val: root.realValue / budget.to * 10000
+								text: root.title + ": " + (val / 100.0) + "%"
                 color: "black"
                 anchors.left: parent.left
-                anchors.leftMargin: 10
+								anchors.leftMargin: root.width * 0.01
                 id: titleLab
                 anchors.verticalCenter: parent.verticalCenter
             }
