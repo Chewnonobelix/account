@@ -25,6 +25,7 @@ LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
 
 SOURCES += \
 	Controller/ItemModel/budgetmodel.cpp \
+	Controller/ItemModel/budgetquickviewmodel.cpp \
     Controller/ItemModel/categorylistmodel.cpp \
     Controller/ItemModel/mainmodel.cpp \
 	Controller/ItemModel/targetlistmodel.cpp \
@@ -81,6 +82,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     Controller/ItemModel/budgetmodel.h \
+    Controller/ItemModel/budgetquickviewmodel.h \
     Controller/ItemModel/categorylistmodel.h \
     Controller/ItemModel/mainmodel.h \
     Controller/ItemModel/targetlistmodel.h \

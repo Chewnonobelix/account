@@ -9,6 +9,7 @@
 #include "Model/budget.h"
 #include "featurebuilder.h"
 #include "filler.h"
+#include "Controller/ItemModel/budgetquickviewmodel.h"
 
 class ControllerBudget: public AbstractController, public FeatureBuilder
 {
@@ -20,6 +21,7 @@ class ControllerBudget: public AbstractController, public FeatureBuilder
 	QDate m_currentDate;
 	QString m_selected;
 	Filler<QUuid, Budget> m_filler;
+	BudgetQuickviewModel m_quickModel;
 
 	public:
 	ControllerBudget() = default;
@@ -32,15 +34,14 @@ class ControllerBudget: public AbstractController, public FeatureBuilder
 	void openManager();
 	void reload();
 
-	QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *);
-	QString displayText() const;
-	QString baseText() const;
-	void checker() {}
-
+	QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *) override;
+	QString displayText() const override;
+	QString baseText() const override;
+	void checker() override {}
+	void setQuickView(QList<QString>) override;
 	Q_INVOKABLE QVariant get(QString) const;
 
 	public slots:
-	void calDateChange(QVariantList);
 	void show(QDate);
 	void closeManager();
 	void addTarget(QString);
@@ -51,12 +52,14 @@ class ControllerBudget: public AbstractController, public FeatureBuilder
 	void addBudget(QString, int type);
 	void removeBudget(QString);
 	void editBudget(QString);
-	void getTarget(QString);
 
 	void updateEntry(QUuid);
 	void changeEntry(QString, QUuid);
 
+	void onEndFill();
+
 	signals:
+	void budgetChanged();
 	void selectCat(QString);
 	void blocked(bool);
 	void dateChanged(QVariant);

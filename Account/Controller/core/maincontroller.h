@@ -24,17 +24,18 @@
 #include "liveqmlengine.h"
 #include "../ItemModel/budgetmodel.h"
 #include "../ItemModel/targetlistmodel.h"
+#include "../ItemModel/budgetquickviewmodel.h"
 
 class ACCOUNT_EXPORT MainController: public AbstractController
 {
   Q_OBJECT
 
   Q_PROPERTY(int currentPage MEMBER m_currentPage)
-  Q_PROPERTY(QVariant dateList MEMBER m_dateList)
+		Q_PROPERTY(QList<QString> dateList READ dateList WRITE setDateList NOTIFY dateListChanged)
 
 private:
   int m_currentPage = 1;
-  QVariant m_dateList;
+		QList<QString> m_dateList;
 
   LiveQmlEngine m_engine;
   ControllerInformation m_info;
@@ -50,7 +51,6 @@ private:
 
   void checkEstimated();
 
-  QList<QDate> dateList() const;
 
   QVariantList m_model;
   QMutex m_modelMutex;
@@ -61,6 +61,9 @@ private:
 public:
   MainController(int = 0);
   ~MainController();
+
+		QList<QString> dateList() const;
+		void setDateList(QList<QString>);
 
 signals:
   void featuresListChanged(QStringList);
@@ -79,6 +82,7 @@ signals:
   void appendCalendarPreview(QVariant);
   void appendMonthPreview(QVariant);
   void openAdd(bool);
+		void dateListChanged();
 
 public slots:
   int exec();

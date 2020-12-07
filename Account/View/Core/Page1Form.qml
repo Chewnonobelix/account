@@ -56,15 +56,11 @@ Page {
 				_main.dateList = selectedDates
 				_mainModel.dateList = selectedDates
 				_mainModel.currentIndex = -1
+				_main.updateQuickView()
 			}
 
 			onDatesChanged:  {
 				_mainModel.currentIndex = -1
-				_main.updateQuickView()
-				_main.pageChange()
-
-				if(_budget)
-					_budget.calDateChange(selectedDates)
 			}
 
 			onMonthChanged: {

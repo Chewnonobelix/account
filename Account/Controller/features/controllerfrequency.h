@@ -72,6 +72,7 @@ public:
     QString displayText() const;
     QString baseText() const;
     void checker();
+				void setQuickView(QList<QString>) override {}
 
     Q_INVOKABLE QObject* worker(QString) const;
     

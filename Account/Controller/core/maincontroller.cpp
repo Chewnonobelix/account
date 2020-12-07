@@ -1,7 +1,7 @@
 #include "maincontroller.h"
 
 MainController::MainController(int storage)
-	: AbstractController(), m_engine(this, QStringLiteral(QML_SOURCE) + "/View")
+				: AbstractController(), m_engine(this, QStringLiteral(QML_SOURCE) + "/View")
 {
 	Q_UNUSED(storage)
 
@@ -10,23 +10,24 @@ MainController::MainController(int storage)
 	qDebug() << "ControllerXMLMulti" << qRegisterMetaType<ControllerXMLMulti>();
 	qDebug() << "ControllerJson" << qRegisterMetaType<ControllerJson>();
 	qDebug() << "Account::FrequencyEnum QML"
-			 << qmlRegisterUncreatableMetaObject(Account::staticMetaObject,
-												 "Account",
-												 1,
-												 0,
-												 "Account",
-												 "This is Account's flags");
+										<< qmlRegisterUncreatableMetaObject(Account::staticMetaObject,
+																																														"Account",
+																																														1,
+																																														0,
+																																														"Account",
+																																														"This is Account's flags");
 	qDebug() << "Account::FrequencyEnum" << qRegisterMetaType<Account::FrequencyEnum>();
 	qDebug() << "Account::TypeEnum" << qRegisterMetaType<Account::TypeEnum>();
 	//    qDebug() << "Account::TypeEnumQml" << qRegisterMetaType<Account::TypeEnum>();
 
 	qDebug() << "Worker Qml"
-			 << qmlRegisterUncreatableType<Worker>("Account.Frequency", 1, 0, "Worker", message);
+										<< qmlRegisterUncreatableType<Worker>("Account.Frequency", 1, 0, "Worker", message);
 	qDebug() << "CategoryModel"
-			 << qmlRegisterType<CategoryListModel>("Account.Model", 1, 0, "CategoryModel");
-    qDebug() << "MainModel" << qmlRegisterType<MainModel>("Account.Model", 1, 0, "MainModel");
-				qDebug() << "BudgetModel" << qmlRegisterType<BudgetModel>("Account.Model", 1, 0, "BudgetModel");
-				qDebug() << "TargetListModel" << qmlRegisterType<TargetListModel>("Account.Model", 1, 0, "TargetListModel");
+										<< qmlRegisterType<CategoryListModel>("Account.Model", 1, 0, "CategoryModel");
+	qDebug() << "MainModel" << qmlRegisterType<MainModel>("Account.Model", 1, 0, "MainModel");
+	qDebug() << "BudgetModel" << qmlRegisterType<BudgetModel>("Account.Model", 1, 0, "BudgetModel");
+	qDebug() << "TargetListModel" << qmlRegisterType<TargetListModel>("Account.Model", 1, 0, "TargetListModel");
+	qDebug() << "BudgetQuickviewModel" << qmlRegisterType<BudgetQuickviewModel>("Account.Model", 1, 0, "BudgetQuickviewModel");
 	qmlRegisterModule("Account.Style", 1, 0);
 
 	m_dbThread = new QThread;
@@ -239,7 +240,7 @@ void MainController::adding(QVariant ref)
 		e.setAccount(account.toString());
 		e.setDate(QDate::fromString(date.toString(), "dd-MM-yyyy"));
 		e.setValue(val.toDouble());
-        e.setType(Account::TypeEnum::Income);
+		e.setType(Account::TypeEnum::Income);
 
 		e.setTitle("Initial");
 
@@ -392,18 +393,28 @@ void MainController::updateQuickView()
 {
 	//TODO
 	auto ld = dateList();
+	if(engine().rootObjects().isEmpty())
+		return;
+
 	QObject* quickView = engine().rootObjects().first()->findChild<QObject*>("quickViewDate");
 
 	if(quickView)
-		quickView->setProperty("currentDate", ld.isEmpty() ? QDate::currentDate(): ld.first());
+	{
+		auto d = ld.isEmpty() ? QDate::currentDate().toString("dd-MM-yyyy"): ld.first();
+		quickView->setProperty("currentDate", QDate::fromString(d, "dd-MM-yyyy"));
+	}
+
+	for(auto it: m_features) {
+		it->setQuickView(ld);
+	}
 }
 
-QList<QDate> MainController::dateList() const
+QList<QString> MainController::dateList() const
 {
-	QList<QDate> ld;
-	auto l = m_dateList.toList();
-	for (int i = 0; i < l.size(); i++)
-		ld << QDate::fromString(l[i].toString(), "dd-MM-yyyy");
+	QList<QString> ld = m_dateList;
+//	auto l = m_dateList.toList();
+//	for (int i = 0; i < l.size(); i++)
+//		ld << QDate::fromString(l[i].toString(), "dd-MM-yyyy");
 
 	for (int i = 0; i < ld.size(); i++)
 		for(int j = i; j < ld.size(); j++)
@@ -411,6 +422,16 @@ QList<QDate> MainController::dateList() const
 				ld.swapItemsAt(i,j);
 
 	return ld;
+}
+
+void MainController::setDateList(QList<QString> list)
+{
+	m_dateList = list;
+	emit dateListChanged();
+
+	for(auto it: m_features) {
+		it->setQuickView(list);
+	}
 }
 
 void MainController::accountChange(QString acc)
