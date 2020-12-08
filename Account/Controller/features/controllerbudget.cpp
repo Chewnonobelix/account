@@ -63,6 +63,7 @@ int ControllerBudget::exec()
 	{
 		m_filler.model = &m_budgets;
 		connect(&m_filler, QThread::finished, this, &ControllerBudget::onEndFill);
+		connect(db(), &InterfaceDataSave::s_updateBudget, this, &ControllerBudget::exec);
 	}
 
 	reload();
