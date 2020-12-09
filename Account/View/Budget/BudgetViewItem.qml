@@ -11,7 +11,9 @@ MenuItem {
 
     contentItem: ProgressBar {
         id: budget
-        from: 0
+
+				anchors.fill: root
+				from: 0
 				to: root.to
 
 				value: root.realValue
@@ -22,7 +24,7 @@ MenuItem {
         }
 
         contentItem: Item {
-
+						anchors.fill: budget
             Rectangle {
                 width: budget.visualPosition * parent.width
 								height: budget.height

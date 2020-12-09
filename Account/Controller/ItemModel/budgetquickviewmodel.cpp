@@ -8,10 +8,10 @@ int BudgetQuickviewModel::rowCount(const QModelIndex &) const
 QHash<int, QByteArray> BudgetQuickviewModel::roleNames() const
 {
 	static QHash<int, QByteArray> ret = {{(int)BudgetQuickRole::BeginRole, "begin"},
-																																						{(int)BudgetQuickRole::EndRole, "end"},
-																																						{(int)BudgetQuickRole::NameRole, "name"},
-																																						{(int)BudgetQuickRole::CurrentRole, "current"},
-																																						{(int)BudgetQuickRole::TargetRole, "target"}};
+																			 {(int)BudgetQuickRole::EndRole, "end"},
+																			 {(int)BudgetQuickRole::NameRole, "name"},
+																			 {(int)BudgetQuickRole::CurrentRole, "current"},
+																			 {(int)BudgetQuickRole::TargetRole, "target"}};
 
 	return ret;
 }
@@ -21,20 +21,20 @@ QVariant BudgetQuickviewModel::data(const QModelIndex &index, int role) const
 	if(index.isValid() && index.row() < rowCount())
 	{
 		auto row = index.row();
-		auto id = m_budget.keys()[row];
+		auto id = m_list.uniqueKeys()[row];
 
 		switch(BudgetQuickRole(role))
 		{
-		case BudgetQuickRole::NameRole:
-			return m_budget[id].category().name();
-		case BudgetQuickRole::BeginRole:
-			return m_list.values(id).first().begin();
-		case BudgetQuickRole::EndRole:
-			return m_list.values(id).first().end();
-		case BudgetQuickRole::TargetRole:
-			return m_list.values(id).first().target();
-		case BudgetQuickRole::CurrentRole:
-			return m_list.values(id).first().current();
+			case BudgetQuickRole::NameRole:
+				return m_budget[id].category().name();
+			case BudgetQuickRole::BeginRole:
+				return m_list.values(id).first().begin();
+			case BudgetQuickRole::EndRole:
+				return m_list.values(id).first().end();
+			case BudgetQuickRole::TargetRole:
+				return m_list.values(id).first().target();
+			case BudgetQuickRole::CurrentRole:
+				return m_list.values(id).first().current();
 		}
 	}
 
@@ -65,8 +65,12 @@ void BudgetQuickviewModel::reload()
 			else
 			{
 				for(auto it: m_dateList)
+				{
 					if(it3.in(it))
+					{
 						m_list.insert(it2.id(), it3);
+					}
+				}
 			}
 		}
 	}
