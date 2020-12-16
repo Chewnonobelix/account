@@ -227,7 +227,6 @@ Page {
 				}
 
 				function viewEntry() {
-					//                    console.log(currentEntry, _mainModel.currentIndex > -1 ? _mainModel.at(_mainModel.currentIndex) : null)
 					currentEntry = _mainModel.currentIndex > -1 ? _mainModel.at(_mainModel.currentIndex) : null
 
 					if(currentEntry) {
@@ -244,6 +243,7 @@ Page {
 					width*0.23,
 					width*0.22,
 					width*0.22]
+
 				onHeightChanged: forceLayout()
 				rowHeightProvider: function(row) {
 					return height * 0.05

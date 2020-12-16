@@ -1,64 +1,61 @@
 #ifndef CONTROLLERBUDGET_H
 #define CONTROLLERBUDGET_H
 
-#include <QQmlApplicationEngine>
-#include <QQmlComponent>
-#include <QQuickItem>
-#include <QQmlContext>
 #include "../core/abstractcontroller.h"
+#include "Controller/ItemModel/budgetquickviewmodel.h"
 #include "Model/budget.h"
 #include "featurebuilder.h"
 #include "filler.h"
-#include "Controller/ItemModel/budgetquickviewmodel.h"
+#include <QQmlApplicationEngine>
+#include <QQmlComponent>
+#include <QQmlContext>
+#include <QQuickItem>
 
-class ControllerBudget: public AbstractController, public FeatureBuilder
-{
+class ControllerBudget : public AbstractController, public FeatureBuilder {
 	Q_OBJECT
 
-	private:
-	QMap<QString, QObject*> m_views;
+private:
+	QMap<QString, QObject *> m_views;
 	QMap<QUuid, Budget> m_budgets;
 	QDate m_currentDate;
 	QString m_selected;
 	Filler<QUuid, Budget> m_filler;
 	BudgetQuickviewModel m_quickModel;
 
-	public:
+public:
 	ControllerBudget() = default;
 	ControllerBudget(const ControllerBudget &);
 
 	~ControllerBudget();
 	bool removeFrom(QUuid);
 
-	int exec();
+	int exec() override;
 	void openManager();
 	void reload();
 
-	QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *, QObject *) override;
+	QSharedPointer<FeatureBuilder> build(QQmlApplicationEngine *,
+																			 QObject *) override;
 	QString displayText() const override;
 	QString baseText() const override;
 	void checker() override {}
 	void setQuickView(QList<QString>) override;
 	Q_INVOKABLE QVariant get(QString) const;
 
-	public slots:
-	void show(QDate);
+public slots:
 	void closeManager();
-	void addTarget(QString);
-	void removeTarget(QString, QString);
+	void removeTarget(QString, QDate);
 	void editReference(QVariant);
 	void showTarget(QString, QString, bool);
 
 	void addBudget(QString, int type);
 	void removeBudget(QString);
-	void editBudget(QString);
 
 	void updateEntry(QUuid);
 	void changeEntry(QString, QUuid);
 
 	void onEndFill();
 
-	signals:
+signals:
 	void budgetChanged();
 	void selectCat(QString);
 	void blocked(bool);

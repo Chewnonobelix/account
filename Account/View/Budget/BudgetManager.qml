@@ -23,10 +23,6 @@ Rectangle {
 		width: 150 * 1.5
 	}
 
-	Connections {
-		target: _budget
-	}
-
 	property var currentBudget: null
 	RowLayout {
 		anchors.fill: parent
@@ -91,7 +87,15 @@ Rectangle {
 				//				ToolTip.text: outcomeList.currentIndex !== -1 ? categoryModel.get(catView.currentIndex).catName + " " + qsTr("target list") : ""
 				ToolTip.delay: 500
 				ToolTip.timeout: 1000
-				ToolTip.visible: budgetArea.containsMouse && (incomeList.currentIndex !== -1 || outcomeList.currentIndex !== -1)
+				ToolTip.visible: budgetArea.crontainsMouse && (incomeList.currentIndex !== -1 || outcomeList.currentIndex !== -1)
+
+				Connections {
+					target: _budget
+
+					function onBudgetChanged() {
+						targetModel.budget = _budget.get(targetModel.currentId)
+					}
+				}
 
 				model: TargetListModel {
 					id: targetModel
@@ -104,6 +108,13 @@ Rectangle {
 				}
 
 				currentIndex: -1
+
+				onCurrentIndexChanged: {
+					if(currentIndex === -1 && targetModel.isValid) {
+						subView.model = targetModel.allSubs()
+					}
+				}
+
 				clip: true
 				spacing: height * 0.02
 
@@ -122,7 +133,7 @@ Rectangle {
 						text:  qsTr("Remove target")
 
 						onTriggered: {
-							_budget.removeTarget(categoryModel.get(catView.currentIndex).catName, Qt.formatDate(targetModel.get(targetView.currentIndex).date, "dd-MM-yyyy"))
+							_budget.removeTarget(targetModel.currentId, targetView.currentDate)
 						}
 					}
 				}
@@ -142,17 +153,14 @@ Rectangle {
 						}
 					}
 
-
-					onOpened: console.log("bite", count)
-
 					Action {
 						id: addSubTarget
 						text: qsTr("Add target")
-						onTriggered: _budget.addTarget(targetModel.currentId)
+						onTriggered: _budget.catChanged(targetModel.currentId)
 					}
-
-
 				}
+
+				property date currentDate
 
 				delegate: Rectangle {
 					width: targetView.width
@@ -168,10 +176,15 @@ Rectangle {
 							z:5
 							onClicked: {
 								targetView.currentIndex = targetView.currentIndex === index ? -1 :  index
-								subView.model = subs
-								subView.selectedDate = Qt.formatDate(date, "dd-MM-yyyy")
+
+								if(targetView.currentIndex !== -1) {
+									subView.model = subs
+									subView.selectedDate = Qt.formatDate(date, "dd-MM-yyyy")
+								}
+
 								if(mouse.button === Qt.RightButton) {
 									targetView.currentIndex = index
+									targetView.currentDate = date
 									targetItemMenu.addAction(compRemoveAction.createObject())
 									targetItemMenu.popup()
 								}

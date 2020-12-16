@@ -45,6 +45,7 @@ void BudgetQuickviewModel::setBudget(QMap<QUuid, Budget> list)
 {
 	m_budget.clear();
 	m_budget = list;
+	reload();
 }
 
 void BudgetQuickviewModel::reload()
