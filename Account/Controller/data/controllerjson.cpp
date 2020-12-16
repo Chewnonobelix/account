@@ -89,12 +89,12 @@ bool ControllerJson::updateCategory(Category & cat)
 
 bool ControllerJson::addBudget(Budget & budget)
 {
-    return add("budget", budget, [this]() { emit s_updateBudget(); });
+    return add("budget", budget, [this, &budget]() { emit s_updateBudget(budget.id()); });
 }
 
 bool ControllerJson::removeBudget(Budget & budget)
 {
-    return remove("budget", budget, [this]() { emit s_updateBudget(); });
+    return remove("budget", budget, [this, &budget]() { emit s_updateBudget(budget.id()); });
 }
 
 QMap<QUuid, Budget> ControllerJson::selectBudgets()
@@ -104,7 +104,7 @@ QMap<QUuid, Budget> ControllerJson::selectBudgets()
 
 bool ControllerJson::updateBudget(Budget & budget)
 {
-    return update("budget", budget, [this]() { emit s_updateBudget(); });
+    return update("budget", budget, [this, &budget]() { emit s_updateBudget(budget.id()); });
 }
 
 bool ControllerJson::addFrequency(Frequency & f)

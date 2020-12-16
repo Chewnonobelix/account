@@ -1,0 +1,12 @@
+#ifndef FREQUENCY_GLOBAL_H
+#define FREQUENCY_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(FREQUENCY_LIBRARY)
+#  define FREQUENCY_EXPORT Q_DECL_EXPORT
+#else
+#  define FREQUENCY_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // FREQUENCY_GLOBAL_H

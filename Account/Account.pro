@@ -1,4 +1,4 @@
-QT += quick sql core xml widgets charts qml gui xmlpatterns network
+QT += quick sql core xml widgets qml gui network
 CONFIG += c++17 windeployqt
 
 TEMPLATE = lib
@@ -24,8 +24,11 @@ DEPENDPATH += $$OUT_PWD/../DesignLibrary/DesignPattern/debug
 LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
 
 SOURCES += \
+	Controller/ItemModel/budgetmodel.cpp \
+	Controller/ItemModel/budgetquickviewmodel.cpp \
     Controller/ItemModel/categorylistmodel.cpp \
     Controller/ItemModel/mainmodel.cpp \
+	Controller/ItemModel/targetlistmodel.cpp \
     Controller/core/abstractcontroller.cpp \
     Controller/core/controllerinformation.cpp \
     Controller/core/controllersettings.cpp \
@@ -78,8 +81,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 #                account_en.ts \
 
 HEADERS += \
+    Controller/ItemModel/budgetmodel.h \
+    Controller/ItemModel/budgetquickviewmodel.h \
     Controller/ItemModel/categorylistmodel.h \
     Controller/ItemModel/mainmodel.h \
+    Controller/ItemModel/targetlistmodel.h \
     Controller/core/abstractcontroller.h \
     Controller/core/controllerinformation.h \
     Controller/core/controllersettings.h \

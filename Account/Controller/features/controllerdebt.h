@@ -30,6 +30,7 @@ public:
     virtual QString displayText() const;
     virtual QString baseText() const;
     virtual void checker();
+				void setQuickView(QList<QString>) override {}
 
     Q_INVOKABLE int exec();
     Q_INVOKABLE void generate(QString);

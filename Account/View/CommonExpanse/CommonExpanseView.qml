@@ -253,7 +253,6 @@ Rectangle {
                 width: parent.width
                 height: parent.height * 0.49
                 
-                onModelChanged: console.log(model)
                 header: Rectangle {
                     gradient: AccountStyle.goldHeader
                     height: recap.height * 0.10

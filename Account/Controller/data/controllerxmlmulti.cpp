@@ -385,16 +385,18 @@ bool ControllerXMLMulti::addBudget(Budget& b)
                            .toElement();
     QDomElement el = m_accounts[currentProfile() + "/" + currentAccount()].createElement("budget");
     QUuid id = b.id().isNull() ? QUuid::createUuid() : b.id();
-    
+    b.setId(id);
     el.setAttribute("id", id.toString());
     el.setAttribute("lastUpdate", QDateTime::currentDateTime().toString());
     el.setAttribute("removed", false);
-    
-    adder(el, "name", b.category());
+    el.setAttribute("type", (int)b.type());
+    adder(el, "name", b.category().id().toString());
     adder(el, "reference",  b.reference().toString("dd-MM-yyyy"));
     
     root.appendChild(el);
     close();
+
+    emit s_updateBudget(id);
     return true;
 }
 
@@ -428,9 +430,10 @@ QMap<QUuid, Budget> ControllerXMLMulti::selectBudgets()
         
         Budget b;
         b.setId(QUuid::fromString(el.attribute("id")));
-        b.setMetadata("lastUpdate", QDateTime::fromString(el.attribute("lastUpdate")));  
+        b.setMetadata("lastUpdate", QDateTime::fromString(el.attribute("lastUpdate")));
+        b.setType((Account::TypeEnum)el.attribute("type").toInt());
         QDomElement child = el.elementsByTagName("name").at(0).toElement();
-        b.setCategory(child.text());
+        b.setCategory(selectCategory()[b.type()][QUuid::fromString(child.text())]);
         child = el.elementsByTagName("reference").at(0).toElement();
         b.setReference(QDate::fromString(child.text(), "dd-MM-yyyy"));
         
@@ -443,9 +446,9 @@ QMap<QUuid, Budget> ControllerXMLMulti::selectBudgets()
             auto t = targets.at(j).toElement();
             QDate d = QDate::fromString(t.attribute("date"), "dd-MM-yyyy");
             double v = t.text().toDouble();
-            int f = t.attribute("frequency").toInt();
-            b.setFrequency(d, (Account::FrequencyEnum)f);
-            b.addTarget(d, v);
+												int f = t.attribute("frequency").toInt();
+
+												b.addTarget(d, v, Account::FrequencyEnum(f));
         }
         
         ret[b.id()] = b;
@@ -494,18 +497,21 @@ bool ControllerXMLMulti::updateBudget(Budget & b)
             
             auto target = b.targets();
             
-            for(auto it: target.keys())
+												for(auto it: target)
             {
                 QMap<QString, QString> attr;
-                attr["date"] = it.toString("dd-MM-yyyy");
-                attr["frequency"] = QString::number((int)b.frequency(it));
-                adder(el, "target", QString::number(target[it]), attr);
+
+																attr["date"] = it.date.toString("dd-MM-yyyy");
+																attr["frequency"] = QString::number((int)it.frequency);
+																adder(el, "target", QString::number(it.target));
             }
             
             el.setAttribute("lastUpdate", QDateTime::currentDateTime().toString());
             el.setAttribute("removed", b.metaData<bool>("removed"));
         }
     }
+
+    emit s_updateBudget(b.id());
     
     close();
     return ret;

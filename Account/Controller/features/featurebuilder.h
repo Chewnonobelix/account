@@ -13,6 +13,7 @@ struct FeatureBuilder
     virtual QString displayText() const = 0;
     virtual QString baseText() const = 0;
     virtual void checker() = 0;
+		virtual void setQuickView(QList<QString>) = 0;
     QObject* view = nullptr;
     virtual ~FeatureBuilder() = default;
 };

@@ -1,4 +1,4 @@
-QT += testlib quick sql core xml widgets charts qml gui xmlpatterns
+QT += testlib quick sql core xml widgets qml gui
 
 CONFIG += qt console warn_on depend_includepath testcase
 CONFIG -= app_bundle

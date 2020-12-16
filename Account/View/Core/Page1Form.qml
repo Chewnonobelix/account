@@ -56,15 +56,11 @@ Page {
 				_main.dateList = selectedDates
 				_mainModel.dateList = selectedDates
 				_mainModel.currentIndex = -1
+				_main.updateQuickView()
 			}
 
 			onDatesChanged:  {
 				_mainModel.currentIndex = -1
-				_main.updateQuickView()
-				_main.pageChange()
-
-				if(_budget)
-					_budget.calDateChange(selectedDates)
 			}
 
 			onMonthChanged: {
@@ -163,7 +159,7 @@ Page {
 
 				active: false
 				width: parent.width
-				height: parent.height - parent.spacing - quickViewDate.height
+				height: parent.height * .86
 
 				onActiveChanged: {
 					item.width = width
@@ -231,7 +227,6 @@ Page {
 				}
 
 				function viewEntry() {
-					//                    console.log(currentEntry, _mainModel.currentIndex > -1 ? _mainModel.at(_mainModel.currentIndex) : null)
 					currentEntry = _mainModel.currentIndex > -1 ? _mainModel.at(_mainModel.currentIndex) : null
 
 					if(currentEntry) {
@@ -248,6 +243,7 @@ Page {
 					width*0.23,
 					width*0.22,
 					width*0.22]
+
 				onHeightChanged: forceLayout()
 				rowHeightProvider: function(row) {
 					return height * 0.05

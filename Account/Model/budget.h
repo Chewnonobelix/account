@@ -11,47 +11,73 @@
 #include "accountglobal.h"
 #include "subbudget.h"
 #include "metadata.h"
+#include <QJsonArray>
+
+class Target {
+	Q_GADGET
+
+	Q_PROPERTY(double target MEMBER target)
+	Q_PROPERTY(Account::FrequencyEnum frequency MEMBER frequency)
+	Q_PROPERTY(QDate date MEMBER date)
+
+	public:
+	QDate date;
+	double target;
+	Account::FrequencyEnum frequency;
+
+	operator QJsonObject() const;
+	Target(const QJsonObject&);
+	Target(QDate, double, Account::FrequencyEnum);
+	Target() = default;
+	Target(const Target&) = default;
+};
 
 class ACCOUNT_EXPORT Budget: public MetaData
 {
+	Q_GADGET
+
+	Q_PROPERTY(Category category READ category WRITE setCategory)
+	Q_PROPERTY(Account::TypeEnum type READ type WRITE setType)
+
 public:
 
+
+
 private:
-    QMap<QDate, Account::FrequencyEnum> m_frequency;
-    QMap<QDate, double> m_targets;
     QMap<QDate, SubBudget> m_subs;
 
-    QMap<QDate, SubBudget>::iterator m_subit = m_subs.end();
-    
-    QDate next(QDate) const;
-    QDate previous(QDate) const;
+				QMap<QDate, SubBudget>::iterator m_subit = m_subs.end();
+
+				QDate next(QDate, Account::FrequencyEnum) const;
+				QDate previous(QDate, Account::FrequencyEnum) const;
 
 public:
     Budget();
     Budget(const Budget &);
     ~Budget() = default;
-    using MetaData::MetaData;
+    Budget(const QJsonObject&);
+    operator QJsonObject() const;
 
     QUuid id() const;
     void setId(QUuid);
+
+    Account::TypeEnum type() const;
+    void setType(Account::TypeEnum);
 
     bool addEntry(Entry);
     bool removeEntry(Entry);
     bool updateEntry(Entry);
 
-    bool addTarget(QDate, double);
+				bool addTarget(QDate, double, Account::FrequencyEnum f);
     bool removeTarget(QDate);
     bool updateTarget(QDate, double);
-    QMap<QDate, double> targets() const;
+				QMap<QDate, Target> targets() const;
 
     bool createSub(QDate);
     double current(QDate);
 
-    Account::FrequencyEnum frequency(QDate) const;
-    void setFrequency(QDate, Account::FrequencyEnum);
-
-    QString category() const;
-    void setCategory(QString);
+    Category category() const;
+    void setCategory(Category);
 
     QDate reference() const;
     void setReference(QDate);

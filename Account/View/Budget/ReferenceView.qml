@@ -11,13 +11,13 @@ Popup {
     id: root
     
     padding: 0
-    property string budgetName
+		property string budgetId
 
     onOpened: {
         cButton.extern(new Date())
     }
 
-    onBudgetNameChanged: reference["cat"] = budgetName
+		onBudgetIdChanged: reference["cat"] = budgetId
 
     property var reference: Object()
 
@@ -31,8 +31,8 @@ Popup {
         Connections {
             target: _budget
 
-            function onCatChanged(cat: string) {
-                budgetName = cat
+						function onCatChanged(cat) {
+								budgetId = cat
                 root.open()
             }
 
