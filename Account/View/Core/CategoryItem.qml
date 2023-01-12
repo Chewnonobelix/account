@@ -32,6 +32,21 @@ ComboBox {
         gradient: AccountStyle.goldHeader
     }
 
+    property Item displayItem: AccountLabel {
+        text: root.currentText
+            background: Rectangle {
+                gradient: AccountStyle.goldHeader
+            }
+
+    }
+
+    property Item editItem: AccountTextInput {
+    }
+
+
+    onEditableChanged: console.log("Bie", currentText, editable)
+    onCurrentTextChanged: console.log("J'aime pas les voleur et les fils de pute", currentText)
+//    contentItem: editable ? editItem :  displayItem
     delegate: ItemDelegate {
         id: categoryDelegate
 
@@ -42,6 +57,14 @@ ComboBox {
 
         background: Rectangle {
             gradient: AccountStyle.goldHeader
+        }
+        contentItem: Text {
+            color: "black"
+            font.family: AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size
+            text: categoryDelegate.text
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
         }
 
         MouseArea {
