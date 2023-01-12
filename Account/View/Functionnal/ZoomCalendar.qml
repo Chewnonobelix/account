@@ -16,7 +16,7 @@ MouseArea {
     property bool multiple: true
     
     function set(date) {
-        month.selectedDate = date
+//        month.selectedDate = date
         month.currentMonth = Qt.formatDate(date, "MM")
         month.currentYear = Qt.formatDate(date, "yyyy")
     }
@@ -102,16 +102,16 @@ MouseArea {
         
         initialItem: MultiCalendar {
             id: month
-            weekNumbersVisible: true
+//            weekNumbersVisible: true
             multiple: area.multiple
-            onDatesChanged: area.datesChanged()
-            onMonthChanged: {
-                area.monthChanged()
-            }
+//            onDatesChanged: area.datesChanged()
+//            onMonthChanged: {
+//                area.monthChanged()
+//            }
 
-            onUpdateSelected: {
-                area.updateSelected()
-            }
+//            onUpdateSelected: {
+//                area.updateSelected()
+//            }
         }
         
         pushEnter: Transition {
