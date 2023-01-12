@@ -1,8 +1,8 @@
-import QtQuick 2.11
+import QtQuick 2.15
 import QtCharts 2.2
-import QtQuick.Controls.Styles 1.4
-import QtQuick.Controls 1.4
-import QtQuick.Controls 2.4
+//import QtQuick.Controls.Styles 1.4
+//import QtQuick.Controls 1.4
+import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import Account 1.0
 

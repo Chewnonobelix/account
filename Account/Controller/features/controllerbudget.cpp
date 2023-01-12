@@ -143,9 +143,9 @@ void ControllerBudget::updateEntry(QUuid id) {
 
 void ControllerBudget::changeEntry(QString old, QUuid id) {
 	Entry e = entry(id);
-
-	if (m_budgets.contains(old))
-		m_budgets[old] >> e;
+    auto uold = QUuid::fromString(old);
+    if (m_budgets.contains(uold))
+        m_budgets[uold] >> e;
 
 	if (m_budgets.contains(e.metaData<QUuid>("budget")))
 		m_budgets[e.metaData<QUuid>("budget")] << e;
@@ -156,8 +156,8 @@ void ControllerBudget::changeEntry(QString old, QUuid id) {
 void ControllerBudget::showTarget(QString catName, QString date, bool all) {
 	QList<SubBudget> list2;
 	emit clearSub();
-
-	auto list = m_budgets[catName].subs();
+    auto ucatName = QUuid::fromString(catName);
+    auto list = m_budgets[ucatName].subs();
 
 	QDate d = QDate::fromString(date, "dd-MM-yyyy");
 

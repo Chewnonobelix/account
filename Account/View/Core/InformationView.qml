@@ -52,9 +52,9 @@ Item {
             Layout.columnSpan: 2
             Layout.alignment: Qt.AlignTop
 
-            onAddNewCategory: _info.addNewCategory(cat)
+            onAddNewCategory: (cat) => _info.addNewCategory(cat)
 
-            onCatChanged: _info.categoryChange(cat)
+            onCatChanged: (cat) =>  _info.categoryChange(cat)
             onTitleChanged: _info.titleChange(title)
             onValueChanged: _info.valueChange(value)
             onSupportChanged: _info.supportChange(supp)

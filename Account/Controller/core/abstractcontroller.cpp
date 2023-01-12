@@ -35,11 +35,11 @@ QString AbstractController::currentAccount()
 
 void AbstractController::CalcThread::run()
 {
-    int start = std::max(l.size() / 4, 1);
+    int start = std::max(int(l.size()) / 4, 1);
     start *= index;
     int j = 0;
     
-    for(j = start; j < (start + (std::max(l.size() / 4, 1))) && j < l.size(); j++)
+    for(j = start; j < (start + (std::max(int(l.size()) / 4, 1))) && j < l.size(); j++)
     {
         if(indexes.contains(j) || !ret)
             continue;
@@ -60,9 +60,9 @@ void AbstractController::finishTotalThread()
     
     if(m_accountTotal.size() > 1)
     {
-        for(auto it = m_accountTotal.begin()+1; it != m_accountTotal.end() && CalcThread::nbRunning == 0; it++)
+        for(auto it = std::next(m_accountTotal.begin()); it != m_accountTotal.end() && CalcThread::nbRunning == 0; it++)
         {
-            *it = *it + *(it-1);
+            *it = *it + *std::prev(it);
         }
     }
 
@@ -124,8 +124,8 @@ Entry AbstractController::entry(QUuid id)
 
 void AbstractController::setDb(QString name)
 {
-    int type = QMetaType::type(name.toLatin1());
-    if(type == QMetaType::UnknownType)
+    auto type = QMetaType::fromName(name.toLatin1());
+    if(!type.isRegistered())
         throw QString("Unknow DB type");
     
     if(m_db != nullptr)
@@ -137,7 +137,7 @@ void AbstractController::setDb(QString name)
     }
     m_dbThread->start();
     
-    m_db = (InterfaceDataSave*)(QMetaType::create(type));
+    m_db = (InterfaceDataSave*)(type.create());
     m_db->init();
     m_db->moveToThread(m_dbThread);
     connect(m_dbThread, &QThread::started, m_db, &InterfaceDataSave::exec);

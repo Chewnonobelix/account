@@ -30,6 +30,8 @@ QVariant BudgetModel::data(const QModelIndex &index, int role) const
     case BudgetRole::HasRole:
         return !QUuid::fromString(c.metaData<QString>(t)).isNull();
     }
+
+    return QVariant();
 }
 
 QHash<int, QByteArray> BudgetModel::roleNames() const

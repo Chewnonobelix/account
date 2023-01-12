@@ -4,7 +4,7 @@ CONFIG += c++17 windeployqt
 TEMPLATE = lib
 
 TARGET = LibAccount
-DLLDESTDIR = $$OUT_PWD/../AccountApp $$OUT_PWD/../Test
+DESTDIR = $$OUT_PWD/../AccountApp $$OUT_PWD/../Test
 
 ##Command de deploiement: windeployeqt --qmldir %{sourceDir}\Account\View
 ##--qmldir %{sourceDir}\Account\View --dir %{buildDir}\deploy %{buildDir}\Account\release\LibAccount.dll
@@ -20,8 +20,8 @@ DEFINES += QT_DEPRECATED_WARNINGS ACCOUNT_LIBRARY
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 INCLUDEPATH += $$PWD/../DesignLibrary/DesignPattern
-DEPENDPATH += $$OUT_PWD/../DesignLibrary/DesignPattern/debug
-LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
+DEPENDPATH += $$OUT_PWD/../DesignLibrary/DesignPattern/
+LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/ -lDesignPattern
 
 SOURCES += \
 	Controller/ItemModel/budgetmodel.cpp \
@@ -77,6 +77,7 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+message($$target.path)
 #TRANSLATIONS += account_fr.ts \
 #                account_en.ts \
 

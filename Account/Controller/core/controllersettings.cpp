@@ -30,7 +30,7 @@ void ControllerSettings::init(QQmlEngine & engine)
     QDir dir;
     auto list = dir.entryInfoList(QStringList("*.qm"));
     QStringList availableLanguage;
-    for(auto it: list)
+    for(auto& it: list)
     {
         m_language[it.baseName()] = new QTranslator();
         m_language[it.baseName()]->load(it.fileName());
@@ -226,11 +226,11 @@ InterfaceDataSave* ControllerSettings::createDb(QString type, bool b) const
 {
     InterfaceDataSave* ret = nullptr;
 
-    int t = QMetaType::type(type.toLatin1());
-    if(t == QMetaType::UnknownType)
+    auto t = QMetaType::fromName(type.toLatin1());
+    if(!t.isRegistered())
         throw QString("Unknow DB type");
 
-    ret = (InterfaceDataSave*)(QMetaType::create(t));
+    ret = (InterfaceDataSave*)(t.create());
     ret->setBackup(b);
     ret->init();
 

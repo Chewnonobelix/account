@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QDate>
+#include <QUuid>
+#include <QString>
 #include "account_global.h"
 
 namespace Account

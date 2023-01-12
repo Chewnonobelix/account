@@ -32,5 +32,5 @@ INCLUDEPATH += $$PWD/../Account
 LIBS += -L$$OUT_PWD/ -lLibAccount
 
 INCLUDEPATH += $$PWD/../DesignLibrary/DesignPattern
-DEPENDPATH += $$OUT_PWD/../DesignLibrary/DesignPattern/debug
-LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
+DEPENDPATH += $$OUT_PWD/../DesignLibrary/DesignPattern/
+LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/ -lDesignPattern

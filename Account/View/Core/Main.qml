@@ -1,11 +1,11 @@
 import QtQuick 2.11
 import Qt.labs.platform 1.1 as P
 
-import QtQuick.Controls 1.4
+//import QtQuick.Controls 1.4
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.4
-import QtQuick.Controls.Styles 1.4
-import QtQuick.Dialogs 1.3
+//import QtQuick.Controls.Styles 1.4
+import QtQuick.Dialogs
 import QtQuick.Layouts 1.13
 
 import "../Style"
@@ -39,11 +39,11 @@ ApplicationWindow {
         objectName: "settings"
     }
     
-    onVisibilityChanged: {
-        _categoryModel.onUpdateCategory()
-        if(visibility === Window.Minimized)
-            hide()
-    }
+//    onVisibilityChanged: {
+//        _categoryModel.onUpdateCategory()
+//        if(visibility === Window.Minimized)
+//            hide()
+//    }
     
     QuickAdding {
         id: quick
@@ -293,7 +293,7 @@ ApplicationWindow {
             property bool holding: false
             property var clickPos: Qt.point(1,1)
             property var old: Qt.point(0,0)
-            onPressed: {
+            onPressed: (mouse) => {
                 clickPos = Qt.point(mouse.x, mouse.y)
             }
             

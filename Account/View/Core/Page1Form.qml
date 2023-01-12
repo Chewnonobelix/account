@@ -52,12 +52,12 @@ Page {
 			Layout.preferredHeight: pageTable.height * 0.30
 			Layout.preferredWidth: pageTable.width * 0.20
 
-			onUpdateSelected:  {
-				_main.dateList = selectedDates
-				_mainModel.dateList = selectedDates
-				_mainModel.currentIndex = -1
-				_main.updateQuickView()
-			}
+            onUpdateSelected:  {
+                _main.dateList = selectedDates
+                _mainModel.dateList = selectedDates
+                _mainModel.currentIndex = -1
+                _main.updateQuickView()
+            }
 
 			onDatesChanged:  {
 				_mainModel.currentIndex = -1

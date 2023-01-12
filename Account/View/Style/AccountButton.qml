@@ -12,6 +12,15 @@ Button {
     ToolTip.timeout: 1000
     ToolTip.visible: root.hovered
 
+    contentItem: Text {
+        color: "black"
+        font.family: AccountStyle.core.name
+        font.pixelSize: AccountStyle.core.size
+        text: root.text
+        horizontalAlignment: Qt.AlignHCenter
+        verticalAlignment: Qt.AlignVCenter
+    }
+
     background: Rectangle {
         gradient: parent.pressed ? AccountStyle.darkGoldButton : AccountStyle.goldButton
         border.color: "darkgoldenrod"

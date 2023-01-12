@@ -68,8 +68,8 @@ QVariant CategoryListModel::data(const QModelIndex &index, int role) const
 	QVariant ret;
 	switch (enumrole) {
 		case CategoryRole::DisplayRole:
-			if (row == rowCount())
-				ret = QVariant(QVariant::String);
+            if (row == rowCount())
+            ret = QVariant(QString());
 			else
 				ret = QVariant::fromValue(m_db->selectCategory()[currentType()].values()[row].name());
 			break;

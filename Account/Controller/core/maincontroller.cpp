@@ -1,7 +1,7 @@
 #include "maincontroller.h"
 
 MainController::MainController(int storage)
-				: AbstractController(), m_engine(this, QStringLiteral(QML_SOURCE) + "/View")
+    : AbstractController(), m_engine(this, {QStringLiteral(QML_SOURCE) + "/View"})
 {
 	Q_UNUSED(storage)
 

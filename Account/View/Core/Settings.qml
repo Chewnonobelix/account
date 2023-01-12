@@ -1,5 +1,5 @@
 import QtQuick 2.14
-import QtQuick.Dialogs 1.3
+import QtQuick.Dialogs
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 
@@ -344,7 +344,7 @@ Dialog {
                             FileDialog {
                                 id: restoreDialog
                                 objectName: "restoreDialog"
-                                selectExisting: true
+//                                selectExisting: true
                                 nameFilters: ["Account backup (*.bckx *.bcks)"]
                                 title: qsTr("Restore backup")
                                 signal s_restore(string file)

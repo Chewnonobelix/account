@@ -9,13 +9,20 @@ ComboBox {
     ToolTip.visible: root.hovered
 
 
-    Rectangle {
-        gradient: AccountStyle.goldButton
-        anchors.fill: parent
+
+    contentItem: Text {
+        color: "black"
+        font.family: AccountStyle.core.name
+        font.pixelSize: AccountStyle.core.size
+        text: root.currentText
+        horizontalAlignment: Qt.AlignHCenter
+        verticalAlignment: Qt.AlignVCenter
+        Rectangle {
+            gradient: AccountStyle.goldButton
+            anchors.fill: parent
+        }
+
     }
-    
-    font.family: AccountStyle.core.name
-    font.pixelSize: AccountStyle.core.size
     clip: true
 
     delegate: ItemDelegate{
@@ -23,9 +30,14 @@ ComboBox {
         width: root.width
         text: textRole ? name : modelData
         
-        font.family: AccountStyle.core.name
-        font.pixelSize: AccountStyle.core.size
-        
+        contentItem: Text {
+            color: "black"
+            font.family: AccountStyle.core.name
+            font.pixelSize: AccountStyle.core.size
+            text: del.text
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+        }
         background: Rectangle {
             gradient: AccountStyle.goldButton
             MouseArea {

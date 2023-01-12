@@ -142,7 +142,7 @@ AccountBackground {
                 height: parent.height * 0.59
                 width: parent.width
 
-                onAddCategory: root.addNewCategory(cat)
+                onAddCategory: (cat) => root.addNewCategory(cat)
 
                 onCurrentValueChanged: {
                     if(currentText !== "") {

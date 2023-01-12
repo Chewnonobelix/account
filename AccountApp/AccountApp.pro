@@ -1,4 +1,4 @@
-CONFIG += c++17 
+CONFIG += c++20
 QT += quick sql core xml widgets qml gui
 
 TEMPLATE = app
@@ -12,8 +12,8 @@ LIBS += -L$$OUT_PWD/ -lLibAccount
 
 
 INCLUDEPATH += $$PWD/../DesignLibrary/DesignPattern
-DEPENDPATH += $$OUT_PWD/../DesignLibrary/DesignPattern/debug
-LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/debug -lDesignPattern
+DEPENDPATH += $$OUT_PWD/../DesignLibrary/DesignPattern/
+LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/ -lDesignPattern
 
 zip.path = $$OUT_PWD
 zip.files = $$PWD/../7z.dll $$PWD/../7z.exe

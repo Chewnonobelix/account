@@ -6,8 +6,8 @@ const Account::FrequencyEnum week = Account::FrequencyEnum::Week;
 const Account::FrequencyEnum month = Account::FrequencyEnum::Month;
 const Account::FrequencyEnum quarter = Account::FrequencyEnum::Quarter;
 const Account::FrequencyEnum year = Account::FrequencyEnum::Year;
-const QDate begin = QDate::currentDate();
-const QDate end = QDate::currentDate().addYears(10);
+const QDate dbegin = QDate::currentDate();
+const QDate dend = QDate::currentDate().addYears(10);
 const int nbgroup = 2;
 
 void TestFrequency::initTestCase()
@@ -33,13 +33,13 @@ void TestFrequency::testSetFreq()
 }
 void TestFrequency::testSetBegin()
 {
-    model1.setBegin(begin);
+    model1.setBegin(dbegin);
     QVERIFY(true);
 }
 
 void TestFrequency::testSetEnd()
 {
-    model1.setEnd(end);
+    model1.setEnd(dend);
     QVERIFY(true);
 }
 void TestFrequency::testSetReference()
@@ -66,12 +66,12 @@ void TestFrequency::testGetFreq()
 
 void TestFrequency::testGetBegin()
 {
-    QCOMPARE(model1.begin(), begin);
+    QCOMPARE(model1.begin(), dbegin);
 }
 
 void TestFrequency::testGetEnd()
 {
-    QCOMPARE(model1.end(), end);
+    QCOMPARE(model1.end(), dend);
 }
 
 void TestFrequency::testGetReference()
@@ -94,15 +94,15 @@ void TestFrequency::testFill()
 {
     (*filler.model)[model1.id()] = model1;
 
-    QDate it = begin;
-    while(it <= end)
+    QDate it = dbegin;
+    while(it <= dend)
     {
         filler.entries<<model1.clone(model1.referenceEntry());
         filler.entries.last().setDate(it);
         it = it.addDays(Account::nbDay(it, model1.freq()));
     }
 
-    QVERIFY(filler.entries.count() == begin.daysTo(end) + 1);
+    QVERIFY(filler.entries.count() == dbegin.daysTo(dend) + 1);
     QVERIFY(filler.model->count() == 1);
     filler.start();
 
@@ -112,7 +112,7 @@ void TestFrequency::testFill()
 
 void TestFrequency::testCount()
 {
-    QCOMPARE(model1.count(), begin.daysTo(end) + 1);
+    QCOMPARE(model1.count(), dbegin.daysTo(dend) + 1);
 }
 
 void TestFrequency::testList()

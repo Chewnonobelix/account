@@ -1,4 +1,5 @@
 #include "controllercommon.h"
+#include <Model/accountglobal.h>
 
 int ControllerCommon::exec()
 {
@@ -32,7 +33,8 @@ void ControllerCommon::init()
 
 void ControllerCommon::closeCommon(QString id, bool isClose)
 {
-    CommonExpanse ce = db()->selectCommon()[id];
+    auto uid = QUuid::fromString(id);
+    CommonExpanse ce = db()->selectCommon()[uid];
     ce.setIsClose(isClose);
     m_db->updateCommon(ce);
     ce.equilibrate();
@@ -76,11 +78,13 @@ void ControllerCommon::addCommonEntry(QVariant ref)
 
 void ControllerCommon::removeCommonEntry(QString idc, QString member, QString ide)
 {
-    CommonExpanse ce = db()->selectCommon()[idc];
+    auto uidc = QUuid::fromString(idc);
+    auto uide = QUuid::fromString(ide);
+    CommonExpanse ce = db()->selectCommon()[uidc];
     auto l = ce.entries().values(member);
     Entry e;
     for (auto it : l)
-        if (it.id() == ide)
+        if (it.id() == uide)
             e = it;
 
     ce.removeEntry(member, e);
