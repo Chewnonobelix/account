@@ -59,14 +59,20 @@ GridLayout {
                 gradient: !isSelected ?  AccountStyle.backgroundGradient : AccountStyle.calSelect
 
                 MouseArea {
-                    onClicked: {
-                        if(!parent.isSelected)
-                            selectedDates.push(model.date)
-                        else
-                            selectedDates.splice(indexOf(selectedDates, model.date), 1)
+                    onClicked: (mouse) => {
+                                   if(dayDel.isCurrentMonth) {
+                                       if(!parent.isSelected) {
+                                           if(!(root.multiple && mouse.modifiers === Qt.ShiftModifier))
+                                                selectedDates.splice(0, selectedDates.length)
+                                           selectedDates.push(model.date)
+                                       }
+                                       else {
+                                           selectedDates.splice(indexOf(selectedDates, model.date), 1)
+                                       }
 
-                        root.selectedDatesChanged()
-                    }
+                                       root.selectedDatesChanged()
+                                   }
+                               }
 
                     anchors.fill: parent
                 }
