@@ -8,8 +8,19 @@ GridLayout {
     id: root
     property bool multiple: true
     columns: 2
+    property var selectedDates: []
+
     Rectangle {
 
+    }
+
+    function indexOf(list, item) {
+        var ret = -1
+        for(var i = 0; i < list.length && ret === -1 ; i++) {
+            ret = list[i].toString() === item.toString() ? i : ret
+        }
+
+        return ret;
     }
 
     DayOfWeekRow {
@@ -17,7 +28,6 @@ GridLayout {
         Layout.fillWidth: true
         delegate: Text {
             text: narrowName
-            font: control.font
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
 
@@ -25,172 +35,45 @@ GridLayout {
         }
     }
     WeekNumberColumn {
-
+        month: multiCal.month
+        year: multiCal.year
     }
 
     MonthGrid {
         id: multiCal
         Layout.fillWidth: true
 
-        locale: Qt.locale("en_US")
-        property var selectedDates: []
-        property var stylesData: []
+        locale: Qt.locale("fr_FR")
 
-        function addCalendar(item) {
-            if(item.value !== 0) {
-                calendarPreview.append(item)
-            }
-        }
+        delegate: Text {
+            id: dayDel
+            property bool isCurrentMonth: model.month === multiCal.month
+            Rectangle {
+                z: -1
+                anchors.fill: parent
+                border.color: "black"
+                property bool isSelected: indexOf(selectedDates, model.date) !== -1
+                gradient: !isSelected ?  AccountStyle.backgroundGradient : AccountStyle.calSelect
 
+                MouseArea {
+                    onClicked: {
+                        if(!parent.isSelected)
+                            selectedDates.push(model.date)
+                        else
+                            selectedDates.splice(indexOf(selectedDates, model.date), 1)
 
-        function addMonth(item) {
-            totalPreview.append(item)
-        }
-
-        function clear() {
-            calendarPreview.clear()
-            totalPreview.clear()
-        }
-
-        ListModel {
-            id: calendarPreview
-            objectName: "calendarPreview"
-
-
-            function find(day) {
-                for(var i = 0; i < count; i++) {
-                    if(get(i).day === day) {
-                        return get(i)
+                        root.selectedDatesChanged()
                     }
+
+                    anchors.fill: parent
                 }
             }
+
+
+            text: model.day
+            color: isCurrentMonth ? "black" : "grey"
+            fontSizeMode: Text.Fit
+            horizontalAlignment: Qt.AlignHCenter
         }
-
-        ListModel {
-            id: totalPreview
-            objectName: "totalPreview"
-
-            function find(day) {
-                for(var i = 0; i < count; i++) {
-                    if(get(i).day === day) {
-                        return get(i)
-                    }
-                }
-            }
-        }
-
-        readonly property string format: "dd-MM-yyyy"
-
-        signal datesChanged()
-        signal monthChanged()
-        property int currentMonth
-        property int currentYear
-        property bool multiple: root.multiple
-
-        month: currentMonth
-        year: currentYear
-        //    weekNumbersVisible: true
-
-        signal updateSelected()
-
-        onCurrentMonthChanged: monthChanged()
-
-        function showNextMonth() {
-            currentMonth ++
-
-            if(currentMonth == 12) {
-                showNextYear()
-                currentMonth = 0
-            }
-            visibleMonth = Qt.binding( function() { return currentMonth})
-
-        }
-
-
-        function showPreviousMonth() {
-            currentMonth --
-
-            if(currentMonth == -1) {
-                showPreviousYear()
-                currentMonth = 11
-            }
-            month = Qt.binding( function() { return currentMonth})
-        }
-
-        function showNextYear() {
-            currentYear ++
-
-            year = Qt.binding( function() { return currentYear})
-
-        }
-
-
-        function showPreviousYear() {
-            currentYear --
-            year = Qt.binding( function() { return currentYear})
-        }
-
-
-        Component.onCompleted: {
-            //        selectedDate = minimumDate
-            month = new Date().getMonth()
-            currentMonth = month
-            year = 1900 + new Date().getYear()
-            currentYear = year
-
-            year = Qt.binding( function() { return currentYear})
-            month = Qt.binding( function() { return currentMonth})
-        }
-
-        //    style: CalendarStyle {
-        //        id:cs
-        //        gridVisible: true
-        //        gridColor: "goldenrod"
-
-        //        background: AccountBackground {
-        //            invisible: true
-        //        }
-
-        //        navigationBar: Rectangle {
-        //            id: navBar
-        //            height: multiCal.height/16
-
-        //            gradient: AccountStyle.goldHeader
-
-        //            AccountLabel {
-        //                id:monthLabel
-        //                height: parent.height
-        //                color:"black"
-        //                anchors.centerIn: parent
-        //                text: Qt.locale().monthName(visibleMonth, Locale.ShortFormat) + " " + visibleYear
-        //                font.family: AccountStyle.title.name
-        //                font.pixelSize: height * 0.8
-        //            }
-
-        //            AccountButton {
-        //                id: nextMonth
-        //                anchors.right: parent.right
-        //                width: multiCal.width/14
-        //                height: parent.height
-        //                text: ">"
-
-        //                onClicked: {
-        //                    multiCal.showNextMonth()
-        //                }
-        //            }
-
-        //            AccountButton {
-        //                id: prevMonth
-        //                anchors.left: parent.left
-        //                width: multiCal.width/14
-        //                height: parent.height
-
-        //                text: "<"
-
-        //                onClicked: {
-        //                    multiCal.showPreviousMonth()
-        //                }
-        //            }
     }
-
 }

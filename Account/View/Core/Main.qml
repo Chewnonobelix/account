@@ -20,8 +20,8 @@ import "../Functionnal"
 ApplicationWindow {
     visible: true
     
-    width: 800
-    height: 640
+    width: 1920
+    height: 1080
         
     id: mainWindow
     
