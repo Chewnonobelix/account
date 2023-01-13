@@ -9,10 +9,7 @@ GridLayout {
     property bool multiple: true
     columns: 2
     property var selectedDates: []
-
-    Rectangle {
-
-    }
+    rowSpacing: height * 0.01
 
     function indexOf(list, item) {
         var ret = -1
@@ -24,8 +21,12 @@ GridLayout {
     }
 
     DayOfWeekRow {
+        id: daysRow
         locale:  multiCal.locale
         Layout.fillWidth: true
+        Layout.row: 0
+        Layout.column: 1
+        Layout.alignment: Qt.AlignBottom
         delegate: Text {
             text: narrowName
             horizontalAlignment: Text.AlignHCenter
@@ -37,9 +38,11 @@ GridLayout {
     WeekNumberColumn {
         month: multiCal.month
         year: multiCal.year
+        Layout.alignment: Qt.AlignTop
     }
 
     MonthGrid {
+        Layout.alignment: Qt.AlignTop
         id: multiCal
         Layout.fillWidth: true
 
