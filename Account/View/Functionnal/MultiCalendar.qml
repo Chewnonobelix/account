@@ -71,6 +71,31 @@ GridLayout {
                 property bool isSelected: indexOf(selectedDates, model.date) !== -1
                 gradient: !isSelected ?  AccountStyle.backgroundGradient : AccountStyle.calSelect
 
+                Component {
+                    id: colorComp
+                    Rectangle {
+                        property double total:0
+                        property bool isFind: false
+
+                        color: {
+                            if(isFind && parent.delCurrentMonth) {
+                                color: total > 0 ? "green" : "red"
+                            }
+                            else {
+                                color: "black"
+                            }
+                        }
+                    }
+                }
+
+                Loader {
+                    id: dayprev
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 2
+
+                    sourceComponent: colorComp
+                }
+
                 MouseArea {
                     onClicked: (mouse) => {
                                    if(dayDel.isCurrentMonth) {
