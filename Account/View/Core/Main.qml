@@ -297,7 +297,7 @@ ApplicationWindow {
                 clickPos = Qt.point(mouse.x, mouse.y)
             }
             
-            onPositionChanged: {
+            onPositionChanged: (mouse) => {
                 if(!isMaximazed) {
                     var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y)
                     mainWindow.x += delta.x

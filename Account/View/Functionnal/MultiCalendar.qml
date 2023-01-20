@@ -7,9 +7,13 @@ import "../Style"
 GridLayout {
     id: root
     property bool multiple: true
-    columns: 2
     property var selectedDates: []
+    property date selectedDate
+    property int currentMonth
+    property int currentYear
+
     rowSpacing: height * 0.01
+    columns: 2
 
     function indexOf(list, item) {
         var ret = -1
@@ -25,12 +29,11 @@ GridLayout {
         locale:  multiCal.locale
         Layout.fillWidth: true
         Layout.row: 0
+        spacing: 0
         Layout.column: 1
         Layout.alignment: Qt.AlignBottom
-        delegate: Text {
+        delegate: AccountHeader {
             text: narrowName
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
 
             required property string narrowName
         }
@@ -39,15 +42,25 @@ GridLayout {
         month: multiCal.month
         year: multiCal.year
         Layout.alignment: Qt.AlignTop
+        Layout.fillHeight: true
+        spacing: 0
+
+        delegate: AccountHeader {
+            text: weekNumber
+            required property int weekNumber
+        }
     }
 
     MonthGrid {
-        Layout.alignment: Qt.AlignTop
         id: multiCal
         Layout.fillWidth: true
-
+        Layout.fillHeight: true
+        Layout.alignment: Qt.AlignTop
+        spacing: 0
         locale: Qt.locale("fr_FR")
 
+        month: Math.max(root.currentMonth - 1, 0)
+        year: root.currentYear
         delegate: Text {
             id: dayDel
             property bool isCurrentMonth: model.month === multiCal.month
@@ -83,6 +96,7 @@ GridLayout {
             color: isCurrentMonth ? "black" : "grey"
             fontSizeMode: Text.Fit
             horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
         }
     }
 }

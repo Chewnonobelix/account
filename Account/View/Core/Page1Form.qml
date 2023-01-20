@@ -64,7 +64,7 @@ Page {
 			}
 
 			onMonthChanged: {
-				_main.previewCalendar(currentMonth+1, currentYear)
+                _main.previewCalendar(currentMonth+1, currentYear)
 			}
 
 			Component.onCompleted: set(new Date())
@@ -185,8 +185,9 @@ Page {
 				syncView: view
 				z:5
 				clip: true
-				delegate: Rectangle {
-					border.color: "goldenrod"
+                implicitHeight: colTable.height * 0.05
+                delegate: Rectangle {
+                    border.color: "goldenrod"
 					AccountHeader {
 						anchors {
 							fill: parent

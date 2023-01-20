@@ -43,9 +43,6 @@ ComboBox {
     property Item editItem: AccountTextInput {
     }
 
-
-    onEditableChanged: console.log("Bie", currentText, editable)
-    onCurrentTextChanged: console.log("J'aime pas les voleur et les fils de pute", currentText)
 //    contentItem: editable ? editItem :  displayItem
     delegate: ItemDelegate {
         id: categoryDelegate

@@ -16,7 +16,7 @@ MouseArea {
     property bool multiple: true
     
     function set(date) {
-//        month.selectedDate = date
+        month.selectedDate = date
         month.currentMonth = Qt.formatDate(date, "MM")
         month.currentYear = Qt.formatDate(date, "yyyy")
     }
