@@ -29,8 +29,10 @@ DISTFILES += \
 
 
 INCLUDEPATH += $$PWD/../Account
-LIBS += -L$$OUT_PWD/ -lLibAccount
+LIBS += -L$$OUT_PWD/../AccountApp -lLibAccount
 
+message($$PWD)
+message($$OUT_PWD)
 INCLUDEPATH += $$PWD/../DesignLibrary/DesignPattern
 DEPENDPATH += $$OUT_PWD/../DesignLibrary/DesignPattern/
 LIBS += -L$$OUT_PWD/../DesignLibrary/DesignPattern/ -lDesignPattern

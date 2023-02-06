@@ -5,7 +5,7 @@ Account \
     AccountApp \
     DesignLibrary \
     Plugins \
-#    Test \
+    Test \
 
 TRANSLATIONS += Account\Francais.ts \
                 Account\English.ts

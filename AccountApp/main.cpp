@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
     int type = index > -1 ? app.arguments()[index + 1].toInt() : 0;
     MainController mc(type);
 
+
     mc.exec();
 
     return app.exec();
