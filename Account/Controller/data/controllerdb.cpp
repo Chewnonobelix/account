@@ -44,7 +44,7 @@ bool ControllerDB::init()
     
     m_db = QSqlDatabase::addDatabase("QSQLITE", backup ? "backup" : "default");
     qDebug()<<"Back?"<<backup<<m_db.connectionNames()<<m_db.connectionName();
-    QString name = QString("account%1").arg(backup ? "_backup" : "");
+    QString name = QString("account%1.db").arg(backup ? "_backup" : "");
     
     m_db.setDatabaseName(name);
     m_db.open();
@@ -137,7 +137,7 @@ void ControllerDB::prepareAccount()
     
     qDebug()<<"SA"<<m_accounts->prepare("SELECT DISTINCT account FROM account WHERE profile=:profile")<<m_accounts->lastError();
     
-    qDebug()<<"RA"<<m_removeAccount->prepare("INSERT INTO temp_account VALUES (:n)")<<m_removeAccount->lastError();    
+    qDebug()<<"RA"<<m_removeAccount->prepare("INSERT INTO tempaccount VALUES (:n)")<<m_removeAccount->lastError();
 }
 
 void ControllerDB::prepareCategory()
@@ -273,7 +273,7 @@ void ControllerDB::prepareProfile()
     
     qDebug()<<"SP"<< m_selectProfiles->prepare("SELECT DISTINCT profile FROM account")<<m_selectProfiles->lastError();
     
-    qDebug()<<"RP"<<m_removeProfile->prepare("INSERT INTO temp_profile VALUES (:n)")<<m_removeProfile->lastError();
+    qDebug()<<"RP"<<m_removeProfile->prepare("INSERT INTO tempprofile VALUES (:n)")<<m_removeProfile->lastError();
 }
 
 void ControllerDB::prepareDebt()
