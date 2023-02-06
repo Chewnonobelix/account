@@ -75,14 +75,14 @@ GridLayout {
                     id: colorComp
                     Rectangle {
                         property double total:0
-                        property bool isFind: false
+                        property bool isFind: true
 
                         color: {
-                            if(isFind && parent.delCurrentMonth) {
+                            if(isFind && dayDel.isCurrentMonth) {
                                 color: total > 0 ? "green" : "red"
                             }
                             else {
-                                color: "black"
+                                color: "transparent"
                             }
                         }
                     }
@@ -92,7 +92,19 @@ GridLayout {
                     id: dayprev
                     anchors.bottom: parent.bottom
                     anchors.bottomMargin: 2
+                    width: parent.width
+                    height: parent.height * .05
 
+                    sourceComponent: colorComp
+                }
+
+                Loader {
+                    id: totalprev
+                    anchors.top: parent.top
+                    anchors.topMargin: 2
+                    width: parent.width
+                    height: parent.height * .05
+//                    color: "brown"
                     sourceComponent: colorComp
                 }
 
