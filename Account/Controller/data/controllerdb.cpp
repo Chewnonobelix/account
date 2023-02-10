@@ -349,22 +349,80 @@ bool ControllerDB::deleteProfile(QString name)
 }
 
 bool ControllerDB::addEntry(Entry & e)
-{        
-    bool ret = false;
-    
+{
+    //    "INSERT INTO account (id, account, value, date_eff, type, profile) "
+    //    "VALUES (:id, :account,:value,:date,:type, :profile)"
+    bool ret = true;
+    if(m_addEntry) {
+        e.id().isNull() ? e.setId(QUuid::createUuid()) : void();
+        m_addEntry->bindValue(":id", e.id());
+        m_addEntry->bindValue(":account", currentAccount());
+        m_addEntry->bindValue(":profile", currentProfile());
+    }
+
+    qDebug()<<m_addEntry<<m_addEntry->isValid()<<m_db.isOpen()<<m_db.lastError();
+    if(m_db.isOpen()) {
+        auto ret = m_addEntry->exec();
+        qDebug()<<"Exec Add entry"<< ret <<m_addEntry->lastError();
+
+        if(ret) {
+            static QStringList excludeList = {"id", "account", "profile"};
+            //            "INSERT INTO entrymetadata (entry, name, value) "
+            //            "VALUES (:entry, :name, :value)"
+            for(auto it: e.metadataList()) {
+                if(!excludeList.contains(it)) {
+                    if(m_insertMetadata) {
+                        m_insertMetadata->bindValue(":entry", e.id());
+                        m_insertMetadata->bindValue(":name", it);
+                        m_insertMetadata->bindValue(":value", e.metaData<QVariant>(it));
+
+                        ret &= m_insertMetadata->exec();
+                        qDebug()<<"Insert metadata "<<ret<<m_insertMetadata->lastError();
+                    }
+                }
+            }
+        }
+    }
     return ret;
 }
 
 QMap<QUuid, Entry> ControllerDB::selectEntry()
 {
+    //    "SELECT * FROM account "
+    //    "WHERE account=:a AND profile=:p"
     QMap<QUuid, Entry> res;
-        
+
+    m_selectEntry->bindValue(":a", currentAccount());
+    m_selectEntry->bindValue(":p", currentProfile());
+    qDebug()<<currentAccount()<<currentProfile();
+    m_selectEntry->exec();
+    while(m_selectEntry->next()) {
+        auto record = m_selectEntry->record();
+        Entry temp;
+        temp.setId(record.value("id").toUuid());
+        temp.setAccount(currentAccount());
+        temp.setMetadata("profile", currentProfile());
+
+        //                "SELECT * FROM entrymetadata "
+        //                "WHERE entry=:ide"
+        m_selectMetadata->bindValue(":ide", temp.id());
+        m_selectMetadata->exec();
+
+        while(m_selectMetadata->next()) {
+            auto recordMeta = m_selectMetadata->record();
+            temp.setMetadata(recordMeta.value("name").toString(), recordMeta.value("value"));
+        }
+
+        res[temp.id()] = temp;
+    }
+
     return res;
 }
 
 bool ControllerDB::updateEntry(Entry & e)
 {
     bool ret = false;
+
     return ret;
 }
 
