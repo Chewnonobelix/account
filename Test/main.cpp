@@ -33,30 +33,30 @@ int main(int argc, char** argv)
     status |= QTest::qExec(&td, argc, argv);
 
     auto t = QtConcurrent::run([](){
-        ControllerJson json;
+        ControllerDB json;
+        json.init();
+        auto today = QDate::currentDate();
+        auto it = today.addYears(-2);
+        auto end = today.addYears(2);
+        json.setCurrentAccount(today.toString("dd-MM-yyyy"));
+        QRandomGenerator seed;
+        for(; it < end; it = it.addDays(1))
+        {
+            auto nb = seed.bounded(0, 10);
 
-            auto today = QDate::currentDate();
-            auto it = today.addYears(-4);
-            auto end = today.addYears(4);
-            json.setCurrentAccount(today.toString("dd-MM-yyyy"));
-            QRandomGenerator seed;
-            for(; it < end; it = it.addDays(1))
-            {
-                auto nb = seed.bounded(0, 10);
+            for(auto i = 0; i < nb; i ++) {
+                auto type = seed.bounded(0, 2) == 0 ? Account::TypeEnum::Income : Account::TypeEnum::Outcome;
+                Entry e;
+                e.setDate(it);
+                e.setTitle(QString("%1_%2").arg(it.toString("dd-MM-yyyy")).arg(i));
+                e.setValue(seed.bounded(0, 1000000)/1000.);
+                e.setType(type);
+                json.addEntry(e);
 
-                for(auto i = 0; i < nb; i ++) {
-                    auto type = seed.bounded(0, 2) == 0 ? Account::TypeEnum::Income : Account::TypeEnum::Outcome;
-                    Entry e;
-                    e.setDate(it);
-                    e.setTitle(QString("%1_%2").arg(it.toString("dd-MM-yyyy")).arg(i));
-                    e.setValue(seed.bounded(0, 1000000)/1000.);
-                    e.setType(type);
-                    json.addEntry(e);
-
-                    qDebug()<<it<<i;
-                }
+                qDebug()<<it<<i;
             }
-        });
+        }
+    });
 
     t.waitForFinished();
     return status;
