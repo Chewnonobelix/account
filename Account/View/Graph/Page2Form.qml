@@ -60,8 +60,8 @@ Rectangle {
         backgroundColor: "transparent"
 
         Component.onCompleted: {
-            createSeries(ChartView.SeriesTypeLine, "past", dta,va)
-            createSeries(ChartView.SeriesTypeLine, "estimated", dta,va)
+            createSeries(ChartView.SeriesTypeSpline, "past", dta,va)
+            createSeries(ChartView.SeriesTypeSpline, "estimated", dta,va)
 
             series("past").objectName = "mainChart"
             series("past").pointsVisible = true
