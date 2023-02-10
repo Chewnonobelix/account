@@ -304,10 +304,16 @@ bool ControllerDB::isConnected() const
     return m_db.isOpen();
 }
 
-QStringList ControllerDB::selectAccount(QString)
+QStringList ControllerDB::selectAccount(QString profile)
 {
     QStringList res;
     
+    QSqlQuery query = m_db.exec(QString("SELECT DISTINCT account FROM account WHERE profile='%1'").arg(currentProfile()));
+    while(query.next()) {
+        auto record = query.record();
+        res<<record.value(0).toString();
+    }
+    qDebug()<<"Account"<<res<<query.lastError()<<profile;
     return res;
 }
 
