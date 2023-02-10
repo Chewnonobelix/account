@@ -326,8 +326,15 @@ bool ControllerDB::removeAccount(QString name)
 
 QStringList ControllerDB::selectProfile() 
 {
-    QStringList ret;    
-    return ret;
+    QStringList res;
+
+    QSqlQuery query = m_db.exec(QString("SELECT DISTINCT profile FROM account"));
+    while(query.next()) {
+        auto record = query.record();
+        res<<record.value(0).toString();
+    }
+    qDebug()<<"Profile"<<res<<query.lastError();
+    return res;
 }
 
 bool ControllerDB::addProfile(QString name, QString) 
