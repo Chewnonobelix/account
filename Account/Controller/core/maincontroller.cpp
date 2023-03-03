@@ -471,12 +471,12 @@ void MainController::checkEstimated()
 
 	QList<Entry> list;
 
-	for (auto it : m_db->selectEntry()) {
-		if (it.estimated() && it.date() <= QDate::currentDate())
-			list<<it;
-		else if(it.date() > QDate::currentDate())
-			break;
-	}
+//	for (auto it : m_db->selectEntry()) {
+//		if (it.estimated() && it.date() <= QDate::currentDate())
+//			list<<it;
+//		else if(it.date() > QDate::currentDate())
+//			break;
+//	}
 
 	QVariantList vl;
 

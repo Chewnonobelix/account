@@ -76,7 +76,7 @@ void ControllerBudget::reload() {
 
 	m_budgets = m_db->selectBudgets();
 
-	m_filler.entries = m_db->selectEntry().values();
+//	m_filler.entries = m_db->selectEntry().values();
 	m_filler.start();
 }
 

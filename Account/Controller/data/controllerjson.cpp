@@ -5,7 +5,7 @@ bool ControllerJson::addEntry(Entry &e)
     return add("entry", e, [this, e]() { emit s_updateEntry(); });
 }
 
-QMap<QUuid, Entry> ControllerJson::selectEntry()
+QFuture<QMap<QUuid, Entry> > ControllerJson::selectEntry()
 {
     auto ret = select<Entry>("entry");
 
@@ -13,7 +13,7 @@ QMap<QUuid, Entry> ControllerJson::selectEntry()
     // for (auto it : ret)
     //  qDebug() << (QJsonObject) it;
 
-    return ret;
+    return QFuture<QMap<QUuid, Entry>>();
 }
 
 bool ControllerJson::updateEntry(Entry & e)

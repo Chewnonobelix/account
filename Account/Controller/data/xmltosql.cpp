@@ -10,10 +10,10 @@ bool transfert(S select, U update, A add)
 {
     bool ret = true;
 
-    for (auto it2 : select()) {
-        ret &= add(it2);
-        ret &= update(it2);
-    }
+//    for (auto it2 : select()) {
+//        ret &= add(it2);
+//        ret &= update(it2);
+//    }
     return ret;
 }
 
@@ -22,7 +22,8 @@ bool TransfertDatabase::transfertEntries()
     bool ret = true;
 
     auto s = [this]() {
-        return m_db->selectEntry();
+        return QMap<QUuid, Entry>();
+//        return m_db->selectEntry();
     };
 
     auto a = [this](auto e) {

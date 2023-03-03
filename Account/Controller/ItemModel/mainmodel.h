@@ -6,6 +6,7 @@
 #include "Model/total.h"
 #include <QAbstractItemModel>
 #include <QList>
+#include <QFutureWatcher>
 
 class MainModel : public QAbstractTableModel
 {
@@ -38,6 +39,9 @@ private:
             int(MainRole::TotalRole)};
 
 	void setRow();
+
+    QFutureWatcher<QMap<QUuid, Entry>> m_fw;
+    QUuid m_selected;
 
 public:
 	enum class MainRole {

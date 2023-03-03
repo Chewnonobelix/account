@@ -10,6 +10,7 @@
 #include <QSqlRecord>
 #include <QSqlResult>
 #include <QVariant>
+#include <QFuture>
 
 class ControllerDB: public InterfaceDataSave
 {
@@ -73,6 +74,8 @@ private:
 
     QString m_currentAccount;
 
+    QMap<QUuid, Entry> m_entries;
+    QFuture<QMap<QUuid, Entry>> m_loadFutur;
     void prepareEntry();
     void prepareAccount();
     void prepareCategory();
@@ -90,7 +93,7 @@ public:
     bool isConnected() const;
 public slots:
     bool addEntry(Entry&)  override;
-    QMap<QUuid, Entry> selectEntry() override;
+    QFuture<QMap<QUuid, Entry>> selectEntry() override;
     bool removeEntry(Entry&) override;
 
     QStringList selectAccount(QString) override;

@@ -24,11 +24,11 @@ void ControllerInformation::view(QUuid id)
         page--;
 
         QVariantList model, le;
-        QList<Entry> les = db()->selectEntry().values();
-        std::for_each(les.begin(), les.end(), [&le, f, g](Entry e) {
-            if (e.metaData<QUuid>("frequency") == f && e.metaData<int>("freqGroup") == g)
-                le << QVariant::fromValue(e);
-        });
+//        QList<Entry> les = db()->selectEntry().values();
+//        std::for_each(les.begin(), les.end(), [&le, f, g](Entry e) {
+//            if (e.metaData<QUuid>("frequency") == f && e.metaData<int>("freqGroup") == g)
+//                le << QVariant::fromValue(e);
+//        });
 
         emit maxPageChanged(le.size() / 100 + 1);
         emit currentPageChanged(1);

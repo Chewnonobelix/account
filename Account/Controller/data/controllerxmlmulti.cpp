@@ -145,7 +145,7 @@ Entry ControllerXMLMulti::selectEntryNode(QDomElement & el)
     return e;
 }
 
-QMap<QUuid, Entry> ControllerXMLMulti::selectEntry()
+QFuture<QMap<QUuid, Entry> > ControllerXMLMulti::selectEntry()
 {
     QMap<QUuid, Entry> ret;
 
@@ -172,7 +172,7 @@ QMap<QUuid, Entry> ControllerXMLMulti::selectEntry()
         ret[e.id()] = e;
     }
 
-    return ret;
+    return QFuture<QMap<QUuid, Entry>>();
 }
 
 bool ControllerXMLMulti::removeEntry(Entry& e)
@@ -666,8 +666,8 @@ QMap<QUuid, Frequency> ControllerXMLMulti::selectFrequency()
         child = el.elementsByTagName("endless").at(0).toElement();
         f.setEndless(child.text().toInt());
 
-        for (auto it : selectEntry())
-            f<<it;
+//        for (auto it : selectEntry())
+//            f<<it;
         ret[f.id()] = f;
     }
 

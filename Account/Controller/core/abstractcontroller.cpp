@@ -77,18 +77,18 @@ void AbstractController::calculTotal()
     pool.clear();
     CalcThread::indexes.clear();
     m_accountTotal.clear();
-    auto l = m_db->selectEntry().values();
-    std::sort(l.begin(), l.end(), [](const Entry& e1, const Entry& e2) {
-            return e1.date() < e2.date();
-    });
+//    auto l = m_db->selectEntry()/*.values()*/;
+//    std::sort(l.begin(), l.end(), [](const Entry& e1, const Entry& e2) {
+//            return e1.date() < e2.date();
+//    });
 
-    for (auto i = 0; i < 5; i++) {
-        auto t = QSharedPointer<CalcThread>::create(i, l, &m_accountTotal);
-        pool<<t;
-        t->start();
-        CalcThread::nbRunning ++;
-        connect(t.data(), &CalcThread::finished, this, &AbstractController::finishTotalThread);
-    }
+//    for (auto i = 0; i < 5; i++) {
+//        auto t = QSharedPointer<CalcThread>::create(i, l, &m_accountTotal);
+//        pool<<t;
+//        t->start();
+//        CalcThread::nbRunning ++;
+//        connect(t.data(), &CalcThread::finished, this, &AbstractController::finishTotalThread);
+//    }
 }
 
 void AbstractController::addEntry(Entry &e)
@@ -99,9 +99,9 @@ void AbstractController::addEntry(Entry &e)
 
     if (m_db->addEntry(et)) {
         Entry init;
-        for (auto it : m_db->selectEntry())
-            if (it.title() == "Initial")
-                init = it;
+//        for (auto it : m_db->selectEntry())
+//            if (it.title() == "Initial")
+//                init = it;
         
         if(et.date() < init.date())
         {
@@ -118,8 +118,9 @@ void AbstractController::addEntry(Entry &e)
 }
 
 Entry AbstractController::entry(QUuid id)
-{    
-    return m_db->selectEntry()[id];
+{
+    return Entry();
+//    return m_db->selectEntry()[id];
 }
 
 void AbstractController::setDb(QString name)

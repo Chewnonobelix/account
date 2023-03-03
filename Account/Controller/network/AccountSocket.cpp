@@ -144,14 +144,14 @@ void AccountSocket::updateLocalProfile()
         for (auto account : accounts) {
             QJsonObject obj;
             QJsonArray array;
-            for (auto e : AbstractController::db()->selectEntry()) {
-                if (e.date() < m_localProfile.begin())
-                    continue;
-                if (e.date() > m_localProfile.end())
-                    continue;
+//            for (auto e : AbstractController::db()->selectEntry()) {
+//                if (e.date() < m_localProfile.begin())
+//                    continue;
+//                if (e.date() > m_localProfile.end())
+//                    continue;
 
-                array.append((QJsonObject) e);
-            }
+//                array.append((QJsonObject) e);
+//            }
             obj.insert("entries", array);
             obj.insert("profile", profile);
             obj.insert("account", account);

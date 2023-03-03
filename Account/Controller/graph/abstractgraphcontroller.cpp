@@ -61,10 +61,10 @@ void AbstractGraphController::increment(int nb)
         it->clear();
     }
 
-    auto e = m_db->selectEntry();
+//    auto e = m_db->selectEntry();
     QMultiMap<QDate, Entry> map;
-    for(auto it: e)
-        map.insert(it.date(), it);
+//    for(auto it: e)
+//        map.insert(it.date(), it);
 
     bool next = true, prev = true;
     for(auto it: map)

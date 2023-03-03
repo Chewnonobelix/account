@@ -37,7 +37,7 @@ int ControllerDebt::exec()
         m_filler.model = &m_debts;
 
     if (!m_filler.isRunning()) {
-        m_filler.entries = db()->selectEntry().values();
+        //        m_filler.entries = db()->selectEntry().values();
         m_filler.start();
     }
 
@@ -71,22 +71,22 @@ void ControllerDebt::endFill()
 void ControllerDebt::addDebt()
 {
     Debt d;
-	auto i = d.initial();
-	i.setBlocked(true);
-	d.setInitial(i);
-	db()->addDebt(d);
+    auto i = d.initial();
+    i.setBlocked(true);
+    d.setInitial(i);
+    db()->addDebt(d);
 }
 
 void ControllerDebt::onNameChanged(QString id, QString name)
 {
-    Debt d = db()->selectDebt()[QUuid::fromString(id)];
-    d.setName(name);
-    auto el = db()->selectEntry();
+//    Debt d = db()->selectDebt()[QUuid::fromString(id)];
+//    d.setName(name);
+//    auto el = db()->selectEntry();
 
-    Entry e = el[QUuid::fromString(id)];
-    e.setTitle(name);
-    d.setInitial(e);
-    db()->updateDebt(d);
+//    //    Entry e = el[QUuid::fromString(id)];
+//    //    e.setTitle(name);
+//    //    d.setInitial(e);
+//    db()->updateDebt(d);
 }
 
 void ControllerDebt::onTimeChanged(QString id, int time)
@@ -118,81 +118,81 @@ void ControllerDebt::onRemoved(QString id)
 
 void ControllerDebt::onInitialDateChanged(QString id, QDate d)
 {
-    Debt b = db()->selectDebt()[QUuid::fromString(id)];
-    auto el = db()->selectEntry();
+//    Debt b = db()->selectDebt()[QUuid::fromString(id)];
+//    auto el = db()->selectEntry();
 
-    Entry e = el[QUuid::fromString(id)];
+//    //    Entry e = el[QUuid::fromString(id)];
 
-    e.setDate(d);
-    b.setInitial(e);
-    db()->updateDebt(b);
+//    //    e.setDate(d);
+//    //    b.setInitial(e);
+//    db()->updateDebt(b);
 }
 
 void ControllerDebt::onInitialTypeChanged(QString id, int t)
 {
-    Debt b = db()->selectDebt()[QUuid::fromString(id)];
-    auto el = db()->selectEntry();
+//    Debt b = db()->selectDebt()[QUuid::fromString(id)];
+//    auto el = db()->selectEntry();
 
-    Entry e = el[QUuid::fromString(id)];
+//    //    Entry e = el[QUuid::fromString(id)];
 
-    e.setType(Account::TypeEnum(t));
-    b.setInitial(e);
-    db()->updateDebt(b);
+//    //    e.setType(Account::TypeEnum(t));
+//    //    b.setInitial(e);
+//    db()->updateDebt(b);
 }
 
 void ControllerDebt::onInitialValueChanged(QString id, double v)
 {
-    auto el = db()->selectEntry();
+//    auto el = db()->selectEntry();
 
-    Entry e = el[QUuid::fromString(id)];
+//    //    Entry e = el[QUuid::fromString(id)];
 
-    Debt b = db()->selectDebt()[QUuid::fromString(id)];
+//        Debt b = db()->selectDebt()[QUuid::fromString(id)];
 
-    e.setValue(v);
-    b.setInitial(e);
+//    //    e.setValue(v);
+//    //    b.setInitial(e);
 
-    db()->updateDebt(b);
+//    db()->updateDebt(b);
 }
 
 void ControllerDebt::onInitialCategoryChanged(QString id, QString c)
 {
- Debt b = db()->selectDebt()[QUuid::fromString(id)];
- auto el = db()->selectEntry();
+//    Debt b = db()->selectDebt()[QUuid::fromString(id)];
+//    auto el = db()->selectEntry();
 
- Entry e = el[QUuid::fromString(id)];
- auto cat = db()->selectCategory()[e.type()][QUuid::fromString(c)];
- e.setCategory(cat);
- b.setInitial(e);
- db()->updateDebt(b);
+//    // Entry e = el[QUuid::fromString(id)];
+//    // auto cat = db()->selectCategory()[e.type()][QUuid::fromString(c)];
+//    // e.setCategory(cat);
+//    // b.setInitial(e);
+//    db()->updateDebt(b);
 }
 
 void ControllerDebt::onInitialSupportChanged(QString id, int s)
 {
-    Debt b = db()->selectDebt()[QUuid::fromString(id)];
-    auto el = db()->selectEntry();
+//    Debt b = db()->selectDebt()[QUuid::fromString(id)];
+//    auto el = db()->selectEntry();
 
-    Entry e = el[QUuid::fromString(id)];
+////    Entry e = el[QUuid::fromString(id)];
 
-    e.setSupport((Account::SupportEnum) s);
-    b.setInitial(e);
-    db()->updateDebt(b);
+////    e.setSupport((Account::SupportEnum) s);
+////    b.setInitial(e);
+//    db()->updateDebt(b);
 }
 
 void ControllerDebt::onNewCategory(int type, QString cat)
 {
- auto cats = db()->selectCategory()[Account::TypeEnum(type)].values();
+    auto cats = db()->selectCategory()[Account::TypeEnum(type)].values();
 
- auto f = std::find_if(cats.begin(), cats.end(), [cat, type](Category c) {
-  return c.name() == cat;
- });
+    auto f = std::find_if(cats.begin(), cats.end(), [cat, type](Category c) {
+        return c.name() == cat;
+    });
 
- if (f != cats.end())
-  return;
+    if (f != cats.end())
+        return;
 
- Category c;
- c.setType(Account::TypeEnum(type));
- c.setName(cat);
- db()->addCategory(c);
+    Category c;
+    c.setType(Account::TypeEnum(type));
+    c.setName(cat);
+    db()->addCategory(c);
 }
 
 void ControllerDebt::generate(QString id)

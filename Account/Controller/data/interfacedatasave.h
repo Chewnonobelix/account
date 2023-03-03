@@ -14,90 +14,91 @@
 #include <QFile>
 #include <QList>
 #include <QString>
+#include <QFuture>
 
 class InterfaceDataSave: public QObject
 {
-	Q_OBJECT
-	private:
-	QDomDocument m_syncs;
+    Q_OBJECT
+private:
+    QDomDocument m_syncs;
 
-	protected:
-	bool backup = false;
-	QString m_currentProfile = "Default";
-	QString m_currentAccount;
-	QString m_path = "data";
+protected:
+    bool backup = false;
+    QString m_currentProfile = "Default";
+    QString m_currentAccount;
+    QString m_path = "data";
 
-	public:
-	InterfaceDataSave();
-	InterfaceDataSave(const InterfaceDataSave &);
-	virtual ~InterfaceDataSave();
-	inline void setBackup(bool back) { backup = back;}
-	inline void setPath(QString path) { m_path = path; }
+public:
+    InterfaceDataSave();
+    InterfaceDataSave(const InterfaceDataSave &);
+    virtual ~InterfaceDataSave();
+    inline void setBackup(bool back) { backup = back;}
+    inline void setPath(QString path) { m_path = path; }
 
-	void setProfile(QString);
-	QString currentProfile() const;
-	void setCurrentAccount(QString);
-	QString currentAccount() const;
+    void setProfile(QString);
+    QString currentProfile() const;
+    void setCurrentAccount(QString);
+    QString currentAccount() const;
 
-	signals:
-	void s_updateEntry(QUuid = QUuid());
-	void s_updateCategory(QUuid = QUuid());
-	void s_updateBudget(QUuid = QUuid());
-	void s_updateFrequency(QUuid = QUuid());
-	void s_updateCommon(QUuid = QUuid());
-	void s_updateProfile(QUuid = QUuid());
-	void s_updateAccount(QUuid = QUuid());
-	void s_updateDebt(QUuid = QUuid());
-	void s_updateSync(QUuid = QUuid());
+signals:
+    void s_updateEntry(QUuid = QUuid());
+    void s_updateCategory(QUuid = QUuid());
+    void s_updateBudget(QUuid = QUuid());
+    void s_updateFrequency(QUuid = QUuid());
+    void s_updateCommon(QUuid = QUuid());
+    void s_updateProfile(QUuid = QUuid());
+    void s_updateAccount(QUuid = QUuid());
+    void s_updateDebt(QUuid = QUuid());
+    void s_updateSync(QUuid = QUuid());
 
-	public slots:
-	void exec();
-	virtual bool addEntry(Entry&) = 0;
-	virtual QMap<QUuid, Entry> selectEntry() = 0;
-	virtual bool removeEntry(Entry&) = 0;
+public slots:
+    void exec();
+    virtual bool addEntry(Entry&) = 0;
+    virtual QFuture<QMap<QUuid, Entry>> selectEntry() = 0;
+    virtual bool removeEntry(Entry&) = 0;
 
-	virtual QStringList selectAccount(QString = "") = 0;
-	virtual bool removeAccount(QString) = 0;
+    virtual QStringList selectAccount(QString = "") = 0;
+    virtual bool removeAccount(QString) = 0;
 
-	virtual bool updateEntry(Entry &) = 0;
+    virtual bool updateEntry(Entry &) = 0;
 
-	virtual bool addCategory(Category &) = 0;
-	virtual bool removeCategory(QString) = 0;
-	virtual QMap<Account::TypeEnum, QMap<QUuid, Category>> selectCategory() = 0;
-	virtual bool updateCategory(Category &) = 0;
+    virtual bool addCategory(Category &) = 0;
+    virtual bool removeCategory(QString) = 0;
+    virtual QMap<Account::TypeEnum, QMap<QUuid, Category>> selectCategory() = 0;
+    virtual bool updateCategory(Category &) = 0;
 
-	virtual bool addBudget(Budget &) = 0;
-	virtual bool removeBudget(Budget&) = 0;
-	virtual QMap<QUuid, Budget> selectBudgets() = 0;
-	virtual bool updateBudget(Budget&) = 0;
+    virtual bool addBudget(Budget &) = 0;
+    virtual bool removeBudget(Budget&) = 0;
+    virtual QMap<QUuid, Budget> selectBudgets() = 0;
+    virtual bool updateBudget(Budget&) = 0;
 
 
-	virtual bool addFrequency(Frequency&) = 0;
-	virtual bool removeFrequency(Frequency&) = 0;
-	virtual bool updateFrequency(Frequency&) = 0;
-	virtual QMap<QUuid, Frequency> selectFrequency() = 0;
+    virtual bool addFrequency(Frequency&) = 0;
+    virtual bool removeFrequency(Frequency&) = 0;
+    virtual bool updateFrequency(Frequency&) = 0;
+    virtual QMap<QUuid, Frequency> selectFrequency() = 0;
 
-	virtual QMap<QUuid, CommonExpanse> selectCommon() = 0;
-	virtual bool addCommon(CommonExpanse&) = 0;
-	virtual bool removeCommon(CommonExpanse&) = 0;
-	virtual bool updateCommon(CommonExpanse &) = 0;
+    virtual QMap<QUuid, CommonExpanse> selectCommon() = 0;
+    virtual bool addCommon(CommonExpanse&) = 0;
+    virtual bool removeCommon(CommonExpanse&) = 0;
+    virtual bool updateCommon(CommonExpanse &) = 0;
 
-	virtual QMap<QUuid, Debt> selectDebt() = 0;
-	virtual bool addDebt(Debt &) = 0;
-	virtual bool removeDebt(Debt &) = 0;
-	virtual bool updateDebt(Debt &) = 0;
+    virtual QMap<QUuid, Debt> selectDebt() = 0;
+    virtual bool addDebt(Debt &) = 0;
+    virtual bool removeDebt(Debt &) = 0;
+    virtual bool updateDebt(Debt &) = 0;
 
-	virtual QStringList selectProfile() = 0;
-	virtual bool addProfile(QString, QString) = 0;
-	virtual bool deleteProfile(QString) = 0;
+    virtual QStringList selectProfile() = 0;
+    virtual bool addProfile(QString, QString) = 0;
+    virtual bool deleteProfile(QString) = 0;
 
-	virtual QMap<QUuid, SynchronizationProfile> selectSyncProfile();
-	virtual bool removeSyncProfile(SynchronizationProfile&);
-	virtual QUuid addSyncProfile(SynchronizationProfile &);
-	virtual bool updateSyncProfile(SynchronizationProfile&);
+    virtual QMap<QUuid, SynchronizationProfile> selectSyncProfile();
+    virtual bool removeSyncProfile(SynchronizationProfile&);
+    virtual QUuid addSyncProfile(SynchronizationProfile &);
+    virtual bool updateSyncProfile(SynchronizationProfile&);
 
-	virtual bool init() = 0;
-	virtual QSharedPointer<InterfaceDataSave> clone() const = 0;
+    virtual bool init() = 0;
+    virtual QSharedPointer<InterfaceDataSave> clone() const = 0;
 };
 
 #endif // INTERFACEDATASAVE_H

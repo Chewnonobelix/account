@@ -2,6 +2,8 @@
 #include "dbrequestsinit.h"
 #include <QDebug>
 #include <QDir>
+#include <QSqlResult>
+#include <QtConcurrent/QtConcurrent>
 
 ControllerDB::ControllerDB(bool backup)
 {
@@ -100,7 +102,7 @@ void ControllerDB::prepareEntry()
     m_selectMetadata = SqlQuery::create(m_db);
     m_insertMetadata = SqlQuery::create(m_db);
     m_removeMetadata = SqlQuery::create(m_db);
-    m_updateMetadata = SqlQuery::create(m_db);
+    //    m_updateMetadata = SqlQuery::create(m_db);
     
     qDebug()<<"SE"<<m_selectEntry->prepare("SELECT * FROM account "
                                                "WHERE account=:a AND profile=:p")<<m_selectEntry->lastError();
@@ -115,12 +117,12 @@ void ControllerDB::prepareEntry()
     //                                               "SET value=:v, type=:t "
     //                                               "WHERE id=:id")<<m_updateEntry->lastError();
     
-    qDebug()<<"AM"<<m_insertMetadata->prepare("INSERT INTO entrymetadata (entry, name, value) "
+    qDebug()<<"AM"<<m_insertMetadata->prepare("INSERT OR REPLACE INTO entrymetadata (entry, name, value) "
                                                   "VALUES (:entry, :name, :value)")<<m_insertMetadata->lastError();
-    
-    qDebug()<<"UM"<<m_updateMetadata->prepare("UPDATE entrymetadata "
-                                                  "SET value=:value "
-                                                  "WHERE entry=:entry AND name=:name")<<m_updateMetadata->lastError();
+
+    //    qDebug()<<"UM"<<m_updateMetadata->prepare("UPDATE entrymetadata "
+    //                                                  "SET value=:value "
+    //                                                  "WHERE entry=:entry AND name=:name")<<m_updateMetadata->lastError();
     
     qDebug()<<"SM"<<m_selectMetadata->prepare("SELECT * FROM entrymetadata "
                                                   "WHERE entry=:ide")<<m_selectMetadata->lastError();
@@ -337,7 +339,7 @@ QStringList ControllerDB::selectProfile()
     return res;
 }
 
-bool ControllerDB::addProfile(QString name, QString) 
+bool ControllerDB::addProfile(QString name, QString)
 {
     bool ret = false;
     return ret;
@@ -352,6 +354,7 @@ bool ControllerDB::addEntry(Entry & e)
 {
     //    "INSERT INTO account (id, account, value, date_eff, type, profile) "
     //    "VALUES (:id, :account,:value,:date,:type, :profile)"
+    qDebug()<<"Add entry"<<e.id()<<e.account()<<e.metaData<QString>("profile");
     bool ret = true;
     if(m_addEntry) {
         e.id().isNull() ? e.setId(QUuid::createUuid()) : void();
@@ -367,7 +370,7 @@ bool ControllerDB::addEntry(Entry & e)
 
         if(ret) {
             static QStringList excludeList = {"id", "account", "profile"};
-            //            "INSERT INTO entrymetadata (entry, name, value) "
+            //            "INSERT OR REPLACE INTO entrymetadata (entry, name, value) "
             //            "VALUES (:entry, :name, :value)"
             for(auto it: e.metadataList()) {
                 if(!excludeList.contains(it)) {
@@ -383,53 +386,109 @@ bool ControllerDB::addEntry(Entry & e)
             }
         }
     }
+
+    if(ret)
+        m_entries[e.id()] = e;
+
     return ret;
 }
 
-QMap<QUuid, Entry> ControllerDB::selectEntry()
+QFuture<QMap<QUuid, Entry>> ControllerDB::selectEntry()
 {
+    //    return m_entries;
     //    "SELECT * FROM account "
     //    "WHERE account=:a AND profile=:p"
-    QMap<QUuid, Entry> res;
 
-    m_selectEntry->bindValue(":a", currentAccount());
-    m_selectEntry->bindValue(":p", currentProfile());
-    qDebug()<<currentAccount()<<currentProfile();
-    m_selectEntry->exec();
-    while(m_selectEntry->next()) {
-        auto record = m_selectEntry->record();
-        Entry temp;
-        temp.setId(record.value("id").toUuid());
-        temp.setAccount(currentAccount());
-        temp.setMetadata("profile", currentProfile());
+    auto future = QtConcurrent::run( [this] () {
+        static QMutex lock;
+        lock.lock();
+        auto start = QDateTime::currentDateTime();
+        qDebug()<<"Start"<<start;
+        QMap<QUuid, Entry> res;
 
-        //                "SELECT * FROM entrymetadata "
-        //                "WHERE entry=:ide"
-        m_selectMetadata->bindValue(":ide", temp.id());
-        m_selectMetadata->exec();
+        m_selectEntry->bindValue(":a", currentAccount());
+        m_selectEntry->bindValue(":p", currentProfile());
+        m_selectEntry->exec();
+        int count = 0;
 
-        while(m_selectMetadata->next()) {
-            auto recordMeta = m_selectMetadata->record();
-            temp.setMetadata(recordMeta.value("name").toString(), recordMeta.value("value"));
+        while(m_selectEntry->next())
+            count++;
+        qDebug()<<currentAccount()<<currentProfile()<<count;
+
+        m_selectEntry->first();
+        int i = 0;
+        while(m_selectEntry->next()) {
+            i++;
+
+            auto percent = (i*100./count);
+
+            if(i % (count/100) == 0)
+                qDebug()<<QDateTime::currentDateTime()<<percent;
+            auto record = m_selectEntry->record();
+            Entry temp;
+            temp.setId(record.value("id").toUuid());
+            temp.setAccount(currentAccount());
+            temp.setMetadata("profile", currentProfile());
+
+            //                "SELECT * FROM entrymetadata "
+            //                "WHERE entry=:ide"
+            m_selectMetadata->bindValue(":ide", temp.id());
+            m_selectMetadata->exec();
+
+            while(m_selectMetadata->next()) {
+                auto recordMeta = m_selectMetadata->record();
+                temp.setMetadata(recordMeta.value("name").toString(), recordMeta.value("value"));
+            }
+
+            emit updateEntry(temp);
+
+            res[temp.id()] = temp;
         }
 
-        res[temp.id()] = temp;
-    }
+        qDebug()<<"Finish"<<(QDateTime::currentDateTime().secsTo(start));
+        lock.unlock();
+        return res;
+    });
 
-    return res;
+    return future;
 }
 
 bool ControllerDB::updateEntry(Entry & e)
 {
     bool ret = false;
+    static QStringList excludeList = {"id", "account", "profile"};
+    //            "INSERT OR REPLACE INTO entrymetadata (entry, name, value) "
+    //            "VALUES (:entry, :name, :value)"
+    for(auto it: e.metadataList()) {
+        if(!excludeList.contains(it)) {
+            if(m_insertMetadata) {
+                m_insertMetadata->bindValue(":entry", e.id());
+                m_insertMetadata->bindValue(":name", it);
+                m_insertMetadata->bindValue(":value", e.metaData<QVariant>(it));
+
+                ret &= m_insertMetadata->exec();
+                //                qDebug()<<"Update metadata "<<QDateTime::currentDateTime()<<ret<<m_insertMetadata->lastError();
+            }
+        }
+    }
+    if(ret)
+        m_entries[e.id()] = e;
 
     return ret;
 }
 
 bool ControllerDB::removeEntry(Entry & e)
 {
+    //"DELETE FROM account "
+    //"WHERE id=:id"
     bool ret = false;
-    
+    m_removeEntry->bindValue(":id", e.id().toString());
+    ret = m_removeEntry->exec();
+    qDebug()<<"Remove entry"<<ret<<m_removeEntry->lastError();
+
+    if(ret)
+        m_entries.remove(e.id());
+
     return ret;
 }
 
@@ -489,7 +548,7 @@ bool ControllerDB::updateFrequency(Frequency& f)
 
 QMap<QUuid, Frequency> ControllerDB::selectFrequency()
 {
-   QMap<QUuid, Frequency> ret;
+    QMap<QUuid, Frequency> ret;
     
     return ret;
 }
@@ -497,7 +556,7 @@ QMap<QUuid, Frequency> ControllerDB::selectFrequency()
 QMap<QUuid, CommonExpanse> ControllerDB::selectCommon()
 {
     QMap<QUuid, CommonExpanse> ret;
-        
+
     return  ret; 
 }
 
