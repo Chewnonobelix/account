@@ -13,3 +13,9 @@ SOURCES += \
     src/controller.cpp
 
 
+INCLUDEPATH += $$PWD/../lib/DesignLibrary/DesignPattern
+
+win32:CONFIG(debug, debug| release): LIBS += -L$$OUT_PWD/../lib/DesignLibrary/DesignPattern/debug -lDesignPattern
+else:win32:CONFIG(release, debug| release): LIBS += -L$$OUT_PWD/../lib/DesignLibrary/DesignPattern/release -lDesignPattern
+else:unix:LIBS += -L$$OUT_PWD/../lib/DesignLibrary/DesignPattern -lDesignPattern
+
