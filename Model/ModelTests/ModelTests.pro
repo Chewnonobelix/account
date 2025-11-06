@@ -4,12 +4,19 @@ QT += testlib
 
 TARGET = ModelTests
 INCLUDEPATH += $$PWD/../include
+INCLUDEPATH += $$PWD/../../lib/DesignLibrary/DesignPattern
 DESTDIR = $$OUT_PWD
 
 SOURCES += \
+    main.cpp \
+    tst_Profile.cpp \
     tst_model.cpp
 
 win32:LIBS += -L$$OUT_PWD/.. -lModel
 unix:LIBS += -L$$OUT_PWD/.. -lModel
+
+win32:CONFIG(debug, debug| release): LIBS += -L$$OUT_PWD/../../lib/DesignLibrary/DesignPattern/debug -lDesignPattern
+else:win32:CONFIG(release, debug| release): LIBS += -L$$OUT_PWD/../../lib/DesignLibrary/DesignPattern/release -lDesignPattern
+else:unix:LIBS += -L$$OUT_PWD/../../lib/DesignLibrary/DesignPattern -lDesignPattern
 
 

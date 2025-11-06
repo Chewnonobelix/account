@@ -12,7 +12,6 @@ void ModelTests::name_returns_Model() {
 	QCOMPARE(api.name(), QStringLiteral("OpenAccount Model"));
 }
 
-QTEST_APPLESS_MAIN(ModelTests)
 
 #include "tst_model.moc"
 
