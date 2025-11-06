@@ -7,10 +7,12 @@ INCLUDEPATH += $$PWD/include
 DESTDIR = $$OUT_PWD
 
 HEADERS += \
+    include/Model/account.h \
     include/Model/model.h \
     include/Model/profile.h
 
 SOURCES += \
+    src/account.cpp \
     src/profile.cpp \
     src/model.cpp
 

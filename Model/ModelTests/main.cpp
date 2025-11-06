@@ -1,6 +1,7 @@
 #include <QtTest>
 #include "tst_Profile.cpp"
 #include "tst_model.cpp"
+#include "tst_account.cpp"
 
 int main(int argc, char **argv)
 {
@@ -11,6 +12,10 @@ int main(int argc, char **argv)
     }
     {
         TestProfile tc;
+        status |= QTest::qExec(&tc, argc, argv);
+    }
+    {
+        tst_account tc;
         status |= QTest::qExec(&tc, argc, argv);
     }
     return status;

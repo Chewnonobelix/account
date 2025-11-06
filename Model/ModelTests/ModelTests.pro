@@ -10,6 +10,7 @@ DESTDIR = $$OUT_PWD
 SOURCES += \
     main.cpp \
     tst_Profile.cpp \
+    tst_account.cpp \
     tst_model.cpp
 
 win32:LIBS += -L$$OUT_PWD/.. -lModel
