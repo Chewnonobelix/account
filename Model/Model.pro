@@ -8,6 +8,7 @@ DESTDIR = $$OUT_PWD
 
 HEADERS += \
     include/Model/account.h \
+    include/Model/enums.h \
     include/Model/model.h \
     include/Model/profile.h
 
