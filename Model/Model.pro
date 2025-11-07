@@ -10,12 +10,17 @@ HEADERS += \
     include/Model/account.h \
     include/Model/enums.h \
     include/Model/model.h \
-    include/Model/profile.h
+    include/Model/profile.h \
+    include/Model/total.h \
+    include/Model/transaction.h
 
 SOURCES += \
     src/account.cpp \
     src/profile.cpp \
-    src/model.cpp
+    src/model.cpp \
+    src/total.cpp \
+    src/transaction.cpp \
+    src/transaction_ops.cpp
 
 
 INCLUDEPATH += $$PWD/../lib/DesignLibrary/DesignPattern

@@ -11,7 +11,9 @@ SOURCES += \
     main.cpp \
     tst_Profile.cpp \
     tst_account.cpp \
-    tst_model.cpp
+    tst_model.cpp \
+    tst_total.cpp \
+    tst_transaction.cpp
 
 win32:LIBS += -L$$OUT_PWD/.. -lModel
 unix:LIBS += -L$$OUT_PWD/.. -lModel

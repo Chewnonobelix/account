@@ -2,6 +2,8 @@
 #include "tst_Profile.cpp"
 #include "tst_model.cpp"
 #include "tst_account.cpp"
+#include "tst_total.cpp"
+#include "tst_transaction.cpp"
 
 int main(int argc, char **argv)
 {
@@ -18,5 +20,16 @@ int main(int argc, char **argv)
         tst_account tc;
         status |= QTest::qExec(&tc, argc, argv);
     }
+
+    {
+        tst_Total tc;
+        status |= QTest::qExec(&tc, argc, argv);
+    }
+    {
+        tst_Transaction tc;
+        status |= QTest::qExec(&tc, argc, argv);
+    }
+
+
     return status;
 }

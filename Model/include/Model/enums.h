@@ -3,7 +3,7 @@
 #include <QObject>
 
 namespace OpenAccountEnums {
-
+Q_NAMESPACE
 /**
  * @brief Represents the type of movement (OP-34)
  */
@@ -11,7 +11,7 @@ enum class Movement {
     Credit,
     Debit
 };
-
+Q_ENUM_NS(Movement)
 /**
  * @brief Represents the type of support (OP-35)
  */
@@ -22,6 +22,7 @@ enum class Support {
     Transfer,
     Other
 };
+Q_ENUM_NS(Support)
 
 /**
  * @brief Represents frequency (OP-36)
@@ -35,6 +36,7 @@ enum class Frequency {
     Yearly,
     Custom
 };
+Q_ENUM_NS(Frequency)
 
 } // namespace OpenAccountEnums
 
