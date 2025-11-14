@@ -83,10 +83,10 @@ private slots:
     void movement_changed_signal() {
         Transaction t;
         QSignalSpy spy(&t, &Transaction::movementChanged);
-        t.setMovement(OpenAccountEnums::Movement::Credit);
+        t.setMovement(OpenAccountEnums::Movement::Debit);
         QCOMPARE(spy.count(), 1);
-        QCOMPARE(t.movement(), OpenAccountEnums::Movement::Credit);
-        t.setMovement(OpenAccountEnums::Movement::Credit);
+        QCOMPARE(t.movement(), OpenAccountEnums::Movement::Debit);
+        t.setMovement(OpenAccountEnums::Movement::Debit);
         QCOMPARE(spy.count(), 1);
     }
 

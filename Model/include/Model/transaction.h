@@ -6,14 +6,17 @@
 #include <QUuid>
 #include <QJsonObject>
 #include <QEnableSharedFromThis>
+#include "model_global.h"
 #include "metadata.h"
 #include "enums.h"
 
-class Total; // forward declaration
+class MODEL_EXPORT Total; // forward declaration
+class Transaction;
+
 
 // Transaction model for monetary operations.
 // Base classes: QObject + MetaData + QEnableSharedFromThis<Transaction>.
-class Transaction : public QObject, public MetaData, public QEnableSharedFromThis<Transaction>
+class MODEL_EXPORT Transaction : public QObject, public MetaData, public QEnableSharedFromThis<Transaction>
 {
     Q_OBJECT
 
@@ -73,8 +76,8 @@ public:
     QJsonObject toJson() const;
 
     // Operators building/merging Totals
-    friend Total operator+(const Transaction& a, const Transaction& b);
-    friend Total operator+(const Transaction& a, const Total& b);
+    friend MODEL_EXPORT Total operator+(Transaction& a, Transaction& b);
+    friend MODEL_EXPORT Total operator+(Transaction& a, const Total& b);
 
 private:
     struct Key {
@@ -98,3 +101,4 @@ private:
         emit (this->*signal)();
     }
 };
+
