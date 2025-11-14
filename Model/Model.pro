@@ -5,11 +5,12 @@ QT -= gui
 TARGET = Model
 INCLUDEPATH += $$PWD/include
 DESTDIR = $$OUT_PWD
-
+DEFINES = MODEL_LIBRARY
 HEADERS += \
     include/Model/account.h \
     include/Model/enums.h \
     include/Model/model.h \
+    include/Model/model_global.h \
     include/Model/profile.h \
     include/Model/total.h \
     include/Model/transaction.h
@@ -19,8 +20,7 @@ SOURCES += \
     src/profile.cpp \
     src/model.cpp \
     src/total.cpp \
-    src/transaction.cpp \
-    src/transaction_ops.cpp
+    src/transaction.cpp
 
 
 INCLUDEPATH += $$PWD/../lib/DesignLibrary/DesignPattern

@@ -7,6 +7,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QMetaType>
+#include "model_global.h"
 #include "metadata.h"
 
 /*
@@ -16,7 +17,7 @@
  * Provides Q_PROPERTY bindings for firstName, lastName, and accounts.
  */
 
-class Profile : public QObject, public MetaData
+class MODEL_EXPORT Profile : public QObject, public MetaData
 {
     Q_OBJECT
 

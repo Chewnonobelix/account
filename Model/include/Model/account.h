@@ -6,10 +6,10 @@
 #include <QUuid>
 #include <QJsonObject>
 #include <QJsonValue>
-
+#include "model_global.h"
 #include "metadata.h"
 
-class Account : public QObject, public MetaData {
+class MODEL_EXPORT Account : public QObject, public MetaData {
     Q_OBJECT
 
     Q_PROPERTY(QString number READ number WRITE setNumber NOTIFY numberChanged)

@@ -1,9 +1,10 @@
 #pragma once
 
 #include <QObject>
+#include "model_global.h"
 
 namespace OpenAccountEnums {
-Q_NAMESPACE
+Q_NAMESPACE_EXPORT(MODEL_EXPORT)
 /**
  * @brief Represents the type of movement (OP-34)
  */

@@ -1,10 +1,11 @@
 #pragma once
 
 #include <QString>
+#include "model_global.h"
 
-namespace Model {
+namespace MODEL_EXPORT Model {
 
-class ModelApi {
+class MODEL_EXPORT ModelApi {
 public:
 	QString name() const;
 };
