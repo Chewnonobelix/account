@@ -2,16 +2,9 @@
 #include <QMetaEnum>
 #include "Model/total.h"
 #include "Model/enums.h"
+#include "Model/transaction.h"
 
 // --- Test helpers -----------------------------------------------------------
-// NOTE: Serialize Movement as its Q_ENUM name (string) to avoid coupling to
-//       underlying enum integer values. Adjust keys if Transaction differs.
-static QString movementToString(OpenAccountEnums::Movement mv)
-{
-    const QMetaEnum me = QMetaEnum::fromType<OpenAccountEnums::Movement>();
-    const char* key = me.valueToKey(static_cast<int>(mv));
-    return key ? QString::fromLatin1(key) : QStringLiteral("Unknown");
-}
 
 static QSharedPointer<Transaction> makeTx(const QDate& date,
                           OpenAccountEnums::Movement mv,
@@ -22,8 +15,8 @@ static QSharedPointer<Transaction> makeTx(const QDate& date,
     o.insert(QStringLiteral("date"),
              QDateTime(date.startOfDay()).toString(Qt::ISODate));
     // Write enum as string key (Q_ENUM).
-    o.insert(QStringLiteral("movement"), movementToString(mv));
-    o.insert(QStringLiteral("amount"), amount);
+    o.insert(QStringLiteral("movement"), int(mv));
+    o.insert(QStringLiteral("value"), amount);
     return QSharedPointer<Transaction>::create(o);
 }
 

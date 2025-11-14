@@ -3,12 +3,13 @@
 #include <QVector>
 #include <QDate>
 #include <QSharedPointer>
+#include "model_global.h"
 #include "transaction.h"
 #include "enums.h"
 
 // Total is a lightweight value-type summarizing a set of transactions.
 // It stores shared pointers to Transactions to avoid copying QObject-derived objects.
-class Total
+class MODEL_EXPORT Total
 {
 public:
     Total() = default;
@@ -28,9 +29,9 @@ public:
     double evaluate() const;
 
     // Merge operators (non-mutating)
-    friend Total operator+(const Total& a, const Total& b);
-    friend Total operator+(const Total& a, const QSharedPointer<Transaction>& t);
-    friend Total operator+(const Total& a, const Transaction& t);
+    friend Total MODEL_EXPORT operator+(const Total& a, const Total& b);
+    friend Total MODEL_EXPORT operator+(const Total& a, const QSharedPointer<Transaction>& t);
+    friend Total MODEL_EXPORT operator+(const Total& a, Transaction& t);
 
 private:
     void recomputeBoundsAfterAppend(const QDate& d);
