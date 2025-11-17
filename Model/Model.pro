@@ -8,6 +8,7 @@ DESTDIR = $$OUT_PWD
 DEFINES = MODEL_LIBRARY
 HEADERS += \
     include/Model/account.h \
+    include/Model/category.h \
     include/Model/enums.h \
     include/Model/model.h \
     include/Model/model_global.h \
@@ -17,6 +18,7 @@ HEADERS += \
 
 SOURCES += \
     src/account.cpp \
+    src/category.cpp \
     src/profile.cpp \
     src/model.cpp \
     src/total.cpp \

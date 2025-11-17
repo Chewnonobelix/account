@@ -113,11 +113,12 @@ private slots:
 
     void category_changed_signal() {
         Transaction t;
+        auto cat = QUuid::createUuid();
         QSignalSpy spy(&t, &Transaction::categoryChanged);
-        t.setCategory("Alimentation");
+        t.setCategory(cat);
         QCOMPARE(spy.count(), 1);
-        QCOMPARE(t.category(), QString("Alimentation"));
-        t.setCategory("Alimentation");
+        QCOMPARE(t.category(),cat);
+        t.setCategory(cat);
         QCOMPARE(spy.count(), 1);
     }
 
@@ -125,6 +126,7 @@ private slots:
     void json_roundtrip() {
         Transaction t;
         const auto id = QUuid::createUuid();
+        auto cat = QUuid::createUuid();
         t.setId(id);
         t.setValue(42.0);
         t.setDescription("Test");
@@ -133,7 +135,7 @@ private slots:
         t.setMovement(OpenAccountEnums::Movement::Debit);
         t.setIsVisible(false);
         t.setAccountId(QUuid::createUuid());
-        t.setCategory("Courses");
+        t.setCategory(cat);
 
         const QJsonObject j = t.toJson();
         Transaction r(j);

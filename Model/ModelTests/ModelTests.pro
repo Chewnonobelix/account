@@ -11,6 +11,7 @@ SOURCES += \
     main.cpp \
     tst_Profile.cpp \
     tst_account.cpp \
+    tst_category.cpp \
     tst_model.cpp \
     tst_total.cpp \
     tst_transaction.cpp

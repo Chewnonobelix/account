@@ -28,7 +28,7 @@ class MODEL_EXPORT Transaction : public QObject, public MetaData, public QEnable
     Q_PROPERTY(OpenAccountEnums::Movement movement READ movement WRITE setMovement NOTIFY movementChanged)
     Q_PROPERTY(bool isVisible READ isVisible WRITE setIsVisible NOTIFY isVisibleChanged)
     Q_PROPERTY(QUuid accountId READ accountId WRITE setAccountId NOTIFY accountIdChanged)
-    Q_PROPERTY(QString category READ category WRITE setCategory NOTIFY categoryChanged)
+    Q_PROPERTY(QUuid category READ category WRITE setCategory NOTIFY categoryChanged)
 
 public:
     explicit Transaction(QObject* parent = nullptr);
@@ -47,7 +47,7 @@ public:
     OpenAccountEnums::Movement movement() const { return metaData<OpenAccountEnums::Movement>(Key::Movement); }
     bool isVisible() const { return metaData<bool>(Key::IsVisible); }
     QUuid accountId() const { return metaData<QUuid>(Key::AccountId); }
-    QString category() const { return metaData<QString>(Key::Category); }
+    QUuid category() const { return metaData<QUuid>(Key::Category); }
 
 public slots:
     // Setters (by copy)
@@ -59,7 +59,7 @@ public slots:
     void setMovement(OpenAccountEnums::Movement v);
     void setIsVisible(bool v);
     void setAccountId(QUuid v);
-    void setCategory(QString v);
+    void setCategory(QUuid v);
 
 signals:
     void idChanged();

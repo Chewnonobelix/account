@@ -14,7 +14,7 @@ Transaction::Transaction(QObject* parent)
     setMetadata(Key::Movement, OpenAccountEnums::Movement{});
     setMetadata(Key::IsVisible, true);
     setMetadata(Key::AccountId, QUuid());
-    setMetadata(Key::Category, QString());
+    setMetadata(Key::Category, QUuid());
 }
 
 Transaction::Transaction(const QJsonObject& json, QObject* parent)
@@ -29,7 +29,7 @@ Transaction::Transaction(const QJsonObject& json, QObject* parent)
     setMetadata(Key::Movement, OpenAccountEnums::Movement{});
     setMetadata(Key::IsVisible, true);
     setMetadata(Key::AccountId, QUuid());
-    setMetadata(Key::Category, QString());
+    setMetadata(Key::Category, QUuid());
 
     if (json.contains(Key::Id))         setMetadata(Key::Id, QUuid(json.value(Key::Id).toString()));
     if (json.contains(Key::Value))      setMetadata(Key::Value, json.value(Key::Value).toDouble());
@@ -51,7 +51,7 @@ void Transaction::setDate(QDate v)                          { assignIfChanged(Ke
 void Transaction::setMovement(OpenAccountEnums::Movement v) { assignIfChanged(Key::Movement, v, &Transaction::movementChanged); }
 void Transaction::setIsVisible(bool v)                      { assignIfChanged(Key::IsVisible, v, &Transaction::isVisibleChanged); }
 void Transaction::setAccountId(QUuid v)                     { assignIfChanged(Key::AccountId, v, &Transaction::accountIdChanged); }
-void Transaction::setCategory(QString v)                    { assignIfChanged(Key::Category, v, &Transaction::categoryChanged); }
+void Transaction::setCategory(QUuid v)                    { assignIfChanged(Key::Category, v, &Transaction::categoryChanged); }
 
 QJsonObject Transaction::toJson() const
 {
@@ -64,7 +64,7 @@ QJsonObject Transaction::toJson() const
     o.insert(Key::Movement, static_cast<int>(movement()));
     o.insert(Key::IsVisible, isVisible());
     o.insert(Key::AccountId, accountId().toString(QUuid::WithoutBraces));
-    o.insert(Key::Category, category());
+    o.insert(Key::Category, category().toString(QUuid::WithoutBraces));
     return o;
 }
 
