@@ -9,6 +9,7 @@ Q_NAMESPACE_EXPORT(MODEL_EXPORT)
  * @brief Represents the type of movement (OP-34)
  */
 enum class Movement {
+    Both,
     Credit,
     Debit
 };
