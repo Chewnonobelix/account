@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG += shared c++17 warn_on
+CONFIG += shared c++17 warn_on plugin
 QT -= gui
 
 TARGET = Model
