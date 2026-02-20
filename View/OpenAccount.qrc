@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/Component">
+        <file>QML/Components/OBButton.qml</file>
+        <file>QML/Components/OBLabel.qml</file>
+    </qresource>
+    <qresource prefix="/Style"/>
+    <qresource prefix="/">
+        <file>QML/Style/OBStyle.qml</file>
+    </qresource>
+</RCC>
