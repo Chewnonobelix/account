@@ -2,6 +2,7 @@
     <qresource prefix="/Component">
         <file>QML/Components/OBButton.qml</file>
         <file>QML/Components/OBLabel.qml</file>
+        <file>QML/Components/OBTitle.qml</file>
     </qresource>
     <qresource prefix="/Style"/>
     <qresource prefix="/">
