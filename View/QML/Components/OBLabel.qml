@@ -17,7 +17,7 @@ Control {
     Label {
         id: textID
         anchors.fill: parent
-        text: "placeholder"
+        text: "placeholder label"
         verticalAlignment: Qt.AlignVCenter
     }
 
