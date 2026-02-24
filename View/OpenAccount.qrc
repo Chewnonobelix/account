@@ -3,9 +3,25 @@
         <file>QML/Components/OBButton.qml</file>
         <file>QML/Components/OBLabel.qml</file>
         <file>QML/Components/OBTitle.qml</file>
+        <file>QML/Components/OBSwitch.qml</file>
+        <file>QML/Components/OBRadioButton.qml</file>
+        <file>QML/Components/OBCheckBox.qml</file>
+        <file>QML/Components/OBHeader.qml</file>
+        <file>QML/Components/OBComboBox.qml</file>
+        <file>QML/Components/OBInput.qml</file>
+        <file>QML/Components/OBDescLine.qml</file>
+        <file>QML/Components/OBSpinBox.qml</file>
     </qresource>
     <qresource prefix="/Style"/>
     <qresource prefix="/">
         <file>QML/Style/OBStyle.qml</file>
+    </qresource>
+    <qresource prefix="/ComposedComponent">
+        <file>QML/ComposedComponent/OBPager.qml</file>
+        <file>QML/ComposedComponent/OBButtonsBar.qml</file>
+        <file>QML/ComposedComponent/OBCalendar.qml</file>
+        <file>QML/ComposedComponent/OBTransactionsList.qml</file>
+        <file>QML/ComposedComponent/OBTransactionInfo.qml</file>
+        <file>QML/ComposedComponent/OBTransactionRow.qml</file>
     </qresource>
 </RCC>
