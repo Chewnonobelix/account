@@ -102,4 +102,5 @@ void TestProfile::testSignal_profileChangedCounts() {
   QVERIFY(spy.count() >= 3);
 }
 
+QTEST_MAIN(TestProfile)
 #include "tst_Profile.moc"

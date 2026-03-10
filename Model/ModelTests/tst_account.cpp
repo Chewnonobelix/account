@@ -152,4 +152,5 @@ private slots:
   }
 };
 
+QTEST_MAIN(tst_account)
 #include "tst_account.moc"

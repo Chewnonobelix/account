@@ -154,4 +154,5 @@ void CategoryTest::testJsonConstructorWithPartialData() {
           direction == OpenAccountEnums::Movement::Both);
 }
 
+QTEST_MAIN(CategoryTest)
 #include "tst_category.moc"

@@ -224,4 +224,5 @@ private slots:
   }
 };
 
+QTEST_MAIN(tst_Transaction)
 #include "tst_transaction.moc"
