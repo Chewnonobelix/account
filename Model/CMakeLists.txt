@@ -4,7 +4,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-add_library(Model
+add_library(OAModel
     src/account.cpp
     src/category.cpp
     src/profile.cpp
@@ -21,15 +21,15 @@ add_library(Model
     include/Model/transaction.h
 )
 
-target_include_directories(Model PRIVATE
-    $$PWD/include
-    $$PWD/../lib/DesignLibrary/DesignPattern
+target_include_directories(OAModel PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_compile_definitions(Model PRIVATE
+target_compile_definitions(OAModel PRIVATE
     "MODEL_LIBRARY"
 )
 
-target_link_libraries(Model PRIVATE
+target_link_libraries(OAModel PUBLIC
     Qt6::Core
+    DesignPattern
 )
