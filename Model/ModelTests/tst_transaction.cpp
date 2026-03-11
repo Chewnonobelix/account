@@ -5,7 +5,7 @@
 #include <QSignalSpy>
 #include <QtTest>
 
-class tst_Transaction : public QObject {
+class TestTransaction : public QObject {
   Q_OBJECT
 private slots:
   // ---------- Basics ----------
@@ -224,5 +224,5 @@ private slots:
   }
 };
 
-QTEST_MAIN(tst_Transaction)
+QTEST_MAIN(TestTransaction)
 #include "tst_transaction.moc"

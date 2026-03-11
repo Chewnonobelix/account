@@ -6,7 +6,7 @@
 #include "../include/Model/category.h"
 #include "../include/Model/enums.h"
 
-class CategoryTest : public QObject {
+class TestCategory : public QObject {
   Q_OBJECT
 
 private slots:
@@ -18,7 +18,7 @@ private slots:
   void testJsonConstructorWithPartialData();
 };
 
-void CategoryTest::testDefaultConstruction() {
+void TestCategory::testDefaultConstruction() {
   Category category;
 
   // Default id should be null
@@ -35,7 +35,7 @@ void CategoryTest::testDefaultConstruction() {
           direction == OpenAccountEnums::Movement::Both);
 }
 
-void CategoryTest::testIdProperty() {
+void TestCategory::testIdProperty() {
   Category category;
   QSignalSpy spy(&category, &Category::idChanged);
   QVERIFY(spy.isValid());
@@ -58,7 +58,7 @@ void CategoryTest::testIdProperty() {
   QCOMPARE(spy.count(), 2);
 }
 
-void CategoryTest::testDirectionProperty() {
+void TestCategory::testDirectionProperty() {
   Category category;
   QSignalSpy spy(&category, &Category::directionChanged);
   QVERIFY(spy.isValid());
@@ -79,7 +79,7 @@ void CategoryTest::testDirectionProperty() {
   QCOMPARE(spy.count(), 2);
 }
 
-void CategoryTest::testNameProperty() {
+void TestCategory::testNameProperty() {
   Category category;
   QSignalSpy spy(&category, &Category::nameChanged);
   QVERIFY(spy.isValid());
@@ -102,7 +102,7 @@ void CategoryTest::testNameProperty() {
   QCOMPARE(spy.count(), 2);
 }
 
-void CategoryTest::testToJsonRoundTrip() {
+void TestCategory::testToJsonRoundTrip() {
   Category category;
 
   const QUuid id = QUuid::createUuid();
@@ -132,7 +132,7 @@ void CategoryTest::testToJsonRoundTrip() {
   QCOMPARE(other.direction(), movement);
 }
 
-void CategoryTest::testJsonConstructorWithPartialData() {
+void TestCategory::testJsonConstructorWithPartialData() {
   QJsonObject json;
 
   const QUuid id = QUuid::createUuid();
@@ -154,5 +154,5 @@ void CategoryTest::testJsonConstructorWithPartialData() {
           direction == OpenAccountEnums::Movement::Both);
 }
 
-QTEST_MAIN(CategoryTest)
+QTEST_MAIN(TestCategory)
 #include "tst_category.moc"

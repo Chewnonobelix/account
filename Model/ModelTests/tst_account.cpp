@@ -2,7 +2,7 @@
 #include <QSignalSpy>
 #include <QtTest/QtTest>
 
-class tst_account : public QObject {
+class TestAccount : public QObject {
   Q_OBJECT
 private slots:
   void test_defaultValues() {
@@ -152,5 +152,5 @@ private slots:
   }
 };
 
-QTEST_MAIN(tst_account)
+QTEST_MAIN(TestAccount)
 #include "tst_account.moc"

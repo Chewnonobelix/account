@@ -19,7 +19,7 @@ makeTx(const QDate &date, OpenAccountEnums::Movement mv, double amount) {
 }
 
 // --- Test case --------------------------------------------------------------
-class tst_Total : public QObject {
+class TestTotal : public QObject {
   Q_OBJECT
 private slots:
   void empty_total_is_zero() {
@@ -100,5 +100,5 @@ private slots:
   }
 };
 
-QTEST_MAIN(tst_Total)
+QTEST_MAIN(TestTotal)
 #include "tst_total.moc"
