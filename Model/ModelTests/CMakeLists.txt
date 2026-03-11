@@ -4,7 +4,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-add_executable(TestProfile tst_Profile.cpp)
+add_executable(TestProfile tst_profile.cpp)
 add_executable(TestAccount tst_account.cpp)
 add_executable(TestCategory tst_category.cpp)
 add_executable(TestModel tst_model.cpp)

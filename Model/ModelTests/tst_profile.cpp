@@ -103,4 +103,4 @@ void TestProfile::testSignal_profileChangedCounts() {
 }
 
 QTEST_MAIN(TestProfile)
-#include "tst_Profile.moc"
+#include "tst_profile.moc"
