@@ -4,16 +4,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-# add_executable(ModelTests
-#     main.cpp
-#     # tst_Profile.cpp
-#     # tst_account.cpp
-#     # tst_category.cpp
-#     # tst_model.cpp
-#     # tst_total.cpp
-#     # tst_transaction.cpp
-# )
-
 add_executable(TestProfile tst_Profile.cpp)
 add_executable(TestAccount tst_account.cpp)
 add_executable(TestCategory tst_category.cpp)
