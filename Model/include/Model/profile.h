@@ -24,7 +24,7 @@ class MODEL_EXPORT Profile : public QObject, public MetaData {
                  firstNameChanged)
   Q_PROPERTY(
       QString lastName READ lastName WRITE setLastName NOTIFY lastNameChanged)
-  Q_PROPERTY(QVector<QUuid> accounts READ accounts WRITE setAccounts NOTIFY
+  Q_PROPERTY(QList<QUuid> accounts READ accounts WRITE setAccounts NOTIFY
                  accountsChanged)
 
 public:
@@ -38,7 +38,7 @@ public:
   QUuid id() const;
   QString firstName() const;
   QString lastName() const;
-  QVector<QUuid> accounts() const;
+  QList<QUuid> accounts() const;
 
   // Setters
   void setId(QUuid id);
@@ -65,7 +65,7 @@ private:
   static constexpr const char *KEY_ACCOUNTS = "accounts";
 
   static QJsonArray accountsToJsonArray(const QVector<QUuid> &accounts);
-  static QVector<QUuid> jsonArrayToAccounts(const QJsonArray &array);
+  static QList<QUuid> jsonArrayToAccounts(const QJsonArray &array);
 };
 
 Q_DECLARE_METATYPE(QVector<QUuid>)
