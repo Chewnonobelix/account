@@ -16,29 +16,7 @@ Profile::Profile(QObject *parent) : QObject(parent), MetaData() {
 }
 
 Profile::Profile(const QJsonObject &obj, QObject *parent)
-    : QObject(parent), MetaData() {
-  qRegisterMetaType<QVector<QUuid>>("QVector<QUuid>");
-
-  if (obj.contains(KEY_ID) && obj.value(KEY_ID).isString())
-    setId(QUuid(obj.value(KEY_ID).toString()));
-  else
-    setId(QUuid());
-
-  if (obj.contains(KEY_FIRSTNAME) && obj.value(KEY_FIRSTNAME).isString())
-    setFirstName(obj.value(KEY_FIRSTNAME).toString());
-  else
-    setFirstName(QString());
-
-  if (obj.contains(KEY_LASTNAME) && obj.value(KEY_LASTNAME).isString())
-    setLastName(obj.value(KEY_LASTNAME).toString());
-  else
-    setLastName(QString());
-
-  if (obj.contains(KEY_ACCOUNTS) && obj.value(KEY_ACCOUNTS).isArray())
-    setAccounts(jsonArrayToAccounts(obj.value(KEY_ACCOUNTS).toArray()));
-  else
-    setAccounts(QVector<QUuid>());
-}
+    : QObject(parent), MetaData(obj) {}
 
 // --- Getters ---
 QUuid Profile::id() const {

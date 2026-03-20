@@ -16,39 +16,8 @@ Transaction::Transaction(QObject *parent) : QObject(parent) {
 }
 
 Transaction::Transaction(const QJsonObject &json, QObject *parent)
-    : QObject(parent) {
+    : MetaData(json), QObject(parent) {
   // Initialize defaults then override with JSON
-  setMetadata(Key::Id, QUuid::createUuid());
-  setMetadata(Key::Value, 0.0);
-  setMetadata(Key::Description, QString());
-  setMetadata(Key::Support, OpenAccountEnums::Support{});
-  setMetadata(Key::Date, QDate::currentDate());
-  setMetadata(Key::Movement, OpenAccountEnums::Movement{});
-  setMetadata(Key::IsVisible, true);
-  setMetadata(Key::AccountId, QUuid());
-  setMetadata(Key::Category, QUuid());
-
-  if (json.contains(Key::Id))
-    setMetadata(Key::Id, QUuid(json.value(Key::Id).toString()));
-  if (json.contains(Key::Value))
-    setMetadata(Key::Value, json.value(Key::Value).toDouble());
-  if (json.contains(Key::Description))
-    setMetadata(Key::Description, json.value(Key::Description).toString());
-  if (json.contains(Key::Support))
-    setMetadata(Key::Support, static_cast<OpenAccountEnums::Support>(
-                                  json.value(Key::Support).toInt()));
-  if (json.contains(Key::Date))
-    setMetadata(Key::Date, QDate::fromString(json.value(Key::Date).toString(),
-                                             Qt::ISODate));
-  if (json.contains(Key::Movement))
-    setMetadata(Key::Movement, static_cast<OpenAccountEnums::Movement>(
-                                   json.value(Key::Movement).toInt()));
-  if (json.contains(Key::IsVisible))
-    setMetadata(Key::IsVisible, json.value(Key::IsVisible).toBool());
-  if (json.contains(Key::AccountId))
-    setMetadata(Key::AccountId, QUuid(json.value(Key::AccountId).toString()));
-  if (json.contains(Key::Category))
-    setMetadata(Key::Category, json.value(Key::Category).toString());
 }
 
 // Setters
