@@ -19,6 +19,9 @@ add_library(OAModel
     include/Model/profile.h
     include/Model/total.h
     include/Model/transaction.h
+    include/Model/frequency.h
+    src/frequency.cpp
+    src/enums.cpp
 )
 
 target_include_directories(OAModel PUBLIC
