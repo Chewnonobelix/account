@@ -31,5 +31,6 @@ target_compile_definitions(OAModel PRIVATE
 
 target_link_libraries(OAModel PUBLIC
     Qt6::Core
-    DesignPattern
+    ChewnoDesignPattern
 )
+
