@@ -51,7 +51,7 @@ add_test(NAME TestCategory COMMAND TestCategory)
 add_test(NAME TestAccount COMMAND TestAccount)
 add_test(NAME TestFrequency COMMAND TestFrequency)
 
-add_custom_target(run_model_tests ALL
+add_custom_target(run_model_tests
     COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
     DEPENDS
         TestProfile
