@@ -58,15 +58,7 @@ void Profile::setAccounts(QVector<QUuid> accounts) {
 
 // --- Serialization ---
 QJsonObject Profile::toJson() const {
-  QJsonObject obj;
-  obj.insert(KEY_ID, id().toString());
-  obj.insert(KEY_FIRSTNAME, firstName());
-  obj.insert(KEY_LASTNAME, lastName());
-
-  QJsonArray arr;
-  for (const QUuid &u : accounts())
-    arr.append(u.toString());
-  obj.insert(KEY_ACCOUNTS, arr);
+  QJsonObject obj = static_cast<QJsonObject>(*this);
   return obj;
 }
 

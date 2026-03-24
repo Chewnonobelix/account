@@ -60,13 +60,7 @@ void Frequency::setPrototype(TransactionPtr value) {
 }
 
 QJsonObject Frequency::toJson() const {
-  QJsonObject json;
-  json.insert(Key::Id, id().toString(QUuid::WithoutBraces));
-  json.insert(Key::Frequency, static_cast<int>(frequency()));
-  json.insert(Key::DateFormat, dateFormat());
-  json.insert(Key::CustomIntervalDays, customIntervalDays());
-  json.insert(Key::Prototype,
-              prototype() ? prototype()->toJson() : QJsonObject());
+  QJsonObject json = static_cast<QJsonObject>(*this);
   return json;
 }
 

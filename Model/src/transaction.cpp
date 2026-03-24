@@ -50,16 +50,7 @@ void Transaction::setCategory(QUuid v) {
 }
 
 QJsonObject Transaction::toJson() const {
-  QJsonObject o;
-  o.insert(Key::Id, id().toString(QUuid::WithoutBraces));
-  o.insert(Key::Value, value());
-  o.insert(Key::Description, description());
-  o.insert(Key::Support, static_cast<int>(support()));
-  o.insert(Key::Date, date().toString(Qt::ISODate));
-  o.insert(Key::Movement, static_cast<int>(movement()));
-  o.insert(Key::IsVisible, isVisible());
-  o.insert(Key::AccountId, accountId().toString(QUuid::WithoutBraces));
-  o.insert(Key::Category, category().toString(QUuid::WithoutBraces));
+  QJsonObject o = static_cast<QJsonObject>(*this);
   return o;
 }
 
