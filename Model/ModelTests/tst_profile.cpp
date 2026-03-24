@@ -43,7 +43,7 @@ void TestProfile::testJsonRoundTrip() {
   p.setId(QUuid::createUuid());
   p.setFirstName("Jean");
   p.setLastName("Martin");
-  QVector<QUuid> accounts = {QUuid::createUuid()};
+  QList<QUuid> accounts = {QUuid::createUuid()};
   p.setAccounts(accounts);
 
   QJsonObject obj = p.toJson();

@@ -8,15 +8,17 @@
  */
 
 Profile::Profile(QObject *parent) : QObject(parent), MetaData() {
-  qRegisterMetaType<QVector<QUuid>>("QVector<QUuid>");
+  qRegisterMetaType<QList<QUuid>>("QList<QUuid>");
   setId(QUuid());
   setFirstName(QString());
   setLastName(QString());
-  setAccounts(QVector<QUuid>());
+  setAccounts(QList<QUuid>());
 }
 
 Profile::Profile(const QJsonObject &obj, QObject *parent)
-    : QObject(parent), MetaData(obj) {}
+    : QObject(parent), MetaData(obj) {
+  setAccounts(jsonArrayToAccounts(obj[KEY_ACCOUNTS].toArray()));
+}
 
 // --- Getters ---
 QUuid Profile::id() const {
@@ -28,8 +30,8 @@ QString Profile::firstName() const { return metaData<QString>(KEY_FIRSTNAME); }
 
 QString Profile::lastName() const { return metaData<QString>(KEY_LASTNAME); }
 
-QVector<QUuid> Profile::accounts() const {
-  return metaData<QVector<QUuid>>(KEY_ACCOUNTS);
+QList<QUuid> Profile::accounts() const {
+  return metaData<QList<QUuid>>(KEY_ACCOUNTS);
 }
 
 // --- Setters ---
@@ -50,7 +52,7 @@ void Profile::setLastName(QString lastName) {
   emit profileChanged();
 }
 
-void Profile::setAccounts(QVector<QUuid> accounts) {
+void Profile::setAccounts(QList<QUuid> accounts) {
   setMetadata(KEY_ACCOUNTS, QVariant::fromValue(accounts));
   emit accountsChanged();
   emit profileChanged();
@@ -68,15 +70,15 @@ bool Profile::isValid() const {
 }
 
 // --- Helpers ---
-QJsonArray Profile::accountsToJsonArray(const QVector<QUuid> &accounts) {
+QJsonArray Profile::accountsToJsonArray(const QList<QUuid> &accounts) {
   QJsonArray arr;
   for (const QUuid &u : accounts)
     arr.append(u.toString());
   return arr;
 }
 
-QVector<QUuid> Profile::jsonArrayToAccounts(const QJsonArray &array) {
-  QVector<QUuid> vec;
+QList<QUuid> Profile::jsonArrayToAccounts(const QJsonArray &array) {
+  QList<QUuid> vec;
   vec.reserve(array.size());
   for (const QJsonValue &v : array)
     if (v.isString())
