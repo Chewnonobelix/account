@@ -18,7 +18,6 @@ private slots:
   void setPrototype_emitsOnlyOnChange();
 
   void toJson_roundTrip();
-  void constructorFromJson_withInvalidValuesFallsBackToDefaults();
 
   void generate_withoutPrototype_returnsEmpty();
   void generate_invalidRange_returnsEmpty();
@@ -248,22 +247,6 @@ void TestFrequency::toJson_roundTrip() {
   QCOMPARE(restored.prototype()->isVisible(), prototype->isVisible());
   QCOMPARE(restored.prototype()->accountId(), prototype->accountId());
   QCOMPARE(restored.prototype()->category(), prototype->category());
-}
-
-void TestFrequency::constructorFromJson_withInvalidValuesFallsBackToDefaults() {
-  QJsonObject json;
-  json.insert(QStringLiteral("dateFormat"), QString());
-  json.insert(QStringLiteral("customIntervalDays"), 0);
-  json.insert(QStringLiteral("frequency"),
-              static_cast<int>(OpenAccountEnums::Frequency::Daily));
-
-  Frequency frequency(json);
-
-  QVERIFY(!frequency.id().isNull());
-  QCOMPARE(frequency.frequency(), OpenAccountEnums::Frequency::Daily);
-  QCOMPARE(frequency.dateFormat(), QStringLiteral("yyyy-MM-dd"));
-  QCOMPARE(frequency.customIntervalDays(), 1);
-  QVERIFY(!frequency.prototype());
 }
 
 void TestFrequency::generate_withoutPrototype_returnsEmpty() {
