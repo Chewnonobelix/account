@@ -12,7 +12,11 @@ Frequency::Frequency(QObject *parent) : QObject(parent) {
 }
 
 Frequency::Frequency(const QJsonObject &json, QObject *parent)
-    : MetaData(json), QObject(parent) {}
+    : MetaData(json), QObject(parent) {
+  auto protoJson = json[Key::Prototype].toObject();
+  auto proto = TransactionPtr::create(protoJson);
+  setPrototype(proto);
+}
 
 QUuid Frequency::id() const { return metaData<QUuid>(Key::Id); }
 
@@ -61,6 +65,7 @@ void Frequency::setPrototype(TransactionPtr value) {
 
 QJsonObject Frequency::toJson() const {
   QJsonObject json = static_cast<QJsonObject>(*this);
+  json[Key::Prototype] = prototype()->toJson();
   return json;
 }
 
