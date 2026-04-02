@@ -7,12 +7,14 @@ set(CMAKE_AUTORCC ON)
 add_library(OAModel
     src/account.cpp
     src/category.cpp
+    src/debt.cpp
     src/profile.cpp
     src/model.cpp
     src/total.cpp
     src/transaction.cpp
     include/Model/account.h
     include/Model/category.h
+    include/Model/debt.h
     include/Model/enums.h
     include/Model/model.h
     include/Model/model_global.h
@@ -36,4 +38,3 @@ target_link_libraries(OAModel PUBLIC
     Qt6::Core
     ChewnoDesignPattern
 )
-
