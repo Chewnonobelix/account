@@ -7,6 +7,7 @@ set(CMAKE_AUTORCC ON)
 add_executable(TestProfile tst_profile.cpp)
 add_executable(TestAccount tst_account.cpp)
 add_executable(TestCategory tst_category.cpp)
+add_executable(TestDebt tst_debt.cpp)
 add_executable(TestModel tst_model.cpp)
 add_executable(TestTotal tst_total.cpp)
 add_executable(TestTransaction tst_transaction.cpp)
@@ -18,6 +19,10 @@ target_link_libraries(TestProfile PRIVATE
     OAModel
 )
 target_link_libraries(TestTransaction PRIVATE
+    Qt6::Test
+    OAModel
+)
+target_link_libraries(TestDebt PRIVATE
     Qt6::Test
     OAModel
 )
@@ -45,6 +50,7 @@ target_link_libraries(TestFrequency PRIVATE
 
 add_test(NAME TestProfile COMMAND TestProfile)
 add_test(NAME TestTransaction COMMAND TestTransaction)
+add_test(NAME TestDebt COMMAND TestDebt)
 add_test(NAME TestTotal COMMAND TestTotal)
 add_test(NAME TestModel COMMAND TestModel)
 add_test(NAME TestCategory COMMAND TestCategory)
@@ -57,6 +63,7 @@ add_custom_target(run_model_tests
         TestProfile
         TestAccount
         TestCategory
+        TestDebt
         TestModel
         TestTotal
         TestTransaction

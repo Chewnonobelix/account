@@ -9,7 +9,9 @@ DESTDIR = $$OUT_PWD
 
 SOURCES += \
     main.cpp \
-    tst_Profile.cpp \
+    tst_debt.cpp \
+    tst_frequency.cpp \
+    tst_profile.cpp \
     tst_account.cpp \
     tst_category.cpp \
     tst_model.cpp \
@@ -22,5 +24,4 @@ unix:LIBS += -L$$OUT_PWD/.. -lModel
 win32:CONFIG(debug, debug| release): LIBS += -L$$OUT_PWD/../../lib/DesignLibrary/DesignPattern/debug -lDesignPattern
 else:win32:CONFIG(release, debug| release): LIBS += -L$$OUT_PWD/../../lib/DesignLibrary/DesignPattern/release -lDesignPattern
 else:unix:LIBS += -L$$OUT_PWD/../../lib/DesignLibrary/DesignPattern -lDesignPattern
-
 
