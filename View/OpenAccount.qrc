@@ -14,6 +14,11 @@
     </qresource>
     <qresource prefix="/Style"/>
     <qresource prefix="/">
+        <file>QML/Style/qmldir</file>
+        <file>QML/Style/OBPalette.qml</file>
+        <file>QML/Style/OBDayPalette.qml</file>
+        <file>QML/Style/OBNightPalette.qml</file>
+        <file>QML/Style/OBTheme.qml</file>
         <file>QML/Style/OBStyle.qml</file>
     </qresource>
     <qresource prefix="/ComposedComponent">
