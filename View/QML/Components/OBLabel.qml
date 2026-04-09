@@ -1,18 +1,25 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Controls
 import Qt5Compat.GraphicalEffects
-import "../Style" as OBStyle
+import "../Style" as Style
+
 Control {
     id: root
 
     enum TextState {
         Neutral,
         Positive,
-        Negative
+        Negative,
+        Disabled
     }
 
+    implicitWidth: textID.implicitWidth
+    implicitHeight: textID.implicitHeight
+
     property alias text: textID.text
-    property TextState textState: TextState.Neutral
+    property int textState: OBLabel.TextState.Neutral
 
     Label {
         id: textID
@@ -23,8 +30,9 @@ Control {
 
     Rectangle {
         anchors.fill: parent
-        gradient: root.textState === TextState.Negative ? OBStyle.OBStyle.negative :
-                                                          root.textState === TextState.Positive ? OBStyle.OBStyle.positive : OBStyle.OBStyle.black
+        gradient: root.textState === OBLabel.TextState.Negative ? Style.OBStyle.negative :
+                                                                  root.textState === OBLabel.TextState.Positive ? Style.OBStyle.positive :
+                                                                                                                   root.textState === OBLabel.TextState.Disabled ? Style.OBStyle.silver : Style.OBStyle.black
         layer.enabled: true
         layer.effect: OpacityMask {
             maskSource: textID
