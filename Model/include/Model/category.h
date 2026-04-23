@@ -1,17 +1,17 @@
 #pragma once
 
-#include <QObject>
-#include <QUuid>
-#include <QString>
-#include <QJsonObject>
-#include <QMetaEnum>
-
-#include "model_global.h"
-#include "metadata.h"
 #include "enums.h"
+#include "metadata.h"
+#include "model_global.h"
+#include <QJsonObject>
+#include <QObject>
+#include <QString>
+#include <QUuid>
 
-class MODEL_EXPORT Category : public QObject, public MetaData
-{
+/**
+ * @brief Labels transactions (e.g. "Food", "Salary") and declares a direction.
+ */
+class MODEL_EXPORT Category : public QObject, public MetaData {
     Q_OBJECT
 
     Q_PROPERTY(QUuid id READ id WRITE setId NOTIFY idChanged)
@@ -19,32 +19,37 @@ class MODEL_EXPORT Category : public QObject, public MetaData
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
 
 public:
-    explicit Category(QObject *parent = nullptr);
-    explicit Category(const QJsonObject &object, QObject *parent = nullptr);
+    explicit Category(QObject* parent = nullptr);
+    explicit Category(const QJsonObject& json, QObject* parent = nullptr);
     ~Category() override = default;
 
-    Category(const Category &) = delete;
-    Category &operator=(const Category &) = delete;
+    Category(const Category&) = delete;
+    Category& operator=(const Category&) = delete;
+    Category(Category&&) = delete;
+    Category& operator=(Category&&) = delete;
 
-    QUuid id() const;
+    [[nodiscard]] QUuid id() const { return metaData<QUuid>(Key::id); }
+    [[nodiscard]] OpenAccountEnums::Movement direction() const {
+        return metaData<OpenAccountEnums::Movement>(Key::direction);
+    }
+    [[nodiscard]] QString name() const { return metaData<QString>(Key::name); }
+
+    [[nodiscard]] QJsonObject toJson() const override;
+    void fromJson(const QJsonObject& json) override;
+
+public slots:
     void setId(QUuid id);
-
-    OpenAccountEnums::Movement direction() const;
     void setDirection(OpenAccountEnums::Movement direction);
-
-    QString name() const;
     void setName(QString name);
-
-    QJsonObject toJson() const;
 
 signals:
     void idChanged();
     void directionChanged();
     void nameChanged();
+    void changed();
 
 private:
-    struct Key
-    {
+    struct Key {
         static constexpr auto id = "id";
         static constexpr auto direction = "direction";
         static constexpr auto name = "name";

@@ -4,68 +4,67 @@
 #include "model_global.h"
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QList>
 #include <QMetaType>
 #include <QObject>
 #include <QString>
 #include <QUuid>
-#include <QVector>
 
-/*
- * Profile class
- * Inherits from QObject and MetaData.
- * Attributes stored via setMetadata() / metaData<T>().
- * Provides Q_PROPERTY bindings for firstName, lastName, and accounts.
+/**
+ * @brief User profile owning a list of Account ids.
  */
-
 class MODEL_EXPORT Profile : public QObject, public MetaData {
-  Q_OBJECT
+    Q_OBJECT
 
-  Q_PROPERTY(QString firstName READ firstName WRITE setFirstName NOTIFY
-                 firstNameChanged)
-  Q_PROPERTY(
-      QString lastName READ lastName WRITE setLastName NOTIFY lastNameChanged)
-  Q_PROPERTY(QList<QUuid> accounts READ accounts WRITE setAccounts NOTIFY
-                 accountsChanged)
+    Q_PROPERTY(QUuid id READ id WRITE setId NOTIFY idChanged)
+    Q_PROPERTY(QString firstName READ firstName WRITE setFirstName NOTIFY firstNameChanged)
+    Q_PROPERTY(QString lastName READ lastName WRITE setLastName NOTIFY lastNameChanged)
+    Q_PROPERTY(QList<QUuid> accounts READ accounts WRITE setAccounts NOTIFY accountsChanged)
 
 public:
-  explicit Profile(QObject *parent = nullptr);
-  explicit Profile(const QJsonObject &obj, QObject *parent = nullptr);
+    explicit Profile(QObject* parent = nullptr);
+    explicit Profile(const QJsonObject& obj, QObject* parent = nullptr);
+    ~Profile() override = default;
 
-  Profile(const Profile &other) = delete;
-  Profile &operator=(const Profile &other) = delete;
+    Profile(const Profile&) = delete;
+    Profile& operator=(const Profile&) = delete;
+    Profile(Profile&&) = delete;
+    Profile& operator=(Profile&&) = delete;
 
-  // Getters
-  QUuid id() const;
-  QString firstName() const;
-  QString lastName() const;
-  QList<QUuid> accounts() const;
+    [[nodiscard]] QUuid id() const { return metaData<QUuid>(Key::id); }
+    [[nodiscard]] QString firstName() const { return metaData<QString>(Key::firstName); }
+    [[nodiscard]] QString lastName() const { return metaData<QString>(Key::lastName); }
+    [[nodiscard]] QList<QUuid> accounts() const { return metaData<QList<QUuid>>(Key::accounts); }
 
-  // Setters
-  void setId(QUuid id);
-  void setFirstName(QString firstName);
-  void setLastName(QString lastName);
-  void setAccounts(QVector<QUuid> accounts);
+    [[nodiscard]] QJsonObject toJson() const override;
+    void fromJson(const QJsonObject& obj) override;
 
-  // Serialization
-  QJsonObject toJson() const;
+    /** True when id is non-null and last name is set. */
+    [[nodiscard]] bool isValid() const;
 
-  // Integrity check
-  bool isValid() const;
+public slots:
+    void setId(QUuid id);
+    void setFirstName(QString firstName);
+    void setLastName(QString lastName);
+    void setAccounts(QList<QUuid> accounts);
 
 signals:
-  void firstNameChanged();
-  void lastNameChanged();
-  void accountsChanged();
-  void profileChanged();
+    void idChanged();
+    void firstNameChanged();
+    void lastNameChanged();
+    void accountsChanged();
+    void changed();
 
 private:
-  static constexpr const char *KEY_ID = "id";
-  static constexpr const char *KEY_FIRSTNAME = "firstName";
-  static constexpr const char *KEY_LASTNAME = "lastName";
-  static constexpr const char *KEY_ACCOUNTS = "accounts";
+    struct Key {
+        static constexpr auto id = "id";
+        static constexpr auto firstName = "firstName";
+        static constexpr auto lastName = "lastName";
+        static constexpr auto accounts = "accounts";
+    };
 
-  static QJsonArray accountsToJsonArray(const QVector<QUuid> &accounts);
-  static QList<QUuid> jsonArrayToAccounts(const QJsonArray &array);
+    static QJsonArray accountsToJson(const QList<QUuid>& accounts);
+    static QList<QUuid> accountsFromJson(const QJsonArray& arr);
 };
 
-Q_DECLARE_METATYPE(QVector<QUuid>)
+Q_DECLARE_METATYPE(QList<QUuid>)

@@ -15,7 +15,7 @@ void Total::addTransaction(QSharedPointer<Transaction> t) {
   recomputeBoundsAfterAppend(t->date());
 }
 
-void Total::addTransactions(const QVector<QSharedPointer<Transaction>> &list) {
+void Total::addTransactions(const QList<QSharedPointer<Transaction>> &list) {
   for (const auto &t : list)
     addTransaction(t);
 }

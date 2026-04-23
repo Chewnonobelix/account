@@ -1,65 +1,51 @@
 #include "Model/category.h"
 
-Category::Category(QObject *parent) : QObject(parent), MetaData() {
-  // Default constructor
+Category::Category(QObject* parent) : QObject(parent), MetaData() {
+    setMetadata(Key::id, QUuid{});
+    setMetadata(Key::direction, OpenAccountEnums::Movement::Both);
+    setMetadata(Key::name, QString{});
 }
 
-Category::Category(const QJsonObject &object, QObject *parent)
-    : QObject(parent), MetaData(object) {}
-
-QUuid Category::id() const { return metaData<QUuid>(Key::id); }
+Category::Category(const QJsonObject& json, QObject* parent)
+    : QObject(parent), MetaData() {
+    setMetadata(Key::direction, OpenAccountEnums::Movement::Both);
+    Category::fromJson(json);
+}
 
 void Category::setId(QUuid id) {
-  if (id == this->id()) {
-    return;
-  }
-
-  setMetadata(Key::id, id);
-  emit idChanged();
-}
-
-OpenAccountEnums::Movement Category::direction() const {
-  return metaData<OpenAccountEnums::Movement>(Key::direction);
+    if (this->id() == id) return;
+    setMetadata(Key::id, id);
+    emit idChanged();
+    emit changed();
 }
 
 void Category::setDirection(OpenAccountEnums::Movement direction) {
-  if (direction == this->direction()) {
-    return;
-  }
-
-  setMetadata(Key::direction, direction);
-  emit directionChanged();
+    if (this->direction() == direction) return;
+    setMetadata(Key::direction, direction);
+    emit directionChanged();
+    emit changed();
 }
 
-QString Category::name() const { return metaData<QString>(Key::name); }
-
 void Category::setName(QString name) {
-  if (name == this->name()) {
-    return;
-  }
-
-  setMetadata(Key::name, name);
-  emit nameChanged();
+    if (this->name() == name) return;
+    setMetadata(Key::name, name);
+    emit nameChanged();
+    emit changed();
 }
 
 QJsonObject Category::toJson() const {
-  QJsonObject object;
+    QJsonObject o;
+    o.insert(Key::id,
+             id().isNull() ? QJsonValue()
+                           : QJsonValue(id().toString(QUuid::WithoutBraces)));
+    o.insert(Key::name, name());
+    o.insert(Key::direction, enumToJson(direction()));
+    return o;
+}
 
-  // Serialize id
-  if (!id().isNull()) {
-    object.insert(Key::id, id().toString(QUuid::WithoutBraces));
-  }
-
-  // Serialize name
-  object.insert(Key::name, name());
-
-  // Serialize direction as enum key if possible
-  QMetaEnum metaEnum = QMetaEnum::fromType<OpenAccountEnums::Movement>();
-  const auto currentDirection = direction();
-  const char *key = metaEnum.valueToKey(static_cast<int>(currentDirection));
-  if (key != nullptr) {
-    object.insert(Key::direction, QString::fromLatin1(key));
-  }
-
-  return object;
+void Category::fromJson(const QJsonObject& json) {
+    setId(QUuid::fromString(json.value(Key::id).toString()));
+    setName(json.value(Key::name).toString());
+    setDirection(enumFromJson<OpenAccountEnums::Movement>(
+        json.value(Key::direction), OpenAccountEnums::Movement::Both));
 }

@@ -1,5 +1,9 @@
 #pragma once
 
+#include "enums.h"
+#include "metadata.h"
+#include "model_global.h"
+#include "transaction.h"
 #include <QDate>
 #include <QEnableSharedFromThis>
 #include <QJsonObject>
@@ -8,19 +12,13 @@
 #include <QSharedPointer>
 #include <QString>
 #include <QUuid>
-#include <QVariant>
-
-#include "enums.h"
-#include "metadata.h"
-#include "transaction.h"
 
 /**
- * @brief Generates dated transactions from a stored prototype transaction.
+ * @brief Generates dated transactions from a stored prototype.
  */
-class Frequency : public QObject,
-                  public MetaData,
-                  public QEnableSharedFromThis<Frequency>
-{
+class MODEL_EXPORT Frequency : public QObject,
+                               public MetaData,
+                               private QEnableSharedFromThis<Frequency> {
     Q_OBJECT
 
     Q_PROPERTY(QUuid id READ id WRITE setId NOTIFY idChanged)
@@ -30,17 +28,30 @@ class Frequency : public QObject,
     Q_PROPERTY(TransactionPtr prototype READ prototype WRITE setPrototype NOTIFY prototypeChanged)
 
 public:
-    explicit Frequency(QObject *parent = nullptr);
-    explicit Frequency(const QJsonObject &json, QObject *parent = nullptr);
+    explicit Frequency(QObject* parent = nullptr);
+    explicit Frequency(const QJsonObject& json, QObject* parent = nullptr);
+    ~Frequency() override = default;
 
-    Frequency(const Frequency &) = delete;
-    Frequency &operator=(const Frequency &) = delete;
+    Frequency(const Frequency&) = delete;
+    Frequency& operator=(const Frequency&) = delete;
+    Frequency(Frequency&&) = delete;
+    Frequency& operator=(Frequency&&) = delete;
 
-    QUuid id() const;
-    OpenAccountEnums::Frequency frequency() const;
-    QString dateFormat() const;
-    int customIntervalDays() const;
-    TransactionPtr prototype() const;
+    using QEnableSharedFromThis<Frequency>::sharedFromThis;
+
+    [[nodiscard]] QUuid id() const { return metaData<QUuid>(Key::id); }
+    [[nodiscard]] OpenAccountEnums::Frequency frequency() const {
+        return metaData<OpenAccountEnums::Frequency>(Key::frequency);
+    }
+    [[nodiscard]] QString dateFormat() const { return metaData<QString>(Key::dateFormat); }
+    [[nodiscard]] int customIntervalDays() const { return metaData<int>(Key::customIntervalDays); }
+    [[nodiscard]] TransactionPtr prototype() const { return metaData<TransactionPtr>(Key::prototype); }
+
+    [[nodiscard]] QJsonObject toJson() const override;
+    void fromJson(const QJsonObject& json) override;
+
+    [[nodiscard]] QList<TransactionPtr> generate(QDate from, QDate to) const;
+    [[nodiscard]] QList<TransactionPtr> generate(QDate startDate, int occurrenceCount) const;
 
 public slots:
     void setId(QUuid value);
@@ -55,40 +66,23 @@ signals:
     void dateFormatChanged();
     void customIntervalDaysChanged();
     void prototypeChanged();
-
-public:
-    QJsonObject toJson() const;
-
-    QList<TransactionPtr> generate(QDate from, QDate to) const;
-    QList<TransactionPtr> generate(QDate startDate, int occurrenceCount) const;
+    void changed();
 
 private:
-    TransactionPtr createTransaction(TransactionPtr prototype, QDate date) const;
+    [[nodiscard]] TransactionPtr createTransaction(TransactionPtr proto, QDate date) const;
+    [[nodiscard]] QString buildDescription(const QString& base, QDate date) const;
+    [[nodiscard]] QDate nextDate(QDate current) const;
 
-    QString buildDescription(QString baseDescription, QDate date) const;
-    QDate nextDate(QDate current) const;
-
-    template<typename T, typename Signal>
-    void assignIfChanged(const char *key, T value, Signal signal)
-    {
-        if (metaData<T>(key) == value)
-            return;
-
-        setMetadata(key, QVariant::fromValue(value));
-        emit (this->*signal)();
-    }
-
-private:
     struct Key {
-        static constexpr auto Id = "id";
-        static constexpr auto Frequency = "frequency";
-        static constexpr auto DateFormat = "dateFormat";
-        static constexpr auto CustomIntervalDays = "customIntervalDays";
-        static constexpr auto Prototype = "prototype";
+        static constexpr auto id = "id";
+        static constexpr auto frequency = "frequency";
+        static constexpr auto dateFormat = "dateFormat";
+        static constexpr auto customIntervalDays = "customIntervalDays";
+        static constexpr auto prototype = "prototype";
     };
 
     struct TransactionKey {
-        static constexpr auto FrequencyId = "frequencyId";
+        static constexpr auto frequencyId = "frequencyId";
     };
 };
 

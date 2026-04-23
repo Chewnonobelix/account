@@ -25,7 +25,7 @@ void TestProfile::testSetGet() {
   QUuid id = QUuid::createUuid();
   QString first = "Alice";
   QString last = "Dupont";
-  QVector<QUuid> accounts = {QUuid::createUuid(), QUuid::createUuid()};
+  QList<QUuid> accounts = {QUuid::createUuid(), QUuid::createUuid()};
 
   p.setId(id);
   p.setFirstName(first);
@@ -85,7 +85,7 @@ void TestProfile::testSignal_lastNameChanged() {
 void TestProfile::testSignal_accountsChanged() {
   Profile p;
   QSignalSpy spy(&p, SIGNAL(accountsChanged()));
-  QVector<QUuid> acc = {QUuid::createUuid(), QUuid::createUuid()};
+  QList<QUuid> acc = {QUuid::createUuid(), QUuid::createUuid()};
   p.setAccounts(acc);
   QCOMPARE(spy.count(), 1);
 }
@@ -96,7 +96,7 @@ void TestProfile::testSignal_profileChangedCounts() {
 
   p.setFirstName("A");
   p.setLastName("B");
-  QVector<QUuid> acc = {QUuid::createUuid()};
+  QList<QUuid> acc = {QUuid::createUuid()};
   p.setAccounts(acc);
 
   QVERIFY(spy.count() >= 3);

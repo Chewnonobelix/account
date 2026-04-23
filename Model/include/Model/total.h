@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QVector>
+#include <QList>
 #include <QDate>
 #include <QSharedPointer>
 #include "model_global.h"
@@ -19,10 +19,10 @@ public:
 
     // Add one or many transactions (shared ownership).
     void addTransaction(QSharedPointer<Transaction> t);
-    void addTransactions(const QVector<QSharedPointer<Transaction>>& list);
+    void addTransactions(const QList<QSharedPointer<Transaction>>& list);
 
     // Access the stored shared pointers.
-    QVector<QSharedPointer<Transaction>> transactions() const { return m_transactions; }
+    QList<QSharedPointer<Transaction>> transactions() const { return m_transactions; }
 
     // Evaluate the signed amount using Movement rule:
     // Credit => +value, Debit => -value
@@ -37,7 +37,7 @@ private:
     void recomputeBoundsAfterAppend(const QDate& d);
 
 private:
-    QVector<QSharedPointer<Transaction>> m_transactions;
+    QList<QSharedPointer<Transaction>> m_transactions;
     QDate m_from;
     QDate m_to;
 };
