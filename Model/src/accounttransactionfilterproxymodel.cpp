@@ -1,0 +1,88 @@
+#include "Model/accounttransactionfilterproxymodel.h"
+
+#include "Model/transactionlistmodel.h"
+
+#include <QString>
+
+AccountTransactionFilterProxyModel::AccountTransactionFilterProxyModel(
+    QObject *parent)
+    : QSortFilterProxyModel(parent) {
+  connect(this, &QAbstractItemModel::rowsInserted, this,
+          &AccountTransactionFilterProxyModel::countChanged);
+  connect(this, &QAbstractItemModel::rowsRemoved, this,
+          &AccountTransactionFilterProxyModel::countChanged);
+  connect(this, &QAbstractItemModel::modelReset, this,
+          &AccountTransactionFilterProxyModel::countChanged);
+}
+
+void AccountTransactionFilterProxyModel::setAccount(Account *account) {
+  if (m_account == account)
+    return;
+
+  if (m_account)
+    disconnect(m_account, nullptr, this, nullptr);
+
+  m_account = account;
+
+  if (m_account) {
+    connect(m_account, &Account::changed, this,
+            &AccountTransactionFilterProxyModel::invalidateAccountFilter);
+    connect(m_account, &QObject::destroyed, this, [this]() {
+      m_account = nullptr;
+      emit accountChanged();
+      invalidateAccountFilter();
+    });
+  }
+
+  emit accountChanged();
+  invalidateAccountFilter();
+}
+
+QHash<int, QByteArray> AccountTransactionFilterProxyModel::roleNames() const {
+  return sourceModel() ? sourceModel()->roleNames()
+                       : QSortFilterProxyModel::roleNames();
+}
+
+QObject *AccountTransactionFilterProxyModel::at(int row) const {
+  const QModelIndex proxyIndex = index(row, 0);
+  if (!proxyIndex.isValid())
+    return nullptr;
+
+  return qvariant_cast<QObject *>(
+      data(proxyIndex, TransactionListModel::TransactionRole));
+}
+
+QVariantMap AccountTransactionFilterProxyModel::get(int row) const {
+  const QModelIndex proxyIndex = index(row, 0);
+  if (!proxyIndex.isValid())
+    return {};
+
+  QVariantMap result;
+  const QHash<int, QByteArray> names = roleNames();
+  for (auto it = names.cbegin(); it != names.cend(); ++it)
+    result.insert(QString::fromLatin1(it.value()), data(proxyIndex, it.key()));
+
+  return result;
+}
+
+bool AccountTransactionFilterProxyModel::filterAcceptsRow(
+    int sourceRow, const QModelIndex &sourceParent) const {
+  if (!sourceModel())
+    return false;
+
+  if (!m_account)
+    return true;
+
+  const QModelIndex sourceIndex = sourceModel()->index(sourceRow, 0, sourceParent);
+  if (!sourceIndex.isValid())
+    return false;
+
+  return sourceModel()
+             ->data(sourceIndex, TransactionListModel::AccountIdRole)
+             .toUuid() == m_account->id();
+}
+
+void AccountTransactionFilterProxyModel::invalidateAccountFilter() {
+  beginFilterChange();
+  endFilterChange(QSortFilterProxyModel::Direction::Rows);
+}
