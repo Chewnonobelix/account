@@ -7,6 +7,7 @@ INCLUDEPATH += $$PWD/include
 DESTDIR = $$OUT_PWD
 DEFINES = MODEL_LIBRARY
 HEADERS += \
+    include/Model/accounttransactionfilterproxymodel.h \
     include/Model/account.h \
     include/Model/category.h \
     include/Model/debt.h \
@@ -16,9 +17,11 @@ HEADERS += \
     include/Model/model_global.h \
     include/Model/profile.h \
     include/Model/total.h \
-    include/Model/transaction.h
+    include/Model/transaction.h \
+    include/Model/transactionlistmodel.h
 
 SOURCES += \
+    src/accounttransactionfilterproxymodel.cpp \
     src/account.cpp \
     src/category.cpp \
     src/debt.cpp \
@@ -27,7 +30,8 @@ SOURCES += \
     src/profile.cpp \
     src/model.cpp \
     src/total.cpp \
-    src/transaction.cpp
+    src/transaction.cpp \
+    src/transactionlistmodel.cpp
 
 
 INCLUDEPATH += $$PWD/../lib/DesignLibrary/DesignPattern

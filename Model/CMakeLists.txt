@@ -5,6 +5,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 add_library(OAModel
+    src/accounttransactionfilterproxymodel.cpp
     src/account.cpp
     src/category.cpp
     src/debt.cpp
@@ -12,6 +13,8 @@ add_library(OAModel
     src/model.cpp
     src/total.cpp
     src/transaction.cpp
+    src/transactionlistmodel.cpp
+    include/Model/accounttransactionfilterproxymodel.h
     include/Model/account.h
     include/Model/category.h
     include/Model/debt.h
@@ -21,6 +24,7 @@ add_library(OAModel
     include/Model/profile.h
     include/Model/total.h
     include/Model/transaction.h
+    include/Model/transactionlistmodel.h
     include/Model/frequency.h
     src/frequency.cpp
     src/enums.cpp
