@@ -5,15 +5,21 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 add_library(Controller
+    src/abstractdatastorage.cpp
     src/controller.cpp
+    include/Controller/abstractdatastorage.h
     include/Controller/controller.h
+    include/Controller/controller_global.h
 )
 
-target_include_directories(Controller PRIVATE
-    $$PWD/include
-    $$PWD/../lib/DesignLibrary/DesignPattern
+target_include_directories(Controller PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_link_libraries(Controller PRIVATE
+target_compile_definitions(Controller PRIVATE
+    CONTROLLER_LIBRARY
+)
+
+target_link_libraries(Controller PUBLIC
     Qt6::Core
 )

@@ -2,13 +2,15 @@
 
 #include <QString>
 
+#include "abstractdatastorage.h"
+#include "controller_global.h"
+
 namespace Controller {
 
-class ControllerApi {
+class CONTROLLER_EXPORT ControllerApi {
 public:
 	QString name() const;
 };
 
 } // namespace Controller
-
 

@@ -4,7 +4,6 @@ QT += testlib
 
 TARGET = ControllerTests
 INCLUDEPATH += $$PWD/../include
-INCLUDEPATH += $$PWD/../../lib/DesignLibrary/DesignPattern
 DESTDIR = $$OUT_PWD
 
 SOURCES += \
@@ -12,9 +11,4 @@ SOURCES += \
 
 win32:LIBS += -L$$OUT_PWD/.. -lController
 unix:LIBS += -L$$OUT_PWD/.. -lController
-
-win32:CONFIG(debug, debug| release): LIBS += -L$$OUT_PWD/../../lib/DesignLibrary/DesignPattern/debug -lDesignPattern
-else:win32:CONFIG(release, debug| release): LIBS += -L$$OUT_PWD/../../lib/DesignLibrary/DesignPattern/release -lDesignPattern
-else:unix:LIBS += -L$$OUT_PWD/../../lib/DesignLibrary/DesignPattern -lDesignPattern
-
 
