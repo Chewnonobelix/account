@@ -6,6 +6,14 @@ BEGIN TRANSACTION;
 -- SQLite schema for persisting the explicit Model entities.
 -- Total is not stored because it is a computed aggregate over transactions.
 -- Additional MetaData key/value pairs can be stored in metadata_entries.
+--
+-- Schema versioning / migrations:
+--   The schema version is tracked with `PRAGMA user_version`. While the
+--   Controller layer is still under development there is no deployed database
+--   to migrate, so refinements stay on version 1. Once persistence ships, any
+--   schema change MUST bump `user_version` and the storage code MUST apply
+--   migrations stepwise (read PRAGMA user_version, run the matching upgrade
+--   scripts, then write the new version) inside a single transaction.
 
 CREATE TABLE IF NOT EXISTS profiles (
     id TEXT PRIMARY KEY NOT NULL,
@@ -13,6 +21,14 @@ CREATE TABLE IF NOT EXISTS profiles (
     last_name TEXT NOT NULL DEFAULT ''
 );
 
+-- Profile <-> Account relation.
+-- The C++ model expresses ownership from the profile side (Profile holds a
+-- QList<QUuid> accounts). The database normalizes the same one-to-many link
+-- from the account side via accounts.profile_id; Profile.accounts is rebuilt
+-- with `SELECT id FROM accounts WHERE profile_id = ?`. ON DELETE CASCADE keeps
+-- the ownership invariant: deleting a profile removes the accounts it owns
+-- (and, transitively, their transactions and debts) instead of leaving them
+-- orphaned with a NULL profile_id.
 CREATE TABLE IF NOT EXISTS accounts (
     id TEXT PRIMARY KEY NOT NULL,
     profile_id TEXT,
@@ -23,7 +39,7 @@ CREATE TABLE IF NOT EXISTS accounts (
     opening TEXT,
     FOREIGN KEY (profile_id) REFERENCES profiles(id)
         ON UPDATE CASCADE
-        ON DELETE SET NULL
+        ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS categories (
@@ -67,7 +83,7 @@ CREATE TABLE IF NOT EXISTS debts (
     start_date TEXT,
     end_date TEXT,
     recurrence TEXT NOT NULL DEFAULT 'Once'
-        CHECK (recurrence IN ('Once', 'Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly')),
+        CHECK (recurrence IN ('Custom', 'Once', 'Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly')),
     direction TEXT NOT NULL DEFAULT 'Debit'
         CHECK (direction IN ('Credit', 'Debit')),
     description TEXT NOT NULL DEFAULT '',
@@ -115,6 +131,9 @@ CREATE TABLE IF NOT EXISTS frequency_prototypes (
 
 -- Optional key/value persistence for extra MetaData entries not modeled as columns.
 -- Store the value as JSON text to preserve QVariant-like payloads.
+-- NOTE: entity_type/entity_id are free text, not foreign keys, so rows here are
+-- NOT cascade-deleted with their owning entity. The storage layer must delete
+-- the matching metadata_entries when it deletes an entity.
 CREATE TABLE IF NOT EXISTS metadata_entries (
     entity_type TEXT NOT NULL
         CHECK (entity_type IN (
