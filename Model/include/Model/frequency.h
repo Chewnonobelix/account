@@ -18,7 +18,7 @@
  */
 class MODEL_EXPORT Frequency : public QObject,
                                public MetaData,
-                               private QEnableSharedFromThis<Frequency> {
+                               public QEnableSharedFromThis<Frequency> {
     Q_OBJECT
 
     Q_PROPERTY(QUuid id READ id WRITE setId NOTIFY idChanged)
@@ -36,8 +36,6 @@ public:
     Frequency& operator=(const Frequency&) = delete;
     Frequency(Frequency&&) = delete;
     Frequency& operator=(Frequency&&) = delete;
-
-    using QEnableSharedFromThis<Frequency>::sharedFromThis;
 
     [[nodiscard]] QUuid id() const { return metaData<QUuid>(Key::id); }
     [[nodiscard]] OpenAccountEnums::Frequency frequency() const {

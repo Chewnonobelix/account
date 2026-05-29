@@ -16,14 +16,11 @@ class Transaction; // forward declaration
 /**
  * @brief Monetary operation attached to an Account and optionally a Category.
  *
- * Inherits QEnableSharedFromThis privately (C++ Core Guideline C.129) —
- * sharedFromThis() remains accessible via `this->sharedFromThis()` inside
- * Transaction and is granted to friend operators building Totals.
  */
 class MODEL_EXPORT Transaction
     : public QObject,
       public MetaData,
-      private QEnableSharedFromThis<Transaction> {
+      public QEnableSharedFromThis<Transaction> {
     Q_OBJECT
 
     Q_PROPERTY(QUuid id READ id WRITE setId NOTIFY idChanged)
@@ -45,8 +42,6 @@ public:
     Transaction& operator=(const Transaction&) = delete;
     Transaction(Transaction&&) = delete;
     Transaction& operator=(Transaction&&) = delete;
-
-    using QEnableSharedFromThis<Transaction>::sharedFromThis;
 
     // Accessors
     [[nodiscard]] QUuid id() const { return metaData<QUuid>(Key::id); }
