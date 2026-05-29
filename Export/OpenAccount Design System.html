@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OpenAccount — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #08110d; font-family: 'Syne', sans-serif; }
+
+/* ── DARK THEME (Coffre-fort) ── */
+:root {
+  --bg-0:          #08110d;
+  --bg-1:          #0d1a12;
+  --bg-2:          #122018;
+  --bg-3:          #192b1f;
+  --bg-4:          #203628;
+  --border:        rgba(180,155,90,0.18);
+  --border-subtle: rgba(180,155,90,0.09);
+
+  --text-primary:   #e8f0e0;
+  --text-secondary: #8aaa80;
+  --text-muted:     #3e5840;
+
+  /* Gold */
+  --gold:          #c9a84c;
+  --gold-light:    #e8c96a;
+  --gold-dark:     #7a5e18;
+  --gold-dim:      rgba(201,168,76,0.13);
+  --gold-border:   rgba(201,168,76,0.32);
+  --gold-glow:     rgba(201,168,76,0.28);
+
+  /* Silver — disabled only */
+  --silver:        #6a7c78;
+  --silver-light:  #c8d4cc;
+  --silver-dark:   #3a4a44;
+  --silver-dim:    rgba(180,200,190,0.12);
+  --silver-border: rgba(180,200,190,0.30);
+
+  /* Banknote green */
+  --bill:          #4aae78;
+  --bill-light:    #6ace94;
+  --bill-dark:     #286040;
+  --bill-dim:      rgba(74,174,120,0.15);
+  --bill-border:   rgba(74,174,120,0.32);
+  --bill-glow:     rgba(74,174,120,0.28);
+
+  /* Semantic */
+  --positive:      #4aae78;
+  --negative:      #c05040;
+  --negative-dim:  rgba(192,80,64,0.14);
+  --warning:       #c98440;
+  --warning-dim:   rgba(201,132,64,0.14);
+
+  /* Labels thème sombre */
+  --lbl-default-text:  var(--text-secondary);
+  --lbl-default-bg:    var(--bg-3);
+  --lbl-default-bd:    var(--border-subtle);
+
+  --lbl-gold-text:     var(--gold-light);
+  --lbl-gold-bg:       var(--gold-dim);
+  --lbl-gold-bd:       var(--gold-border);
+
+  --lbl-silver-text:   var(--silver);
+  --lbl-silver-bg:     var(--silver-dim);
+  --lbl-silver-bd:     var(--silver-border);
+
+  --lbl-bill-text:     var(--bill-light);
+  --lbl-bill-bg:       linear-gradient(135deg, rgba(74,174,120,0.22) 0%, rgba(40,96,64,0.10) 100%);
+  --lbl-bill-bd:       var(--bill-border);
+
+  --lbl-danger-text:   var(--negative);
+  --lbl-danger-bg:     var(--negative-dim);
+  --lbl-danger-bd:     rgba(192,80,58,0.25);
+
+  --lbl-warning-text:  var(--warning);
+  --lbl-warning-bg:    var(--warning-dim);
+  --lbl-warning-bd:    rgba(201,132,60,0.25);
+
+  --lbl-outline-text:  var(--text-secondary);
+  --lbl-outline-bg:    transparent;
+  --lbl-outline-bd:    var(--border);
+
+  --mono: 'DM Mono', monospace;
+  --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* ── LIGHT THEME (Velin billet) ── */
+.theme-light {
+  --bg-0:          #d8ead0;
+  --bg-1:          #cce0c2;
+  --bg-2:          #bdd4b2;
+  --bg-3:          #aec8a0;
+  --bg-4:          #9eba90;
+  --border:        rgba(40,80,30,0.22);
+  --border-subtle: rgba(40,80,30,0.12);
+
+  --text-primary:   #0e1e0a;
+  --text-secondary: #2e4e20;
+  --text-muted:     #5a7850;
+
+  --gold:          #8a6520;
+  --gold-light:    #b08030;
+  --gold-dark:     #5a3e08;
+  --gold-dim:      rgba(138,101,32,0.13);
+  --gold-border:   rgba(138,101,32,0.32);
+  --gold-glow:     rgba(138,101,32,0.22);
+
+  --silver:        #607870;
+  --silver-light:  #a8bcb4;
+  --silver-dark:   #384840;
+  --silver-dim:    rgba(96,120,112,0.12);
+  --silver-border: rgba(96,120,112,0.24);
+
+  --bill:          #1e6e42;
+  --bill-light:    #2e8e58;
+  --bill-dark:     #0e4828;
+  --bill-dim:      rgba(30,110,66,0.14);
+  --bill-border:   rgba(30,110,66,0.32);
+  --bill-glow:     rgba(30,110,66,0.22);
+
+  --positive:      #1e6e42;
+  --negative:      #7a2010;
+  --negative-dim:  rgba(122,32,16,0.13);
+  --warning:       #7a5010;
+  --warning-dim:   rgba(122,80,16,0.13);
+
+  /* Labels thème clair : noir, rouge, orange, vert uniquement */
+  --lbl-default-text:  #0a1208;
+  --lbl-default-bg:    rgba(10,18,8,0.10);
+  --lbl-default-bd:    rgba(10,18,8,0.28);
+
+  --lbl-gold-text:     #0a1208;
+  --lbl-gold-bg:       rgba(10,18,8,0.10);
+  --lbl-gold-bd:       rgba(10,18,8,0.28);
+
+  --lbl-silver-text:   #0a1208;
+  --lbl-silver-bg:     rgba(10,18,8,0.08);
+  --lbl-silver-bd:     rgba(10,18,8,0.22);
+
+  --lbl-bill-text:     #0f5c2a;
+  --lbl-bill-bg:       linear-gradient(135deg, rgba(15,92,42,0.18) 0%, rgba(46,160,90,0.10) 100%);
+  --lbl-bill-bd:       rgba(15,92,42,0.38);
+
+  --lbl-danger-text:   #b01008;
+  --lbl-danger-bg:     rgba(176,16,8,0.12);
+  --lbl-danger-bd:     rgba(176,16,8,0.36);
+
+  --lbl-warning-text:  #a84c00;
+  --lbl-warning-bg:    rgba(168,76,0,0.12);
+  --lbl-warning-bd:    rgba(168,76,0,0.34);
+
+  --lbl-outline-text:  #0a1208;
+  --lbl-outline-bg:    transparent;
+  --lbl-outline-bd:    rgba(10,18,8,0.36);
+}
+
+/* ── SHARED UTILITY ── */
+.artboard-wrap {
+  background: var(--bg-1);
+  padding: 20px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.artboard-wrap::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--noise);
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+}
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px; }
+.col { display: flex; flex-direction: column; gap: 12px; }
+.divider { height: 1px; background: var(--border-subtle); margin: 14px 0; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+const { useState, useEffect, useContext, createContext } = React;
+
+/* ── TWEAK DEFAULTS ── */
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "metal": "or",
+  "relief": 70,
+  "theme": "sombre"
+}/*EDITMODE-END*/;
+
+/* ── METALS PALETTE ── */
+const METALS = {
+  or:      { gold:"#c9a84c", goldLight:"#e8c96a", goldDark:"#7a5e18", goldGlow:"rgba(201,168,76,0.28)",  goldDim:"rgba(201,168,76,0.13)",  goldBorder:"rgba(201,168,76,0.32)"  },
+  platine: { gold:"#8aaaba", goldLight:"#b8d0de", goldDark:"#486878", goldGlow:"rgba(138,170,186,0.28)", goldDim:"rgba(138,170,186,0.13)", goldBorder:"rgba(138,170,186,0.32)" },
+  cuivre:  { gold:"#b85e28", goldLight:"#d88040", goldDark:"#783010", goldGlow:"rgba(184,94,40,0.35)",   goldDim:"rgba(184,94,40,0.13)",   goldBorder:"rgba(184,94,40,0.32)"  },
+};
+
+/* ── TWEAKS CONTEXT ── */
+const TweaksCtx = createContext(TWEAK_DEFAULTS);
+
+/* ── CSS VAR INJECTOR ── */
+const ThemeApplier = ({ metal, relief, theme }) => {
+  useEffect(() => {
+    const m = METALS[metal] || METALS.or;
+    const r = relief / 100; // 0–1
+    const isDark = theme === "sombre";
+
+    // Relief: scale gradient contrast and shadow depth
+    const shadowScale = 0.2 + r * 0.8;
+    const highlightAlpha = (0.15 + r * 0.40).toFixed(2);
+    const shadowAlpha    = (0.20 + r * 0.45).toFixed(2);
+
+    // Base surfaces
+    const darkVars = `
+      --bg-0:#08110d; --bg-1:#0d1a12; --bg-2:#122018; --bg-3:#192b1f; --bg-4:#203628;
+      --border:rgba(180,155,90,0.18); --border-subtle:rgba(180,155,90,0.09);
+      --text-primary:#e8f0e0; --text-secondary:#8aaa80; --text-muted:#3e5840;
+      --bill:#4aae78; --bill-light:#6ace94; --bill-dark:#286040;
+      --bill-dim:rgba(74,174,120,0.15); --bill-border:rgba(74,174,120,0.32); --bill-glow:rgba(74,174,120,0.28);
+      --positive:#4aae78; --negative:#c05040; --negative-dim:rgba(192,80,64,0.14);
+      --warning:#c98440; --warning-dim:rgba(201,132,64,0.14);
+    `;
+    const lightVars = `
+      --bg-0:#d8ead0; --bg-1:#cce0c2; --bg-2:#bdd4b2; --bg-3:#aec8a0; --bg-4:#9eba90;
+      --border:rgba(40,80,30,0.22); --border-subtle:rgba(40,80,30,0.12);
+      --text-primary:#0e1e0a; --text-secondary:#2e4e20; --text-muted:#5a7850;
+      --bill:#1e6e42; --bill-light:#2e8e58; --bill-dark:#0e4828;
+      --bill-dim:rgba(30,110,66,0.14); --bill-border:rgba(30,110,66,0.32); --bill-glow:rgba(30,110,66,0.22);
+      --positive:#1e6e42; --negative:#7a2010; --negative-dim:rgba(122,32,16,0.13);
+      --warning:#7a5010; --warning-dim:rgba(122,80,16,0.13);
+    `;
+
+    const css = `
+      :root {
+        ${isDark ? darkVars : lightVars}
+        --gold:${m.gold}; --gold-light:${m.goldLight}; --gold-dark:${m.goldDark};
+        --gold-glow:${m.goldGlow}; --gold-dim:${m.goldDim}; --gold-border:${m.goldBorder};
+        --relief-highlight: rgba(255,255,255,${highlightAlpha});
+        --relief-shadow: rgba(0,0,0,${shadowAlpha});
+        --relief-glow-mult: ${shadowScale};
+      }
+      .theme-light {
+        ${isDark ? lightVars : darkVars}
+        --gold:${m.gold}; --gold-light:${m.goldLight}; --gold-dark:${m.goldDark};
+        --gold-glow:${m.goldGlow}; --gold-dim:${m.goldDim}; --gold-border:${m.goldBorder};
+      }
+    `;
+    let el = document.getElementById('tweak-overrides');
+    if (!el) { el = document.createElement('style'); el.id = 'tweak-overrides'; document.head.appendChild(el); }
+    el.textContent = css;
+  }, [metal, relief, theme]);
+  return null;
+};
+
+/* ── THEME WRAPPER ── */
+const Light = ({ children }) =>
+<div className="theme-light" style={{ background: "var(--bg-1)", width: "100%", height: "100%" }}>
+    {children}
+  </div>;
+
+
+/* ─────────────────────────────────────────
+   LABEL
+───────────────────────────────────────── */
+const OALabel = ({ children, variant = "default", size = "md", dot }) => {
+  const sizeMap = {
+    sm: { fontSize: 10, padding: "3px 8px" },
+    md: { fontSize: 11, padding: "4px 10px" },
+    lg: { fontSize: 12, padding: "5px 12px" }
+  };
+  const variantMap = {
+    default: { background: "var(--lbl-default-bg)", color: "var(--lbl-default-text)", border: "1px solid var(--lbl-default-bd)" },
+    gold:    { background: "var(--lbl-gold-bg)",    color: "var(--lbl-gold-text)",    border: "1px solid var(--lbl-gold-bd)" },
+    silver:  { background: "var(--lbl-silver-bg)",  color: "var(--lbl-silver-text)",  border: "1px solid var(--lbl-silver-bd)" },
+    bill:    { background: "var(--lbl-bill-bg)",    color: "var(--lbl-bill-text)",    border: "1px solid var(--lbl-bill-bd)" },
+    danger:  { background: "var(--lbl-danger-bg)",  color: "var(--lbl-danger-text)",  border: "1px solid var(--lbl-danger-bd)" },
+    warning: { background: "var(--lbl-warning-bg)", color: "var(--lbl-warning-text)", border: "1px solid var(--lbl-warning-bd)" },
+    outline: { background: "var(--lbl-outline-bg)", color: "var(--lbl-outline-text)", border: "1px solid var(--lbl-outline-bd)" },
+    secondary: { background: "var(--lbl-default-bg)", color: "var(--lbl-default-text)", border: "1px solid var(--lbl-default-bd)" }
+  };
+  return (
+    <span style={{
+      display: "inline-flex", alignItems: "center", gap: 6,
+      fontFamily: "'Syne', sans-serif", fontWeight: 600,
+      letterSpacing: "0.06em", borderRadius: 3, lineHeight: 1,
+      ...sizeMap[size], ...variantMap[variant]
+    }}>
+      {dot && <span style={{ width: 5, height: 5, borderRadius: "50%", background: "currentColor", flexShrink: 0 }}></span>}
+      {children}
+    </span>);
+
+};
+
+/* ─────────────────────────────────────────
+   BUTTON
+───────────────────────────────────────── */
+const OAButton = ({ children, variant = "gold", size = "md", icon, disabled, loading }) => {
+  const { relief } = useContext(TweaksCtx);
+  const r = (relief || 70) / 100;
+  const [hovered, setHovered] = useState(false);
+  const [pressed, setPressed] = useState(false);
+
+  const sizeMap = {
+    sm: { fontSize: 11, padding: "7px 16px" },
+    md: { fontSize: 12, padding: "10px 22px" },
+    lg: { fontSize: 13, padding: "13px 28px" }
+  };
+
+  // Metallic shine scales with relief tweak
+  const hi  = `rgba(255,255,255,${(0.12 + r * 0.45).toFixed(2)})`;
+  const hi2 = `rgba(255,255,255,${(0.06 + r * 0.22).toFixed(2)})`;
+  const sh  = `rgba(0,0,0,${(0.20 + r * 0.40).toFixed(2)})`;
+  const sh2 = `rgba(0,0,0,${(0.30 + r * 0.30).toFixed(2)})`;
+
+  const metallic = (topA, topB, midA, midB, botA, botB, glowColor) => {
+    const glowAlpha = (0.15 + r * 0.38).toFixed(2);
+    const glow = glowColor.replace(/[\d.]+\)$/, glowAlpha + ')');
+    return {
+      background: pressed
+        ? `linear-gradient(180deg, ${midB} 0%, ${botA} 100%)`
+        : hovered
+          ? `linear-gradient(180deg, ${topA} 0%, ${topA} 5%, ${topB} 18%, ${midA} 50%, ${midB} 82%, ${botA} 95%, ${botB} 100%)`
+          : `linear-gradient(180deg, ${topB} 0%, ${topB} 4%, ${midA} 20%, ${midA} 50%, ${midB} 80%, ${botA} 96%, ${botA} 100%)`,
+      boxShadow: pressed
+        ? `inset 0 2px 8px ${sh2}, inset 0 1px 2px ${sh}`
+        : hovered
+          ? `0 ${Math.round(4+r*6)}px ${Math.round(14+r*10)}px ${glow}, inset 0 1px 0 ${hi}, inset 0 -1px 0 ${sh}`
+          : `0 2px ${Math.round(6+r*8)}px ${sh}, inset 0 1px 0 ${hi2}, inset 0 -1px 0 ${sh}`,
+    };
+  };
+
+  const variants = {
+    gold: {
+      ...metallic(
+        "#fff0a0", "#f0d868", "#d4a83c", "#b88820", "#8a6010", "#5a3c00",
+        "rgba(201,168,76,0.50)"
+      ),
+      color: "#1a0800",
+      border: "1px solid rgba(180,130,20,0.60)",
+      textShadow: "0 1px 1px rgba(255,255,255,0.18)"
+    },
+    bill: {
+      ...metallic(
+        "#b0f0c0", "#70d890", "#3aae68", "#228848", "#0e6030", "#064020",
+        "rgba(74,174,120,0.45)"
+      ),
+      color: "#f0fff4",
+      border: "1px solid rgba(40,160,90,0.55)",
+      textShadow: "0 1px 2px rgba(0,0,0,0.30)"
+    },
+    secondary: {
+      background: pressed ?
+      "linear-gradient(180deg, var(--bg-4) 0%, var(--bg-3) 100%)" :
+      hovered ?
+      "linear-gradient(180deg, var(--bg-4) 0%, var(--bg-3) 100%)" :
+      "linear-gradient(180deg, var(--bg-3) 0%, var(--bg-2) 100%)",
+      color: "var(--text-primary)",
+      border: "1px solid var(--border)",
+      boxShadow: pressed ?
+      "inset 0 2px 6px rgba(0,0,0,0.5)" :
+      "0 2px 8px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.35)"
+    },
+    ghost: {
+      background: hovered ? "var(--bg-3)" : "transparent",
+      color: hovered ? "var(--text-primary)" : "var(--text-secondary)",
+      border: "1px solid " + (hovered ? "var(--border)" : "transparent"),
+      boxShadow: "none"
+    },
+    danger: {
+      ...metallic(
+        "#f09080", "#d86050", "#c04030", "#8a2818", "#600e00", "#3a0000",
+        "rgba(192,64,48,0.45)"
+      ),
+      color: "#fff8f8",
+      border: "1px solid rgba(180,60,40,0.55)",
+      textShadow: "0 1px 2px rgba(0,0,0,0.30)"
+    },
+    outline: {
+      background: hovered ? "var(--gold-dim)" : "transparent",
+      color: "var(--gold-light)",
+      border: "1px solid var(--gold-border)",
+      boxShadow: hovered ? "0 0 0 3px var(--gold-dim)" : "none"
+    },
+    // Disabled appearance (silver) — applied via disabled prop override
+    _disabled: {
+      background: "linear-gradient(180deg, #b8c8c0 0%, #8a9e96 40%, #4a6058 80%, #2a3e36 100%)",
+      color: "rgba(240,248,244,0.45)",
+      border: "1px solid rgba(160,190,178,0.35)",
+      boxShadow: "inset 0 1px 0 rgba(220,240,232,0.20), inset 0 -1px 0 rgba(0,0,0,0.35)",
+      textShadow: "none"
+    }
+  };
+
+  const activeStyle = disabled ? variants._disabled : variants[variant];
+
+  return (
+    <button
+      disabled={disabled}
+      onMouseEnter={() => !disabled && setHovered(true)}
+      onMouseLeave={() => {setHovered(false);setPressed(false);}}
+      onMouseDown={() => !disabled && setPressed(true)}
+      onMouseUp={() => setPressed(false)}
+      style={{
+        display: "inline-flex", alignItems: "center", gap: 8,
+        fontFamily: "'Syne', sans-serif", fontWeight: 700,
+        letterSpacing: "0.06em", cursor: disabled ? "not-allowed" : "pointer",
+        outline: "none", transition: "all 0.15s ease",
+        opacity: disabled ? 0.75 : 1, userSelect: "none",
+        borderRadius: 4, transform: pressed ? "translateY(1px)" : "translateY(0)",
+        ...sizeMap[size], ...activeStyle
+      }}>
+      
+      {loading && <span style={{ width: 11, height: 11, border: "2px solid currentColor", borderTopColor: "transparent", borderRadius: "50%", animation: "spin 0.7s linear infinite", flexShrink: 0 }}></span>}
+      {icon && !loading && <span>{icon}</span>}
+      {children}
+    </button>);
+
+};
+
+/* ─────────────────────────────────────────
+   CHECKBOX
+───────────────────────────────────────── */
+const OACheckbox = ({ label, checked: extChecked, indeterminate, disabled }) => {
+  const [internal, setInternal] = useState(extChecked ?? false);
+  const checked = extChecked !== undefined ? extChecked : internal;
+  const [hov, setHov] = useState(false);
+
+  return (
+    <label
+      style={{ display: "inline-flex", alignItems: "center", gap: 10, cursor: disabled ? "not-allowed" : "pointer", opacity: disabled ? 0.35 : 1, userSelect: "none", fontFamily: "'Syne', sans-serif", fontSize: 13, color: "var(--text-primary)", fontWeight: 400 }}
+      onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+      onClick={() => !disabled && setInternal((v) => !v)}>
+      
+      <span style={{
+        width: 18, height: 18, flexShrink: 0, borderRadius: 3,
+        border: checked || indeterminate ? "2px solid var(--gold)" : `2px solid ${hov ? "var(--gold-border)" : "var(--border)"}`,
+        background: checked || indeterminate ?
+        "linear-gradient(135deg, var(--gold-light), var(--gold-dark))" :
+        hov ? "var(--gold-dim)" : "var(--bg-3)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        transition: "all 0.15s",
+        boxShadow: checked ? "0 1px 6px var(--gold-glow)" : hov ? "0 0 0 3px var(--gold-dim)" : "inset 0 1px 3px rgba(0,0,0,0.35)"
+      }}>
+        {indeterminate && !checked && <span style={{ width: 8, height: 2, background: "var(--gold-light)", borderRadius: 1 }}></span>}
+        {checked &&
+        <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+            <path d="M1 4L3.8 7L9 1" stroke="#1a0e00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        }
+      </span>
+      {label}
+    </label>);
+
+};
+
+/* ─────────────────────────────────────────
+   RADIO
+───────────────────────────────────────── */
+const OARadioGroup = ({ options, defaultValue }) => {
+  const [sel, setSel] = useState(defaultValue ?? options[0]?.value);
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      {options.map((opt) => {
+        const active = sel === opt.value;
+        return (
+          <label key={opt.value}
+          style={{ display: "inline-flex", alignItems: "center", gap: 10, cursor: opt.disabled ? "not-allowed" : "pointer", opacity: opt.disabled ? 0.35 : 1, userSelect: "none", fontFamily: "'Syne', sans-serif", fontSize: 13, color: "var(--text-primary)" }}
+          onClick={() => !opt.disabled && setSel(opt.value)}>
+            
+            <span style={{
+              width: 18, height: 18, borderRadius: "50%", flexShrink: 0,
+              border: active ? "2px solid var(--gold)" : "2px solid var(--border)",
+              background: active ? "var(--bg-3)" : "var(--bg-3)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              transition: "all 0.15s",
+              boxShadow: active ? "0 0 0 3px var(--gold-dim), inset 0 1px 3px rgba(0,0,0,0.3)" : "inset 0 1px 3px rgba(0,0,0,0.35)"
+            }}>
+              {active && <span style={{ width: 8, height: 8, borderRadius: "50%", background: "linear-gradient(135deg, var(--gold-light), var(--gold))", boxShadow: "0 1px 4px var(--gold-glow)" }}></span>}
+            </span>
+            <span>
+              {opt.label}
+              {opt.sublabel && <span style={{ display: "block", fontSize: 10, color: "var(--text-muted)", fontFamily: "var(--mono)", marginTop: 1 }}>{opt.sublabel}</span>}
+            </span>
+          </label>);
+
+      })}
+    </div>);
+
+};
+
+/* ─────────────────────────────────────────
+   SLIDER
+───────────────────────────────────────── */
+const OASlider = ({ label, min = 0, max = 100, defaultValue = 40, step = 1, suffix = "", showTicks }) => {
+  const [val, setVal] = useState(defaultValue);
+  const pct = (val - min) / (max - min) * 100;
+  return (
+    <div style={{ width: "100%" }}>
+      {label &&
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
+          <span style={{ fontFamily: "'Syne', sans-serif", fontSize: 12, color: "var(--text-secondary)", fontWeight: 500 }}>{label}</span>
+          <span style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--gold-light)", fontWeight: 500 }}>{val.toLocaleString()}{suffix}</span>
+        </div>
+      }
+      <div style={{ position: "relative", height: 6, background: "var(--bg-4)", borderRadius: 3, boxShadow: "inset 0 1px 3px rgba(0,0,0,0.5)" }}>
+        <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: `${pct}%`, background: "linear-gradient(90deg, var(--gold-dark), var(--gold-light))", borderRadius: 3, boxShadow: "0 0 8px var(--gold-glow)", transition: "width 0.05s" }}></div>
+        <input type="range" min={min} max={max} step={step} value={val} onChange={(e) => setVal(Number(e.target.value))}
+        style={{ position: "absolute", top: "50%", left: 0, transform: "translateY(-50%)", width: "100%", appearance: "none", background: "transparent", cursor: "pointer", height: 22, margin: 0 }} />
+        
+      </div>
+      {showTicks &&
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
+          {[min, max / 4, max / 2, max * 3 / 4, max].map((t, i) =>
+        <span key={i} style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--text-muted)" }}>{Math.round(t).toLocaleString()}</span>
+        )}
+        </div>
+      }
+    </div>);
+
+};
+
+/* ─────────────────────────────────────────
+   LIST VIEW
+───────────────────────────────────────── */
+const txData = [
+{ id: 1, name: "Virement salaire", category: "Revenus", date: "24 avr.", amount: 3200, type: "credit", account: "Courant" },
+{ id: 2, name: "Loyer — Studio Bastille", category: "Logement", date: "23 avr.", amount: -1100, type: "debit", account: "Courant" },
+{ id: 3, name: "Spotify Premium", category: "Abonnements", date: "22 avr.", amount: -9.99, type: "debit", account: "Courant" },
+{ id: 4, name: "Boulangerie Paul", category: "Alimentation", date: "22 avr.", amount: -6.40, type: "debit", account: "Courant" },
+{ id: 5, name: "Remboursement — Marie", category: "Transferts", date: "21 avr.", amount: 45, type: "credit", account: "Courant" },
+{ id: 6, name: "SNCF — Paris Lyon", category: "Transport", date: "20 avr.", amount: -54.00, type: "debit", account: "Courant" }];
+
+
+const OAListView = () => {
+  const [sel, setSel] = useState(null);
+  const [hov, setHov] = useState(null);
+  const [sortCol, setSort] = useState("date");
+  const cols = [
+  { key: "name", label: "Libellé", flex: 3 },
+  { key: "category", label: "Catégorie", flex: 2 },
+  { key: "date", label: "Date", flex: 1.5 },
+  { key: "account", label: "Compte", flex: 1.5 },
+  { key: "amount", label: "Montant", flex: 1.5, right: true }];
+
+  return (
+    <div style={{ width: "100%", borderRadius: 6, overflow: "hidden", border: "1px solid var(--border)", boxShadow: "0 4px 24px rgba(0,0,0,0.35)" }}>
+      {/* Header */}
+      <div style={{ display: "flex", padding: "0 16px", height: 38, background: "linear-gradient(180deg, var(--bg-3) 0%, var(--bg-2) 100%)", borderBottom: "1px solid var(--border)", alignItems: "center" }}>
+        {cols.map((c) =>
+        <div key={c.key} onClick={() => setSort(c.key)}
+        style={{ flex: c.flex, fontFamily: "var(--mono)", fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: sortCol === c.key ? "var(--gold)" : "var(--text-muted)", cursor: "pointer", display: "flex", alignItems: "center", gap: 4, justifyContent: c.right ? "flex-end" : "flex-start", transition: "color 0.1s" }}>
+            {c.label}{sortCol === c.key && <span style={{ fontSize: 7 }}>▼</span>}
+          </div>
+        )}
+      </div>
+      {/* Rows */}
+      {txData.map((tx, i) =>
+      <div key={tx.id}
+      onClick={() => setSel(sel === tx.id ? null : tx.id)}
+      onMouseEnter={() => setHov(tx.id)} onMouseLeave={() => setHov(null)}
+      style={{
+        display: "flex", padding: "0 16px", height: 50, alignItems: "center",
+        background: sel === tx.id ? "linear-gradient(90deg, var(--gold-dim), transparent)" : hov === tx.id ? "var(--bg-3)" : "transparent",
+        borderBottom: i < txData.length - 1 ? "1px solid var(--border-subtle)" : "none",
+        cursor: "pointer", transition: "background 0.12s",
+        borderLeft: sel === tx.id ? "2px solid var(--gold)" : "2px solid transparent"
+      }}>
+          <div style={{ flex: 3, display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{
+            width: 30, height: 30, borderRadius: 4, flexShrink: 0,
+            background: tx.type === "credit" ?
+            "linear-gradient(135deg, var(--bill-dim), rgba(74,158,110,0.05))" :
+            "var(--bg-4)",
+            border: tx.type === "credit" ? "1px solid var(--bill-border)" : "1px solid var(--border-subtle)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: 13, color: tx.type === "credit" ? "var(--bill-light)" : "var(--text-muted)",
+            fontWeight: 600, boxShadow: "inset 0 1px 3px rgba(0,0,0,0.25)"
+          }}>
+              {tx.type === "credit" ? "↓" : "↑"}
+            </span>
+            <span style={{ fontSize: 13, color: "var(--text-primary)", fontWeight: 500 }}>{tx.name}</span>
+          </div>
+          <div style={{ flex: 2 }}><OALabel variant="default" size="sm">{tx.category}</OALabel></div>
+          <div style={{ flex: 1.5, fontFamily: "var(--mono)", fontSize: 11, color: "var(--text-muted)" }}>{tx.date}</div>
+          <div style={{ flex: 1.5, fontFamily: "var(--mono)", fontSize: 11, color: "var(--text-muted)" }}>{tx.account}</div>
+          <div style={{ flex: 1.5, textAlign: "right", fontFamily: "var(--mono)", fontSize: 13, fontWeight: 600, color: tx.amount > 0 ? "var(--positive)" : "var(--text-primary)", letterSpacing: "0.02em" }}>
+            {tx.amount > 0 ? "+" : ""}{tx.amount.toLocaleString("fr-FR", { minimumFractionDigits: 2 })} €
+          </div>
+        </div>
+      )}
+    </div>);
+
+};
+
+/* ─────────────────────────────────────────
+   HEADER
+───────────────────────────────────────── */
+const OAHeader = ({ variant = "full" }) => {
+  const [active, setActive] = useState("Transactions");
+  const nav = ["Tableau de bord", "Transactions", "Budget", "Épargne", "Rapports"];
+
+  const headerBase = {
+    background: "linear-gradient(180deg, var(--bg-2) 0%, var(--bg-1) 100%)",
+    borderBottom: "1px solid var(--border)",
+    boxShadow: "0 2px 16px rgba(0,0,0,0.45)"
+  };
+
+  if (variant === "compact") return (
+    <div style={{ ...headerBase, height: 52, display: "flex", alignItems: "center", padding: "0 20px", gap: 20 }}>
+      <span style={{ width: 26, height: 26, background: "linear-gradient(135deg, var(--gold-light), var(--gold-dark))", borderRadius: 5, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--mono)", fontSize: 10, color: "#1a0e00", fontWeight: 700, boxShadow: "0 1px 6px var(--gold-glow)" }}>OA</span>
+      {nav.map((item) =>
+      <button key={item} onClick={() => setActive(item)}
+      style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "'Syne', sans-serif", fontSize: 12, fontWeight: 600, color: active === item ? "var(--gold-light)" : "var(--text-muted)", padding: "4px 0", letterSpacing: "0.04em", borderBottom: active === item ? "2px solid var(--gold)" : "2px solid transparent", transition: "all 0.15s" }}>
+          {item}
+        </button>
+      )}
+      <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 10 }}>
+        <span style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--text-muted)" }}>EUR — 12:04</span>
+        <div style={{ width: 30, height: 30, borderRadius: "50%", background: "linear-gradient(135deg, var(--gold-light), var(--gold-dark))", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--mono)", fontSize: 10, color: "#1a0e00", fontWeight: 700, boxShadow: "0 1px 8px var(--gold-glow)" }}>AL</div>
+      </div>
+    </div>);
+
+
+  return (
+    <div style={headerBase}>
+      <div style={{ height: 58, display: "flex", alignItems: "center", padding: "0 24px", borderBottom: "1px solid var(--border-subtle)", gap: 16 }}>
+        {/* Logo */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginRight: 12 }}>
+          <span style={{ width: 30, height: 30, background: "linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%)", borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--mono)", fontSize: 11, color: "#1a0e00", fontWeight: 700, boxShadow: "0 2px 8px var(--gold-glow), inset 0 1px 0 rgba(255,245,180,0.4)" }}>OA</span>
+          <span style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 14, letterSpacing: "0.12em", background: "linear-gradient(90deg, var(--gold-light), var(--gold), var(--text-secondary))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>OPENACCOUNT</span>
+        </div>
+        {/* Search */}
+        <div style={{ flex: 1, maxWidth: 340, height: 34, background: "var(--bg-3)", border: "1px solid var(--border-subtle)", borderRadius: 4, display: "flex", alignItems: "center", padding: "0 12px", gap: 8, boxShadow: "inset 0 1px 4px rgba(0,0,0,0.4)" }}>
+          <span style={{ color: "var(--text-muted)", fontSize: 13 }}>⌕</span>
+          <span style={{ fontFamily: "'Syne', sans-serif", fontSize: 12, color: "var(--text-muted)" }}>Rechercher une transaction…</span>
+          <span style={{ marginLeft: "auto", fontFamily: "var(--mono)", fontSize: 9, color: "var(--text-muted)", background: "var(--bg-4)", padding: "2px 5px", borderRadius: 3, border: "1px solid var(--border-subtle)" }}>⌘K</span>
+        </div>
+        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 12 }}>
+          <OALabel variant="bill" size="sm" dot>Synchronisé</OALabel>
+          <div style={{ height: 30, padding: "0 12px", background: "var(--bg-3)", border: "1px solid var(--border)", borderRadius: 4, display: "flex", alignItems: "center", gap: 6, fontFamily: "var(--mono)", fontSize: 11, color: "var(--silver)", cursor: "pointer", boxShadow: "inset 0 1px 3px rgba(0,0,0,0.3), 0 1px 0 var(--border)" }}>
+            <span>🏦</span><span>BNP Paribas</span><span style={{ color: "var(--text-muted)" }}>▾</span>
+          </div>
+          <div style={{ width: 34, height: 34, borderRadius: "50%", background: "linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--mono)", fontSize: 11, color: "#1a0e00", fontWeight: 700, boxShadow: "0 2px 10px var(--gold-glow)", cursor: "pointer" }}>AL</div>
+        </div>
+      </div>
+      <div style={{ height: 46, display: "flex", alignItems: "stretch", padding: "0 24px", gap: 0 }}>
+        {nav.map((item) =>
+        <button key={item} onClick={() => setActive(item)}
+        style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "'Syne', sans-serif", fontSize: 12, fontWeight: 600, color: active === item ? "var(--gold-light)" : "var(--text-muted)", padding: "0 16px", letterSpacing: "0.05em", borderBottom: active === item ? "2px solid var(--gold)" : "2px solid transparent", transition: "all 0.15s", whiteSpace: "nowrap", textShadow: active === item ? "0 0 20px var(--gold-glow)" : "none" }}>
+            {item}
+          </button>
+        )}
+        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontFamily: "var(--mono)", fontSize: 10, color: "var(--text-muted)" }}>Avril 2026</span>
+          {["‹", "›"].map((ch) => <button key={ch} style={{ background: "linear-gradient(180deg, var(--bg-3), var(--bg-2))", border: "1px solid var(--border)", borderRadius: 3, width: 24, height: 24, color: "var(--text-secondary)", fontSize: 12, cursor: "pointer", boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)" }}>{ch}</button>)}
+        </div>
+      </div>
+    </div>);
+
+};
+
+/* ─────────────────────────────────────────
+   APP
+───────────────────────────────────────── */
+const App = () => {
+  const [tweaks, setTweaks] = useTweaks(TWEAK_DEFAULTS);
+  return (
+  <TweaksCtx.Provider value={tweaks}>
+    <ThemeApplier metal={tweaks.metal} relief={tweaks.relief} theme={tweaks.theme} />
+    <TweaksPanel>
+      <TweakSection title="Métal dominant">
+        <TweakRadio id="metal" value={tweaks.metal} onChange={v => setTweaks({metal:v})}
+          options={[
+            { value:"or",      label:"Or" },
+            { value:"platine", label:"Platine" },
+            { value:"cuivre",  label:"Cuivre" },
+          ]} />
+      </TweakSection>
+      <TweakSection title="Relief métallique">
+        <TweakSlider id="relief" label="Profondeur" min={0} max={100} step={5}
+          value={tweaks.relief} onChange={v => setTweaks({relief:v})} />
+      </TweakSection>
+      <TweakSection title="Thème global">
+        <TweakRadio id="theme" value={tweaks.theme} onChange={v => setTweaks({theme:v})}
+          options={[
+            { value:"sombre", label:"Coffre-fort" },
+            { value:"clair",  label:"Velin billet" },
+          ]} />
+      </TweakSection>
+    </TweaksPanel>
+    <DesignCanvas title="OpenAccount — Système de Design">
+
+    <DCSection id="s-header" title="Header">
+      <DCArtboard id="h-full-dark" label="Header Complet — Sombre" width={900} height={110}>
+        <OAHeader variant="full" />
+      </DCArtboard>
+      <DCArtboard id="h-full-light" label="Header Complet — Clair" width={900} height={110}>
+        <Light><OAHeader variant="full" /></Light>
+      </DCArtboard>
+      <DCArtboard id="h-compact-dark" label="Header Compact — Sombre" width={900} height={52}>
+        <OAHeader variant="compact" />
+      </DCArtboard>
+      <DCArtboard id="h-compact-light" label="Header Compact — Clair" width={900} height={52}>
+        <Light><OAHeader variant="compact" /></Light>
+      </DCArtboard>
+    </DCSection>
+
+    <DCSection id="s-labels" title="Labels & Badges">
+      <DCArtboard id="lab-dark" label="Labels — Sombre" width={680} height={195}>
+        <div className="artboard-wrap">
+          <div className="section-label">Labels / Badges</div>
+          <div className="row">
+            <OALabel variant="gold" dot>Or — Primaire</OALabel>
+            <OALabel variant="secondary">Argent</OALabel>
+            <OALabel variant="bill" dot>Crédit</OALabel>
+            <OALabel variant="danger" dot>Erreur</OALabel>
+            <OALabel variant="warning" dot>Attention</OALabel>
+            <OALabel variant="outline">Contour</OALabel>
+            <OALabel>Défaut</OALabel>
+          </div>
+          <div className="row" style={{ marginTop: 14 }}>
+            <OALabel variant="gold" size="sm" dot>Synchronisé</OALabel>
+            <OALabel variant="warning" size="sm" dot>En attente</OALabel>
+            <OALabel variant="danger" size="sm" dot>Décliné</OALabel>
+            <OALabel variant="bill" size="sm">+ 3 200,00 €</OALabel>
+            <OALabel variant="default" size="sm">Alimentation</OALabel>
+            <OALabel variant="secondary" size="sm">Logement</OALabel>
+          </div>
+        </div>
+      </DCArtboard>
+      <DCArtboard id="lab-light" label="Labels — Clair" width={680} height={195}>
+        <Light>
+          <div className="artboard-wrap">
+            <div className="section-label">Labels / Badges</div>
+            <div className="row">
+              <OALabel variant="gold" dot>Or — Primaire</OALabel>
+              <OALabel variant="secondary">Argent</OALabel>
+              <OALabel variant="bill" dot>Crédit</OALabel>
+              <OALabel variant="danger" dot>Erreur</OALabel>
+              <OALabel variant="warning" dot>Attention</OALabel>
+              <OALabel variant="outline">Contour</OALabel>
+              <OALabel>Défaut</OALabel>
+            </div>
+            <div className="row" style={{ marginTop: 14 }}>
+              <OALabel variant="gold" size="sm" dot>Synchronisé</OALabel>
+              <OALabel variant="warning" size="sm" dot>En attente</OALabel>
+              <OALabel variant="danger" size="sm" dot>Décliné</OALabel>
+              <OALabel variant="bill" size="sm">+ 3 200,00 €</OALabel>
+              <OALabel variant="default" size="sm">Alimentation</OALabel>
+              <OALabel variant="secondary" size="sm">Logement</OALabel>
+            </div>
+          </div>
+        </Light>
+      </DCArtboard>
+    </DCSection>
+
+    <DCSection id="s-buttons" title="Boutons">
+      <DCArtboard id="btn-dark" label="Boutons — Sombre" width={860} height={680}>
+        <div className="artboard-wrap" style={{ height: "615px" }}>
+          <div className="section-label">Variantes</div>
+          <div className="row">
+            <OAButton variant="gold">Confirmer</OAButton>
+            <OAButton variant="secondary">Annuler</OAButton>
+            <OAButton variant="bill" icon="↓">Crédit</OAButton>
+            <OAButton variant="ghost">Détails</OAButton>
+            <OAButton variant="danger">Supprimer</OAButton>
+            <OAButton variant="outline">Exporter</OAButton>
+          </div>
+          <div className="divider"></div>
+          <div className="section-label">Tailles</div>
+          <div className="row">
+            <OAButton variant="gold" size="sm">Petit</OAButton>
+            <OAButton variant="gold" size="md">Moyen</OAButton>
+            <OAButton variant="gold" size="lg">Grand</OAButton>
+          </div>
+          <div className="divider"></div>
+          <div className="section-label">États</div>
+          <div className="row">
+            <OAButton variant="gold" loading>Traitement…</OAButton>
+            <OAButton variant="gold" disabled>Or — Désactivé</OAButton>
+            <OAButton variant="bill" disabled>Vert — Désactivé</OAButton>
+            <OAButton variant="danger" disabled>Danger — Désactivé</OAButton>
+            <OAButton variant="secondary" icon="↓">Télécharger</OAButton>
+            <OAButton variant="outline" icon="＋">Nouvelle opération</OAButton>
+          </div>
+        </div>
+      </DCArtboard>
+      <DCArtboard id="btn-light" label="Boutons — Clair" width={860} height={680}>
+        <Light>
+          <div className="artboard-wrap">
+            <div className="section-label">Variantes</div>
+            <div className="row">
+              <OAButton variant="gold">Confirmer</OAButton>
+              <OAButton variant="secondary">Annuler</OAButton>
+              <OAButton variant="bill" icon="↓">Crédit</OAButton>
+              <OAButton variant="ghost">Détails</OAButton>
+              <OAButton variant="danger">Supprimer</OAButton>
+              <OAButton variant="outline">Exporter</OAButton>
+            </div>
+            <div className="divider"></div>
+            <div className="section-label">Tailles</div>
+            <div className="row">
+              <OAButton variant="gold" size="sm">Petit</OAButton>
+              <OAButton variant="gold" size="md">Moyen</OAButton>
+              <OAButton variant="gold" size="lg">Grand</OAButton>
+            </div>
+            <div className="divider"></div>
+            <div className="section-label">États</div>
+            <div className="row">
+              <OAButton variant="gold" loading>Traitement…</OAButton>
+              <OAButton variant="gold" disabled>Or — Désactivé</OAButton>
+              <OAButton variant="bill" disabled>Vert — Désactivé</OAButton>
+              <OAButton variant="danger" disabled>Danger — Désactivé</OAButton>
+              <OAButton variant="secondary" icon="↓">Télécharger</OAButton>
+              <OAButton variant="outline" icon="＋">Nouvelle opération</OAButton>
+            </div>
+          </div>
+        </Light>
+      </DCArtboard>
+    </DCSection>
+
+    <DCSection id="s-checks" title="Cases à cocher">
+      <DCArtboard id="cb-dark" label="Checkboxes — Sombre" width={460} height={265}>
+        <div className="artboard-wrap">
+          <div className="section-label">Cases à cocher</div>
+          <div className="col">
+            <OACheckbox label="Inclure les transactions récurrentes" checked={true} />
+            <OACheckbox label="Afficher les soldes négatifs" checked={false} />
+            <OACheckbox label="Notifications par email" indeterminate />
+            <OACheckbox label="Option désactivée" disabled checked />
+            <OACheckbox label={"Masquer les petits montants (\u003c 5 \u20AC)"} />
+          </div>
+        </div>
+      </DCArtboard>
+      <DCArtboard id="cb-light" label="Checkboxes — Clair" width={460} height={265}>
+        <Light>
+          <div className="artboard-wrap">
+            <div className="section-label">Cases à cocher</div>
+            <div className="col">
+              <OACheckbox label="Inclure les transactions récurrentes" checked={true} />
+              <OACheckbox label="Afficher les soldes négatifs" checked={false} />
+              <OACheckbox label="Notifications par email" indeterminate />
+              <OACheckbox label="Option désactivée" disabled checked />
+              <OACheckbox label={"Masquer les petits montants (\u003c 5 \u20AC)"} />
+            </div>
+          </div>
+        </Light>
+      </DCArtboard>
+    </DCSection>
+
+    <DCSection id="s-radio" title="Boutons radio">
+      <DCArtboard id="rb-d1" label="Période — Sombre" width={280} height={275}>
+        <div className="artboard-wrap">
+          <div className="section-label">Période d'analyse</div>
+          <OARadioGroup defaultValue="month" options={[
+        { value: "week", label: "7 derniers jours" },
+        { value: "month", label: "Ce mois-ci" },
+        { value: "quarter", label: "Ce trimestre" },
+        { value: "year", label: "Cette année" },
+        { value: "custom", label: "Personnalisé" }]
+        } />
+        </div>
+      </DCArtboard>
+      <DCArtboard id="rb-l1" label="Période — Clair" width={280} height={275}>
+        <Light>
+          <div className="artboard-wrap">
+            <div className="section-label">Période d'analyse</div>
+            <OARadioGroup defaultValue="month" options={[
+          { value: "week", label: "7 derniers jours" },
+          { value: "month", label: "Ce mois-ci" },
+          { value: "quarter", label: "Ce trimestre" },
+          { value: "year", label: "Cette année" },
+          { value: "custom", label: "Personnalisé" }]
+          } />
+          </div>
+        </Light>
+      </DCArtboard>
+      <DCArtboard id="rb-d2" label="Compte — Sombre" width={320} height={275}>
+        <div className="artboard-wrap">
+          <div className="section-label">Type de compte</div>
+          <OARadioGroup defaultValue="checking" options={[
+        { value: "checking", label: "Compte courant", sublabel: "•••• 4821" },
+        { value: "savings", label: "Livret A", sublabel: "•••• 0032" },
+        { value: "invest", label: "PEA", sublabel: "•••• 9114" },
+        { value: "joint", label: "Compte joint", sublabel: "•••• 3307", disabled: true }]
+        } />
+        </div>
+      </DCArtboard>
+      <DCArtboard id="rb-l2" label="Compte — Clair" width={320} height={275}>
+        <Light>
+          <div className="artboard-wrap">
+            <div className="section-label">Type de compte</div>
+            <OARadioGroup defaultValue="checking" options={[
+          { value: "checking", label: "Compte courant", sublabel: "•••• 4821" },
+          { value: "savings", label: "Livret A", sublabel: "•••• 0032" },
+          { value: "invest", label: "PEA", sublabel: "•••• 9114" },
+          { value: "joint", label: "Compte joint", sublabel: "•••• 3307", disabled: true }]
+          } />
+          </div>
+        </Light>
+      </DCArtboard>
+    </DCSection>
+
+    <DCSection id="s-slider" title="Sliders">
+      <DCArtboard id="sl-dark" label="Sliders — Sombre" width={520} height={290}>
+        <div className="artboard-wrap">
+          <div className="section-label">Contrôles de budget</div>
+          <div className="col" style={{ gap: 26 }}>
+            <OASlider label="Plafond mensuel" min={0} max={5000} defaultValue={1800} step={50} suffix=" €" showTicks />
+            <OASlider label="Épargne automatique" min={0} max={100} defaultValue={15} suffix=" %" />
+            <OASlider label="Alerte de solde bas" min={0} max={2000} defaultValue={300} step={50} suffix=" €" />
+          </div>
+        </div>
+      </DCArtboard>
+      <DCArtboard id="sl-light" label="Sliders — Clair" width={520} height={290}>
+        <Light>
+          <div className="artboard-wrap">
+            <div className="section-label">Contrôles de budget</div>
+            <div className="col" style={{ gap: 26 }}>
+              <OASlider label="Plafond mensuel" min={0} max={5000} defaultValue={1800} step={50} suffix=" €" showTicks />
+              <OASlider label="Épargne automatique" min={0} max={100} defaultValue={15} suffix=" %" />
+              <OASlider label="Alerte de solde bas" min={0} max={2000} defaultValue={300} step={50} suffix=" €" />
+            </div>
+          </div>
+        </Light>
+      </DCArtboard>
+    </DCSection>
+
+    <DCSection id="s-list" title="Liste — Transactions">
+      <DCArtboard id="lv-dark" label="Liste — Sombre" width={860} height={475}>
+        <div className="artboard-wrap" style={{ padding: 24 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+            <div>
+              <div className="section-label" style={{ marginBottom: 4 }}>Transactions récentes</div>
+              <span style={{ fontFamily: "'Syne', sans-serif", fontSize: 18, fontWeight: 800, background: "linear-gradient(90deg, var(--gold-light), var(--text-secondary))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Avril 2026</span>
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <OAButton variant="ghost" size="sm">Filtrer</OAButton>
+              <OAButton variant="secondary" size="sm" icon="↓">Exporter</OAButton>
+              <OAButton variant="gold" size="sm" icon="＋">Nouvelle entrée</OAButton>
+            </div>
+          </div>
+          <OAListView />
+        </div>
+      </DCArtboard>
+      <DCArtboard id="lv-light" label="Liste — Clair" width={860} height={475}>
+        <Light>
+          <div className="artboard-wrap" style={{ padding: 24 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+              <div>
+                <div className="section-label" style={{ marginBottom: 4 }}>Transactions récentes</div>
+                <span style={{ fontFamily: "'Syne', sans-serif", fontSize: 18, fontWeight: 800, color: "var(--text-primary)" }}>Avril 2026</span>
+              </div>
+              <div style={{ display: "flex", gap: 8 }}>
+                <OAButton variant="ghost" size="sm">Filtrer</OAButton>
+                <OAButton variant="secondary" size="sm" icon="↓">Exporter</OAButton>
+                <OAButton variant="gold" size="sm" icon="＋">Nouvelle entrée</OAButton>
+              </div>
+            </div>
+            <OAListView />
+          </div>
+        </Light>
+      </DCArtboard>
+    </DCSection>
+
+  </DesignCanvas>
+  </TweaksCtx.Provider>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold-dark));
+  border: 2px solid var(--bg-1);
+  box-shadow: 0 1px 6px var(--gold-glow), 0 2px 4px rgba(0,0,0,0.5);
+  cursor: pointer; transition: box-shadow 0.15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 4px var(--gold-dim), 0 1px 8px var(--gold-glow);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold-dark));
+  border: 2px solid var(--bg-1); cursor: pointer;
+}
+</style>
+</body>
+</html>
