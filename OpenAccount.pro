@@ -8,6 +8,7 @@ SUBDIRS += \
     View \
     app/OpenAccount \
     Controller/ControllerTests \
+    Controller/ControllerTests/StorageLayerTests.pro \
     Model/ModelTests \
     View/ViewTests
 

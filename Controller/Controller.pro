@@ -9,9 +9,13 @@ DESTDIR = $$OUT_PWD
 
 HEADERS += \
     include/Controller/abstractdatastorage.h \
+    include/Controller/abstractstoragelayer.h \
     include/Controller/controller.h \
-    include/Controller/controller_global.h
+    include/Controller/controller_global.h \
+    include/Controller/inmemorystoragelayer.h \
+    include/Controller/storagecommand.h
 
 SOURCES += \
     src/abstractdatastorage.cpp \
-    src/controller.cpp
+    src/controller.cpp \
+    src/inmemorystoragelayer.cpp

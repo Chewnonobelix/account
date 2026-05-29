@@ -7,9 +7,13 @@ set(CMAKE_AUTORCC ON)
 add_library(Controller
     src/abstractdatastorage.cpp
     src/controller.cpp
+    src/inmemorystoragelayer.cpp
     include/Controller/abstractdatastorage.h
+    include/Controller/abstractstoragelayer.h
     include/Controller/controller.h
     include/Controller/controller_global.h
+    include/Controller/inmemorystoragelayer.h
+    include/Controller/storagecommand.h
 )
 
 target_include_directories(Controller PUBLIC
