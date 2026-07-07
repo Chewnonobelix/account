@@ -1,11 +1,26 @@
 #include "../include/Model/account.h"
 #include <QSignalSpy>
-#include <QtTest/QtTest>
+#include <QtTest>
+
+/*
+ * Unit tests for Account
+ * Tests default values, setters/getters, JSON round-trip and signals.
+ * Account is deliberately non-copyable and non-movable (QObject identity),
+ * so copy/move semantics are not exercised.
+ */
 
 class TestAccount : public QObject {
-  Q_OBJECT
+    Q_OBJECT
+
 private slots:
-  void test_defaultValues() {
+    void testDefaultValues();
+    void testSetGet();
+    void testJsonRoundTrip();
+    void testSignalEmissions();
+    void testChangedBroadcast();
+};
+
+void TestAccount::testDefaultValues() {
     Account a;
     QCOMPARE(a.number(), QString());
     QCOMPARE(a.bank(), QString());
@@ -13,9 +28,9 @@ private slots:
     QCOMPARE(a.description(), QString());
     QCOMPARE(a.opening(), QDate());
     QVERIFY(a.id().isNull());
-  }
+}
 
-  void test_settersGetters() {
+void TestAccount::testSetGet() {
     Account a;
     a.setNumber("FR761234567890");
     a.setBank("ACME Bank");
@@ -31,9 +46,9 @@ private slots:
     QCOMPARE(a.opening(), QDate(2024, 6, 1));
     QCOMPARE(a.id(),
              QUuid::fromString("{3f2504e0-4f89-11d3-9a0c-0305e82c3301}"));
-  }
+}
 
-  void test_jsonRoundTrip() {
+void TestAccount::testJsonRoundTrip() {
     Account a;
     a.setNumber("FR00 0000 0000 0000");
     a.setBank("Bankii");
@@ -51,53 +66,9 @@ private slots:
     QCOMPARE(b.description(), a.description());
     QCOMPARE(b.opening(), a.opening());
     QCOMPARE(b.id(), a.id());
-  }
+}
 
-  void test_copyAndAssign() {
-    Account a;
-    a.setNumber("A");
-    a.setBank("B");
-    a.setInterest(3.14);
-    a.setDescription("C");
-    a.setOpening(QDate(2022, 12, 24));
-    a.setId(QUuid::createUuid());
-
-    Account b = a; // copy-ctor
-    QCOMPARE(b.number(), a.number());
-    QCOMPARE(b.bank(), a.bank());
-    QCOMPARE(b.interest(), a.interest());
-    QCOMPARE(b.description(), a.description());
-    QCOMPARE(b.opening(), a.opening());
-    QCOMPARE(b.id(), a.id());
-
-    Account c; // copy-assign
-    c = a;
-    QCOMPARE(c.number(), a.number());
-    QCOMPARE(c.bank(), a.bank());
-    QCOMPARE(c.interest(), a.interest());
-    QCOMPARE(c.description(), a.description());
-    QCOMPARE(c.opening(), a.opening());
-    QCOMPARE(c.id(), a.id());
-
-    Account d = std::move(a); // move-ctor
-    QCOMPARE(d.number(), b.number());
-    QCOMPARE(d.bank(), b.bank());
-    QCOMPARE(d.interest(), b.interest());
-    QCOMPARE(d.description(), b.description());
-    QCOMPARE(d.opening(), b.opening());
-    QCOMPARE(d.id(), b.id());
-
-    Account e; // move-assign
-    e = std::move(b);
-    QCOMPARE(e.number(), d.number());
-    QCOMPARE(e.bank(), d.bank());
-    QCOMPARE(e.interest(), d.interest());
-    QCOMPARE(e.description(), d.description());
-    QCOMPARE(e.opening(), d.opening());
-    QCOMPARE(e.id(), d.id());
-  }
-
-  void test_signalEmissions_onChange() {
+void TestAccount::testSignalEmissions() {
     Account a;
 
     QSignalSpy spyNumber(&a, SIGNAL(numberChanged()));
@@ -129,9 +100,9 @@ private slots:
     QCOMPARE(spyOpening.count(), 1);
     a.setOpening(QDate(2024, 1, 1));
     QCOMPARE(spyOpening.count(), 1);
-  }
+}
 
-  void test_changedSignal_broadcast() {
+void TestAccount::testChangedBroadcast() {
     Account a;
     QSignalSpy spyChanged(&a, SIGNAL(changed()));
 
@@ -149,8 +120,7 @@ private slots:
     a.setDescription("D1");
     a.setOpening(QDate(2023, 5, 20));
     QCOMPARE(spyChanged.count(), 5);
-  }
-};
+}
 
 QTEST_MAIN(TestAccount)
 #include "tst_account.moc"
