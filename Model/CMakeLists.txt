@@ -28,6 +28,12 @@ add_library(OAModel
     include/Model/frequency.h
     src/frequency.cpp
     src/enums.cpp
+    src/tricountmember.cpp
+    src/tricountexpense.cpp
+    src/tricount.cpp
+    include/Model/tricountmember.h
+    include/Model/tricountexpense.h
+    include/Model/tricount.h
 )
 
 target_include_directories(OAModel PUBLIC
