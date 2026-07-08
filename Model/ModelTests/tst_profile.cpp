@@ -92,7 +92,7 @@ void TestProfile::testSignal_accountsChanged() {
 
 void TestProfile::testSignal_profileChangedCounts() {
   Profile p;
-  QSignalSpy spy(&p, SIGNAL(profileChanged()));
+  QSignalSpy spy(&p, SIGNAL(changed()));
 
   p.setFirstName("A");
   p.setLastName("B");
