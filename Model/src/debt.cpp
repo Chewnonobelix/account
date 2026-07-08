@@ -259,7 +259,10 @@ void Debt::setAccountId(QUuid value) {
 // --- JSON ------------------------------------------------------------------
 
 QJsonObject Debt::toJson() const {
-    QJsonObject json = static_cast<QJsonObject>(*this);
+    // Qualified call to the base serializer: an unqualified toJson() (or a
+    // static_cast<QJsonObject> going through MetaData::operator QJsonObject)
+    // would re-dispatch to this override and recurse infinitely.
+    QJsonObject json = MetaData::toJson();
 
     const QMetaEnum recurrenceMetaEnum =
         QMetaEnum::fromType<OpenAccountEnums::Frequency>();
