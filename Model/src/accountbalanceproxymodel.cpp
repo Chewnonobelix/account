@@ -4,6 +4,9 @@
 
 #include <QAbstractItemModel>
 
+#include "Model/total.h"
+#include "Model/transaction.h"
+
 AccountBalanceProxyModel::AccountBalanceProxyModel(QObject *parent)
     : QAbstractProxyModel(parent) {}
 
