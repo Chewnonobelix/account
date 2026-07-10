@@ -57,12 +57,6 @@ int AccountBalanceProxyModel::roleFor(const QByteArray &name) const {
   return -1;
 }
 
-double AccountBalanceProxyModel::signedValue(OpenAccountEnums::Movement movement,
-                                             double value) {
-  // Mirror Total::evaluate(): Credit => +value, Debit => -value, Both => +value.
-  return movement == OpenAccountEnums::Movement::Debit ? -value : value;
-}
-
 QDate AccountBalanceProxyModel::anchorDate() const {
   return m_referenceDate.isValid() ? m_referenceDate : QDate::currentDate();
 }

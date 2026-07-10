@@ -139,7 +139,6 @@ private:
 
   void connectSourceModel(QAbstractItemModel *sourceModel);
   int roleFor(const QByteArray &name) const;
-  static double signedValue(OpenAccountEnums::Movement movement, double value);
   QDate anchorDate() const;
   QDate windowStart(const QDate &windowEnd) const;
   QDate bucketKey(const QDate &date) const;
