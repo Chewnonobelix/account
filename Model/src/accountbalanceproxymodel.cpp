@@ -102,8 +102,7 @@ void AccountBalanceProxyModel::rebuild() {
     struct Entry {
       int sourceRow;
       QDate date;
-      double signedValue;
-      double balance;
+      TransactionPtr transaction;
     };
 
     QList<Entry> entries;
@@ -119,7 +118,13 @@ void AccountBalanceProxyModel::rebuild() {
           source->data(sourceIndex, movementRole)
               .value<OpenAccountEnums::Movement>();
 
-      entries.append({row, date, signedValue(movement, value), 0.0});
+      // Rebuild a lightweight Transaction so the accumulation can be delegated
+      // to Total (which owns the Credit/Debit/Both sign rule).
+      auto transaction = QSharedPointer<Transaction>::create();
+      transaction->setDate(date);
+      transaction->setValue(value);
+      transaction->setMovement(movement);
+      entries.append({row, date, transaction});
     }
 
     // Sort chronologically; keep source order stable for same-day entries so
