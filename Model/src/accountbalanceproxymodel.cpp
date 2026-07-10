@@ -134,35 +134,37 @@ void AccountBalanceProxyModel::rebuild() {
                        return a.date < b.date;
                      });
 
-    // Accumulate over the whole history first, so a windowed view still starts
-    // from the correct balance.
-    double runningBalance = m_initialBalance;
-    for (Entry &entry : entries) {
-      runningBalance += entry.signedValue;
-      entry.balance = runningBalance;
-    }
-
     // Restrict to the requested window (anchored on referenceDate, or today).
     const QDate lowerBound = windowStart(anchorDate());
 
-    // Bucket by frequency: entries are date-sorted, so a bucket is a contiguous
-    // run of equal keys. Each bucket yields one point holding the end-of-period
-    // balance and the date of its last transaction.
+    // Accumulate into a Total: the balance at a point is the initial balance
+    // plus Total::evaluate() over every transaction up to and including it.
+    // Earlier-than-window transactions are still added to the Total so the
+    // first visible point already carries the full history.
+    //
+    // Entries are date-sorted, so a bucket is a contiguous run of equal keys;
+    // each bucket yields one point holding the end-of-period balance and the
+    // date of its last transaction.
+    Total total;
     m_rows.reserve(entries.size());
     QDate currentKey;
     for (const Entry &entry : entries) {
+      total.addTransaction(entry.transaction);
+
       if (lowerBound.isValid() && entry.date < lowerBound)
         continue;
+
+      const double balance = m_initialBalance + total.evaluate();
 
       const QDate key = bucketKey(entry.date);
       if (m_rows.isEmpty() || key != currentKey) {
         currentKey = key;
-        m_rows.append({entry.sourceRow, entry.date, entry.balance});
+        m_rows.append({entry.sourceRow, entry.date, balance});
       } else {
         Row &last = m_rows.last();
         last.sourceRow = entry.sourceRow;
         last.date = entry.date;
-        last.balance = entry.balance;
+        last.balance = balance;
       }
       m_sourceToProxy.insert(entry.sourceRow, m_rows.size() - 1);
     }
