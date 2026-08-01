@@ -2,40 +2,48 @@
 
 using namespace Controller;
 
-AbstractController::AbstractController(AbstractStorageLayer *storageLayer)
-	: m_storageLayer(storageLayer) {}
+AbstractController::AbstractController(QObject *parent) : QObject(parent) {}
 
-AbstractStorageLayer *AbstractController::storageLayer() const {
-	return m_storageLayer;
+Profile *AbstractController::currentProfile() const {
+	return m_currentProfile;
 }
 
-void AbstractController::setStorageLayer(AbstractStorageLayer *storageLayer) {
-	m_storageLayer = storageLayer;
+Account *AbstractController::currentAccount() const {
+	return m_currentAccount;
 }
 
-StorageResult AbstractController::selectAll() const {
-	return select({});
+void AbstractController::setCurrentProfile(Profile *profile) {
+	if (m_currentProfile == profile)
+		return;
+
+	if (m_currentProfile)
+		disconnect(m_currentProfile, &QObject::destroyed, this, nullptr);
+
+	m_currentProfile = profile;
+
+	if (m_currentProfile)
+		connect(m_currentProfile, &QObject::destroyed, this, [this]() {
+			m_currentProfile = nullptr;
+			emit currentProfileChanged();
+		});
+
+	emit currentProfileChanged();
 }
 
-StorageResult AbstractController::select(const Criteria &where, const QStringList &columns) const {
-	return execute(SelectCommand{tableName(), where, columns});
-}
+void AbstractController::setCurrentAccount(Account *account) {
+	if (m_currentAccount == account)
+		return;
 
-StorageResult AbstractController::insertRecord(const Record &row) const {
-	return execute(InsertCommand{tableName(), row});
-}
+	if (m_currentAccount)
+		disconnect(m_currentAccount, &QObject::destroyed, this, nullptr);
 
-StorageResult AbstractController::updateRecord(const Record &values, const Criteria &where) const {
-	return execute(UpdateCommand{tableName(), values, where});
-}
+	m_currentAccount = account;
 
-StorageResult AbstractController::removeRecord(const Criteria &where) const {
-	return execute(DeleteCommand{tableName(), where});
-}
+	if (m_currentAccount)
+		connect(m_currentAccount, &QObject::destroyed, this, [this]() {
+			m_currentAccount = nullptr;
+			emit currentAccountChanged();
+		});
 
-StorageResult AbstractController::execute(const Command &command) const {
-	if (!m_storageLayer)
-		return StorageResult::fail(QStringLiteral("AbstractController: no storage layer configured"));
-
-	return m_storageLayer->execute(command);
+	emit currentAccountChanged();
 }

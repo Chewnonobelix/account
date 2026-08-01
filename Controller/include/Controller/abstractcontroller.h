@@ -1,41 +1,43 @@
 #pragma once
 
-#include <QString>
+#include <QObject>
+#include <QPointer>
 
-#include "abstractstoragelayer.h"
+#include "Model/account.h"
+#include "Model/profile.h"
 #include "controller_global.h"
 
 namespace Controller {
 
 // Base class for every domain controller (Account, Transaction, Category, ...).
 //
-// Holds a non-owning pointer to the storage layer and exposes generic CRUD
-// helpers built on top of it, scoped to the table the subclass names via
-// tableName(). Concrete controllers just implement tableName() and inherit
-// select/insert/update/remove for free, so swapping the backend (in-memory,
-// SQLite, ...) never requires touching controller code.
-class CONTROLLER_EXPORT AbstractController {
+// Holds the profile and account currently selected in the application, shared
+// by every concrete controller so they all read/write against the same
+// selection instead of each one tracking it independently.
+class CONTROLLER_EXPORT AbstractController : public QObject {
+	Q_OBJECT
+
+	Q_PROPERTY(Profile *currentProfile READ currentProfile WRITE setCurrentProfile NOTIFY currentProfileChanged)
+	Q_PROPERTY(Account *currentAccount READ currentAccount WRITE setCurrentAccount NOTIFY currentAccountChanged)
+
 public:
-	explicit AbstractController(AbstractStorageLayer *storageLayer = nullptr);
-	virtual ~AbstractController() = default;
+	explicit AbstractController(QObject *parent = nullptr);
+	~AbstractController() override = default;
 
-	[[nodiscard]] AbstractStorageLayer *storageLayer() const;
-	void setStorageLayer(AbstractStorageLayer *storageLayer);
+	[[nodiscard]] Profile *currentProfile() const;
+	[[nodiscard]] Account *currentAccount() const;
 
-protected:
-	// Name of the table this controller manages.
-	[[nodiscard]] virtual QString tableName() const = 0;
+public slots:
+	void setCurrentProfile(Profile *profile);
+	void setCurrentAccount(Account *account);
 
-	[[nodiscard]] StorageResult selectAll() const;
-	[[nodiscard]] StorageResult select(const Criteria &where, const QStringList &columns = {}) const;
-	[[nodiscard]] StorageResult insertRecord(const Record &row) const;
-	[[nodiscard]] StorageResult updateRecord(const Record &values, const Criteria &where) const;
-	[[nodiscard]] StorageResult removeRecord(const Criteria &where) const;
-
-	[[nodiscard]] StorageResult execute(const Command &command) const;
+signals:
+	void currentProfileChanged();
+	void currentAccountChanged();
 
 private:
-	AbstractStorageLayer *m_storageLayer;
+	QPointer<Profile> m_currentProfile;
+	QPointer<Account> m_currentAccount;
 };
 
 } // namespace Controller
