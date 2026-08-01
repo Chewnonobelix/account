@@ -4,7 +4,8 @@ QT -= gui
 
 TARGET = Controller
 DEFINES += CONTROLLER_LIBRARY
-INCLUDEPATH += $$PWD/include
+INCLUDEPATH += $$PWD/include \
+    $$PWD/../Model/include
 DESTDIR = $$OUT_PWD
 
 HEADERS += \

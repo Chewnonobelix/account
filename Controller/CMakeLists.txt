@@ -28,4 +28,5 @@ target_compile_definitions(Controller PRIVATE
 
 target_link_libraries(Controller PUBLIC
     Qt6::Core
+    OAModel
 )
