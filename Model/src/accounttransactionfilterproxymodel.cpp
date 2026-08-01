@@ -7,6 +7,14 @@
 AccountTransactionFilterProxyModel::AccountTransactionFilterProxyModel(
     QObject *parent)
     : QSortFilterProxyModel(parent) {
+  qRegisterMetaType<QList<QDate>>("QList<QDate>");
+  qRegisterMetaType<QList<OpenAccountEnums::Support>>(
+      "QList<OpenAccountEnums::Support>");
+  qRegisterMetaType<QList<QUuid>>("QList<QUuid>");
+
+  m_descriptionFilter.setPatternOptions(
+      QRegularExpression::CaseInsensitiveOption);
+
   connect(this, &QAbstractItemModel::rowsInserted, this,
           &AccountTransactionFilterProxyModel::countChanged);
   connect(this, &QAbstractItemModel::rowsRemoved, this,
@@ -36,6 +44,48 @@ void AccountTransactionFilterProxyModel::setAccount(Account *account) {
 
   emit accountChanged();
   invalidateAccountFilter();
+}
+
+void AccountTransactionFilterProxyModel::setDateFilter(
+    const QList<QDate> &dateFilter) {
+  if (m_dateFilter == dateFilter)
+    return;
+
+  m_dateFilter = dateFilter;
+  emit dateFilterChanged();
+  invalidateFilter();
+}
+
+void AccountTransactionFilterProxyModel::setSupportFilter(
+    const QList<OpenAccountEnums::Support> &supportFilter) {
+  if (m_supportFilter == supportFilter)
+    return;
+
+  m_supportFilter = supportFilter;
+  emit supportFilterChanged();
+  invalidateFilter();
+}
+
+void AccountTransactionFilterProxyModel::setCategoryFilter(
+    const QList<QUuid> &categoryFilter) {
+  if (m_categoryFilter == categoryFilter)
+    return;
+
+  m_categoryFilter = categoryFilter;
+  emit categoryFilterChanged();
+  invalidateFilter();
+}
+
+void AccountTransactionFilterProxyModel::setDescriptionFilter(
+    const QString &descriptionFilter) {
+  if (m_descriptionFilterText == descriptionFilter)
+    return;
+
+  m_descriptionFilterText = descriptionFilter;
+  m_descriptionFilter.setPattern(
+      QRegularExpression::escape(descriptionFilter));
+  emit descriptionFilterChanged();
+  invalidateFilter();
 }
 
 QHash<int, QByteArray> AccountTransactionFilterProxyModel::roleNames() const {
