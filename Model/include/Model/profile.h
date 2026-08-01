@@ -67,4 +67,3 @@ private:
     static QList<QUuid> accountsFromJson(const QJsonArray& arr);
 };
 
-Q_DECLARE_METATYPE(QList<QUuid>)
