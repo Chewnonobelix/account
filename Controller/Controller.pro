@@ -8,6 +8,7 @@ INCLUDEPATH += $$PWD/include
 DESTDIR = $$OUT_PWD
 
 HEADERS += \
+    include/Controller/abstractcontroller.h \
     include/Controller/abstractdatastorage.h \
     include/Controller/abstractstoragelayer.h \
     include/Controller/controller.h \
@@ -16,6 +17,7 @@ HEADERS += \
     include/Controller/storagecommand.h
 
 SOURCES += \
+    src/abstractcontroller.cpp \
     src/abstractdatastorage.cpp \
     src/controller.cpp \
     src/inmemorystoragelayer.cpp

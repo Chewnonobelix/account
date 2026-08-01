@@ -5,9 +5,11 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 add_library(Controller
+    src/abstractcontroller.cpp
     src/abstractdatastorage.cpp
     src/controller.cpp
     src/inmemorystoragelayer.cpp
+    include/Controller/abstractcontroller.h
     include/Controller/abstractdatastorage.h
     include/Controller/abstractstoragelayer.h
     include/Controller/controller.h
