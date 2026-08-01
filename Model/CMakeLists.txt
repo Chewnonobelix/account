@@ -21,6 +21,7 @@ add_library(OAModel
     include/Model/category.h
     include/Model/debt.h
     include/Model/enums.h
+    include/Model/metatypes.h
     include/Model/model.h
     include/Model/model_global.h
     include/Model/profile.h

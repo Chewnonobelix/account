@@ -10,6 +10,7 @@
 
 #include "account.h"
 #include "enums.h"
+#include "metatypes.h"
 #include "model_global.h"
 
 class MODEL_EXPORT AccountTransactionFilterProxyModel

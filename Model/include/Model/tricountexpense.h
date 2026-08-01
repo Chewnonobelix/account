@@ -1,6 +1,7 @@
 #pragma once
 
 #include "metadata.h"
+#include "metatypes.h"
 #include "model_global.h"
 #include "transaction.h"
 #include <QJsonObject>
