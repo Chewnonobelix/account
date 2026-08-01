@@ -7,11 +7,6 @@
 AccountTransactionFilterProxyModel::AccountTransactionFilterProxyModel(
     QObject *parent)
     : QSortFilterProxyModel(parent) {
-  qRegisterMetaType<QList<QDate>>("QList<QDate>");
-  qRegisterMetaType<QList<OpenAccountEnums::Support>>(
-      "QList<OpenAccountEnums::Support>");
-  qRegisterMetaType<QList<QUuid>>("QList<QUuid>");
-
   m_descriptionFilter.setPatternOptions(
       QRegularExpression::CaseInsensitiveOption);
 

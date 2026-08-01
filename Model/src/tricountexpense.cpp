@@ -6,7 +6,6 @@
 
 TricountExpense::TricountExpense(QObject* parent)
     : QObject(parent), MetaData(), m_transaction(TransactionPtr::create()) {
-    qRegisterMetaType<QList<QUuid>>("QList<QUuid>");
     qRegisterMetaType<TransactionPtr>("TransactionPtr");
     setMetadata(Key::id, QUuid::createUuid());
     setMetadata(Key::payerId, QUuid{});
@@ -15,7 +14,6 @@ TricountExpense::TricountExpense(QObject* parent)
 
 TricountExpense::TricountExpense(const QJsonObject& json, QObject* parent)
     : QObject(parent), MetaData(), m_transaction(TransactionPtr::create()) {
-    qRegisterMetaType<QList<QUuid>>("QList<QUuid>");
     qRegisterMetaType<TransactionPtr>("TransactionPtr");
     setMetadata(Key::id, QUuid{});
     setMetadata(Key::payerId, QUuid{});

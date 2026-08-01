@@ -1,7 +1,6 @@
 #include "Model/profile.h"
 
 Profile::Profile(QObject* parent) : QObject(parent), MetaData() {
-    qRegisterMetaType<QList<QUuid>>("QList<QUuid>");
     setMetadata(Key::id, QUuid{});
     setMetadata(Key::firstName, QString{});
     setMetadata(Key::lastName, QString{});
@@ -10,7 +9,6 @@ Profile::Profile(QObject* parent) : QObject(parent), MetaData() {
 
 Profile::Profile(const QJsonObject& obj, QObject* parent)
     : QObject(parent), MetaData() {
-    qRegisterMetaType<QList<QUuid>>("QList<QUuid>");
     setMetadata(Key::accounts, QList<QUuid>{});
     Profile::fromJson(obj);
 }
