@@ -18,6 +18,7 @@ add_executable(TestFrequency tst_frequency.cpp)
 add_executable(TestTricountMember tst_tricountmember.cpp)
 add_executable(TestTricountExpense tst_tricountexpense.cpp)
 add_executable(TestTricount tst_tricount.cpp)
+add_executable(TestTransfer tst_transfer.cpp)
 
 
 target_link_libraries(TestProfile PRIVATE
@@ -78,6 +79,10 @@ target_link_libraries(TestTricount PRIVATE
     Qt6::Test
     OAModel
 )
+target_link_libraries(TestTransfer PRIVATE
+    Qt6::Test
+    OAModel
+)
 
 add_test(NAME TestProfile COMMAND TestProfile)
 add_test(NAME TestAccountTransactionFilterProxyModel COMMAND TestAccountTransactionFilterProxyModel)
@@ -93,6 +98,7 @@ add_test(NAME TestFrequency COMMAND TestFrequency)
 add_test(NAME TestTricountMember COMMAND TestTricountMember)
 add_test(NAME TestTricountExpense COMMAND TestTricountExpense)
 add_test(NAME TestTricount COMMAND TestTricount)
+add_test(NAME TestTransfer COMMAND TestTransfer)
 
 add_custom_target(run_model_tests
     COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
@@ -111,5 +117,6 @@ add_custom_target(run_model_tests
         TestTricountMember
         TestTricountExpense
         TestTricount
+        TestTransfer
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
