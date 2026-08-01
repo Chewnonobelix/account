@@ -1,5 +1,6 @@
 #include "../include/Model/account.h"
 #include "../include/Model/accounttransactionfilterproxymodel.h"
+#include "../include/Model/enums.h"
 #include "../include/Model/transaction.h"
 #include "../include/Model/transactionlistmodel.h"
 
@@ -10,12 +11,18 @@ class TestAccountTransactionFilterProxyModel : public QObject {
   Q_OBJECT
 
 private:
-  static TransactionPtr makeTransaction(const QString &description,
-                                        const QUuid &accountId) {
+  static TransactionPtr makeTransaction(
+      const QString &description, const QUuid &accountId,
+      const QDate &date = QDate(),
+      OpenAccountEnums::Support support = OpenAccountEnums::Support::Other,
+      const QUuid &category = QUuid()) {
     TransactionPtr transaction = TransactionPtr::create();
     transaction->setDescription(description);
     transaction->setValue(10.0);
     transaction->setAccountId(accountId);
+    transaction->setDate(date);
+    transaction->setSupport(support);
+    transaction->setCategory(category);
     return transaction;
   }
 
