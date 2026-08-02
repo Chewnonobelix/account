@@ -39,6 +39,8 @@ add_library(OAModel
     include/Model/tricount.h
     src/transfer.cpp
     include/Model/transfer.h
+    src/budget.cpp
+    include/Model/budget.h
 )
 
 target_include_directories(OAModel PUBLIC
