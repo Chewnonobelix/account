@@ -17,7 +17,8 @@ Control {
 
     property color trackColorOff: Style.OBTheme.palette.disabled
     property color trackColorOn: Style.OBTheme.palette.accent
-    property color thumbColor: Style.OBTheme.palette.surface
+    property Gradient thumbGradientEnabled: Style.OBStyle.goldOut
+    property Gradient thumbGradientDisabled: Style.OBStyle.silver
     property color borderColor: Style.OBTheme.palette.outline
     property real borderWidth: Style.OBConstants.borderWidth
 
@@ -61,7 +62,7 @@ Control {
             height: parent.height - 4
             radius: width / 2
             anchors.verticalCenter: parent.verticalCenter
-            color: root.thumbColor
+            gradient: root.enabled ? root.thumbGradientEnabled : root.thumbGradientDisabled
             x: root.checkState === Qt.Unchecked ? 2 :
                root.checkState === Qt.PartiallyChecked ? (parent.width - width) / 2 : parent.width - width - 2
 
