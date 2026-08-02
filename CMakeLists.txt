@@ -4,6 +4,8 @@ project(OpenAccount LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+enable_testing()
+
 set(OPENACCOUNT_QT_COMPONENTS
     Core
     Gui
