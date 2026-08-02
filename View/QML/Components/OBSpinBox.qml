@@ -59,43 +59,41 @@ SpinBox {
     }
 
     property real indicatorWidth: Style.OBConstants.heightMedium
-    property color indicatorColorNormal: Style.OBTheme.palette.surfaceRaised
-    property color indicatorColorPressed: Style.OBTheme.palette.accent
-    property color indicatorTextColor: Style.OBTheme.palette.textPrimary
 
-    up.indicator: Rectangle {
-        x: root.mirrored ? 0 : root.width - width
-        implicitWidth: root.indicatorWidth
-        height: root.height
-        radius: root.borderRadius
-        color: root.up.pressed ? root.indicatorColorPressed : root.indicatorColorNormal
-        border.width: root.borderWidth
-        border.color: root.borderColorNormal
-        opacity: root.value < root.to ? 1 : 0.5
+    leftPadding: down.indicator ? down.indicator.width : 0
+    rightPadding: up.indicator ? up.indicator.width : 0
 
-        Text {
-            text: "+"
-            anchors.centerIn: parent
-            font.pixelSize: root.font.pixelSize * 1.2
-            color: root.indicatorTextColor
-        }
+    contentItem: TextInput {
+        text: root.textFromValue(root.value, root.locale)
+        font: root.font
+        color: root.enabled ? Style.OBTheme.palette.textPrimary : Style.OBTheme.palette.textDisabled
+        selectionColor: Style.OBTheme.palette.selection
+        selectedTextColor: Style.OBTheme.palette.textPrimary
+        horizontalAlignment: Qt.AlignHCenter
+        verticalAlignment: Qt.AlignVCenter
+        readOnly: !root.editable
+        validator: root.validator
+        inputMethodHints: Qt.ImhFormattedNumbersOnly
+        clip: width < implicitWidth
     }
 
-    down.indicator: Rectangle {
+    down.indicator: OBButton {
         x: root.mirrored ? root.width - width : 0
+        y: 0
         implicitWidth: root.indicatorWidth
-        height: root.height
-        radius: root.borderRadius
-        color: root.down.pressed ? root.indicatorColorPressed : root.indicatorColorNormal
-        border.width: root.borderWidth
-        border.color: root.borderColorNormal
-        opacity: root.value > root.from ? 1 : 0.5
+        implicitHeight: root.height
+        text: "-"
+        enabled: root.enabled && root.value > root.from
+        onClicked: root.decrease()
+    }
 
-        Text {
-            text: "-"
-            anchors.centerIn: parent
-            font.pixelSize: root.font.pixelSize * 1.2
-            color: root.indicatorTextColor
-        }
+    up.indicator: OBButton {
+        x: root.mirrored ? 0 : root.width - width
+        y: 0
+        implicitWidth: root.indicatorWidth
+        implicitHeight: root.height
+        text: "+"
+        enabled: root.enabled && root.value < root.to
+        onClicked: root.increase()
     }
 }
