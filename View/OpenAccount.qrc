@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/Component">
+    <qresource prefix="/">
         <file>QML/Components/OBLabel.qml</file>
         <file>QML/Components/OBButton.qml</file>
         <file>QML/Components/OBHeader.qml</file>
@@ -8,9 +8,6 @@
         <file>QML/Components/OBSwitch.qml</file>
         <file>QML/Components/OBCheckBox.qml</file>
         <file>QML/Components/OBComboBox.qml</file>
-    </qresource>
-    <qresource prefix="/Style"/>
-    <qresource prefix="/">
         <file>QML/Style/qmldir</file>
         <file>QML/Style/OBPalette.qml</file>
         <file>QML/Style/OBDayPalette.qml</file>

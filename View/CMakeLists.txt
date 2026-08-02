@@ -11,8 +11,8 @@ add_library(View
 )
 
 target_include_directories(View PRIVATE
-    $$PWD/include
-    $$PWD/../lib/DesignLibrary/DesignPattern
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../lib/DesignLibrary/DesignPattern
 )
 
 target_link_libraries(View PRIVATE
