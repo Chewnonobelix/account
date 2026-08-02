@@ -31,6 +31,7 @@ Control {
         text: "Header"
         font.bold: true
         font.pixelSize: 20
+        horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
     }
 }
