@@ -13,6 +13,7 @@ set(OPENACCOUNT_QT_COMPONENTS
     Qml
     Quick
     QuickControls2
+    QuickTest
     Network
     Sql)
 
