@@ -1,5 +1,14 @@
 <RCC>
-    <qresource prefix="/Component"/>
+    <qresource prefix="/Component">
+        <file>QML/Components/OBLabel.qml</file>
+        <file>QML/Components/OBButton.qml</file>
+        <file>QML/Components/OBHeader.qml</file>
+        <file>QML/Components/OBTextInput.qml</file>
+        <file>QML/Components/OBSpinBox.qml</file>
+        <file>QML/Components/OBSwitch.qml</file>
+        <file>QML/Components/OBCheckBox.qml</file>
+        <file>QML/Components/OBComboBox.qml</file>
+    </qresource>
     <qresource prefix="/Style"/>
     <qresource prefix="/">
         <file>QML/Style/qmldir</file>
