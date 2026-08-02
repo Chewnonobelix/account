@@ -1,6 +1,7 @@
 module OpenAccount.Style
 singleton OBStyle 1.0 OBStyle.qml
 singleton OBTheme 1.0 OBTheme.qml
+singleton OBConstants 1.0 OBConstants.qml
 OBPalette 1.0 OBPalette.qml
 OBDayPalette 1.0 OBDayPalette.qml
 OBNightPalette 1.0 OBNightPalette.qml
