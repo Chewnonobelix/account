@@ -18,4 +18,7 @@ QtObject {
 
     readonly property int verticalSpacing: 12
     readonly property int horizontalSpacing: 12
+
+    readonly property real borderRadius: 6
+    readonly property real borderWidth: 1
 }
