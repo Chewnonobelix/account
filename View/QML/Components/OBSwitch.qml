@@ -17,7 +17,6 @@ Control {
 
     property color trackColorOff: Style.OBTheme.palette.disabled
     property color trackColorOn: Style.OBTheme.palette.accent
-    property color trackColorPartial: Style.OBTheme.palette.accentWarm
     property color thumbColor: Style.OBTheme.palette.surface
     property color borderColor: Style.OBTheme.palette.outline
     property real borderWidth: Style.OBConstants.borderWidth
@@ -35,11 +34,26 @@ Control {
     }
 
     background: Rectangle {
+        id: track
         radius: height / 2
-        color: root.checkState === Qt.Unchecked ? root.trackColorOff :
-               root.checkState === Qt.PartiallyChecked ? root.trackColorPartial : root.trackColorOn
+        color: root.trackColorOff
         border.width: root.borderWidth
         border.color: root.borderColor
+
+        Rectangle {
+            id: fill
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            radius: track.radius
+            color: root.trackColorOn
+            width: root.checkState === Qt.Unchecked ? 0 :
+                   root.checkState === Qt.PartiallyChecked ? parent.width / 2 : parent.width
+
+            Behavior on width {
+                NumberAnimation { duration: 120; easing.type: Easing.OutQuad }
+            }
+        }
 
         Rectangle {
             id: thumb
