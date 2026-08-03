@@ -7,6 +7,7 @@
 #include <QEnableSharedFromThis>
 #include <QJsonObject>
 #include <QObject>
+#include <QQmlEngine>
 #include <QString>
 #include <QUuid>
 
@@ -22,9 +23,11 @@ class MODEL_EXPORT Transaction
       public MetaData,
       public QEnableSharedFromThis<Transaction> {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(QUuid id READ id WRITE setId NOTIFY idChanged)
     Q_PROPERTY(double value READ value WRITE setValue NOTIFY valueChanged)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(QString description READ description WRITE setDescription NOTIFY descriptionChanged)
     Q_PROPERTY(OpenAccountEnums::Support support READ support WRITE setSupport NOTIFY supportChanged)
     Q_PROPERTY(QDate date READ date WRITE setDate NOTIFY dateChanged)
@@ -46,6 +49,7 @@ public:
     // Accessors
     [[nodiscard]] QUuid id() const { return metaData<QUuid>(Key::id); }
     [[nodiscard]] double value() const { return metaData<double>(Key::value); }
+    [[nodiscard]] QString name() const { return metaData<QString>(Key::name); }
     [[nodiscard]] QString description() const { return metaData<QString>(Key::description); }
     [[nodiscard]] OpenAccountEnums::Support support() const {
         return metaData<OpenAccountEnums::Support>(Key::support);
@@ -64,6 +68,7 @@ public:
 public slots:
     void setId(QUuid v);
     void setValue(double v);
+    void setName(QString v);
     void setDescription(QString v);
     void setSupport(OpenAccountEnums::Support v);
     void setDate(QDate v);
@@ -75,6 +80,7 @@ public slots:
 signals:
     void idChanged();
     void valueChanged();
+    void nameChanged();
     void descriptionChanged();
     void supportChanged();
     void dateChanged();
@@ -92,6 +98,7 @@ private:
     struct Key {
         static constexpr auto id = "id";
         static constexpr auto value = "value";
+        static constexpr auto name = "name";
         static constexpr auto description = "description";
         static constexpr auto support = "support";
         static constexpr auto date = "date";

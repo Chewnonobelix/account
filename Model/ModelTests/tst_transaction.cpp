@@ -48,6 +48,16 @@ private slots:
     QCOMPARE(spy.count(), 1);
   }
 
+  void name_changed_signal() {
+    Transaction t;
+    QSignalSpy spy(&t, &Transaction::nameChanged);
+    t.setName("Groceries");
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(t.name(), QString("Groceries"));
+    t.setName("Groceries");
+    QCOMPARE(spy.count(), 1);
+  }
+
   void description_changed_signal() {
     Transaction t;
     QSignalSpy spy(&t, &Transaction::descriptionChanged);
@@ -128,6 +138,7 @@ private slots:
     auto cat = QUuid::createUuid();
     t.setId(id);
     t.setValue(42.0);
+    t.setName("Groceries");
     t.setDescription("Test");
     t.setSupport(OpenAccountEnums::Support::Cash);
     t.setDate(QDate(2025, 8, 18));
@@ -143,6 +154,7 @@ private slots:
     // overrides if present)
     QCOMPARE(r.id(), id);
     QCOMPARE(r.value(), t.value());
+    QCOMPARE(r.name(), t.name());
     QCOMPARE(r.description(), t.description());
     QCOMPARE(r.support(), t.support());
     QCOMPARE(r.date(), t.date());

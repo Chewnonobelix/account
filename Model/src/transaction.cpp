@@ -4,6 +4,7 @@
 Transaction::Transaction(QObject* parent) : QObject(parent), MetaData() {
     setMetadata(Key::id, QUuid::createUuid());
     setMetadata(Key::value, 0.0);
+    setMetadata(Key::name, QString{});
     setMetadata(Key::description, QString{});
     setMetadata(Key::support, OpenAccountEnums::Support{});
     setMetadata(Key::date, QDate::currentDate());
@@ -18,6 +19,7 @@ Transaction::Transaction(const QJsonObject& json, QObject* parent)
     // Seed sane defaults, then override from JSON.
     setMetadata(Key::id, QUuid::createUuid());
     setMetadata(Key::value, 0.0);
+    setMetadata(Key::name, QString{});
     setMetadata(Key::description, QString{});
     setMetadata(Key::support, OpenAccountEnums::Support{});
     setMetadata(Key::date, QDate::currentDate());
@@ -41,6 +43,13 @@ void Transaction::setValue(double v) {
     if (qFuzzyCompare(value(), v)) return;
     setMetadata(Key::value, v);
     emit valueChanged();
+    emit changed();
+}
+
+void Transaction::setName(QString v) {
+    if (name() == v) return;
+    setMetadata(Key::name, v);
+    emit nameChanged();
     emit changed();
 }
 
