@@ -51,4 +51,27 @@ TestCase {
         compare(row.isCredit, false)
         compare(row.highlightGradient, row.negativeGradient)
     }
+
+    function test_defaultIsUnselected() {
+        compare(row.selected, false)
+    }
+
+    function test_selectAndDeselect() {
+        row.select()
+        compare(row.selected, true)
+        row.deselect()
+        compare(row.selected, false)
+    }
+
+    // TransactionRow reacts to a bare TapHandler, and mouseClick() synthetic
+    // events aren't reliably delivered under the offscreen QPA platform
+    // used for headless CI. toggleSelected() is the exact function
+    // TapHandler.onTapped invokes, so calling it directly still exercises
+    // the real tap logic.
+    function test_tapTogglesSelected() {
+        row.toggleSelected()
+        compare(row.selected, true)
+        row.toggleSelected()
+        compare(row.selected, false)
+    }
 }

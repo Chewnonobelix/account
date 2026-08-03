@@ -12,12 +12,14 @@ Item {
     id: root
 
     property Transaction transaction: null
+    property bool selected: false
 
     readonly property bool isCredit: root.transaction !== null &&
                                       root.transaction.movement === OpenAccountEnums.Movement.Credit
 
     property Gradient positiveGradient: Style.OBStyle.positive
     property Gradient negativeGradient: Style.OBStyle.negative
+    property color selectedBorderColor: Style.OBTheme.palette.outlineStrong
 
     readonly property Gradient highlightGradient: root.isCredit ? root.positiveGradient : root.negativeGradient
     readonly property color directionColor: root.isCredit ? Style.OBTheme.palette.success : Style.OBTheme.palette.danger
@@ -25,7 +27,9 @@ Item {
     implicitWidth: contentRow.implicitWidth + 2 * Style.OBConstants.leftMargins
     implicitHeight: Style.OBConstants.heightMedium
 
+    // Direction tint: always visible, independent of selection.
     Rectangle {
+        visible: root.selected
         anchors.fill: parent
         gradient: root.highlightGradient
     }
@@ -43,7 +47,6 @@ Item {
             width: Style.OBConstants.widthLittle / 2
             text: root.isCredit ? "+" : "-"
             font.bold: true
-            color: root.directionColor
             horizontalAlignment: Text.AlignHCenter
             anchors.verticalCenter: parent.verticalCenter
         }
@@ -74,5 +77,22 @@ Item {
             horizontalAlignment: Text.AlignRight
             anchors.verticalCenter: parent.verticalCenter
         }
+    }
+
+    function select() {
+        root.selected = true
+    }
+
+    function deselect() {
+        root.selected = false
+    }
+
+    function toggleSelected() {
+        root.selected = !root.selected
+    }
+
+    TapHandler {
+        gesturePolicy: TapHandler.ReleaseWithinBounds
+        onTapped: root.toggleSelected()
     }
 }
