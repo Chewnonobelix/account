@@ -348,6 +348,41 @@ ApplicationWindow {
                 }
             }
 
+            UiKitSection {
+                title: "TableRow"
+                width: parent.width
+
+                Column {
+                    spacing: Style.OBConstants.verticalSpacing / 2
+
+                    Composed.TableRow {
+                        width: Style.OBConstants.widthBig * 1.5
+                        text: "Groceries — Neutral"
+                        selected: true
+                        rowState: Composed.TableRow.RowState.Neutral
+                    }
+
+                    Composed.TableRow {
+                        width: Style.OBConstants.widthBig * 1.5
+                        text: "Salary — Positive"
+                        selected: true
+                        rowState: Composed.TableRow.RowState.Positive
+                    }
+
+                    Composed.TableRow {
+                        width: Style.OBConstants.widthBig * 1.5
+                        text: "Overdraft fee — Negative"
+                        selected: true
+                        rowState: Composed.TableRow.RowState.Negative
+                    }
+
+                    Composed.TableRow {
+                        width: Style.OBConstants.widthBig * 1.5
+                        text: "Tap me to select"
+                    }
+                }
+            }
+
             Item { width: 1; height: Style.OBConstants.bottomMargins }
         }
     }
