@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
+import OpenAccount.Model
+
 import "../../View/QML/Style" as Style
 import "../../View/QML/Components" as Comp
 import "../../View/QML/ComposedComponent" as Composed
@@ -379,6 +381,35 @@ ApplicationWindow {
                     Composed.TableRow {
                         width: Style.OBConstants.widthBig * 1.5
                         text: "Tap me to select"
+                    }
+                }
+            }
+
+            UiKitSection {
+                title: "TransactionRow"
+                width: parent.width
+
+                Column {
+                    spacing: Style.OBConstants.verticalSpacing / 2
+
+                    Composed.TransactionRow {
+                        transaction: Transaction {
+                            name: "Salary"
+                            description: "Monthly salary"
+                            date: "2026-01-05"
+                            value: 2500
+                            movement: OpenAccountEnums.Movement.Credit
+                        }
+                    }
+
+                    Composed.TransactionRow {
+                        transaction: Transaction {
+                            name: "Rent"
+                            description: "Monthly rent"
+                            date: "2026-01-06"
+                            value: 950
+                            movement: OpenAccountEnums.Movement.Debit
+                        }
                     }
                 }
             }

@@ -20,4 +20,13 @@ target_link_libraries(UiKit PRIVATE
     Qt6::Quick
     Qt6::QuickControls2
     ChewnoDesignPattern
+    $<LINK_LIBRARY:WHOLE_ARCHIVE,OAModel>
 )
+
+# OAModel is a static QML module (import OpenAccount.Model). Its type
+# registration lives in a translation unit nothing else references, so a
+# normal static-archive link would drop it; qt6_import_qml_plugins() can't
+# help here either since UiKit loads .qml files from disk at runtime rather
+# than through qt_add_qml_module/QML_FILES, so qmlimportscanner finds
+# nothing to scan. WHOLE_ARCHIVE forces that object file (and its static
+# QQmlModuleRegistration) to be linked in unconditionally.
