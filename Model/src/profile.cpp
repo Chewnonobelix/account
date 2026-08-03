@@ -46,20 +46,21 @@ void Profile::setAccounts(QList<QUuid> accounts) {
 // --- JSON ------------------------------------------------------------------
 
 QJsonObject Profile::toJson() const {
-    QJsonObject o;
-    o.insert(Key::id,
-             id().isNull() ? QJsonValue()
-                           : QJsonValue(id().toString(QUuid::WithoutBraces)));
-    o.insert(Key::firstName, firstName());
-    o.insert(Key::lastName, lastName());
+    // Qualified call to the base serializer: an unqualified toJson() would
+    // re-dispatch to this override and recurse infinitely. MetaData already
+    // knows how to serialize id/firstName/lastName; accounts is a
+    // QList<QUuid>, which isn't a type MetaData can serialize generically,
+    // so it keeps its dedicated JSON array encoding.
+    QJsonObject o = MetaData::toJson();
     o.insert(Key::accounts, accountsToJson(accounts()));
     return o;
 }
 
 void Profile::fromJson(const QJsonObject& obj) {
-    setId(QUuid::fromString(obj.value(Key::id).toString()));
-    setFirstName(obj.value(Key::firstName).toString());
-    setLastName(obj.value(Key::lastName).toString());
+    // MetaData::fromJson() restores id/firstName/lastName; accounts is
+    // patched afterwards via its setter since MetaData::fromJson() only
+    // restores QString/QStringList/double/bool values from JSON.
+    MetaData::fromJson(obj);
     setAccounts(accountsFromJson(obj.value(Key::accounts).toArray()));
 }
 

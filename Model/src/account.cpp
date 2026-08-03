@@ -61,25 +61,13 @@ void Account::setOpening(QDate v) {
 // --- JSON ------------------------------------------------------------------
 
 QJsonObject Account::toJson() const {
-    QJsonObject o;
-    o.insert(Key::id,
-             id().isNull() ? QJsonValue()
-                           : QJsonValue(id().toString(QUuid::WithoutBraces)));
-    o.insert(Key::number, number());
-    o.insert(Key::bank, bank());
-    o.insert(Key::interest, interest());
-    o.insert(Key::description, description());
-    o.insert(Key::opening,
-             opening().isValid() ? QJsonValue(opening().toString(Qt::ISODate))
-                                 : QJsonValue());
-    return o;
+    // Qualified call to the base serializer: an unqualified toJson() would
+    // re-dispatch to this override and recurse infinitely. MetaData already
+    // knows how to serialize every field here (id/opening included), so
+    // there's nothing left to add.
+    return MetaData::toJson();
 }
 
 void Account::fromJson(const QJsonObject& json) {
-    setId(QUuid::fromString(json.value(Key::id).toString()));
-    setNumber(json.value(Key::number).toString());
-    setBank(json.value(Key::bank).toString());
-    setInterest(json.value(Key::interest).toDouble(0.0));
-    setDescription(json.value(Key::description).toString());
-    setOpening(QDate::fromString(json.value(Key::opening).toString(), Qt::ISODate));
+    MetaData::fromJson(json);
 }

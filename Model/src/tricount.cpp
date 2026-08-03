@@ -274,16 +274,12 @@ void Tricount::removeExpense(QUuid id) {
 // --- JSON ------------------------------------------------------------------
 
 QJsonObject Tricount::toJson() const {
-    QJsonObject o;
-    o.insert(Key::id, id().isNull()
-                          ? QJsonValue()
-                          : QJsonValue(id().toString(QUuid::WithoutBraces)));
-    o.insert(Key::name, name());
-    o.insert(Key::description, description());
-    o.insert(Key::date,
-             date().isValid() ? QJsonValue(date().toString(Qt::ISODate))
-                              : QJsonValue());
-    o.insert(Key::currency, currency());
+    // Qualified call to the base serializer: an unqualified toJson() would
+    // re-dispatch to this override and recurse infinitely. MetaData already
+    // knows how to serialize id/name/description/date/currency; members and
+    // expenses are QLists of nested objects living outside the MetaData map
+    // (see m_members/m_expenses), so they keep their dedicated encoding.
+    QJsonObject o = MetaData::toJson();
 
     QJsonArray members;
     for (const TricountMemberPtr& m : m_members)
@@ -301,11 +297,10 @@ QJsonObject Tricount::toJson() const {
 }
 
 void Tricount::fromJson(const QJsonObject& json) {
-    setId(QUuid::fromString(json.value(Key::id).toString()));
-    setName(json.value(Key::name).toString());
-    setDescription(json.value(Key::description).toString());
-    setDate(QDate::fromString(json.value(Key::date).toString(), Qt::ISODate));
-    setCurrency(json.value(Key::currency).toString());
+    // MetaData::fromJson() restores id/name/description/date/currency;
+    // members/expenses are patched afterwards via their setters since they
+    // live outside the MetaData map.
+    MetaData::fromJson(json);
 
     QList<TricountMemberPtr> members;
     for (const QJsonValue& v : json.value(Key::members).toArray())

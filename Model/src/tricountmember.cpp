@@ -54,25 +54,14 @@ bool TricountMember::isValid() const {
 
 // --- JSON ------------------------------------------------------------------
 
-namespace {
-QJsonValue uuidToJson(const QUuid& u) {
-    return u.isNull() ? QJsonValue()
-                      : QJsonValue(u.toString(QUuid::WithoutBraces));
-}
-} // namespace
-
 QJsonObject TricountMember::toJson() const {
-    QJsonObject o;
-    o.insert(Key::id, uuidToJson(id()));
-    o.insert(Key::name, name());
-    o.insert(Key::profileId, uuidToJson(profileId()));
-    o.insert(Key::accountId, uuidToJson(accountId()));
-    return o;
+    // Qualified call to the base serializer: an unqualified toJson() would
+    // re-dispatch to this override and recurse infinitely. Every field here
+    // (id/name/profileId/accountId) is a plain QUuid/QString MetaData
+    // already knows how to serialize.
+    return MetaData::toJson();
 }
 
 void TricountMember::fromJson(const QJsonObject& json) {
-    setId(QUuid::fromString(json.value(Key::id).toString()));
-    setName(json.value(Key::name).toString());
-    setProfileId(QUuid::fromString(json.value(Key::profileId).toString()));
-    setAccountId(QUuid::fromString(json.value(Key::accountId).toString()));
+    MetaData::fromJson(json);
 }

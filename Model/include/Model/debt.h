@@ -70,6 +70,7 @@ public:
     [[nodiscard]] QList<TransactionPtr> generateRepayments() const;
 
     [[nodiscard]] QJsonObject toJson() const override;
+    void fromJson(const QJsonObject& json) override;
 
 public slots:
     void setId(QUuid value);

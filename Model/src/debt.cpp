@@ -2,7 +2,6 @@
 #include "Model/frequency.h"
 
 #include <QJsonValue>
-#include <QMetaEnum>
 
 Debt::Debt(QObject* parent) : QObject(parent), MetaData() {
     setMetadata(Key::id, QUuid::createUuid());
@@ -20,43 +19,20 @@ Debt::Debt(QObject* parent) : QObject(parent), MetaData() {
 }
 
 Debt::Debt(const QJsonObject& json, QObject* parent)
-    : QObject(parent), MetaData(json) {
-    OpenAccountEnums::Frequency parsedRecurrence = OpenAccountEnums::Frequency::Once;
-    if (json.value(Key::recurrence).isString()) {
-        const QMetaEnum metaEnum =
-            QMetaEnum::fromType<OpenAccountEnums::Frequency>();
-        const QByteArray utf8 = json.value(Key::recurrence).toString().toUtf8();
-        const int enumValue = metaEnum.keyToValue(utf8.constData());
-        if (enumValue >= 0)
-            parsedRecurrence = static_cast<OpenAccountEnums::Frequency>(enumValue);
-    } else if (json.value(Key::recurrence).isDouble()) {
-        parsedRecurrence = static_cast<OpenAccountEnums::Frequency>(
-            json.value(Key::recurrence).toInt());
-    }
-
-    if (parsedRecurrence == OpenAccountEnums::Frequency::Custom ||
-        parsedRecurrence == OpenAccountEnums::Frequency::LAST) {
-        parsedRecurrence = OpenAccountEnums::Frequency::Once;
-    }
-
-    OpenAccountEnums::Movement parsedDirection = OpenAccountEnums::Movement::Debit;
-    if (json.value(Key::direction).isString()) {
-        const QMetaEnum metaEnum =
-            QMetaEnum::fromType<OpenAccountEnums::Movement>();
-        const QByteArray utf8 = json.value(Key::direction).toString().toUtf8();
-        const int enumValue = metaEnum.keyToValue(utf8.constData());
-        if (enumValue >= 0)
-            parsedDirection = static_cast<OpenAccountEnums::Movement>(enumValue);
-    } else if (json.value(Key::direction).isDouble()) {
-        parsedDirection = static_cast<OpenAccountEnums::Movement>(
-            json.value(Key::direction).toInt());
-    }
-
-    if (parsedDirection == OpenAccountEnums::Movement::Both)
-        parsedDirection = OpenAccountEnums::Movement::Debit;
-
-    setMetadata(Key::recurrence, parsedRecurrence);
-    setMetadata(Key::direction, parsedDirection);
+    : QObject(parent), MetaData() {
+    setMetadata(Key::id, QUuid::createUuid());
+    setMetadata(Key::name, QString());
+    setMetadata(Key::counterparty, QString());
+    setMetadata(Key::principal, 0.0);
+    setMetadata(Key::remaining, 0.0);
+    setMetadata(Key::interest, 0.0);
+    setMetadata(Key::startDate, QDate());
+    setMetadata(Key::endDate, QDate());
+    setMetadata(Key::recurrence, OpenAccountEnums::Frequency::Once);
+    setMetadata(Key::direction, OpenAccountEnums::Movement::Debit);
+    setMetadata(Key::description, QString());
+    setMetadata(Key::accountId, QUuid());
+    Debt::fromJson(json);
 }
 
 QList<TransactionPtr> Debt::generateRepayments() const {
@@ -263,21 +239,33 @@ QJsonObject Debt::toJson() const {
     // static_cast<QJsonObject> going through MetaData::operator QJsonObject)
     // would re-dispatch to this override and recurse infinitely.
     QJsonObject json = MetaData::toJson();
-
-    const QMetaEnum recurrenceMetaEnum =
-        QMetaEnum::fromType<OpenAccountEnums::Frequency>();
-    const char* recurrenceKey =
-        recurrenceMetaEnum.valueToKey(static_cast<int>(recurrence()));
-    json.insert(Key::recurrence,
-                recurrenceKey != nullptr ? QString::fromLatin1(recurrenceKey)
-                                         : QStringLiteral("Once"));
-
-    const QMetaEnum metaEnum = QMetaEnum::fromType<OpenAccountEnums::Movement>();
-    const char* directionKey =
-        metaEnum.valueToKey(static_cast<int>(direction()));
-    json.insert(Key::direction,
-                directionKey != nullptr ? QString::fromLatin1(directionKey)
-                                        : QStringLiteral("Debit"));
-
+    json.insert(Key::recurrence, enumToJson(recurrence()));
+    json.insert(Key::direction, enumToJson(direction()));
     return json;
+}
+
+void Debt::fromJson(const QJsonObject& json) {
+    // MetaData::fromJson() restores id/name/counterparty/principal/
+    // remaining/interest/startDate/endDate/description/accountId;
+    // recurrence/direction are patched afterwards, with the same
+    // normalization guards setRecurrence()/setDirection() apply, but via
+    // setMetadata() directly so restoring from JSON stays signal-free like
+    // every other constructor path in this class.
+    MetaData::fromJson(json);
+
+    OpenAccountEnums::Frequency parsedRecurrence =
+        enumFromJson<OpenAccountEnums::Frequency>(
+            json.value(Key::recurrence), OpenAccountEnums::Frequency::Once);
+    if (parsedRecurrence == OpenAccountEnums::Frequency::Custom ||
+        parsedRecurrence == OpenAccountEnums::Frequency::LAST) {
+        parsedRecurrence = OpenAccountEnums::Frequency::Once;
+    }
+    setMetadata(Key::recurrence, parsedRecurrence);
+
+    OpenAccountEnums::Movement parsedDirection =
+        enumFromJson<OpenAccountEnums::Movement>(
+            json.value(Key::direction), OpenAccountEnums::Movement::Debit);
+    if (parsedDirection == OpenAccountEnums::Movement::Both)
+        parsedDirection = OpenAccountEnums::Movement::Debit;
+    setMetadata(Key::direction, parsedDirection);
 }

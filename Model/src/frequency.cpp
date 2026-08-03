@@ -67,29 +67,26 @@ void Frequency::setPrototype(TransactionPtr value) {
 // --- JSON ------------------------------------------------------------------
 
 QJsonObject Frequency::toJson() const {
-    QJsonObject o;
-    o.insert(Key::id, id().toString(QUuid::WithoutBraces));
+    // Qualified call to the base serializer: an unqualified toJson() would
+    // re-dispatch to this override and recurse infinitely. MetaData already
+    // knows how to serialize id/dateFormat/customIntervalDays; frequency is
+    // an enum and prototype a nested Transaction, neither of which MetaData
+    // can serialize generically, so they keep their dedicated handling.
+    QJsonObject o = MetaData::toJson();
     o.insert(Key::frequency, enumToJson(frequency()));
-    o.insert(Key::dateFormat, dateFormat());
-    o.insert(Key::customIntervalDays, customIntervalDays());
     o.insert(Key::prototype,
              prototype() ? prototype()->toJson() : QJsonObject{});
     return o;
 }
 
 void Frequency::fromJson(const QJsonObject& json) {
-    if (json.contains(Key::id)) {
-        const QUuid parsed = QUuid::fromString(json.value(Key::id).toString());
-        if (!parsed.isNull())
-            setId(parsed);
-    }
+    // MetaData::fromJson() restores id/dateFormat/customIntervalDays;
+    // frequency/prototype are patched afterwards via their setters since
+    // neither is representable in the generic MetaData map.
+    MetaData::fromJson(json);
     if (json.contains(Key::frequency))
         setFrequency(enumFromJson<OpenAccountEnums::Frequency>(
             json.value(Key::frequency), OpenAccountEnums::Frequency::Once));
-    if (json.contains(Key::dateFormat))
-        setDateFormat(json.value(Key::dateFormat).toString());
-    if (json.contains(Key::customIntervalDays))
-        setCustomIntervalDays(json.value(Key::customIntervalDays).toInt(1));
     if (json.contains(Key::prototype)) {
         const QJsonValue v = json.value(Key::prototype);
         if (v.isObject() && !v.toObject().isEmpty())

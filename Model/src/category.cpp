@@ -34,18 +34,23 @@ void Category::setName(QString name) {
 }
 
 QJsonObject Category::toJson() const {
-    QJsonObject o;
+    // Qualified call to the base serializer: an unqualified toJson() would
+    // re-dispatch to this override and recurse infinitely. MetaData handles
+    // name generically; id keeps its explicit brace-less format (part of
+    // this class's tested JSON contract) and direction needs enum-specific
+    // handling.
+    QJsonObject o = MetaData::toJson();
     o.insert(Key::id,
              id().isNull() ? QJsonValue()
                            : QJsonValue(id().toString(QUuid::WithoutBraces)));
-    o.insert(Key::name, name());
     o.insert(Key::direction, enumToJson(direction()));
     return o;
 }
 
 void Category::fromJson(const QJsonObject& json) {
-    setId(QUuid::fromString(json.value(Key::id).toString()));
-    setName(json.value(Key::name).toString());
+    // MetaData::fromJson() restores id/name; direction is patched
+    // afterwards via its setter so the normal signal path still applies.
+    MetaData::fromJson(json);
     setDirection(enumFromJson<OpenAccountEnums::Movement>(
         json.value(Key::direction), OpenAccountEnums::Movement::Both));
 }

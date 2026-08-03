@@ -96,49 +96,26 @@ void Transaction::setCategory(QUuid v) {
 // --- JSON ------------------------------------------------------------------
 
 QJsonObject Transaction::toJson() const {
-    QJsonObject o;
-    o.insert(Key::id, id().toString(QUuid::WithoutBraces));
-    o.insert(Key::value, value());
-    o.insert(Key::description, description());
-    o.insert(Key::support, enumToJson(support()));
-    o.insert(Key::date,
-             date().isValid() ? QJsonValue(date().toString(Qt::ISODate))
-                              : QJsonValue());
-    o.insert(Key::movement, enumToJson(movement()));
-    o.insert(Key::isVisible, isVisible());
-    o.insert(Key::accountId,
-             accountId().isNull()
-                 ? QJsonValue()
-                 : QJsonValue(accountId().toString(QUuid::WithoutBraces)));
-    o.insert(Key::category,
-             category().isNull()
-                 ? QJsonValue()
-                 : QJsonValue(category().toString(QUuid::WithoutBraces)));
-    return o;
+    // Qualified call to the base serializer: an unqualified toJson() would
+    // re-dispatch to this override and recurse infinitely. MetaData already
+    // knows how to serialize id/accountId/category (QUuid), name/description
+    // (QString), value (double), date (QDate) and isVisible (bool); only the
+    // enums need custom handling.
+    QJsonObject json = MetaData::toJson();
+    json.insert(Key::support, enumToJson(support()));
+    json.insert(Key::movement, enumToJson(movement()));
+    return json;
 }
 
 void Transaction::fromJson(const QJsonObject& json) {
-    if (json.contains(Key::id))
-        setId(QUuid::fromString(json.value(Key::id).toString()));
-    if (json.contains(Key::value))
-        setValue(json.value(Key::value).toDouble(0.0));
-    if (json.contains(Key::description))
-        setDescription(json.value(Key::description).toString());
-    if (json.contains(Key::support))
-        setSupport(enumFromJson<OpenAccountEnums::Support>(
-            json.value(Key::support), OpenAccountEnums::Support{}));
-    if (json.contains(Key::date))
-        setDate(QDate::fromString(json.value(Key::date).toString(),
-                                  Qt::ISODate));
-    if (json.contains(Key::movement))
-        setMovement(enumFromJson<OpenAccountEnums::Movement>(
-            json.value(Key::movement), OpenAccountEnums::Movement{}));
-    if (json.contains(Key::isVisible))
-        setIsVisible(json.value(Key::isVisible).toBool(true));
-    if (json.contains(Key::accountId))
-        setAccountId(QUuid::fromString(json.value(Key::accountId).toString()));
-    if (json.contains(Key::category))
-        setCategory(QUuid::fromString(json.value(Key::category).toString()));
+    // MetaData::fromJson() restores id/value/name/description/date/
+    // isVisible/accountId/category; support/movement are patched afterwards
+    // via their setters so the normal signal path still applies.
+    MetaData::fromJson(json);
+    setSupport(enumFromJson<OpenAccountEnums::Support>(
+        json.value(Key::support), OpenAccountEnums::Support{}));
+    setMovement(enumFromJson<OpenAccountEnums::Movement>(
+        json.value(Key::movement), OpenAccountEnums::Movement{}));
 }
 
 // --- Operators -------------------------------------------------------------

@@ -114,23 +114,23 @@ QList<QUuid> TricountExpense::uuidsFromJson(const QJsonArray& arr) {
 }
 
 QJsonObject TricountExpense::toJson() const {
-    QJsonObject o;
-    o.insert(Key::id, id().isNull()
-                          ? QJsonValue()
-                          : QJsonValue(id().toString(QUuid::WithoutBraces)));
+    // Qualified call to the base serializer: an unqualified toJson() would
+    // re-dispatch to this override and recurse infinitely. MetaData already
+    // knows how to serialize id/payerId; transaction is a nested Transaction
+    // and excluded a QList<QUuid>, neither of which MetaData can serialize
+    // generically, so they keep their dedicated encoding.
+    QJsonObject o = MetaData::toJson();
     o.insert(Key::transaction,
              m_transaction ? m_transaction->toJson() : QJsonObject{});
-    o.insert(Key::payerId,
-             payerId().isNull()
-                 ? QJsonValue()
-                 : QJsonValue(payerId().toString(QUuid::WithoutBraces)));
     o.insert(Key::excluded, uuidsToJson(excluded()));
     return o;
 }
 
 void TricountExpense::fromJson(const QJsonObject& json) {
-    setId(QUuid::fromString(json.value(Key::id).toString()));
-    setPayerId(QUuid::fromString(json.value(Key::payerId).toString()));
+    // MetaData::fromJson() restores id/payerId; transaction/excluded are
+    // patched afterwards via their setters since neither is representable
+    // in the generic MetaData map.
+    MetaData::fromJson(json);
     setExcluded(uuidsFromJson(json.value(Key::excluded).toArray()));
     setTransaction(
         TransactionPtr::create(json.value(Key::transaction).toObject()));
