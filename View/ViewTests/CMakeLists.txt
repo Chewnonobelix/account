@@ -34,6 +34,7 @@ add_executable(UiKitComponentTests
     qml/tst_OBSpinBox.qml
     qml/tst_OBSwitch.qml
     qml/tst_OBTextInput.qml
+    qml/tst_OBTitle.qml
 )
 
 target_compile_definitions(UiKitComponentTests PRIVATE
