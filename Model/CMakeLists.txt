@@ -45,6 +45,10 @@ add_library(OAModel
 
 target_include_directories(OAModel PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    # The generated QML type registration code (oamodel_qmltyperegistrations.cpp)
+    # includes headers by bare name (<enums.h>, <transaction.h>), so the
+    # directory containing them must be on the include path too.
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Model
 )
 
 target_compile_definitions(OAModel PRIVATE
@@ -53,5 +57,13 @@ target_compile_definitions(OAModel PRIVATE
 
 target_link_libraries(OAModel PUBLIC
     Qt6::Core
+    Qt6::Qml
     ChewnoDesignPattern
+)
+
+# Exposes OpenAccountEnums and Transaction to QML (import OpenAccount.Model)
+# via the QML_NAMED_ELEMENT/QML_ELEMENT macros in enums.h/transaction.h.
+qt_add_qml_module(OAModel
+    URI OpenAccount.Model
+    VERSION 1.0
 )

@@ -2,9 +2,11 @@
 
 #include "model_global.h"
 #include <QObject>
+#include <QQmlEngine>
 
 namespace OpenAccountEnums {
 Q_NAMESPACE_EXPORT(MODEL_EXPORT)
+QML_NAMED_ELEMENT(OpenAccountEnums)
 /**
  * @brief Represents the type of movement (OP-34)
  */
