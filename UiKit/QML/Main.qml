@@ -3,6 +3,7 @@ import QtQuick.Controls
 
 import "../../View/QML/Style" as Style
 import "../../View/QML/Components" as Comp
+import "../../View/QML/ComposedComponent" as Composed
 
 ApplicationWindow {
     id: window
@@ -294,9 +295,60 @@ ApplicationWindow {
             width: window.width - 2 * Style.OBConstants.leftMargins
             spacing: Style.OBConstants.verticalSpacing * 2
 
-            Comp.OBLabel {
-                text: "No complex components yet."
+            UiKitSection {
+                title: "DescLine"
+                width: parent.width
+
+                Column {
+                    spacing: Style.OBConstants.verticalSpacing / 2
+
+                    Composed.DescLine {
+                        title: "Account name"
+                        contentType: Composed.DescLine.ContentType.TextInput
+                        contentConfig: ({ "text": "Checking" })
+                    }
+
+                    Composed.DescLine {
+                        title: "Active"
+                        contentType: Composed.DescLine.ContentType.CheckBox
+                        contentConfig: ({ "checked": true })
+                    }
+
+                    Composed.DescLine {
+                        title: "Balance"
+                        contentType: Composed.DescLine.ContentType.SpinBox
+                        contentConfig: ({ "realTo": 1000, "realValue": 250 })
+                    }
+
+                    Composed.DescLine {
+                        title: "Status"
+                        contentType: Composed.DescLine.ContentType.Label
+                        contentConfig: ({ "text": "Ok", "textState": Comp.OBLabel.TextState.Positive })
+                    }
+
+                    Composed.DescLine {
+                        title: "Type"
+                        contentType: Composed.DescLine.ContentType.ComboBox
+                        contentConfig: ({ "model": ["Checking", "Savings", "Credit card", "Cash"] })
+                    }
+
+                    // Explicit-content mode: any custom Item works as the value slot too.
+                    Composed.DescLine {
+                        title: "Custom content"
+
+                        Row {
+                            spacing: Style.OBConstants.horizontalSpacing / 2
+
+                            Comp.OBButton {
+                                text: "Edit"
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
+                    }
+                }
             }
+
+            Item { width: 1; height: Style.OBConstants.bottomMargins }
         }
     }
 }
