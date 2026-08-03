@@ -15,8 +15,9 @@ Control {
     property int checkState: Qt.Unchecked
     property bool checked: false
 
-    property color trackColorOff: Style.OBTheme.palette.disabled
-    property color trackColorOn: Style.OBTheme.palette.accent
+    property Gradient trackGradientOff: Style.OBStyle.silver
+    property Gradient trackGradientOn: Style.OBStyle.goldIn
+    property real trackOnOpacity: 0.75
     property Gradient thumbGradientEnabled: Style.OBStyle.goldOut
     property Gradient thumbGradientDisabled: Style.OBStyle.silver
     property color borderColor: Style.OBTheme.palette.outline
@@ -37,7 +38,7 @@ Control {
     background: Rectangle {
         id: track
         radius: height / 2
-        color: root.trackColorOff
+        gradient: root.trackGradientOff
         border.width: root.borderWidth
         border.color: root.borderColor
 
@@ -47,7 +48,8 @@ Control {
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             radius: track.radius
-            color: root.trackColorOn
+            gradient: root.trackGradientOn
+            opacity: root.trackOnOpacity
             width: root.checkState === Qt.Unchecked ? 0 :
                    root.checkState === Qt.PartiallyChecked ? parent.width / 2 : parent.width
 
