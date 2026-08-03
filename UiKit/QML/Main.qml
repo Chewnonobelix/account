@@ -7,6 +7,28 @@ import "../../View/QML/Components" as Comp
 ApplicationWindow {
     id: window
 
+    component OBTabButton: TabButton {
+        id: tabButton
+
+        implicitWidth: Style.OBConstants.widthMedium
+        implicitHeight: Style.OBConstants.heightMedium
+
+        background: Rectangle {
+            radius: Style.OBConstants.borderRadius
+            border.width: Style.OBConstants.borderWidth
+            border.color: !tabButton.enabled ? Style.OBTheme.palette.disabled :
+                          (tabButton.checked || tabButton.down) ? Style.OBTheme.palette.outlineStrong : Style.OBTheme.palette.outline
+            gradient: !tabButton.enabled ? Style.OBStyle.silver :
+                      (tabButton.checked || tabButton.down) ? Style.OBStyle.goldIn : Style.OBStyle.goldOut
+        }
+
+        contentItem: Comp.OBLabel {
+            text: tabButton.text
+            horizontalAlignment: Text.AlignHCenter
+            textState: tabButton.enabled ? Comp.OBLabel.TextState.Neutral : Comp.OBLabel.TextState.Disabled
+        }
+    }
+
     width: 560
     height: 820
     visible: true
@@ -49,8 +71,25 @@ ApplicationWindow {
         }
     }
 
-    ScrollView {
+    TabBar {
+        id: tabBar
         anchors.top: headerRow.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: Style.OBConstants.leftMargins
+
+        OBTabButton {
+            text: "Components"
+        }
+        OBTabButton {
+            text: "Complex components"
+        }
+    }
+
+    ScrollView {
+        id: componentsTab
+        visible: tabBar.currentIndex === 0
+        anchors.top: tabBar.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
@@ -106,9 +145,37 @@ ApplicationWindow {
                     id: demoHeader
                     text: headerTextInput.text
                     width: Style.OBConstants.widthBig
+                    orientation: headerOrientationBox.currentIndex === 0 ? Gradient.Vertical : Gradient.Horizontal
+                    reversed: headerReversedToggle.checked
                 }
                 Comp.OBTextInput {
                     id: headerTextInput
+                    text: "Section title"
+                }
+                Comp.OBComboBox {
+                    id: headerOrientationBox
+                    model: ["Vertical", "Horizontal"]
+                }
+                Comp.OBCheckBox {
+                    id: headerReversedToggle
+                    text: "reversed"
+                    checked: false
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            UiKitSection {
+                title: "OBTitle"
+                target: demoTitle
+                width: parent.width
+
+                Comp.OBTitle {
+                    id: demoTitle
+                    text: titleTextInput.text
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                Comp.OBTextInput {
+                    id: titleTextInput
                     text: "Section title"
                 }
             }
@@ -210,6 +277,26 @@ ApplicationWindow {
             }
 
             Item { width: 1; height: Style.OBConstants.bottomMargins }
+        }
+    }
+
+    ScrollView {
+        id: complexComponentsTab
+        visible: tabBar.currentIndex === 1
+        anchors.top: tabBar.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.margins: Style.OBConstants.leftMargins
+        clip: true
+
+        Column {
+            width: window.width - 2 * Style.OBConstants.leftMargins
+            spacing: Style.OBConstants.verticalSpacing * 2
+
+            Comp.OBLabel {
+                text: "No complex components yet."
+            }
         }
     }
 }
