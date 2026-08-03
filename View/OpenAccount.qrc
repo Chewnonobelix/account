@@ -9,6 +9,7 @@
         <file>QML/Components/OBCheckBox.qml</file>
         <file>QML/Components/OBComboBox.qml</file>
         <file>QML/Components/OBTitle.qml</file>
+        <file>QML/ComposedComponent/DescLine.qml</file>
         <file>QML/Style/qmldir</file>
         <file>QML/Style/OBPalette.qml</file>
         <file>QML/Style/OBDayPalette.qml</file>
