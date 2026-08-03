@@ -12,9 +12,9 @@ CheckBox {
     property real borderRadius: Style.OBConstants.borderRadius
     property real borderWidth: Style.OBConstants.borderWidth
     property color borderColor: Style.OBTheme.palette.outline
-    property color backgroundColor: Style.OBTheme.palette.surface
-    property color checkedColor: Style.OBTheme.palette.accent
-    property color partialColor: Style.OBTheme.palette.accentWarm
+    property Gradient backgroundGradient: Style.OBStyle.silver
+    property Gradient checkedGradient: Style.OBStyle.goldOut
+    property Gradient partialGradient: Style.OBStyle.goldIn
 
     indicator: Rectangle {
         implicitWidth: root.indicatorSize
@@ -22,7 +22,7 @@ CheckBox {
         x: root.leftPadding
         y: (root.height - height) / 2
         radius: root.borderRadius
-        color: root.backgroundColor
+        gradient: root.backgroundGradient
         border.width: root.borderWidth
         border.color: root.borderColor
 
@@ -32,7 +32,7 @@ CheckBox {
             height: parent.height - 8
             radius: root.borderRadius / 2
             visible: root.checkState !== Qt.Unchecked
-            color: root.checkState === Qt.PartiallyChecked ? root.partialColor : root.checkedColor
+            gradient: root.checkState === Qt.PartiallyChecked ? root.partialGradient : root.checkedGradient
         }
     }
 
