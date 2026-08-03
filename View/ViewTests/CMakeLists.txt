@@ -37,6 +37,7 @@ add_executable(UiKitComponentTests
     qml/tst_OBTitle.qml
     qml/tst_DescLine.qml
     qml/tst_TableRow.qml
+    qml/tst_TransactionRow.qml
 )
 
 target_compile_definitions(UiKitComponentTests PRIVATE
@@ -45,7 +46,16 @@ target_compile_definitions(UiKitComponentTests PRIVATE
 
 target_link_libraries(UiKitComponentTests PRIVATE
     Qt6::QuickTest
+    $<LINK_LIBRARY:WHOLE_ARCHIVE,OAModel>
 )
+
+# OAModel is a static QML module (import OpenAccount.Model). Its type
+# registration lives in a translation unit nothing else references, so a
+# normal static-archive link would drop it; qt6_import_qml_plugins() can't
+# help here either since this test loads .qml files at runtime via
+# QUICK_TEST_MAIN rather than through qt_add_qml_module/QML_FILES, so
+# qmlimportscanner finds nothing to scan. WHOLE_ARCHIVE forces that object
+# file (and its static QQmlModuleRegistration) to be linked in unconditionally.
 
 add_test(NAME UiKitComponentTests COMMAND UiKitComponentTests)
 set_tests_properties(UiKitComponentTests PROPERTIES
