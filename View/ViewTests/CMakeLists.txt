@@ -36,6 +36,7 @@ add_executable(UiKitComponentTests
     qml/tst_OBTextInput.qml
     qml/tst_OBTitle.qml
     qml/tst_DescLine.qml
+    qml/tst_TableRow.qml
 )
 
 target_compile_definitions(UiKitComponentTests PRIVATE
