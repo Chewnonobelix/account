@@ -17,8 +17,6 @@ Control {
     property alias text: labelID.text
     property alias pixelSize: labelID.font.pixelSize
     property Gradient gradient: Style.OBStyle.header
-    property color borderColor: Style.OBTheme.palette.outline
-    property real borderWidth: Style.OBConstants.borderWidth
 
     // Axis the gradient flows along: Gradient.Vertical (default) or Gradient.Horizontal.
     property int orientation: Gradient.Vertical
@@ -26,8 +24,6 @@ Control {
     property bool reversed: false
 
     background: Rectangle {
-        border.width: root.borderWidth
-        border.color: root.borderColor
         // A 180° rotation mirrors the gradient's start/end without touching its
         // stops: each band is uniform along the perpendicular axis, so rotating
         // the whole rectangle looks identical to reversing the stop order.

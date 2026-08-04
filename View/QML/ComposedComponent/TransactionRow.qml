@@ -5,9 +5,10 @@ import OpenAccount.Model
 import "../Style" as Style
 import "../Components" as Comp
 
-// A single transaction row for a table/list: direction, name, date,
-// description and amount. The row is tinted based on the bound Transaction's
-// movement (Credit -> positive/success wash, Debit -> negative/danger wash).
+// A single selectable transaction row for a table/list: direction, name,
+// date, description and amount. When selected, the row is tinted based on
+// the bound Transaction's movement (Credit -> positive/success wash,
+// Debit -> negative/danger wash).
 Item {
     id: root
 
@@ -19,7 +20,6 @@ Item {
 
     property Gradient positiveGradient: Style.OBStyle.positive
     property Gradient negativeGradient: Style.OBStyle.negative
-    property color selectedBorderColor: Style.OBTheme.palette.outlineStrong
 
     readonly property Gradient highlightGradient: root.isCredit ? root.positiveGradient : root.negativeGradient
     readonly property color directionColor: root.isCredit ? Style.OBTheme.palette.success : Style.OBTheme.palette.danger
@@ -27,7 +27,7 @@ Item {
     implicitWidth: contentRow.implicitWidth + 2 * Style.OBConstants.leftMargins
     implicitHeight: Style.OBConstants.heightMedium
 
-    // Direction tint: always visible, independent of selection.
+    // Direction tint, shown only while the row is selected.
     Rectangle {
         visible: root.selected
         anchors.fill: parent
