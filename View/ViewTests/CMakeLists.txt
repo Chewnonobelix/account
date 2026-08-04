@@ -28,6 +28,7 @@ add_executable(UiKitComponentTests
     tst_uikit_components.cpp
     qml/tst_OBButton.qml
     qml/tst_OBCheckBox.qml
+    qml/tst_OBRadioButton.qml
     qml/tst_OBComboBox.qml
     qml/tst_OBHeader.qml
     qml/tst_OBLabel.qml
