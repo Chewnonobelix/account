@@ -504,6 +504,21 @@ ApplicationWindow {
                 }
             }
 
+            UiKitSection {
+                title: "OBDateButton"
+                target: demoDateButton
+                width: parent.width
+
+                Composed.OBDateButton {
+                    id: demoDateButton
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                Comp.OBLabel {
+                    text: "selected: " + (demoDateButton.hasDate ? Qt.formatDate(demoDateButton.selectedDate, "yyyy-MM-dd") : "none")
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
             Item { width: 1; height: Style.OBConstants.bottomMargins }
         }
     }
