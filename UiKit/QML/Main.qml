@@ -87,6 +87,9 @@ ApplicationWindow {
         OBTabButton {
             text: "Complex components"
         }
+        OBTabButton {
+            text: "Calendar"
+        }
     }
 
     ScrollView {
@@ -430,6 +433,45 @@ ApplicationWindow {
                     realFrom: 1
                     realTo: 20
                     realValue: 5
+                }
+            }
+
+            Item { width: 1; height: Style.OBConstants.bottomMargins }
+        }
+    }
+
+    ScrollView {
+        id: calendarTab
+        visible: tabBar.currentIndex === 2
+        anchors.top: tabBar.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.margins: Style.OBConstants.leftMargins
+        clip: true
+
+        Column {
+            width: window.width - 2 * Style.OBConstants.leftMargins
+            spacing: Style.OBConstants.verticalSpacing * 2
+
+            UiKitSection {
+                title: "OBCalendar"
+                width: parent.width
+
+                Composed.OBCalendar {
+                    id: demoCalendar
+                    anchors.verticalCenter: parent.verticalCenter
+                    // Demo data: alternating daily gain/loss, and a running
+                    // total that trends up in the first half of the month
+                    // and down in the second half.
+                    dailyTotal: function (date) { return date.getDate() % 3 === 0 ? -40 : 60 }
+                    cumulativeTotal: function (date) { return 15 - date.getDate() }
+                }
+                Comp.OBLabel {
+                    text: "selected: " + (demoCalendar.selectedDates.length > 0 ?
+                              demoCalendar.selectedDates.map(function (d) { return Qt.formatDate(d, "yyyy-MM-dd") }).join(", ") :
+                              "none")
+                    anchors.verticalCenter: parent.verticalCenter
                 }
             }
 
