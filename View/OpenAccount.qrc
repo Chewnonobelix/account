@@ -1,25 +1,29 @@
 <RCC>
-    <qresource prefix="/">
-        <file>QML/Components/OBLabel.qml</file>
-        <file>QML/Components/OBButton.qml</file>
-        <file>QML/Components/OBHeader.qml</file>
-        <file>QML/Components/OBTextInput.qml</file>
-        <file>QML/Components/OBSpinBox.qml</file>
-        <file>QML/Components/OBSwitch.qml</file>
-        <file>QML/Components/OBCheckBox.qml</file>
-        <file>QML/Components/OBComboBox.qml</file>
-        <file>QML/Components/OBTitle.qml</file>
-        <file>QML/ComposedComponent/DescLine.qml</file>
-        <file>QML/ComposedComponent/TableRow.qml</file>
-        <file>QML/ComposedComponent/TransactionRow.qml</file>
-        <file>QML/ComposedComponent/Pager.qml</file>
-        <file>QML/ComposedComponent/OBCalendar.qml</file>
-        <file>QML/Style/qmldir</file>
-        <file>QML/Style/OBPalette.qml</file>
-        <file>QML/Style/OBDayPalette.qml</file>
-        <file>QML/Style/OBNightPalette.qml</file>
-        <file>QML/Style/OBTheme.qml</file>
-        <file>QML/Style/OBStyle.qml</file>
-        <file>QML/Style/OBConstants.qml</file>
+    <qresource prefix="/QML/Components">
+        <file alias="OBLabel.qml">QML/Components/OBLabel.qml</file>
+        <file alias="OBButton.qml">QML/Components/OBButton.qml</file>
+        <file alias="OBHeader.qml">QML/Components/OBHeader.qml</file>
+        <file alias="OBTextInput.qml">QML/Components/OBTextInput.qml</file>
+        <file alias="OBSpinBox.qml">QML/Components/OBSpinBox.qml</file>
+        <file alias="OBSwitch.qml">QML/Components/OBSwitch.qml</file>
+        <file alias="OBCheckBox.qml">QML/Components/OBCheckBox.qml</file>
+        <file alias="OBComboBox.qml">QML/Components/OBComboBox.qml</file>
+        <file alias="OBTitle.qml">QML/Components/OBTitle.qml</file>
+    </qresource>
+    <qresource prefix="/QML/ComposedComponent">
+        <file alias="DescLine.qml">QML/ComposedComponent/DescLine.qml</file>
+        <file alias="TableRow.qml">QML/ComposedComponent/TableRow.qml</file>
+        <file alias="TransactionRow.qml">QML/ComposedComponent/TransactionRow.qml</file>
+        <file alias="Pager.qml">QML/ComposedComponent/Pager.qml</file>
+        <file alias="OBCalendar.qml">QML/ComposedComponent/OBCalendar.qml</file>
+    </qresource>
+    <qresource prefix="/QML/Style">
+        <file alias="qmldir">QML/Style/qmldir</file>
+        <file alias="OBPalette.qml">QML/Style/OBPalette.qml</file>
+        <file alias="OBDayPalette.qml">QML/Style/OBDayPalette.qml</file>
+        <file alias="OBNightPalette.qml">QML/Style/OBNightPalette.qml</file>
+        <file alias="OBTheme.qml">QML/Style/OBTheme.qml</file>
+        <file alias="OBStyle.qml">QML/Style/OBStyle.qml</file>
+        <file alias="OBConstants.qml">QML/Style/OBConstants.qml</file>
     </qresource>
 </RCC>
