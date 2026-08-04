@@ -272,6 +272,31 @@ ApplicationWindow {
             }
 
             UiKitSection {
+                title: "OBRadioButton"
+                target: radioA
+                width: parent.width
+
+                ButtonGroup {
+                    id: radioGroup
+                    buttons: [radioA, radioB, radioC]
+                }
+
+                Comp.OBRadioButton {
+                    id: radioA
+                    text: "Option A"
+                    checked: true
+                }
+                Comp.OBRadioButton {
+                    id: radioB
+                    text: "Option B"
+                }
+                Comp.OBRadioButton {
+                    id: radioC
+                    text: "Option C"
+                }
+            }
+
+            UiKitSection {
                 title: "OBComboBox"
                 target: demoCombo
                 width: parent.width
