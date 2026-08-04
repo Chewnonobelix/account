@@ -16,6 +16,12 @@ TestCase {
         text: "Click me"
     }
 
+    Comp.OBButton {
+        id: iconButton
+        text: "With icon"
+        icon.source: "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%2F%3E"
+    }
+
     SignalSpy {
         id: clickSpy
         target: button
@@ -55,5 +61,15 @@ TestCase {
 
     function test_enabledUsesNormalBorderColor() {
         compare(button.background.border.color, button.borderColorNormal)
+    }
+
+    function test_noIconByDefault() {
+        compare(button.iconItem.source.toString().length, 0)
+        compare(button.contentItem.rightPadding, 0)
+    }
+
+    function test_iconSourceShowsIconOnTheRight() {
+        verify(iconButton.iconItem.source.toString().length > 0)
+        verify(iconButton.contentItem.rightPadding > 0)
     }
 }

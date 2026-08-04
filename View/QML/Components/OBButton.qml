@@ -18,6 +18,11 @@ Button {
     property Gradient gradientPressed: Style.OBStyle.goldIn
     property Gradient gradientDisabled: Style.OBStyle.silver
 
+    // icon.source/width/height come from AbstractButton's built-in grouped
+    // "icon" property; we render it ourselves since contentItem is custom.
+    property real iconSpacing: Style.OBConstants.horizontalSpacing / 2
+    readonly property alias iconItem: iconImage
+
     background: Rectangle {
         radius: root.borderRadius
         border.width: root.borderWidth
@@ -31,5 +36,18 @@ Button {
         text: root.text
         horizontalAlignment: Text.AlignHCenter
         textState: root.enabled ? OBLabel.TextState.Neutral : OBLabel.TextState.Disabled
+        rightPadding: root.icon.source.toString().length > 0 ? iconImage.width + root.iconSpacing : 0
+    }
+
+    Image {
+        id: iconImage
+        source: root.icon.source
+        visible: source.toString().length > 0
+        width: root.icon.width > 0 ? root.icon.width : Style.OBConstants.heightLittle
+        height: root.icon.height > 0 ? root.icon.height : Style.OBConstants.heightLittle
+        fillMode: Image.PreserveAspectFit
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.right: parent.right
+        anchors.rightMargin: Style.OBConstants.rightMargins / 2
     }
 }
