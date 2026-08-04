@@ -41,6 +41,7 @@ add_executable(UiKitComponentTests
     qml/tst_TransactionRow.qml
     qml/tst_Pager.qml
     qml/tst_OBCalendar.qml
+    qml/tst_OBDateButton.qml
 )
 
 target_compile_definitions(UiKitComponentTests PRIVATE
