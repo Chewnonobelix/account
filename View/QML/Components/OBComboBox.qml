@@ -33,8 +33,17 @@ ComboBox {
         text: root.displayText
         horizontalAlignment: Text.AlignHCenter
         textState: root.enabled ? OBLabel.TextState.Neutral : OBLabel.TextState.Disabled
-        leftPadding: Style.OBConstants.leftMargins
+        leftPadding: root.indicator.width + Style.OBConstants.leftMargins
         rightPadding: root.indicator.width + Style.OBConstants.rightMargins
+    }
+
+    // Marks the control as openable; the popup itself is closed/opened by
+    // clicking anywhere on the control, this glyph doesn't handle input.
+    indicator: OBLabel {
+        text: ">"
+        x: root.width - width - Style.OBConstants.rightMargins
+        y: (root.height - height) / 2
+        textState: root.enabled ? OBLabel.TextState.Neutral : OBLabel.TextState.Disabled
     }
 
     popup: Popup {
@@ -75,6 +84,17 @@ ComboBox {
             text: delegateItem.text
             horizontalAlignment: Text.AlignHCenter
             textState: delegateItem.enabled ? OBLabel.TextState.Neutral : OBLabel.TextState.Disabled
+            rightPadding: selectionIndicator.width + Style.OBConstants.rightMargins
+        }
+
+        // Non-interactive: selecting an entry is still done by clicking the
+        // delegate itself, this is only a visual marker of root.currentValue.
+        OBRadioButton {
+            id: selectionIndicator
+            x: delegateItem.width - width - Style.OBConstants.rightMargins
+            y: (delegateItem.height - height) / 2
+            enabled: false
+            checked: modelData === root.currentValue
         }
     }
 }
