@@ -1,6 +1,7 @@
 pragma Singleton
 
 import QtQuick
+import QtQuick.Shapes
 
 QtObject {
     id: root
@@ -222,7 +223,16 @@ QtObject {
             color: root.colors.headerEnd
         }
     }
-    property Gradient radioSelected: Gradient {
+    // Radio buttons draw their selected dot via a Shape/ShapePath (see
+    // OBRadioButton) since Rectangle.gradient only supports linear
+    // gradients; this radius matches that dot's size (indicatorSize - 8) / 2.
+    readonly property real radioSelectedRadius: (OBConstants.heightLittle - 8) / 2
+    property RadialGradient radioSelected: RadialGradient {
+        centerX: root.radioSelectedRadius
+        centerY: root.radioSelectedRadius
+        centerRadius: root.radioSelectedRadius
+        focalX: centerX
+        focalY: centerY
         GradientStop {
             position: 0.0
             color: root.colors.radioCenter

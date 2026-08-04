@@ -7,6 +7,7 @@
         <file alias="OBSpinBox.qml">QML/Components/OBSpinBox.qml</file>
         <file alias="OBSwitch.qml">QML/Components/OBSwitch.qml</file>
         <file alias="OBCheckBox.qml">QML/Components/OBCheckBox.qml</file>
+        <file alias="OBRadioButton.qml">QML/Components/OBRadioButton.qml</file>
         <file alias="OBComboBox.qml">QML/Components/OBComboBox.qml</file>
         <file alias="OBTitle.qml">QML/Components/OBTitle.qml</file>
     </qresource>
