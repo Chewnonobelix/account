@@ -414,6 +414,25 @@ ApplicationWindow {
                 }
             }
 
+            UiKitSection {
+                title: "Pager"
+                target: demoPager
+                width: parent.width
+
+                Composed.Pager {
+                    id: demoPager
+                    maxPage: pagerMaxSpin.realValue
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                Comp.OBSpinBox {
+                    id: pagerMaxSpin
+                    decimals: 0
+                    realFrom: 1
+                    realTo: 20
+                    realValue: 5
+                }
+            }
+
             Item { width: 1; height: Style.OBConstants.bottomMargins }
         }
     }
