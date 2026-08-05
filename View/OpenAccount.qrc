@@ -18,6 +18,7 @@
         <file alias="Pager.qml">QML/ComposedComponent/Pager.qml</file>
         <file alias="OBCalendar.qml">QML/ComposedComponent/OBCalendar.qml</file>
         <file alias="OBDateButton.qml">QML/ComposedComponent/OBDateButton.qml</file>
+        <file alias="OBTransactionInfo.qml">QML/ComposedComponent/OBTransactionInfo.qml</file>
     </qresource>
     <qresource prefix="/QML/Style">
         <file alias="qmldir">QML/Style/qmldir</file>
