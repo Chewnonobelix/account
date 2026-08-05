@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Layouts
 
 import "../Style" as Style
 import "../Components" as Comp
@@ -11,7 +12,12 @@ import "../Components" as Comp
 // overriding a few of its properties through contentConfig:
 //   DescLine { title: "Balance"; contentType: DescLine.ContentType.SpinBox
 //              contentConfig: { "realTo": 1000, "realValue": 250 } }
-Item {
+//
+// Built on RowLayout rather than manual anchoring: the title and value
+// cells size and position themselves from their own preferred/implicit
+// widths, so a long title can never overlap the value next to it, and the
+// row's own implicitWidth/implicitHeight fall out of that automatically.
+RowLayout {
     id: root
 
     enum ContentType {
@@ -29,39 +35,40 @@ Item {
     property var contentConfig: ({})
     default property alias content: contentItem.data
 
+    // Floor for the title column; it still grows past this when the title
+    // text itself is wider, so a long title is never clipped. Callers that
+    // want several DescLines to line up (e.g. a form) can measure
+    // titleNaturalWidth across their rows and feed the max back in here.
+    property real titleWidth: Style.OBConstants.widthMedium
+    readonly property alias titleNaturalWidth: titleLabel.implicitWidth
+
     readonly property Item value: root.contentType !== DescLine.ContentType.None ? contentLoader.item :
                                    (contentItem.children.length > 0 ? contentItem.children[0] : null)
 
-    implicitWidth: titleLabel.width + Style.OBConstants.horizontalSpacing +
-                   Math.max(contentItem.childrenRect.width, contentLoader.width)
-    implicitHeight: Math.max(titleLabel.implicitHeight, contentItem.childrenRect.height, contentLoader.height)
+    spacing: Style.OBConstants.horizontalSpacing
 
     Comp.OBTitle {
         id: titleLabel
         text: root.title
-        width: Style.OBConstants.widthMedium
-        anchors.left: parent.left
-        anchors.verticalCenter: parent.verticalCenter
+        Layout.preferredWidth: Math.max(root.titleWidth, implicitWidth)
+        Layout.alignment: Qt.AlignVCenter
     }
 
     // Explicit-content mode: holds whatever the caller declares as a child.
     Item {
         id: contentItem
-        anchors.left: titleLabel.right
-        anchors.leftMargin: Style.OBConstants.horizontalSpacing
-        anchors.verticalCenter: parent.verticalCenter
-        width: childrenRect.width
-        height: childrenRect.height
+        Layout.alignment: Qt.AlignVCenter
+        implicitWidth: childrenRect.width
+        implicitHeight: childrenRect.height
         visible: root.contentType === DescLine.ContentType.None
     }
 
     // Preset mode: instantiates a default-configured OB component for contentType.
     Loader {
         id: contentLoader
-        anchors.left: titleLabel.right
-        anchors.leftMargin: Style.OBConstants.horizontalSpacing
-        anchors.verticalCenter: parent.verticalCenter
+        Layout.alignment: Qt.AlignVCenter
         active: root.contentType !== DescLine.ContentType.None
+        visible: root.contentType !== DescLine.ContentType.None
         sourceComponent: {
             switch (root.contentType) {
             case DescLine.ContentType.CheckBox: return checkBoxPreset
