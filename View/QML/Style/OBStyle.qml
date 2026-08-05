@@ -235,12 +235,13 @@ QtObject {
         focalY: centerY
         GradientStop {
             position: 0.0
-            color: root.colors.radioCenter
+            color: root.colors.textPrimary
         }
         GradientStop {
             position: 1.0
-            color: root.colors.textPrimary
+            color: root.colors.radioCenter
         }
+
     }
 
     property Gradient black: Gradient {
