@@ -20,5 +20,9 @@ Item {
         text: root.text.toUpperCase()
         font.bold: true
         font.pixelSize: 18
+        // Callers (e.g. DescLine) pin this to a fixed column width; without
+        // eliding, text longer than that width paints past it and
+        // overlaps whatever sits to the right.
+        elide: Text.ElideRight
     }
 }

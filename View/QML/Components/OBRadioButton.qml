@@ -53,6 +53,7 @@ RadioButton {
         font: root.font
         color: root.enabled ? Style.OBTheme.palette.textPrimary : Style.OBTheme.palette.textDisabled
         verticalAlignment: Text.AlignVCenter
+        elide: Text.ElideRight
         leftPadding: root.indicator.width + root.spacing
     }
 }
