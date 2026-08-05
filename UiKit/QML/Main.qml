@@ -447,6 +447,34 @@ ApplicationWindow {
             }
 
             UiKitSection {
+                title: "OBTransactionInfo"
+                width: parent.width
+
+                Row {
+                    spacing: Style.OBConstants.horizontalSpacing
+
+                    Composed.OBTransactionInfo {
+                        readOnly: !transactionInfoEditToggle.checked
+                        transaction: Transaction {
+                            name: "Salary"
+                            description: "Monthly salary"
+                            date: "2026-01-05"
+                            value: 2500
+                            movement: OpenAccountEnums.Movement.Credit
+                            support: OpenAccountEnums.Support.Transfer
+                        }
+                    }
+
+                    Comp.OBCheckBox {
+                        id: transactionInfoEditToggle
+                        text: "editable"
+                        checked: false
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+            }
+
+            UiKitSection {
                 title: "Pager"
                 target: demoPager
                 width: parent.width
