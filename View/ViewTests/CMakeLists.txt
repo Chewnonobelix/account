@@ -39,6 +39,7 @@ add_executable(UiKitComponentTests
     qml/tst_DescLine.qml
     qml/tst_TableRow.qml
     qml/tst_TransactionRow.qml
+    qml/tst_OBTransactionInfo.qml
     qml/tst_Pager.qml
     qml/tst_OBCalendar.qml
     qml/tst_OBDateButton.qml
