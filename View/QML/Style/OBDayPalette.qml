@@ -14,6 +14,7 @@ OBPalette {
     accentWarm: "#EFC94D"
     accentStrong: "#FFD700"
     accentHighlight: "#FCEA74"
+    accentContrast: "#000000"
 
     headerStart: "#7A5C05"
     headerMid: "#D4AF37"

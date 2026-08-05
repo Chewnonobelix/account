@@ -33,6 +33,7 @@ ComboBox {
         text: root.displayText
         horizontalAlignment: Text.AlignHCenter
         textState: root.enabled ? OBLabel.TextState.Neutral : OBLabel.TextState.Disabled
+        colorNeutral: Style.OBTheme.palette.accentContrast
         leftPadding: root.indicator.width + Style.OBConstants.leftMargins
         rightPadding: root.indicator.width + Style.OBConstants.rightMargins
     }
@@ -84,6 +85,7 @@ ComboBox {
             text: delegateItem.text
             horizontalAlignment: Text.AlignHCenter
             textState: delegateItem.enabled ? OBLabel.TextState.Neutral : OBLabel.TextState.Disabled
+            colorNeutral: Style.OBTheme.palette.accentContrast
             rightPadding: selectionIndicator.width + Style.OBConstants.rightMargins
         }
 

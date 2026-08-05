@@ -36,6 +36,7 @@ Button {
         text: root.text
         horizontalAlignment: Text.AlignHCenter
         textState: root.enabled ? OBLabel.TextState.Neutral : OBLabel.TextState.Disabled
+        colorNeutral: Style.OBTheme.palette.accentContrast
         rightPadding: root.icon.source.toString().length > 0 ? iconImage.width + root.iconSpacing : 0
     }
 

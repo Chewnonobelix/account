@@ -360,6 +360,7 @@ Item {
                         Comp.OBLabel {
                             anchors.centerIn: parent
                             text: dayCell.model.day
+                            colorNeutral: dayCell.selected ? Style.OBTheme.palette.accentContrast : Style.OBTheme.palette.textPrimary
                         }
 
                         // Day-only total.
@@ -417,6 +418,7 @@ Item {
                     Comp.OBLabel {
                         anchors.centerIn: parent
                         text: Qt.locale().monthName(monthCell.index, Locale.ShortFormat)
+                        colorNeutral: monthCell.isDisplayed ? Style.OBTheme.palette.accentContrast : Style.OBTheme.palette.textPrimary
                     }
 
                     MouseArea {
@@ -453,6 +455,7 @@ Item {
                     Comp.OBLabel {
                         anchors.centerIn: parent
                         text: String(yearCell.year)
+                        colorNeutral: yearCell.isDisplayed ? Style.OBTheme.palette.accentContrast : Style.OBTheme.palette.textPrimary
                     }
 
                     MouseArea {

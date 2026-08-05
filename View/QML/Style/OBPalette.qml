@@ -14,6 +14,10 @@ QtObject {
     property color accentWarm
     property color accentStrong
     property color accentHighlight
+    // Text/foreground drawn on top of the gold gradients (goldOut/goldIn)
+    // or the selection highlight, both of which run light-toned through
+    // most of their span in every theme; keep this dark regardless of mode.
+    property color accentContrast
 
     property color headerStart
     property color headerMid
