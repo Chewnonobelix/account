@@ -42,9 +42,17 @@ add_library(OAModel
     # views/OBComboBox models.
     include/Model/Models/accountbalanceproxymodel.h
     include/Model/Models/accounttransactionfilterproxymodel.h
+    include/Model/Models/enumlistmodel.h
+    include/Model/Models/frequencymodel.h
+    include/Model/Models/movementmodel.h
+    include/Model/Models/supportmodel.h
     include/Model/Models/transactionlistmodel.h
     src/Models/accountbalanceproxymodel.cpp
     src/Models/accounttransactionfilterproxymodel.cpp
+    src/Models/enumlistmodel.cpp
+    src/Models/frequencymodel.cpp
+    src/Models/movementmodel.cpp
+    src/Models/supportmodel.cpp
     src/Models/transactionlistmodel.cpp
 )
 
@@ -70,9 +78,9 @@ target_link_libraries(OAModel PUBLIC
     ChewnoDesignPattern
 )
 
-# Exposes OpenAccountEnums and Transaction to QML (import OpenAccount.Model)
-# via the QML_NAMED_ELEMENT/QML_ELEMENT macros in
-# enums.h/Business/transaction.h.
+# Exposes OpenAccountEnums, Transaction and the enum list models to QML
+# (import OpenAccount.Model) via the QML_NAMED_ELEMENT/QML_ELEMENT macros in
+# enums.h/Business/transaction.h/Models/{movement,support,frequency}model.h.
 qt_add_qml_module(OAModel
     URI OpenAccount.Model
     VERSION 1.0
