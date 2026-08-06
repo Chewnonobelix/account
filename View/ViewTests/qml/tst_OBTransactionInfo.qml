@@ -37,6 +37,17 @@ TestCase {
         transaction: creditTx
     }
 
+    // OBTransactionInfo's movement/support fields are backed by these same
+    // model types (MovementModel/SupportModel); it doesn't expose its own
+    // internal instances, so the name<->value round trip is verified here
+    // directly against the models it delegates to.
+    MovementModel {
+        id: movementModel
+    }
+    SupportModel {
+        id: supportModel
+    }
+
     function test_noTransactionIsNotCredit() {
         info.transaction = null
         compare(info.isCredit, false)
@@ -64,15 +75,13 @@ TestCase {
         info.readOnly = true
     }
 
-    function test_movementNamesAndValuesLineUp() {
-        compare(info.movementNames.length, info.movementValues.length)
-        compare(info.movementValues[info.movementNames.indexOf("Credit")], OpenAccountEnums.Movement.Credit)
-        compare(info.movementValues[info.movementNames.indexOf("Debit")], OpenAccountEnums.Movement.Debit)
+    function test_movementModelNamesAndValuesLineUp() {
+        compare(movementModel.textAt(movementModel.indexOfValue(OpenAccountEnums.Movement.Credit)), "Credit")
+        compare(movementModel.textAt(movementModel.indexOfValue(OpenAccountEnums.Movement.Debit)), "Debit")
     }
 
-    function test_supportNamesAndValuesLineUp() {
-        compare(info.supportNames.length, info.supportValues.length)
-        compare(info.supportValues[info.supportNames.indexOf("Transfer")], OpenAccountEnums.Support.Transfer)
-        compare(info.supportValues[info.supportNames.indexOf("Card")], OpenAccountEnums.Support.Card)
+    function test_supportModelNamesAndValuesLineUp() {
+        compare(supportModel.textAt(supportModel.indexOfValue(OpenAccountEnums.Support.Transfer)), "Transfer")
+        compare(supportModel.textAt(supportModel.indexOfValue(OpenAccountEnums.Support.Card)), "Card")
     }
 }

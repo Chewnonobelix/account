@@ -35,6 +35,19 @@ private slots:
     QVERIFY(model.indexOfValue(OpenAccountEnums::Movement::Debit) >= 0);
   }
 
+  void movement_textAt_matchesDisplayRoleData() {
+    MovementModel model;
+    const int row = model.indexOfValue(OpenAccountEnums::Movement::Credit);
+    QCOMPARE(model.textAt(row), QStringLiteral("Credit"));
+    QCOMPARE(model.textAt(row), model.data(model.index(row), Qt::DisplayRole).toString());
+  }
+
+  void textAt_outOfRangeReturnsEmpty() {
+    MovementModel model;
+    QVERIFY(model.textAt(-1).isEmpty());
+    QVERIFY(model.textAt(model.rowCount()).isEmpty());
+  }
+
   // --- SupportModel ----------------------------------------------------------
 
   void support_rowCountMatchesEnumEntries() {

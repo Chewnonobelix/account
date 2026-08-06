@@ -22,6 +22,11 @@ QHash<int, QByteArray> EnumListModel::roleNames() const {
     return {{Qt::DisplayRole, "text"}};
 }
 
+QString EnumListModel::textAt(int row) const {
+    if (row < 0 || row >= m_entries.size()) return {};
+    return m_entries.at(row).text;
+}
+
 void EnumListModel::setEntries(QVector<Entry> entries) {
     beginResetModel();
     m_entries = std::move(entries);

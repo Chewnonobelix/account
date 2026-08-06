@@ -20,13 +20,6 @@ Item {
     readonly property bool isCredit: root.transaction !== null &&
                                       root.transaction.movement === OpenAccountEnums.Movement.Credit
 
-    readonly property var movementNames: ["Credit", "Debit"]
-    readonly property var movementValues: [OpenAccountEnums.Movement.Credit, OpenAccountEnums.Movement.Debit]
-    readonly property var supportNames: ["Cash", "Cheque", "Card", "Transfer", "Other"]
-    readonly property var supportValues: [OpenAccountEnums.Support.Cash, OpenAccountEnums.Support.Cheque,
-                                           OpenAccountEnums.Support.Card, OpenAccountEnums.Support.Transfer,
-                                           OpenAccountEnums.Support.Other]
-
     // Thicker than the usual control border so the gold ring reads clearly
     // against the inner surface.
     readonly property real borderThickness: Style.OBConstants.borderWidth * 3
@@ -69,6 +62,16 @@ Item {
             PropertyChanges { target: descriptionLoader; sourceComponent: descriptionInput }
         }
     ]
+
+    // Shared, stateless combo models for the movement/support fields — one
+    // instance each, bound as both the read-only lookup (textAt/indexOfValue)
+    // and the editable OBComboBox's model.
+    MovementModel {
+        id: movementModel
+    }
+    SupportModel {
+        id: supportModel
+    }
 
     // Golden frame: an outer rectangle painted with the gold gradient, left
     // showing only as a ring since the inner rectangle covers everything
@@ -214,30 +217,30 @@ Item {
     Component {
         id: movementLabel
         Comp.OBLabel {
-            text: root.transaction ? root.movementNames[root.movementValues.indexOf(root.transaction.movement)] : ""
+            text: root.transaction ? movementModel.textAt(movementModel.indexOfValue(root.transaction.movement)) : ""
         }
     }
     Component {
         id: movementInput
         Comp.OBComboBox {
-            model: root.movementNames
-            currentIndex: root.transaction ? root.movementValues.indexOf(root.transaction.movement) : -1
-            onActivated: function (index) { if (root.transaction) root.transaction.movement = root.movementValues[index] }
+            model: movementModel
+            currentIndex: root.transaction ? movementModel.indexOfValue(root.transaction.movement) : -1
+            onActivated: function (index) { if (root.transaction) root.transaction.movement = movementModel.valueAt(index) }
         }
     }
 
     Component {
         id: supportLabel
         Comp.OBLabel {
-            text: root.transaction ? root.supportNames[root.supportValues.indexOf(root.transaction.support)] : ""
+            text: root.transaction ? supportModel.textAt(supportModel.indexOfValue(root.transaction.support)) : ""
         }
     }
     Component {
         id: supportInput
         Comp.OBComboBox {
-            model: root.supportNames
-            currentIndex: root.transaction ? root.supportValues.indexOf(root.transaction.support) : -1
-            onActivated: function (index) { if (root.transaction) root.transaction.support = root.supportValues[index] }
+            model: supportModel
+            currentIndex: root.transaction ? supportModel.indexOfValue(root.transaction.support) : -1
+            onActivated: function (index) { if (root.transaction) root.transaction.support = supportModel.valueAt(index) }
         }
     }
 

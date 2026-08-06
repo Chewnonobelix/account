@@ -24,6 +24,11 @@ public:
     [[nodiscard]] QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
+    // Display text for a row, e.g. to render a read-only label for the
+    // enumerator currently held by a bound model (indexOfValue(value) then
+    // textAt(row)) without needing QAbstractItemModel::data() from QML.
+    [[nodiscard]] Q_INVOKABLE QString textAt(int row) const;
+
 protected:
     struct Entry {
         QString text;
