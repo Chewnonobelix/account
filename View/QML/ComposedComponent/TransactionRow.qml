@@ -21,11 +21,24 @@ Item {
     property Gradient positiveGradient: Style.OBStyle.positive
     property Gradient negativeGradient: Style.OBStyle.negative
 
-    readonly property Gradient highlightGradient: root.isCredit ? root.positiveGradient : root.negativeGradient
-    readonly property color directionColor: root.isCredit ? Style.OBTheme.palette.success : Style.OBTheme.palette.danger
+    property Gradient highlightGradient: root.negativeGradient
+    property color directionColor: Style.OBTheme.palette.danger
 
     implicitWidth: contentRow.implicitWidth + 2 * Style.OBConstants.leftMargins
     implicitHeight: Style.OBConstants.heightMedium
+
+    state: root.isCredit ? "credit" : "debit"
+
+    states: [
+        State {
+            name: "credit"
+            PropertyChanges { target: root; highlightGradient: root.positiveGradient; directionColor: Style.OBTheme.palette.success }
+        },
+        State {
+            name: "debit"
+            PropertyChanges { target: root; highlightGradient: root.negativeGradient; directionColor: Style.OBTheme.palette.danger }
+        }
+    ]
 
     // Direction tint, shown only while the row is selected.
     Rectangle {

@@ -23,12 +23,28 @@ Item {
     property Gradient positiveGradient: Style.OBStyle.positive
     property Gradient negativeGradient: Style.OBStyle.negative
 
-    readonly property Gradient highlightGradient: root.rowState === TableRow.RowState.Positive ? root.positiveGradient :
-                                                   root.rowState === TableRow.RowState.Negative ? root.negativeGradient :
-                                                   root.selectedGradient
+    property Gradient highlightGradient: root.selectedGradient
 
     implicitWidth: Style.OBConstants.widthBig
     implicitHeight: Style.OBConstants.heightMedium
+
+    state: rowState === TableRow.RowState.Positive ? "positive" :
+           rowState === TableRow.RowState.Negative ? "negative" : "neutral"
+
+    states: [
+        State {
+            name: "neutral"
+            PropertyChanges { target: root; highlightGradient: root.selectedGradient }
+        },
+        State {
+            name: "positive"
+            PropertyChanges { target: root; highlightGradient: root.positiveGradient }
+        },
+        State {
+            name: "negative"
+            PropertyChanges { target: root; highlightGradient: root.negativeGradient }
+        }
+    ]
 
     Rectangle {
         anchors.fill: parent

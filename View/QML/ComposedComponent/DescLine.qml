@@ -47,6 +47,50 @@ RowLayout {
 
     spacing: Style.OBConstants.horizontalSpacing
 
+    state: {
+        switch (root.contentType) {
+        case DescLine.ContentType.CheckBox: return "checkBox"
+        case DescLine.ContentType.Label: return "label"
+        case DescLine.ContentType.SpinBox: return "spinBox"
+        case DescLine.ContentType.TextInput: return "textInput"
+        case DescLine.ContentType.ComboBox: return "comboBox"
+        default: return "custom"
+        }
+    }
+
+    states: [
+        State {
+            name: "custom"
+            PropertyChanges { target: contentItem; visible: true }
+            PropertyChanges { target: contentLoader; active: false; visible: false; sourceComponent: null }
+        },
+        State {
+            name: "checkBox"
+            PropertyChanges { target: contentItem; visible: false }
+            PropertyChanges { target: contentLoader; active: true; visible: true; sourceComponent: checkBoxPreset }
+        },
+        State {
+            name: "label"
+            PropertyChanges { target: contentItem; visible: false }
+            PropertyChanges { target: contentLoader; active: true; visible: true; sourceComponent: labelPreset }
+        },
+        State {
+            name: "spinBox"
+            PropertyChanges { target: contentItem; visible: false }
+            PropertyChanges { target: contentLoader; active: true; visible: true; sourceComponent: spinBoxPreset }
+        },
+        State {
+            name: "textInput"
+            PropertyChanges { target: contentItem; visible: false }
+            PropertyChanges { target: contentLoader; active: true; visible: true; sourceComponent: textInputPreset }
+        },
+        State {
+            name: "comboBox"
+            PropertyChanges { target: contentItem; visible: false }
+            PropertyChanges { target: contentLoader; active: true; visible: true; sourceComponent: comboBoxPreset }
+        }
+    ]
+
     Comp.OBTitle {
         id: titleLabel
         text: root.title
@@ -60,25 +104,12 @@ RowLayout {
         Layout.alignment: Qt.AlignVCenter
         implicitWidth: childrenRect.width
         implicitHeight: childrenRect.height
-        visible: root.contentType === DescLine.ContentType.None
     }
 
     // Preset mode: instantiates a default-configured OB component for contentType.
     Loader {
         id: contentLoader
         Layout.alignment: Qt.AlignVCenter
-        active: root.contentType !== DescLine.ContentType.None
-        visible: root.contentType !== DescLine.ContentType.None
-        sourceComponent: {
-            switch (root.contentType) {
-            case DescLine.ContentType.CheckBox: return checkBoxPreset
-            case DescLine.ContentType.Label: return labelPreset
-            case DescLine.ContentType.SpinBox: return spinBoxPreset
-            case DescLine.ContentType.TextInput: return textInputPreset
-            case DescLine.ContentType.ComboBox: return comboBoxPreset
-            default: return null
-            }
-        }
         onLoaded: {
             for (var key in root.contentConfig) {
                 item[key] = root.contentConfig[key]

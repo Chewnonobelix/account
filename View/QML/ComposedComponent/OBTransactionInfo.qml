@@ -47,6 +47,29 @@ Item {
     implicitWidth: root.contentWidth + 2 * Style.OBConstants.leftMargins + 2 * root.borderThickness
     implicitHeight: contentColumn.implicitHeight + 2 * Style.OBConstants.topMargins + 2 * root.borderThickness
 
+    state: root.readOnly ? "readOnly" : "editable"
+
+    states: [
+        State {
+            name: "readOnly"
+            PropertyChanges { target: nameLoader; sourceComponent: nameLabel }
+            PropertyChanges { target: dateLoader; sourceComponent: dateLabel }
+            PropertyChanges { target: amountLoader; sourceComponent: amountLabel }
+            PropertyChanges { target: movementLoader; sourceComponent: movementLabel }
+            PropertyChanges { target: supportLoader; sourceComponent: supportLabel }
+            PropertyChanges { target: descriptionLoader; sourceComponent: descriptionLabel }
+        },
+        State {
+            name: "editable"
+            PropertyChanges { target: nameLoader; sourceComponent: nameInput }
+            PropertyChanges { target: dateLoader; sourceComponent: dateInput }
+            PropertyChanges { target: amountLoader; sourceComponent: amountInput }
+            PropertyChanges { target: movementLoader; sourceComponent: movementInput }
+            PropertyChanges { target: supportLoader; sourceComponent: supportInput }
+            PropertyChanges { target: descriptionLoader; sourceComponent: descriptionInput }
+        }
+    ]
+
     // Golden frame: an outer rectangle painted with the gold gradient, left
     // showing only as a ring since the inner rectangle covers everything
     // but that margin.
@@ -86,7 +109,7 @@ Item {
                 titleWidth: root.titleColumnWidth
 
                 Loader {
-                    sourceComponent: root.readOnly ? nameLabel : nameInput
+                    id: nameLoader
                 }
             }
 
@@ -96,7 +119,7 @@ Item {
                 titleWidth: root.titleColumnWidth
 
                 Loader {
-                    sourceComponent: root.readOnly ? dateLabel : dateInput
+                    id: dateLoader
                 }
             }
 
@@ -106,7 +129,7 @@ Item {
                 titleWidth: root.titleColumnWidth
 
                 Loader {
-                    sourceComponent: root.readOnly ? amountLabel : amountInput
+                    id: amountLoader
                 }
             }
 
@@ -116,7 +139,7 @@ Item {
                 titleWidth: root.titleColumnWidth
 
                 Loader {
-                    sourceComponent: root.readOnly ? movementLabel : movementInput
+                    id: movementLoader
                 }
             }
 
@@ -126,7 +149,7 @@ Item {
                 titleWidth: root.titleColumnWidth
 
                 Loader {
-                    sourceComponent: root.readOnly ? supportLabel : supportInput
+                    id: supportLoader
                 }
             }
 
@@ -136,7 +159,7 @@ Item {
                 titleWidth: root.titleColumnWidth
 
                 Loader {
-                    sourceComponent: root.readOnly ? descriptionLabel : descriptionInput
+                    id: descriptionLoader
                 }
             }
         }

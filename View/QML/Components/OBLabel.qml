@@ -25,7 +25,27 @@ Text {
     // (combo boxes, table cells, DescLine values, ...) risks text wider
     // than that box; elide it instead of letting it paint over neighbors.
     elide: Text.ElideRight
-    color: textState === OBLabel.TextState.Negative ? colorNegative :
-           textState === OBLabel.TextState.Positive ? colorPositive :
-           textState === OBLabel.TextState.Disabled ? colorDisabled : colorNeutral
+
+    state: textState === OBLabel.TextState.Negative ? "negative" :
+           textState === OBLabel.TextState.Positive ? "positive" :
+           textState === OBLabel.TextState.Disabled ? "disabled" : "neutral"
+
+    states: [
+        State {
+            name: "neutral"
+            PropertyChanges { target: root; color: root.colorNeutral }
+        },
+        State {
+            name: "positive"
+            PropertyChanges { target: root; color: root.colorPositive }
+        },
+        State {
+            name: "negative"
+            PropertyChanges { target: root; color: root.colorNegative }
+        },
+        State {
+            name: "disabled"
+            PropertyChanges { target: root; color: root.colorDisabled }
+        }
+    ]
 }

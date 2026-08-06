@@ -147,6 +147,32 @@ ApplicationWindow {
             }
 
             UiKitSection {
+                title: "OBLabel states"
+                width: parent.width
+
+                Comp.OBLabel {
+                    text: "Neutral"
+                    textState: Comp.OBLabel.TextState.Neutral
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                Comp.OBLabel {
+                    text: "Positive"
+                    textState: Comp.OBLabel.TextState.Positive
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                Comp.OBLabel {
+                    text: "Negative"
+                    textState: Comp.OBLabel.TextState.Negative
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                Comp.OBLabel {
+                    text: "Disabled"
+                    textState: Comp.OBLabel.TextState.Disabled
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            UiKitSection {
                 title: "OBHeader"
                 target: demoHeader
                 width: parent.width
@@ -307,6 +333,54 @@ ApplicationWindow {
                 }
                 Comp.OBLabel {
                     text: "-> " + demoCombo.displayText
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            UiKitSection {
+                title: "OBComboBox + MovementModel"
+                target: movementCombo
+                width: parent.width
+
+                Comp.OBComboBox {
+                    id: movementCombo
+                    model: MovementModel {}
+                    currentIndex: 0
+                }
+                Comp.OBLabel {
+                    text: "-> " + movementCombo.model.valueAt(movementCombo.currentIndex)
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            UiKitSection {
+                title: "OBComboBox + SupportModel"
+                target: supportCombo
+                width: parent.width
+
+                Comp.OBComboBox {
+                    id: supportCombo
+                    model: SupportModel {}
+                    currentIndex: 0
+                }
+                Comp.OBLabel {
+                    text: "-> " + supportCombo.model.valueAt(supportCombo.currentIndex)
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            UiKitSection {
+                title: "OBComboBox + FrequencyModel"
+                target: frequencyCombo
+                width: parent.width
+
+                Comp.OBComboBox {
+                    id: frequencyCombo
+                    model: FrequencyModel {}
+                    currentIndex: 0
+                }
+                Comp.OBLabel {
+                    text: "-> " + frequencyCombo.model.valueAt(frequencyCombo.currentIndex)
                     anchors.verticalCenter: parent.verticalCenter
                 }
             }

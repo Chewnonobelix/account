@@ -4,6 +4,8 @@ set(CMAKE_AUTORCC ON)
 
 add_executable(UiKit
     src/main.cpp
+    QML/Main.qml
+    QML/UiKitSection.qml
 )
 
 # UiKit is a dev-only playground: LiveQmlEngine (ChewnoDesignPattern) hot-reloads
