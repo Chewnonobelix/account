@@ -5,6 +5,7 @@
 #include <QMetaType>
 #include <QRegularExpression>
 
+#include <utility>
 #include <variant>
 
 using namespace Controller;
@@ -118,6 +119,14 @@ StorageResult InMemoryStorageLayer::execute(const Command &command) {
 		return StorageResult::fail(QStringLiteral("storage layer is not open"));
 	}
 	return std::visit([this](const auto &concrete) { return run(concrete); }, command);
+}
+
+QHash<QString, QList<Record>> InMemoryStorageLayer::tables() const {
+	return m_tables;
+}
+
+void InMemoryStorageLayer::setTables(QHash<QString, QList<Record>> tables) {
+	m_tables = std::move(tables);
 }
 
 StorageResult InMemoryStorageLayer::run(const SelectCommand &command) {

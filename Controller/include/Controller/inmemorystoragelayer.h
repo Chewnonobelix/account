@@ -26,6 +26,12 @@ public:
 
 	StorageResult execute(const Command &command) override;
 
+	// Bulk access to the underlying tables, so a persistent layer can wrap
+	// this class as its in-memory engine: load what it read from disk with
+	// setTables() on open(), then serialize tables() back out after writes.
+	[[nodiscard]] QHash<QString, QList<Record>> tables() const;
+	void setTables(QHash<QString, QList<Record>> tables);
+
 private:
 	StorageResult run(const SelectCommand &command);
 	StorageResult run(const InsertCommand &command);
