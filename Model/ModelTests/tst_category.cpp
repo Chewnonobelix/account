@@ -3,7 +3,7 @@
 #include <QUuid>
 #include <QtTest>
 
-#include "../include/Model/category.h"
+#include "../include/Model/Business/category.h"
 #include "../include/Model/enums.h"
 
 class TestCategory : public QObject {

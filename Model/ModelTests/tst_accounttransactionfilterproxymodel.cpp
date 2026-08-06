@@ -1,8 +1,8 @@
-#include "../include/Model/account.h"
-#include "../include/Model/accounttransactionfilterproxymodel.h"
+#include "../include/Model/Business/account.h"
+#include "../include/Model/Models/accounttransactionfilterproxymodel.h"
 #include "../include/Model/enums.h"
-#include "../include/Model/transaction.h"
-#include "../include/Model/transactionlistmodel.h"
+#include "../include/Model/Business/transaction.h"
+#include "../include/Model/Models/transactionlistmodel.h"
 
 #include <QSignalSpy>
 #include <QtTest/QtTest>

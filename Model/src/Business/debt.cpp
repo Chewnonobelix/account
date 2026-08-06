@@ -1,5 +1,5 @@
-#include "Model/debt.h"
-#include "Model/frequency.h"
+#include "Model/Business/debt.h"
+#include "Model/Business/frequency.h"
 
 #include <QJsonValue>
 

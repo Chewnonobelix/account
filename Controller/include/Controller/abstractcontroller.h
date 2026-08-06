@@ -3,8 +3,8 @@
 #include <QObject>
 #include <QPointer>
 
-#include "Model/account.h"
-#include "Model/profile.h"
+#include "Model/Business/account.h"
+#include "Model/Business/profile.h"
 #include "controller_global.h"
 
 namespace Controller {

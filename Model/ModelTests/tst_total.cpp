@@ -1,6 +1,6 @@
 #include "../include/Model/enums.h"
-#include "../include/Model/total.h"
-#include "../include/Model/transaction.h"
+#include "../include/Model/Business/total.h"
+#include "../include/Model/Business/transaction.h"
 #include <QMetaEnum>
 #include <QtTest>
 

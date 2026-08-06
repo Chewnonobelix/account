@@ -1,6 +1,6 @@
-#include "Model/accounttransactionfilterproxymodel.h"
+#include "Model/Models/accounttransactionfilterproxymodel.h"
 
-#include "Model/transactionlistmodel.h"
+#include "Model/Models/transactionlistmodel.h"
 
 #include <QString>
 

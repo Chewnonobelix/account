@@ -1,11 +1,11 @@
-#include "Model/accountbalanceproxymodel.h"
+#include "Model/Models/accountbalanceproxymodel.h"
 
 #include <algorithm>
 
 #include <QAbstractItemModel>
 
-#include "Model/total.h"
-#include "Model/transaction.h"
+#include "Model/Business/total.h"
+#include "Model/Business/transaction.h"
 
 AccountBalanceProxyModel::AccountBalanceProxyModel(QObject *parent)
     : QAbstractProxyModel(parent) {}

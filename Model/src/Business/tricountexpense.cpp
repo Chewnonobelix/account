@@ -1,4 +1,4 @@
-#include "Model/tricountexpense.h"
+#include "Model/Business/tricountexpense.h"
 
 #include <QJsonArray>
 #include <QSet>

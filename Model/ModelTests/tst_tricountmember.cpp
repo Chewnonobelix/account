@@ -1,4 +1,4 @@
-#include "../include/Model/tricountmember.h"
+#include "../include/Model/Business/tricountmember.h"
 #include <QSignalSpy>
 #include <QtTest>
 

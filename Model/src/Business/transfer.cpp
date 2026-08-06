@@ -1,4 +1,4 @@
-#include "Model/transfer.h"
+#include "Model/Business/transfer.h"
 
 Transfer::Transfer(QObject* parent) : QObject(parent), MetaData() {
     setMetadata(Key::debitAccountId, QUuid{});

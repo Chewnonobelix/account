@@ -1,4 +1,4 @@
-#include "Model/account.h"
+#include "Model/Business/account.h"
 
 Account::Account(QObject* parent) : QObject(parent), MetaData() {
     setMetadata(Key::id, QUuid{});

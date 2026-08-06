@@ -1,6 +1,6 @@
 #include "../include/Model/enums.h"
-#include "../include/Model/transaction.h"
-#include "../include/Model/transfer.h"
+#include "../include/Model/Business/transaction.h"
+#include "../include/Model/Business/transfer.h"
 
 #include <QSignalSpy>
 #include <QtTest/QtTest>

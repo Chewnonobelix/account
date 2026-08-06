@@ -1,4 +1,4 @@
-#include "Model/frequency.h"
+#include "Model/Business/frequency.h"
 
 namespace {
 constexpr auto kDefaultDateFormat = "yyyy-MM-dd";

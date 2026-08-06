@@ -1,4 +1,4 @@
-#include "../include/Model/debt.h"
+#include "../include/Model/Business/debt.h"
 
 #include <QSignalSpy>
 #include <QtTest/QtTest>

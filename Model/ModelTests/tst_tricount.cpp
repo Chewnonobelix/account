@@ -1,6 +1,6 @@
-#include "../include/Model/tricount.h"
-#include "../include/Model/tricountexpense.h"
-#include "../include/Model/tricountmember.h"
+#include "../include/Model/Business/tricount.h"
+#include "../include/Model/Business/tricountexpense.h"
+#include "../include/Model/Business/tricountmember.h"
 #include <QSignalSpy>
 #include <QtTest>
 

@@ -1,4 +1,4 @@
-#include "../include/Model/budget.h"
+#include "../include/Model/Business/budget.h"
 
 #include <QSignalSpy>
 #include <QtTest/QtTest>

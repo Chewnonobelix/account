@@ -1,4 +1,4 @@
-#include "Model/category.h"
+#include "Model/Business/category.h"
 
 Category::Category(QObject* parent) : QObject(parent), MetaData() {
     setMetadata(Key::id, QUuid{});

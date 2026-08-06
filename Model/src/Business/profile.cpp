@@ -1,4 +1,4 @@
-#include "Model/profile.h"
+#include "Model/Business/profile.h"
 
 Profile::Profile(QObject* parent) : QObject(parent), MetaData() {
     setMetadata(Key::id, QUuid{});

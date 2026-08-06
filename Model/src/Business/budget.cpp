@@ -1,4 +1,4 @@
-#include "Model/budget.h"
+#include "Model/Business/budget.h"
 
 Budget::Budget(QObject* parent) : QObject(parent), MetaData() {
     setMetadata(Key::id, QUuid::createUuid());

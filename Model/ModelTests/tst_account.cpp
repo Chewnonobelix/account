@@ -1,4 +1,4 @@
-#include "../include/Model/account.h"
+#include "../include/Model/Business/account.h"
 #include <QSignalSpy>
 #include <QtTest>
 

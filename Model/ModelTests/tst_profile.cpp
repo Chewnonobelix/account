@@ -1,4 +1,4 @@
-#include "../include/Model/profile.h"
+#include "../include/Model/Business/profile.h"
 #include <QSignalSpy>
 #include <QtTest>
 

@@ -1,4 +1,4 @@
-#include "Model/transactionlistmodel.h"
+#include "Model/Models/transactionlistmodel.h"
 
 #include <QString>
 

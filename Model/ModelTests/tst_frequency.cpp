@@ -1,7 +1,7 @@
 #include <QSignalSpy>
 #include <QtTest>
 
-#include "Model/frequency.h"
+#include "Model/Business/frequency.h"
 
 class TestFrequency : public QObject {
   Q_OBJECT

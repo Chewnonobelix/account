@@ -1,5 +1,5 @@
-#include "Model/transaction.h"
-#include "Model/total.h"
+#include "Model/Business/transaction.h"
+#include "Model/Business/total.h"
 
 Transaction::Transaction(QObject* parent) : QObject(parent), MetaData() {
     setMetadata(Key::id, QUuid::createUuid());

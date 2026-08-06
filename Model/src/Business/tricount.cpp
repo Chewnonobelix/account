@@ -1,4 +1,4 @@
-#include "Model/tricount.h"
+#include "Model/Business/tricount.h"
 
 #include <QJsonArray>
 #include <QtGlobal>

@@ -1,5 +1,5 @@
-#include "../include/Model/transaction.h"
-#include "../include/Model/transactionlistmodel.h"
+#include "../include/Model/Business/transaction.h"
+#include "../include/Model/Models/transactionlistmodel.h"
 
 #include <QSignalSpy>
 #include <QtTest/QtTest>

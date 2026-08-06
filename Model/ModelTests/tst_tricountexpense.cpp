@@ -1,5 +1,5 @@
-#include "../include/Model/tricountexpense.h"
-#include "../include/Model/transaction.h"
+#include "../include/Model/Business/tricountexpense.h"
+#include "../include/Model/Business/transaction.h"
 #include <QSignalSpy>
 #include <QtTest>
 

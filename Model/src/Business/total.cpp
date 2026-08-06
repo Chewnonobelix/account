@@ -1,4 +1,4 @@
-#include "Model/total.h"
+#include "Model/Business/total.h"
 #include <algorithm>
 
 void Total::recomputeBoundsAfterAppend(const QDate &d) {

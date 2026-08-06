@@ -5,50 +5,59 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 add_library(OAModel
-    src/accountbalanceproxymodel.cpp
-    src/accounttransactionfilterproxymodel.cpp
-    src/account.cpp
-    src/category.cpp
-    src/debt.cpp
-    src/profile.cpp
-    src/model.cpp
-    src/total.cpp
-    src/transaction.cpp
-    src/transactionlistmodel.cpp
-    include/Model/accountbalanceproxymodel.h
-    include/Model/accounttransactionfilterproxymodel.h
-    include/Model/account.h
-    include/Model/category.h
-    include/Model/debt.h
     include/Model/enums.h
     include/Model/metatypes.h
     include/Model/model.h
     include/Model/model_global.h
-    include/Model/profile.h
-    include/Model/total.h
-    include/Model/transaction.h
-    include/Model/transactionlistmodel.h
-    include/Model/frequency.h
-    src/frequency.cpp
     src/enums.cpp
-    src/tricountmember.cpp
-    src/tricountexpense.cpp
-    src/tricount.cpp
-    include/Model/tricountmember.h
-    include/Model/tricountexpense.h
-    include/Model/tricount.h
-    src/transfer.cpp
-    include/Model/transfer.h
-    src/budget.cpp
-    include/Model/budget.h
+    src/model.cpp
+
+    # Business: domain entities (no Qt item-model interface).
+    include/Model/Business/account.h
+    include/Model/Business/budget.h
+    include/Model/Business/category.h
+    include/Model/Business/debt.h
+    include/Model/Business/frequency.h
+    include/Model/Business/profile.h
+    include/Model/Business/total.h
+    include/Model/Business/transaction.h
+    include/Model/Business/transfer.h
+    include/Model/Business/tricount.h
+    include/Model/Business/tricountexpense.h
+    include/Model/Business/tricountmember.h
+    src/Business/account.cpp
+    src/Business/budget.cpp
+    src/Business/category.cpp
+    src/Business/debt.cpp
+    src/Business/frequency.cpp
+    src/Business/profile.cpp
+    src/Business/total.cpp
+    src/Business/transaction.cpp
+    src/Business/transfer.cpp
+    src/Business/tricount.cpp
+    src/Business/tricountexpense.cpp
+    src/Business/tricountmember.cpp
+
+    # Models: QAbstractItemModel-derived types, meant to be bound as QML
+    # views/OBComboBox models.
+    include/Model/Models/accountbalanceproxymodel.h
+    include/Model/Models/accounttransactionfilterproxymodel.h
+    include/Model/Models/transactionlistmodel.h
+    src/Models/accountbalanceproxymodel.cpp
+    src/Models/accounttransactionfilterproxymodel.cpp
+    src/Models/transactionlistmodel.cpp
 )
 
 target_include_directories(OAModel PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     # The generated QML type registration code (oamodel_qmltyperegistrations.cpp)
-    # includes headers by bare name (<enums.h>, <transaction.h>), so the
-    # directory containing them must be on the include path too.
+    # includes headers by bare name (<enums.h>, <transaction.h>, ...), so
+    # every directory that holds a QML_ELEMENT-tagged header must be on the
+    # include path too. It also lets headers in one subfolder quote-include
+    # a sibling in the other (e.g. transactionlistmodel.h -> transaction.h).
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Model
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Model/Business
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Model/Models
 )
 
 target_compile_definitions(OAModel PRIVATE
@@ -62,7 +71,8 @@ target_link_libraries(OAModel PUBLIC
 )
 
 # Exposes OpenAccountEnums and Transaction to QML (import OpenAccount.Model)
-# via the QML_NAMED_ELEMENT/QML_ELEMENT macros in enums.h/transaction.h.
+# via the QML_NAMED_ELEMENT/QML_ELEMENT macros in
+# enums.h/Business/transaction.h.
 qt_add_qml_module(OAModel
     URI OpenAccount.Model
     VERSION 1.0

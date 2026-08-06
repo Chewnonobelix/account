@@ -1,4 +1,4 @@
-#include "Model/tricountmember.h"
+#include "Model/Business/tricountmember.h"
 
 TricountMember::TricountMember(QObject* parent) : QObject(parent), MetaData() {
     setMetadata(Key::id, QUuid::createUuid());
