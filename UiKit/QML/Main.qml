@@ -524,11 +524,34 @@ ApplicationWindow {
                 title: "OBTransactionInfo"
                 width: parent.width
 
+                CategoryListModel {
+                    id: transactionInfoCategoryModel
+
+                    Component.onCompleted: {
+                        const salary = categoryPrototype.createObject(transactionInfoCategoryModel)
+                        salary.setId("{11111111-1111-1111-1111-111111111111}")
+                        salary.name = "Salary"
+                        salary.direction = OpenAccountEnums.Movement.Credit
+                        addCategory(salary)
+
+                        const groceries = categoryPrototype.createObject(transactionInfoCategoryModel)
+                        groceries.setId("{22222222-2222-2222-2222-222222222222}")
+                        groceries.name = "Groceries"
+                        groceries.direction = OpenAccountEnums.Movement.Debit
+                        addCategory(groceries)
+                    }
+                }
+                Component {
+                    id: categoryPrototype
+                    Category {}
+                }
+
                 Row {
                     spacing: Style.OBConstants.horizontalSpacing
 
                     Composed.OBTransactionInfo {
                         readOnly: !transactionInfoEditToggle.checked
+                        categoryModel: transactionInfoCategoryModel
                         transaction: Transaction {
                             name: "Salary"
                             description: "Monthly salary"
@@ -536,6 +559,10 @@ ApplicationWindow {
                             value: 2500
                             movement: OpenAccountEnums.Movement.Credit
                             support: OpenAccountEnums.Support.Transfer
+                            // QUuid isn't one of QML's built-in value types, so
+                            // it can't be set via a static property assignment
+                            // (unlike QDate above) — only via a method call.
+                            Component.onCompleted: setCategory("{11111111-1111-1111-1111-111111111111}")
                         }
                     }
 

@@ -3,16 +3,22 @@
 #include "enums.h"
 #include "metadata.h"
 #include "model_global.h"
+#include <QEnableSharedFromThis>
 #include <QJsonObject>
 #include <QObject>
+#include <QQmlEngine>
+#include <QSharedPointer>
 #include <QString>
 #include <QUuid>
 
 /**
  * @brief Labels transactions (e.g. "Food", "Salary") and declares a direction.
  */
-class MODEL_EXPORT Category : public QObject, public MetaData {
+class MODEL_EXPORT Category : public QObject,
+                               public MetaData,
+                               public QEnableSharedFromThis<Category> {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(QUuid id READ id WRITE setId NOTIFY idChanged)
     Q_PROPERTY(OpenAccountEnums::Movement direction READ direction WRITE setDirection NOTIFY directionChanged)
@@ -55,3 +61,6 @@ private:
         static constexpr auto name = "name";
     };
 };
+
+using CategoryPtr = QSharedPointer<Category>;
+Q_DECLARE_METATYPE(CategoryPtr)

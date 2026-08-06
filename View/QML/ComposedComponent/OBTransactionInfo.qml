@@ -7,8 +7,8 @@ import "../Components" as Comp
 
 // Summary card for a single Transaction: a header with its name and date,
 // framed by a golden border, and one DescLine per field relevant to the
-// user (amount, movement, payment method, description) — deliberately
-// leaving out bookkeeping fields (id, accountId, category, isVisible).
+// user (amount, movement, payment method, category, description) —
+// deliberately leaving out bookkeeping fields (id, accountId, isVisible).
 // In readOnly mode every field renders as a plain label; otherwise each
 // becomes an editable control that writes straight back to `transaction`.
 Item {
@@ -16,6 +16,10 @@ Item {
 
     property Transaction transaction: null
     property bool readOnly: true
+    // Categories are user-defined and shared across transactions, so unlike
+    // Movement/Support (fixed enums) this card doesn't own the list itself —
+    // the caller supplies the app's CategoryListModel to pick from.
+    property CategoryListModel categoryModel: null
 
     readonly property bool isCredit: root.transaction !== null &&
                                       root.transaction.movement === OpenAccountEnums.Movement.Credit
@@ -29,13 +33,15 @@ Item {
     // clipped — grows automatically if a title changes.
     readonly property real titleColumnWidth: Math.max(
         nameLine.titleNaturalWidth, dateLine.titleNaturalWidth, amountLine.titleNaturalWidth,
-        movementLine.titleNaturalWidth, supportLine.titleNaturalWidth, descriptionLine.titleNaturalWidth)
+        movementLine.titleNaturalWidth, supportLine.titleNaturalWidth, categoryLine.titleNaturalWidth,
+        descriptionLine.titleNaturalWidth)
 
     // Widest row (title column + spacing + value column) drives the card's
     // width; adapts to content instead of a hardcoded guess.
     readonly property real contentWidth: Math.max(
         nameLine.implicitWidth, dateLine.implicitWidth, amountLine.implicitWidth,
-        movementLine.implicitWidth, supportLine.implicitWidth, descriptionLine.implicitWidth)
+        movementLine.implicitWidth, supportLine.implicitWidth, categoryLine.implicitWidth,
+        descriptionLine.implicitWidth)
 
     implicitWidth: root.contentWidth + 2 * Style.OBConstants.leftMargins + 2 * root.borderThickness
     implicitHeight: contentColumn.implicitHeight + 2 * Style.OBConstants.topMargins + 2 * root.borderThickness
@@ -50,6 +56,7 @@ Item {
             PropertyChanges { target: amountLoader; sourceComponent: amountLabel }
             PropertyChanges { target: movementLoader; sourceComponent: movementLabel }
             PropertyChanges { target: supportLoader; sourceComponent: supportLabel }
+            PropertyChanges { target: categoryLoader; sourceComponent: categoryLabel }
             PropertyChanges { target: descriptionLoader; sourceComponent: descriptionLabel }
         },
         State {
@@ -59,6 +66,7 @@ Item {
             PropertyChanges { target: amountLoader; sourceComponent: amountInput }
             PropertyChanges { target: movementLoader; sourceComponent: movementInput }
             PropertyChanges { target: supportLoader; sourceComponent: supportInput }
+            PropertyChanges { target: categoryLoader; sourceComponent: categoryInput }
             PropertyChanges { target: descriptionLoader; sourceComponent: descriptionInput }
         }
     ]
@@ -157,6 +165,16 @@ Item {
             }
 
             DescLine {
+                id: categoryLine
+                title: "Category"
+                titleWidth: root.titleColumnWidth
+
+                Loader {
+                    id: categoryLoader
+                }
+            }
+
+            DescLine {
                 id: descriptionLine
                 title: "Description"
                 titleWidth: root.titleColumnWidth
@@ -241,6 +259,32 @@ Item {
             model: supportModel
             currentIndex: root.transaction ? supportModel.indexOfValue(root.transaction.support) : -1
             onActivated: function (index) { if (root.transaction) root.transaction.support = supportModel.valueAt(index) }
+        }
+    }
+
+    Component {
+        id: categoryLabel
+        Comp.OBLabel {
+            text: {
+                if (!root.transaction || !root.categoryModel) return ""
+                const row = root.categoryModel.indexOf(root.transaction.category)
+                const category = row >= 0 ? root.categoryModel.at(row) : null
+                return category ? category.name : ""
+            }
+        }
+    }
+    Component {
+        id: categoryInput
+        Comp.OBComboBox {
+            model: root.categoryModel
+            textRole: "name"
+            valueRole: "id"
+            currentIndex: root.transaction && root.categoryModel ? root.categoryModel.indexOf(root.transaction.category) : -1
+            onActivated: function (index) {
+                if (!root.transaction || !root.categoryModel) return
+                const category = root.categoryModel.at(index)
+                if (category) root.transaction.category = category.id
+            }
         }
     }
 

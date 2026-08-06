@@ -69,7 +69,10 @@ ComboBox {
     delegate: ItemDelegate {
         id: delegateItem
         width: root.width
-        text: modelData
+        // modelData is only synthesized for single-role models (e.g. a plain
+        // string list, or EnumListModel); a multi-role model must say which
+        // role holds the label via textRole, same as stock ComboBox.
+        text: root.textRole ? model[root.textRole] : modelData
         highlighted: root.highlightedIndex === index
 
         background: Rectangle {
@@ -96,7 +99,7 @@ ComboBox {
             x: delegateItem.width - width - Style.OBConstants.rightMargins
             y: (delegateItem.height - height) / 2
             enabled: false
-            checked: modelData === root.currentValue
+            checked: (root.valueRole ? model[root.valueRole] : (root.textRole ? model[root.textRole] : modelData)) === root.currentValue
         }
     }
 }
