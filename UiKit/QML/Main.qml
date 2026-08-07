@@ -610,6 +610,50 @@ ApplicationWindow {
                 }
             }
 
+            UiKitSection {
+                id: counterSection
+                title: "OBButtonPair (+/-)"
+                target: counterPair
+                width: parent.width
+
+                property int counterValue: 0
+
+                Composed.OBButtonPair {
+                    id: counterPair
+                    leftText: "-"
+                    rightText: "+"
+                    anchors.verticalCenter: parent.verticalCenter
+                    onLeftClicked: counterSection.counterValue -= 1
+                    onRightClicked: counterSection.counterValue += 1
+                }
+                Comp.OBLabel {
+                    text: "value = " + counterSection.counterValue
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            UiKitSection {
+                id: confirmSection
+                title: "OBButtonPair (accept/cancel)"
+                target: confirmPair
+                width: parent.width
+
+                property string lastAction: "none"
+
+                Composed.OBButtonPair {
+                    id: confirmPair
+                    leftText: "Cancel"
+                    rightText: "Accept"
+                    anchors.verticalCenter: parent.verticalCenter
+                    onLeftClicked: confirmSection.lastAction = "cancelled"
+                    onRightClicked: confirmSection.lastAction = "accepted"
+                }
+                Comp.OBLabel {
+                    text: "last action: " + confirmSection.lastAction
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
             Item { width: 1; height: Style.OBConstants.bottomMargins }
         }
     }
