@@ -44,7 +44,8 @@ Item {
         descriptionLine.implicitWidth)
 
     implicitWidth: root.contentWidth + 2 * Style.OBConstants.leftMargins + 2 * root.borderThickness
-    implicitHeight: contentColumn.implicitHeight + 2 * Style.OBConstants.topMargins + 2 * root.borderThickness
+    implicitHeight: header.implicitHeight + Style.OBConstants.verticalSpacing + contentColumn.implicitHeight +
+                     Style.OBConstants.bottomMargins + 2 * root.borderThickness
 
     state: root.readOnly ? "readOnly" : "editable"
 
@@ -91,28 +92,38 @@ Item {
     }
 
     Rectangle {
+        id: cardSurface
         anchors.fill: parent
         anchors.margins: root.borderThickness
         radius: Style.OBConstants.borderRadius
         gradient: Style.OBStyle.background
 
+        // Flush against the card surface's own edges (left/right/top) rather
+        // than sitting inside contentColumn's margins, so the header spans
+        // the full width instead of being inset like the fields below it.
+        Comp.OBHeader {
+            id: header
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            text: root.transaction ? root.transaction.name + " - " + Qt.formatDate(root.transaction.date, "yyyy-MM-dd") : ""
+            leftPadding: 0
+            rightPadding: 0
+            topPadding: 0
+            bottomPadding: 0
+        }
+
         Column {
             id: contentColumn
-            anchors.fill: parent
-            anchors.margins: Style.OBConstants.leftMargins
+            anchors.top: header.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.topMargin: Style.OBConstants.verticalSpacing
+            anchors.leftMargin: Style.OBConstants.leftMargins
+            anchors.rightMargin: Style.OBConstants.rightMargins
+            anchors.bottomMargin: Style.OBConstants.bottomMargins
             spacing: Style.OBConstants.verticalSpacing
-
-            Comp.OBHeader {
-                width: root.contentWidth
-                text: root.transaction ? root.transaction.name + " - " + Qt.formatDate(root.transaction.date, "yyyy-MM-dd") : ""
-            }
-
-            Rectangle {
-                width: root.contentWidth
-                height: 1
-                color: Style.OBTheme.palette.outline
-                opacity: 0.3
-            }
 
             DescLine {
                 id: nameLine
