@@ -338,6 +338,22 @@ ApplicationWindow {
             }
 
             UiKitSection {
+                title: "OBComboBox orientation"
+                target: orientationCombo
+                width: parent.width
+
+                Comp.OBComboBox {
+                    id: orientationCombo
+                    model: ["Checking", "Savings", "Credit card", "Cash"]
+                    popupOrientation: orientationBox.currentIndex === 0 ? Comp.OBComboBox.PopupOrientation.Vertical : Comp.OBComboBox.PopupOrientation.Horizontal
+                }
+                Comp.OBComboBox {
+                    id: orientationBox
+                    model: ["Vertical", "Horizontal"]
+                }
+            }
+
+            UiKitSection {
                 title: "OBComboBox + MovementModel"
                 target: movementCombo
                 width: parent.width

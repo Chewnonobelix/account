@@ -6,8 +6,15 @@ import "../Style" as Style
 ComboBox {
     id: root
 
+    enum PopupOrientation {
+        Vertical,
+        Horizontal
+    }
+
     implicitWidth: Style.OBConstants.widthMedium
     implicitHeight: Style.OBConstants.heightMedium
+
+    property int popupOrientation: OBComboBox.PopupOrientation.Vertical
 
     property real borderRadius: Style.OBConstants.borderRadius
     property real borderWidth: Style.OBConstants.borderWidth
@@ -48,17 +55,36 @@ ComboBox {
     }
 
     popup: Popup {
-        y: root.height
-        width: root.width
-        implicitHeight: contentItem.implicitHeight
+        id: comboPopup
         padding: 0
 
+        // Popup isn't an Item, so it can't own state/states itself; the
+        // ListView below (its contentItem) drives both its own orientation
+        // and the popup's geometry via PropertyChanges.
         contentItem: ListView {
+            id: popupListView
             clip: true
+            implicitWidth: contentWidth
             implicitHeight: contentHeight
             model: root.popup.visible ? root.delegateModel : null
             currentIndex: root.highlightedIndex
             ScrollIndicator.vertical: ScrollIndicator {}
+            ScrollIndicator.horizontal: ScrollIndicator {}
+
+            state: root.popupOrientation === OBComboBox.PopupOrientation.Horizontal ? "horizontal" : "vertical"
+
+            states: [
+                State {
+                    name: "vertical"
+                    PropertyChanges { target: popupListView; orientation: ListView.Vertical }
+                    PropertyChanges { target: comboPopup; x: 0; y: root.height; width: root.width; implicitHeight: popupListView.contentHeight }
+                },
+                State {
+                    name: "horizontal"
+                    PropertyChanges { target: popupListView; orientation: ListView.Horizontal }
+                    PropertyChanges { target: comboPopup; x: root.width; y: 0; width: popupListView.contentWidth; implicitHeight: root.height }
+                }
+            ]
         }
 
         background: Rectangle {
@@ -68,12 +94,24 @@ ComboBox {
 
     delegate: ItemDelegate {
         id: delegateItem
-        width: root.width
         // modelData is only synthesized for single-role models (e.g. a plain
         // string list, or EnumListModel); a multi-role model must say which
         // role holds the label via textRole, same as stock ComboBox.
         text: root.textRole ? model[root.textRole] : modelData
         highlighted: root.highlightedIndex === index
+
+        state: root.popupOrientation === OBComboBox.PopupOrientation.Horizontal ? "horizontal" : "vertical"
+
+        states: [
+            State {
+                name: "vertical"
+                PropertyChanges { target: delegateItem; width: root.width }
+            },
+            State {
+                name: "horizontal"
+                PropertyChanges { target: delegateItem; height: root.height }
+            }
+        ]
 
         background: Rectangle {
             radius: root.borderRadius
