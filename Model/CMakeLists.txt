@@ -41,21 +41,41 @@ add_library(OAModel
     # Models: QAbstractItemModel-derived types, meant to be bound as QML
     # views/OBComboBox models.
     include/Model/Models/accountbalanceproxymodel.h
+    include/Model/Models/accountlistmodel.h
     include/Model/Models/accounttransactionfilterproxymodel.h
+    include/Model/Models/budgetlistmodel.h
     include/Model/Models/categorylistmodel.h
+    include/Model/Models/debtaccountfilterproxymodel.h
+    include/Model/Models/debtlistmodel.h
     include/Model/Models/enumlistmodel.h
+    include/Model/Models/frequencyaccountfilterproxymodel.h
+    include/Model/Models/frequencylistmodel.h
     include/Model/Models/frequencymodel.h
     include/Model/Models/movementmodel.h
+    include/Model/Models/pagefilterproxymodel.h
+    include/Model/Models/profileaccountfilterproxymodel.h
+    include/Model/Models/profilelistmodel.h
     include/Model/Models/supportmodel.h
     include/Model/Models/transactionlistmodel.h
+    include/Model/Models/tricountlistmodel.h
     src/Models/accountbalanceproxymodel.cpp
+    src/Models/accountlistmodel.cpp
     src/Models/accounttransactionfilterproxymodel.cpp
+    src/Models/budgetlistmodel.cpp
     src/Models/categorylistmodel.cpp
+    src/Models/debtaccountfilterproxymodel.cpp
+    src/Models/debtlistmodel.cpp
     src/Models/enumlistmodel.cpp
+    src/Models/frequencyaccountfilterproxymodel.cpp
+    src/Models/frequencylistmodel.cpp
     src/Models/frequencymodel.cpp
     src/Models/movementmodel.cpp
+    src/Models/pagefilterproxymodel.cpp
+    src/Models/profileaccountfilterproxymodel.cpp
+    src/Models/profilelistmodel.cpp
     src/Models/supportmodel.cpp
     src/Models/transactionlistmodel.cpp
+    src/Models/tricountlistmodel.cpp
 )
 
 target_include_directories(OAModel PUBLIC

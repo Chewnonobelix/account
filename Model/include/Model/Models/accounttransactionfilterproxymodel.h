@@ -3,6 +3,7 @@
 #include <QDate>
 #include <QList>
 #include <QPointer>
+#include <QQmlEngine>
 #include <QRegularExpression>
 #include <QSortFilterProxyModel>
 #include <QUuid>
@@ -16,6 +17,7 @@
 class MODEL_EXPORT AccountTransactionFilterProxyModel
     : public QSortFilterProxyModel {
   Q_OBJECT
+  QML_ELEMENT
 
   Q_PROPERTY(Account *account READ account WRITE setAccount NOTIFY accountChanged)
   Q_PROPERTY(int count READ count NOTIFY countChanged)
@@ -48,6 +50,7 @@ public:
 signals:
   void accountChanged();
   void countChanged();
+
   void dateFilterChanged();
   void supportFilterChanged();
   void categoryFilterChanged();

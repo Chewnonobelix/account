@@ -220,6 +220,14 @@ bool TransactionListModel::addTransaction(const TransactionPtr &transaction) {
   return true;
 }
 
+bool TransactionListModel::addTransaction(QObject *transaction) {
+  Transaction *rawTransaction = qobject_cast<Transaction *>(transaction);
+  if (!rawTransaction)
+    return false;
+
+  return addTransaction(TransactionPtr(rawTransaction, [](Transaction *) {}));
+}
+
 bool TransactionListModel::removeTransaction(const QUuid &transactionId) {
   return removeTransactionAt(indexOf(transactionId));
 }

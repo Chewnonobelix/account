@@ -22,6 +22,16 @@ add_executable(TestTransfer tst_transfer.cpp)
 add_executable(TestBudget tst_budget.cpp)
 add_executable(TestEnumListModels tst_enumlistmodels.cpp)
 add_executable(TestCategoryListModel tst_categorylistmodel.cpp)
+add_executable(TestAccountListModel tst_accountlistmodel.cpp)
+add_executable(TestProfileListModel tst_profilelistmodel.cpp)
+add_executable(TestProfileAccountFilterProxyModel tst_profileaccountfilterproxymodel.cpp)
+add_executable(TestPageFilterProxyModel tst_pagefilterproxymodel.cpp)
+add_executable(TestBudgetListModel tst_budgetlistmodel.cpp)
+add_executable(TestDebtListModel tst_debtlistmodel.cpp)
+add_executable(TestDebtAccountFilterProxyModel tst_debtaccountfilterproxymodel.cpp)
+add_executable(TestFrequencyListModel tst_frequencylistmodel.cpp)
+add_executable(TestFrequencyAccountFilterProxyModel tst_frequencyaccountfilterproxymodel.cpp)
+add_executable(TestTricountListModel tst_tricountlistmodel.cpp)
 
 
 target_link_libraries(TestProfile PRIVATE
@@ -98,6 +108,46 @@ target_link_libraries(TestCategoryListModel PRIVATE
     Qt6::Test
     OAModel
 )
+target_link_libraries(TestAccountListModel PRIVATE
+    Qt6::Test
+    OAModel
+)
+target_link_libraries(TestProfileListModel PRIVATE
+    Qt6::Test
+    OAModel
+)
+target_link_libraries(TestProfileAccountFilterProxyModel PRIVATE
+    Qt6::Test
+    OAModel
+)
+target_link_libraries(TestPageFilterProxyModel PRIVATE
+    Qt6::Test
+    OAModel
+)
+target_link_libraries(TestBudgetListModel PRIVATE
+    Qt6::Test
+    OAModel
+)
+target_link_libraries(TestDebtListModel PRIVATE
+    Qt6::Test
+    OAModel
+)
+target_link_libraries(TestDebtAccountFilterProxyModel PRIVATE
+    Qt6::Test
+    OAModel
+)
+target_link_libraries(TestFrequencyListModel PRIVATE
+    Qt6::Test
+    OAModel
+)
+target_link_libraries(TestFrequencyAccountFilterProxyModel PRIVATE
+    Qt6::Test
+    OAModel
+)
+target_link_libraries(TestTricountListModel PRIVATE
+    Qt6::Test
+    OAModel
+)
 
 add_test(NAME TestProfile COMMAND TestProfile)
 add_test(NAME TestAccountTransactionFilterProxyModel COMMAND TestAccountTransactionFilterProxyModel)
@@ -117,6 +167,16 @@ add_test(NAME TestTransfer COMMAND TestTransfer)
 add_test(NAME TestBudget COMMAND TestBudget)
 add_test(NAME TestEnumListModels COMMAND TestEnumListModels)
 add_test(NAME TestCategoryListModel COMMAND TestCategoryListModel)
+add_test(NAME TestAccountListModel COMMAND TestAccountListModel)
+add_test(NAME TestProfileListModel COMMAND TestProfileListModel)
+add_test(NAME TestProfileAccountFilterProxyModel COMMAND TestProfileAccountFilterProxyModel)
+add_test(NAME TestPageFilterProxyModel COMMAND TestPageFilterProxyModel)
+add_test(NAME TestBudgetListModel COMMAND TestBudgetListModel)
+add_test(NAME TestDebtListModel COMMAND TestDebtListModel)
+add_test(NAME TestDebtAccountFilterProxyModel COMMAND TestDebtAccountFilterProxyModel)
+add_test(NAME TestFrequencyListModel COMMAND TestFrequencyListModel)
+add_test(NAME TestFrequencyAccountFilterProxyModel COMMAND TestFrequencyAccountFilterProxyModel)
+add_test(NAME TestTricountListModel COMMAND TestTricountListModel)
 
 add_custom_target(run_model_tests
     COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
@@ -139,5 +199,15 @@ add_custom_target(run_model_tests
         TestBudget
         TestEnumListModels
         TestCategoryListModel
+        TestAccountListModel
+        TestProfileListModel
+        TestProfileAccountFilterProxyModel
+        TestPageFilterProxyModel
+        TestBudgetListModel
+        TestDebtListModel
+        TestDebtAccountFilterProxyModel
+        TestFrequencyListModel
+        TestFrequencyAccountFilterProxyModel
+        TestTricountListModel
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )

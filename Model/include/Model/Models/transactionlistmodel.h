@@ -2,6 +2,7 @@
 
 #include <QAbstractListModel>
 #include <QList>
+#include <QQmlEngine>
 #include <QVariantMap>
 
 #include "model_global.h"
@@ -9,6 +10,7 @@
 
 class MODEL_EXPORT TransactionListModel : public QAbstractListModel {
   Q_OBJECT
+  QML_ELEMENT
 
   Q_PROPERTY(int count READ count NOTIFY countChanged)
 
@@ -44,6 +46,11 @@ public:
 
   void setTransactions(const QList<TransactionPtr> &transactions);
   bool addTransaction(const TransactionPtr &transaction);
+  // QML can't construct a TransactionPtr (QSharedPointer) directly, so this
+  // overload wraps a QObject-owned Transaction (e.g. from Component.createObject)
+  // with a no-op deleter: the shared pointer is only used for shared access
+  // here, actual lifetime stays with whatever already owns the QObject.
+  Q_INVOKABLE bool addTransaction(QObject *transaction);
   bool removeTransaction(const QUuid &transactionId);
   bool removeTransactionAt(int row);
   void clear();
