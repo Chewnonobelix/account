@@ -12,6 +12,17 @@ Column {
     property Item target: null
     default property alias content: contentRow.data
 
+    // Space offered by the containing ScrollView's column. root.width can't
+    // just be bound to this directly: Column (like Row) reports its own
+    // implicitWidth from children's actual *width*, not their implicitWidth,
+    // so if root.width were pinned to availableWidth, an overflowing
+    // contentRow underneath would overflow invisibly — the outer ScrollView
+    // would never see it and couldn't scroll to it. Growing root.width to
+    // match contentRow when it's wider keeps that overflow visible one level
+    // up the chain, all the way to the ScrollView's contentWidth.
+    property real availableWidth: 0
+    width: Math.max(availableWidth, contentRow.implicitWidth)
+
     spacing: Style.OBConstants.verticalSpacing / 2
 
     Row {
@@ -42,6 +53,11 @@ Column {
         opacity: 0.3
     }
 
+    // Row, not Flow: most demo children anchor.verticalCenter to this
+    // item, and Flow (unlike Row) claims full control of both axes to
+    // support wrapping, so it rejects anchored children outright and
+    // silently stops laying out anything. Overflow is instead handled by
+    // the horizontal scrollbar on the containing ScrollView.
     Row {
         id: contentRow
         spacing: Style.OBConstants.horizontalSpacing

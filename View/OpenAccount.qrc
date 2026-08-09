@@ -10,6 +10,7 @@
         <file alias="OBRadioButton.qml">QML/Components/OBRadioButton.qml</file>
         <file alias="OBComboBox.qml">QML/Components/OBComboBox.qml</file>
         <file alias="OBTitle.qml">QML/Components/OBTitle.qml</file>
+        <file alias="OBScrollBar.qml">QML/Components/OBScrollBar.qml</file>
     </qresource>
     <qresource prefix="/QML/ComposedComponent">
         <file alias="DescLine.qml">QML/ComposedComponent/DescLine.qml</file>
@@ -19,6 +20,8 @@
         <file alias="OBCalendar.qml">QML/ComposedComponent/OBCalendar.qml</file>
         <file alias="OBDateButton.qml">QML/ComposedComponent/OBDateButton.qml</file>
         <file alias="OBTransactionInfo.qml">QML/ComposedComponent/OBTransactionInfo.qml</file>
+        <file alias="OBTransactionList.qml">QML/ComposedComponent/OBTransactionList.qml</file>
+        <file alias="OBButtonPair.qml">QML/ComposedComponent/OBButtonPair.qml</file>
     </qresource>
     <qresource prefix="/QML/Style">
         <file alias="qmldir">QML/Style/qmldir</file>

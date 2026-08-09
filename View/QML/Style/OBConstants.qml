@@ -21,4 +21,6 @@ QtObject {
 
     readonly property real borderRadius: 6
     readonly property real borderWidth: 1
+
+    readonly property real scrollBarThickness: 12
 }

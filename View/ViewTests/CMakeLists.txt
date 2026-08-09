@@ -34,6 +34,7 @@ add_executable(UiKitComponentTests
     qml/tst_OBLabel.qml
     qml/tst_OBSpinBox.qml
     qml/tst_OBSwitch.qml
+    qml/tst_OBScrollBar.qml
     qml/tst_OBTextInput.qml
     qml/tst_OBTitle.qml
     qml/tst_DescLine.qml
@@ -41,6 +42,7 @@ add_executable(UiKitComponentTests
     qml/tst_TableRow.qml
     qml/tst_TransactionRow.qml
     qml/tst_OBTransactionInfo.qml
+    qml/tst_OBTransactionList.qml
     qml/tst_Pager.qml
     qml/tst_OBCalendar.qml
     qml/tst_OBDateButton.qml

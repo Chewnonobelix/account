@@ -102,14 +102,36 @@ ApplicationWindow {
         anchors.margins: Style.OBConstants.leftMargins
         clip: true
 
+        // ScrollView's own style only anchors vertical-to-right/full-height
+        // and horizontal-to-bottom/full-width for the *default* scrollbars
+        // it declares internally; supplying our own via the attached
+        // properties opts out of that layout, so it's replicated here.
+        ScrollBar.vertical: Comp.OBScrollBar {
+            policy: ScrollBar.AlwaysOn
+            parent: componentsTab
+            x: componentsTab.mirrored ? 0 : componentsTab.width - width
+            y: componentsTab.topPadding
+            height: componentsTab.availableHeight
+            active: componentsTab.ScrollBar.horizontal.active
+        }
+
+        ScrollBar.horizontal: Comp.OBScrollBar {
+            policy: ScrollBar.AlwaysOn
+            parent: componentsTab
+            x: componentsTab.leftPadding
+            y: componentsTab.height - height
+            width: componentsTab.availableWidth
+            active: componentsTab.ScrollBar.vertical.active
+        }
+
         Column {
-            width: window.width - 2 * Style.OBConstants.leftMargins
+            width: window.width - 2 * Style.OBConstants.leftMargins - Style.OBConstants.scrollBarThickness
             spacing: Style.OBConstants.verticalSpacing * 2
 
             UiKitSection {
                 title: "OBButton"
                 target: demoButton
-                width: parent.width
+                availableWidth: parent.width
 
                 Comp.OBButton {
                     id: demoButton
@@ -128,7 +150,7 @@ ApplicationWindow {
             UiKitSection {
                 title: "OBLabel"
                 target: demoLabel
-                width: parent.width
+                availableWidth: parent.width
 
                 Comp.OBLabel {
                     id: demoLabel
@@ -148,7 +170,7 @@ ApplicationWindow {
 
             UiKitSection {
                 title: "OBLabel states"
-                width: parent.width
+                availableWidth: parent.width
 
                 Comp.OBLabel {
                     text: "Neutral"
@@ -175,7 +197,7 @@ ApplicationWindow {
             UiKitSection {
                 title: "OBHeader"
                 target: demoHeader
-                width: parent.width
+                availableWidth: parent.width
 
                 Comp.OBHeader {
                     id: demoHeader
@@ -203,7 +225,7 @@ ApplicationWindow {
             UiKitSection {
                 title: "OBTitle"
                 target: demoTitle
-                width: parent.width
+                availableWidth: parent.width
 
                 Comp.OBTitle {
                     id: demoTitle
@@ -219,7 +241,7 @@ ApplicationWindow {
             UiKitSection {
                 title: "OBTextInput"
                 target: demoInput
-                width: parent.width
+                availableWidth: parent.width
 
                 Comp.OBTextInput {
                     id: demoInput
@@ -234,7 +256,7 @@ ApplicationWindow {
             UiKitSection {
                 title: "OBSpinBox (real numbers)"
                 target: demoSpin
-                width: parent.width
+                availableWidth: parent.width
 
                 Comp.OBSpinBox {
                     id: demoSpin
@@ -253,7 +275,7 @@ ApplicationWindow {
             UiKitSection {
                 title: "OBSwitch (tristate)"
                 target: demoSwitch
-                width: parent.width
+                availableWidth: parent.width
 
                 Comp.OBSwitch {
                     id: demoSwitch
@@ -276,7 +298,7 @@ ApplicationWindow {
             UiKitSection {
                 title: "OBCheckBox"
                 target: demoCheck
-                width: parent.width
+                availableWidth: parent.width
 
                 Comp.OBCheckBox {
                     id: demoCheck
@@ -300,7 +322,7 @@ ApplicationWindow {
             UiKitSection {
                 title: "OBRadioButton"
                 target: radioA
-                width: parent.width
+                availableWidth: parent.width
 
                 ButtonGroup {
                     id: radioGroup
@@ -325,7 +347,7 @@ ApplicationWindow {
             UiKitSection {
                 title: "OBComboBox"
                 target: demoCombo
-                width: parent.width
+                availableWidth: parent.width
 
                 Comp.OBComboBox {
                     id: demoCombo
@@ -340,7 +362,7 @@ ApplicationWindow {
             UiKitSection {
                 title: "OBComboBox orientation"
                 target: orientationCombo
-                width: parent.width
+                availableWidth: parent.width
 
                 Comp.OBComboBox {
                     id: orientationCombo
@@ -356,7 +378,7 @@ ApplicationWindow {
             UiKitSection {
                 title: "OBComboBox + MovementModel"
                 target: movementCombo
-                width: parent.width
+                availableWidth: parent.width
 
                 Comp.OBComboBox {
                     id: movementCombo
@@ -372,7 +394,7 @@ ApplicationWindow {
             UiKitSection {
                 title: "OBComboBox + SupportModel"
                 target: supportCombo
-                width: parent.width
+                availableWidth: parent.width
 
                 Comp.OBComboBox {
                     id: supportCombo
@@ -388,7 +410,7 @@ ApplicationWindow {
             UiKitSection {
                 title: "OBComboBox + FrequencyModel"
                 target: frequencyCombo
-                width: parent.width
+                availableWidth: parent.width
 
                 Comp.OBComboBox {
                     id: frequencyCombo
@@ -398,6 +420,40 @@ ApplicationWindow {
                 Comp.OBLabel {
                     text: "-> " + frequencyCombo.model.valueAt(frequencyCombo.currentIndex)
                     anchors.verticalCenter: parent.verticalCenter
+                }
+            }
+
+            UiKitSection {
+                title: "OBScrollBar"
+                target: demoScrollBar
+                availableWidth: parent.width
+
+                Flickable {
+                    id: demoFlickable
+                    width: Style.OBConstants.widthBig
+                    height: Style.OBConstants.heightBig * 2
+                    contentWidth: width
+                    contentHeight: scrollContent.height
+                    clip: true
+
+                    ScrollBar.vertical: Comp.OBScrollBar {
+                        id: demoScrollBar
+                        policy: ScrollBar.AlwaysOn
+                    }
+
+                    Column {
+                        id: scrollContent
+                        width: demoFlickable.width
+
+                        Repeater {
+                            model: 10
+                            Comp.OBLabel {
+                                text: "Row " + (index + 1)
+                                width: scrollContent.width
+                                height: Style.OBConstants.heightLittle
+                            }
+                        }
+                    }
                 }
             }
 
@@ -415,13 +471,35 @@ ApplicationWindow {
         anchors.margins: Style.OBConstants.leftMargins
         clip: true
 
+        // ScrollView's own style only anchors vertical-to-right/full-height
+        // and horizontal-to-bottom/full-width for the *default* scrollbars
+        // it declares internally; supplying our own via the attached
+        // properties opts out of that layout, so it's replicated here.
+        ScrollBar.vertical: Comp.OBScrollBar {
+            policy: ScrollBar.AlwaysOn
+            parent: complexComponentsTab
+            x: complexComponentsTab.mirrored ? 0 : complexComponentsTab.width - width
+            y: complexComponentsTab.topPadding
+            height: complexComponentsTab.availableHeight
+            active: complexComponentsTab.ScrollBar.horizontal.active
+        }
+
+        ScrollBar.horizontal: Comp.OBScrollBar {
+            policy: ScrollBar.AlwaysOn
+            parent: complexComponentsTab
+            x: complexComponentsTab.leftPadding
+            y: complexComponentsTab.height - height
+            width: complexComponentsTab.availableWidth
+            active: complexComponentsTab.ScrollBar.vertical.active
+        }
+
         Column {
-            width: window.width - 2 * Style.OBConstants.leftMargins
+            width: window.width - 2 * Style.OBConstants.leftMargins - Style.OBConstants.scrollBarThickness
             spacing: Style.OBConstants.verticalSpacing * 2
 
             UiKitSection {
                 title: "DescLine"
-                width: parent.width
+                availableWidth: parent.width
 
                 Column {
                     spacing: Style.OBConstants.verticalSpacing / 2
@@ -474,7 +552,7 @@ ApplicationWindow {
 
             UiKitSection {
                 title: "TableRow"
-                width: parent.width
+                availableWidth: parent.width
 
                 Column {
                     spacing: Style.OBConstants.verticalSpacing / 2
@@ -509,7 +587,7 @@ ApplicationWindow {
 
             UiKitSection {
                 title: "TransactionRow"
-                width: parent.width
+                availableWidth: parent.width
 
                 Column {
                     spacing: Style.OBConstants.verticalSpacing / 2
@@ -538,7 +616,7 @@ ApplicationWindow {
 
             UiKitSection {
                 title: "OBTransactionInfo"
-                width: parent.width
+                availableWidth: parent.width
 
                 CategoryListModel {
                     id: transactionInfoCategoryModel
@@ -592,9 +670,54 @@ ApplicationWindow {
             }
 
             UiKitSection {
+                title: "OBTransactionList"
+                availableWidth: parent.width
+
+                TransactionListModel {
+                    id: transactionListDemoModel
+
+                    Component.onCompleted: {
+                        addTransaction(transactionPrototype.createObject(transactionListDemoModel, {
+                            name: "Salary", description: "Monthly salary", date: new Date("2026-01-05"),
+                            value: 2500, movement: OpenAccountEnums.Movement.Credit
+                        }))
+                        addTransaction(transactionPrototype.createObject(transactionListDemoModel, {
+                            name: "Rent", description: "Monthly rent", date: new Date("2026-01-06"),
+                            value: 950, movement: OpenAccountEnums.Movement.Debit
+                        }))
+                        addTransaction(transactionPrototype.createObject(transactionListDemoModel, {
+                            name: "Groceries", description: "Weekly groceries", date: new Date("2026-01-08"),
+                            value: 120, movement: OpenAccountEnums.Movement.Debit
+                        }))
+                        addTransaction(transactionPrototype.createObject(transactionListDemoModel, {
+                            name: "Freelance", description: "Side project payout", date: new Date("2026-01-10"),
+                            value: 400, movement: OpenAccountEnums.Movement.Credit
+                        }))
+                    }
+                }
+                Component {
+                    id: transactionPrototype
+                    Transaction {}
+                }
+
+                AccountTransactionFilterProxyModel {
+                    id: transactionListDemoProxy
+                    sourceModel: transactionListDemoModel
+                }
+
+                Composed.OBTransactionList {
+                    model: transactionListDemoProxy
+                    // Real usage defaults to 100/page; shrunk here so the
+                    // gallery's 4 demo transactions actually span 2 pages
+                    // and the Pager is visibly exercised.
+                    pageSize: 2
+                }
+            }
+
+            UiKitSection {
                 title: "Pager"
                 target: demoPager
-                width: parent.width
+                availableWidth: parent.width
 
                 Composed.Pager {
                     id: demoPager
@@ -614,7 +737,7 @@ ApplicationWindow {
                 id: counterSection
                 title: "OBButtonPair (+/-)"
                 target: counterPair
-                width: parent.width
+                availableWidth: parent.width
 
                 property int counterValue: 0
 
@@ -636,7 +759,7 @@ ApplicationWindow {
                 id: confirmSection
                 title: "OBButtonPair (accept/cancel)"
                 target: confirmPair
-                width: parent.width
+                availableWidth: parent.width
 
                 property string lastAction: "none"
 
@@ -668,13 +791,35 @@ ApplicationWindow {
         anchors.margins: Style.OBConstants.leftMargins
         clip: true
 
+        // ScrollView's own style only anchors vertical-to-right/full-height
+        // and horizontal-to-bottom/full-width for the *default* scrollbars
+        // it declares internally; supplying our own via the attached
+        // properties opts out of that layout, so it's replicated here.
+        ScrollBar.vertical: Comp.OBScrollBar {
+            policy: ScrollBar.AlwaysOn
+            parent: calendarTab
+            x: calendarTab.mirrored ? 0 : calendarTab.width - width
+            y: calendarTab.topPadding
+            height: calendarTab.availableHeight
+            active: calendarTab.ScrollBar.horizontal.active
+        }
+
+        ScrollBar.horizontal: Comp.OBScrollBar {
+            policy: ScrollBar.AlwaysOn
+            parent: calendarTab
+            x: calendarTab.leftPadding
+            y: calendarTab.height - height
+            width: calendarTab.availableWidth
+            active: calendarTab.ScrollBar.vertical.active
+        }
+
         Column {
-            width: window.width - 2 * Style.OBConstants.leftMargins
+            width: window.width - 2 * Style.OBConstants.leftMargins - Style.OBConstants.scrollBarThickness
             spacing: Style.OBConstants.verticalSpacing * 2
 
             UiKitSection {
                 title: "OBCalendar"
-                width: parent.width
+                availableWidth: parent.width
 
                 Composed.OBCalendar {
                     id: demoCalendar
@@ -696,7 +841,7 @@ ApplicationWindow {
             UiKitSection {
                 title: "OBDateButton"
                 target: demoDateButton
-                width: parent.width
+                availableWidth: parent.width
 
                 Composed.OBDateButton {
                     id: demoDateButton
