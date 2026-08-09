@@ -6,9 +6,12 @@
 #include "transaction.h"
 
 #include <QDate>
+#include <QEnableSharedFromThis>
 #include <QJsonObject>
 #include <QList>
 #include <QObject>
+#include <QQmlEngine>
+#include <QSharedPointer>
 #include <QString>
 #include <QUuid>
 
@@ -17,8 +20,11 @@
  *
  * direction() == Debit means money owed, Credit means money lent.
  */
-class MODEL_EXPORT Debt : public QObject, public MetaData {
+class MODEL_EXPORT Debt : public QObject,
+                          public MetaData,
+                          public QEnableSharedFromThis<Debt> {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(QUuid id READ id WRITE setId NOTIFY idChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
@@ -117,3 +123,6 @@ private:
         static constexpr auto accountId = "accountId";
     };
 };
+
+using DebtPtr = QSharedPointer<Debt>;
+Q_DECLARE_METATYPE(DebtPtr)

@@ -6,9 +6,12 @@
 #include "transaction.h"
 
 #include <QDate>
+#include <QEnableSharedFromThis>
 #include <QJsonObject>
 #include <QList>
 #include <QObject>
+#include <QQmlEngine>
+#include <QSharedPointer>
 #include <QString>
 #include <QUuid>
 
@@ -20,8 +23,11 @@
  * value marks it repeatable. Transactions matching the category and period
  * are attached via addTransaction() to compute usedAmount() / usageRatio().
  */
-class MODEL_EXPORT Budget : public QObject, public MetaData {
+class MODEL_EXPORT Budget : public QObject,
+                             public MetaData,
+                             public QEnableSharedFromThis<Budget> {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(QUuid id READ id WRITE setId NOTIFY idChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
@@ -118,3 +124,6 @@ private:
     // how Total accumulates transactions outside of the metadata map.
     QList<TransactionPtr> m_transactions;
 };
+
+using BudgetPtr = QSharedPointer<Budget>;
+Q_DECLARE_METATYPE(BudgetPtr)

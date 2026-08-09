@@ -9,6 +9,7 @@
 #include <QJsonObject>
 #include <QList>
 #include <QObject>
+#include <QQmlEngine>
 #include <QSharedPointer>
 #include <QString>
 #include <QUuid>
@@ -20,6 +21,7 @@ class MODEL_EXPORT Frequency : public QObject,
                                public MetaData,
                                public QEnableSharedFromThis<Frequency> {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(QUuid id READ id WRITE setId NOTIFY idChanged)
     Q_PROPERTY(OpenAccountEnums::Frequency frequency READ frequency WRITE setFrequency NOTIFY frequencyChanged)

@@ -3,8 +3,11 @@
 #include "metadata.h"
 #include "model_global.h"
 #include <QDate>
+#include <QEnableSharedFromThis>
 #include <QJsonObject>
 #include <QObject>
+#include <QQmlEngine>
+#include <QSharedPointer>
 #include <QString>
 #include <QUuid>
 
@@ -15,8 +18,11 @@
  * QML integration. Emits a per-property change signal and a generic
  * `changed()` aggregate signal whenever any attribute is modified.
  */
-class MODEL_EXPORT Account : public QObject, public MetaData {
+class MODEL_EXPORT Account : public QObject,
+                              public MetaData,
+                              public QEnableSharedFromThis<Account> {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(QUuid id READ id WRITE setId NOTIFY idChanged)
     Q_PROPERTY(QString number READ number WRITE setNumber NOTIFY numberChanged)
@@ -74,3 +80,6 @@ private:
         static constexpr auto opening = "opening";
     };
 };
+
+using AccountPtr = QSharedPointer<Account>;
+Q_DECLARE_METATYPE(AccountPtr)

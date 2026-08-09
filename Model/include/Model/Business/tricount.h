@@ -6,11 +6,14 @@
 #include "tricountexpense.h"
 #include "tricountmember.h"
 #include <QDate>
+#include <QEnableSharedFromThis>
 #include <QJsonObject>
 #include <QList>
 #include <QMap>
 #include <QMetaType>
 #include <QObject>
+#include <QQmlEngine>
+#include <QSharedPointer>
 #include <QString>
 #include <QUuid>
 
@@ -43,8 +46,11 @@ public:
  * transfers to settle up, and the Transactions to attach to the real accounts
  * of profile-linked members.
  */
-class MODEL_EXPORT Tricount : public QObject, public MetaData {
+class MODEL_EXPORT Tricount : public QObject,
+                               public MetaData,
+                               public QEnableSharedFromThis<Tricount> {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(QUuid id READ id WRITE setId NOTIFY idChanged)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
@@ -151,3 +157,6 @@ Q_DECLARE_METATYPE(TricountSettlement)
 Q_DECLARE_METATYPE(QList<TricountSettlement>)
 Q_DECLARE_METATYPE(QList<TricountMemberPtr>)
 Q_DECLARE_METATYPE(QList<TricountExpensePtr>)
+
+using TricountPtr = QSharedPointer<Tricount>;
+Q_DECLARE_METATYPE(TricountPtr)

@@ -3,19 +3,25 @@
 #include "metadata.h"
 #include "metatypes.h"
 #include "model_global.h"
+#include <QEnableSharedFromThis>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QList>
 #include <QMetaType>
 #include <QObject>
+#include <QQmlEngine>
+#include <QSharedPointer>
 #include <QString>
 #include <QUuid>
 
 /**
  * @brief User profile owning a list of Account ids.
  */
-class MODEL_EXPORT Profile : public QObject, public MetaData {
+class MODEL_EXPORT Profile : public QObject,
+                              public MetaData,
+                              public QEnableSharedFromThis<Profile> {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(QUuid id READ id WRITE setId NOTIFY idChanged)
     Q_PROPERTY(QString firstName READ firstName WRITE setFirstName NOTIFY firstNameChanged)
@@ -67,4 +73,7 @@ private:
     static QJsonArray accountsToJson(const QList<QUuid>& accounts);
     static QList<QUuid> accountsFromJson(const QJsonArray& arr);
 };
+
+using ProfilePtr = QSharedPointer<Profile>;
+Q_DECLARE_METATYPE(ProfilePtr)
 
