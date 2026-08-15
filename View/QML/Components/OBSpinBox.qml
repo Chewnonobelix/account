@@ -26,8 +26,24 @@ SpinBox {
     to: realTo * decimalFactor
     stepSize: realStepSize * decimalFactor
 
-    onRealValueChanged: value = Math.round(realValue * decimalFactor)
-    onValueChanged: realValue = value / decimalFactor
+    // Guarded both ways: an unconditional `realValue = value / decimalFactor`
+    // here would fire even when value only just changed to mirror realValue
+    // one line above, and in QML *any* imperative write — even a no-op one
+    // that reassigns the same number — permanently clears whatever
+    // declarative binding the value came from (e.g. a caller's
+    // `realValue: someModel.threshold`). That silently froze this control
+    // the moment it was first shown, so switching someModel afterwards
+    // never propagated. Only writing back when the value actually differs
+    // keeps both directions' bindings alive until the user genuinely edits
+    // the field (which is expected to take over from the binding then).
+    onRealValueChanged: {
+        const newValue = Math.round(realValue * decimalFactor)
+        if (value !== newValue) value = newValue
+    }
+    onValueChanged: {
+        const newRealValue = value / decimalFactor
+        if (realValue !== newRealValue) realValue = newRealValue
+    }
 
     validator: DoubleValidator {
         bottom: Math.min(root.realFrom, root.realTo)
