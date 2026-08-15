@@ -22,6 +22,16 @@
         <file alias="OBTransactionInfo.qml">QML/ComposedComponent/OBTransactionInfo.qml</file>
         <file alias="OBTransactionList.qml">QML/ComposedComponent/OBTransactionList.qml</file>
         <file alias="OBButtonPair.qml">QML/ComposedComponent/OBButtonPair.qml</file>
+        <file alias="OBBudgetToday.qml">QML/ComposedComponent/OBBudgetToday.qml</file>
+    </qresource>
+    <qresource prefix="/QML/Popup">
+        <file alias="OBAddCategoryPopup.qml">QML/Popup/OBAddCategoryPopup.qml</file>
+        <file alias="OBAddProfilePopup.qml">QML/Popup/OBAddProfilePopup.qml</file>
+        <file alias="OBAddAccountPopup.qml">QML/Popup/OBAddAccountPopup.qml</file>
+        <file alias="OBValidateTransactionsPopup.qml">QML/Popup/OBValidateTransactionsPopup.qml</file>
+    </qresource>
+    <qresource prefix="/QML/Page">
+        <file alias="OBBudgetPage.qml">QML/Page/OBBudgetPage.qml</file>
     </qresource>
     <qresource prefix="/QML/Style">
         <file alias="qmldir">QML/Style/qmldir</file>

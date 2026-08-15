@@ -4,6 +4,12 @@ set(CMAKE_AUTORCC ON)
 
 add_executable(UiKit
     src/main.cpp
+    src/demodatalog.h
+    src/demodataset.h
+    src/demodataworker.h
+    src/demodataworker.cpp
+    src/demodatagenerator.h
+    src/demodatagenerator.cpp
     QML/Main.qml
     QML/UiKitSection.qml
 )
