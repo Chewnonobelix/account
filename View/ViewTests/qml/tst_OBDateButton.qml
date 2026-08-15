@@ -42,4 +42,29 @@ TestCase {
         compare(dateButton.calendar.isSameDay(dateButton.selectedDate, picked), true)
         compare(dateButton.popup.opened, false)
     }
+
+    // A button near the bottom-right corner has no room for the calendar
+    // to open "naturally" below/left-aligned with it; the popup must flip
+    // above and/or clamp horizontally to stay fully inside the window
+    // instead of opening partly (or fully) off-screen — see
+    // OBDateButton.qml's calendarPopup.onAboutToShow.
+    function test_popupStaysWithinWindowBoundsNearBottomEdge() {
+        const edgeButton = edgeButtonComponent.createObject(testCase, {
+            x: testCase.width - 40, y: testCase.height - 10
+        })
+
+        edgeButton.buttonItem.clicked()
+
+        verify(edgeButton.popup.y >= 0)
+        verify(edgeButton.popup.y + edgeButton.popup.height <= testCase.height)
+        verify(edgeButton.popup.x >= 0)
+        verify(edgeButton.popup.x + edgeButton.popup.width <= testCase.width)
+
+        edgeButton.destroy()
+    }
+
+    Component {
+        id: edgeButtonComponent
+        Composed.OBDateButton {}
+    }
 }
