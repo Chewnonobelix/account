@@ -51,7 +51,7 @@ public:
   Q_INVOKABLE bool addBudget(QObject *budget);
   bool removeBudget(const QUuid &budgetId);
   bool removeBudgetAt(int row);
-  void clear();
+  Q_INVOKABLE void clear();
 
   Q_INVOKABLE QObject *at(int row) const;
   Q_INVOKABLE QVariantMap get(int row) const;

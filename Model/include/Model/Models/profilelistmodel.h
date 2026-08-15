@@ -48,7 +48,7 @@ public:
   Q_INVOKABLE bool addProfile(QObject *profile);
   bool removeProfile(const QUuid &profileId);
   bool removeProfileAt(int row);
-  void clear();
+  Q_INVOKABLE void clear();
 
   Q_INVOKABLE QObject *at(int row) const;
   Q_INVOKABLE QVariantMap get(int row) const;

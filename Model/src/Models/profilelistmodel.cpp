@@ -1,5 +1,6 @@
 #include "Model/Models/profilelistmodel.h"
 
+#include <QSet>
 #include <QString>
 
 namespace {
@@ -104,21 +105,23 @@ void ProfileListModel::setProfiles(const QList<ProfilePtr> &profiles) {
   QList<ProfilePtr> nextProfiles;
   nextProfiles.reserve(profiles.size());
 
-  auto alreadyAdded = [&nextProfiles](const ProfilePtr &candidate) {
-    for (const ProfilePtr &existing : nextProfiles) {
-      if (existing == candidate)
-        return true;
-      if (existing && candidate && !existing->id().isNull() &&
-          existing->id() == candidate->id()) {
-        return true;
-      }
-    }
-    return false;
-  };
+  // Hash-set dedup instead of an O(n) scan per candidate: with a large
+  // bulk-loaded list the scan-per-candidate version turns into an O(n^2)
+  // pass that can visibly freeze the UI thread this runs on.
+  QSet<const Profile *> seenPointers;
+  QSet<QUuid> seenIds;
+  seenPointers.reserve(profiles.size());
+  seenIds.reserve(profiles.size());
 
   for (const ProfilePtr &profile : profiles) {
-    if (!profile || alreadyAdded(profile))
+    if (!profile || seenPointers.contains(profile.data()))
       continue;
+    if (!profile->id().isNull() && seenIds.contains(profile->id()))
+      continue;
+
+    seenPointers.insert(profile.data());
+    if (!profile->id().isNull())
+      seenIds.insert(profile->id());
 
     nextProfiles.append(profile);
   }

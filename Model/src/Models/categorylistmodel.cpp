@@ -1,5 +1,6 @@
 #include "Model/Models/categorylistmodel.h"
 
+#include <QSet>
 #include <QString>
 
 namespace {
@@ -125,21 +126,23 @@ void CategoryListModel::setCategories(const QList<CategoryPtr> &categories) {
   QList<CategoryPtr> nextCategories;
   nextCategories.reserve(categories.size());
 
-  auto alreadyAdded = [&nextCategories](const CategoryPtr &candidate) {
-    for (const CategoryPtr &existing : nextCategories) {
-      if (existing == candidate)
-        return true;
-      if (existing && candidate && !existing->id().isNull() &&
-          existing->id() == candidate->id()) {
-        return true;
-      }
-    }
-    return false;
-  };
+  // Hash-set dedup instead of an O(n) scan per candidate: with a large
+  // bulk-loaded list the scan-per-candidate version turns into an O(n^2)
+  // pass that can visibly freeze the UI thread this runs on.
+  QSet<const Category *> seenPointers;
+  QSet<QUuid> seenIds;
+  seenPointers.reserve(categories.size());
+  seenIds.reserve(categories.size());
 
   for (const CategoryPtr &category : categories) {
-    if (!category || alreadyAdded(category))
+    if (!category || seenPointers.contains(category.data()))
       continue;
+    if (!category->id().isNull() && seenIds.contains(category->id()))
+      continue;
+
+    seenPointers.insert(category.data());
+    if (!category->id().isNull())
+      seenIds.insert(category->id());
 
     nextCategories.append(category);
   }

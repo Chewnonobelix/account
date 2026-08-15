@@ -47,7 +47,7 @@ public:
   Q_INVOKABLE bool addCategory(QObject *category);
   bool removeCategory(const QUuid &categoryId);
   bool removeCategoryAt(int row);
-  void clear();
+  Q_INVOKABLE void clear();
 
   Q_INVOKABLE QObject *at(int row) const;
   Q_INVOKABLE QVariantMap get(int row) const;

@@ -50,7 +50,7 @@ public:
   Q_INVOKABLE bool addAccount(QObject *account);
   bool removeAccount(const QUuid &accountId);
   bool removeAccountAt(int row);
-  void clear();
+  Q_INVOKABLE void clear();
 
   Q_INVOKABLE QObject *at(int row) const;
   Q_INVOKABLE QVariantMap get(int row) const;

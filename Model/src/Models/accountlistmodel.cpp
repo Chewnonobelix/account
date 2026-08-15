@@ -1,5 +1,6 @@
 #include "Model/Models/accountlistmodel.h"
 
+#include <QSet>
 #include <QString>
 
 namespace {
@@ -120,21 +121,23 @@ void AccountListModel::setAccounts(const QList<AccountPtr> &accounts) {
   QList<AccountPtr> nextAccounts;
   nextAccounts.reserve(accounts.size());
 
-  auto alreadyAdded = [&nextAccounts](const AccountPtr &candidate) {
-    for (const AccountPtr &existing : nextAccounts) {
-      if (existing == candidate)
-        return true;
-      if (existing && candidate && !existing->id().isNull() &&
-          existing->id() == candidate->id()) {
-        return true;
-      }
-    }
-    return false;
-  };
+  // Hash-set dedup instead of an O(n) scan per candidate: with a large
+  // bulk-loaded list the scan-per-candidate version turns into an O(n^2)
+  // pass that can visibly freeze the UI thread this runs on.
+  QSet<const Account *> seenPointers;
+  QSet<QUuid> seenIds;
+  seenPointers.reserve(accounts.size());
+  seenIds.reserve(accounts.size());
 
   for (const AccountPtr &account : accounts) {
-    if (!account || alreadyAdded(account))
+    if (!account || seenPointers.contains(account.data()))
       continue;
+    if (!account->id().isNull() && seenIds.contains(account->id()))
+      continue;
+
+    seenPointers.insert(account.data());
+    if (!account->id().isNull())
+      seenIds.insert(account->id());
 
     nextAccounts.append(account);
   }

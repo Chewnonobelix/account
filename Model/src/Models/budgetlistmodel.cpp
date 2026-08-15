@@ -1,5 +1,6 @@
 #include "Model/Models/budgetlistmodel.h"
 
+#include <QSet>
 #include <QString>
 
 namespace {
@@ -150,21 +151,23 @@ void BudgetListModel::setBudgets(const QList<BudgetPtr> &budgets) {
   QList<BudgetPtr> nextBudgets;
   nextBudgets.reserve(budgets.size());
 
-  auto alreadyAdded = [&nextBudgets](const BudgetPtr &candidate) {
-    for (const BudgetPtr &existing : nextBudgets) {
-      if (existing == candidate)
-        return true;
-      if (existing && candidate && !existing->id().isNull() &&
-          existing->id() == candidate->id()) {
-        return true;
-      }
-    }
-    return false;
-  };
+  // Hash-set dedup instead of an O(n) scan per candidate: with a large
+  // bulk-loaded list the scan-per-candidate version turns into an O(n^2)
+  // pass that can visibly freeze the UI thread this runs on.
+  QSet<const Budget *> seenPointers;
+  QSet<QUuid> seenIds;
+  seenPointers.reserve(budgets.size());
+  seenIds.reserve(budgets.size());
 
   for (const BudgetPtr &budget : budgets) {
-    if (!budget || alreadyAdded(budget))
+    if (!budget || seenPointers.contains(budget.data()))
       continue;
+    if (!budget->id().isNull() && seenIds.contains(budget->id()))
+      continue;
+
+    seenPointers.insert(budget.data());
+    if (!budget->id().isNull())
+      seenIds.insert(budget->id());
 
     nextBudgets.append(budget);
   }
