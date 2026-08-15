@@ -32,6 +32,7 @@ add_executable(TestDebtAccountFilterProxyModel tst_debtaccountfilterproxymodel.c
 add_executable(TestFrequencyListModel tst_frequencylistmodel.cpp)
 add_executable(TestFrequencyAccountFilterProxyModel tst_frequencyaccountfilterproxymodel.cpp)
 add_executable(TestTricountListModel tst_tricountlistmodel.cpp)
+add_executable(TestEstimatedTransactionFilterProxyModel tst_estimatedtransactionfilterproxymodel.cpp)
 
 
 target_link_libraries(TestProfile PRIVATE
@@ -148,6 +149,10 @@ target_link_libraries(TestTricountListModel PRIVATE
     Qt6::Test
     OAModel
 )
+target_link_libraries(TestEstimatedTransactionFilterProxyModel PRIVATE
+    Qt6::Test
+    OAModel
+)
 
 add_test(NAME TestProfile COMMAND TestProfile)
 add_test(NAME TestAccountTransactionFilterProxyModel COMMAND TestAccountTransactionFilterProxyModel)
@@ -177,6 +182,7 @@ add_test(NAME TestDebtAccountFilterProxyModel COMMAND TestDebtAccountFilterProxy
 add_test(NAME TestFrequencyListModel COMMAND TestFrequencyListModel)
 add_test(NAME TestFrequencyAccountFilterProxyModel COMMAND TestFrequencyAccountFilterProxyModel)
 add_test(NAME TestTricountListModel COMMAND TestTricountListModel)
+add_test(NAME TestEstimatedTransactionFilterProxyModel COMMAND TestEstimatedTransactionFilterProxyModel)
 
 add_custom_target(run_model_tests
     COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
@@ -209,5 +215,6 @@ add_custom_target(run_model_tests
         TestFrequencyListModel
         TestFrequencyAccountFilterProxyModel
         TestTricountListModel
+        TestEstimatedTransactionFilterProxyModel
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )

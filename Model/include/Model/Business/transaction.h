@@ -33,6 +33,12 @@ class MODEL_EXPORT Transaction
     Q_PROPERTY(QDate date READ date WRITE setDate NOTIFY dateChanged)
     Q_PROPERTY(OpenAccountEnums::Movement movement READ movement WRITE setMovement NOTIFY movementChanged)
     Q_PROPERTY(bool isVisible READ isVisible WRITE setIsVisible NOTIFY isVisibleChanged)
+    // Marks a transaction generated ahead of time from a recurring Frequency
+    // (e.g. a predicted monthly bill) as not yet confirmed to have actually
+    // happened as predicted. Cleared once the user validates it — see
+    // OBValidateTransactionsPopup, which surfaces every estimated
+    // transaction whose date has already passed.
+    Q_PROPERTY(bool estimated READ estimated WRITE setEstimated NOTIFY estimatedChanged)
     Q_PROPERTY(QUuid accountId READ accountId WRITE setAccountId NOTIFY accountIdChanged)
     Q_PROPERTY(QUuid category READ category WRITE setCategory NOTIFY categoryChanged)
 
@@ -59,6 +65,7 @@ public:
         return metaData<OpenAccountEnums::Movement>(Key::movement);
     }
     [[nodiscard]] bool isVisible() const { return metaData<bool>(Key::isVisible); }
+    [[nodiscard]] bool estimated() const { return metaData<bool>(Key::estimated); }
     [[nodiscard]] QUuid accountId() const { return metaData<QUuid>(Key::accountId); }
     [[nodiscard]] QUuid category() const { return metaData<QUuid>(Key::category); }
 
@@ -74,6 +81,7 @@ public slots:
     void setDate(QDate v);
     void setMovement(OpenAccountEnums::Movement v);
     void setIsVisible(bool v);
+    void setEstimated(bool v);
     void setAccountId(QUuid v);
     void setCategory(QUuid v);
 
@@ -86,6 +94,7 @@ signals:
     void dateChanged();
     void movementChanged();
     void isVisibleChanged();
+    void estimatedChanged();
     void accountIdChanged();
     void categoryChanged();
     void changed();
@@ -104,6 +113,7 @@ private:
         static constexpr auto date = "date";
         static constexpr auto movement = "movement";
         static constexpr auto isVisible = "isVisible";
+        static constexpr auto estimated = "estimated";
         static constexpr auto accountId = "accountId";
         static constexpr auto category = "category";
     };

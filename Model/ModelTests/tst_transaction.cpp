@@ -14,6 +14,7 @@ private slots:
     QVERIFY(!t.id().isNull());
     QCOMPARE(t.value(), 0.0);
     QVERIFY(t.isVisible());
+    QVERIFY(!t.estimated());
     QVERIFY(t.date().isValid());
     // sharedFromThis() must be null when not owned by QSharedPointer
     QVERIFY(t.sharedFromThis().isNull());
@@ -109,6 +110,16 @@ private slots:
     QCOMPARE(spy.count(), 1);
   }
 
+  void estimated_changed_signal() {
+    Transaction t;
+    QSignalSpy spy(&t, &Transaction::estimatedChanged);
+    t.setEstimated(true);
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(t.estimated(), true);
+    t.setEstimated(true);
+    QCOMPARE(spy.count(), 1);
+  }
+
   void accountId_changed_signal() {
     Transaction t;
     QSignalSpy spy(&t, &Transaction::accountIdChanged);
@@ -144,6 +155,7 @@ private slots:
     t.setDate(QDate(2025, 8, 18));
     t.setMovement(OpenAccountEnums::Movement::Debit);
     t.setIsVisible(false);
+    t.setEstimated(true);
     t.setAccountId(QUuid::createUuid());
     t.setCategory(cat);
 
@@ -160,6 +172,7 @@ private slots:
     QCOMPARE(r.date(), t.date());
     QCOMPARE(r.movement(), t.movement());
     QCOMPARE(r.isVisible(), t.isVisible());
+    QCOMPARE(r.estimated(), t.estimated());
     QCOMPARE(r.accountId(), t.accountId());
     QCOMPARE(r.category(), t.category());
   }

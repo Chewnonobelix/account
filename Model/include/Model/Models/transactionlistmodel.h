@@ -25,7 +25,8 @@ public:
     MovementRole,
     IsVisibleRole,
     AccountIdRole,
-    CategoryRole
+    CategoryRole,
+    EstimatedRole
   };
   Q_ENUM(Role)
 
@@ -51,9 +52,9 @@ public:
   // with a no-op deleter: the shared pointer is only used for shared access
   // here, actual lifetime stays with whatever already owns the QObject.
   Q_INVOKABLE bool addTransaction(QObject *transaction);
-  bool removeTransaction(const QUuid &transactionId);
+  Q_INVOKABLE bool removeTransaction(const QUuid &transactionId);
   bool removeTransactionAt(int row);
-  void clear();
+  Q_INVOKABLE void clear();
 
   Q_INVOKABLE QObject *at(int row) const;
   Q_INVOKABLE QVariantMap get(int row) const;

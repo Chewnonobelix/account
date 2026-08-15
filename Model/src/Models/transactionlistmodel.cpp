@@ -1,5 +1,6 @@
 #include "Model/Models/transactionlistmodel.h"
 
+#include <QSet>
 #include <QString>
 
 namespace {
@@ -126,6 +127,9 @@ bool TransactionListModel::setData(const QModelIndex &index,
     transaction->setCategory(categoryId);
     return true;
   }
+  case EstimatedRole:
+    transaction->setEstimated(value.toBool());
+    return true;
   default:
     break;
   }
@@ -150,7 +154,8 @@ QHash<int, QByteArray> TransactionListModel::roleNames() const {
           {MovementRole, "movement"},
           {IsVisibleRole, "isVisible"},
           {AccountIdRole, "accountId"},
-          {CategoryRole, "category"}};
+          {CategoryRole, "category"},
+          {EstimatedRole, "estimated"}};
 }
 
 TransactionPtr TransactionListModel::transactionAt(int row) const {
@@ -169,21 +174,24 @@ void TransactionListModel::setTransactions(
   QList<TransactionPtr> nextTransactions;
   nextTransactions.reserve(transactions.size());
 
-  auto alreadyAdded = [&nextTransactions](const TransactionPtr &candidate) {
-    for (const TransactionPtr &existing : nextTransactions) {
-      if (existing == candidate)
-        return true;
-      if (existing && candidate && !existing->id().isNull() &&
-          existing->id() == candidate->id()) {
-        return true;
-      }
-    }
-    return false;
-  };
+  // Hash-set dedup instead of an O(n) scan per candidate: with a few
+  // thousand transactions (e.g. bulk-loading a generated demo dataset) the
+  // scan-per-candidate version turns into an O(n^2) pass that can visibly
+  // freeze the UI thread this runs on.
+  QSet<const Transaction *> seenPointers;
+  QSet<QUuid> seenIds;
+  seenPointers.reserve(transactions.size());
+  seenIds.reserve(transactions.size());
 
   for (const TransactionPtr &transaction : transactions) {
-    if (!transaction || alreadyAdded(transaction))
+    if (!transaction || seenPointers.contains(transaction.data()))
       continue;
+    if (!transaction->id().isNull() && seenIds.contains(transaction->id()))
+      continue;
+
+    seenPointers.insert(transaction.data());
+    if (!transaction->id().isNull())
+      seenIds.insert(transaction->id());
 
     nextTransactions.append(transaction);
   }
@@ -354,6 +362,10 @@ void TransactionListModel::connectTransaction(const TransactionPtr &transaction)
           [this, rawTransaction]() {
             emitRolesChanged(rawTransaction, {CategoryRole});
           });
+  connect(rawTransaction, &Transaction::estimatedChanged, this,
+          [this, rawTransaction]() {
+            emitRolesChanged(rawTransaction, {EstimatedRole});
+          });
 }
 
 void TransactionListModel::disconnectTransaction(Transaction *transaction) {
@@ -391,6 +403,8 @@ QVariant TransactionListModel::roleData(const TransactionPtr &transaction,
     return transaction->accountId();
   case CategoryRole:
     return transaction->category();
+  case EstimatedRole:
+    return transaction->estimated();
   default:
     break;
   }

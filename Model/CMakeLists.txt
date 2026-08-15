@@ -48,6 +48,7 @@ add_library(OAModel
     include/Model/Models/debtaccountfilterproxymodel.h
     include/Model/Models/debtlistmodel.h
     include/Model/Models/enumlistmodel.h
+    include/Model/Models/estimatedtransactionfilterproxymodel.h
     include/Model/Models/frequencyaccountfilterproxymodel.h
     include/Model/Models/frequencylistmodel.h
     include/Model/Models/frequencymodel.h
@@ -66,6 +67,7 @@ add_library(OAModel
     src/Models/debtaccountfilterproxymodel.cpp
     src/Models/debtlistmodel.cpp
     src/Models/enumlistmodel.cpp
+    src/Models/estimatedtransactionfilterproxymodel.cpp
     src/Models/frequencyaccountfilterproxymodel.cpp
     src/Models/frequencylistmodel.cpp
     src/Models/frequencymodel.cpp

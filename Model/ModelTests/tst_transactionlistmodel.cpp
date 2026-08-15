@@ -63,6 +63,54 @@ private slots:
     QCOMPARE(payload.value(QStringLiteral("accountId")).toUuid(), accountId);
   }
 
+  void estimatedRole_roundTripsThroughDataAndSetData() {
+    TransactionListModel model;
+    const TransactionPtr transaction = makeTransaction(QStringLiteral("Insurance"), 60.0);
+    QVERIFY(model.addTransaction(transaction));
+
+    const QModelIndex index = model.index(0, 0);
+    QCOMPARE(model.data(index, TransactionListModel::EstimatedRole).toBool(), false);
+
+    QVERIFY(model.setData(index, true, TransactionListModel::EstimatedRole));
+    QCOMPARE(transaction->estimated(), true);
+    QCOMPARE(model.data(index, TransactionListModel::EstimatedRole).toBool(), true);
+    QCOMPARE(model.get(0).value(QStringLiteral("estimated")).toBool(), true);
+  }
+
+  void estimatedChanges_emitDataChanged() {
+    TransactionListModel model;
+    const TransactionPtr transaction = makeTransaction(QStringLiteral("Phone bill"), 25.0);
+    QVERIFY(model.addTransaction(transaction));
+
+    QSignalSpy dataChangedSpy(&model, &QAbstractItemModel::dataChanged);
+    transaction->setEstimated(true);
+
+    QCOMPARE(dataChangedSpy.count(), 1);
+    const QList<QVariant> arguments = dataChangedSpy.takeFirst();
+    const QList<int> roles = qvariant_cast<QList<int>>(arguments.at(2));
+    QVERIFY(roles.contains(TransactionListModel::EstimatedRole));
+  }
+
+  void removeTransaction_removesByIdAndReturnsFalseWhenNotFound() {
+    TransactionListModel model;
+    const TransactionPtr kept = makeTransaction(QStringLiteral("Kept"), 10.0);
+    const TransactionPtr removed = makeTransaction(QStringLiteral("Removed"), 20.0);
+    QVERIFY(model.addTransaction(kept));
+    QVERIFY(model.addTransaction(removed));
+
+    QSignalSpy rowsRemovedSpy(&model, &QAbstractItemModel::rowsRemoved);
+    QSignalSpy countSpy(&model, &TransactionListModel::countChanged);
+
+    QVERIFY(model.removeTransaction(removed->id()));
+    QCOMPARE(rowsRemovedSpy.count(), 1);
+    QCOMPARE(countSpy.count(), 1);
+    QCOMPARE(model.rowCount(), 1);
+    QCOMPARE(model.at(0), static_cast<QObject *>(kept.data()));
+
+    QVERIFY(!model.removeTransaction(removed->id())); // already gone
+    QVERIFY(!model.removeTransaction(QUuid::createUuid())); // never existed
+  }
+
   void duplicateTransactions_areRejected() {
     TransactionListModel model;
     const TransactionPtr transaction = makeTransaction(QStringLiteral("Rent"), 900.0);

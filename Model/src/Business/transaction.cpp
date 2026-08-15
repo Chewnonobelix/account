@@ -10,6 +10,7 @@ Transaction::Transaction(QObject* parent) : QObject(parent), MetaData() {
     setMetadata(Key::date, QDate::currentDate());
     setMetadata(Key::movement, OpenAccountEnums::Movement{});
     setMetadata(Key::isVisible, true);
+    setMetadata(Key::estimated, false);
     setMetadata(Key::accountId, QUuid{});
     setMetadata(Key::category, QUuid{});
 }
@@ -25,6 +26,7 @@ Transaction::Transaction(const QJsonObject& json, QObject* parent)
     setMetadata(Key::date, QDate::currentDate());
     setMetadata(Key::movement, OpenAccountEnums::Movement{});
     setMetadata(Key::isVisible, true);
+    setMetadata(Key::estimated, false);
     setMetadata(Key::accountId, QUuid{});
     setMetadata(Key::category, QUuid{});
     Transaction::fromJson(json);
@@ -85,6 +87,13 @@ void Transaction::setIsVisible(bool v) {
     if (isVisible() == v) return;
     setMetadata(Key::isVisible, v);
     emit isVisibleChanged();
+    emit changed();
+}
+
+void Transaction::setEstimated(bool v) {
+    if (estimated() == v) return;
+    setMetadata(Key::estimated, v);
+    emit estimatedChanged();
     emit changed();
 }
 
