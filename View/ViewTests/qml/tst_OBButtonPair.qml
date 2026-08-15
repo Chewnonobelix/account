@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Layouts
 import QtTest
 
 import "../../QML/ComposedComponent" as Composed
@@ -33,6 +34,7 @@ TestCase {
         pair.rightText = "+"
         pair.leftEnabled = true
         pair.rightEnabled = true
+        pair.stretch = false
     }
 
     function test_defaultTexts() {
@@ -75,5 +77,14 @@ TestCase {
         pair.rightEnabled = false
         compare(pair.rightButton.enabled, false)
         compare(pair.leftButton.enabled, true)
+    }
+
+    function test_stretchExposesFillWidthOnBothButtons() {
+        compare(pair.leftButton.Layout.fillWidth, false)
+        compare(pair.rightButton.Layout.fillWidth, false)
+
+        pair.stretch = true
+        compare(pair.leftButton.Layout.fillWidth, true)
+        compare(pair.rightButton.Layout.fillWidth, true)
     }
 }
