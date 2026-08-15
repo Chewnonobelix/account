@@ -51,6 +51,24 @@ void AccountTransactionFilterProxyModel::setDateFilter(
   invalidateFilter();
 }
 
+void AccountTransactionFilterProxyModel::setDateFrom(QDate dateFrom) {
+  if (m_dateFrom == dateFrom)
+    return;
+
+  m_dateFrom = dateFrom;
+  emit dateFromChanged();
+  invalidateFilter();
+}
+
+void AccountTransactionFilterProxyModel::setDateTo(QDate dateTo) {
+  if (m_dateTo == dateTo)
+    return;
+
+  m_dateTo = dateTo;
+  emit dateToChanged();
+  invalidateFilter();
+}
+
 void AccountTransactionFilterProxyModel::setSupportFilter(
     const QList<OpenAccountEnums::Support> &supportFilter) {
   if (m_supportFilter == supportFilter)
@@ -125,10 +143,17 @@ bool AccountTransactionFilterProxyModel::filterAcceptsRow(
               .toUuid() != m_account->id())
     return false;
 
-  if (!m_dateFilter.isEmpty() &&
-      !m_dateFilter.contains(
-          sourceModel()->data(sourceIndex, TransactionListModel::DateRole).toDate()))
-    return false;
+  if (!m_dateFilter.isEmpty() || m_dateFrom.isValid() || m_dateTo.isValid()) {
+    const QDate date =
+        sourceModel()->data(sourceIndex, TransactionListModel::DateRole).toDate();
+
+    if (!m_dateFilter.isEmpty() && !m_dateFilter.contains(date))
+      return false;
+    if (m_dateFrom.isValid() && date < m_dateFrom)
+      return false;
+    if (m_dateTo.isValid() && date > m_dateTo)
+      return false;
+  }
 
   if (!m_supportFilter.isEmpty() &&
       !m_supportFilter.contains(

@@ -140,6 +140,8 @@ private slots:
     proxy.setSourceModel(&sourceModel);
 
     QVERIFY(proxy.dateFilter().isEmpty());
+    QVERIFY(!proxy.dateFrom().isValid());
+    QVERIFY(!proxy.dateTo().isValid());
     QVERIFY(proxy.supportFilter().isEmpty());
     QVERIFY(proxy.categoryFilter().isEmpty());
     QVERIFY(proxy.descriptionFilter().isEmpty());
@@ -170,6 +172,61 @@ private slots:
     QCOMPARE(filterChangedSpy.count(), 1);
     QCOMPARE(proxy.rowCount(), 1);
     QCOMPARE(proxy.at(0), static_cast<QObject *>(kept.data()));
+  }
+
+  void dateRange_showsOnlyDatesWithinBounds() {
+    const QUuid accountId = QUuid::createUuid();
+
+    const TransactionPtr before =
+        makeTransaction(QStringLiteral("Before"), accountId, QDate(2026, 1, 9));
+    const TransactionPtr kept =
+        makeTransaction(QStringLiteral("Kept"), accountId, QDate(2026, 1, 15));
+    const TransactionPtr after =
+        makeTransaction(QStringLiteral("After"), accountId, QDate(2026, 1, 21));
+
+    TransactionListModel sourceModel;
+    QVERIFY(sourceModel.addTransaction(before));
+    QVERIFY(sourceModel.addTransaction(kept));
+    QVERIFY(sourceModel.addTransaction(after));
+
+    AccountTransactionFilterProxyModel proxy;
+    proxy.setSourceModel(&sourceModel);
+
+    QSignalSpy fromSpy(&proxy, &AccountTransactionFilterProxyModel::dateFromChanged);
+    QSignalSpy toSpy(&proxy, &AccountTransactionFilterProxyModel::dateToChanged);
+    proxy.setDateFrom(QDate(2026, 1, 10));
+    proxy.setDateTo(QDate(2026, 1, 20));
+
+    QCOMPARE(fromSpy.count(), 1);
+    QCOMPARE(toSpy.count(), 1);
+    QCOMPARE(proxy.rowCount(), 1);
+    QCOMPARE(proxy.at(0), static_cast<QObject *>(kept.data()));
+  }
+
+  void dateRange_openEndedBoundLeavesThatSideUnrestricted() {
+    const QUuid accountId = QUuid::createUuid();
+
+    const TransactionPtr early =
+        makeTransaction(QStringLiteral("Early"), accountId, QDate(2020, 1, 1));
+    const TransactionPtr kept =
+        makeTransaction(QStringLiteral("Kept"), accountId, QDate(2026, 1, 15));
+    const TransactionPtr after =
+        makeTransaction(QStringLiteral("After"), accountId, QDate(2026, 1, 21));
+
+    TransactionListModel sourceModel;
+    QVERIFY(sourceModel.addTransaction(early));
+    QVERIFY(sourceModel.addTransaction(kept));
+    QVERIFY(sourceModel.addTransaction(after));
+
+    AccountTransactionFilterProxyModel proxy;
+    proxy.setSourceModel(&sourceModel);
+
+    // Only dateTo is set: everything up to and including it passes,
+    // regardless of how far in the past.
+    proxy.setDateTo(QDate(2026, 1, 20));
+
+    QCOMPARE(proxy.rowCount(), 2);
+    QVERIFY(proxy.dateFrom().isNull());
   }
 
   void supportFilter_showsOnlyMatchingSupports() {
@@ -327,6 +384,16 @@ private slots:
         &proxy, &AccountTransactionFilterProxyModel::descriptionFilterChanged);
     proxy.setDescriptionFilter(QStringLiteral("foo"));
     QCOMPARE(descriptionSpy.count(), 0);
+
+    proxy.setDateFrom(QDate(2026, 1, 1));
+    QSignalSpy dateFromSpy(&proxy, &AccountTransactionFilterProxyModel::dateFromChanged);
+    proxy.setDateFrom(QDate(2026, 1, 1));
+    QCOMPARE(dateFromSpy.count(), 0);
+
+    proxy.setDateTo(QDate(2026, 1, 31));
+    QSignalSpy dateToSpy(&proxy, &AccountTransactionFilterProxyModel::dateToChanged);
+    proxy.setDateTo(QDate(2026, 1, 31));
+    QCOMPARE(dateToSpy.count(), 0);
   }
 };
 
